@@ -106,7 +106,7 @@ function setClose(user_id,
             {/if}
               <strong>{$curr_protocole->_ref_chir->user_last_name} {$curr_protocole->_ref_chir->user_first_name} &mdash; {$curr_protocole->_ext_code_ccam->code}</strong>
             </a>
-            <br />{$curr_protocole->_ext_code_ccam->libelleLong}
+            {$curr_protocole->_ext_code_ccam->libelleLong}
           </td>
         </tr>
         {/foreach}
