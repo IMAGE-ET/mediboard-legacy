@@ -41,25 +41,14 @@ $sql= "SELECT *
   ORDER BY text";
 $groups = db_loadList($sql);
 
-// Création de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-$smarty = new Smarty();
-
-// Initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-// Mapping des variables
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('user', $AppUI->user_id);
 $smarty->assign('functions', $functions);
 $smarty->assign('functionsel', $functionsel);
 $smarty->assign('groups', $groups);
 
-// Affichage de la page
 $smarty->display('vw_idx_functions.tpl');
 
 ?>

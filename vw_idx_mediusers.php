@@ -69,26 +69,14 @@ $query = "SELECT functions_mediboard.*,
   
 $functions = db_loadList($query);
 
-// Création de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-$smarty = new Smarty();
-
-// Initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-// Mapping des variables
-$smarty->assign('m', $m);
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('user', $AppUI->user_id);
 $smarty->assign('usersel', $usersel);
 $smarty->assign('users', $users);
 $smarty->assign('functions', $functions);
 
-//Affichage de la page
 $smarty->display('vw_idx_mediusers.tpl');
 
 ?>
