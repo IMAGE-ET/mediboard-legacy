@@ -49,7 +49,6 @@ class CSetupdPplanningOp {
 		case "0.1": {
             $sql = "ALTER TABLE operations ADD entree_bloc TIME AFTER temp_operation ,
                     ADD sortie_bloc TIME AFTER entree_bloc ,
-                    ADD type_anesth TINYINT AFTER time_anesth ,
                     ADD saisie ENUM( 'n', 'o' ) DEFAULT 'n' NOT NULL ,
                     CHANGE plageop_id plageop_id BIGINT( 20 ) UNSIGNED";
         }
