@@ -286,6 +286,7 @@ function printForm() {
     url += '&type_adm='    + eval('type_adm'               );
     url += '&chambre='     + eval('chambre'                ); 
     popup(700, 500, url, 'printAdm');
+    form.submit();
   }
 }
 </script>

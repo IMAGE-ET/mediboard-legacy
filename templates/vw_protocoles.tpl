@@ -67,7 +67,7 @@ function setClose() {ldelim}
         
         {foreach item=curr_protocole from=$protocoles}
         <tr>    
-          <td>
+          <td class="text">
             <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab={$tab}{/if}&amp;protocole_id={$curr_protocole.operation_id}">
               <strong>Dr. {$curr_protocole.lastname} {$curr_protocole.firstname} &mdash; {$curr_protocole.CCAM_code}</strong>
             </a>
