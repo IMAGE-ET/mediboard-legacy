@@ -42,16 +42,16 @@ function setClose(key, val){
 <tr>
   <th align="center">Nom</th>
   <th align="center">Prénom</th>
+  <th align="center">Date de naissance</th>
   <th align="center">Adresse</th>
-  <th align="center">Ville</th>
   <th align="center">Selectionner</th>
 </tr>
 {foreach from=$list item=curr_patient}
 <tr>
   <td>{$curr_patient.lastname}</td>
   <td>{$curr_patient.firstname}</td>
-  <td>{$curr_patient.adresse}</td>
-  <td>{$curr_patient.ville}</td>
+  <td>{$curr_patient.naissance}</td>
+  <td>{$curr_patient.adresse} {$curr_patient.cp} {$curr_patient.ville}</td>
   <td class="button"><input type="button" class="button" value="selectionner" onclick="setClose({$curr_patient.id}, '{$curr_patient.lastname} {$curr_patient.firstname}')" /></td>
 </tr>
 {/foreach}

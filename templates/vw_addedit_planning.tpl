@@ -89,7 +89,7 @@ function popPat() {
   url += '&a=pat_selector';
   url += '&dialog=1';
 
-  window.open(url, 'Patient', 'left=50, top=50, width=400, height=250, resizable=yes');
+  window.open(url, 'Patient', 'left=50, top=50, width=500, height=500, resizable=yes');
 }
 
 function setPat( key, val ) {
