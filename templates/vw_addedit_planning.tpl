@@ -139,14 +139,24 @@ function popPlage() {
   window.open(url, 'Plage', 'left=50, top=50, width=400, height=250, resizable=yes');
 }
 
-function setPlage( key, val ){
+function setPlage( key, val, adm ) {
   var f = document.editFrm;
 
   if (key != '') {
-    f.plageop_id.value = key
+    f.plageop_id.value = key;
     f.date.value = val;
     window.plageop_id = key;
     window.date = val;
+    /*
+    if(adm == -1) {
+      f._rdv_adm.value = 0;
+      f._date_rdv_adm.value = 0; 
+    }
+    else {
+      f._rdv_adm.value = 0;
+      f._date_rdv_adm.value = 0;
+    }
+    */
   }
 }
 
@@ -168,6 +178,7 @@ function setProtocole(
     prot_hour_op,
     prot_min_op,
     prot_examen,
+    prot_materiel,
     prot_type_adm,
     prot_duree_hospi) {
 
@@ -179,6 +190,7 @@ function setProtocole(
   f._hour_op.value = prot_hour_op;
   f._min_op.value = prot_min_op;
   f.examen.value = prot_examen;
+  f.materiel.value= prot_materiel;
   f.type_adm.value = prot_type_adm;
   f.duree_hospi.value = prot_duree_hospi;
 }
@@ -346,12 +358,12 @@ function printForm() {
           <td colspan="2"><textarea name="examen" rows="3">{$op->examen}</textarea></td>
         </tr>
 
-        {if !$protocole}
         <tr>
           <th><label for="editFrm_materiel">Matériel à prévoir:</label></th>
           <td colspan="2"><textarea name="materiel" rows="3">{$op->materiel}</textarea></td>
         </tr>
 
+        {if !$protocole}
         <tr>
           <th><label for="editFrm_info_n">Information du patient:</label></th>
           <td colspan="2">
