@@ -1,5 +1,16 @@
 {literal}
 <script language="javascript">
+
+// HTMLArea.loadPlugin("TableOperations");
+// HTMLArea.loadPlugin("SpellChecker");
+// HTMLArea.loadPlugin("FullPage");
+// HTMLArea.loadPlugin("CSS");
+// HTMLArea.loadPlugin("ContextMenu");
+// HTMLArea.loadPlugin("HtmlTidy");
+// HTMLArea.loadPlugin("ListType");
+// HTMLArea.loadPlugin("CharacterMap");
+// HTMLArea.loadPlugin("DynamicCSS");
+
 var editor = null;
 
 function initEditor() {
