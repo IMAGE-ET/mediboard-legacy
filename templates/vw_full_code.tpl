@@ -12,7 +12,7 @@
 			</form>
 		</td>
 		<td bgcolor="#ff9999" valign="middle" align="center" width="50%">
-			{if $canEdit}
+			{if $canEdit && $master.levelinf.0.sid == 0}
 			<form name="addFavoris" action="./index.php?m=dPcim10" method="post">
 			<input type="hidden" name="dosql" value="do_favoris_aed">
 			<input type="hidden" name="del" value="0">

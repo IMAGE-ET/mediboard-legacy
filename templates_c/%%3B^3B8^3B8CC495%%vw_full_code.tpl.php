@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-12 15:40:00
+<?php /* Smarty version 2.6.3, created on 2004-09-29 00:38:36
          compiled from vw_full_code.tpl */ ?>
 <table width="100%" bgcolor="#ff9999">
 	<th bgcolor="#ff9999" align="center" colspan=2>
@@ -16,7 +16,7 @@
 			</form>
 		</td>
 		<td bgcolor="#ff9999" valign="middle" align="center" width="50%">
-			<?php if ($this->_tpl_vars['canEdit']): ?>
+			<?php if ($this->_tpl_vars['canEdit'] && $this->_tpl_vars['master']['levelinf']['0']['sid'] == 0): ?>
 			<form name="addFavoris" action="./index.php?m=dPcim10" method="post">
 			<input type="hidden" name="dosql" value="do_favoris_aed">
 			<input type="hidden" name="del" value="0">
