@@ -1,4 +1,6 @@
-<?php ob_start(); ?>
+<?php
+//	ob_start();
+?>
 
 <?php /* STYLE/DEFAULT $Id$ */
 $dialog = dPgetParam( $_GET, 'dialog', 0 );
@@ -45,7 +47,8 @@ foreach ($nav as $module) {
 	if (!getDenyRead($modDirectory)) {
 		$modName = $AppUI->_($module['mod_ui_name']);
 		$modIcon = dPfindImage($module['mod_ui_icon'], $module['mod_directory']);
-		echo "<li><a href='?m=$modDirectory'><img src='$modIcon' />$modName</a></li>\n";
+		//echo "<li><a href='?m=$modDirectory'><img src='$modIcon' />$modName</a></li>\n";
+		echo "<li><a href='?m=$modDirectory'>".dPshowImage($modIcon)."$modName</a></li>\n";
 	}
 }
 
