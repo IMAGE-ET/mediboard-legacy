@@ -35,7 +35,7 @@ $title["dateFormed"] = substr($title["date"], 8, 2)." / ".substr($title["date"],
 $title["plage"] = substr($title["debut"], 0, 2)."h".substr($title["debut"], 3, 2)." - ".substr($title["fin"], 0, 2)."h".substr($title["fin"], 3, 2);
 
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
-		patients.naissance AS naissance,
+		patients.naissance AS naissance, operations.type_anesth AS type_anesth,
 		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote
 		FROM operations
 		LEFT JOIN patients
@@ -80,6 +80,7 @@ if(isset($list1)) {
     $ccam = mysql_fetch_array($ccamr);
     $list1[$key]["CCAM"] = $ccam["LIBELLELONG"];
 	$list1[$key]["duree"] = substr($value["temps"], 0, 2)."h".substr($value["temps"], 3, 2);
+	$list1[$key]["lu_type_anesth"] = $anesth[$list1[$key]["type_anesth"]];
   }
 }
 else
