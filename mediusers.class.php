@@ -131,13 +131,13 @@ class CMediusers extends CDpObject {
   }
   
   function delFunctionPermission() {
-    $where = array(
-      "permission_user = '$this->user_id'", 
-      "permission_grant_on = 'mediusers'",
-      "permission_item = '$this->function_id'");
+    $where = array();
+    $where["permission_user"    ] = "= '$this->user_id'";
+    $where["permission_grant_on"] = "= 'mediusers'";
+    $where["permission_item"    ] = "= '$this->function_id'";
     
     $perm = new CPermission;
-    if ($perm->loadObject()) {
+    if ($perm->loadObject($where)) {
       $perm->delete();
     }
   }
