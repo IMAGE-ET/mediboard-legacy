@@ -139,7 +139,10 @@ foreach($plagesop as $key => $value) {
     if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
     $plagesop[$key]["operations"][$key2]["age"] = $age;
 	$plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
-    $plagesop[$key]["operations"][$key2]["lu_type_anesth"] = $anesth[$value2["type_anesth"]];
+    if($value2["type_anesth"])
+      $plagesop[$key]["operations"][$key2]["lu_type_anesth"] = $anesth[$value2["type_anesth"]];
+    else
+      $plagesop[$key]["operations"][$key2]["lu_type_anesth"] = null;
     if($value2["materiel"] != "") {
       switch($value2["commande_mat"]) {
         case "o" : {

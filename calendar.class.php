@@ -117,7 +117,7 @@ class Ccalendar
 	$strout .= "<tr>\n";
 	$strout .= "<td><a href=\"$prev\" target=\"_self\"><<</a></td>\n";
 	$strout .= "<td align=\"center\" colspan=\"7\" bgcolor=\"#3333ff\">\n";
-	$strout .= "<b>".$this->monthList[$this->month]." ". $this->year."</b>\n";
+	$strout .= "<b>".$this->monthList[intval($this->month)]." ". $this->year."</b>\n";
 	$strout .= "</td>\n";
 	$strout .= "<td><a href=\"$next\" target=\"_self\">>></a></td>\n";
 	$strout .= "</tr>\n";

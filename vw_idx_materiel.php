@@ -36,7 +36,6 @@ mysql_select_db("ccam")
   or die("Could not select database");
 
 foreach($op as $key => $value) {
-  $op[$key]["dateFormed"] = substr($value["date"], 8, 2)."/".substr($value["date"], 5, 2)."/".substr($value["date"], 0, 4);
   $op[$key]["chir_name"] = "Dr. ".$value["chir_lastname"]." ".$value["chir_firstname"];
   $op[$key]["pat_name"] = $value["pat_lastname"]." ".$value["pat_firstname"];
   $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";

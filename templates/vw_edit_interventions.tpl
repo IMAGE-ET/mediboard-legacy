@@ -3,7 +3,7 @@
     <th colspan=2>
 	  Dr. {$title.firstname} {$title.lastname}
 	  <br />
-	  {$title.dateFormed}
+	  {$title.date|date_format:"%A %d %B %Y"}
 	  <br />
 	  {$title.salle} : {$title.plage}
 	</th>
@@ -21,7 +21,7 @@
 		  <td width="50%">
 		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op.id}">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
-			Admission : le {$curr_op.date_adm} à {$curr_op.time_adm}
+			Admission le {$curr_op.date_adm|date_format:"%a %d %b"} à {$curr_op.time_adm}
 			<br />
             Côté : {$curr_op.cote}
             <br />
@@ -72,7 +72,7 @@
             </a>
 		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op.id}">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
-			Admission : le {$curr_op.date_adm} à {$curr_op.time_adm}
+			Admission le {$curr_op.date_adm|date_format:"%a %d %b"} à {$curr_op.time_adm}
 			<br />
             Côté : {$curr_op.cote}
             <br />

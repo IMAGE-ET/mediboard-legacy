@@ -31,7 +31,6 @@ $sql = "SELECT plagesop.debut AS debut, plagesop.fin AS fin,
 		WHERE plagesop.id = '$id'";
 $result = db_loadlist($sql);
 $title = $result[0];
-$title["dateFormed"] = substr($title["date"], 8, 2)." / ".substr($title["date"], 5, 2)." / ".substr($title["date"], 0, 4);
 $title["plage"] = substr($title["debut"], 0, 2)."h".substr($title["debut"], 3, 2)." - ".substr($title["fin"], 0, 2)."h".substr($title["fin"], 3, 2);
 
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
@@ -86,7 +85,6 @@ if(isset($list1)) {
 	  $list1[$key]["lu_type_anesth"] = $anesth[$value["type_anesth"]];
 	else
 	  $list1[$key]["lu_type_anesth"] = 0;
-	$list1[$key]["date_adm"] = substr($value["date_adm"], 8, 2)."/".substr($value["date_adm"], 5, 2)."/".substr($value["date_adm"], 0, 4);
 	$list1[$key]["time_adm"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
   }
 }
@@ -115,7 +113,6 @@ if(isset($list2)) {
 	  $list2[$key]["lu_type_anesth"] = $anesth[$list2[$key]["type_anesth"]];
 	else
 	  $list2[$key]["lu_type_anesth"] = 0;
-	$list2[$key]["date_adm"] = substr($value["date_adm"], 8, 2)."/".substr($value["date_adm"], 5, 2)."/".substr($value["date_adm"], 0, 4);
 	$list2[$key]["time_adm"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
     $j = 0;
     for($i = substr($value["debut"], 0, 2) ; $i < substr($value["fin"], 0, 2) ; $i++) {

@@ -53,7 +53,7 @@ function popMateriel() {
 		</tr>
 		{foreach from=$op item=curr_op}
 		<tr>
-		  <td>{$curr_op.dateFormed}</td>
+		  <td>{$curr_op.date|date_format:"%a %d %b %Y"}</td>
 		  <td>{$curr_op.chir_name}</td>
 		  <td>{$curr_op.pat_name}</td>
 		  <td class="text">{$curr_op.CCAM} <i>({$curr_op.CCAM_code})</i></td>

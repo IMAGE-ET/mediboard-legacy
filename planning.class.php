@@ -97,7 +97,7 @@ class Cplanning
   
   function display()
   {
-    $today = $this->dayWeekList[date("w", mktime(0, 0, 0, $this->month, $this->day, $this->year))];
+    $today = strftime("%a %d %b", mktime(0, 0, 0, $this->month, $this->day, $this->year));
     echo "<table align=\"center\" bgcolor=\"#bbccff\" border=0>\n";
 	echo "<tr>\n";
 	for($i=0;$i<47;$i++)
