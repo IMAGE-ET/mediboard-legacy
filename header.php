@@ -1,10 +1,4 @@
-<?php
-//	ob_start();
-?>
-
-<?php /* STYLE/DEFAULT $Id$ */
-$dialog = dPgetParam( $_GET, 'dialog', 0 );
-?>
+<?php /* $Id$ */ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/html" xml:lang="en" lang="en">
@@ -16,10 +10,11 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
-	<title>Mediboard :: Système de gestion des structures de santé</title>
+  <title>Mediboard :: Plateforme pour les métiers de la santé</title>
+  <script src="./style/<?php echo $uistyle;?>/prepare_forms.js" type="text/javascript" ></script>
 </head>
 
-<body onload="this.focus();">
+<body onload="prepareForms()">
 
 <?php 
 	$dialog = dPgetParam( $_GET, 'dialog', 0 );
