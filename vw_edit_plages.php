@@ -11,6 +11,7 @@ global $m;
 require_once("modules/dPbloc/checkDate.php");
 require_once($AppUI->getModuleClass($m, "planning"));
 require_once($AppUI->getModuleClass($m, "calendar"));
+require_once($AppUI->getModuleClass("mediusers", "functions"));
 
 $planning = new Cplanning($_SESSION['day'], $_SESSION['month'], $_SESSION['year']);
 $calendar = new Ccalendar("index.php?m=dPbloc", $_SESSION['day'], $_SESSION['month'], $_SESSION['year']);
@@ -23,28 +24,8 @@ function popPlanning(debut) {
 }
 </script>
 
-<table width="100%">
+<table class="main">
 	<tr>
-		<td valign="top" rowspan=2>
-
-      <table class="form">
-        <tr><th class="category">Légende</th></tr>
-<?php
-$sql = "SELECT functions_mediboard.text AS texte, functions_mediboard.color AS color
-  FROM functions_mediboard, groups_mediboard
-  WHERE groups_mediboard.group_id = functions_mediboard.group_id
-  AND (groups_mediboard.text = 'Chirurgie' 
-  OR groups_mediboard.text = 'Anesthésie')
-  ORDER BY groups_mediboard.text, functions_mediboard.text";
-$rows = db_loadlist($sql);
-
-foreach($rows as $key => $value) {
-	echo "<tr><td class='text' style='background: #{$value['color']};'>{$value['texte']}</td></tr>";
-}
-?>
-      </table>
-
-		</td>
 		<td width="100%" valign="top" align="center">
 <?php
 $planning->displayJour();
@@ -54,6 +35,20 @@ $planning->displayJour();
 <?php
 echo $calendar->display();
 ?>
+<?php
+$listSpec = new CFunctions();
+$listSpec = $listSpec->loadSpecialites();
+?>
+
+      <table class="tbl">
+        <tr><th>Liste des spécialités</th></tr>
+        <?php foreach($listSpec as $curr_spec) { ?>
+        <tr>
+          <td class="text" style="background: #<?php echo $curr_spec->color; ?>;"><?php echo $curr_spec->text; ?></td>
+        </tr>
+        <?php } ?>
+      </table>
+
 		</td>
 	</tr>
 	<tr>

@@ -8,8 +8,9 @@
 */
 
 include_once("modules/dPbloc/checkDate.php");
-require_once( $AppUI->getModuleClass('dPbloc', 'planning') );
-require_once( $AppUI->getModuleClass('dPbloc', 'calendar') );
+require_once($AppUI->getModuleClass('dPbloc', 'planning'));
+require_once($AppUI->getModuleClass('dPbloc', 'calendar'));
+require_once($AppUI->getModuleClass('mediusers', 'functions'));
 
 $planning = new Cplanning($_SESSION['day'], $_SESSION['month'], $_SESSION['year']);
 $calendar = new Ccalendar("index.php?m=dPbloc", $_SESSION['day'], $_SESSION['month'], $_SESSION['year']);
@@ -31,20 +32,18 @@ echo $calendar->display();
 	<tr>
 		<td valign="top">
 <?php
-$sql = "select functions_mediboard.text as texte, functions_mediboard.color as color
-		from functions_mediboard, groups_mediboard
-		where groups_mediboard.group_id = functions_mediboard.group_id
-		and (groups_mediboard.text = 'Chirurgie' or groups_mediboard.text = 'Anesthésie')
-		order by groups_mediboard.text, functions_mediboard.text";
-$rows = db_loadlist($sql);
-echo "<table width=\"100%\">";
-echo "<tr><td valign=\"top\" align=\"center\"><b><i>Légende</i></b>";
-foreach($rows as $key => $value)
-{
-	echo "<tr><td valign=\"top\" bgcolor=\"#".$value['color']."\">".$value['texte']."</td></tr>";
-}
-echo "</table>";
+$listSpec = new CFunctions();
+$listSpec = $listSpec->loadSpecialites();
 ?>
+
+      <table class="tbl">
+        <tr><th>Liste des spécialités</th></tr>
+        <?php foreach($listSpec as $curr_spec) { ?>
+        <tr>
+          <td class="text" style="background: #<?php echo $curr_spec->color; ?>;"><?php echo $curr_spec->text; ?></td>
+        </tr>
+        <?php } ?>
+      </table>
 		</td>
 	</tr>
 </table>
