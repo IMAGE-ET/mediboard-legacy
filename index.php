@@ -1,0 +1,26 @@
+<?php 
+
+$canRead = !getDenyRead( $m );
+$canEdit = !getDenyEdit( $m );
+
+if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
+$AppUI->savePlace();
+
+if (isset( $_GET['tab'] )) {
+	$AppUI->setState( 'dPadmissionsIdxTab', $_GET['tab'] );
+}
+$tab = $AppUI->getState( 'dPadmissionsIdxTab' ) !== NULL ? $AppUI->getState( 'dPadmissionsIdxTab' ) : 0;
+$active = intval( !$AppUI->getState( 'dPadmissionsIdxTab' ) );
+
+$titleBlock = new CTitleBlock( 'dPadmissions', 'dPadmissions.png', $m, "$m.$a" );
+$titleBlock->addCell();
+$titleBlock->show();
+
+$tabBox = new CTabBox( "?m=dPadmissions", "{$AppUI->cfg['root_dir']}/modules/dPadmissions/", $tab );
+$tabBox->add( 'vw_idx_admission', 'Consultation de admissions' );
+$tabBox->show();
+
+?>
