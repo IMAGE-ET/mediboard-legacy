@@ -7,7 +7,8 @@
 function printAdmission(id) {
   var url = './index.php?m=dPadmissions&a=print_admission&dialog=1';
   url = url + '&id=' + id;
-  window.open(url, 'Patient', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
+  neo = window.open(url, 'Patient', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
+  //if(neo.window.focus){neo.window.focus();}
 }
 
 //]]>
