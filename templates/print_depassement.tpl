@@ -15,7 +15,7 @@
   {/if}
   <tr><th>Coté: </th><td>{$admission->cote}</td></tr>
   <tr><th>Dépassement d'honoraires: </th><td>{$admission->depassement} €</td></tr>
-  
+
   <tr><th>Signature du patient</th></tr>
 
 </table>
