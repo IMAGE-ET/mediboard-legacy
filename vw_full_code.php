@@ -26,7 +26,7 @@ if (mysql_num_rows($result) == 0) {
 }
 
 require_once ("modules/$m/include.php");
-$query = "select * from master where abbrev = '$code'";
+$query = "SELECT * FROM master WHERE abbrev = '$code'";
 $result = mysql_query($query);
 $row = mysql_fetch_array($result);
 mysql_close();

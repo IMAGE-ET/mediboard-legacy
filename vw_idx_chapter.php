@@ -18,17 +18,17 @@ $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
 mysql_select_db("cim10")
   or die("Could not select database");
 
-$query = "select * from chapter order by chap";
+$query = "SELECT * FROM chapter ORDER BY chap";
 $result = mysql_query($query);
 $i = 0;
 while($row = mysql_fetch_array($result))
 {
   $chapter[$i]["rom"] = $row['rom'];
-  $query = "select * from master where SID = '".$row['SID']."'";
+  $query = "SELECT * FROM master WHERE SID = '".$row['SID']."'";
   $result2 = mysql_query($query);
   $row2 = mysql_fetch_array($result2);
   $chapter[$i]["code"] = $row2['abbrev'];
-  $query = "select * from libelle where SID = '".$row['SID']."' and source = 'S'";
+  $query = "SELECT * FROM libelle WHERE SID = '".$row['SID']."' AND source = 'S'";
   $result2 = mysql_query($query);
   $row2 = mysql_fetch_array($result2);
   $chapter[$i]["text"] = $row2['FR_OMS'];

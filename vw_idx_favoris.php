@@ -16,8 +16,10 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 $user = $AppUI->user_id;
 
 //Recherche des codes favoris
-$query = "select favoris_id, favoris_code from cim10favoris where favoris_user = '$AppUI->user_id'
-			order by favoris_code";
+$query = "SELECT favoris_id, favoris_code
+		  FROM cim10favoris
+		  WHERE favoris_user = '$AppUI->user_id'
+		  ORDER BY favoris_code";
 $favoris = db_loadList($query);
 
 $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
@@ -30,11 +32,11 @@ $codes = "";
 foreach($favoris as $key => $value)
 {
   $codes[$i]["id"] = $value['favoris_id'];
-  $query = "select * from master where abbrev = '".$value['favoris_code']."'";
+  $query = "SELECT * FROM master WHERE abbrev = '".$value['favoris_code']."'";
   $result = mysql_query($query);
   $row = mysql_fetch_array($result);
   $codes[$i]["code"] = $row['abbrev'];
-  $query = "select * from libelle where SID = '".$row['SID']."' and source = 'S'";
+  $query = "SELECT * FROM libelle WHERE SID = '".$row['SID']."' AND source = 'S'";
   $result = mysql_query($query);
   $row = mysql_fetch_array($result);
   $codes[$i]["text"] = $row['FR_OMS'];
