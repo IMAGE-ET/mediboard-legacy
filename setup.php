@@ -36,6 +36,7 @@ class CSetupdPcabinet {
       db_exec( "DROP TABLE plageconsult;" );
       db_exec( "DROP TABLE files_mediboard;" );
       db_exec( "DROP TABLE files_index_mediboard;" );
+      db_exec( "DROP TABLE tarifs;" );
 
 		return null;
 	}
