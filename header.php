@@ -40,7 +40,7 @@
 <?php
 foreach ($nav as $module) {
 	$modDirectory = $module['mod_directory'];
-	if (!getDenyRead($modDirectory)) {
+	if (isMbModuleVisible($modDirectory)) {
 		$modName = $AppUI->_($module['mod_ui_name']);
 		$modIcon = dPfindImage($module['mod_ui_icon'], $module['mod_directory']);
     $modImage = dPshowImage($modIcon, 48, 48, $modName);

@@ -101,6 +101,7 @@ table.tbl th {
 table.tbl td {
   background-color: #fff;
   padding: 2px;
+  white-space: nowrap;
 }
 
 /* a 'colorized' table */
