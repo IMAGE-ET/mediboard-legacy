@@ -7,12 +7,12 @@
       <input type="hidden" name="m" value="{$m}">
       <input type="hidden" name="tab" value="{$tab}">
 
-      <label for="selection_selChir">Choisir un chirurgien:</label>
+      <label for="selection_selChir">Chirurgien:</label>
       <select name="selChir" onchange="this.form.submit()">
-        <option value="-1">Aucun chirurgien</option>
+        <option value="-1">-- Choisir un chirurgien</option>
         {foreach from=$listChir item=curr_chir}
-        <option value="{$curr_chir.id}" {if $curr_chir.id == $selChir} selected="selected" {/if}>
-          {$curr_chir.lastname} {$curr_chir.firstname}
+        <option value="{$curr_chir->user_id}" {if $curr_chir->user_id == $selChir} selected="selected" {/if}>
+          {$curr_chir->user_last_name} {$curr_chir->user_first_name}
         </option>
         {/foreach}
       </select>

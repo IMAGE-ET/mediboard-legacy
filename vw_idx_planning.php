@@ -93,14 +93,8 @@ else {
   $specialite = "0";
 }
 
-$sql = "SELECT users.user_last_name as lastname, users.user_first_name as firstname, users.user_id as id
-        FROM users, users_mediboard, functions_mediboard, groups_mediboard
-        WHERE (groups_mediboard.text = 'Chirurgie' OR groups_mediboard.text = 'Anesthésie')
-        AND users.user_id = users_mediboard.user_id
-        AND users_mediboard.function_id = functions_mediboard.function_id
-        AND functions_mediboard.group_id = groups_mediboard.group_id
-        ORDER BY lastname, firstname";
-$listChir = db_loadlist($sql);
+$mediuser = new CMediusers;
+$listChir = $mediuser->loadChirAnest(PERM_EDIT);
 
 //Requete SQL pour le planning du mois
 // * temp total de chaque plage
