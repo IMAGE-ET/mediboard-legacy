@@ -99,7 +99,7 @@ $sql = "select operations.operation_id, patients.nom as nom, patients.prenom as 
 		where operations.date_adm = '$year-$month-$day' ";
 if($selAff != "0")
   $sql .= "AND operations.admis = '$selAff' ";
-$sql .= "order by patients.nom";
+$sql .= "order by operations.time_adm";
 $today = db_loadlist($sql);
 foreach($today as $key => $value) {
   $today[$key]["hour"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
