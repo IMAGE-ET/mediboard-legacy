@@ -84,7 +84,7 @@ function setChir( key, val ){
 }
 
 function popPat() {
-  var url = './index.php?m=dPpatient';
+  var url = './index.php?m=dPpatients';
   url += '&a=pat_selector';
   url += '&dialog=1';
   popup(500, 500, url, 'Patient');
@@ -509,9 +509,9 @@ function printForm() {
         <tr>
           <th><label for="editFrm_chambre_o">Chambre particulière:</label></th>
           <td>
-            <input name="chambre" value="o" type="radio" {if !$op || $op->chambre == "o"} checked="checked" {/if}/>
+            <input name="chambre" value="o" type="radio" {if $op->chambre == "o"} checked="checked" {/if}/>
             <label for="editFrm_chambre_o">Oui</label>
-            <input name="chambre" value="n" type="radio" {if $op->chambre == "n"} checked="checked" {/if}/>
+            <input name="chambre" value="n" type="radio" {if !$op || $op->chambre == "n"} checked="checked" {/if}/>
             <label for="editFrm_chambre_n">Non</label>
           </td>
         </tr>
