@@ -7,9 +7,10 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
-require_once('modules/admin/admin.class.php');
-require_once('modules/dPpatients/patients.class.php');
+global $AppUI, $canRead, $canEdit, $m;
+
+require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );

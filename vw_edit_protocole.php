@@ -7,9 +7,9 @@
 * @author Romain Ollivier
 */
 
-require_once("modules/dPplanningOp/planning.class.php");
-
 global $AppUI, $canRead, $canEdit, $m;
+
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );

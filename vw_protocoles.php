@@ -7,11 +7,11 @@
 * @author Thomas Despoix
 */
 
-
-require_once("modules/mediusers/mediusers.class.php");
-require_once("modules/mediusers/functions.class.php");
-require_once("modules/mediusers/groups.class.php");
-require_once("modules/dPplanningOp/planning.class.php");
+require_once( $AppUI->getModuleClass('mediusers') );
+require_once( $AppUI->getModuleClass('mediusers', 'functions') );
+require_once( $AppUI->getModuleClass('mediusers', 'groups') );
+require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 global $AppUI, $canRead, $canEdit, $m;
 

@@ -318,13 +318,13 @@ function printForm() {
           <td colspan="2">
             <select name="_hour_op">
             {foreach from=$hours key=key item=hour}
-              <option {if (!$op && $key == 1) || $op->_hour_op == $key} selected="selected" {/if}>{$key}</option>
+              <option value="{$key}" {if (!$op && $key == 1) || $op->_hour_op == $key} selected="selected" {/if}>{$key}</option>
             {/foreach}
             </select>
             :
             <select name="_min_op">
             {foreach from=$mins item=min}
-              <option {if (!$op && $min == 0) || $op->_min_op == $min} selected="selected" {/if}>{$min}</option>
+              <option value="{$min}" {if (!$op && $min == 0) || $op->_min_op == $min} selected="selected" {/if}>{$min}</option>
             {/foreach}
             </select>
           </td>

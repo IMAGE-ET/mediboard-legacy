@@ -7,7 +7,9 @@
 * @author Romain Ollivier
 */
 
-require_once("planning.class.php");
+global $AppUI;
+
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 $obj = new COperation();
 $msg = '';

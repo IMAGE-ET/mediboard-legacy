@@ -7,12 +7,12 @@
 * @author Romain Ollivier
 */
 
-//require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('dp' ) );
 
-//require_once("modules/admin/admin.class.php");
-require_once("modules/dPpatients/patients.class.php");
-require_once("modules/dPbloc/plagesop.class.php");
-require_once("modules/dPccam/acte.class.php");
+require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
+require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
+require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 
 class COperation extends CDpObject {
   // DB Table key
