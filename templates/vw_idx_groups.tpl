@@ -7,18 +7,18 @@
 			<form name="group" action="./index.php?m=mediusers" method="post">
 			<input type="hidden" name="dosql" value="do_groups_aed">
 			<input type="hidden" name="del" value="0">
-			<table align="center">
+			<table class="form" align="center">
 				{if $groupsel.exist == 0}
 				<tr>
-					<td align="center" colspan=2>
-						<b>Création d'un nouveau groupe</b>
-					</td>
+					<th colspan=2>
+						Création d'un nouveau groupe
+					</th>
 				</tr>
 				<tr>
-					<td align="right">
+					<td class="propname">
 						Intitulé :
 					</td>
-					<td>
+					<td class="propvalue">
 						<input type="text" name="text">
 					</td>
 				</tr>
@@ -29,16 +29,16 @@
 				</tr>
 				{else}
 				<tr>
-					<td align="center" colspan=2>
-						<b>Modification du groupe <i>{$groupsel.text}</i></b>
+					<th colspan=2>
+						Modification du groupe <i>{$groupsel.text}</i>
 						<input type="hidden" name="group_id" value="{$groupsel.group_id}">
 					</td>
 				</tr>
 				<tr>
-					<td align="right">
+					<td class="propname">
 						Intitulé :
 					</td>
-					<td>
+					<td class="propvalue">
 						<input type="text" name="text" value="{$groupsel.text}">
 					</td>
 				</tr>
@@ -62,12 +62,10 @@
 	</tr>
 	<tr>
 		<td valign="top" align="center">
-			<table>
-				<tr>
-					<td bgcolor="#5172a5" align="center">
-						<b>liste des groupes</b>
-					</td>
-				</tr>
+			<table class="tbl">
+				<th>
+					liste des groupes
+				</th>
 				{foreach from=$groups item=curr_group}
 				<tr>
 					<td bgcolor="#d2e5fb">

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-24 10:43:06
+<?php /* Smarty version 2.6.3, created on 2004-09-17 11:12:50
          compiled from vw_idx_groups.tpl */ ?>
 <table width="100%">
 	<tr>
@@ -9,18 +9,18 @@
 			<form name="group" action="./index.php?m=mediusers" method="post">
 			<input type="hidden" name="dosql" value="do_groups_aed">
 			<input type="hidden" name="del" value="0">
-			<table align="center">
+			<table class="form" align="center">
 				<?php if ($this->_tpl_vars['groupsel']['exist'] == 0): ?>
 				<tr>
-					<td align="center" colspan=2>
-						<b>Création d'un nouveau groupe</b>
-					</td>
+					<th colspan=2>
+						Création d'un nouveau groupe
+					</th>
 				</tr>
 				<tr>
-					<td align="right">
+					<td class="propname">
 						Intitulé :
 					</td>
-					<td>
+					<td class="propvalue">
 						<input type="text" name="text">
 					</td>
 				</tr>
@@ -31,18 +31,18 @@
 				</tr>
 				<?php else: ?>
 				<tr>
-					<td align="center" colspan=2>
-						<b>Modification du groupe <i><?php echo $this->_tpl_vars['groupsel']['text']; ?>
-</i></b>
+					<th colspan=2>
+						Modification du groupe <i><?php echo $this->_tpl_vars['groupsel']['text']; ?>
+</i>
 						<input type="hidden" name="group_id" value="<?php echo $this->_tpl_vars['groupsel']['group_id']; ?>
 ">
 					</td>
 				</tr>
 				<tr>
-					<td align="right">
+					<td class="propname">
 						Intitulé :
 					</td>
-					<td>
+					<td class="propvalue">
 						<input type="text" name="text" value="<?php echo $this->_tpl_vars['groupsel']['text']; ?>
 ">
 					</td>
@@ -68,12 +68,10 @@
 	</tr>
 	<tr>
 		<td valign="top" align="center">
-			<table>
-				<tr>
-					<td bgcolor="#5172a5" align="center">
-						<b>liste des groupes</b>
-					</td>
-				</tr>
+			<table class="tbl">
+				<th>
+					liste des groupes
+				</th>
 				<?php if (count($_from = (array)$this->_tpl_vars['groups'])):
     foreach ($_from as $this->_tpl_vars['curr_group']):
 ?>

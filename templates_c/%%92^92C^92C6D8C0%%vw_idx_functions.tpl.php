@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-26 09:03:12
+<?php /* Smarty version 2.6.3, created on 2004-09-17 11:12:49
          compiled from vw_idx_functions.tpl */ ?>
 <?php echo '
 <script language="javascript">
@@ -20,29 +20,29 @@ function setColor(color) {
 			<a href="index.php?m=mediusers&tab=1&userfunction=0"><b>Créer une fonction</b></a>
 		</td>
 		<td valign="top" rowspan=2 width="50%">
-			<table align="center">
+			<table class="form" align="center">
 			<form name="editFrm" action="./index.php?m=mediusers" method="post">
 			<input type="hidden" name="dosql" value="do_functions_aed">
 			<input type="hidden" name="del" value="0">
 			<?php if ($this->_tpl_vars['functionsel']['exist'] == 0): ?>
 			<tr>
-				<td valign="top" align="center" colspan=2>
-					<b>Création d'une nouvelle fonction</b>
-				</td>
+				<th colspan=2>
+					Création d'une nouvelle fonction
+				</th>
 			</tr>
 			<tr>
-				<td align="right">
+				<td class="propname">
 					Intitulé :
 				</td>
-				<td>
+				<td class="propvalue">
 					<input type="text" name="text">
 				</td>
 			</tr>
 			<tr>
-				<td align="right">
+				<td class="propname">
 					Groupe :
 				</td>
-				<td>
+				<td class="propvalue">
 					<select name="group_id">
 					<?php if (count($_from = (array)$this->_tpl_vars['groups'])):
     foreach ($_from as $this->_tpl_vars['curr_group']):
@@ -61,10 +61,10 @@ function setColor(color) {
 				</td>
 			</tr>
 			<tr>
-				<td align="right">
+				<td class="propname">
 					Couleur :
 				</td>
-				<td valign="top">
+				<td  class="propvalue">
 					<span id="test" title="test" style="background:#ffffff;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">cliquez ici</a></span>
 					<input type="hidden" name="color" value="FFFFFF">
 				</td>
@@ -77,27 +77,27 @@ function setColor(color) {
 			</form>
 			<?php else: ?>
 			<tr>
-				<td valign="top" align="center" colspan=2>
+				<th colspan=2>
 					<b>Modification de la fonction <i><?php echo $this->_tpl_vars['functionsel']['text']; ?>
 </i></b>
 					<input type="hidden" name="function_id" value="<?php echo $this->_tpl_vars['functionsel']['function_id']; ?>
 ">
-				</td>
+				</th>
 			</tr>
 			<tr>
-				<td align="right">
+				<td class="propname">
 					Intitulé :
 				</td>
-				<td>
+				<td class="propvalue">
 					<input type="text" name="text" value="<?php echo $this->_tpl_vars['functionsel']['text']; ?>
 "><br>
 				</td>
 			</tr>
 			<tr>
-				<td align="right">
+				<td class="propname">
 					Groupe :
 				</td>
-				<td>
+				<td class="propvalue">
 					<select name="group_id">
 					<?php if (count($_from = (array)$this->_tpl_vars['groups'])):
     foreach ($_from as $this->_tpl_vars['curr_group']):
@@ -116,10 +116,10 @@ function setColor(color) {
 				</td>
 			</tr>
 			<tr>
-				<td align="right">
+				<td class="propname">
 					Couleur :
 				</td>
-				<td>
+				<td class="propvalue">
 					<span id="test" title="test" style="background:#<?php echo $this->_tpl_vars['functionsel']['color']; ?>
 ;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">cliquez ici</a></span>
 					<input type="hidden" name="color" value="<?php echo $this->_tpl_vars['functionsel']['color']; ?>
@@ -147,28 +147,26 @@ function setColor(color) {
 	</tr>
 	<tr>
 		<td valign="top" align="center">
-			<table>
-				<tr>
-					<td bgcolor="#5172A5" align="center">
-						<b>liste des fonctions</b>
-					</td>
-					<td bgcolor="#5172A5" align="center">
-						<b>groupe</b>
-					</td>
-					<td bgcolor="#5172A5" align="center">
-						<b>couleur</b>
-					</td>
-				</tr>
+			<table class="color">
+				<th>
+					liste des fonctions
+				</th>
+				<th>
+					groupe
+				</th>
+				<th>
+					couleur
+				</th>
 				<?php if (count($_from = (array)$this->_tpl_vars['functions'])):
     foreach ($_from as $this->_tpl_vars['curr_function']):
 ?>
 				<tr>
-					<td bgcolor="#d2e5fb">
+					<td class="white">
 						<a href="index.php?m=mediusers&tab=1&userfunction=<?php echo $this->_tpl_vars['curr_function']['function_id']; ?>
 "><?php echo $this->_tpl_vars['curr_function']['text']; ?>
 </a>
 					</td>
-					<td bgcolor="#d2e5fb">
+					<td class="white">
 						<a href="index.php?m=mediusers&tab=1&userfunction=<?php echo $this->_tpl_vars['curr_function']['function_id']; ?>
 "><?php echo $this->_tpl_vars['curr_function']['mygroup']; ?>
 </a>

@@ -17,7 +17,7 @@ $config['mod_setup_class'] = 'CSetupMediusers';
 $config['mod_type'] = 'user';
 $config['mod_ui_name'] = 'Mediusers';
 $config['mod_ui_icon'] = 'mediusers.png';
-$config['mod_description'] = 'Gestion des utilisateurs Mediboard';
+$config['mod_description'] = 'Gestion des utilisateurs';
 $config['mod_config'] = true;
 
 // show module configuration with the dPframework (if requested via http)
