@@ -35,6 +35,7 @@ $titleBlock->show();	//finally show the titleBlock
 $tabBox = new CTabBox( "?m=dPbloc", "{$AppUI->cfg['root_dir']}/modules/dPbloc/", $tab );
 $tabBox->add( "vw_idx_planning", "Planning de la semaine" );
 $tabBox->add( "vw_edit_plages", "Modifier les plages opératoires" );
+$tabBox->add( "vw_edit_interventions", "Gestion des interventions" );
 $tabBox->add( "vw_idx_salles", "Gestion des salles" );
 
 $tabBox->show();

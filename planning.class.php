@@ -1,4 +1,5 @@
 <?php
+GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 class Cplanning
 {
@@ -41,7 +42,7 @@ class Cplanning
 	if(sizeof($row)>0)
 	{
 	  $vide = 0;
-	  echo "Dr ".$row[0]['user_first_name']." ".$row[0]['user_last_name']."<br>";
+	  echo "Dr. ".$row[0]['user_first_name']." ".$row[0]['user_last_name'];
 	}
 	if ($idanesth == NULL)
 	  $idanesth = 0;
@@ -51,7 +52,7 @@ class Cplanning
 	if(sizeof($row)>0)
 	{
 	  $vide = 0;
-	  echo "Dr ".$row[0]['user_first_name']." ".$row[0]['user_last_name']."<br>";
+	  echo "Dr. ".$row[0]['user_first_name']." ".$row[0]['user_last_name'];
 	}
 	if ($idspec == NULL)
 	  $idspec = 0;
@@ -61,7 +62,7 @@ class Cplanning
 	{
 	  $vide = 0;
 	  if(strlen($row[0]['text']) > 22)
-	    echo substr($row[0]['text'], 0, 22)."...<br>";
+	    echo substr($row[0]['text'], 0, 22)."...";
 	  else
 	    echo $row[0]['text']."<br>";
 	}
@@ -125,9 +126,12 @@ class Cplanning
 			  $f = 0;
 			  $fsize = (substr($value2['fin'], 0, 2) - substr($value2['debut'], 0, 2)) * 4;
 			  $fsize += (substr($value2['fin'], 3, 2) - substr($value2['debut'], 3, 2)) / 15;
-			  echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\"><b>";
-			  echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			  echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\" nowrap=\"nowrap\"><b>";
+			  echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			  echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
+			  echo "</a>";
+			  echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			  echo " <img src=\"./modules/dPbloc/images/edit.png\" alt=\"editer la plage\" border=\"0\" height=\"16\" width=\"16\">";
 			  echo "</a>";
 			  echo "</b></td>\n";
 			}
@@ -151,9 +155,12 @@ class Cplanning
 			    $f = 0;
 			    $fsize = (substr($value2['fin'], 0, 2) - substr($value2['debut'], 0, 2)) * 4;
 			    $fsize += (substr($value2['fin'], 3, 2) - substr($value2['debut'], 3, 2)) / 15;
-			    echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\"><b>";
-			    echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			    echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\" nowrap=\"nowrap\"><b>";
+			    echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			    echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
+			    echo "</a>";
+			    echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			    echo " <img src=\"./modules/dPbloc/images/edit.png\" alt=\"editer la plage\" border=\"0\" height=\"16\" width=\"16\">";
 			    echo "</a>";
 			    echo "</b></td>\n";
 			  }
