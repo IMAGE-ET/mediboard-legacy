@@ -128,6 +128,23 @@ function setCode( key, type ){
   }
 }
 
+function checkChir() {
+  var form = document.editFrm;
+  var field = null;
+  
+  if (field = form.chir_id) {
+    if (field.value == 0) {
+      alert("Chirurgien manquant");
+      popChir();
+      return false;
+    }
+    else
+      return true;
+  }
+  else
+    return false;
+}
+
 function popPlage() {
   var url = './index.php?m=dPplanningOp';
   url += '&a=plage_selector';
@@ -135,8 +152,8 @@ function popPlage() {
   url += '&chir=' + document.editFrm.chir_id.value;
   url += '&curr_op_hour=' + document.editFrm._hour_op.value;
   url += '&curr_op_min=' + document.editFrm._min_op.value;
-
-  window.open(url, 'Plage', 'left=50, top=50, width=400, height=250, resizable=yes');
+  if(checkChir())
+    window.open(url, 'Plage', 'left=50, top=50, width=400, height=250, resizable=yes');
 }
 
 function setPlage( key, val, adm ) {
