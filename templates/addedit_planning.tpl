@@ -134,7 +134,7 @@ function setCalendar( idate, fdate ) {
 <input type="hidden" name="dosql" value="do_consultation_aed" />
 <input type="hidden" name="del" value="0" />
 <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-<input type="hidden" name="compte_rendu" value="{$consult->compte_rendu}" />
+<input type="hidden" name="compte_rendu" value="{$consult->compte_rendu|escape:"html"}" />
 
 <table class="main">
   <tr>
