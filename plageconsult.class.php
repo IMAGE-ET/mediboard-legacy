@@ -139,7 +139,6 @@ class CPlageconsult extends CDpObject {
   }
   
   function becomeNext() {
-    mbTrace("au début du becomeNext", $this);
     $nextTime = mktime (0, 0, 0, $this->_month, $this->_day+7, $this->_year);
     $this->_year  = date("Y", $nextTime);
     $this->_month = date("m", $nextTime);
