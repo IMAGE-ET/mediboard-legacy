@@ -7,7 +7,8 @@ function setClose() {ldelim}
     "{$protSel->CCAM_code}",
     "{$protSel->_hour_op}",
     "{$protSel->_min_op}",
-    "{$protSel->examen}",
+    "{$protSel->examen|escape:javascript}",
+    "{$protSel->materiel|escape:javascript}",
     "{$protSel->type_adm}",
     "{$protSel->duree_hospi}");
   window.close();
@@ -97,7 +98,7 @@ function setClose() {ldelim}
         
         <tr>
           <th>Temps opératoire</th>
-          <td>{$protSel->_hour_op}:{$protSel->_min_op}</td>
+          <td>{$protSel->_hour_op}h{if $protSel->_min_op}{$protSel->_min_op}{/if}</td>
         </tr>
         
         {if $protSel->examen}
@@ -106,10 +107,20 @@ function setClose() {ldelim}
         </tr>
                  
         <tr>
-          <td class="text" colspan="2">{$protSel->examen}</td>
+          <td class="text" colspan="2">{$protSel->examen|nl2br}</td>
         </tr>
         {/if}
         
+        {if $protSel->materiel}
+        <tr>
+          <th class="text" colspan="2">Matériel à prévoir</th>
+        </tr>
+                 
+        <tr>
+          <td class="text" colspan="2">{$protSel->materiel|nl2br}</td>
+        </tr>
+        {/if}
+
         <tr>
           <th class="category" colspan="2">Détails de l'hospitalisation</th>
         </tr>
@@ -119,7 +130,7 @@ function setClose() {ldelim}
           <td>
             {if $protSel->type_adm == "comp"} Hospitalisation complète{/if}
             {if $protSel->type_adm == "ambu"} Ambulatoire{/if}
-			      {if $protSel->type_adm == "exte"} Externe{/if}
+            {if $protSel->type_adm == "exte"} Externe{/if}
           </td>
         </tr>
 
