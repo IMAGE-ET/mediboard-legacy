@@ -37,7 +37,8 @@ $title["plage"] = substr($title["debut"], 0, 2)."h".substr($title["debut"], 3, 2
 // Liste de droite
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
 		patients.naissance AS naissance, operations.type_anesth AS type_anesth,
-		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote,
+		operations.CCAM_code AS CCAM_code, operations.CCAM_code2 AS CCAM_code2,
+		operations.temp_operation AS temps, operations.cote AS cote,
         operations.date_adm AS date_adm, operations.time_adm AS time_adm, operations.annulee AS annulee,
         operations.type_adm as type_adm
 		FROM operations
@@ -52,7 +53,8 @@ $list1 = db_loadlist($sql);
 // Liste de gauche
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
 		patients.naissance AS naissance,
-		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote,
+		operations.CCAM_code AS CCAM_code, operations.CCAM_code2 AS CCAM_code2,
+		operations.temp_operation AS temps, operations.cote AS cote,
         operations.date_adm AS date_adm, operations.time_adm AS time_adm,
         operations.time_operation AS heure, plagesop.debut AS debut, plagesop.fin AS fin, operations.rank AS rank,
         operations.type_anesth AS type_anesth, operations.type_adm as type_adm
@@ -85,6 +87,12 @@ if(isset($list1)) {
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
     $list1[$key]["CCAM"] = $ccam["LIBELLELONG"];
+    if($value["CCAM_code2"]) {
+      $sql = "select LIBELLELONG from actes where CODE = '".$value["CCAM_code2"]."'";
+      $ccamr = mysql_query($sql);
+      $ccam = mysql_fetch_array($ccamr);
+      $list1[$key]["CCAM2"] = $ccam["LIBELLELONG"];
+    }
 	$list1[$key]["duree"] = substr($value["temps"], 0, 2)."h".substr($value["temps"], 3, 2);
 	if($value["type_anesth"])
 	  $list1[$key]["lu_type_anesth"] = $anesth[$value["type_anesth"]];
@@ -111,6 +119,12 @@ if(isset($list2)) {
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
     $list2[$key]["CCAM"] = $ccam["LIBELLELONG"];
+    if($value["CCAM_code2"]) {
+      $sql = "select LIBELLELONG from actes where CODE = '".$value["CCAM_code2"]."'";
+      $ccamr = mysql_query($sql);
+      $ccam = mysql_fetch_array($ccamr);
+      $list2[$key]["CCAM2"] = $ccam["LIBELLELONG"];
+    }
 	$list2[$key]["duree"] = substr($value["temps"], 0, 2)."h".substr($value["temps"], 3, 2);
 	$list2[$key]["hour"] = substr($value["heure"], 0, 2);
 	$list2[$key]["min"] = substr($value["heure"], 3, 2);

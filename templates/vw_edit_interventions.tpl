@@ -27,6 +27,7 @@
 		  </td>
 		  <td class="text">
 			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
+			{if $curr_op.CCAM_code2}<br />{$curr_op.CCAM_code2} : <i>{$curr_op.CCAM2}</i>{/if}
 			<br />
             Côté : {$curr_op.cote}
             <br />
