@@ -2,38 +2,55 @@
 <script language="JavaScript" type="text/javascript">
 
 function editModele(consult, modele) {
-  popup(700, 700, './index.php?m=dPcabinet&a=edit_compte_rendu&consult=' + consult + '&modele=' + modele + '&dialog=1', 'Compte-rendu');
+  $url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
+  $url += '&consult=' + consult;
+  $url += '&modele=' + modele;
+  popup(700, 700, url, 'Compte-rendu');
 }
-  
+
+function newOperation() {
+  $url = '?m=dPplanningOp&tab=vw_add_planning';
+  $url += '&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}'
+  $url += '&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}'
+  window.location.href = $url;
+}
+
+function newConsultation() {
+  $url = '?m=dPcabinet&tab=add_planning';
+  $url += '&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}'
+  $url += '&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}'
+  window.location.href = $url;
+}
+
 </script>
 {/literal}
 
 
-<table class="main">
+<table>
   <tr>
-    <td>
+    <td style="vertical-align: top">
 
     <table align="center" width="100%">
       <tr>
         <th></th>
-        <th><a href="?m={$m}&change=1&yearconsult={$pyear}"><</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;yearconsult={$pyear}"><</a></th>
         <th>{$year}</th>
-        <th><a href="?m={$m}&change=1&yearconsult={$nyear}">></a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;yearconsult={$nyear}">></a></th>
         <th></th>
       </tr>
       <tr>
-        <th><a href="?m={$m}&change=1&monthconsult={$ppmonth}"><<</a></th>
-        <th><a href="?m={$m}&change=1&monthconsult={$pmonth}"><</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$ppmonth}"><<</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$pmonth}"><</a></th>
         <th>{$monthName}</th>
-        <th><a href="?m={$m}&change=1&monthconsult={$nmonth}">></a></th>
-        <th><a href="?m={$m}&change=1&monthconsult={$nnmonth}">>></a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$nmonth}">></a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$nnmonth}">>></a></th>
       </tr>
       <tr>
-        <th><a href="?m={$m}&change=1&dayconsult={$ppday}"><<</a></th>
-        <th><a href="?m={$m}&change=1&dayconsult={$pday}"><</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$ppday}"><<</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$pday}"><</a></th>
         <th>{$dayName} {$day}</th>
-        <th><a href="?m={$m}&change=1&dayconsult={$nday}">></a></th>
-        <th><a href="?m={$m}&change=1&dayconsult={$nnday}">>></a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$nday}">></a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$nnday}">>></a></th>
       </tr>
     </table>
 
@@ -51,12 +68,12 @@ function editModele(consult, modele) {
         {foreach from=$curr_plage->_ref_consultations item=curr_consult}
         <tr>
           <td>{if $curr_consult->consultation_id == $consult->consultation_id}<b>{/if}
-          <a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">{$curr_consult->heure}</a>
+          <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">{$curr_consult->heure}</a>
           {if $curr_consult->consultation_id == $consult->consultation_id}</b>{/if}</td>
           <td>{if $curr_consult->consultation_id == $consult->consultation_id}<b>{/if}
-          <a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">{$curr_consult->_ref_patient->nom} {$curr_consult->_ref_patient->prenom}</a>
+          <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">{$curr_consult->_ref_patient->nom} {$curr_consult->_ref_patient->prenom}</a>
           {if $curr_consult->consultation_id == $consult->consultation_id}</b>{/if}</td>
-          <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+          <td><a href="index.php?m={$m}&amp;tab=edit_planning&amp;consultation_id={$curr_consult->consultation_id}">
           <img src="modules/dPcabinet/images/planning.png"></a></td>
         </tr>
         {/foreach}
@@ -68,20 +85,22 @@ function editModele(consult, modele) {
       {/if}
     </table>
     
-    </td>
+	</td>
 
-    {if $consult->consultation_id}
-    <td>
-      <table>
+{if $consult->consultation_id}
+    <td style="width: 100%">
+      <table class="main">
         <tr>
-          <td valign="top">
+          <td>
             <table class="form">
-              <tr><th colspan="2" class="category"><a href="?m=dPpatients&tab=0&id={$consult->_ref_patient->patient_id}">Patient</a></th></tr>
+              <tr><th colspan="2" class="category"><a href="?m=dPpatients&amp;tab=0&amp;id={$consult->_ref_patient->patient_id}">Patient</a></th></tr>
               <tr><th>Nom :</th><td>{$consult->_ref_patient->nom}</td></tr>
               <tr><th>Prénom :</th><td>{$consult->_ref_patient->prenom}</th></tr>
               <tr><th>Age :</th><td>{$consult->_ref_patient->_age} ans</td><tr>
             </table>
+
             <form name="motifRquesFrm" action="?m={$m}" method="POST">
+
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="dosql" value="do_consultation_aed" />
@@ -93,6 +112,7 @@ function editModele(consult, modele) {
             <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
             <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
             <input type="hidden" name="compte_rendu" value="{$consult->compte_rendu|escape:"html"}" />
+
             <table class="form">
               <tr><th colspan="2" class="category">Consultation</th></tr>
               <tr><th>Motif :</th>
@@ -101,6 +121,7 @@ function editModele(consult, modele) {
               <td><textarea name="rques">{$consult->rques}</textarea></td></tr>
               <td colspan="2" class="button"><input type="submit" value="modifier"></td>
             </table>
+
             </form>
             
             <table class="form">
@@ -117,7 +138,8 @@ function editModele(consult, modele) {
 	              <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
 	              <input type="button" value="supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.submit();}{/literal}"/>
 
-	              </form></td>
+	              </form>
+	            </td>
 	          </tr>
               {/foreach}
               <tr>
@@ -137,35 +159,54 @@ function editModele(consult, modele) {
                 </td>
               </tr>
             </table>
+            
           </td>
           
-          <td valign="top">
+          <td>
             <table class="form">
-              <tr><th colspan="2" class="category">Antécédants</th></tr>
-              <tr><td>consultations</td>
-              <td>interventions</td></tr>
-              <tr><td><ul>
-                {foreach from=$consult->_ref_patient->_ref_consultations item=curr_consult}
-                <li><a href="?m={$m}&selConsult={$curr_consult->consultation_id}">
-                Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name}<br />
-                le {$curr_consult->_ref_plageconsult->date}</a></li>
-                {/foreach}
-              </ul></td>
-              <td><ul>
-                {foreach from=$consult->_ref_patient->_ref_operations item=curr_op}
-                <li><a href="?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op->operation_id}">
-                Dr. {$curr_op->_ref_chir->user_first_name} {$curr_op->_ref_chir->user_last_name}<br />
-                le {$curr_op->_ref_plageop->date}</a></li>
-                {/foreach}
-              </ul></td></tr>
-            </table>
+              <tr>
+              	<th colspan="2" class="category">Interventions</th>
+              </tr>
+              
+              {foreach from=$consult->_ref_patient->_ref_operations item=curr_op}
+              <tr>
+                <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+                  {$curr_op->_ref_plageop->date}</a></td>
+                <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+                  Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name}</a></td>
+              </tr>
+              {/foreach}
+              
+              <tr>
+                <td class="button" colspan="2">
+                  <input type="button" value="Planifier une intervention" onclick="newOperation()" />
+                </td>
+              </tr>
+			</table>
+			
             <table class="form">
-              <tr><th colspan="2" class="category">Règlement</th></tr>
-              <tr><th>Reste à payer: </th><td>le règlement</td></tr>
+              {if $consult->_ref_patient->_ref_consultations}
+              <tr><th class="category" colspan="2">Consultations</th></tr>
+              {foreach from=$consult->_ref_patient->_ref_consultations item=curr_consult}
+              <tr>
+                <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+                  {$curr_consult->_ref_plageconsult->date}</a></td>
+                <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+                  Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}</a></td>
+              </tr>
+              {/foreach}
+              {/if}
+
+              <tr>
+                <td class="button" colspan="2">
+                  <input type="button" value="Planifier une consultation" onclick="newConsultation()" />
+                </td>
+              </tr>
             </table>
+            
           </td>
           
-          <td valign="top">
+          <td>
             <table class="form">
             {if $consult->compte_rendu}
               <tr><th colspan="2" class="category">Compte-Rendu</th></tr>
@@ -204,29 +245,20 @@ function editModele(consult, modele) {
                   </a>
                 </td>
                 <td>
-                  <a href="?m=dPcompteRendu&amp;tab=addedit_modeles&amp;compte_rendu_id={$curr_modele->compte_rendu_id}">
+                  <a href="?m=dPcompteRendu&amp;tab=addedit_modeles&amp;com&amp;te_rendu_id={$curr_modele->compte_rendu_id}">
                     <img src="modules/dPcabinet/images/edit.png" />
                   </a>
                 </td>
               </tr>
             {/foreach}
             {/if}
-
-            
-            <table class="form">
-              <tr>
-              	<th class="category">Plannifier</th>
-              </tr>
-              
-              <tr>
-                <td class="button">
-                  <a href="?m=dPplanningOp&amp;tab=2&amp;chir_id={$curr_consult->_ref_plageconsult->_ref_chir->user_id}&amp;pat_id={$consult->_ref_patient->patient_id}">
-                    Une nouvelle intervention
-                  </a>
-                </td>
-              </tr>
             </table>
-				
+
+            <table class="form">
+              <tr><th colspan="2" class="category">Règlement</th></tr>
+              <tr><th>Reste à payer: </th><td>le règlement</td></tr>
+            </table>
+
           </td>
           
         </tr>

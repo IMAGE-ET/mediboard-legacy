@@ -119,6 +119,7 @@ $listModele = db_loadObjectList($sql, new CCompteRendu());
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->debugging = true;
 
 $smarty->assign('day', $day);
 $smarty->assign('nday', $nday);
