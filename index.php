@@ -1,14 +1,16 @@
 <?php /* $Id$ */
 
-/**
-* @package Mediboard
-* @subpackage dPpatients
-* @version $Revision$
-* @author Romain Ollivier
-*/
+/*
+ * @package Mediboard
+ * @subpackage dPpatients
+ * @version $Revision$
+ * @author Romain Ollivier
+ */
 
-$canRead = !getDenyRead( $m );
-$canEdit = !getDenyEdit( $m );
+// [Begin] non-module specific code
+ 
+$canRead = !getDenyRead($m);
+$canEdit = !getDenyEdit($m);
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -16,22 +18,27 @@ if (!$canRead) {
 
 $AppUI->savePlace();
 
-if (isset( $_GET['tab'] )) {
-	$AppUI->setState( 'dPpatientsIdxTab', $_GET['tab'] );
+if (isset($_GET['tab'])) {
+	$AppUI->setState("{$m}IdxTab", $_GET['tab']);
 }
-$tab = $AppUI->getState( 'dPpatientsIdxTab' ) !== NULL ? $AppUI->getState( 'dPpatientsIdxTab' ) : 0;
-$active = intval( !$AppUI->getState( 'dPpatientsIdxTab' ) );
 
-$titleBlock = new CTitleBlock( 'Gestion des patients', 'dPpatients.png', $m, "$m.$a" );
+$tab = $AppUI->getState("{$m}IdxTab");
+$active = intval(!$tab);
+
+// [End] non-module specific code
+
+$titleBlock = new CTitleBlock('Gestion des patients', '$m.png', $m, "$m.$a");
 $titleBlock->addCell();
 $titleBlock->show();
 
-$tabBox = new CTabBox( "?m=dPpatients", "{$AppUI->cfg['root_dir']}/modules/dPpatients/", $tab );
-$tabBox->add( 'vw_idx_patients', 'Consulter un dossier' );
+$tabBox = new CTabBox("?m=$m", "{$AppUI->cfg['root_dir']}/modules/$m/", $tab);
+$tabBox->add('vw_idx_patients', 'Consulter un dossier');
+
 if($canEdit) {
-  $tabBox->add( 'vw_edit_patients', 'Modifier un dossier' );
-  $tabBox->add( 'vw_add_patients', 'Créer un dossier' );
+  $tabBox->add('vw_edit_patients', 'Modifier un dossier');
+  $tabBox->add('vw_add_patients', 'Créer un dossier');
 }
+
 $tabBox->show();
 
 ?>
