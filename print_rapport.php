@@ -47,7 +47,6 @@ else {
   foreach($listPrat as $key => $value) {
     $in[] = "'$key'";
   }
-  mbTrace("le in", $in);
   $in = implode(", ", $in);
   $where["chir_id"] = "IN ($in)";
 }
@@ -93,3 +92,5 @@ $smarty->assign('listPlage', $listPlage);
 $smarty->assign('total', $total);
 
 $smarty->display('print_rapport.tpl');
+
+?>
