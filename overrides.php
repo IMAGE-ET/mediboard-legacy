@@ -16,7 +16,7 @@ class CTitleBlock extends CTitleBlock_core {
 			$s .= "</td>";
 		}
 
-		$s .= "\n<td class='titlecell'><h1>" . $AppUI->_($this->title) . "</h1></td>";
+		$s .= "\n<td class='titlecell'>" . $AppUI->_($this->title) . "</td>";
 
 		foreach ($this->cells1 as $c) {
 			$s .= "\n$c[2]<td $c[0]>$c[1]</td>$c[3]";
@@ -50,8 +50,8 @@ class CTitleBlock extends CTitleBlock_core {
 
 			$s .= "\n<table class='crumbsblock'>";
 			$s .= "\n<tr>";
-			$s .= "\n\t<td>";
-			$s .= "\n\t\t" . implode( ' <strong>:</strong> ', $crumbs );
+			$s .= "\n\t<td class='crumbscell'>";
+			$s .= "\n\t\t" . implode(" \n<strong> : </strong>", $crumbs );
 			$s .= "\n\t</td>";
 
 			foreach ($this->cells2 as $c) {
@@ -121,7 +121,6 @@ class CTabBox extends CTabBox_core {
       }
 
       foreach( $this->tabs as $k => $v ) {
-        $class = ($k == $this->active) ? "tabon" : "taboff";
         $sel = ($k == $this->active) ? "selected" : "normal";
         $value = $AppUI->_($v[1]);
         

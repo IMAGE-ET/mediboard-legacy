@@ -17,9 +17,12 @@
   vertical-align: middle;
 }
 
-#banner h1 {
+#banner p {
+  font-family: Georgia, serif;
+  font-size: 20px; 
   float: left;
-  margin: 10px 20px 0px;
+  color: #620;
+  margin: 5px 10px 0;
 }
 
 #banner a {
@@ -28,115 +31,110 @@
 
 /* Navigation */
 
+#menubar table {
+  border: 1px solid #999;
+  background-color: #ccc;
+  color: #fff;
+  text-align: left;
+}
+
 #nav {
-	border: 1px solid #999;
-	background-color: #ccc;
-	color: #fff;
-	text-align: left;
-}
-
-#nav table {
-	width: 100%;
-	border-spacing: 0px;
-}
-
-#nav td {
-	padding: 3px;
-	vertical-align: middle;
+  width: 100%;
+  vertical-align: middle;
 }
 
 #nav ul {
-	margin: 4px;
-	padding: 0px;
-	list-style-type: none;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
 
 #nav li {
-	display: inline;
-	margin: 0px 2px;
+  display: inline;
+  float: left;
 }
 
 #nav a {
-	display: block;
-	float: left;
-	text-align: center;
-	font-weight: bold;
-	font-variant: small-caps;
-	font-size: 10pt;
-	padding: 3px 4px;
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  font-variant: small-caps;
+  font-size: 10pt;
+  padding: 3px 4px;
 }
 
 #nav a:hover {
-	text-decoration: none;
-	background: #ddd;
-	padding: 2px 3px;
-	border: 1px outset #ddd;
+  text-decoration: none;
+  background: #ddd;
+  padding: 2px 3px;
+  border: 1px outset #ddd;
 }
 
 #nav a:active {
-	background: #ddd;
-	padding: 2px 3px;
-	border: 1px inset #ddd;
+  background: #ddd;
+  padding: 2px 3px;
+  border: 1px inset #ddd;
 }
 
 #nav li.selected a {
-	text-decoration: none;
-	background: #aaa;
-	padding: 2px 3px;
-	border: 1px inset #888;
+  text-decoration: none;
+  background: #aaa;
+  padding: 2px 3px;
+  border: 1px inset #888;
 }
 
 #nav img {
-	display: block;
-	margin: auto;
-	width: 48px;
+  display: block;
+  margin: auto;
+  width: 48px;
 }
 
-	/* ---- Begin Patch for damned IE that never works ---- */
-	
-	#nav li a {
-		width: 6em;
-	}
-	
-	#nav li>a {
-		width: auto;
-	}
-	
-	/* ---- End patch ---- */
+  /* ---- Begin Patch for damned IE that never works ---- */
+  
+  #nav li a {
+    width: 1em;
+    white-space: nowrap;
+  }
+  
+  #nav li>a {
+    width: auto;
+  }
+  
+  /* ---- End patch ---- */
 
 /* Creation */
 
 #new {
-	white-space: nowrap;
-	text-align: right;
-	vertical-align: top;	
+  white-space: nowrap;
+  text-align: right;
+  vertical-align: center;  
 }
 
 /* User */
 
 #user table {
-	border-spacing: 0px;
-	border: 2px;
-	width: 100%;
-	border-bottom: 1px dashed black;
+  border-spacing: 0px;
+  border: 2px;
+  width: 100%;
+  border-bottom: 1px dashed black;
 }
 
 #user td {
-	padding: 3px;
-	
+  padding: 0 3px;
+  
 }
 
 #userWelcome {
-	width: 100%;
+  width: 100%;
 }
 
 #userMenu {
-	white-space: nowrap;
+  white-space: nowrap;
 }
 
 /* Main -- table -- pane */
 
 #main {
-	width: 100%;
-	border-spacing: 0px
+  width: 100%;
+  border-spacing: 0px
 }

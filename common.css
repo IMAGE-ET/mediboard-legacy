@@ -7,10 +7,32 @@ table.titleblock td {
 }
 
 table.titleblock td.titlecell {
+  font-family: Georgia, serif;
+  font-size: 20px; 
+  color: #620;
+  width: 100%;
+}
+
+/* Bread crumbs block */
+
+table.crumbsblock {
+  width: 100%;
+}
+
+table.crumbsblock td {
+  white-space: nowrap;
+}
+
+table.crumbsblock td.crumbscell {
   width: 100%;
 }
 
 /* Tab view table */
+
+table.taborflat {
+  display: none;
+}
+
 table.tabview {
   border-spacing: 0px;
   border-collapse: collapse; /* Hack for IE */
@@ -182,6 +204,7 @@ table.form td.button {
 
 table.main {
   width: 100%;
+  margin: 4px;
   border-spacing: 10px;
 }
 
@@ -203,25 +226,9 @@ a.hdr:visited {
 
 /* tabbed boxes */
 
-td.tabon {
-  background: #ccc;
-  border: outset #fff 2px;
-  border-bottom: none;
-}
-
-td.taboff {
-  background: #ccc;
-  border: solid #ccc 1px;
-  border-bottom: 2px;
-}
-
-td.tabsp {
-  border-bottom: solid #ccc 2px;
-}
-
 td.tabox {
   background-color: #ccc;
-  border: solid #ccc 4px;
+  border: solid #ccc 2px;
 }
 
 /* Message styles */

@@ -4,7 +4,7 @@
 
 body {
   font-family: arial, sans-serif;
-  font-size: 12px;  
+  font-size: 11px;  
   background-color: #efe;
   background: url(./images/bodyGradient.jpg) no-repeat top center;
   margin: 0px;
@@ -12,7 +12,7 @@ body {
 
 table {
   font-family: arial, sans-serif;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 tr {

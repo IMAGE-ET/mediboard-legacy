@@ -27,15 +27,15 @@
 <table id="header" cellspacing="0"><!-- IE Hack: cellspacing should be useless --> 
 <tr>
 	<td id="banner">
-		<h1>Mediboard :: Système de gestion des structures de santé</h1>
-		<a href='http://www.mediboard.org'><img src="style/<?php echo $uistyle;?>/images/mbSmall.gif" alt="Logo Mediboard"  /></a>
+		<p>Mediboard :: Système de gestion des structures de santé</p>
+		<a href='http://www.mediboard.org'><img src="./style/<?php echo $uistyle;?>/images/mbSmall.gif" alt="Logo Mediboard"  /></a>
 	</td>
 </tr>
 <tr>
-	<td id="nav">
+	<td id="menubar">
 		<table>
 			<tr>
-				<td>
+				<td id="nav">
 					<ul>
 <?php
 foreach ($nav as $module) {
