@@ -1,4 +1,7 @@
-<?php /* $Id$ */ ?>
+<?php /* $Id$ */ 
+
+require_once("./style/$uistyle/mb_functions.php");
+?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -43,8 +46,8 @@ foreach ($nav as $module) {
 	if (!getDenyRead($modDirectory)) {
 		$modName = $AppUI->_($module['mod_ui_name']);
 		$modIcon = dPfindImage($module['mod_ui_icon'], $module['mod_directory']);
-		//echo "<li><a href='?m=$modDirectory'><img src='$modIcon' />$modName</a></li>\n";
-		echo "<li><a href='?m=$modDirectory'>".dPshowImage($modIcon, 48, 48, $modName)."$modName</a></li>\n";
+    $liClass = $modDirectory == $m ? "class='selected'" : "";
+		echo "<li $liClass><a href='?m=$modDirectory'>".dPshowImage($modIcon, 48, 48, $modName)."$modName</a></li>\n";
 	}
 }
 
