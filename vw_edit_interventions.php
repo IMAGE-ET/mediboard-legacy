@@ -6,15 +6,16 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-if(dPgetParam($_GET, "id", "noid") != "noid")
-{
-  $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", "");
+if(dPgetParam($_GET, "id", "noid") == "noid") {
+  if(!isset($_SESSION[$m][$tab]["id"])) {
+    $AppUI->msg = "Vous devez choisir une plage opératoire";
+    $AppUI->redirect( "m=dPbloc&tab=1");
+  }
+  else
+    $id = $_SESSION[$m][$tab]["id"];
 }
 else
-{
-  $AppUI->msg = "Vous devez choisir une plage opératoire";
-  $AppUI->redirect( "m=dPbloc&tab=0" );
-}
+  $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
 
 $sql = "select users.user_first_name as firstname,
 		users.user_last_name as lastname, plagesop.date as date,

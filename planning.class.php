@@ -7,9 +7,14 @@ class Cplanning
   var $day;
   var $month;
   var $year;
+  var $dayWeekList;
+  var $monthList;
   
   function Cplanning($day, $month, $year)
   {
+    $this->dayWeekList = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
+	$this->monthList = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout",
+							"Septembre", "Octobre", "Novembre", "Décembre");
     $this->day = $day;
 	$this->month = $month;
 	$this->year = $year;
@@ -74,14 +79,7 @@ class Cplanning
   
   function display()
   {
-    $dayWeekList[1] = "Lundi";
-    $dayWeekList[2] = "Mardi";
-    $dayWeekList[3] = "Mercredi";
-    $dayWeekList[4] = "Jeudi";
-    $dayWeekList[5] = "Vendredi";
-    $dayWeekList[6] = "Samedi";
-    $dayWeekList[0] = "Dimanche";
-    $today = $dayWeekList[date("w", mktime(0, 0, 0, $this->month, $this->day, $this->year))];
+    $today = $this->dayWeekList[date("w", mktime(0, 0, 0, $this->month, $this->day, $this->year))];
     echo "<table align=\"center\" bgcolor=\"#bbccff\" border=0>\n";
 	echo "<tr>\n";
 	for($i=0;$i<47;$i++)
@@ -183,14 +181,21 @@ class Cplanning
   }
   function displayJour()
   {
-    echo "<table align=\"center\" cellspacing=4>\n";
+    echo "<table align=\"center\" cellspacing=4 width=\"100%\">\n";
 	$nday = date("j");
 	$nmonth = date("n");
 	$nyear = date("Y");
 	echo "<tr>\n";
-	echo "<td bgcolor=\"#ffffff\" colspan=2 align=\"center\">\n";
+	echo "<td rowspan=3>\n";
+	$today = $this->dayWeekList[date("w", mktime(0, 0, 0, $this->month, $this->day, $this->year))];
+	$tomonth = $this->monthList[$this->month];
+	echo "<b>$today $this->day $tomonth $this->year</b>";
+	echo "</td>";
+	echo "<td bgcolor=\"#ffffff\" align=\"center\" colspan=2>\n";
 	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
-	echo "aujourd'hui : $nday / $nmonth / $nyear\n";
+	$today = $this->dayWeekList[date("w", mktime(0, 0, 0, $nmonth, $nday, $nyear))];
+	$tomonth = $this->monthList[$nmonth];
+	echo "aujourd'hui : $today $nday $tomonth $nyear\n";
 	echo "</a>";
 	echo "</td>\n";
 	echo "</tr>\n";
@@ -242,9 +247,11 @@ class Cplanning
 	$nmonth = date("n");
 	$nyear = date("Y");
 	echo "<tr>\n";
-	echo "<td bgcolor=\"#ffffff\" colspan=2 align=\"center\">\n";
+	echo "<td bgcolor=\"#ffffff\" align=\"center\" colspan=2>\n";
 	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
-	echo "aujourd'hui : $nday / $nmonth / $nyear\n";
+	$today = $this->dayWeekList[date("w", mktime(0, 0, 0, $nmonth, $nday, $nyear))];
+	$tomonth = $this->monthList[$nmonth];
+	echo "aujourd'hui : $today $nday $tomonth $nyear\n";
 	echo "</a>";
 	echo "</td>\n";
 	echo "</tr>\n";
