@@ -124,8 +124,39 @@ function checkForm() {
 <tr>
   <td class="greedyPane">
 
-    <table class="color">
-      
+    <form name="filterFrm" action="?m={$m}&amp;tab={$tab}" method="get">
+        
+    <table class="form">
+      <tr>
+        <th class="category" colspan="10">Filtrer les aides</th>
+      </tr>
+
+      <tr>
+        <th><label for="filterFrm_user_id" title="Filtrer les aides pour cet utilisateur">Utilisateur:</label></th>
+        <td>
+          <select name="user_id" onchange="this.form.submit()">
+            <option value="">&mdash; Tous les utilisateurs</option>
+            {foreach from=$users item=curr_user}
+            <option value="{$curr_user->user_id}" {if $curr_user->user_id == $filter_user_id} selected="selected" {/if}>
+              {$curr_user->user_last_name} {$curr_user->user_first_name}
+            </option>
+            {/foreach}
+          </select>
+        </td>
+        <th><label for="filterFrm" title="Filtrer les aides pour ce module">Module:</label></th>
+        <td>
+          <select name="module" onchange="this.form.submit()">
+            <option value="0">&mdash; Choisir un module</option>
+              {html_options options=$moduleNames selected=$filter_module}
+          </select>
+        </td>
+          </tr>
+        </table>
+        
+        </form>
+    
+        <table class="tbl">
+    
     <tr>
       <th colspan="10"><strong>Liste des aides à la saisie</strong></th>
     </tr>
@@ -228,7 +259,7 @@ function checkForm() {
     <tr>
       <th><label for="editFrm_text" title="Texte de remplacement.">Texte:</label></th>
       <td>
-        <textarea name="text">{$aide->text}</textarea>
+        <textarea style="width: 200px" rows="4" name="text">{$aide->text}</textarea>
       </td>
     </tr>
 

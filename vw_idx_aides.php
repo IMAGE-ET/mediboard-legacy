@@ -52,6 +52,11 @@ if (!$aide_id) {
   $aide->user_id = $AppUI->user_id;
 }
 
+// Filtres sur la liste d'aides
+$filter_user_id = mbGetValueFromGetOrSession("filter_user_id");
+$filter_module = mbGetValueFromGetOrSession("filter_module");
+
+
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
@@ -59,6 +64,8 @@ $smarty = new CSmartyDP;
 $smarty->assign('users', $users);
 $smarty->assign('modules', $modules);
 $smarty->assign('moduleNames', $moduleNames);
+$smarty->assign('filter_user_id', $filter_user_id);
+$smarty->assign('filter_module', $filter_module);
 $smarty->assign('aides', $aides);
 $smarty->assign('aide', $aide);
 
