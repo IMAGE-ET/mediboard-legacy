@@ -19,7 +19,7 @@ $formulaire = new Cformulaire(dPgetParam($_GET, "tool", ""), dPgetParam($_GET, "
 
 <script language="javascript">
 function popPlanning(day, month, year) {
-  window.open('./index.php?m=dPbloc&a=view_planning&dialog=1&day='+day+'&month='+month+'&year='+year, 'Planning du jour', 'left=10,top=10,height=550,width=700,resizable,scrollbars=1');
+  window.open('./index.php?m=dPbloc&a=view_planning&dialog=1&day='+day+'&month='+month+'&year='+year, 'Planning', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
 }
 </script>
 
