@@ -146,7 +146,7 @@ class Cplanning
 			  echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			  echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
 			  echo "</a> (".$value2['numop'].")";
-			  echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			  echo "<a href=\"index.php?m=dPbloc&tab=1&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
 			  echo " <img src=\"./modules/dPbloc/images/edit.png\" alt=\"editer la plage\" border=\"0\" height=\"16\" width=\"16\">";
 			  echo "</a>";
 			  echo "</b></td>\n";
@@ -175,7 +175,7 @@ class Cplanning
 			    echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			    echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
 			    echo "</a> (".$value2['numop'].")";
-			    echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			    echo "<a href=\"index.php?m=dPbloc&tab=1&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
 			    echo " <img src=\"./modules/dPbloc/images/edit.png\" alt=\"editer la plage\" border=\"0\" height=\"16\" width=\"16\">";
 			    echo "</a>";
 			    echo "</b></td>\n";
@@ -256,7 +256,7 @@ class Cplanning
 	echo "<table align=\"center\">";
 	echo "<tr>";
     echo "<td bgcolor=\"#ffffff\">";
-	echo "<a href=\"index.php?m=dPbloc&tab=1&tool=add\" target=\"_self\">Ajouter une plage opératoire</a>";
+	echo "<a href=\"index.php?m=dPbloc&tab=1&id=0\" target=\"_self\">Ajouter une plage opératoire</a>";
 	echo "</td>";
 	echo "</tr>";
 	echo "</table>";

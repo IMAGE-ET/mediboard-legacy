@@ -7,46 +7,117 @@
 * @author Romain Ollivier
 */
 
-require_once("plagesop.class.php");
-// create a new instance of the dPccam class
-$obj = new CPlageOp();
-$msg = '';	// reset the message string
+require_once($AppUI->getModuleClass("dPbloc", "plagesop"));
 
-// bind the informations (variables) retrieved via post to the dPccam object
+// Object binding
+$obj = new CPlageOp();
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
 
-// detect if a delete operation has to be processed
 $del = dPgetParam( $_POST, 'del', 0 );
+$repeat = dPgetParam( $_POST, '_repeat', 0 );
+$double = dPgetParam( $_POST, '_double', 0 );
 
+$body_msg = null;
+$header = array();
+$msgNo = null;
 
 if ($del) {
-	// check if there are dependencies on this object (not relevant for dPccam, left here for show-purposes)
-	if (!$obj->canDelete( $msg )) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-		$AppUI->redirect();
-	}
+  $obj->load();
 
-	// see how easy it is to run database commands with the object oriented architecture !
-	// simply delete a quote from db and have detailed error or success report
-	if (($msg = $obj->delete())) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );			// message with error flag
-		$AppUI->redirect();
-	} else {
-		$AppUI->setMsg( "Plage(s) supprimée(s)", UI_MSG_ALERT);		// message with success flag
-		$AppUI->redirect( "m=dPbloc" );
-	}
+  $deleted = 0;
+  $not_deleted = 0;
+  $not_found = 0;
+
+  while ($repeat--) {
+    $msg = NULL;
+    if ($obj->id) {
+      if ($obj->canDelete($msg)) {
+        if ($msg = $obj->delete()) {
+          $not_deleted++;
+        } 
+        else {
+          $msg = "plage supprimée";
+          $deleted++;
+        }
+      }
+      else {
+        $not_deleted++;
+      } 
+    }
+    else {
+      $not_found++;
+      $msg = "Impossible de supprimer, plage non trouvée";
+    }
+    
+    $body_msg .= "<br />Plage du $obj->_day-$obj->_month-$obj->_year: " . $msg;
+    
+    $obj->becomeNext();
+  }
+  
+  if ($deleted    ) $header [] = "$deleted plage(s) supprimée(s)";
+  if ($not_deleted) $header [] = "$not_deleted plage(s) non supprimée(s)";
+  if ($not_found  ) $header [] = "$not_found plage(s) non trouvée(s)";
+  
+  $msgNo = $deleted ? UI_MSG_ALERT : UI_MSG_ERROR;
+
+  $_SESSION["dPbloc"]["id"] = null;
 } else {
-	// simply store the added/edited quote in database via the store method of the dPccam child class of the CDpObject provided ba the dPFramework
-	// no sql command is necessary here! :-)
-	if (($msg = $obj->store())) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-	} else {
-		$isNotNew = @$_POST['id'];
-		$AppUI->setMsg( $isNotNew ? 'Plage(s) mise(s) à jour' : 'Plage(s) insérée(s)', UI_MSG_OK);
-	}
-	$AppUI->redirect();
+  
+  $created = 0;
+  $updated = 0;
+  $not_created = 0;
+  $not_updated = 0;
+
+  while ($repeat--) {
+    $msg = null;
+    if ($obj->id) {
+      if ($msg = $obj->store()) {
+        $not_updated++;
+      } 
+      else {
+        $msg = "plage mise à jour";
+        $updated++;
+      }
+    }
+    else {
+      if ($msg = $obj->store()) {
+        $not_created++;
+      } 
+      else {
+        $msg = "plage créée";
+        $created++;
+      }
+    }
+    
+    $body_msg .= "<br />Plage du $obj->_day-$obj->_month-$obj->_year: " . $msg;
+    
+    $obj->becomeNext();
+    
+    if ($double) {
+			$repeat--;
+      $obj->becomeNext();
+		}
+  }
+  
+  if ($created) $header [] = "$created plage(s) créée(s)";
+  if ($updated) $header [] = "$updated plage(s) mise(s) à jour";
+  if ($not_created) $header [] = "$not_created plage(s) non créée(s)";
+  if ($not_updated) $header [] = "$not_created plage(s) non mise(s) à jour";
+  
+  $msgNo = ($not_created + $not_updated) ?
+    (($not_created + $not_updated) ? UI_MSG_ALERT : UI_MSG_ERROR) :
+    UI_MSG_OK;
 }
+
+$complete_msg = implode(" - ", $header);
+if ($body_msg) {
+// Uncomment for more verbose
+// $complete_msg .= $body_msg; 
+}
+
+$AppUI->setMsg($complete_msg, $msgNo);
+$AppUI->redirect("m=$m");
 ?>

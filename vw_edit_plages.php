@@ -7,14 +7,13 @@
 * @author Romain Ollivier
 */
 
-include_once("modules/dPbloc/checkDate.php");
-require_once("modules/dPbloc/planning.class.php");
-require_once("modules/dPbloc/calendar.class.php");
-require_once("modules/dPbloc/formulaire.class.php");
+global $m;
+require_once("modules/dPbloc/checkDate.php");
+require_once($AppUI->getModuleClass($m, "planning"));
+require_once($AppUI->getModuleClass($m, "calendar"));
 
 $planning = new Cplanning($_SESSION['day'], $_SESSION['month'], $_SESSION['year']);
 $calendar = new Ccalendar("index.php?m=dPbloc", $_SESSION['day'], $_SESSION['month'], $_SESSION['year']);
-$formulaire = new Cformulaire(dPgetParam($_GET, "tool", ""), dPgetParam($_GET, "id", 0));
 ?>
 
 <script language="javascript">
@@ -60,13 +59,58 @@ echo $calendar->display();
 	<tr>
 		<td valign="top" align="center">
 <?php
-if(!getDenyEdit($m))
-{
-  $formulaire->display();
-}
-else
-{
-  echo "<i>Vous n'avez pas le droit de modifier le planning</i>";
+if (!getDenyEdit($m)) {
+  ////////////////// NEW WAY /////////////////////
+  global $m, $AppUI;
+  
+  require_once($AppUI->getModuleClass($m, "plagesop"));
+  $plagesel = new CPlageOp;
+  $plagesel->load(mbGetValueFromGetOrSession("id"));
+  
+  require_once($AppUI->getModuleClass($m, "salle"));
+  $salle = new CSalle;
+  $salles = $salle->loadlist();
+  
+  require_once($AppUI->getModuleClass("mediusers", "functions"));
+  $function = new CFunctions;
+  $specs = $function->loadSpecialites();
+
+  require_once($AppUI->getModuleClass("mediusers"));
+  $mediuser = new CMediusers;
+  $chirs = $mediuser->loadChirurgiens();
+  $anesths = $mediuser->loadAnesthesistes();
+
+  // Heures & minutes
+  $start = 8;
+  $stop = 20;
+  $step = 15;
+  
+  for ($i = $start; $i < $stop; $i++) {
+      $hours[] = $i;
+  }
+  
+  for ($i = 0; $i < 60; $i += $step) {
+      $mins[] = $i;
+  }
+  
+  // Création du template
+  require_once($AppUI->getSystemClass("smartydp"));
+  $smarty = new CSmartyDP;
+  
+  $smarty->assign('plagesel', $plagesel);
+  $smarty->assign('chirs', $chirs);
+  $smarty->assign('anesths', $anesths);
+  $smarty->assign('salles', $salles);
+  $smarty->assign('specs', $specs);
+  
+  $smarty->assign('heures', $hours);
+  $smarty->assign('minutes', $mins);
+
+  $smarty->assign('day'  , $_SESSION['day'  ]);
+  $smarty->assign('month', $_SESSION['month']);
+  $smarty->assign('year' , $_SESSION['year' ]);
+
+  $smarty->display('vw_edit_plages.tpl');
 }
 ?>
 		</td>
