@@ -54,11 +54,12 @@ class CSetupdPplanningOp {
 	function install() {
 		$sql = "CREATE TABLE operations ( " .
 			"  operation_id bigint(20) unsigned NOT NULL auto_increment" .
-			",  pat_id bigint(20) unsigned NOT NULL default '0'" .
-			",  chir_id bigint(20) unsigned NOT NULL default '0'" .
-			",  plageop_id bigint(20) unsigned NOT NULL default '0'" .
-			", CCAM_code varchar(7) default NULL" .
+			", pat_id bigint(20) unsigned NOT NULL default '0'" .
+			", chir_id bigint(20) unsigned NOT NULL default '0'" .
+			", plageop_id bigint(20) unsigned NOT NULL default '0'" .
 			", CIM10_code varchar(5) default NULL" .
+			", CCAM_code varchar(7) default NULL" .
+			", temp_operation time NOT NULL default '00:00:00'" .
 			", examen text" .
 			", materiel text" .
 			", info enum('o','n') NOT NULL default 'n'" .

@@ -78,36 +78,36 @@ function setCalendar( idate, fdate ) {
 		<td valign="top">
 			<table class="form">
 				<tr>
-					<th colspan=3>
+					<th colspan=3 class="category">
 						Informations concernant l'opération
 					</th>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th class="mandatory">
 						Chirurgien :
-					</td>
-					<td class="propvalue">
-						<input type="text" name="chir_name" size="30" value="">
+					</th>
+					<td class="readonly">
+						<input type="text" name="chir_name" size="30" value="" readonly>
 					</td>
 					<td>
 						<input type="button" value="choisir un chirurgien" onclick="popChir()">
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th class="mandatory">
 						Patient :
-					</td>
-					<td>
-						<input type="text" name="pat_name" size="30" value="">
+					</th>
+					<td class="readonly">
+						<input type="text" name="pat_name" size="30" value="" readonly>
 					</td>
 					<td>
 						<input type="button" value="rechercher un patient" onclick="popPat()">
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Diagnostic (CIM10) :
-					</td>
+					</th>
 					<td>
 						<input type="text" name="CIM10_code" size="10" value="">
 					</td>
@@ -116,9 +116,9 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Code CCAM :
-					</td>
+					</th>
 					<td>
 						<input type="text" name="CCAM_code" size="10" value="">
 					</td>
@@ -127,10 +127,35 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
-						Date de l'intervention :
+					<th class="mandatory">
+						Temps opératoire :
+					</th>
+					<td colspan=2>
+						<select name="hour_op">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+						</select>
+						:
+						<select name="min_op">
+							<option>00</option>
+							<option>15</option>
+							<option>30</option>
+							<option>45</option>
+						</select>
 					</td>
-					<td>
+				</tr>
+				<tr>
+					<th class="mandatory">
+						Date de l'intervention :
+					</th
+					<td class="readonly">
 						<input type="hidden" name="plageop_id" value="">
 						<input type="text" name="date" readonly size="15" value="JJ / MM / YYYY">
 					</td>
@@ -139,26 +164,26 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Examens complémentaires :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td colspan=2>
 						<textarea name="examen" rows="3"></textarea>
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Materiel à prévoir :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td>
 						<textarea name="materiel" rows="3"></textarea>
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Information du patient :
-					</td>
-					<td class="propvalue">
+					</th
+					<td>
 						<input name="info" value="oui" type="radio">
 						Oui
 						<input name="info" value="non" type="radio" checked>
@@ -170,15 +195,15 @@ function setCalendar( idate, fdate ) {
 		<td valign="top">
 			<table class="form">
 				<tr>
-					<th colspan="3">
+					<th colspan="3" class="category">
 						RDV d'anesthésie
 					</th>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Date :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td class="readonly">
 						<input type="hidden" name="date_rdv_anesth" value="{$todayi}">
 						<input type="text" name="rdv_anesth" value="{$todayf}" readonly>
 						<a href="#" onClick="popCalendar( 'rdv_anesth', 'rdv_anesth');">
@@ -187,10 +212,10 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Heure :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td>
 						<select name="hour_anesth">
 							<option>08</option>
 							<option>09</option>
@@ -215,15 +240,15 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<th colspan="3">
+					<th colspan="3" class="category">
 						Admission
 					</th>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Date :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td class="readonly">
 						<input type="hidden" name="date_rdv_adm" value="{$todayi}">
 						<input type="text" name="rdv_adm" value="{$todayf}" readonly>
 						<a href="#" onClick="popCalendar( 'rdv_adm', 'rdv_adm');">
@@ -232,10 +257,10 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Heure :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td>
 						<select name="hour_adm">
 							<option>08</option>
 							<option>09</option>
@@ -260,18 +285,18 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Durée d'hospitalisation :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td>
 						<input type"text" name="duree_hospi" size="1" value="0"> jours
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Admission en :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td>
 						<input name="type_adm" value="comp" type="radio" checked> 
 						hospitalisation complète
 						<br>
@@ -280,10 +305,10 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Chambre particulière :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td>
 						<input name="chambre" value="oui" type="radio" checked>
 						Oui
 						<input name="chambre" value="non" type="radio">
@@ -291,13 +316,15 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<th colspan=3>Autre</th>
+					<th colspan=3 class="category">
+						Autre
+					</th>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Risque ATNC :
-					</td>
-					<td class="propvalue">
+					</th>
+					<td>
 						<input name="ATNC" value="oui" type="radio">
 						Oui
 						<input name="ATNC" value="non" type="radio" checked>
@@ -305,21 +332,21 @@ function setCalendar( idate, fdate ) {
 					</td>
 				</tr>
 				<tr>
-					<td class="propname">
+					<th>
 						Remarques :
-					</td>
-					<td class="propvalue">
-						<textarea name="rque" rows="3"></textarea>
+					</th>
+					<td>
+						<textarea name="rques" rows="3"></textarea>
 					</td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 	<tr>
-		<td align="center">
+		<td class="button">
 			<input class="button" type="reset" value="Annuler">
 		</td>
-		<td align="center">
+		<td class="button">
 			<input class="button" type="submit" value="Valider">
 		</td>
 	</tr>

@@ -17,6 +17,7 @@ class Cplanning extends CDpObject {
 	var $plageop_id = NULL;
 	var $CCAM_code = NULL;
 	var $CIM10_code = NULL;
+	var $temp_operation = NULL;
 	var $examen = NULL;
 	var $materiel = NULL;
 	var $info = NULL;
@@ -31,6 +32,8 @@ class Cplanning extends CDpObject {
 	var $rques = NULL;
 	
 	// form fields
+	var $hour_op = NULL;
+	var $min_op = NULL;
 	var $date_rdv_anesth = NULL;
 	var $hour_anesth = NULL;
 	var $min_anesth = NULL
@@ -57,6 +60,7 @@ class Cplanning extends CDpObject {
 		$this->time_anesth = $this->hour_anesth.":".$this->min_anesth.":00";
 		$this->date_adm = substr($this->date_rdv_adm, 0, 4)."-".substr($this->date_rdv_adm, 4, 2)."-".substr($this->date_rdv_adm, 6, 2);
 		$this->time_adm = $this->hour_adm.":".$this->min_adm.":00";
+		$this->temp_operation
 		if($this->operation_id != NULL) {
 			$sql = "update operations set pat_id = '$this->pat_id', chir_id = '$this->chir_id',
 					plageop_id = '$this->plageop_id', CCAM_code = '$this->CCAM_code', CIM10_code = '$this->CIM10_code',
