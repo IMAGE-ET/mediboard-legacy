@@ -37,17 +37,10 @@ while($row = mysql_fetch_array($result))
 
 mysql_close();
 
-require_once("lib/smarty/Smarty.class.php");
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-$smarty = new Smarty();
-
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('user', $AppUI->user_id);
 $smarty->assign('chapter', $chapter);
 
 $smarty->display('vw_idx_chapter.tpl');

@@ -59,22 +59,14 @@ $numresults = $i;
 
 mysql_close();
 
-//Creation de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
-$smarty = new Smarty();
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-//initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-//Mapping des variables
 $smarty->assign('keys', $keys);
 $smarty->assign('master', $master);
 $smarty->assign('numresults', $numresults);
 
-//Affichage de la page
 $smarty->display('vw_find_code.tpl');
 
 ?>
