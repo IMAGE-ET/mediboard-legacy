@@ -165,7 +165,16 @@ function setPlage( key, val, adm ) {
     window.plageop_id = key;
     window.date = val;
     var sdate = val;
-    var date = new Date(parseInt(sdate.slice(6, 10)), parseInt(sdate.slice(3,5)) - 1, parseInt(sdate.slice(0,2)));
+    if(sdate.slice(0,1) == "0")
+      var tmpday = parseInt(sdate.slice(1,2));
+    else
+      var tmpday = parseInt(sdate.slice(0,2));
+    if(sdate.slice(3,4) == "0")
+      var tmpmonth = parseInt(sdate.slice(4,5)) - 1;
+    else
+      var tmpmonth = parseInt(sdate.slice(3,5)) - 1;
+    var tmpyear = parseInt(sdate.slice(6,10));
+    var date = new Date(tmpyear, tmpmonth, tmpday);
     if(adm) {
       date.setDate(parseInt(date.getDate()) - 1);
     }
