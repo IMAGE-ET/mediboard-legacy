@@ -34,7 +34,7 @@ class CSmartyDP extends Smarty {
    * Standard data assignment
    */
   function CSmartyDP() {
-    global $AppUI, $canRead, $canEdit, $m, $a, $tab, $dialog;
+    global $AppUI, $dbChrono, $canRead, $canEdit, $m, $a, $tab, $dialog;
     
     // Directories initialisation
     $this->template_dir = "modules/$m/templates/";
@@ -46,6 +46,7 @@ class CSmartyDP extends Smarty {
 
     // Standard data assignment
     $this->assign("app", $AppUI);
+    $this->assign("dbChrono", $dbChrono);
     $this->assign("user", $AppUI->user_id); // shouldn't be necessary
     $this->assign("canEdit", $canEdit);
     $this->assign("canRead", $canRead);
