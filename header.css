@@ -1,13 +1,11 @@
 /* Global header */
 
-
 #header {
   width: 100%;
   border-spacing: 0px;
   border: none;
 }
 
-#header td,
 #header td {
   padding: 0px;
 }
@@ -68,18 +66,24 @@
 	padding: 3px 4px;
 }
 
-#nav li.selected a {
-	text-decoration: none;
-	background: #aaa;
-	padding: 2px 3px;
-	border: 1px inset #888;
-}
-
 #nav a:hover {
 	text-decoration: none;
 	background: #ddd;
 	padding: 2px 3px;
 	border: 1px outset #ddd;
+}
+
+#nav a:active {
+	background: #ddd;
+	padding: 2px 3px;
+	border: 1px inset #ddd;
+}
+
+#nav li.selected a {
+	text-decoration: none;
+	background: #aaa;
+	padding: 2px 3px;
+	border: 1px inset #888;
 }
 
 #nav img {
