@@ -126,7 +126,7 @@ class Acte
     }
     
     //On rentre les activites associees
-    $query = "select * from activiteactes where CODEACTE = '$this->code'";
+    $query = "select * from activiteacte where CODEACTE = '$this->code'";
     $result = mysql_query($query);
     $i = 0;
     while($row = mysql_fetch_array($result))
