@@ -89,8 +89,9 @@ function setColor(color) {
     <tr>
       <td class="button" colspan="2">
         {if $functionsel.exist}
-        <input type="reset" value="Annuler">
-        <input type="submit" name="btnFuseAction" value="Modifier">
+            <input type="reset" value="Réinitialiser" />
+            <input type="submit" value="Valider" />
+            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
         {else}
         <input type="submit" name="btnFuseAction" value="Créer">
         {/if}

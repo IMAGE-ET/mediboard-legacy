@@ -29,10 +29,10 @@
   
   <td class="pane">
 
-    <form name="mediuser" action="./index.php?m=mediusers" method="post">
-    <input type="hidden" name="dosql" value="do_mediusers_aed">
+    <form name="mediuser" action="./index.php?m=mediusers" method="post" />
+    <input type="hidden" name="dosql" value="do_mediusers_aed" />
     <input type="hidden" name="user_id" value="{$usersel.id}" />
-    <input type="hidden" name="del" value="0">
+    <input type="hidden" name="del" value="0" />
 
     <table class="form">
 
@@ -99,8 +99,9 @@
     <tr>
       <td class="button" colspan="2">
         {if $usersel.exist}
-        <input type="reset" value="Annuler">
-        <input type="submit" name="btnFuseAction" value="Modifier">
+        <input type="reset" value="Réinitialiser" />
+        <input type="submit" value="Valider" />
+        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
         {else}
         <input type="submit" name="btnFuseAction" value="Créer">
         {/if}
@@ -110,28 +111,6 @@
     </table>
 
     </form>
-
-    {if $usersel.exist}
-    <form name="mediuser" action="./index.php?m=mediusers" method="post">
-    <input type="hidden" name="dosql" value="do_mediusers_aed" />
-    <input type="hidden" name="user_id" value="{$usersel.id}" />
-    <input type="hidden" name="del" value="1" />
-
-    <table class="form">
-
-    <tr>
-      <th class="category">Supression de l'utilisateur &lsquo;{$usersel.username}&rsquo;</th>
-    </tr>
-    
-    <tr>
-      <td class="button"><input class="button" type="submit" name="btnFuseAction" value="Supprimer" /></td>
-    </tr>
-
-    </table>
-
-    </form>
-    {/if}
-
   </td>
 </tr>
 

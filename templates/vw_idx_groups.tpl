@@ -48,8 +48,9 @@
     <tr>
       <td class="button" colspan="2">
         {if $groupsel.exist}
-        <input type="reset" value="Annuler">
-        <input type="submit" name="btnFuseAction" value="Modifier">
+        <input type="reset" value="Réinitialiser" />
+        <input type="submit" value="Valider" />
+        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
         {else}
         <input type="submit" name="btnFuseAction" value="Créer">
         {/if}
@@ -57,29 +58,6 @@
     </tr>
 
     </table>
-
-    </form>
-
-    {if $groupsel.exist}
-    <form name="group" action="./index.php?m=mediusers" method="post">
-    <input type="hidden" name="dosql" value="do_groups_aed" />
-		<input type="hidden" name="group_id" value="{$groupsel.group_id}" />
-    <input type="hidden" name="del" value="1" />
-
-    <table class="form">
-
-    <tr>
-      <th class="category">Supression du groupe &lsquo;{$groupsel.text}&rsquo;</th>
-    </tr>
-    
-    <tr>
-      <td class="button"><input class="button" type="submit" name="btnFuseAction" value="Supprimer" /></td>
-    </tr>
-
-    </table>
-
-    </form>
-    {/if}
 
   </td>
 </tr>
