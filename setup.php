@@ -56,7 +56,8 @@ class CSetupdPprotocoles {
 			"  protocole_id int(11) unsigned NOT NULL auto_increment" .
 			", code_CCAM varchar(7) NOT NULL default ''" .
 			", duree tinyint(4) default NULL" .
-			", PRIMARY KEY  (protocole_id)" .
+			", rques text" .
+			", PRIMARY KEY (protocole_id)" .
 			", UNIQUE KEY protocole_id (protocole_id)" .
 			") TYPE=MyISAM;";
 		db_exec( $sql ); db_error();
