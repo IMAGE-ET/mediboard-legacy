@@ -1,16 +1,12 @@
 <table class="main">
   <tr>
     <td colspan="2">
-      <form action="index.php" target="_self" name="selection" method="get" encoding="">
-      <input type="hidden" name="m" value="{$m}">
-      <input type="hidden" name="tab" value="{$tab}">
-      Type d'affichage :
-        <select name="selAff" onchange="this.form.submit()">
-          <option value="0" {if $selAff == "0"} selected = "selected" {/if}>Toutes les admissions</option>
-          <option value="o" {if $selAff == "o"} selected = "selected" {/if}>Admissions effectuées</option>
-          <option value="n" {if $selAff == "n"} selected = "selected" {/if}>Admissions non effectuées</option>
-    </select>
-    </form>
+      Admissions affichées : <b>
+      {if $selAdmis == "n"}admissions non effectuées
+      {elseif $selSaisis == "n"}préadmission AS/400 non faite
+      {else}toutes les admissions
+      {/if}
+      </b>
       </td>
   </tr>
   <tr>
@@ -29,14 +25,12 @@
     <td>
       <table class="tbl">
         <tr>
-          <th>
-            Date
-          </th>
-          <th>
-            Nombre d'admissions
-          </th>
+          <th>Date</th>
+          <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selSaisis=0">Toutes les admissions</a></th>
+          <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selSaisis=n">Préadmission AS/400 non faite</a></th>
+          <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=n&amp;selSaisis=0">Admissions non effectuées</a></th>
         </tr>
-        {foreach from=$list item=curr_list}
+        {foreach from=$list1 item=curr_list}
         <tr>
           <td align="right">
             <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$curr_list.day}&amp;month={$month}&amp;year={$year}">
@@ -45,6 +39,12 @@
           </td>
           <td align="center">
             {$curr_list.num}
+          </td>
+          <td align="center">
+            {$curr_list.num3}
+          </td>
+          <td align="center">
+            {$curr_list.num2}
           </td>
         </tr>
         {/foreach}
@@ -88,16 +88,26 @@
             {$curr_adm.hour}
             </a>
           </td>
-          {if $curr_adm.admis == "n"}
           <td>
-            <form name="editFrm{$curr_adm.id}" action="index.php" method="get">
+            {if $curr_adm.admis == "n"}
+            <form name="editAdmFrm{$curr_adm.id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_edit_admis" />
             <input type="hidden" name="id" value="{$curr_adm.operation_id}" />
+            <input type="hidden" name="mode" value="admis" />
             <input type="submit" value="Admis" />
             </form> 
+            {/if}
+            {if $curr_adm.saisie == "n"}
+            <form name="editSaisFrm{$curr_adm.id}" action="index.php" method="get">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="a" value="do_edit_admis" />
+            <input type="hidden" name="id" value="{$curr_adm.operation_id}" />
+            <input type="hidden" name="mode" value="saisie" />
+            <input type="submit" value="Saisie" />
+            </form> 
+            {/if}
           </td>
-          {/if}
         </tr>
         {/foreach}
       </table>

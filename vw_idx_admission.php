@@ -18,7 +18,8 @@ $listDay = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", 
 $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
 				"Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
 
-$selAff = mbGetValueFromGetOrSession("selAff", 0);
+$selAdmis = mbGetValueFromGetOrSession("selAdmis", "0");
+$selSaisis = mbGetValueFromGetOrSession("selSaisis", "0");
 $day = mbGetValueFromGetOrSession("day", date("d"));
 $month = mbGetValueFromGetOrSession("month", date("m"));
 $year = mbGetValueFromGetOrSession("year", date("Y"));
@@ -42,23 +43,79 @@ $monthName = $listMonth[$month - 1];
 $title1 = "$monthName $year";
 $title2 = "$dayName $day $monthName $year";
 
-$sql = "SELECT operation_id, operations.date_adm AS date, count(operation_id) AS num
-		FROM operations
-		LEFT JOIN plagesop
+//Liste des admissions par jour
+$sql = "SELECT plagesop.id AS pid, operations.operation_id, operations.date_adm AS date, count(operation_id) AS num
+		FROM plagesop
+		LEFT JOIN operations
 		ON operations.plageop_id = plagesop.id
-		WHERE operations.date_adm LIKE '$year-$month-__'";
-if($selAff != "0")
-  $sql .= " AND operations.admis = '$selAff'";
-$sql .= " GROUP BY operations.date_adm
-		  ORDER BY operations.date_adm";
-$list = db_loadlist($sql);
-foreach($list as $key => $value) {
+		WHERE operations.date_adm LIKE '$year-$month-__'
+		GROUP BY operations.date_adm
+		ORDER BY operations.date_adm";
+$list1 = db_loadlist($sql);
+foreach($list1 as $key => $value) {
   $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
-  $list[$key]["dateFormed"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
-  $list[$key]["day"] = substr($value["date"], 8, 2);
+  $list1[$key]["dateFormed"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
+  $list1[$key]["day"] = substr($value["date"], 8, 2);
 }
+
+//Liste des admissions non effectuées par jour
+$sql = "SELECT operations.date_adm AS date, count(operation_id) AS num
+		FROM plagesop
+		LEFT JOIN operations
+		ON operations.plageop_id = plagesop.id
+		WHERE operations.date_adm LIKE '$year-$month-__'
+		AND operations.admis = 'n'
+		GROUP BY operations.date_adm
+		ORDER BY operations.date_adm";
+$list2 = db_loadlist($sql);
+foreach($list2 as $key => $value) {
+  $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
+  $list2[$key]["dateFormed"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
+  $list2[$key]["day"] = substr($value["date"], 8, 2);
+}
+
+//Liste des admissions non remplies dansl'AS/400 par jour
+$sql = "SELECT operations.date_adm AS date, count(operation_id) AS num
+		FROM plagesop
+		LEFT JOIN operations
+		ON operations.plageop_id = plagesop.id
+		WHERE operations.date_adm LIKE '$year-$month-__'
+		AND operations.saisie = 'n'
+		GROUP BY operations.date_adm
+		ORDER BY operations.date_adm";
+$list3 = db_loadlist($sql);
+foreach($list3 as $key => $value) {
+  $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
+  $list3[$key]["dateFormed"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
+  $list3[$key]["day"] = substr($value["date"], 8, 2);
+}
+
+//On met toutes les sommes d'intervention dans le même tableau
+foreach($list1 as $key => $value) {
+  $i2 = 0;
+  $i2fin = sizeof($list2);
+  while(($list2[$i2]["date"] != $value["date"]) && ($i2 < $i2fin)) {
+    $i2++;
+  }
+  if($list2[$i2]["date"] == $value["date"])
+    $list1[$key]["num2"] = $list2[$i2]["num"];
+  else
+    $list1[$key]["num2"] = 0;
+  $i3 = 0;
+  $i3fin = sizeof($list3);
+  while(($list3[$i3]["date"] != $value["date"]) && ($i3 < $i3fin)) {
+    $i3++;
+  }
+  if($list3[$i3]["date"] == $value["date"])
+    $list1[$key]["num3"] = $list3[$i3]["num"];
+  else
+    $list1[$key]["num3"] = 0;
+}
+
+//operations de la journée
 $sql = "SELECT operations.operation_id, patients.nom AS nom, patients.prenom AS prenom,
-        operations.admis AS admis, users.user_first_name AS chir_firstname,
+        operations.admis AS admis, operations.saisie AS saisie,
+        users.user_first_name AS chir_firstname,
         users.user_last_name AS chir_lastname, operations.time_adm
 		FROM operations
 		LEFT JOIN patients
@@ -68,8 +125,10 @@ $sql = "SELECT operations.operation_id, patients.nom AS nom, patients.prenom AS 
 		LEFT JOIN users
 		ON users.user_username = plagesop.id_chir
 		WHERE operations.date_adm = '$year-$month-$day'";
-if($selAff != "0")
-  $sql .= " AND operations.admis = '$selAff'";
+if($selAdmis != "0")
+  $sql .= " AND operations.admis = '$selAdmis'";
+if($selSaisis != "0")
+  $sql .= " AND operations.saisie = '$selSaisis'";
 $sql .= " ORDER BY operations.time_adm";
 $today = db_loadlist($sql);
 foreach($today as $key => $value) {
@@ -95,10 +154,13 @@ $smarty->assign('nmonthy', $nmonthy);
 $smarty->assign('pmonthd', $pmonthd);
 $smarty->assign('pmonth', $pmonth);
 $smarty->assign('pmonthy', $pmonthy);
-$smarty->assign('selAff', $selAff);
+$smarty->assign('selAdmis', $selAdmis);
+$smarty->assign('selSaisis', $selSaisis);
 $smarty->assign('title1', $title1);
 $smarty->assign('title2', $title2);
-$smarty->assign('list', $list);
+$smarty->assign('list1', $list1);
+//$smarty->assign('list2', $list2);
+//$smarty->assign('list3', $list3);
 $smarty->assign('today', $today);
 
 $smarty->display('vw_idx_admission.tpl');
