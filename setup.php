@@ -71,6 +71,7 @@ class CSetupdPcim10 {
 
 		db_exec( $sql );
 		db_error();
+		$this->upgrade("all");
 		
 		return null;
 	}
