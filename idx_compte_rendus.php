@@ -65,6 +65,7 @@ if($pat_id) {
 $where = array();
 $where["chrono"] = "= ".CC_TERMINE;
 $where["cr_valide"] = "= 0";
+$where["annule"] = "!= 1";
 $listConsult = new CConsultation;
 $listConsult = $listConsult->loadList($where, "plageconsult_id", null, "plageconsult_id");
 $inId = array();
