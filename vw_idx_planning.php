@@ -161,22 +161,25 @@ do {
 while($inverse);
 
 //Tri des résultats
-foreach($result as $key => $value) {
-  $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
-  $plageop = $value["id"];
-  $list[$key]["date"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
-  $list[$key]["day"] = substr($value["date"], 8, 2);
-  $list[$key]["horaires"] = substr($value["debut"], 0, 2)."h".substr($value["debut"], 3, 2)." - ".
-  							substr($value["fin"], 0, 2)."h".substr($value["fin"], 3, 2);
-  $list[$key]["operations"] = $value["operations"];
-  if(isset($duree[$plageop]["hour"]))
-    $list[$key]["occupe"] = $duree[$plageop]["hour"]."h".$duree[$plageop]["min"];
-  else
-    $list[$key]["occupe"] = "-";
-  $list[$key]["spe"] = $value["spe"];
-  //$list[$key]["occupe"] = (substr($value["busy_time"], -6, strlen($value["busy_time"]) - 4))."h".(substr($value["busy_time"], -4, 2));
+if(isset($result)) {
+  foreach($result as $key => $value) {
+    $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
+    $plageop = $value["id"];
+    $list[$key]["date"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
+    $list[$key]["day"] = substr($value["date"], 8, 2);
+    $list[$key]["horaires"] = substr($value["debut"], 0, 2)."h".substr($value["debut"], 3, 2)." - ".
+                              substr($value["fin"], 0, 2)."h".substr($value["fin"], 3, 2);
+    $list[$key]["operations"] = $value["operations"];
+    if(isset($duree[$plageop]["hour"]))
+      $list[$key]["occupe"] = $duree[$plageop]["hour"]."h".$duree[$plageop]["min"];
+    else
+      $list[$key]["occupe"] = "-";
+    $list[$key]["spe"] = $value["spe"];
+    //$list[$key]["occupe"] = (substr($value["busy_time"], -6, strlen($value["busy_time"]) - 4))."h".(substr($value["busy_time"], -4, 2));
+  }
 }
-
+else
+  $list[0] = "";
 //Requete SQL pour le planning de la journée
 $sql = "SELECT operations.operation_id AS id, operations.pat_id,
 		operations.CCAM_code, operations.temp_operation,
