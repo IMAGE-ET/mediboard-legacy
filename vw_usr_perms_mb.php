@@ -117,7 +117,7 @@ $modules = $AppUI->getActiveModules( 'modules' );
 $modules["all"] = "all";
 
 // Template creation
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('user_id', $user_id);
