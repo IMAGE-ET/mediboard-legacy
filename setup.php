@@ -65,7 +65,7 @@ class CSetupdPpatients {
   				`medecin_traitant` int(11) NOT NULL default '0',
   				`incapable_majeur` enum('o','n') NOT NULL default 'n',
   				`ATNC` enum('o','n') NOT NULL default 'n',
-  				`matricule` NOT NULL varchar(15) default '',
+  				`matricule` varchar(15) NOT NULL default '',
   				`SHS` varchar(10) NOT NULL default '',
   				PRIMARY KEY  (`patient_id`),
   				UNIQUE KEY `patient_id` (`patient_id`),
