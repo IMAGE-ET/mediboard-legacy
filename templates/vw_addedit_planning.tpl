@@ -19,14 +19,14 @@ function checkForm() {
       popPat();
       return false;
     }
-
+/* Not a mandatory anymore
   if (field = form.CIM10_code)
     if (field.value.length == 0) {
       alert("Code CIM10 Manquant");
       popCode('cim10');
       return false;
     }
-
+*/
   if (field = form.CCAM_code)
     if (field.value.length == 0) {
       alert("Code CCAM Manquant");
@@ -276,7 +276,7 @@ function printForm() {
         </tr>
         
         <tr>
-          <th class="mandatory"><label for="editFrm_CIM10_code">Diagnostic (CIM10):</label></th>
+          <th><label for="editFrm_CIM10_code">Diagnostic (CIM10):</label></th>
           <td><input type="text" name="CIM10_code" size="10" value="{$op->CIM10_code}" /></td>
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('cim10')" /></td>
         </tr>
@@ -290,7 +290,7 @@ function printForm() {
 
         {if !$protocole}
         <tr>
-          <th><label for="editFrm_cote">Coté:</label></th>
+          <th class="mandatory"><label for="editFrm_cote">Coté:</label></th>
           <td colspan="2">
             <select name="cote">
               <option {if !$op && $op->cote == "total"} selected="selected" {/if} >total</option>
