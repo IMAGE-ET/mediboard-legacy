@@ -1,6 +1,7 @@
 <table class="main">
   <tr>
     <td>
+
       <form name="editFrm" action="./index.php?m=dPpatients" method="post">
 
       <input type="hidden" name="dosql" value="do_patients_aed">
@@ -80,35 +81,30 @@
       
       <tr>
         <th>Téléphone:</td>
-        <td>s
-          <input type="text" name="tel1" size=1 value="{$patient.tel.0}{$patient.tel.1}"> - 
-          <input type="text" name="tel2" size=1 value="{$patient.tel.2}{$patient.tel.3}"> -
-          <input type="text" name="tel3" size=1 value="{$patient.tel.4}{$patient.tel.5}"> -
-          <input type="text" name="tel4" size=1 value="{$patient.tel.6}{$patient.tel.7}"> -
-          <input type="text" name="tel5" size=1 value="{$patient.tel.8}{$patient.tel.9}">
+        <td>
+          <input type="text" name="tel1" size="1" value="{$patient.tel.0}{$patient.tel.1}"> - 
+          <input type="text" name="tel2" size="1" value="{$patient.tel.2}{$patient.tel.3}"> -
+          <input type="text" name="tel3" size="1" value="{$patient.tel.4}{$patient.tel.5}"> -
+          <input type="text" name="tel4" size="1" value="{$patient.tel.6}{$patient.tel.7}"> -
+          <input type="text" name="tel5" size="1" value="{$patient.tel.8}{$patient.tel.9}">
         </td>
       </tr>
       
       <tr>
         <td class="button" colspan="4">
           {if $patient}
-            <input type="reset" value="réinitialiser" />
-            <input type="submit" value="modifier" />
-            <input type="button" value="supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+            <input type="reset" value="Réinitialiser" />
+            <input type="submit" value="Valider" />
+            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
           {else}
-            <input type="submit" value="créer" />
+            <input type="submit" value="Créer" />
           {/if}
           </form>
         </td>
-      
-    
       </tr>
       
       </table>
 
     </td>
-    
-    
   </tr>
-
 </table>
