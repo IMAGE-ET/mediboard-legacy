@@ -9,10 +9,11 @@ function editModele(consult, modele) {
 {/literal}
 
 
-<table>
+<table class="main">
   <tr>
-    <td valign="top">
-      <table align="center" width="100%">
+    <td>
+
+    <table align="center" width="100%">
       <tr>
         <th></th>
         <th><a href="?m={$m}&change=1&yearconsult={$pyear}"><</a></th>
@@ -34,8 +35,9 @@ function editModele(consult, modele) {
         <th><a href="?m={$m}&change=1&dayconsult={$nday}">></a></th>
         <th><a href="?m={$m}&change=1&dayconsult={$nnday}">>></a></th>
       </tr>
-      </table>
-      <table class="tbl">
+    </table>
+
+    <table class="tbl">
       {if $listPlage}
       {foreach from=$listPlage item=curr_plage}
         <tr>
@@ -64,10 +66,12 @@ function editModele(consult, modele) {
           <th colspan=2><b>Pas de consultations</b></th>
         </tr>
       {/if}
-      </table>
+    </table>
+    
     </td>
+
     {if $consult->consultation_id}
-    <td valign="top">
+    <td>
       <table>
         <tr>
           <td valign="top">
@@ -98,29 +102,43 @@ function editModele(consult, modele) {
               <td colspan="2" class="button"><input type="submit" value="modifier"></td>
             </table>
             </form>
+            
             <table class="form">
               <tr><th colspan="3" class="category">Fichiers liés</th></tr>
               {foreach from=$consult->_ref_files item=curr_file}
               <tr>
                 <td><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></td>
                 <td>{$curr_file->file_size}</td>
-                <td class="button"><form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+                <td class="button">
+                  <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+
                   <input type="hidden" name="dosql" value="do_file_aed" />
 	              <input type="hidden" name="del" value="1" />
 	              <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
 	              <input type="button" value="supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.submit();}{/literal}"/>
+
 	              </form></td>
 	          </tr>
               {/foreach}
-              <tr><td colspan="2"><form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-              <input type="hidden" name="dosql" value="do_file_aed" />
-	          <input type="hidden" name="del" value="0" />
-	          <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />
-              <input type="file" name="formfile" /></td>
-              <td class="button"><input type="submit" value="ajouter">
-              </form></td></tr>
+              <tr>
+                <td colspan="2">
+                  <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+ 
+                  <input type="hidden" name="dosql" value="do_file_aed" />
+	              <input type="hidden" name="del" value="0" />
+	              <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />
+                  <input type="file" name="formfile" />
+                </td>
+
+                <td class="button">
+                  <input type="submit" value="ajouter">
+                  
+                  </form>
+                </td>
+              </tr>
             </table>
           </td>
+          
           <td valign="top">
             <table class="form">
               <tr><th colspan="2" class="category">Antécédants</th></tr>
@@ -146,6 +164,7 @@ function editModele(consult, modele) {
               <tr><th>Reste à payer: </th><td>le règlement</td></tr>
             </table>
           </td>
+          
           <td valign="top">
             <table class="form">
             {if $consult->compte_rendu}
@@ -153,7 +172,9 @@ function editModele(consult, modele) {
               <tr>
                 <td><a href="#" onclick="editModele({$consult->consultation_id}, 0)">
                   Modifier le compte-rendu</a></td>
-                <td><form name="delCompteRenduFrm" action="?m={$m}" method="POST">
+                <td>
+                  <form name="delCompteRenduFrm" action="?m={$m}" method="POST">
+
                   <input type="hidden" name="m" value="{$m}" />
                   <input type="hidden" name="del" value="0" />
                   <input type="hidden" name="dosql" value="do_consultation_aed" />
@@ -168,23 +189,49 @@ function editModele(consult, modele) {
                   <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
                   <input type="hidden" name="compte_rendu" value="" />
                   <img src="modules/dPcabinet/images/trash.png" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {document.delCompteRenduFrm.submit();}{/literal}">
+
                   </form></td>
               </tr>
             {else}
-              <tr><th colspan="2" class="category">Modèles dispo.</th></tr>
-              {foreach from=$listModele item=curr_modele}
-                <tr>
-                  <td><a href="#" onclick="editModele({$consult->consultation_id}, {$curr_modele->compte_rendu_id})">
-                    {$curr_modele->nom}</a></td>
-                  <td><a href="?m=dPcompteRendu&tab=addedit_modeles&compte_rendu_id={$curr_modele->compte_rendu_id}">
-                    <img src="modules/dPcabinet/images/edit.png"></a></td>
-                </tr>
-              {/foreach}
+              <tr>
+                <th colspan="2" class="category">Modèles dispo.</th>
+              </tr>
+            {foreach from=$listModele item=curr_modele}
+              <tr>
+                <td>
+                  <a href="#" onclick="editModele({$consult->consultation_id}, {$curr_modele->compte_rendu_id})">
+                    {$curr_modele->nom}
+                  </a>
+                </td>
+                <td>
+                  <a href="?m=dPcompteRendu&amp;tab=addedit_modeles&amp;compte_rendu_id={$curr_modele->compte_rendu_id}">
+                    <img src="modules/dPcabinet/images/edit.png" />
+                  </a>
+                </td>
+              </tr>
+            {/foreach}
             {/if}
+
+            
+            <table class="form">
+              <tr>
+              	<th class="category">Plannifier</th>
+              </tr>
+              
+              <tr>
+                <td class="button">
+                  <a href="?m=dPplanningOp&amp;tab=2amp;chir_id={$curr_consult->_ref_plageconsult->_ref_chir->user_id}&amp;pat_id={$consult->_ref_patient->patient_id}">
+                    Une nouvelle intervention
+                  </a>
+                </td>
+              </tr>
             </table>
+				
           </td>
+          
         </tr>
       </table>
+      
     </td>
     {/if}
   </tr>
