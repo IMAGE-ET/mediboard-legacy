@@ -57,8 +57,8 @@ function checkGroup() {
     </tr>
 
     <tr>
-      <th class="mandatory">Intitulé:</th>
-      <td><input type="text" name="text" value="{$groupsel.text}" /></td>
+      <th class="mandatory"><label for="group_text" title="intitulé du groupe, obligatoire.">Intitulé:</label></th>
+      <td><input type="text" name="text" id="group_text" value="{$groupsel.text}" /></td>
     </tr>
     
     <tr>
@@ -66,9 +66,9 @@ function checkGroup() {
         {if $groupsel.exist}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
         {else}
-        <input type="submit" name="btnFuseAction" value="Créer">
+        <input type="submit" name="btnFuseAction" value="Créer" />
         {/if}
       </td>
     </tr>
