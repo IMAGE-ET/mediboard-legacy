@@ -35,8 +35,8 @@
 		  <td>{$curr_op.cote}</td>
           <td>{$curr_op.lu_type_anesth}</td>
           <td>{$curr_op.adm}</td>
-		  <td>{$curr_op.rques} {if $curr_op.mat}({$curr_op.mat}){/if}</td>
-		  <td>{$curr_op.examen}</td>
+		  <td>{$curr_op.rques|nl2br:php} {if $curr_op.mat}({$curr_op.mat|nl2br:php}){/if}</td>
+		  <td>{$curr_op.examen|nl2br:php}</td>
 		  <td>{$curr_op.lastname}</td>
 		  <td>{$curr_op.firstname}</td>
 		  <td>{$curr_op.age} ans</td>

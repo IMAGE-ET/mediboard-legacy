@@ -71,6 +71,7 @@ class CSetupdPbloc {
 					PRIMARY KEY  (id)
 					) TYPE=MyISAM COMMENT='Table des salles d''opération du bloc' AUTO_INCREMENT=6 ;";
 		db_exec( $sql ); db_error();
+		$this->upgrade("all");
 		return null;
 	}
 }
