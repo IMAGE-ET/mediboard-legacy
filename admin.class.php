@@ -176,22 +176,6 @@ class CPermission extends CDpObject {
 		$this->CDpObject( 'permissions', 'permission_id' );
 	}
   
-  function store() {
-    $this->updateDBFields();
-    
-    return parent::store();
-  }
-  
-  function load($oid = null, $strip = TRUE) {
-    if (!parent::load($oid, $strip)) {
-      return false;
-    }
-    
-    $this->updateFormFields();
-
-    return true;
-  }
-  
   function updateFormFields() {
     if ($this->permission_item == PERM_ALL) {
       switch ($this->permission_value) {
