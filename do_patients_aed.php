@@ -33,8 +33,9 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );			// message with error flag
 		$AppUI->redirect();
 	} else {
+    $_SESSION[$m]["id"] = NULL;
 		$AppUI->setMsg( "Patient supprimé", UI_MSG_ALERT);		// message with success flag
-		$AppUI->redirect( "m=$m" );
+		$AppUI->redirect( "m=$m&tab=0" );
 	}
 } else {
 	// simply store the added/edited quote in database via the store method of the dPccam child class of the CDpObject provided ba the dPFramework

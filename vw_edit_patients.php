@@ -1,55 +1,53 @@
 <?php /* $Id$ */
 
 /**
-* @package Mediboard
-* @subpackage dPpatients
-* @version $Revision$
-* @author Romain Ollivier
-*/
+ * @package Mediboard
+ * @subpackage dPpatients
+ * @version $Revision$
+ * @author Romain Ollivier
+ */
 
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-if(dPgetParam($_GET, "id", "noid") == "noid") {
-  if(!isset($_SESSION[$m][$tab]["id"])) {
-    $AppUI->msg = "Vous devez choisir un patient";
-    $AppUI->redirect( "m=dPpatients&tab=0" );
-  }
-  else
-    $id = $_SESSION[$m][$tab]["id"];
-}
-else
-  $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
+$patient_id = mbGetValueFromGetOrSession("id");
 
-//Recuperation des patients
-$sql = "select * from patients where patient_id = '$id'";
-$patient = db_loadlist($sql);
+// Récuperation du patient sélectionné
+require_once("patients.class.php");
 
-foreach($patient as $key => $value) {
-  $patient[$key]["day"] = substr($value["naissance"], 8, 2);
-  $patient[$key]["month"] = substr($value["naissance"], 5, 2);
-  $patient[$key]["year"] = substr($value["naissance"], 0, 4);
+$patient = new CPatient;
+$patient->load($patient_id);
+
+if (!$patient->patient_id) {
+  $AppUI->setmsg("Vous devez choisir un patient", UI_MSG_ALERT);
+  $AppUI->redirect( "m=$m&tab=0" );
 }
 
-//Creation de l'objet smarty
+// Date formatting
+$patient->_jour  = substr($patient->naissance, 8, 2);
+$patient->_mois  = substr($patient->naissance, 5, 2);
+$patient->_annee = substr($patient->naissance, 0, 4);
+
+// Création de l'objet smarty
 require_once("lib/smarty/Smarty.class.php");
+
 $smarty = new Smarty();
 
-//initialisation des repertoires
+// Initialisation des repertoires
 $smarty->template_dir = "modules/$m/templates/";
 $smarty->compile_dir = "modules/$m/templates_c/";
 $smarty->config_dir = "modules/$m/configs/";
 $smarty->cache_dir = "modules/$m/cache/";
 
-//On récupère les informations
-
+// Mapping des données
+$smarty->assign('m', $m);
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
-$smarty->assign('patient', $patient[0]);
+$smarty->assign('patient', $patient);
 
-//Affichage de la page
+// Affichage de la page
 $smarty->display('vw_edit_patients.tpl');
 ?>

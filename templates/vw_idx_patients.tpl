@@ -66,8 +66,8 @@ function checkPatient() {
 
     </td>
  
-    {if $patient != ""}
-    <td class="greedyPane">
+    {if $patient->patient_id}
+    <td class="pane">
       <table class="form">
         <tr>
           <th class="category" colspan="2">Identité</th>
@@ -76,33 +76,33 @@ function checkPatient() {
 
         <tr>
           <th>Nom:</th>
-          <td>{$patient.nom}</td>
+          <td>{$patient->nom}</td>
           <th>Incapable majeur:</th>
           <td>
-            {if $patient.incapable_majeur == "o"} oui {/if}
-            {if $patient.incapable_majeur == "n"} non {/if}
+            {if $patient->incapable_majeur == "o"} oui {/if}
+            {if $patient->incapable_majeur == "n"} non {/if}
           </td>
         </tr>
         
         <tr>
           <th>Prénom:</th>
-          <td>{$patient.prenom}</td>
+          <td>{$patient->prenom}</td>
           <th>ATNC:</th>
           <td>
-            {if $patient.ATNC == "o"} oui {/if}
-            {if $patient.ATNC == "n"} non {/if}
+            {if $patient->ATNC == "o"} oui {/if}
+            {if $patient->ATNC == "n"} non {/if}
         </tr>
         
         <tr>
           <th>Date de naissance:</th>
-          <td>{$patient.dateFormed}</td>
+          <td>{$patient->dateFormed}</td>
         </tr>
         
         <tr>
           <th>Sexe:</th>
           <td>
-            {if $patient.sexe == "m"} masculin {/if}
-            {if $patient.sexe == "f"} féminin  {/if} 
+            {if $patient->sexe == "m"} masculin {/if}
+            {if $patient->sexe == "f"} féminin  {/if} 
           </td>
         </tr>
         
@@ -113,26 +113,26 @@ function checkPatient() {
         
         <tr>
           <th>Adresse:</th>
-          <td>{$patient.adresse}</td>
+          <td>{$patient->adresse}</td>
           <th>Numéro d'assuré social:</th>
-          <td>{$patient.matricule}</td>
+          <td>{$patient->matricule}</td>
         </tr>
         
         <tr>
           <th>Ville:</th>
-          <td>{$patient.ville}</td>
+          <td>{$patient->ville}</td>
           <th>Code administratif:</th>
-          <td>{$patient.SHS}</td>
+          <td>{$patient->SHS}</td>
         </tr>
         
         <tr>
           <th>Code Postal:</th>
-          <td>{$patient.cp}</td>
+          <td>{$patient->cp}</td>
         </tr>
         
         <tr>
           <th>Téléphone:</th>
-          <td>{$patient.tel}</td>
+          <td>{$patient->tel}</td>
         </tr>
         
         {if $canEdit}
@@ -141,7 +141,7 @@ function checkPatient() {
             <form name="modif" action="./index.php" method="get">
             <input type="hidden" name="m" value="dPpatients" />
             <input type="hidden" name="tab" value="1" />
-            <input type="hidden" name="id" value="{$patient.patient_id}" />
+            <input type="hidden" name="id" value="{$patient->patient_id}" />
             <input type="submit" value="Modifier" />
             </form>
           </td>
