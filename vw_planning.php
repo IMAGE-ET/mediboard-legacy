@@ -112,8 +112,6 @@ $daysOfWeek[6]["name"] = "Dimanche";
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->debugging = true;
-
 $smarty->assign('chirSel', $chirSel);
 $smarty->assign('plageSel', $plageSel);
 $smarty->assign('plageconsult_id', $plageconsult_id);
