@@ -26,9 +26,10 @@ function supprimer() {
     <th class="category">Informations sur le modèle</th>
     <th>Nom: </th>
     <td><input type="text" name="nom" value="{$compte_rendu->nom}"></td>
-    <th>Chirurgien: </th>
+    <th>Praticien:</th>
     <td>
       <select name="chir_id">
+        <option value="0">&mdash; Choisir un praticien &mdash;</options>
         {foreach from=$listPrat item=curr_prat}
           <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $prat_id} selected="selected" {/if}>
             {$curr_prat->user_last_name} {$curr_prat->user_first_name}

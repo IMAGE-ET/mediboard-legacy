@@ -10,9 +10,6 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('mediusers', 'functions') );
-require_once( $AppUI->getModuleClass('mediusers', 'groups') );
-require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'templatemanager') );
 
@@ -36,18 +33,12 @@ $listPrat = $mediusers->loadPraticiens(PERM_EDIT);
 // Liste des types de compte rendu
 $listType = array('consultation', 'operation', 'hospitalisation', 'autre');
 
-// L'utilisateur est-il chirurgien?
+// L'utilisateur est-il praticien?
 if (!$prat_id) {
   $mediuser = new CMediusers;
   $mediuser->load($AppUI->user_id);
 
-  $function = new CFunctions;
-  $function->load($mediuser->function_id);
-
-  $group = new CGroups;
-  $group->load($function->group_id);
-
-  if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
+  if ($mediuser->isPraticien()) {
     $prat_id = $AppUI->user_id;
     mbSetValueToSession("selPrat", $prat_id);
   }

@@ -4,6 +4,7 @@
       <form name="selectPrat" action="index.php" method="GET">
       <input type="hidden" name="m" value="{$m}" />
         <select name="selPrat" onchange="submit()">
+          <option value="0">&mdash; Choisir un praticien &mdash;</options>
           {foreach from=$listPrat item=curr_prat}
             <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $prat_id} selected="selected" {/if}>
               {$curr_prat->user_last_name} {$curr_prat->user_first_name}
