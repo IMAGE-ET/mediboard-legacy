@@ -17,8 +17,15 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// L'utilisateur est-il praticien?
+$mediuser = new CMediusers;
+$mediuser->load($AppUI->user_id);
+if ($mediuser->isPraticien()) {
+  $chir = $mediuser->createUser();
+} else
+  $chir = null;
+
 // A t'on fourni l'id du patient et du chirurgien?
-$chir = null;
 $chir_id = mbGetValueFromGetOrSession("chir_id", null);
 if ($chir_id) {
   $chir = new CUser;
@@ -30,13 +37,6 @@ $pat_id = dPgetParam($_GET, "pat_id");
 if ($pat_id) {
   $pat = new CPatient;
   $pat->load($pat_id);
-}
-
-// L'utilisateur est-il praticien?
-$mediuser = new CMediusers;
-$mediuser->load($AppUI->user_id);
-if ($mediuser->isPraticien()) {
-  $chir = $mediuser->createUser();
 }
 
 // Heures & minutes

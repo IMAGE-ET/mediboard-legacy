@@ -70,6 +70,8 @@ class CSetupdPplanningOp {
             db_exec( $sql ); db_error();
         }
         case "0.23" : {
+        	$sql = "ALTER TABLE `operations` ADD `modifiee` TINYINT DEFAULT '0' NOT NULL AFTER `saisie` ;";
+        	db_exec( $sql ); db_error();
         	$sql = "ALTER TABLE `operations` ADD `annulee` TINYINT DEFAULT '0' NOT NULL ;";
             db_exec( $sql ); db_error();
 			return true;

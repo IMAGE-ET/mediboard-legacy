@@ -54,6 +54,7 @@ $sql = "SELECT operations.temp_operation AS duree, plagesop.id AS id
 		WHERE plagesop.id_chir = '$id_chir'
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NOT NULL
+		AND operations.annulee != 1
 		ORDER BY plagesop.date, plagesop.id";
 $result = db_loadlist($sql);
 foreach($result as $key => $value) {

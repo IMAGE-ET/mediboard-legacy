@@ -191,7 +191,6 @@ function popProtocole() {
   url += '&a=vw_protocoles';
   url += '&dialog=1';
   url += '&chir_id='   + document.editFrm.chir_id.value;
-  url += '&CCAM_code=' + document.editFrm.CCAM_code.value;
   popup(700, 500, url, 'Protocole');
 }
 
@@ -213,7 +212,7 @@ function setProtocole(
   var f = document.editFrm;
   
   f.chir_id.value       = chir_id;
-  f._chir_name.value    = "Dr " + chir_last_name + " " + chir_first_name;
+  f._chir_name.value    = chir_last_name + " " + chir_first_name;
   f.CCAM_code.value     = prot_CCAM_code;
   f._hour_op.value      = prot_hour_op;
   f._min_op.value       = prot_min_op;
@@ -296,7 +295,13 @@ function printForm() {
 <input type="hidden" name="operation_id" value="{$op->operation_id}" />
 <input type="hidden" name="commande_mat" value="{$op->commande_mat}" />
 <input type="hidden" name="rank" value="{$op->rank}" />
+<input type="hidden" name="saisie" value="n" />
 <input type="hidden" name="annulee" value="0" />
+{if $op->saisie == 'o'}
+<input type="hidden" name="modifiee" value="1" />
+{else}
+<input type="hidden" name="modifiee" value="0" />
+{/if}
 
 <table class="main">
   <tr>
@@ -546,7 +551,7 @@ function printForm() {
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
             <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
-            <input type="button" value="Annuler" onclick="{literal}if (confirm('Veuillez confirmer l'annulation')) {this.form.annulee.value = 1; this.form.submit();}{/literal}" />
+            <input type="button" value="Annuler" onclick="{literal}if (confirm('Veuillez confirmer l\'annulation')) {this.form.annulee.value = 1; this.form.rank.value = 0; this.form.submit();}{/literal}" />
           {else}
             <input type="submit" value="Créer" />
           {/if}

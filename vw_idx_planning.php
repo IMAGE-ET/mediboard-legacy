@@ -116,6 +116,7 @@ $sql = "SELECT plagesop.id AS id, plagesop.date, COUNT(operations.temp_operation
 		ON plagesop.id = operations.plageop_id
 		WHERE plagesop.id_chir = '$selChirLogin'
 		AND plagesop.date LIKE '$year-$month-__'
+		AND operations.annulee = 0
 		AND operations.operation_id IS NOT NULL
 		GROUP BY operations.plageop_id";
 $result2 = db_loadlist($sql);
@@ -185,7 +186,7 @@ if (isset($result)) {
 // Requete SQL pour le planning de la journée
 $sql = "SELECT operations.operation_id AS id, operations.pat_id,
 		operations.CCAM_code, operations.temp_operation,
-        operations.rank, operations.time_operation
+        operations.rank, operations.time_operation, operations.annulee AS annulee
 		FROM plagesop
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id
@@ -204,11 +205,12 @@ foreach($result as $key => $value) {
   $today[$key]["nom"] = $patient[0]["nom"];
   $today[$key]["prenom"] = $patient[0]["prenom"];
   $today[$key]["CCAM_code"] = $value["CCAM_code"];
-  if($value["rank"]) {
+  if($value["rank"])
     $today[$key]["heure"] = substr($value["time_operation"], 0, 2)."h".substr($value["time_operation"], 3, 2);
-  } else {
+  else if($value["annulee"])
+    $today[$key]["heure"] = "ANNULE";
+  else
     $today[$key]["heure"] = "-";
-  }
   $today[$key]["temps"] = substr($value["temp_operation"], 0, 2)."h".substr($value["temp_operation"], 3, 2);
 }
 

@@ -35,7 +35,7 @@ class COperation extends CDpObject {
   var $examen = null;
   var $materiel = null;
   var $convalescence = null;
-  var $commande_mat = "n";
+  var $commande_mat = null;
   var $info = null;
   var $date_anesth = null;
   var $time_anesth = null;
@@ -47,9 +47,12 @@ class COperation extends CDpObject {
   var $chambre = null;
   var $ATNC = null;
   var $rques = null;
-  var $rank = 0;
-  var $admis = "n";
+  var $rank = null;
+  var $admis = null;
+  var $saisie = null;
+  var $modifiee = null;
   var $depassement = null;
+  var $annulee = null;
     
   // Form fields
   var $_hour_op = null;
@@ -75,10 +78,7 @@ class COperation extends CDpObject {
     $this->CDpObject( 'operations', 'operation_id' );
   }
 
-  function delete() {
-
-    // Re-numérotation des autres plages de la même plage
-    if ($this->rank) {
+  function reorder() {
       $sql = "SELECT operations.operation_id, operations.temp_operation,
       	plagesop.debut
         FROM operations
@@ -110,11 +110,15 @@ class COperation extends CDpObject {
         $i++;
       }
     }
-    
+
+  function delete() {
+    // Re-numérotation des autres plages de la même plage
+    if ($this->rank)
+  	  $this->reorder();
     return parent::delete();
   }
   
-	function updateFormFields() {
+  function updateFormFields() {
     $this->_hour_op = intval(substr($this->temp_operation, 0, 2));
     $this->_min_op  = intval(substr($this->temp_operation, 3, 2));
 
@@ -175,6 +179,14 @@ class COperation extends CDpObject {
     $this->temp_operation = 
       $this->_hour_op.":".
       $this->_min_op.":00";
+  }
+  
+  function store() {
+    $msg = parent::store();
+    if($this->annulee)
+      $this->reorder();
+    return $msg;
+    
   }
   
   function loadRefs() {

@@ -1,12 +1,32 @@
 <!-- $Id$ -->
 
 <script language="javascript">
-function setClose(user_id, user_last_name, user_first_name, CCAM_code,
-                  _hour_op, _min_op, examen, materiel, convalescence,
-                  depassement, type_adm, duree_hospi, rques) {ldelim}
-  window.opener.setProtocole(user_id, user_last_name, user_first_name, CCAM_code,
-                             _hour_op, _min_op, examen, materiel, convalescence,
-                             depassement, type_adm, duree_hospi, rques)
+function setClose(user_id,
+                  user_last_name,
+                  user_first_name,
+                  CCAM_code,
+                  _hour_op,
+                  _min_op,
+                  examen,
+                  materiel,
+                  convalescence,
+                  depassement,
+                  type_adm,
+                  duree_hospi,
+                  rques) {ldelim}
+  window.opener.setProtocole(user_id,
+                             user_last_name,
+                             user_first_name,
+                             CCAM_code,
+                             _hour_op,
+                             _min_op,
+                             examen,
+                             materiel,
+                             convalescence,
+                             depassement,
+                             type_adm,
+                             duree_hospi,
+                             rques)
   window.close();
 {rdelim}
 </script>
@@ -68,7 +88,7 @@ function setClose(user_id, user_last_name, user_first_name, CCAM_code,
         <tr>    
           <td class="text">
             {if $dialog}
-            <a href="#" onclick="setClose('{$protSel->_ref_chir->user_id}',
+            <a href="#" onclick="setClose('{$curr_protocole->_ref_chir->user_id}',
                                 '{$curr_protocole->_ref_chir->user_last_name}',
                                 '{$curr_protocole->_ref_chir->user_first_name}',
                                 '{$curr_protocole->CCAM_code}',
