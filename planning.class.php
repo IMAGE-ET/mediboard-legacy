@@ -12,56 +12,60 @@ require_once( $AppUI->getSystemClass ('dp' ) );
 require_once("modules/admin/admin.class.php");
 require_once("modules/dPpatients/patients.class.php");
 require_once("modules/dPbloc/plagesop.class.php");
+require_once("modules/dPccam/acte.class.php");
 
 class COperation extends CDpObject {
   // DB Table key
-  var $operation_id = NULL;
+  var $operation_id = null;
 
   // DB References
-  var $pat_id = NULL;
-  var $chir_id = NULL;
-  var $plageop_id = NULL;
+  var $pat_id = null;
+  var $chir_id = null;
+  var $plageop_id = null;
 
   // DB fields
-  var $CCAM_code = NULL;
-  var $CIM10_code = NULL;
-  var $cote = NULL;
-  var $temp_operation = NULL;
-  var $entree_bloc = NULL;
-  var $sortie_bloc = NULL;
-  var $time_operation = NULL;
-  var $examen = NULL;
-  var $materiel = NULL;
+  var $CCAM_code = null;
+  var $CIM10_code = null;
+  var $cote = null;
+  var $temp_operation = null;
+  var $entree_bloc = null;
+  var $sortie_bloc = null;
+  var $time_operation = null;
+  var $examen = null;
+  var $materiel = null;
   var $commande_mat = "n";
-  var $info = NULL;
-  var $date_anesth = NULL;
-  var $time_anesth = NULL;
-  var $type_anesth = NULL;  
-  var $date_adm = NULL;
-  var $time_adm = NULL;
-  var $duree_hospi = NULL;
-  var $type_adm = NULL;
-  var $chambre = NULL;
-  var $ATNC = NULL;
-  var $rques = NULL;
+  var $info = null;
+  var $date_anesth = null;
+  var $time_anesth = null;
+  var $type_anesth = null;  
+  var $date_adm = null;
+  var $time_adm = null;
+  var $duree_hospi = null;
+  var $type_adm = null;
+  var $chambre = null;
+  var $ATNC = null;
+  var $rques = null;
   var $rank = 0;
   var $admis = "n";
     
   // Form fields
-  var $_hour_op = NULL;
-  var $_min_op = NULL;
-  var $_date_rdv_anesth = NULL;
-  var $_hour_anesth = NULL;
-  var $_min_anesth = NULL;
-  var $_lu_type_anesth = NULL;
-  var $_date_rdv_adm = NULL;
-  var $_hour_adm = NULL;
-  var $_min_adm = NULL;
+  var $_hour_op = null;
+  var $_min_op = null;
+  var $_date_rdv_anesth = null;
+  var $_hour_anesth = null;
+  var $_min_anesth = null;
+  var $_lu_type_anesth = null;
+  var $_date_rdv_adm = null;
+  var $_hour_adm = null;
+  var $_min_adm = null;
 
   // DB References
-  var $_ref_pat = NULL;
-  var $_ref_chir = NULL;
-  var $_ref_plageop = NULL;
+  var $_ref_pat = null;
+  var $_ref_chir = null;
+  var $_ref_plageop = null;
+  
+  // External references
+  var $_ext_code_ccam = null;
 
   function COperation() {
     $this->CDpObject( 'operations', 'operation_id' );
@@ -90,7 +94,7 @@ class COperation extends CDpObject {
     return parent::delete();
   }
   
-	function load($oid = NULL, $strip = TRUE) {
+	function load($oid = null, $strip = TRUE) {
     if (!parent::load($oid, $strip)) {
       return FALSE;
     }
@@ -107,7 +111,7 @@ class COperation extends CDpObject {
       substr($this->date_anesth, 5, 2)."/".
       substr($this->date_anesth, 0, 4);
       
-    if($this->type_anesth != NULL) {
+    if($this->type_anesth != null) {
       $anesth = dPgetSysVal("AnesthType");
       $this->_lu_type_anesth = $anesth[$this->type_anesth];
     }
@@ -167,12 +171,14 @@ class COperation extends CDpObject {
     // Forward references
     $this->_ref_chir = new CUser;
     $this->_ref_chir->load($this->chir_id);
-    
+        
     $this->_ref_pat = new CPatient;
     $this->_ref_pat->load($this->pat_id);
     
     $this->_ref_plageop = new CPlageOp;
     $this->_ref_plageop->load($this->plageop_id);
+    
+    $this->_ext_code_ccam = new Acte($this->CCAM_code);
   }
 }
 
