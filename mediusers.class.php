@@ -90,7 +90,7 @@ class CMediusers extends CDpObject {
 
   function updateFormFields() {
     $user = new CUser();
-    if ($user->load($this->user_id, $strip)) {
+    if ($user->load($this->user_id)) {
       $this->_user_username   = $user->user_username  ;
       $this->_user_password   = $user->user_password  ;
       $this->_user_first_name = $user->user_first_name;
