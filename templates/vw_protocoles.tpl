@@ -89,8 +89,8 @@ function setClose(user_id,
           <td class="text">
             {if $dialog}
             <a href="#" onclick="setClose('{$curr_protocole->_ref_chir->user_id}',
-                                '{$curr_protocole->_ref_chir->user_last_name}',
-                                '{$curr_protocole->_ref_chir->user_first_name}',
+                                '{$curr_protocole->_ref_chir->user_last_name|escape:javascript}',
+                                '{$curr_protocole->_ref_chir->user_first_name|escape:javascript}',
                                 '{$curr_protocole->CCAM_code}',
                                 '{$curr_protocole->_hour_op}',
                                 '{$curr_protocole->_min_op}',
