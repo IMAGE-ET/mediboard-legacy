@@ -1,5 +1,5 @@
 <?php
-ini_set("include_path", ".;D:\Projects\pear\PEAR");
+ini_set("include_path", ".;..\..\lib\PEAR");
 
 // XML Helper functions
 require_once("XML/Tree.php");
@@ -150,6 +150,7 @@ $chrono->showStep("Parse XML Tree");
 // Step: Seek praticiens
 $medecins = array();
 
+// /html/body/table/tr[3]/td/table/tr/td[2]/table/tr[7]/td/table/tr/td[2]/table/tr/td/b
 // /html/body/table/tr[3]/td/table/tr/td[2]/table/tr[7]/td/table
 $node =& getElement($node, "body");
 $node =& getElement($node, "table");
@@ -176,6 +177,7 @@ foreach ($node->children as $key=>$child) {
     switch ($key % 3) {
       case 0:
         // /td[2]/table/tr/td/b
+
         $node =& $child;
         $node =& getElement($node, "td", 2);
         $node =& getElement($node, "table");
@@ -186,6 +188,9 @@ foreach ($node->children as $key=>$child) {
         $medecin['Nom'] = is_a($node, "XML_Tree_Node") ? 
           substr($node->content, 0, -6) : 
           null;
+        $espace = strpos($medecin['Nom'], " ");
+        $medecin['Prenom'] = addslashes(substr($medecin['Nom'], 0, $espace));
+        $medecin['Nom'] = addslashes(substr($medecin['Nom'], $espace + 1));
         
         // /td[3]/<empty>
         $node =& $child;
@@ -195,6 +200,7 @@ foreach ($node->children as $key=>$child) {
         $medecin['Departement'] = is_a($node, "XML_Tree_Node") ? 
           trim(substr($node->content, 3)) : 
           null;
+        $medecin['Departement'] = addslashes($medecin['Departement']);
 
         break;
       case 1:
@@ -207,7 +213,7 @@ foreach ($node->children as $key=>$child) {
         
         $disciplines = array();
         foreach (getAllElements($node, "") as $discNode) {
-          $disciplines[] = trim(substr($discNode->content, 2));
+          $disciplines[] = trim(addslashes(substr($discNode->content, 2)));
         }
 
         $medecin['Disciplines'] = implode($disciplines, "\n");
@@ -222,6 +228,7 @@ foreach ($node->children as $key=>$child) {
         $node =& getElement($node, "td");
 
         $medecin['Adresse'] = is_a($node, "XML_Tree_Node") ? $node->content : null;
+        $medecin['Adresse'] = addslashes($medecin['Adresse']);
         
         // /td/table/tr[3]/td
         $node =& $child;
@@ -231,6 +238,8 @@ foreach ($node->children as $key=>$child) {
         $node =& getElement($node, "td");
 
         $medecin['CodePostal'] = is_a($node, "XML_Tree_Node") ? $node->content : null;
+        $medecin['Ville'] = addslashes(substr($medecin['CodePostal'], 6));
+        $medecin['CodePostal'] = addslashes(substr($medecin['CodePostal'], 0, 5));
 
         // /td[2]/table/tr/td[3]
         $node =& $child;
@@ -240,6 +249,10 @@ foreach ($node->children as $key=>$child) {
         $node =& getElement($node, "td", 3);
 
         $medecin['Tel'] = is_a($node, "XML_Tree_Node") ? $node->content : null;
+        $medecin['Tel'] = str_replace(" ", "", $medecin['Tel']);
+        $medecin['Tel'] = str_replace("/", "", $medecin['Tel']);
+        $medecin['Tel'] = str_replace("-", "", $medecin['Tel']);
+        $medecin['Tel'] = addslashes(str_replace(".", "", $medecin['Tel']));
       
         // /td[2]/table/tr[2]/td[3]
         $node =& $child;
@@ -249,6 +262,10 @@ foreach ($node->children as $key=>$child) {
         $node =& getElement($node, "td", 3);
 
         $medecin['Fax'] = is_a($node, "XML_Tree_Node") ? $node->content : null;
+        $medecin['Fax'] = str_replace(" ", "", $medecin['Fax']);
+        $medecin['Fax'] = str_replace("/", "", $medecin['Fax']);
+        $medecin['Fax'] = str_replace("-", "", $medecin['Fax']);
+        $medecin['Fax'] = addslashes(str_replace(".", "", $medecin['Fax']));
 
         // /td[2]/table/tr[3]/td[3]
         $node =& $child;
@@ -266,31 +283,22 @@ foreach ($node->children as $key=>$child) {
 
 $chrono->showStep("Seek praticians (" . count($medecins). " found)");
 
-$chrono->showTotal();
-?>
+$mysql = mysql_connect("localhost", "root", "");
+mysql_select_db("dotproject");
 
-<table border="1">
-  <tr>
-    <th>Nom</th>
-    <th>Dép</th>
-    <th>Discipline</th>
-    <th>Adresse</th>
-    <th>Code Postal</th>
-    <th>Tél</th>
-    <th>Fax</th>
-    <th>e-Mail</th>
-  </tr>
-  
-<?php foreach ($medecins as $medecin) { ?>
-  <tr>
-    <td><?php echo $medecin['Nom']; ?></td>
-    <td><?php echo $medecin['Departement']; ?></td>
-    <td><?php echo nl2br($medecin['Disciplines']); ?></td>
-    <td><?php echo $medecin['Adresse']; ?></td>
-    <td><?php echo $medecin['CodePostal']; ?></td>
-    <td><?php echo $medecin['Tel']; ?></td>
-    <td><?php echo $medecin['Fax']; ?></td>
-    <td><?php echo $medecin['E-mail']; ?></td>
-  </tr>
-<?php } ?>
-</table>
+foreach ($medecins as $medecin) {
+	$query = "INSERT INTO medecin(nom, prenom, specialite, tel, fax, email, adresse, ville, cp)" .
+			"\nVALUES ('". $medecin['Nom'] ."', '". $medecin['Prenom'] ."', '". $medecin['Disciplines'] .
+            "', '". $medecin['Tel'] ."', '". $medecin['Fax'] ."', '". $medecin['E-mail'] .
+            "', '". $medecin['Adresse'] ."', '".$medecin['Ville']  ."', '". $medecin['CodePostal'] ."')";
+    mysql_query($query);
+    if(mysql_error()) {
+      echo "<p>Erreur :<br>$query<br>". mysql_error()."</p>";
+    }
+}
+ mysql_close();
+ 
+ $chrono->showStep("Database queries");
+ 
+ $chrono->showTotal();
+ ?>
