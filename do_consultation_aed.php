@@ -28,7 +28,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-    $_SESSION[$m]["consultation_id"] = NULL;
+    mbSetValueToSession("consultation_id");
 		$AppUI->setMsg( "Consultation supprimée", UI_MSG_ALERT);
 		$AppUI->redirect( "m=$m" );
 	}

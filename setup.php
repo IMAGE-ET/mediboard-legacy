@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.2';
+$config['mod_version'] = '0.21';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -44,11 +44,13 @@ class CSetupdPcabinet {
 		switch ( $old_version )
 		{
 		case "all":
-		case "0.1": {
-		    $sql = "ALTER TABLE plageconsult ADD freq TIME DEFAULT '00:15:00' NOT NULL AFTER date ;";
-		db_exec( $sql ); db_error();
-		}
+		case "0.1":
+		  $sql = "ALTER TABLE plageconsult ADD freq TIME DEFAULT '00:15:00' NOT NULL AFTER date ;";
+		  db_exec( $sql ); db_error();
 		case "0.2":
+      $sql = "ALTER TABLE `consultation` ADD `compte_rendu` TEXT DEFAULT NULL";
+      db_exec( $sql ); db_error();
+    case "0.21":
 			return true;
 		default:
 			return false;

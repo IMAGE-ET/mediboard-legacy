@@ -24,10 +24,11 @@ class CConsultation extends CDpObject {
   // DB fields
   var $heure = null;
   var $duree = null;
-  var $motif = null;
   var $secteur1 = null;
   var $secteur2 = null;
+  var $motif = null;
   var $rques = null;
+  var $compte_rendu = null;
 
   // Form fields
   var $_hour = null;

@@ -216,9 +216,10 @@ function setCalendar( idate, fdate ) {
       <table class="form">
         <tr>
           <td class="button">
-          {if $op}
+          {if $consult->consultation_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
+            <input type="button" value="Compte-Rendu" onclick="popup(700, 700, './index.php?m={$m}&a=vw_compta&dialog=1', 'Compte-rendu')"/>
             <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
           {else}
             <input type="submit" value="Créer" />
