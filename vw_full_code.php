@@ -56,8 +56,8 @@ $TBS->MergeBlock('chap',	$chapitres);
 $TBS->MergeBlock('asso',	$associabilite);
 $TBS->MergeBlock('incomp',	$incompatibilite);
 
-$TBS->
-
 $TBS->Show();
+
+//$TBS->Show();
 
 ?>
