@@ -55,6 +55,7 @@ class CSetupdPplanningOp {
 		$sql = "CREATE TABLE operations ( " .
 			"  operation_id bigint(20) unsigned NOT NULL auto_increment" .
 			",  pat_id bigint(20) unsigned NOT NULL default '0'" .
+			",  chir_id bigint(20) unsigned NOT NULL default '0'" .
 			",  plageop_id bigint(20) unsigned NOT NULL default '0'" .
 			", CCAM_code varchar(7) default NULL" .
 			", CIM10_code varchar(5) default NULL" .
