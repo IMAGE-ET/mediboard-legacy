@@ -58,7 +58,7 @@ class clsTbsLocator {
 class clsTinyButStrong {
 	//Public properties
 	var $Source = '' ; //Current result of the merged template
-	var $Render = 3 ;
+	var $Render = 1 ;  //Make the output but don't exit to let dP end the html file
 	var $HtmlCharSet = '' ;
 	//Private properties
 	var $_Version = '1.95.1';

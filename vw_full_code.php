@@ -48,7 +48,7 @@ $textproc = $acte->procedure["texte"];
 
 //Creation de la page avec TBS
 $TBS = new clsTinyButStrong; 
-$TBS->LoadTemplate("modules/$m/tpl/acte.tpl");
+$TBS->LoadTemplate("modules/$m/tpl/vw_full_code.tpl", "iso-8859-1");
 //$TBS->MergeBlock('user',	$user);
 //$TBS->MergeBlock('rq',		$remarques);
 $TBS->MergeBlock('act',		$activites);
@@ -57,7 +57,5 @@ $TBS->MergeBlock('asso',	$associabilite);
 $TBS->MergeBlock('incomp',	$incompatibilite);
 
 $TBS->Show();
-
-//$TBS->Show();
 
 ?>
