@@ -111,6 +111,7 @@ $smarty->assign('app', $AppUI);
 $smarty->assign('m', $m);
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('canRead', $canRead);
+$smarty->assign('dialog', $dialog);
 
 $smarty->assign('protocoles', $protocoles);
 $smarty->assign('protSel', $protSel);

@@ -59,7 +59,7 @@ function checkForm() {
   if (field = form._hour_adm)
     if (field.value.length == 0) {
       alert("Admission: heure manquante");
-      form.hour_anesth.focus();
+      field.focus();
       return false;
     }
 
@@ -71,36 +71,7 @@ function popChir() {
   url += '&a=chir_selector';
   url += '&dialog=1';
   
-  window.open(url, 'Chirurgien', 'left=50,top=50,height=250,width=400,resizable');
-}
-
-function popPat() {
-  var url = './index.php?m=dPplanningOp';
-  url += '&a=pat_selector';
-  url += '&dialog=1';
-
-  window.open(url, 'Patient', 'left=50,top=50,height=250,width=400,resizable');
-}
-
-function popCode(type) {
-  var url = './index.php?m=dPplanningOp';
-  url += '&a=code_selector';
-  url += '&dialog=1';
-  url += '&chir='+ document.editFrm.chir_id.value;
-  url += '&type='+ type;
-
-  window.open(url, 'CIM10', 'left=50,top=50,height=500,width=600,resizable');
-}
-
-function popPlage() {
-  var url = './index.php?m=dPplanningOp';
-  url += '&a=plage_selector';
-  url += '&dialog=1';
-  url += '&chir=' + document.editFrm.chir_id.value;
-  url += '&hour=' + document.editFrm._hour_op.value;
-  url += '&min=' + document.editFrm._min_op.value;
-
-  window.open(url, 'Plage', 'left=50,top=50,height=250,width=400,resizable');
+  window.open(url, 'Chirurgien', 'left=50, top=50, height=250, width=400, resizable=yes');
 }
 
 function setChir( key, val ){
@@ -113,7 +84,15 @@ function setChir( key, val ){
     }
 }
 
-function setPat( key, val ){
+function popPat() {
+  var url = './index.php?m=dPplanningOp';
+  url += '&a=pat_selector';
+  url += '&dialog=1';
+
+  window.open(url, 'Patient', 'left=50, top=50, width=400, height=250, resizable=yes');
+}
+
+function setPat( key, val ) {
   var f = document.editFrm;
 
   if (val != '') {
@@ -122,6 +101,16 @@ function setPat( key, val ){
     window.pat_id = key;
     window._pat_name = val;
   }
+}
+
+function popCode(type) {
+  var url = './index.php?m=dPplanningOp';
+  url += '&a=code_selector';
+  url += '&dialog=1';
+  url += '&chir='+ document.editFrm.chir_id.value;
+  url += '&type='+ type;
+
+  window.open(url, 'CIM10', 'left=50, top=50, width=600, height=500, resizable=yes');
 }
 
 function setCode( key, type ){
@@ -139,6 +128,17 @@ function setCode( key, type ){
   }
 }
 
+function popPlage() {
+  var url = './index.php?m=dPplanningOp';
+  url += '&a=plage_selector';
+  url += '&dialog=1';
+  url += '&chir=' + document.editFrm.chir_id.value;
+  url += '&hour=' + document.editFrm._hour_op.value;
+  url += '&min=' + document.editFrm._min_op.value;
+
+  window.open(url, 'Plage', 'left=50, top=50, width=400, height=250, resizable=yes');
+}
+
 function setPlage( key, val ){
   var f = document.editFrm;
 
@@ -150,10 +150,43 @@ function setPlage( key, val ){
   }
 }
 
+function popProtocole() {
+  var url = './index.php?m=dPplanningOp';
+  url += '&a=vw_protocoles';
+  url += '&dialog=1';
+  url += '&chir_id='   + document.editFrm.chir_id.value;
+  url += '&CCAM_code=' + document.editFrm.CCAM_code.value;
+
+  window.open(url, 'Protocole', 'top=200, left=250, width=600, height=400, scrollbars=yes, resizable=yes' );
+}
+
+function setProtocole(
+    chir_id,
+    chir_last_name,
+    chir_first_name,
+    prot_CCAM_code,
+    prot_hour_op,
+    prot_min_op,
+    prot_examen,
+    prot_type_adm,
+    prot_duree_hospi) {
+
+  var f = document.editFrm;
+  
+  f.chir_id.value = chir_id;
+  f._chir_name.value = "Dr " + chir_last_name + " " + chir_first_name;
+  f.CCAM_code.value = prot_CCAM_code;
+  f._hour_op.value = prot_hour_op;
+  f._min_op.value = prot_min_op;
+  f.examen.value = prot_examen;
+  f.type_adm.value = prot_type_adm;
+  f.duree_hospi.value = prot_duree_hospi;
+}
+
 var calendarField = '';
 var calWin = null;
  
-function popCalendar( field ){
+function popCalendar( field ) {
   calendarField = field;
   idate = eval( 'document.editFrm._date' + field + '.value' );
   
@@ -163,7 +196,7 @@ function popCalendar( field ){
   url += '&callback=setCalendar';
   url += '&date=' + idate;
   
-  window.open(url, 'calwin', 'top=250,left=250,width=280, height=250, scollbars=false' );
+  window.open(url, 'calwin', 'left=250, top=250, width=280, height=250, scrollbars=yes' );
 }
 
 function setCalendar( idate, fdate ) {
@@ -172,8 +205,9 @@ function setCalendar( idate, fdate ) {
   fld_date.value = idate;
   fld_fdate.value = fdate;
 }
-	
+  
 function printForm() {
+  // @todo Pourquoi ne pas seulement passer le operation_id? ca parait bcp moins régressif
   if (checkForm()) {
     url = './index.php?m=dPplanningOp';
     url += '&a=view_planning';
@@ -196,7 +230,7 @@ function printForm() {
     url += '&type_adm='    + eval('document.editFrm.type_adm.value'   );
     url += '&chambre='     + eval('document.editFrm.chambre.value'    ); 
  
-    window.open( url, 'printAdm', 'top=10,left=10, width=800, height=600, scollbars=true' );
+    window.open( url, 'printAdm', 'top=50,left=50, width=700, height=500, scrollbars=yes' );
   }
 }
 </script>
@@ -212,60 +246,68 @@ function printForm() {
 <table class="main">
   <tr>
     <td>
-	
+  
       <table class="form">
         <tr><th class="category" colspan="3">Informations concernant l'opération</th></tr>
 
+        {if !$protocole}
         <tr>
-		      <th class="mandatory"><input type="hidden" name="chir_id" value="{$chir->user_id}" />Chirurgien:</th>
+          <td class="button" colspan="3"><input type="button" value="Choisir un protocole" onclick="popProtocole()" /></td>
+        </tr>
+        {/if}
+        
+        <tr>
+          <th class="mandatory"><input type="hidden" name="chir_id" value="{$chir->user_id}" /><label for="editFrm_chir_id">Chirurgien:</label></th>
           <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if ($chir)}Dr. {$chir->user_last_name} {$chir->user_first_name}{/if}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
 
         {if !$protocole}
         <tr>
-          <th class="mandatory"><input type="hidden" name="pat_id" value="{$pat->patient_id}" />Patient:</th>
+          <th class="mandatory"><input type="hidden" name="pat_id" value="{$pat->patient_id}" /><label for="editFrm_chir_id">Patient:</label></th>
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->nom} {$pat->prenom}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
         
         <tr>
-          <th class="mandatory">Diagnostic (CIM10):</th>
+          <th class="mandatory"><label for="editFrm_CIM10_code">Diagnostic (CIM10):</label></th>
           <td><input type="text" name="CIM10_code" size="10" value="{$op->CIM10_code}" /></td>
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('cim10')" /></td>
         </tr>
         {/if}
 
         <tr>
-          <th class="mandatory">Acte médical (CCAM):</th>
+          <th class="mandatory"><label for="editFrm_CCAM_code">Acte médical (CCAM):</label></th>
           <td><input type="text" name="CCAM_code" size="10" value="{$op->CCAM_code}" /></td>
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
 
+        {if !$protocole}
         <tr>
           <th>Coté:</th>
           <td colspan="2">
             <select name="cote">
-          	  <option {if !$op && $op->cote == "total"} selected="selected" {/if} >total</option>
-          	  <option {if $op->cote == "droit"    } selected="selected" {/if} >droit     </option>
-          	  <option {if $op->cote == "gauche"   } selected="selected" {/if} >gauche    </option>
-          	  <option {if $op->cote == "bilatéral"} selected="selected" {/if} >bilatéral</option>
-          	</select>
+              <option {if !$op && $op->cote == "total"} selected="selected" {/if} >total</option>
+              <option {if $op->cote == "droit"    } selected="selected" {/if} >droit     </option>
+              <option {if $op->cote == "gauche"   } selected="selected" {/if} >gauche    </option>
+              <option {if $op->cote == "bilatéral"} selected="selected" {/if} >bilatéral</option>
+            </select>
           </td>
         </tr>
+        {/if}
 
         <tr>
           <th class="mandatory">Temps opératoire:</th>
           <td colspan="2">
             <select name="_hour_op">
             {foreach from=$hours key=key item=hour}
-            	<option {if (!$op && $key == 1) || $op->_hour_op == $key} selected="selected" {/if}>{$key}</option>
+              <option {if (!$op && $key == 1) || $op->_hour_op == $key} selected="selected" {/if}>{$key}</option>
             {/foreach}
             </select>
             :
             <select name="_min_op">
             {foreach from=$mins item=min}
-            	<option {if (!$op && $min == 0) || $op->_min_op == $min} selected="selected" {/if}>{$min}</option>
+              <option {if (!$op && $min == 0) || $op->_min_op == $min} selected="selected" {/if}>{$min}</option>
             {/foreach}
             </select>
           </td>
@@ -324,13 +366,13 @@ function printForm() {
           <td>
             <select name="_hour_anesth">
             {foreach from=$hours item=hour}
-            	<option {if $op->_hour_anesth == $hour} selected="selected" {/if}>{$hour}</option>
+              <option {if $op->_hour_anesth == $hour} selected="selected" {/if}>{$hour}</option>
             {/foreach}
             </select>
             :
             <select name="_min_anesth">
             {foreach from=$mins item=min}
-            	<option {if $op->_min_anesth == $min} selected="selected" {/if}>{$min}</option>
+              <option {if $op->_min_anesth == $min} selected="selected" {/if}>{$min}</option>
             {/foreach}
             </select>
           </td>
@@ -356,13 +398,13 @@ function printForm() {
           <td>
             <select name="_hour_adm">
             {foreach from=$hours item=hour}
-            	<option {if $op->_hour_adm == $hour} selected="selected" {/if}>{$hour}</option>
+              <option {if $op->_hour_adm == $hour} selected="selected" {/if}>{$hour}</option>
             {/foreach}
             </select>
             :
             <select name="_min_adm">
             {foreach from=$mins item=min}
-            	<option {if $op->_min_adm == $min} selected="selected" {/if}>{$min}</option>
+              <option {if $op->_min_adm == $min} selected="selected" {/if}>{$min}</option>
             {/foreach}
             </select>
           </td>
@@ -376,9 +418,12 @@ function printForm() {
         <tr>
           <th>Admission en:</th>
           <td>
-            <input name="type_adm" value="comp" type="radio" {if !$op || $op->type_adm == "comp"} checked="checked" {/if} />hospitalisation complète<br />
-            <input name="type_adm" value="ambu" type="radio" {if $op->type_adm == "ambu"} checked="checked" {/if} />Ambulatoire<br />
-			      <input name="type_adm" value="exte" type="radio" {if $op->type_adm == "exte"} checked="checked" {/if} />Externe
+            <input name="type_adm" value="comp" type="radio" {if !$op || $op->type_adm == "comp"} checked="checked" {/if} />
+            <label for="editFrm_type_adm_comp">Hospitalisation complète</label><br />
+            <input name="type_adm" value="ambu" type="radio" {if $op->type_adm == "ambu"} checked="checked" {/if} />
+            <label for="editFrm_type_adm_ambu">Ambulatoire</label><br />
+            <input name="type_adm" value="exte" type="radio" {if $op->type_adm == "exte"} checked="checked" {/if} />
+            <label for="editFrm_type_adm_exte">Externe</label><br />
           </td>
         </tr>
         
@@ -386,16 +431,20 @@ function printForm() {
         <tr>
           <th>Chambre particulière:</th>
           <td>
-            <input name="chambre" value="o" type="radio" {if !$op || $op->chambre == "o"} checked="checked" {/if}/>Oui
-            <input name="chambre" value="n" type="radio" {if $op->chambre == "n"} checked="checked" {/if}/>Non
+            <input name="chambre" value="o" type="radio" {if !$op || $op->chambre == "o"} checked="checked" {/if}/>
+            <label for="editFrm_chambre_o">Oui</label>
+            <input name="chambre" value="n" type="radio" {if $op->chambre == "n"} checked="checked" {/if}/>
+            <label for="editFrm_chambre_n">Non</label>
           </td>
         </tr>
         <tr><th class="category" colspan="3">Autre</th></tr>
         <tr>
           <th>Risque ATNC:</th>
           <td>
-            <input name="ATNC" value="o" type="radio" {if $op->ATNC == "o"} checked="checked" {/if} />Oui
-            <input name="ATNC" value="n" type="radio" {if !$op || $op->ATNC == "n"} checked="checked" {/if} />Non
+            <input name="ATNC" value="o" type="radio" {if $op->ATNC == "o"} checked="checked" {/if} />
+            <label for="editFrm_ATNC_o">Oui</label>
+            <input name="ATNC" value="n" type="radio" {if !$op || $op->ATNC == "n"} checked="checked" {/if} />
+            <label for="editFrm_ATNC_n">Non</label>
           </td>
         </tr>
         <tr>

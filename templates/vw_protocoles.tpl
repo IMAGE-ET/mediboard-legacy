@@ -1,15 +1,32 @@
+<script language="javascript">
+function setClose() {ldelim}
+  window.opener.setProtocole(
+    "{$chirSel->user_id}",
+    "{$chirSel->user_last_name}",
+    "{$chirSel->user_first_name}",
+    "{$protSel->CCAM_code}",
+    "{$protSel->_hour_op}",
+    "{$protSel->_min_op}",
+    "{$protSel->examen}",
+    "{$protSel->type_adm}",
+    "{$protSel->duree_hospi}");
+  window.close();
+{rdelim}
+</script>
+
 <table class="main">
   <tr>
     <td colspan="2">
 
-      <form name="selectFrm" action="" method="get">
+      <form name="selectFrm" action="index.php" method="get">
       
       <input type="hidden" name="m" value="{$m}" />
-      <input type="hidden" name="tab" value="3" />
+      <input type="hidden" {if $dialog} name="a" value="vw_protocoles" {else} name="tab" value="3" {/if}  />
+      <input type="hidden" name="dialog" value="{$dialog}" />
 
-      <table width="50%">
+      <table>
         <tr>
-          <td width="50%">
+          <td style="white-space: nowrap;">
             Choisir un chirurgien :
             <select name="chir_id" onchange="this.form.submit()">
               <option value="" >Tous les chirurgiens</option>
@@ -20,7 +37,7 @@
               {/foreach}
             </select>
           </td>
-          <td width="50%">
+          <td style="white-space: nowrap;">
             Choisir un code CCAM :
             <select name="CCAM_code" onchange="this.form.submit()">
               <option value="" >Tous les codes</option>
@@ -39,29 +56,33 @@
   </tr>
 
   <tr>
-    <td style="width: 50%;">
+    <td class="halfPane">
 
       <table class="tbl">
         <tr>
-          <th>Chirurgien</th>
-          <th>Acte CCAM</th>
+          <th>Chirurgien &mdash; Acte CCAM</th>
         </tr>
         
         {foreach item=curr_protocole from=$protocoles}
         <tr>    
-          <td style="white-space: nowrap"><a href="?m={$m}&amp;tab=3&amp;protocole_id={$curr_protocole.operation_id}">Dr. {$curr_protocole.lastname} {$curr_protocole.firstname}</a></td>
-          <td><strong>{$curr_protocole.CCAM_code}</strong><br />{$curr_protocole.CCAM_libelle}</td>
+          <td>
+            <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab=3{/if}&amp;protocole_id={$curr_protocole.operation_id}">
+              <strong>Dr. {$curr_protocole.lastname} {$curr_protocole.firstname} &mdash; {$curr_protocole.CCAM_code}</strong>
+            </a>
+            <br />{$curr_protocole.CCAM_libelle}
+          </td>
         </tr>
         {/foreach}
+
       </table>
 
     </td>
-    <td style="width: 50%;">
+    <td class="halfPane">
 
       {if $protSel}
       <table class="form">
         <tr>
-          <th class="category" colspan="4">Détails du protocole</th>
+          <th class="category" colspan="2">Détails du protocole</th>
         </tr>
 
         <tr>
@@ -71,28 +92,26 @@
         
         <tr>
           <th>Code CCAM:</th>
-          <td class="text" colspan="3"><strong>{$ccamSel.CODE}</strong><br />{$ccamSel.LIBELLELONG}</td>
+          <td class="text"><strong>{$ccamSel.CODE}</strong><br />{$ccamSel.LIBELLELONG}</td>
         </tr>
         
         <tr>
-          <th>Côté:</th>
-          <td>{$protSel->cote}</td>
           <th>Temps opératoire</th>
           <td>{$protSel->_hour_op}:{$protSel->_min_op}</td>
         </tr>
         
         {if $protSel->examen}
         <tr>
-          <th class="text" colspan="4">Examens complémentaires</th>
+          <th class="text" colspan="2">Examens complémentaires</th>
         </tr>
                  
         <tr>
-          <td class="text" colspan="4">{$protSel->examen}</td>
+          <td class="text" colspan="2">{$protSel->examen}</td>
         </tr>
         {/if}
         
         <tr>
-          <th class="category" colspan="4">Détails de l'hospitalisation</th>
+          <th class="category" colspan="2">Détails de l'hospitalisation</th>
         </tr>
         
         <tr>
@@ -102,21 +121,31 @@
             {if $protSel->type_adm == "ambu"} Ambulatoire{/if}
 			      {if $protSel->type_adm == "exte"} Externe{/if}
           </td>
+        </tr>
+
+        <tr>
           <th>Durée d'hospitalisation:</th>
           <td>{$protSel->duree_hospi} jours</td>
         </tr>
   
-        {if $canEdit}
-        <tr>
-          <td class="button" colspan="4">
-            <form name="modif" action="./index.php" method="get">
-            <input type="hidden" name="m" value="{$m}" />
-            <input type="hidden" name="tab" value="5" />
-            <input type="hidden" name="protocole_id" value="{$protSel->operation_id}" />
-            <input type="submit" value="Modifier" />
-            </form>
-          </td>
-        </tr>
+        {if $dialog}
+          <tr>
+            <td class="button" colspan="3">
+              <input type="button" value="Sélectionner ce protocole" onclick="setClose()" />
+            </td>
+        {else}
+          {if $canEdit}
+          <tr>
+            <td class="button" colspan="2">
+              <form name="modif" action="./index.php" method="get">
+              <input type="hidden" name="m" value="{$m}" />
+              <input type="hidden" name="tab" value="5" />
+              <input type="hidden" name="protocole_id" value="{$protSel->operation_id}" />
+              <input type="submit" value="Modifier" />
+              </form>
+            </td>
+          </tr>
+          {/if}
         {/if}
       
       </table>
