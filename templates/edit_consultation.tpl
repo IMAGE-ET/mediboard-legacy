@@ -27,7 +27,7 @@ function pasteText(formName) {
   var aide = eval("form._aide_" + formName);
   var area = eval("form." + formName);
   
-  area.value += '\n' + aide.value + ' ';
+  area.value += aide.value + '\n';
   aide.value = 0;
   area.focus();
 }
