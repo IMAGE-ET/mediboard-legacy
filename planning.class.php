@@ -27,17 +27,21 @@ class Cplanning
 	$this->month = $month;
 	$this->year = $year;
 	unset($this->salles);
-    $sql = "select id, nom from sallesbloc";
+    $sql = "SELECT id, nom FROM sallesbloc";
     $this->salles = db_loadlist($sql);
 	foreach($this->salles as $key => $value)
 	{
-	  $sql = "select plagesop.id as id, plagesop.debut as debut, plagesop.fin as fin,
-	  			plagesop.id_chir as chir, plagesop.id_anesth as anesth, plagesop.id_spec as spec,
-				functions_mediboard.color as couleur
-	  			from plagesop, users, users_mediboard, functions_mediboard
-				where id_salle = '".$value['id']."' and date = '".$year."-".$month."-".$day."'
-				and (plagesop.id_chir = users.user_username or plagesop.id_spec = functions_mediboard.function_id) and users_mediboard.user_id = users.user_id
-				and users_mediboard.function_id = functions_mediboard.function_id group by plagesop.id";
+	  $sql = "SELECT plagesop.id AS id, plagesop.debut AS debut, plagesop.fin AS fin,
+              plagesop.id_chir AS chir, plagesop.id_anesth AS anesth, plagesop.id_spec AS spec,
+              functions_mediboard.color AS couleur, COUNT(operations.operation_id) AS numop
+              FROM plagesop, users, users_mediboard, functions_mediboard
+              LEFT JOIN operations
+              ON operations.plageop_id = plagesop.id
+              WHERE id_salle = '".$value['id']."' AND date = '".$year."-".$month."-".$day."'
+              AND (plagesop.id_chir = users.user_username OR plagesop.id_spec = functions_mediboard.function_id)
+              AND users_mediboard.user_id = users.user_id
+              AND users_mediboard.function_id = functions_mediboard.function_id
+              GROUP BY plagesop.id";
 	  $this->salles[$key]['plages'] = db_loadlist($sql);
 	  foreach($this->salles[$key]['plages'] as $key2 => $value2)
 	  {
@@ -135,7 +139,7 @@ class Cplanning
 			  echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\" nowrap=\"nowrap\"><b>";
 			  echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			  echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
-			  echo "</a>";
+			  echo "</a> (".$value2['numop'].")";
 			  echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
 			  echo " <img src=\"./modules/dPbloc/images/edit.png\" alt=\"editer la plage\" border=\"0\" height=\"16\" width=\"16\">";
 			  echo "</a>";
@@ -164,7 +168,7 @@ class Cplanning
 			    echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\" nowrap=\"nowrap\"><b>";
 			    echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			    echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
-			    echo "</a>";
+			    echo "</a> (".$value2['numop'].")";
 			    echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
 			    echo " <img src=\"./modules/dPbloc/images/edit.png\" alt=\"editer la plage\" border=\"0\" height=\"16\" width=\"16\">";
 			    echo "</a>";
