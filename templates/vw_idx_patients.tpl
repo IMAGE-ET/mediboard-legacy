@@ -171,6 +171,13 @@ function printPatient(id) {
       </table>
 
       <table class="form">
+        <tr><th class="category" colspan="2">Nouvelle action</th></tr>
+        <tr>
+          <td><a href="index.php?m=dPcabinet&amp;tab=add_planning&amp;pat_id={$patient->patient_id}">
+            Plannifier une consultation</a></th>
+          <td><a href="index.php?m=dPplanningOp&amp;tab=vw_add_planning&amp;pat_id={$patient->patient_id}">
+            Plannifier une intervention</a></th>
+        </tr>
         {if $patient->_ref_operations}
         <tr><th colspan="2" class="category">Interventions</th></tr>
         {foreach from=$patient->_ref_operations item=curr_op}
