@@ -88,7 +88,7 @@ $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
   or die("Could not connect");
 mysql_select_db("ccam")
   or die("Could not select database");
-$sql = "select LIBELLELONG from ACTES where CODE = '$CCAM_code'";
+$sql = "select LIBELLELONG from actes where CODE = '$CCAM_code'";
 $ccamr = mysql_query($sql);
 $ccam = mysql_fetch_array($ccamr);
 $adm["CCAM"] = $ccam["LIBELLELONG"];

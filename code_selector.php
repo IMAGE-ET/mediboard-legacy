@@ -31,7 +31,7 @@ switch($type) {
 			or die("Could not select database");
 		$i = 0;
 		foreach($codes as $key => $value) {
-			$query = "select CODE, LIBELLELONG from ACTES where CODE = '".$value['code']."'";
+			$query = "select CODE, LIBELLELONG from actes where CODE = '".$value['code']."'";
 			$result = mysql_query($query);
 			$row = mysql_fetch_array($result);
 			$list[$i]["code"] = $row['CODE'];
@@ -54,7 +54,7 @@ switch($type) {
 			or die("Could not select database");
 		$i = 0;
 		foreach($codes as $key => $value) {
-			$query = "select CODE, LIBELLELONG from ACTES where CODE = '".$value['code']."'";
+			$query = "select CODE, LIBELLELONG from actes where CODE = '".$value['code']."'";
 			$result = mysql_query($query);
 			$row = mysql_fetch_array($result);
 			$list[$i]["code"] = $row['CODE'];

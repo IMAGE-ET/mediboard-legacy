@@ -220,7 +220,7 @@ mysql_select_db("ccam")
   or die("Could not select database");
 if(isset($today)) {
   foreach($today as $key => $value) {
-    $sql = "SELECT LIBELLELONG FROM ACTES WHERE CODE = '".$value["CCAM_code"]."'";
+    $sql = "SELECT LIBELLELONG FROM actes WHERE CODE = '".$value["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
     $today[$key]["CCAM"] = $ccam["LIBELLELONG"];
