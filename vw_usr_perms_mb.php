@@ -78,6 +78,7 @@ $res = db_exec($sql);
 
 // Get the projects into an temp array
 while ($row = db_fetch_assoc( $res )) {
+  // Older dotProject version
 	$item = @$row[@$pgos[$row['permission_grant_on']]];
 	if (!$item) {
 		$item = $row['permission_item'];
@@ -89,7 +90,7 @@ while ($row = db_fetch_assoc( $res )) {
 
   // Mediboard version 
   $module = $row['permission_grant_on'];
-  $name_field = $pgos[$module]["name_field"];
+  $name_field = @$pgos[$module]["name_field"];
   $item_name = $row["permission_item"] == -1 ? "all" : $row[$name_field];
   $perms[] = array (
     "perm_id" => $row["permission_id"],
