@@ -103,6 +103,18 @@ textarea {
   width: 99%;
 }
 
+button {
+  border: 1px black solid;
+  font-size: 12px;
+  background: #ddd;
+  margin: 0 2px;
+  padding: 0px 2px;
+}
+
+button:hover {
+  background: #bbb;
+}
+
 input {
   border: 1px black solid;
   font-size: 12px;
