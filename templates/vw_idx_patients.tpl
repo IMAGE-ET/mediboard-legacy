@@ -27,7 +27,7 @@ function checkPatient() {
       
       <table class="form">
         <tr>
-          <th class="category" colspan="2">Identité</th>
+          <th class="category" colspan="2">Recherche d'un dossier patient</th>
         </tr>
   
         <tr>
@@ -151,10 +151,29 @@ function checkPatient() {
         {/if}
         
         {if $patient->_ref_operations}
-        <tr><th class="category" colspan="4">Code CCAM des Interventions</th></tr>
-        {foreach from=$patient->_ref_operations item=curr_op}
-        <tr><td colspan="4"><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op->operation_id}">{$curr_op->CCAM_code}</a></td></tr>
-        {/foreach}
+        <table class="tbl">
+          <tr> 
+	        <th>Date</th>
+	        <th>Praticien</th>
+	      </tr>
+        
+          {foreach from=$patient->_ref_operations item=curr_op}
+          <tr>
+            <td>
+              <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+                {$curr_op->_ref_plageop->_date}
+              </a>
+            </td>
+            <td>
+              <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+                Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name} 
+              </a>
+            </td>
+          </tr>
+
+          {/foreach}
+  
+        </table>      
         {/if}
       </table>
     </td>

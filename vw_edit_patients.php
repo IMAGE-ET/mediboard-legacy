@@ -16,7 +16,7 @@ if (!$canRead) {
 $patient_id = mbGetValueFromGetOrSession("id");
 
 // Récuperation du patient sélectionné
-require_once("patients.class.php");
+require_once("modules/$m/patients.class.php");
 
 $patient = new CPatient;
 $patient->load($patient_id);

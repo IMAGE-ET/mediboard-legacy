@@ -16,11 +16,14 @@ if (!$canRead) {
 $patient_id = mbGetValueFromGetOrSession("id");
 
 // Récuperation du patient sélectionné
-require_once("patients.class.php");
+require_once("modules/$m/patients.class.php");
 
 $patient = new CPatient;
 $patient->load($patient_id);
 $patient->loadRefs();
+
+foreach ($patient->_ref_operations as $key => $op)
+  $patient->_ref_operations[$key]->loadRefs();
 
 // Récuperation des patients recherchés
 $patient_nom    = mbGetValueFromGetOrSession("nom"   );
