@@ -93,15 +93,15 @@ if ($del) {
     }
     
     $body_msg .= "<br />Plage du $obj->_day-$obj->_month-$obj->_year: " . $msg;
-    
+  
     $obj->becomeNext();
     
     if ($double) {
 	  $repeat--;
       $obj->becomeNext();
-	}
+	  }
   }
-  
+
   if ($created) $header [] = "$created plage(s) créée(s)";
   if ($updated) $header [] = "$updated plage(s) mise(s) à jour";
   if ($not_created) $header [] = "$not_created plage(s) non créée(s)";
@@ -117,7 +117,6 @@ if ($body_msg) {
 // Uncomment for more verbose
 //  $complete_msg .= $body_msg; 
 }
-
 $AppUI->setMsg($complete_msg, $msgNo);
 $AppUI->redirect("m=$m");
 ?>

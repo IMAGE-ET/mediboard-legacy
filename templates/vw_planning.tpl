@@ -4,18 +4,23 @@
 <script language="javascript">
 function checkPlage() {
   var form = document.editFrm;
-    
-  if (form.id_chir.value == -1) {
-    alert("Merci de choisir un chirurgien");
-    form.chir_id.focus();
-    return false;
-  }
+  var field = null;
   
-  if (form._hour_fin.value < form._hour_deb.value) {
-    alert("L'heure de début doit être supérieure à la l'heure de fin");
-    form._hour_fin.focus();
-    return false;
-  }
+  if (field = form.chir_id)
+    if (field.value == -1) {
+      alert("Merci de choisir un chirurgien");
+      field.focus();
+      return false;
+    }
+  
+  var fieldDeb = form._hour_deb;
+  var fieldFin = form._hour_fin;
+  if (fieldDeb && fieldFin)
+    if (fieldDeb.value >= fieldFin.value) {
+      alert("L'heure de début doit être inférieure à la l'heure de fin");
+      fieldFin.focus();
+      return false;
+    }
   
   return true;
 }

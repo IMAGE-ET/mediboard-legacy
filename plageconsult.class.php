@@ -100,12 +100,17 @@ class CPlageconsult extends CDpObject {
   
   function store() {
     $this->updateDBFields();
+    
     if ($msg = $this->hasCollisions()) {
       return $msg;
     }
-    if(!$this->canDelete($msg)) {
-      return $msg;
-    }
+  
+    if ($this->plageconsult_id) {
+      if (!$this->canDelete($msg)) {
+        return $msg;
+      }
+		}
+
     return parent::store();
   }
   
