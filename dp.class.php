@@ -62,22 +62,35 @@ class CDpObject {
 	}
 
 /**
- *	Binds an array/hash to this object
- *	@param int $oid optional argument, if not specifed then the value of current key is used
- *	@return any result from the database operation
+ *  loads a list of objects according to a SQL where clause
+ *  @param string $where the SQL where clause
+ *  @return the objects array
  */
-	function load( $oid=null , $strip = true) {
-		$k = $this->_tbl_key;
-		if ($oid) {
-			$this->$k = intval( $oid );
-		}
-		$oid = $this->$k;
-		if ($oid === null) {
-			return false;
-		}
-		$sql = "SELECT * FROM $this->_tbl WHERE $this->_tbl_key=$oid";
-		return db_loadObject( $sql, $this, false, $strip );
-	}
+  function loadList($where = null) {
+    $sql = "SELECT * FROM $this->_tbl";
+    if ($where)
+      $sql .= " WHERE $where";
+      
+    return db_loadObjectList($sql, $this);
+  }
+
+/**
+ *  Binds an array/hash to this object
+ *  @param int $oid optional argument, if not specifed then the value of current key is used
+ *  @return any result from the database operation
+ */
+  function load( $oid=null , $strip = true) {
+    $k = $this->_tbl_key;
+    if ($oid) {
+      $this->$k = intval( $oid );
+    }
+    $oid = $this->$k;
+    if ($oid === null) {
+      return false;
+    }
+    $sql = "SELECT * FROM $this->_tbl WHERE $this->_tbl_key=$oid";
+    return db_loadObject( $sql, $this, false, $strip );
+  }
 
 /**
  *	Generic check method
