@@ -1,6 +1,18 @@
 <?php
 ini_set("include_path", ".;..\..\lib\PEAR");
 
+if(isset($_GET["debut"])) {
+  $debut = $_GET["debut"];
+}
+else
+  $debut = 0;
+
+if(isset($_GET["step"])) {
+  $step = $_GET["step"];
+}
+else
+  $step = 5;
+
 // XML Helper functions
 require_once("XML/Tree.php");
 
@@ -39,6 +51,7 @@ class Chronometer {
   var $startTotal = null;
   var $startStep  = null;
   var $nbSteps = 0;
+  var $prefix = null;
     
   function Chronometer() {
 	  $this->startTotal = $this->microtimeFloat();
@@ -53,29 +66,44 @@ class Chronometer {
   function showStep($str) {
     $this->nbSteps++;
     $elapsed = $this->microtimeFloat() - $this->startStep;
-    echo "<p>Step #$this->nbSteps: $str... $elapsed seconds</p>";
+    //echo "<p>Step #$this->nbSteps: $str... $elapsed seconds</p>";
     $this->startStep = $this->microtimeFloat();
   }
   
   function showTotal() {
     $elapsed = $this->microtimeFloat() - $this->startTotal;
-    echo "<p>Total: $this->nbSteps step(s) in $elapsed seconds</p>";
+    //echo "<p>Total $this->prefix: $this->nbSteps step(s) in $elapsed seconds</p>";
 	}
 }
 
 // Chrono start
 $chrono = new Chronometer;
 
+require_once 'PHP/Compat/Function/file_get_contents.php';
+require_once 'PHP/Compat/Function/file_put_contents.php';
 
 // Emulates an HTTP request
-$url = "http://www.conseil-national.medecin.fr/annuaire.php"; //index.php?url=annuaire/result.php&from=100&to=200";
-$path = "medecin.htm";
-$fields = array(
-  "nomexercice=Nom",
-  "localite=Ville",
-  "cp=17___"
-);
-
+$fin = $debut + $step;
+if($fin > 193)
+  $fin = 193;
+for($i = $debut; $i <= $fin; $i++)
+{
+$path = null;
+$path = "medecins/";
+if($i < 10) {
+$path .= "0";
+}
+if($i < 100) {
+$path .= "0";
+}
+$path .= "$i.htm";
+$chrono->prefix = $i;
+//$url = "http://www.conseil-national.medecin.fr/annuaire.php"; //index.php?url=annuaire/result.php&from=100&to=200";
+//$fields = array(
+//  "nomexercice=Nom",
+//  "localite=Ville",
+//  "cp=17___"
+//);
 //$ch = curl_init($url);
 //$file = fopen($path, "w");
 //
@@ -94,8 +122,8 @@ $fields = array(
 //$chrono->showStep("Send HTTP request");
 
 // Step: Get data from http request
-require_once 'PHP/Compat/Function/file_get_contents.php';
 
+$str = null;
 $str = file_get_contents($path);
 
 $chrono->showStep("Load content from file");
@@ -135,19 +163,23 @@ $str = preg_replace("/<\/tr>([^<>]*)<\/tr>/i", "</tr>$1", $str);
 $chrono->showStep("Fix extra-closures");
 
 // Step: Save data on another file
-require_once 'PHP/Compat/Function/file_put_contents.php';
+$tmp = null;
 $tmp = "medecintmp.htm";
+$bytes = null;
 $bytes = file_put_contents($tmp, $str);
 
 $chrono->showStep("Save content ($bytes bytes)");
 
 // Step: Parse XML Tree
+$tree = null;
 $tree = new XML_Tree();
+$node = null;
 $node =& $tree->getTreeFromString($str);
 
 $chrono->showStep("Parse XML Tree");
 
 // Step: Seek praticiens
+$medecins = null;
 $medecins = array();
 
 // /html/body/table/tr[3]/td/table/tr/td[2]/table/tr[7]/td/table/tr/td[2]/table/tr/td/b
@@ -211,6 +243,7 @@ foreach ($node->children as $key=>$child) {
         $node =& getElement($node, "tr", 2);
         $node =& getElement($node, "td");
         
+        $disciplines = null;
         $disciplines = array();
         foreach (getAllElements($node, "") as $discNode) {
           $disciplines[] = trim(addslashes(substr($discNode->content, 2)));
@@ -301,4 +334,8 @@ foreach ($medecins as $medecin) {
  $chrono->showStep("Database queries");
  
  $chrono->showTotal();
+}
+
+$goto = "Location:medecin.php?debut=".$fin;
+header($goto);
  ?>
