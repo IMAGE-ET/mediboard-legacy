@@ -388,8 +388,8 @@ function printForm() {
         {/if}
         
         <tr>
-          <td class="text"><label for="editFrm_examen">Examens complémentaires</label></td>
-          <td class="text"><label for="editFrm_materiel">Matériel à prévoir</label></td>
+          <td class="text"><label for="editFrm_examen">Bilan pré-op</label></td>
+          <td class="text"><label for="editFrm_materiel">Matériel à prévoir / examens per-op</label></td>
           <td class="text"><label for="editFrm_convalescence">Convalescence</label></td>
         </tr>
 
