@@ -52,7 +52,7 @@ $op["hour_adm"] = substr($op["time_adm"], 0, 2);
 $op["min_adm"] = substr($op["time_adm"], 3, 2);
 
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('op', $op);

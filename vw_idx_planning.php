@@ -8,8 +8,8 @@
 */
 
 include_once("modules/dPbloc/checkDate.php");
-require_once("modules/dPbloc/planning.class.php");
-require_once("modules/dPbloc/calendar.class.php");
+require_once( $AppUI->getModuleClass('dPbloc', 'planning') );
+require_once( $AppUI->getModuleClass('dPbloc', 'calendar') );
 
 $planning = new Cplanning($_SESSION['day'], $_SESSION['month'], $_SESSION['year']);
 $calendar = new Ccalendar("index.php?m=dPbloc", $_SESSION['day'], $_SESSION['month'], $_SESSION['year']);

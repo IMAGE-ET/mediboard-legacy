@@ -7,7 +7,9 @@
  *  @author Romain Ollivier
  */
 
-require_once("salle.class.php");
+global $AppUI;
+
+require_once( $AppUI->getModuleClass('dPbloc', 'salle') );
 
 $obj = new Csalle();
 $msg = '';
