@@ -9,7 +9,6 @@
 								<form action="index.php?m=dPccam&tab=2" target="_self" name="selection" method="get" encoding="">
 								<input type="hidden" name="m" value="dPccam">
 								<input type="hidden" name="tab" value="2">
-								<input type="hidden" name="menu" value="acte">
 								<td colspan=2 valign="top" align="center">
 									<b>Code de l'acte :</b>
 									<input type="text" name="codeacte" value="{$codeacte}">
@@ -20,7 +19,7 @@
 							{if $islog == 1}
 							<tr>
 								<td colspan=2 valign="top" align="center">
-									<a href="sql.php?type=addfav&menu=acte&codeacte={$codeacte}">Ajouter à Mes Actes</a>
+									<a href="sql.php?type=addfav&codeacte={$codeacte}">Ajouter à Mes Actes</a>
 								</td>
 							</tr>
 							{/if}
@@ -65,7 +64,7 @@
 							</tr>
 							<tr>
 								<td valign="top">
-									<a href="index.php?m=dPccam&tab=2&menu=acte&codeacte={$codeproc}">{$codeproc}</a>
+									<a href="index.php?m=dPccam&tab=2&codeacte={$codeproc}">{$codeproc}</a>
 								</td>
 								<td valign="top">
 									{$textproc}
@@ -106,7 +105,7 @@
 							{foreach name=associations from=$asso item=curr_asso}
 							<tr>
 								<td valign="top">
-									<b><a href="index.php?m=dPccam&tab=2&menu=acte&codeacte={$curr_asso.code}">{$curr_asso.code}</a></b>
+									<b><a href="index.php?m=dPccam&tab=2&codeacte={$curr_asso.code}">{$curr_asso.code}</a></b>
 								</td>
 								<td valign="top">
 									{$curr_asso.texte}
@@ -125,7 +124,7 @@
 							{foreach name=incompatibilites from=$incomp item=curr_incomp}
 							<tr>
 								<td valign="top">
-									<b><a href="index.php?m=dPccam&tab=2&menu=acte&codeacte={$curr_incomp.code}">{$curr_incomp.code}</a></b>
+									<b><a href="index.php?m=dPccam&tab=2&codeacte={$curr_incomp.code}">{$curr_incomp.code}</a></b>
 								</td>
 								<td valign="top">
 									{$curr_incomp.texte}
