@@ -47,7 +47,7 @@ for ($i = 0; $i < 60; $i += $step) {
 }
 
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('protocole', TRUE);
