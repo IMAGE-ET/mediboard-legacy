@@ -27,6 +27,7 @@ $sql = "SELECT plagesop.date as date, users.user_last_name as chir_lastname, use
         WHERE operations.materiel != ''
         AND operations.commande_mat != 'o'
         AND operations.plageop_id IS NOT NULL
+        AND operations.annulee != 1
         ORDER BY plagesop.date, operations.rank";
 $op = db_loadlist($sql);
 

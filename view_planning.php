@@ -91,9 +91,9 @@ foreach($plagesop as $key=>$value) {
   $plagesop[$key]["date"] = $dayOfWeekList[$curr_dayOfWeek]." $curr_day ".$monthList[$curr_intmonth]." $curr_year";
   $sql = "SELECT operations.temp_operation AS duree, operations.cote AS cote, operations.time_operation AS heure,
           operations.CCAM_code AS CCAM_code, operations.CCAM_code2 AS CCAM_code2,
-          operations.rques AS rques, operations.materiel AS materiel, 
+          operations.rques AS rques, operations.materiel AS materiel, operations.rank AS rank,
           operations.commande_mat AS commande_mat, operations.type_anesth AS type_anesth,
-          operations.examen AS examen, operations.type_adm AS adm,
+          operations.examen AS examen, operations.type_adm AS adm, operations.annulee AS annulee,
           patients.nom AS lastname, patients.prenom AS firstname, patients.sexe AS sexe,
           patients.naissance AS naissance
           FROM operations
@@ -138,7 +138,10 @@ foreach($plagesop as $key => $value) {
     if($moisjour<$moisnais){$age=$age-1;}
     if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
     $plagesop[$key]["operations"][$key2]["age"] = $age;
-	$plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
+    if($value2["rank"])
+	  $plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
+    else
+      $plagesop[$key]["operations"][$key2]["heure"] = "-";
     if($value2["type_anesth"])
       $plagesop[$key]["operations"][$key2]["lu_type_anesth"] = $anesth[$value2["type_anesth"]];
     else

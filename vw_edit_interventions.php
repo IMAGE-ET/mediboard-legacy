@@ -20,6 +20,7 @@ if(!($id = mbGetValueFromGetOrSession('id'))) {
 
 $anesth = dPgetSysVal("AnesthType");
 
+// Info sur la plag opératoire
 $sql = "SELECT plagesop.debut AS debut, plagesop.fin AS fin,
         users.user_first_name AS firstname, users.user_last_name AS lastname,
         plagesop.date AS date, sallesbloc.nom AS salle
@@ -33,10 +34,11 @@ $result = db_loadlist($sql);
 $title = $result[0];
 $title["plage"] = substr($title["debut"], 0, 2)."h".substr($title["debut"], 3, 2)." - ".substr($title["fin"], 0, 2)."h".substr($title["fin"], 3, 2);
 
+// Liste de droite
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
 		patients.naissance AS naissance, operations.type_anesth AS type_anesth,
 		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote,
-        operations.date_adm AS date_adm, operations.time_adm AS time_adm
+        operations.date_adm AS date_adm, operations.time_adm AS time_adm, operations.annulee AS annulee
 		FROM operations
 		LEFT JOIN patients
 		ON operations.pat_id = patients.patient_id
@@ -45,6 +47,8 @@ $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, pati
 		WHERE plagesop.id = '$id' AND operations.rank = '0'
 		ORDER BY operations.temp_operation";
 $list1 = db_loadlist($sql);
+
+// Liste de gauche
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
 		patients.naissance AS naissance,
 		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote,

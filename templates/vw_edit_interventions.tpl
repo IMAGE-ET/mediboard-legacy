@@ -45,9 +45,13 @@
 			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
 		  </td>
 		  <td>
+		    {if $curr_op.annulee}
+		    <img src="./modules/{$m}/images/cross.png" width="12" height="12" alt="annulée" border="0" />
+		    {else}
 		    <a href="index.php?m={$m}&a=do_order_op&cmd=insert&id={$curr_op.id}">
 		    <img src="./modules/{$m}/images/tick.png" width="12" height="12" alt="ajouter" border="0" />
 			</a>
+			{/if}
 		  </td>
 		</tr>
 		{/foreach}
@@ -120,7 +124,7 @@
 			<br />
 			{/if}
 			<a href="index.php?m={$m}&a=do_order_op&cmd=rm&id={$curr_op.id}">
-		    <img src="./modules/{$m}/images/cross.png" width="12" height="12" alt="monter" border="0" />
+		    <img src="./modules/{$m}/images/cross.png" width="12" height="12" alt="supprimer" border="0" />
 			</a>
 			{if $curr_op.rank != $max}
 			<br />
