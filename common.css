@@ -3,78 +3,71 @@
 /* @todo CSS table.tbl factorization done: clean up HTML code */
 
 table.tbl {
-	width: 100%;
-	border: 0px;
-	border-spacing: 1px;
-	background: #9ce;
+  width: 100%;
+  border: 0px;
+  border-spacing: 1px;
+  background: #9ce;
 }
 
 table.tbl th {
-	background-color: #888;
-	padding: 2px;
-	color: #fff;
-	border: outset #ccc 1px;
-	font-weight: normal;
-	text-align: center;
+  background-color: #888;
+  padding: 2px;
+  color: #fff;
+  border: outset #ccc 1px;
+  font-weight: normal;
+  text-align: center;
 }
 
 table.tbl td {
-	background-color: #fff;
-	padding: 2px;
+  background-color: #fff;
+  padding: 2px;
 }
 
 /* a 'colorized' table */
 
 table.color {
-	width: 100%;
-	border: 0px;
-	border-spacing: 1px;
-	background: #9ce;
+  width: 100%;
+  border: 0px;
+  border-spacing: 1px;
 }
 
 table.color th {
-	background-color: #888;
-	padding: 2px;
-	color: #fff;
-	border: outset #ccc 1px;
-	font-weight: normal;
-	text-align: center;
+  background: #888;
+  padding: 2px;
+  color: #fff;
+  border: outset #888 1px;
+  font-weight: normal;
+  text-align: center;
 }
 
 table.color td {
-	padding: 2px;
+  padding: 2px;
 }
 
 table.color td.white {
-	background-color: #fff;
-	padding: 2px;
+  background-color: #fff;
 }
 
 /* a 'standard' table */
 
 table.std {
-	border: solid #8c8 3px;
-	background: #eef;
+  border: solid #8c8 3px;
+  background: #eef;
 }
 table.std th {
-	background-color: #888;
-	color: #fff;
-	border: outset #ccc 1px;
+  background-color: #888;
+  color: #fff;
+  border: outset #ccc 1px;
 }
 
 table.std td.hilite {
-	background-color: #fff;
+  background-color: #fff;
 }
 
 /* Form tables */
-table.form {
-}
 
-table.form th.category {
-  font-style: italic;
-  font-weight: bold;  
-  text-align: center;
-  background: #aaa;
+table.form {
+  width: 100%;
 }
 
 table.form th {
@@ -84,8 +77,16 @@ table.form th {
   font-weight: normal;
 }
 
+table.form th.category {
+  font-style: italic;
+  font-weight: bold;  
+  text-align: center;
+  background: #aaa;
+  border: #aaa 1px outset;
+}
+
 table.form td {
-  vertical-align: middle;
+  vertical-align: top;
   text-align: left;
 }
 
@@ -104,48 +105,63 @@ table.form td.button {
   vertical-align: middle;
 }
 
+/* Pane table */
+
+table.main {
+  width: 100%;
+  border-spacing: 10px;
+}
+
+table.main td {
+  vertical-align: top;
+}
+
+td.greedyPane {
+  width: 100%;
+}
+
 /* links in header blocks */
 
 a.hdr:link, 
 a.hdr:active, 
 a.hdr:visited {
-	color: #fff;
+  color: #fff;
 }
 
 /* tabbed boxes */
 
 td.tabon {
-	background: #ace;
-	border: outset #fff 2px;
-	border-bottom: none;
+  background: #ace;
+  border: outset #fff 2px;
+  border-bottom: none;
 }
 
 td.taboff {
-	background: #def;
-	border: solid #ccc 1px;
-	border-bottom: 2px;
+  background: #def;
+  border: solid #ccc 1px;
+  border-bottom: 2px;
 }
 
 td.tabsp {
-	border-bottom: solid #ccc 2px;
+  border-bottom: solid #ccc 2px;
 }
 
 td.tabox {
-	background-color: #ace;
-	border: solid #ccc 2px;
-	border-top: none;
+  background-color: #ace;
+  border: solid #ccc 2px;
+  border-top: none;
 }
 
 /* Message styles */
 
 .warning {
-	color: #f00;
+  color: #f00;
 }
 
 .error {
-	color: #f00;
+  color: #f00;
 }
 
 .message {
-	color: #888;
+  color: #888;
 }

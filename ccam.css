@@ -1,0 +1,31 @@
+table.fullCode {
+  width: 100%;
+  background: #f99;
+}
+
+table.fullCode tr td.pane {
+  vertical-align: top;
+  width: 50%;
+  background: #fdd;
+  padding: 5px;
+}
+
+table.fullCode tr td.pane table {
+  width: 100%;
+}
+
+table.findCode {
+  width: 100%;
+  background: #99f;
+}
+
+table.findCode th {
+  text-align: left;
+}
+
+table.findCode td {
+  vertical-align: top;
+  width: 25%;
+  background: #ddf;
+  padding: 5px;
+}

@@ -2,15 +2,19 @@
   margin: 100px 0px 0px; 
 }
 
-#login form table {
+#login table {
   border: solid #8c8 3px;
+  width: 400px;
   background: #eef;
   margin: auto;
   text-align: center;
   padding: 5px;
 }
 
-#poweredBy {
+#login td {
   text-align: center;
+}
+
+#poweredBy {
   font-size: 8pt;
 }

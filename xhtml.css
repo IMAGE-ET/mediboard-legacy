@@ -1,106 +1,124 @@
 /* XHTML elements */
 
 body {
-	font-family: Osaka, Arial, verdana, Sans-Serif;
-	font-size: 10pt;
-	background-color: #efe;
-	background: url(./images/bodyGradient.jpg) no-repeat center;
-	margin: 0px;
+  font-family: arial, sans-serif;
+  font-size: 12px;  
+  background-color: #efe;
+  background: url(./images/bodyGradient.jpg) no-repeat top center;
+  margin: 0px;
 }
 
-img {
-	border: none;
-}
-
-ul {
-	margin-left: 25px;
-}
-
-dl {
-	margin-top: 0px; 
-	padding-left: 1px;
-}
-
-dt {
-	margin-top: 5px;
-	color: #009;
-	font-weight: bold;
-}
-
-dd {
-	margin-bottom: 0px; 
-	margin-left: 12px;
-}
-
-em {
-	font-weight: bold;
-	text-decoration: none;
-	font-style: normal;
-}
-
-a:link {
-	color: #555;
-	text-decoration: none;
-}
-
-a:visited {
-	color: #555;
-	text-decoration: none;
-}
-
-a:active {
-	color: #555;
-	text-decoration: none;
-}
-
-a:hover {
-	color: #555;
-	text-decoration: underline;
-}
-
-td {
-	font-size: 10pt;
+table {
+  font-family: arial, sans-serif;
+  font-size: 12px;
 }
 
 tr {
-	font-size: 10pt
+}
+
+th {
+  text-align: center;
+  vertical-align: top;
+}
+
+td {
+}
+
+img {
+  border: none;
+}
+
+ul {
+  margin: 0;
+}
+
+dl {
+  margin-top: 0px; 
+  padding-left: 1px;
+}
+
+dt {
+  margin-top: 5px;
+  color: #009;
+  font-weight: bold;
+}
+
+dd {
+  margin-bottom: 0px; 
+  margin-left: 12px;
+}
+
+a:link {
+  color: #555;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #555;
+  text-decoration: none;
+}
+
+a:active {
+  color: #555;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #555;
+  text-decoration: underline;
 }
 
 h1, .title { /* @todo Remove 'title' class, use h2 instead */
-	font-size: 12pt;
-	font-weight: bold;
-	color: #555;
-	margin: 12px 0px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  margin: 12px 0px;
 }
 
 h2, .subtitle { /* @todo Remove 'subtitile' class, use h2 instead */
-	font-size: 14pt;
-	font-weight: bold;
-	color: #494;
-	margin: 8px 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #494;
+  margin: 8px 10px;
 }
 
 h3 {
-	font-size: 12pt;
-	font-weight: bold;
-	color: #449;
-	margin: 4px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #449;
+  margin: 4px 20px;
 }
 
 form {
-	margin: 0px;
+  margin: 0px;
 }
 
 textarea {
-	font-family: Osaka, Arial, verdana, Sans-Serif;
-	font-size: 10pt;
-	border: 1px black solid;
-	width: 100%;
+  font-family: arial, sans-serif;
+  font-size: 12px;
+  border: 1px black solid;
+  width: 98%;
 }
 
-select,
 input {
-	border: 1px black solid;
-	font-size: 10pt;
-	padding: 1px 2px;
+  border: 1px black solid;
+  font-size: 12px;
+  padding: 1px 2px;
+}
+
+input[type=submit],
+input[type=reset],
+input[type=button] {
+  background: #ddd;
+}
+
+input[type=submit]:hover,
+input[type=reset]:hover,
+input[type=button]:hover {
+  background: #bbb;
+}
+select {
+  border: 1px black solid;
+  font-size: 12px;
+  padding: 0;
 }
