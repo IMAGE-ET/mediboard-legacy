@@ -14,8 +14,8 @@ if (!$canEdit) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-//Vérification de l'existence de doublons
-$siblings = NULL;
+// Vérification de l'existence de doublons
+$textSiblings = NULL;
 $patient = NULL;
 if($created = dPgetParam($_GET, 'created', 0)){
   $sql = "SELECT patient_id, nom, prenom, naissance, adresse, ville, CP " .

@@ -44,16 +44,14 @@ if($patient->patient_id) {
 $patient_nom    = mbGetValueFromGetOrSession("nom"   );
 $patient_prenom = mbGetValueFromGetOrSession("prenom");
 
-if ($patient_nom || $patient_prenom) {
-  $sql = "SELECT * 
-    FROM patients 
-    WHERE 1 ";
-  if($patient_nom)
-    $sql .= "AND nom LIKE '$patient_nom%' ";
-  if($patient_prenom)
-    $sql .= "AND prenom LIKE '$patient_prenom%' ";
-  $sql .= "ORDER BY nom, prenom LIMIT 0, 100";
-  $patients = db_loadlist($sql);
+$where = null;
+if ($patient_nom   ) $where[] = "nom LIKE '$patient_nom%'";
+if ($patient_prenom) $where[] = "prenom LIKE '$patient_prenom%'";
+
+$patients = null;
+if ($where) {
+	$patients = new CPatient();
+  $patients = $patients->loadList($where, "nom, prenom", "0, 100");
 }
 
 // Création du template

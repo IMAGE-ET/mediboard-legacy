@@ -15,7 +15,8 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$dialog = dPgetParam($_GET, "dialog", 0);
+$dialog = dPgetParam($_GET, "dialog");
+
 $type = mbGetValueFromGetOrSession("type", '_traitant');
 $medecin_id = mbGetValueFromGetOrSession("medecin_id");
 
@@ -30,20 +31,18 @@ else {
   //$medecin->loadRefs();
 }
 
-// Récuperation des medecins recherchés
+// Récuperation des patients recherchés
 $medecin_nom    = mbGetValueFromGetOrSession("medecin_nom"   );
 $medecin_prenom = mbGetValueFromGetOrSession("medecin_prenom");
 
-if ($medecin_nom || $medecin_prenom) {
-  $sql = "SELECT * 
-    FROM medecin
-    WHERE 1 ";
-  if ($medecin_nom)
-    $sql .= "AND nom LIKE '$medecin_nom%'";
-  if ($medecin_prenom)
-    $sql .= "AND prenom LIKE '$medecin_prenom%'";
-  $sql .= "ORDER BY nom, prenom LIMIt 0, 100";
-  $medecins = db_loadlist($sql);
+$where = null;
+if ($medecin_nom   ) $where[] = "nom LIKE '$medecin_nom%'";
+if ($medecin_prenom) $where[] = "prenom LIKE '$medecin_prenom%'";
+
+$medecins = null;
+if ($where) {
+  $medecins = new CMedecin();
+  $medecins = $medecins->loadList($where, "nom, prenom", "0, 100");
 }
 
 // Création du template

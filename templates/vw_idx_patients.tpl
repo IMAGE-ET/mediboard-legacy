@@ -65,10 +65,10 @@ function printPatient(id) {
 
         {foreach from=$patients item=curr_patient}
         <tr>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient.patient_id}">{$curr_patient.nom}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient.patient_id}">{$curr_patient.prenom}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient.patient_id}">{$curr_patient.adresse}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient.patient_id}">{$curr_patient.ville}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->nom}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->prenom}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->adresse}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->ville}</a></td>
         </tr>
         {/foreach}
         
@@ -154,46 +154,45 @@ function printPatient(id) {
         
         {if $canEdit}
         <tr>
-          <td class="button" colspan="2">
+          <td class="button" colspan="4">
             <form name="modif" action="./index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="tab" value="vw_edit_patients" />
             <input type="hidden" name="id" value="{$patient->patient_id}" />
             <input type="submit" value="Modifier" />
-            </form>
-          </td>
-          <td class="button" colspan="2">
+
             <input type="button" value="Imprimer" onclick="printPatient({$patient->patient_id})" />
+
+            </form>
+
           </td>
         </tr>
         {/if}
+      </table>
 
-        <table class="form">
-          {if $patient->_ref_operations}
-          <tr><th colspan="2" class="category">Interventions</th></tr>
-          <tr><th class="category">Date</th><th class="category">Praticien</th></tr>
-          {foreach from=$patient->_ref_operations item=curr_op}
-          <tr>
-            <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-              {$curr_op->_ref_plageop->date}</a></td>
-            <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-              Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name}</a></td>
-          </tr>
-          {/foreach}
-          {/if}
-          {if $patient->_ref_operations}
-          <tr><th class="category" colspan="2">Consultations</th></tr>
-          <tr><th class="category">Date</th><th class="category">Praticien</th></tr>
-          {foreach from=$patient->_ref_consultations item=curr_consult}
-          <tr>
-            <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
-              {$curr_consult->_ref_plageconsult->date}</a></td>
-            <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
-              Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}</a></td>
-          </tr>
-          {/foreach}
-          {/if}
-        </table>
+      <table class="form">
+        {if $patient->_ref_operations}
+        <tr><th colspan="2" class="category">Interventions</th></tr>
+        {foreach from=$patient->_ref_operations item=curr_op}
+        <tr>
+          <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+            {$curr_op->_ref_plageop->date}</a></td>
+          <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+            Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name}</a></td>
+        </tr>
+        {/foreach}
+        {/if}
+        {if $patient->_ref_consultations}
+        <tr><th class="category" colspan="2">Consultations</th></tr>
+        {foreach from=$patient->_ref_consultations item=curr_consult}
+        <tr>
+          <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+            {$curr_consult->_ref_plageconsult->date}</a></td>
+          <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+            Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}</a></td>
+        </tr>
+        {/foreach}
+        {/if}
       </table>
     </td>
     {/if}

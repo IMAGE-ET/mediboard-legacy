@@ -81,15 +81,15 @@ function setClose() {ldelim}
         {foreach from=$medecins item=curr_medecin}
         <tr>
           {if $dialog}
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin.medecin_id}">{$curr_medecin.nom}</a></td>
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin.medecin_id}">{$curr_medecin.prenom}</a></td>
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin.medecin_id}">{$curr_medecin.adresse}</a></td>
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin.medecin_id}">{$curr_medecin.ville}</a></td>
+          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->nom}</a></td>
+          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->prenom}</a></td>
+          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
+          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
           {else}
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin.medecin_id}">{$curr_medecin.nom}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin.medecin_id}">{$curr_medecin.prenom}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin.medecin_id}">{$curr_medecin.adresse}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin.medecin_id}">{$curr_medecin.ville}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->nom}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->prenom}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
           {/if}
         </tr>
         {/foreach}
