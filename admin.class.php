@@ -83,12 +83,18 @@ class CUser extends CDpObject {
 	 * @return string error message when necessary, null otherwise
 	 */
   function copyPermissionsFrom($user_id, $delExistingPerms = false) {
-    $export = var_export($this, true); echo "<pre>This: $export</pre>";
-
     if (!$user_id) {
 			return null;
 		}    
  
+    // Copy user type
+    $profile = new CUser();
+    $profile->load($user_id);
+    $this->user_type = $profile->user_type;
+    if ($msg = $this->store()) {
+      return $msg;
+    }
+        
     // Delete existing permissions
     if ($delExistingPerms) {
       if (!db_delete( 'permissions', 'permission_user', $this->user_id )) {
