@@ -38,4 +38,13 @@ function mbSetValueToSession($valName, $value = NULL) {
   $_SESSION[$m][$valName] = $value;
 }
 
+/**
+ * Traces variable using preformated text et varibale export
+ * @return void 
+ **/
+function mbTrace($label, &$var) {
+  $export = var_export($var, true); 
+  echo "<pre>$label: $export</pre>";
+}
+
 ?>
