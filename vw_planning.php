@@ -54,7 +54,7 @@ if($plageSel->chir_id != $chirSel) {
 
 // Liste des chirurgiens
 $mediusers = new CMediusers();
-$listChirs = $mediusers->loadChirAnest(PERM_EDIT);
+$listChirs = $mediusers->loadPraticiens(PERM_EDIT);
 
 // Periode
 $debut = mbGetValueFromGetOrSession("debut", date("d/m/Y"));
