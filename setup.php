@@ -110,6 +110,8 @@ class CSetupMediusers {
 
 		db_exec( $sql );
 		db_error();
+		
+		$this->upgrade("all");
 
 		return null;
 	}
