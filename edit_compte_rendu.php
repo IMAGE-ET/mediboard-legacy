@@ -61,12 +61,14 @@ $templateManager->addProperty("Patient - médecin correspondant 1", "Dr. {$patien
 $templateManager->addProperty("Patient - médecin correspondant 2", "Dr. {$patient->_ref_medecin2->nom} {$patient->_ref_medecin2->prenom}");
 $templateManager->addProperty("Patient - médecin correspondant 3", "Dr. {$patient->_ref_medecin3->nom} {$patient->_ref_medecin3->prenom}");
 
-$templateManager->addProperty("Consultation - date"     , $plageconsult->date );
-$templateManager->addProperty("Consultation - heure"    , $consult->heure);
-$templateManager->addProperty("Consultation - motif"    , nl2br($consult->motif));
-$templateManager->addProperty("Consultation - remarques", nl2br($consult->rques));
+$templateManager->addProperty("Consultation - date"      , $plageconsult->date );
+$templateManager->addProperty("Consultation - heure"     , $consult->heure);
+$templateManager->addProperty("Consultation - motif"     , nl2br($consult->motif));
+$templateManager->addProperty("Consultation - remarques" , nl2br($consult->rques));
+$templateManager->addProperty("Consultation - examen"    , nl2br($consult->examen));
+$templateManager->addProperty("Consultation - traitement", nl2br($consult->traitement));
 
-if($consult->compte_rendu) {
+if ($consult->compte_rendu) {
   $templateManager->document = $consult->compte_rendu;
 } else {
   $templateManager->applyTemplate($modele);

@@ -185,7 +185,7 @@ function pasteText(formName) {
                 <th>
                   <select name="_aide_traitement" size="1" onchange="pasteText('traitement')">
                     <option value="0">&mdash; Choisir une aide</option>
-                    {html_options options=$aides.traitements}
+                    {html_options options=$aides.traitement}
                   </select>
                 </th>
               </tr>
@@ -329,7 +329,7 @@ function pasteText(formName) {
                   </a>
                 </td>
                 <td>
-                  <a href="?m=dPcompteRendu&amp;tab=addedit_modeles&amp;com&amp;te_rendu_id={$curr_modele->compte_rendu_id}">
+                  <a href="?m=dPcompteRendu&amp;tab=addedit_modeles&amp;compte_rendu_id={$curr_modele->compte_rendu_id}">
                     <img src="modules/dPcabinet/images/edit.png" />
                   </a>
                 </td>
