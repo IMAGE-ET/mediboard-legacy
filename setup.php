@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.25';
+$config['mod_version'] = '0.26';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -83,6 +83,19 @@ class CSetupdPcabinet {
                   ADD `type_tarif` ENUM( 'cheque', 'CB', 'especes', 'tiers', 'autre' ) ;";
           db_exec( $sql ); db_error();
         case "0.25":
+          $sql = "ALTER TABLE `tarifs` CHANGE `valeur` `secteur1` FLOAT( 6 ) DEFAULT NULL;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `tarifs` ADD `secteur2` FLOAT( 6 ) NOT NULL;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `consultation` CHANGE `secteur1` `secteur1` FLOAT( 6 ) DEFAULT '0' NOT NULL;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `consultation` CHANGE `secteur2` `secteur2` FLOAT( 6 ) DEFAULT '0' NOT NULL;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `consultation` CHANGE `tarif` `tarif` VARCHAR( 50 ) DEFAULT NULL;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `plageconsult` ADD `libelle` VARCHAR( 50 ) DEFAULT NULL AFTER `chir_id` ;";
+          db_exec( $sql ); db_error();
+        case "0.26":
 			return true;
 		default:
 			return false;

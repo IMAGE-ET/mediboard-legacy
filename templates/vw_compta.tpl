@@ -23,7 +23,7 @@ function checkRapport(){
   return false;
 }
 
-function popCalendar( field ){
+function popCalendar( field ) {
   calendarField = field;
   idate = eval( 'document.printFrm.date_' + field + '.value' );
   var url = "index.php?m=public&a=calendar&dialog=1&callback=setCalendar";
@@ -78,6 +78,7 @@ function setCalendar( idate, fdate ) {
         {/foreach}
     <tr><th>Etat des paiements :</th>
       <td><select name="etat">
+        <option value="-1">&mdash; Tous &mdash;</option>
         <option value="1">Payés</option>
         <option value="0">Impayés</option>
       </select></td>
@@ -108,21 +109,25 @@ function setCalendar( idate, fdate ) {
     {/if}
 
     <tr><td><table class="tbl">
-      <tr><th colspan="2">Tarifs du praticien</th></tr>
+      <tr><th colspan="3">Tarifs du praticien</th></tr>
+      <tr><th>Nom</th><th>Secteur 1</th><th>Secteur 2</th></tr>
       {foreach from=$listeTarifsChir item=curr_tarif}
       <tr>
         <td><a href="index.php?m={$m}&amp;tarif_id={$curr_tarif->tarif_id}">{$curr_tarif->description}</a></td>
-        <td><a href="index.php?m={$m}&amp;tarif_id={$curr_tarif->tarif_id}">{$curr_tarif->valeur} €</a></td>
+        <td><a href="index.php?m={$m}&amp;tarif_id={$curr_tarif->tarif_id}">{$curr_tarif->secteur1} €</a></td>
+        <td><a href="index.php?m={$m}&amp;tarif_id={$curr_tarif->tarif_id}">{$curr_tarif->secteur2} €</a></td>
       </tr>
       {/foreach}
     </table></td>
 
     <td><table class="tbl">
-      <tr><th colspan="2">Tarifs du cabinet</th></tr>
+      <tr><th colspan="3">Tarifs du cabinet</th></tr>
+      <tr><th>Nom</th><th>Secteur 1</th><th>Secteur 2</th></tr>
       {foreach from=$listeTarifsSpe item=curr_tarif}
       <tr>
         <td><a href="index.php?m={$m}&amp;tarif_id={$curr_tarif->tarif_id}">{$curr_tarif->description}</a></td>
-        <td><a href="index.php?m={$m}&amp;tarif_id={$curr_tarif->tarif_id}">{$curr_tarif->valeur} €</a></td>
+        <td><a href="index.php?m={$m}&amp;tarif_id={$curr_tarif->tarif_id}">{$curr_tarif->secteur1} €</a></td>
+        <td><a href="index.php?m={$m}&amp;tarif_id={$curr_tarif->tarif_id}">{$curr_tarif->secteur2} €</a></td>
       </tr>
       {/foreach}
     </table></td>
@@ -149,8 +154,10 @@ function setCalendar( idate, fdate ) {
         </tr>
         <tr><th>Nom :</th>
           <td><input type="text" name="description" value="{$tarif->description}" /></td></tr>
-        <tr><th>Valeur :</th>
-          <td><input type="text" name="valeur" value="{$tarif->valeur}" size="4" /> €</td></tr>
+        <tr><th>Secteur1 :</th>
+          <td><input type="text" name="secteur1" value="{$tarif->secteur1}" size="6" /> €</td></tr>
+        <tr><th>Secteur2 :</th>
+          <td><input type="text" name="secteur2" value="{$tarif->secteur2}" size="6" /> €</td></tr>
         <tr><td class="button" colspan="2">
           {if $tarif->tarif_id}
           <input type="submit" value="Modifier" />

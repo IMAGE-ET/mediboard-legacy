@@ -65,7 +65,6 @@ if ($del) {
 
   $_SESSION["dPcabinet"]["plageconsult_id"] = null;
 } else {
-  
   $created = 0;
   $updated = 0;
   $not_created = 0;
@@ -92,7 +91,7 @@ if ($del) {
       }
     }
     
-    $body_msg .= "<br />Plage du $obj->_day-$obj->_month-$obj->_year: " . $msg;
+    $body_msg .= "<br />Plage du $obj->date: " . $msg;
   
     $obj->becomeNext();
     

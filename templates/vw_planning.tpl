@@ -71,6 +71,7 @@ function checkPlage() {
               {if $curr_plage->_hour_deb == $curr_hour}
                 <td align="center" bgcolor="#aaaaaa" rowspan="{$curr_plage->_hour_fin-$curr_plage->_hour_deb}">
                   <a href="index.php?m={$m}&amp;tab={$tab}&amp;plageconsult_id={$curr_plage->plageconsult_id}">
+                    {if $curr_plage->libelle}{$curr_plage->libelle}<br />{/if}
                     {$curr_plage->_ref_consultations|@count} consult(s)
                   </a>
                 </td>
@@ -116,15 +117,8 @@ function checkPlage() {
                     {/foreach}
                     </select>
                 </td>
-                <th><label for="editFrm__jour">Jour de la semaine:</label></th>
-                <td><select name="_jour">
-                    {foreach from=$daysOfWeek item=curr_day}
-                    <option value="{$curr_day.index}" {if $curr_day.index == $plageSel->_jour} selected="selected" {/if}>
-                      {$curr_day.name}
-                    </option>
-                    {/foreach}
-                    </select>
-                </td>
+                <th><labl for="editFrm_libelle">Libelle:</label></th>
+                <td><input type="text" name="libelle" value="{$plageSel->libelle}" />
               </tr>
 
               <tr>
@@ -137,8 +131,15 @@ function checkPlage() {
                     {/foreach}
                     </select>
                 </td>
-                <th><label for="editFrm__repeat">Nombre de répétitions:</label></th>
-                <td><input type="text" size="2" name="_repeat" value="1" /></td>
+                <th><label for="editFrm__jour">Jour de la semaine:</label></th>
+                <td><select name="_jour">
+                    {foreach from=$daysOfWeek item=curr_day}
+                    <option value="{$curr_day.index}" {if $curr_day.index == $plageSel->_jour} selected="selected" {/if}>
+                      {$curr_day.name}
+                    </option>
+                    {/foreach}
+                    </select>
+                </td>
               </tr>
 
               <tr>
@@ -151,11 +152,8 @@ function checkPlage() {
                     {/foreach}
                     </select>
                 </td>
-                <th><label>Type de répétition:</label></th>
-                <td>
-                  <input type="checkbox" name="_double">
-                  <label for="editFrm__double">Une semaine sur deux</label>
-                </td>
+                <th><label for="editFrm__repeat">Nombre de répétitions:</label></th>
+                <td><input type="text" size="2" name="_repeat" value="1" /></td>
               </tr>
               
               <tr>
@@ -167,7 +165,11 @@ function checkPlage() {
                   <option value="20" {if ($plageSel->_freq == "20")} selected="selected" {/if}>20</option>
                   <option value="30" {if ($plageSel->_freq == "30")} selected="selected" {/if}>30</option>
                 </select> minutes</td>
-
+                <th><label>Type de répétition:</label></th>
+                <td>
+                  <input type="checkbox" name="_double">
+                  <label for="editFrm__double">Une semaine sur deux</label>
+                </td>
               <tr>
                 {if $plageconsult_id == -1}
                 <td class="button" colspan="4"><input type="submit" value="Creer" /></td>
@@ -214,7 +216,7 @@ function checkPlage() {
           <th colspan="10">
             <strong>
             {if $plageconsult_id != -1}
-            Consultations du {$plageSel->date}
+            Consultations du {$plageSel->date|date_format:"%A %d %B %Y"}
             {else}
             Pas de plage selectionnée
             {/if}

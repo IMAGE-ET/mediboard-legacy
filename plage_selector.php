@@ -45,7 +45,8 @@ $monthList = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
 $nameMonth = $monthList[$month-1];
 
 // Récupération des plages de consultation disponibles
-$sql = "SELECT plageconsult.date AS date, plageconsult.debut AS debut," .
+$sql = "SELECT plageconsult.libelle AS libelle, plageconsult.date AS date," .
+		"\nplageconsult.debut AS debut," .
 		"\nplageconsult.fin AS fin, plageconsult.freq AS freq," .
 		"\nplageconsult.plageconsult_id AS plageconsult_id, count(consultation.consultation_id) AS nb" .
 		"\nFROM plageconsult" .

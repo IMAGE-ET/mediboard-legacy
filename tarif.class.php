@@ -21,7 +21,8 @@ class CTarif extends CDpObject {
 
   // DB fields
   var $description = null;
-  var $valeur = null;
+  var $secteur1 = null;
+  var $secteur2 = null;
   
   // Form fields
   var $_type = null;

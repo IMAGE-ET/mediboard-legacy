@@ -3,7 +3,17 @@
 
 function modifTarif() {
   var form = document.tarifFrm;
-  form.tarif.value = form.choix.value;  
+  var secteurs = form.choix.value;
+  var pos = secteurs.indexOf("/");
+  var size = secteurs.length;
+  var secteur1 = eval(secteurs.substring(0, pos));
+  var secteur2 = eval(secteurs.substring(pos+1, size));
+  form.secteur1.value = secteur1;
+  form.secteur2.value = secteur2;
+  form._somme.value = secteur1 + secteur2;
+  for(i=0;i<form.choix.length;++i)
+  if(form.choix.options[i].selected == true)
+   form.tarif.value = form.choix.options[i].text;  
 }
 
 function checkTarif() {
@@ -392,27 +402,34 @@ function supprimerCompteRendu() {
 
             <table class="form">
               <tr><th colspan="2" class="category">Règlement</th></tr>
-              {if !$consult->tarif}
+              {if !$consult->secteur1}
               <tr><th>Type de reglement :<input type="hidden" name="paye" value="0" /></th>
                 <td><select name="choix" onchange="modifTarif()">
                   <option value="-1" selected="selected">&mdash; Choix du tarif &mdash;</option>
                   <optgroup label="Tarifs praticien">
                   {foreach from=$tarifsChir item=curr_tarif}
-                  <option value="{$curr_tarif->valeur}">{$curr_tarif->description}</option>
+                  <option value="{$curr_tarif->secteur1}/{$curr_tarif->secteur2}">{$curr_tarif->description}</option>
                   {/foreach}
+                  </optgroup>
                   <optgroup label="Tarifs cabinet">
                   {foreach from=$tarifsCab item=curr_tarif}
-                  <option value="{$curr_tarif->valeur}">{$curr_tarif->description}</option>
+                  <option value="{$curr_tarif->secteur1}/{$curr_tarif->secteur2}">{$curr_tarif->description}</option>
                   {/foreach}
+                  </optgroup>
                 </select></td>
               </tr>
               {/if}
               {if !$consult->paye}
-              <tr><th>Somme à régler :</th><td><input type="text" size="4" name="tarif" value="{$consult->tarif}" /> €</td></tr>
+              <tr><th>Somme à régler :</th>
+                <td><input type="text" size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
+                  <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
+                  <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
+                  <input type="hidden" name="tarif" value="{$consult->tarif}" /></td>
+              </tr>
               {else}
-              <tr><td colspan="2">{$consult->tarif} € ont été réglés</td></tr>
+              <tr><td colspan="2">{$consult->secteur1+$consult->secteur2} € ont été réglés</td></tr>
               {/if}
-              {if $consult->tarif && !$consult->paye}
+              {if $consult->secteur1 && !$consult->paye}
               <tr><th>Moyen de paiement :<input type="hidden" name="paye" value="1" /></th>
                 <td><select name="type_tarif">
                   <option value="cheque">Chèques</option>

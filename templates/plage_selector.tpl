@@ -20,6 +20,7 @@ function setClose(hour, min) {ldelim}
     <table class="tbl">
       <tr>
         <th>Date</th>
+        <th>Libelle</th>
         <th>Etat</th>
       </tr>
       {foreach from=$listPlage item=curr_plage}
@@ -29,9 +30,8 @@ function setClose(hour, min) {ldelim}
           {$curr_plage.affichage}
           </a>
         </td>
-        <td>
-          {$curr_plage.nb} / {$curr_plage.total}
-        </td>
+        <td>{$curr_plage.libelle}</td>
+        <td>{$curr_plage.nb} / {$curr_plage.total}</td>
       </tr>
       {/foreach}
     </table>

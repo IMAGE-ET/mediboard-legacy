@@ -26,6 +26,7 @@ class CPlageconsult extends CDpObject {
   var $fin = null;
 
   // Form fields
+  var $libelle = null;
   var $_hour_deb = null;
   var $_min_deb = null;
   var $_hour_fin = null;
@@ -64,14 +65,14 @@ class CPlageconsult extends CDpObject {
     //$this->_ref_consultations = db_loadObjectList($sql, new CConsultation());
   }
   
-  function check() {
+  function checkFrequence() {
   	$oldValues = new CPlageconsult();
   	$oldValues->load($this->plageconsult_id);
   	$oldValues->loadRefs();
   	if(($oldValues->_freq != $this->_freq) && (count($oldValues->_ref_consultations) > 0))
   	  return false;
   	else
-  	  return parent::check();
+  	  return true;
   }
   
   function canDelete(&$msg, $oid = null) {
@@ -107,17 +108,14 @@ class CPlageconsult extends CDpObject {
   
   function store() {
     $this->updateDBFields();
-    
     if ($msg = $this->hasCollisions()) {
       return $msg;
     }
-  
     if ($this->plageconsult_id) {
-      if (!$this->canDelete($msg)) {
-        return $msg;
+      if (!$this->checkFrequence()) {
+        return "Vous ne pouvez pas modifier la fréquence de cette plage";
       }
-		}
-
+    }
     return parent::store();
   }
   
@@ -133,8 +131,8 @@ class CPlageconsult extends CDpObject {
     $this->_jour     = date("w", mktime(0, 0, 0, $currmonth, $currday-1, $curryear));
     $this->_jour     = intval($this->_jour);
     $this->_day      = date("d", mktime(0, 0, 0, $currmonth, $currday-$this->_jour, $curryear));
-    $this->_month    = $currmonth;
-    $this->_year     = $curryear;
+    $this->_month    = date("m", mktime(0, 0, 0, $currmonth, $currday-$this->_jour, $curryear));
+    $this->_year     = date("Y", mktime(0, 0, 0, $currmonth, $currday-$this->_jour, $curryear));
     $this->_dateFormated = date("d/m/Y", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
   }
   
