@@ -28,6 +28,7 @@ class Cplagesop extends CDpObject {
   var $fin = NULL;
     
   // Form Fields
+  var $_date = NULL;
   var $day = NULL;
   var $month = NULL;
   var $year = NULL;
@@ -193,6 +194,17 @@ class Cplagesop extends CDpObject {
         }
       }
     }
+  }
+  
+	function load($oid = NULL, $strip = TRUE) {
+    if (!parent::load($oid, $strip)) {
+      return FALSE;
+    }
+    
+    $this->_date = 
+      substr($this->date, 8, 2)."/".
+      substr($this->date, 5, 2)."/".
+      substr($this->date, 0, 4);
   }
 }
 ?>
