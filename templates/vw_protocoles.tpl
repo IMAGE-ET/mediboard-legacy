@@ -21,7 +21,7 @@ function setClose() {ldelim}
       <form name="selectFrm" action="index.php" method="get">
       
       <input type="hidden" name="m" value="{$m}" />
-      <input type="hidden" {if $dialog} name="a" value="vw_protocoles" {else} name="tab" value="3" {/if}  />
+      <input type="hidden" {if $dialog} name="a" {else} name="tab" {/if} value="vw_protocoles" />
       <input type="hidden" name="dialog" value="{$dialog}" />
 
       <table>
@@ -66,7 +66,7 @@ function setClose() {ldelim}
         {foreach item=curr_protocole from=$protocoles}
         <tr>    
           <td>
-            <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab=3{/if}&amp;protocole_id={$curr_protocole.operation_id}">
+            <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab={$tab}{/if}&amp;protocole_id={$curr_protocole.operation_id}">
               <strong>Dr. {$curr_protocole.lastname} {$curr_protocole.firstname} &mdash; {$curr_protocole.CCAM_code}</strong>
             </a>
             <br />{$curr_protocole.CCAM_libelle}
@@ -138,10 +138,12 @@ function setClose() {ldelim}
           <tr>
             <td class="button" colspan="2">
               <form name="modif" action="./index.php" method="get">
+              
               <input type="hidden" name="m" value="{$m}" />
-              <input type="hidden" name="tab" value="5" />
+              <input type="hidden" name="tab" value="vw_edit_protocole" />
               <input type="hidden" name="protocole_id" value="{$protSel->operation_id}" />
               <input type="submit" value="Modifier" />
+              
               </form>
             </td>
           </tr>

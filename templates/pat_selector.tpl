@@ -3,7 +3,7 @@
 {literal}
 <script language="javascript">
 function createPat(){
-  window.opener.location = "index.php?m=dPpatients&tab=2";
+  window.opener.location = "index.php?m=dPpatients&tab=vw_add_planning";
   window.close();
 }
 
