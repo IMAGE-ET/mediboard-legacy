@@ -20,7 +20,7 @@ $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juille
 $day   = mbGetValueFromGetOrSession("day"  , date("d"));
 $month = mbGetValueFromGetOrSession("month", date("m"));
 $year  = mbGetValueFromGetOrSession("year" , date("Y"));
-$selChir = mbGetValueFromGetOrSession("selChir", 0);
+$selChir = mbGetValueFromGetOrSession("selChir", -1);
 
 $nday  = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
 $ndaym = date("m", mktime(0, 0, 0, $month, $day + 1, $year));

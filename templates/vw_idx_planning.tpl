@@ -9,7 +9,7 @@
 
       <label for="selection_selChir">Choisir un chirurgien:</label>
       <select name="selChir" onchange="this.form.submit()">
-        <option value="0">Aucun chirurgien</option>
+        <option value="-1">Aucun chirurgien</option>
         {foreach from=$listChir item=curr_chir}
         <option value="{$curr_chir.id}" {if $curr_chir.id == $selChir} selected="selected" {/if}>
           Dr. {$curr_chir.lastname} {$curr_chir.firstname}
