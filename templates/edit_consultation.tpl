@@ -4,20 +4,20 @@
       <table class="tbl">
       {foreach from=$listPlage item=curr_plage}
         <tr>
-          <th colspan="4"><b>Consultations de {$curr_plage->_hour_deb}h à {$curr_plage->_hour_fin}h</b></th>
+          <th colspan="2"><b>Consultations de {$curr_plage->_hour_deb}h à {$curr_plage->_hour_fin}h</b></th>
         </tr>
         <tr>
           <th>Heure</th>
           <th>Patient</th>
-          <th>Motif</th>
-          <th>Remarques</th>
         </tr>
         {foreach from=$curr_plage->_ref_consultations item=curr_consult}
         <tr>
-          <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">{$curr_consult->heure}</a></td>
-          <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">{$curr_consult->_ref_patient->nom} {$curr_consult->_ref_patient->prenom}</a></td>
-          <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">{$curr_consult->motif|nl2br}</a></td>
-          <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">{$curr_consult->rques|nl2br}</a></td>
+          <td>{if $curr_consult->consultation_id == $consult->consultation_id}<b>{/if}
+          <a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">{$curr_consult->heure}</a>
+          {if $curr_consult->consultation_id == $consult->consultation_id}</b>{/if}</td>
+          <td>{if $curr_consult->consultation_id == $consult->consultation_id}<b>{/if}
+          <a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">{$curr_consult->_ref_patient->nom} {$curr_consult->_ref_patient->prenom}</a>
+          {if $curr_consult->consultation_id == $consult->consultation_id}</b>{/if}</td>
         </tr>
         {/foreach}
       {/foreach}
@@ -29,18 +29,9 @@
           <td valign="top">
             <table class="form">
               <tr><th colspan="2" class="category">Patient</th></tr>
-              <tr>
-                <th>Nom :</th>
-                <td>{$consult->_ref_patient->nom}</td>
-              </tr>
-              <tr>
-                <th>Prénom :</th>
-                <td>{$consult->_ref_patient->prenom}</th>
-              </tr>
-              <tr>
-                <th>Age :</th>
-                <td>{$consult->_ref_patient->_age} ans</td>
-              <tr>
+              <tr><th>Nom :</th><td>{$consult->_ref_patient->nom}</td></tr>
+              <tr><th>Prénom :</th><td>{$consult->_ref_patient->prenom}</th></tr>
+              <tr><th>Age :</th><td>{$consult->_ref_patient->_age} ans</td><tr>
             </table>
             <table class="form">
               <tr><th colspan="2" class="category">Fichiers liés</th></tr>
@@ -56,6 +47,11 @@
               <input type="file" name="formfile"></td>
               <td class="button"><input type="submit" value="ajouter">
               </form></td></tr>
+            </table>
+            <table class="form">
+              <tr><th colspan="2" class="category">Consultation</th></tr>
+              <tr><th>Motif :</th><td>{$consult->motif|nl2br}</td></tr>
+              <tr><th>Remarques :</th><td>{$consult->rques|nl2br}</td></tr>
             </table>
           </td>
           <td valign="top">
