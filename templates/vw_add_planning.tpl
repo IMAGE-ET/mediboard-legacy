@@ -88,14 +88,14 @@ function setCalendar( idate, fdate ) {
 <input type="hidden" name="chir_id" value="" />
 <input type="hidden" name="pat_id" value="" />
 
-<table class="form">
+<table class="main">
   <tr>
     <td>
 	
       <table class="form">
         <tr><th class="category" colspan="3">Informations concernant l'opération</th></tr>
         <tr>
-		  <th class="mandatory">Chirurgien:</th>
+		      <th class="mandatory">Chirurgien:</th>
           <td class="readonly"><input type="text" name="chir_name" size="30" value="" readonly="readonly" /></td>
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
@@ -156,7 +156,7 @@ function setCalendar( idate, fdate ) {
         </tr>
         <tr>
           <th>Information du patient:</th>
-          <td>
+          <td  colspan="2">
             <input name="info" value="o" type="radio" />Oui
             <input name="info" value="n" type="radio" checked="checked" />Non
           </td>
@@ -171,10 +171,10 @@ function setCalendar( idate, fdate ) {
         <tr>
           <th>Date:</th>
           <td class="readonly">
-		    <input type="hidden" name="date_rdv_anesth" value="{$todayi}" />
+            <input type="hidden" name="date_rdv_anesth" value="{$todayi}" />
             <input type="text" name="rdv_anesth" value="{$todayf}" readonly="readonly" />
             <a href="#" onClick="popCalendar( 'rdv_anesth', 'rdv_anesth');">
-			  <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
+              <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
             </a>
           </td>
         </tr>
@@ -216,7 +216,7 @@ function setCalendar( idate, fdate ) {
           </td>
         </tr>
         <tr>
-		  <th>Heure:</th>
+          <th>Heure:</th>
           <td>
             <select name="hour_adm">
               <option>08</option>
@@ -271,14 +271,27 @@ function setCalendar( idate, fdate ) {
           <th>Remarques:</th>
           <td><textarea name="rques" rows="3"></textarea></td>
         </tr>
+
       </table>
-	  
+    
     </td>
   </tr>
+
   <tr>
-    <td class="button"><input class="button" type="reset" value="Annuler" /></td>
-    <td class="button"><input class="button" type="submit" value="Valider" /></td>
+    <td colspan="2">
+
+      <table class="form">
+        <tr>
+          <td class="button">
+            <input class="button" type="reset" value="Annuler" />
+            <input class="button" type="submit" value="Valider" />
+          </td>
+        </tr>
+      </table>
+    
+    </td>
   </tr>
+
 </table>
 
 </form>
