@@ -13,7 +13,7 @@
   <script src="./style/<?php echo $uistyle;?>/functions.js" type="text/javascript" ></script>
 </head>
 
-<body onload="prepareForms()">
+<body onload="main()">
 
 <!-- Begin HTML Area Integration -->
 <script type="text/javascript">
