@@ -30,7 +30,7 @@
         
         <tr>
           <th>Date de naissance:</th>
-          <td>{$op.naissance|date_format:"%d-%m-%Y"}</td>
+          <td>{$op.dateFormed}</td>
         </tr>
         
         <tr>
