@@ -3,6 +3,9 @@
 /**
 * User Class
 */
+
+require_once($AppUI->getSystemClass("dp"));
+
 class CUser extends CDpObject {
 	var $user_id = null;
 	var $user_username = null;
