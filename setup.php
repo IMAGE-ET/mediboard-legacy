@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPpatients';
-$config['mod_version'] = '0.1';
+$config['mod_version'] = '0.2';
 $config['mod_directory'] = 'dPpatients';
 $config['mod_setup_class'] = 'CSetupdPpatients';
 $config['mod_type'] = 'user';
@@ -40,9 +40,28 @@ class CSetupdPpatients {
 	function upgrade( $old_version ) {
 		switch ( $old_version )
 		{
-		case "all":		// upgrade from scratch (called from install)
-		case "0.9":		//do some alter table commands
-		case "1.0":
+		case "all":
+		case "0.1": {
+		  $sql = "ALTER TABLE patients
+		  		  ADD medecin1 INT( 11 ) AFTER medecin_traitant ,
+                  ADD medecin2 INT( 11 ) AFTER medecin1 ,
+                  ADD medecin3 INT( 11 ) AFTER medecin2 ;";
+		  db_exec( $sql ); db_error();
+		  $sql = "CREATE TABLE medecin (
+                  medecin_id int(11) NOT NULL auto_increment,
+                  nom varchar(50) NOT NULL default '',
+                  prenom varchar(50) NOT NULL default '',
+                  tel varchar(10) default NULL,
+                  fax varchar(10) default NULL,
+                  email varchar(50) default NULL,
+                  adresse varchar(50) default NULL,
+                  ville varchar(50) default NULL,
+                  cp varchar(5) default NULL,
+                  PRIMARY KEY  (medecin_id)
+                  ) TYPE=MyISAM COMMENT='Table des medecins correspondants';";
+		db_exec( $sql ); db_error();
+		}
+		case "0.2":
 			return true;
 		default:
 			return false;
@@ -72,6 +91,7 @@ class CSetupdPpatients {
   				KEY `nom` (`nom`,`prenom`)
 				) TYPE=MyISAM AUTO_INCREMENT=1 ;";
 		db_exec( $sql ); db_error();
+		upgrade("all");
 		return null;
 	}
 }

@@ -28,6 +28,9 @@ class CPatient extends CDpObject {
 	var $cp = null;
 	var $tel = null;
 	var $medecin_traitant = null;
+	var $medecin1 = null;
+	var $medecin2 = null;
+	var $medecin3 = null;
 	var $incapable_majeur = null;
 	var $ATNC = null;
 	var $matricule = null;
@@ -118,19 +121,19 @@ class CPatient extends CDpObject {
   
   function loadRefs() {
     // Backward references
-    $obj = new COperation;
+    $obj = new COperation();
     $this->_ref_operations = $obj->loadList("pat_id = '$this->patient_id'");
   }
-  
-	function getSiblings() {
-      $sql = "SELECT patient_id, nom, prenom, naissance, adresse, ville, CP " .
+
+  function getSiblings() {
+    $sql = "SELECT patient_id, nom, prenom, naissance, adresse, ville, CP " .
       		"FROM patients WHERE " .
       		"patient_id != '$this->patient_id' " .
       		"AND ((nom    = '$this->nom'    AND prenom    = '$this->prenom'   ) " .
       		  "OR (nom    = '$this->nom'    AND naissance = '$this->naissance') " .
       		  "OR (prenom = '$this->prenom' AND naissance = '$this->naissance'))";
-      $siblings = db_loadlist($sql);
-      return $siblings;
-    }
+    $siblings = db_loadlist($sql);
+    return $siblings;
+  }
 }
 ?>

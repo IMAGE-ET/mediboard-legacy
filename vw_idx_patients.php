@@ -19,8 +19,10 @@ $patient_id = mbGetValueFromGetOrSession("id");
 
 // Récuperation du patient sélectionné
 $patient = new CPatient;
-if(dPgetParam($_GET, "new", 0))
+if(dPgetParam($_GET, "new", 0)) {
   $patient->load(NULL);
+  mbSetValueToSession("id", null);
+}
 else
   $patient->load($patient_id);
 $patient->loadRefs();

@@ -24,6 +24,7 @@ function checkPatient() {
     
       <form name="find" action="./index.php" method="get">
       <input type="hidden" name="m" value="{$m}" />
+      <input type="hidden" name="tab" value="{$tab}" />
       
       <table class="form">
       <input type="hidden" name="new" value="1" />
@@ -94,6 +95,7 @@ function checkPatient() {
           <td>
             {if $patient->ATNC == "o"} oui {/if}
             {if $patient->ATNC == "n"} non {/if}
+          </td>
         </tr>
         
         <tr>
