@@ -117,11 +117,13 @@
 		    <a href="index.php?m={$m}&a=do_order_op&cmd=up&id={$curr_op.id}">
 		    <img src="./modules/{$m}/images/uparrow.png" width="12" height="12" alt="monter" border="0" />
 			</a>
-			{/if}
-			{if $curr_op.rank != 1 and $curr_op.rank != $max}
 			<br />
 			{/if}
+			<a href="index.php?m={$m}&a=do_order_op&cmd=rm&id={$curr_op.id}">
+		    <img src="./modules/{$m}/images/cross.png" width="12" height="12" alt="monter" border="0" />
+			</a>
 			{if $curr_op.rank != $max}
+			<br />
 		    <a href="index.php?m={$m}&a=do_order_op&cmd=down&id={$curr_op.id}">
 		    <img src="./modules/{$m}/images/downarrow.png" width="12" height="12" alt="descendre" border="0" />
 			</a>

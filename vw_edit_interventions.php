@@ -82,7 +82,10 @@ if(isset($list1)) {
     $ccam = mysql_fetch_array($ccamr);
     $list1[$key]["CCAM"] = $ccam["LIBELLELONG"];
 	$list1[$key]["duree"] = substr($value["temps"], 0, 2)."h".substr($value["temps"], 3, 2);
-	$list1[$key]["lu_type_anesth"] = $anesth[$value["type_anesth"]];
+	if($value["type_anesth"])
+	  $list1[$key]["lu_type_anesth"] = $anesth[$value["type_anesth"]];
+	else
+	  $list1[$key]["lu_type_anesth"] = 0;
 	$list1[$key]["date_adm"] = substr($value["date_adm"], 8, 2)."/".substr($value["date_adm"], 5, 2)."/".substr($value["date_adm"], 0, 4);
 	$list1[$key]["time_adm"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
   }
@@ -108,7 +111,10 @@ if(isset($list2)) {
 	$list2[$key]["duree"] = substr($value["temps"], 0, 2)."h".substr($value["temps"], 3, 2);
 	$list2[$key]["hour"] = substr($value["heure"], 0, 2);
 	$list2[$key]["min"] = substr($value["heure"], 3, 2);
-    $list2[$key]["lu_type_anesth"] = $anesth[$list2[$key]["type_anesth"]];
+	if($list2[$key]["type_anesth"])
+	  $list2[$key]["lu_type_anesth"] = $anesth[$list2[$key]["type_anesth"]];
+	else
+	  $list2[$key]["lu_type_anesth"] = 0;
 	$list2[$key]["date_adm"] = substr($value["date_adm"], 8, 2)."/".substr($value["date_adm"], 5, 2)."/".substr($value["date_adm"], 0, 4);
 	$list2[$key]["time_adm"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
     $j = 0;
