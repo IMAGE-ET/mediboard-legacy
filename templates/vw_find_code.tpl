@@ -9,13 +9,13 @@
 
   <tr>
     <th>Mots clefs:</th>
-    <td><input type="text" name="keys" value="{$keys}" /></td>
+    <td><input tabindex="1" type="text" name="keys" value="{$keys}" /></td>
   </tr>
   
   <tr>
     <td class="button" colspan="2">
-      <input type="submit" value="rechercher" />
-      <input type="reset" value="recommencer" />
+      <input tabindex="2" type="reset" value="réinitialiser" />
+      <input tabindex="3" type="submit" value="rechercher" />
     </td>
   </tr>
 </table>
