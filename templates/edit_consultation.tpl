@@ -220,7 +220,7 @@ function editModele(consult, modele) {
               
               <tr>
                 <td class="button">
-                  <a href="?m=dPplanningOp&amp;tab=2amp;chir_id={$curr_consult->_ref_plageconsult->_ref_chir->user_id}&amp;pat_id={$consult->_ref_patient->patient_id}">
+                  <a href="?m=dPplanningOp&amp;tab=2&amp;chir_id={$curr_consult->_ref_plageconsult->_ref_chir->user_id}&amp;pat_id={$consult->_ref_patient->patient_id}">
                     Une nouvelle intervention
                   </a>
                 </td>
