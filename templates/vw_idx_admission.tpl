@@ -18,13 +18,13 @@
 		    Date
 		  </th>
 		  <th>
-		    Nombre
+		    Nombre d'admissions
 		  </th>
 		</tr>
 	    {foreach from=$list item=curr_list}
 		<tr>
 		  <td align="right">
-		    <a href="index.php?m=dPadmissions&tab=0&day={$curr_plage.day}&month={$month}&year={$year}">
+		    <a href="index.php?m=dPadmissions&tab=0&day={$curr_list.day}&month={$month}&year={$year}">
 			{$curr_list.dateFormed}
 			</a>
 		  </td>
@@ -44,6 +44,12 @@
 		  <th>
 		    Prénom
 		  </th>
+		  <th>
+		    Chirurgien
+		  </th>
+		  <th>
+		    Heure
+		  </th>
 		</tr>
 	    {foreach from=$today item=curr_adm}
 		<tr>
@@ -52,6 +58,12 @@
 		  </td>
 		  <td>
 		    {$curr_adm.prenom}
+		  </td>
+		  <td>
+		    Dr. {$curr_adm.chir_lastname} {$curr_adm.chir_firstname}
+		  </td>
+		  <td>
+		    {$curr_adm.hour}
 		  </td>
 		</tr>
 		{/foreach}

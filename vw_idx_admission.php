@@ -41,27 +41,35 @@ $monthName = $listMonth[$month - 1];
 $title1 = "$monthName $year";
 $title2 = "$dayName $day $monthName $year";
 
-$sql = "select operation_id, date, count(operation_id) as num
+$sql = "select operation_id, operations.date_adm as date, count(operation_id) as num
 		from operations
 		left join plagesop
 		on operations.plageop_id = plagesop.id
-		where plagesop.date like '$year-$month-__'
-		group by plagesop.date
-		order by plagesop.date";
+		where operations.date_adm like '$year-$month-__'
+		group by operations.date_adm
+		order by operations.date_adm";
 $list = db_loadlist($sql);
 foreach($list as $key => $value) {
   $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
   $list[$key]["dateFormed"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
+  $list[$key]["day"] = substr($value["date"], 8, 2);
 }
-$sql = "select patients.nom, patients.prenom
+$sql = "select operations.operation_id, patients.nom as nom, patients.prenom as prenom,
+		users.user_first_name as chir_firstname, users.user_last_name as chir_lastname,
+		operations.time_adm
 		from operations
 		left join patients
 		on operations.pat_id = patients.patient_id
 		left join plagesop
 		on operations.plageop_id = plagesop.id
-		where plagesop.date = '$year-$month-$day'
+		left join users
+		on users.user_username = plagesop.id_chir
+		where operations.date_adm = '$year-$month-$day'
 		order by patients.nom";
 $today = db_loadlist($sql);
+foreach($today as $key => $value) {
+  $today[$key]["hour"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
+}
 
 require_once("lib/smarty/Smarty.class.php");
 
