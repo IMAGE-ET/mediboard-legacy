@@ -216,12 +216,14 @@ foreach($result as $key => $value) {
 
 //Requete SQL pour le planning de la journée
 $sql = "SELECT operations.operation_id AS id, operations.pat_id,
-		operations.CCAM_code, operations.temp_operation
+		operations.CCAM_code, operations.temp_operation,
+        operations.rank, operations.time_operation
 		FROM plagesop
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id
 		WHERE plagesop.date = '$year-$month-$day'
-		AND plagesop.id_chir = '$user'";
+		AND plagesop.id_chir = '$user'
+        ORDER BY operations.rank, operations.temp_operation";
 $result = db_loadlist($sql);
 
 //Tri des résultats
@@ -233,7 +235,12 @@ foreach($result as $key => $value) {
   $today[$key]["nom"] = $patient[0]["nom"];
   $today[$key]["prenom"] = $patient[0]["prenom"];
   $today[$key]["CCAM_code"] = $value["CCAM_code"];
-  $today[$key]["temps"] = substr($value["temp_operation"],0, 5);
+  if($value["rank"]) {
+    $today[$key]["heure"] = substr($value["time_operation"], 0, 2)."h".substr($value["time_operation"], 3, 2);
+  } else {
+    $today[$key]["heure"] = "-";
+  }
+  $today[$key]["temps"] = substr($value["temp_operation"], 0, 2)."h".substr($value["temp_operation"], 3, 2);
 }
 
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
