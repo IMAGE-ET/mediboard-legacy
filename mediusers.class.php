@@ -197,7 +197,7 @@ class CMediusers extends CDpObject {
     if ($perm_type) {
       foreach ($mediusers as $key => $mediuser) {
         if (isMbAllowed($perm_type, "mediusers", $mediuser->function_id)) {
-          $users[] = $baseusers[$key];
+          $users[$key] = $baseusers[$key];
         }          
       }
     } else {
