@@ -43,9 +43,8 @@ function prepareForms() {
         }
       }
 
-
       // Focus on first text input
-      if (giveFocus && element.type == "text") {
+      if (giveFocus && element.type == "text" && !element.getAttribute("readonly")) {
         element.focus();
         giveFocus = false;
       }
