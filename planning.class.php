@@ -43,7 +43,7 @@ class Cplanning extends CDpObject {
 	var $hour_adm = NULL;
 	var $min_adm = NULL;
 
-	function Cpatients() {
+	function Cplanning() {
 		$this->CDpObject( 'operations', 'operation_id' );
 	}
 
