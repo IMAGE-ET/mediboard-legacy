@@ -114,19 +114,11 @@ class CPlageOp extends CDpObject {
   }
   
   function store () {
+    $this->updateDBFields();
     if ($msg = $this->hasCollisions()) {
       return $msg;
-    }
-    $this->updateDBFields();    
+    }    
 	return parent::store();
-  }
-  
-  function load($oid = null, $strip = true) {
-    if (!parent::load($oid, $strip)) {
-      return false;
-    }
-    $this->updateFormFields();
-    return true;
   }
   
   function updateFormFields() {
