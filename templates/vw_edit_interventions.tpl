@@ -63,11 +63,13 @@
 		{foreach from=$list2 item=curr_op}
 		<tr>
 		  <td width="50%">
+		    <a name="{$curr_op.id}">
 			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_order_op" />
             <input type="hidden" name="cmd" value="sethour" />
             <input type="hidden" name="id" value="{$curr_op.id}" />
+            </a>
 		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op.id}">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
 			Admission : le {$curr_op.date_adm} à {$curr_op.time_adm}

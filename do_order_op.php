@@ -153,5 +153,5 @@ switch($cmd)
     break;
   }
 }
-$AppUI->redirect();
+$AppUI->redirect("m=$m#$id");
 ?>
