@@ -31,7 +31,7 @@ $active = intval(!$tab);
 
 // [End] non-module specific code
 
-$titleBlock = new CTitleBlock('Gestion des patients', '$m.png', $m, "$m.$a");
+$titleBlock = new CTitleBlock('Gestion des patients', "$m.png", $m, "$m.$a");
 $titleBlock->addCell();
 $titleBlock->show();
 
