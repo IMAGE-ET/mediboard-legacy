@@ -18,7 +18,7 @@ var calWin = null;
 function popCalendar( field ){
   calendarField = field;
   idate = eval( 'document.paramFrm.date_' + field + '.value' );
-  window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=280, height=250, scollbars=false' );
+  popup(280, 250, 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin');
 }
 
 function setCalendar( idate, fdate ) {
@@ -30,7 +30,7 @@ function setCalendar( idate, fdate ) {
 
 function popCode(type) {
   var chir = document.paramFrm.chir.value;
-  window.open('./index.php?m=dPbloc&a=code_selector&dialog=1&type='+type+'&chir='+chir, type, 'left=50,top=50,height=500,width=600,resizable');
+  popup(600, 500, './index.php?m=dPbloc&a=code_selector&dialog=1&type='+type+'&chir='+chir, type);
 }
 
 function setCode( key, type ){
@@ -65,7 +65,7 @@ function popPlanning() {
   url = url + '&chir=' + chir;
   url = url + '&spe=' + spe;
   url = url + '&salle=' + salle;
-  window.open(url, 'Planning', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
+  popup(700, 550, url, 'Planning');
 }
 </script>
 {/literal}
