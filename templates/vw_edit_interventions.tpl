@@ -27,10 +27,12 @@ function popOp(id) {
 		{foreach from=$list1 item=curr_op}
 		<tr>
 		  <td width="50%">
-		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.firstname} {$curr_op.lastname}</a></b>
+		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.lastname} {$curr_op.firstname}</a></b>
 			<br />
 			Code CCAM : {$curr_op.CCAM_code}
 			<br />
+      Côté : {$curr_op.cote}
+      <br />
 			Durée : {$curr_op.duree}
 		  </td>
 		  <td>
@@ -60,10 +62,12 @@ function popOp(id) {
             <input type="hidden" name="a" value="do_order_op" />
             <input type="hidden" name="cmd" value="sethour" />
             <input type="hidden" name="id" value="{$curr_op.id}" />
-		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.firstname} {$curr_op.lastname}</a></b>
+		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.lastname} {$curr_op.firstname}</a></b>
 			<br />
 			Code CCAM : {$curr_op.CCAM_code}
 			<br />
+      Côté : {$curr_op.cote}
+      <br />
 			Durée : {$curr_op.duree}
 			<br />
 			<select name="hour">

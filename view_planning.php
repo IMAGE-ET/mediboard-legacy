@@ -30,16 +30,16 @@ $date = $dayOfWeekList[$dayOfWeek]." $day ".$monthList[$month]." $year";
 
 //On sort les plages opératoires
 //  Chir - Salle - Horaires
-$sql = "select plagesop.id as id, users.user_last_name as lastname,
-		users.user_first_name as firstname,	sallesbloc.nom as salle,
-		plagesop.debut as debut, plagesop.fin as fin
-		from plagesop
-		left join users
-		on plagesop.id_chir = users.user_username
-		left join sallesbloc
-		on plagesop.id_salle = sallesbloc.id
-		where date = '$year-$month-$day'
-		order by plagesop.id_salle, plagesop.debut";
+$sql = "SELECT plagesop.id AS id, users.user_last_name AS lastname,
+		users.user_first_name AS firstname,	sallesbloc.nom AS salle,
+		plagesop.debut AS debut, plagesop.fin AS fin
+		FROM plagesop
+		LEFT JOIN users
+		ON plagesop.id_chir = users.user_username
+		LEFT JOIN sallesbloc
+		ON plagesop.id_salle = sallesbloc.id
+		WHERE date = '$year-$month-$day'
+		ORDER BY plagesop.id_salle, plagesop.debut";
 $plagesop = db_loadlist($sql);
 
 //Operations de chaque plage
@@ -47,16 +47,16 @@ $plagesop = db_loadlist($sql);
 foreach($plagesop as $key=>$value) {
   $plagesop[$key]["debut"] = substr($value["debut"], 0, 2)."h".substr($value["debut"], 3, 2);
   $plagesop[$key]["fin"] = substr($value["fin"], 0, 2)."h".substr($value["fin"], 3, 2);
-  $sql = "select operations.temp_operation as duree, operations.cote as cote, operations.time_operation as heure,
-  		operations.CCAM_code as CCAM_code, operations.rques as rques, operations.materiel as materiel, 
-        operations.commande_mat as commande_mat, patients.nom as lastname, patients.prenom as firstname,
-        patients.sexe as sexe, patients.naissance as naissance
-  		from operations
-		left join patients
-		on operations.pat_id = patients.patient_id
-		where operations.plageop_id = '".$value["id"]."'
-		and operations.rank != '0'
-		order by operations.rank";
+  $sql = "SELECT operations.temp_operation AS duree, operations.cote AS cote, operations.time_operation AS heure,
+  		operations.CCAM_code AS CCAM_code, operations.rques AS rques, operations.materiel AS materiel, 
+        operations.commande_mat AS commande_mat, patients.nom AS lastname, patients.prenom AS firstname,
+        patients.sexe AS sexe, patients.naissance AS naissance
+  		FROM operations
+		LEFT JOIN patients
+		ON operations.pat_id = patients.patient_id
+		WHERE operations.plageop_id = '".$value["id"]."'
+		AND operations.rank != '0'
+		ORDER BY operations.rank";
   $plagesop[$key]["operations"] = db_loadlist($sql);
 }
 
@@ -78,7 +78,6 @@ foreach($plagesop as $key => $value) {
     if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
     $plagesop[$key]["operations"][$key2]["age"] = $age;
 	$plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
-    $plagesop[$key]["operations"][$key2]["mat"] = "<i>Pas de materiel particulier</i>";
     if($value2["materiel"] != "") {
       switch($value2["commande_mat"]) {
         case "o" : {
@@ -90,6 +89,8 @@ foreach($plagesop as $key => $value) {
           break;
         }
       }
+    } else {
+      $plagesop[$key]["operations"][$key2]["mat"] = "";
     }
     $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";
     $ccamr = mysql_query($sql);

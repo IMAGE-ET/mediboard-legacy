@@ -29,7 +29,7 @@
 		  <td>{$curr_op.heure}</td>
 		  <td>{$curr_op.CCAM} <i>({$curr_op.CCAM_code})</i></td>
 		  <td>{$curr_op.cote}</td>
-		  <td>{$curr_op.rques} ({$curr_op.mat})</td>
+		  <td>{$curr_op.rques} {if $curr_op.mat}({$curr_op.mat}){/if}</td>
 		  <td>{$curr_op.lastname}</td>
 		  <td>{$curr_op.firstname}</td>
 		  <td>{$curr_op.age} ans</td>

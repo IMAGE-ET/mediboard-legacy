@@ -24,40 +24,40 @@ if(dPgetParam($_GET, "id", "noid") == "noid") {
 else
   $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
 
-$sql = "select plagesop.debut as debut, plagesop.fin as fin,
-        users.user_first_name as firstname, users.user_last_name as lastname,
-        plagesop.date as date, sallesbloc.nom as salle
-		from plagesop
-		left join users
-		on plagesop.id_chir = users.user_username
-		left join sallesbloc
-		on plagesop.id_salle = sallesbloc.id
-		where plagesop.id = '$id'";
+$sql = "SELECT plagesop.debut AS debut, plagesop.fin AS fin,
+        users.user_first_name AS firstname, users.user_last_name AS lastname,
+        plagesop.date AS date, sallesbloc.nom AS salle
+		FROM plagesop
+		LEFT JOIN users
+		ON plagesop.id_chir = users.user_username
+		LEFT JOIN sallesbloc
+		ON plagesop.id_salle = sallesbloc.id
+		WHERE plagesop.id = '$id'";
 $result = db_loadlist($sql);
 $title = $result[0];
 $title["dateFormed"] = substr($title["date"], 8, 2)." / ".substr($title["date"], 5, 2)." / ".substr($title["date"], 0, 4);
 $title["plage"] = substr($title["debut"], 0, 2)."h".substr($title["debut"], 3, 2)." - ".substr($title["fin"], 0, 2)."h".substr($title["fin"], 3, 2);
 
-$sql = "select operations.operation_id as id, patients.prenom as firstname, patients.nom as lastname,
-		operations.CCAM_code as CCAM_code, operations.temp_operation as temps
-		from operations
-		left join patients
-		on operations.pat_id = patients.patient_id
-		left join plagesop
-		on operations.plageop_id = plagesop.id
-		where plagesop.id = '$id' and operations.rank = '0'
-		order by operations.temp_operation";
+$sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
+		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote
+		FROM operations
+		LEFT JOIN patients
+		ON operations.pat_id = patients.patient_id
+		LEFT JOIN plagesop
+		ON operations.plageop_id = plagesop.id
+		WHERE plagesop.id = '$id' AND operations.rank = '0'
+		ORDER BY operations.temp_operation";
 $list1 = db_loadlist($sql);
-$sql = "select operations.operation_id as id, patients.prenom as firstname, patients.nom as lastname,
-		operations.CCAM_code as CCAM_code, operations.temp_operation as temps, operations.time_operation as heure,
-        plagesop.debut as debut, plagesop.fin as fin, operations.rank as rank
-		from operations
-		left join patients
-		on operations.pat_id = patients.patient_id
-		left join plagesop
-		on operations.plageop_id = plagesop.id
-		where plagesop.id = '$id' and operations.rank != '0'
-		order by operations.rank";
+$sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
+		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote,
+        operations.time_operation AS heure, plagesop.debut AS debut, plagesop.fin AS fin, operations.rank AS rank
+		FROM operations
+		LEFT JOIN patients
+		ON operations.pat_id = patients.patient_id
+		LEFT JOIN plagesop
+		ON operations.plageop_id = plagesop.id
+		WHERE plagesop.id = '$id' AND operations.rank != '0'
+		ORDER BY operations.rank";
 $list2 = db_loadlist($sql);
 
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
