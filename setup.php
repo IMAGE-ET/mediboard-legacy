@@ -74,6 +74,7 @@ class CSetupdPplanningOp {
 			", ATNC enum('o','n') NOT NULL default 'n'" .
 			", rques text" .
 			", rank tinyint(4) NOT NULL default '0'" .
+			", admis enum('n', 'o') NOT NULL default 'n'"
 			", PRIMARY KEY  (operation_id)" .
 			", UNIQUE KEY operation_id (operation_id)" .
 			") TYPE=MyISAM;";
