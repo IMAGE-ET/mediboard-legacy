@@ -136,7 +136,7 @@ class Acte
     }
     foreach($this->activites as $key => $value)
     {
-      $query = "select * from ACTIVITE where CODE = '" . $this->activites[$key]["code"] . "'";
+      $query = "select * from activite where CODE = '" . $this->activites[$key]["code"] . "'";
       $result = mysql_query($query);
       $row = mysql_fetch_array($result);
       $this->activites[$key]["nom"] = $row['LIBELLE'];
