@@ -22,8 +22,6 @@ $patient = new CPatient;
 $patient->load($patient_id);
 $patient->loadRefs();
 
-$export = var_export($patient, true); echo "<pre>patient: $export</pre>";
-
 if (!$patient->patient_id) {
   $AppUI->setmsg("Vous devez choisir un patient", UI_MSG_ALERT);
   $AppUI->redirect("m=$m&tab=vw_idx_patients");

@@ -20,11 +20,7 @@ require_once("patients.class.php");
 
 $patient = new CPatient;
 $patient->load($patient_id);
-
-// Formatage de la naissance
-$patient->_jour  = substr($patient->naissance, 8, 2);
-$patient->_mois  = substr($patient->naissance, 5, 2);
-$patient->_annee = substr($patient->naissance, 0, 4);
+$patient->loadRefs();
 
 // Récuperation des patients recherchés
 $patient_nom    = mbGetValueFromGetOrSession("nom"   );
