@@ -160,7 +160,6 @@ table.form th {
 }
 
 table.form th.category {
-  font-style: italic;
   font-weight: bold;  
   text-align: center;
   background: #aaa;
@@ -175,7 +174,6 @@ table.form th.mandatory {
 table.form th.text {
   white-space: normal;
   text-align: center;
-  font-style: italic;
 }
 
 table.form td {
