@@ -79,7 +79,7 @@
           <td>
 		    {if $op.type_adm == "comp"}
 			hospitalisation complète
-			{else if $op.type_adm == "ambu"}
+			{elseif $op.type_adm == "ambu"}
 			Ambulatoire
 			{else}
 			Externe
