@@ -26,7 +26,7 @@
           {$curr_modele->nom}</a></td>
           <td><a href="index.php?m={$m}&tab=addedit_modeles&compte_rendu_id={$curr_modele->compte_rendu_id}">
           {$curr_modele->type}</a></td>
-          <td>{$curr_modele->source}</td>
+          <td class="text">{$curr_modele->source}</td>
           <td><input type="button" value="supprimer" /></td>
         </tr>
         {/foreach}
