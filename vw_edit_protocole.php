@@ -35,7 +35,7 @@ $chir->load($op->chir_id);
 $pat = new CPatient;
 $pat->load($op->pat_id);
 
-$plage = new Cplagesop;
+$plage = new CPlageOp;
 $plage->load($op->plageop_id);
 
 // Heures & minutes
