@@ -11,7 +11,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPccam';
-$config['mod_version'] = '1.0.0';
+$config['mod_version'] = '0.1';
 $config['mod_directory'] = 'dPccam';
 $config['mod_setup_class'] = 'CSetupdPccam';
 $config['mod_type'] = 'user';
