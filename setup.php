@@ -43,7 +43,8 @@ class CSetupdPplanningOp {
 		case "all":		// upgrade from scratch (called from install)
 		case "0.1": {
             $sql = "ALTER TABLE operations ADD entree_bloc TIME AFTER temp_operation ,
-                    ADD sortie_bloc TIME AFTER entree_bloc";
+                    ADD sortie_bloc TIME AFTER entree_bloc ,
+                    ADD type_anesth TINYINT AFTER time_anesth";
             db_exec( $sql ); db_error();
 			return true;
         }
@@ -63,7 +64,7 @@ class CSetupdPplanningOp {
 			", CCAM_code varchar(7) default NULL" .
 			", cote enum('droit','gauche','bilatéral','total') NOT NULL default 'total'" .
 			", temp_operation time NOT NULL default '00:00:00'" .
-            ", entree_bloc` time default NULL" .
+            ", entree_bloc time default NULL" .
             ", sortie_bloc time default NULL" .
 			", time_operation time NOT NULL default '00:00:00'" .
 			", examen text" .
@@ -72,6 +73,7 @@ class CSetupdPplanningOp {
 			", info enum('o','n') NOT NULL default 'n'" .
 			", date_anesth date NOT NULL default '0000-00-00'" .
 			", time_anesth time NOT NULL default '00:00:00'" .
+            ", type_anesth tinyint(4) default NULL" .
 			", date_adm date NOT NULL default '0000-00-00'" .
 			", time_adm time NOT NULL default '00:00:00'" .
 			", duree_hospi tinyint(4) unsigned NOT NULL default '0'" .
