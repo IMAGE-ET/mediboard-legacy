@@ -4,30 +4,35 @@
 <script language="javascript">
 function checkForm() {
   var form = document.editFrm;
-    
-  if (form.chir_id.value == 0) {
-    alert("Chirurgien manquant");
-    popChir();
-    return false;
-  }
-    
-  if (form.pat_id.value == 0) {
-    alert("Patient manquant");
-    popPat();
-    return false;
-  }
+  var field = null;
+  
+  if (field = form.chir_id)
+    if (field.value == 0) {
+      alert("Chirurgien manquant");
+      popChir();
+      return false;
+    }
 
-  if (form.CIM10_code.value.length == 0) {
-    alert("Code CIM10 Manquant");
-    popCode('cim10');
-    return false;
-  }
+  if (field = form.pat_id)
+    if (field.value == 0) {
+      alert("Patient manquant");
+      popPat();
+      return false;
+    }
 
-  if (form.CCAM_code.value.length == 0) {
-    alert("Code CCAM Manquant");
-    popCode('ccam');
-    return false;
-  }
+  if (field = form.CIM10_code)
+    if (field.value.length == 0) {
+      alert("Code CIM10 Manquant");
+      popCode('cim10');
+      return false;
+    }
+
+  if (field = form.CCAM_code)
+    if (field.value.length == 0) {
+      alert("Code CCAM Manquant");
+      popCode('ccam');
+      return false;
+    }
 
 /* Bug in IE
   if (form._hour_op.value == 0 && form._min_op.value == 0) {
@@ -36,23 +41,27 @@ function checkForm() {
     return false;
   }
 */
-  if (form.plageop_id.value == 0) {
-    alert("Intervention non planifiée");
-    popPlage();
-    return false;
-  }
 
-  if (form._date_rdv_adm.value.length == 0) {
-    alert("Admission: date manquante");
-    popCalendar('_rdv_adm', '_rdv_adm');
-    return false;
-  }
+  if (field = form.plageop_id)
+    if (field.value == 0) {
+      alert("Intervention non planifiée");
+      popPlage();
+      return false;
+    }
 
-  if (form._hour_adm.value.length == 0) {
-    alert("Admission: heure manquante");
-    form.hour_anesth.focus();
-    return false;
-  }
+  if (field = form._date_rdv_adm)
+    if (field.value.length == 0) {
+      alert("Admission: date manquante");
+      popCalendar('_rdv_adm', '_rdv_adm');
+      return false;
+    }
+
+  if (field = form._hour_adm)
+    if (field.value.length == 0) {
+      alert("Admission: heure manquante");
+      form.hour_anesth.focus();
+      return false;
+    }
 
   return true;
 }
@@ -219,13 +228,13 @@ function printForm() {
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->nom} {$pat->prenom}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
-        {/if}
         
         <tr>
           <th class="mandatory">Diagnostic (CIM10):</th>
           <td><input type="text" name="CIM10_code" size="10" value="{$op->CIM10_code}" /></td>
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('cim10')" /></td>
         </tr>
+        {/if}
 
         <tr>
           <th class="mandatory">Acte médical (CCAM):</th>

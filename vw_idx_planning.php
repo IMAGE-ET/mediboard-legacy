@@ -15,54 +15,26 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 
 //Initialisation de variables
 $listDay = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
-$listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-				"Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
+$listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
 
-if(dPgetParam($_GET, 'day', -1) == -1) {
-  if(!isset($_SESSION[$m][$tab]["day"]))
-    $day = $_SESSION[$m][$tab]["day"] = date("d");
-  else
-    $day = $_SESSION[$m][$tab]["day"];
-}
-else
-$day = $_SESSION[$m][$tab]["day"] = dPgetParam($_GET, 'day', -1);
+$day   = mbGetValueFromGetOrSession("day"  , date("d"));
+$month = mbGetValueFromGetOrSession("month", date("m"));
+$year  = mbGetValueFromGetOrSession("year" , date("Y"));
+$selChir = mbGetValueFromGetOrSession("selChir");
 
-if(dPgetParam($_GET, 'month', -1) == -1) {
-  if(!isset($_SESSION[$m][$tab]["month"]))
-    $month = $_SESSION[$m][$tab]["month"] = date("m");
-  else
-    $month = $_SESSION[$m][$tab]["month"];
-}
-else
-$month = $_SESSION[$m][$tab]["month"] = dPgetParam($_GET, 'month', -1);
-
-if(dPgetParam($_GET, 'year', -1) == -1) {
-  if(!isset($_SESSION[$m][$tab]["year"]))
-    $year = $_SESSION[$m][$tab]["year"] = date("Y");
-  else
-    $year = $_SESSION[$m][$tab]["year"];
-}
-else
-$year = $_SESSION[$m][$tab]["year"] = dPgetParam($_GET, 'year', -1);
-if(dPgetParam($_GET, 'selChir', 0) == 0) {
-  if(!isset($_SESSION[$m][$tab]["selChir"]))
-    $selChir = $_SESSION[$m][$tab]["selChir"] = 0;
-  else
-    $selChir = $_SESSION[$m][$tab]["selChir"];
-}
-else
-$selChir = $_SESSION[$m][$tab]["selChir"] = dPgetParam($_GET, 'selChir', 0);
-
-$nday = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
+$nday  = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
 $ndaym = date("m", mktime(0, 0, 0, $month, $day + 1, $year));
 $ndayy = date("Y", mktime(0, 0, 0, $month, $day + 1, $year));
-$pday = date("d", mktime(0, 0, 0, $month, $day - 1, $year));
+
+$pday  = date("d", mktime(0, 0, 0, $month, $day - 1, $year));
 $pdaym = date("m", mktime(0, 0, 0, $month, $day - 1, $year));
 $pdayy = date("Y", mktime(0, 0, 0, $month, $day - 1, $year));
-$nmonth = date("m", mktime(0, 0, 0, $month + 1, $day, $year));
+
+$nmonth  = date("m", mktime(0, 0, 0, $month + 1, $day, $year));
 $nmonthd = date("d", mktime(0, 0, 0, $month + 1, $day, $year));
 $nmonthy = date("Y", mktime(0, 0, 0, $month + 1, $day, $year));
-$pmonth = date("m", mktime(0, 0, 0, $month - 1, $day, $year));
+
+$pmonth  = date("m", mktime(0, 0, 0, $month - 1, $day, $year));
 $pmonthd = date("d", mktime(0, 0, 0, $month - 1, $day, $year));
 $pmonthy = date("Y", mktime(0, 0, 0, $month - 1, $day, $year));
 
@@ -124,36 +96,8 @@ foreach($result as $key => $value) {
   $duree[$plageop]["hour"] = date("H", $duree[$plageop]["newtime"]);
   $duree[$plageop]["min"] = date("i", $duree[$plageop]["newtime"]);  
 }
-// * liste des operations triées par plage
-/*$sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
-		plagesop.fin, plagesop.debut, 0 AS busy_time, 0 AS spe
-		FROM plagesop
-		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_chir = '$user'
-		AND plagesop.date LIKE '$year-$month-__'
-		AND operations.operation_id IS NULL
-		UNION
-		SELECT plagesop.id AS id, plagesop.date, COUNT(operations.temp_operation) AS operations,
-		plagesop.fin, plagesop.debut, SUM(operations.temp_operation) AS busy_time, 0 AS spe
-		FROM plagesop
-		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_chir = '$user'
-		AND plagesop.date LIKE '$year-$month-__'
-		AND operations.operation_id IS NOT NULL
-		GROUP BY operations.plageop_id
-		UNION
-		SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
-		plagesop.fin, plagesop.debut, 0 AS busy_time, 1 AS spe
-		FROM plagesop
-		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_spec = '$specialite'
-		AND plagesop.date LIKE '$year-$month-__'
-		ORDER BY plagesop.date, plagesop.id";
-*/
-// Nouvelle requete pour assurer la compatibilité avec mySQL 3.X
+// Liiste des operations triées par plage
+// Requete sans UNION pour assurer la compatibilité avec mySQL 3.X
 $sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
 		plagesop.fin, plagesop.debut, 0 AS busy_time, 0 AS spe
 		FROM plagesop

@@ -40,7 +40,7 @@ $tabBox->add("vw_idx_planning", "Consulter le planning");
 $tabBox->add("vw_edit_planning", "Modifier une intervention");
 $tabBox->add("vw_add_planning", "Planifier une intervention");
 $tabBox->add("vw_protocoles", "Protocoles");
-$tabBox->add("vw_add_protocole", "Ajouter un protocole");
-$tabBox->add("vw_edit_protocole", "Editer un protocole");
+$tabBox->add("vw_add_protocole", "Créer un protocole");
+$tabBox->add("vw_edit_protocole", "Modifier un protocole");
 $tabBox->show();
 ?>
