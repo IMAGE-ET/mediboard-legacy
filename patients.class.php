@@ -145,15 +145,18 @@ class CPatient extends CDpObject {
     return parent::canDelete( $msg, $oid, $tables );
   }
   
-  function loadRefs() {
-    // Backward references
+  // Backward references
+  function loadRefsBack() {
     // opérations
     $obj = new COperation();
     $this->_ref_operations = $obj->loadList("pat_id = '$this->patient_id'");
     // consultations
     $obj = new CConsultation();
     $this->_ref_consultations = $obj->loadList("patient_id = '$this->patient_id'");
-    // Forward references
+  }
+
+  // Forward references
+  function loadRefsFwd() {
     // medecin_traitant
     $obj = new CMedecin();
     if($obj->load($this->medecin_traitant))
