@@ -33,7 +33,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-    $_SESSION[$m][$tab]["usergroup"] = 0;
+    $_SESSION[$m]["usergroup"] = NULL;
 		$AppUI->setMsg( "Groupe supprimé", UI_MSG_ALERT);
 		$AppUI->redirect( "m=$m" );
 	}

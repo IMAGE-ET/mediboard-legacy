@@ -20,11 +20,7 @@ $sql = "SELECT *
 $groups = db_loadList($sql);
 
 // Récupération du groupe à ajouter/editer
-if (isset($_GET["usergroup"])) {
-  $_SESSION[$m][$tab]["usergroup"] = $_GET["usergroup"];
-}
-
-$usergroup = dPgetParam($_SESSION[$m][$tab], "usergroup", 0);
+$usergroup = mbGetValueFromGetOrSession("usergroup", 0);
 
 $sql = "SELECT * 
   FROM groups_mediboard 
