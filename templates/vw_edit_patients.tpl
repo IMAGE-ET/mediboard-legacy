@@ -42,7 +42,8 @@ function popMed(type) {
   url += '&dialog=1';
   url += '&type=' + type;
   
-  window.open(url, 'Medecin', 'left=50, top=50, height=400, width=600, resizable=yes');
+  neo = window.open(url, 'Medecin', 'left=50, top=50, height=400, width=600, resizable=yes');
+  if(neo.window.focus){neo.window.focus();}
 }
 
 function setMed( key, nom, prenom, type ){
