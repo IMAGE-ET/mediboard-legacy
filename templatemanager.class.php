@@ -8,7 +8,7 @@
 */
 
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass('smartydp'));
 
 class CTemplateManager {
   var $properties = array();
@@ -41,6 +41,10 @@ class CTemplateManager {
   
   function initHTMLArea () {
     $smarty = new CSmartyDP;
+    $smarty->template_dir = "modules/dPcompteRendu/templates/";
+    $smarty->compile_dir = "modules/dPcompteRendu/templates_c/";
+    $smarty->config_dir = "modules/dPcompteRendu/configs/";
+    $smarty->cache_dir = "modules/dPcompteRendu/cache/";
     $smarty->assign("templateManager", $this);
     $smarty->display('init_htmlarea.tpl');      
 	}
