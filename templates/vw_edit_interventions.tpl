@@ -21,6 +21,8 @@
 		  <td width="50%">
 		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op.id}">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
+			Admission : le {$curr_op.date_adm} à {$curr_op.time_adm}
+			<br />
             Côté : {$curr_op.cote}
             <br />
 			Durée : {$curr_op.duree}
@@ -67,6 +69,8 @@
             <input type="hidden" name="cmd" value="sethour" />
             <input type="hidden" name="id" value="{$curr_op.id}" />
 		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op.id}">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
+			<br />
+			Admission : le {$curr_op.date_adm} à {$curr_op.time_adm}
 			<br />
             Côté : {$curr_op.cote}
             <br />

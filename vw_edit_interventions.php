@@ -36,7 +36,8 @@ $title["plage"] = substr($title["debut"], 0, 2)."h".substr($title["debut"], 3, 2
 
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
 		patients.naissance AS naissance, operations.type_anesth AS type_anesth,
-		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote
+		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote,
+        operations.date_adm AS date_adm, operations.time_adm AS time_adm
 		FROM operations
 		LEFT JOIN patients
 		ON operations.pat_id = patients.patient_id
@@ -48,6 +49,7 @@ $list1 = db_loadlist($sql);
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
 		patients.naissance AS naissance,
 		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote,
+        operations.date_adm AS date_adm, operations.time_adm AS time_adm,
         operations.time_operation AS heure, plagesop.debut AS debut, plagesop.fin AS fin, operations.rank AS rank,
         operations.type_anesth AS type_anesth
 		FROM operations
@@ -80,7 +82,9 @@ if(isset($list1)) {
     $ccam = mysql_fetch_array($ccamr);
     $list1[$key]["CCAM"] = $ccam["LIBELLELONG"];
 	$list1[$key]["duree"] = substr($value["temps"], 0, 2)."h".substr($value["temps"], 3, 2);
-	$list1[$key]["lu_type_anesth"] = $anesth[$list1[$key]["type_anesth"]];
+	$list1[$key]["lu_type_anesth"] = $anesth[$value["type_anesth"]];
+	$list1[$key]["date_adm"] = substr($value["date_adm"], 8, 2)."/".substr($value["date_adm"], 5, 2)."/".substr($value["date_adm"], 0, 4);
+	$list1[$key]["time_adm"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
   }
 }
 else
@@ -105,6 +109,8 @@ if(isset($list2)) {
 	$list2[$key]["hour"] = substr($value["heure"], 0, 2);
 	$list2[$key]["min"] = substr($value["heure"], 3, 2);
     $list2[$key]["lu_type_anesth"] = $anesth[$list2[$key]["type_anesth"]];
+	$list2[$key]["date_adm"] = substr($value["date_adm"], 8, 2)."/".substr($value["date_adm"], 5, 2)."/".substr($value["date_adm"], 0, 4);
+	$list2[$key]["time_adm"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
     $j = 0;
     for($i = substr($value["debut"], 0, 2) ; $i < substr($value["fin"], 0, 2) ; $i++) {
       if(strlen($i) == 1)
