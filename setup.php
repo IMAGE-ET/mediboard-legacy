@@ -1,12 +1,11 @@
-<?php
-/*
- * Name:      dPprotocoles
- * Directory: dPprotocoles
- * Version:   1.0.0
- * Type:      user
- * UI Name:   dPprotocoles
- * UI Icon:
- */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPprotocoles
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 // MODULE CONFIGURATION DEFINITION
 $config = array();
