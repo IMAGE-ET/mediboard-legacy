@@ -43,6 +43,10 @@ $where["function_id"] = "= '".$mediuser->function_id."'";
 $listeTarifsSpe = new CTarif();
 $listeTarifsSpe = $listeTarifsSpe->loadList($where);
 
+// Liste des praticiens du cabinet
+$listPrat = new CMediusers();
+$listPrat = $listPrat->loadPraticiens(PERM_READ);
+
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
@@ -53,6 +57,7 @@ $smarty->assign('mediuser', $mediuser);
 $smarty->assign('listeTarifsChir', $listeTarifsChir);
 $smarty->assign('listeTarifsSpe', $listeTarifsSpe);
 $smarty->assign('tarif', $tarif);
+$smarty->assign('listPrat', $listPrat);
 
 $smarty->display('vw_compta.tpl');
 

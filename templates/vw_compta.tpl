@@ -2,17 +2,42 @@
 
 {literal}
 <script language="javascript">
+function checkRapport(){
+  var form = document.printFrm;
+    
+  if (form.date_debut.value > form.date_fin.value) {
+    alert("Date de début superieure à la date de fin");
+    return false;
+  }
+  var debut = form.date_debut.value;
+  var fin = form.date_fin.value;
+  var chir = form.chir.value;
+  var etat = form.etat.value;
+  var type = form.type.value;
+  var aff = form.aff.value;
+  var url = './index.php?m=dPcabinet&a=print_rapport&dialog=1';
+  url = url + '&debut=' + debut;
+  url = url + '&fin=' + fin;
+  url = url + '&chir=' + chir;
+  url = url + '&etat=' + etat;
+  url = url + '&type=' + type;
+  url = url + '&aff=' + aff;
+  popup(700, 550, url, 'Rapport');
+  
+  return false;
+}
+
 function popCalendar( field ){
   calendarField = field;
-  idate = eval( 'document.paramFrm.date_' + field + '.value' );
+  idate = eval( 'document.printFrm.date_' + field + '.value' );
   var url = "index.php?m=public&a=calendar&dialog=1&callback=setCalendar";
   url += "&date=" + idate;
   popup(280, 250, url, 'calwin');
 }
 
 function setCalendar( idate, fdate ) {
-  fld_date = eval( 'document.paramFrm.date_' + calendarField );
-  fld_fdate = eval( 'document.paramFrm.' + calendarField );
+  fld_date = eval( 'document.printFrm.date_' + calendarField );
+  fld_fdate = eval( 'document.printFrm.' + calendarField );
   fld_date.value = idate;
   fld_fdate.value = fdate;
 }
@@ -21,7 +46,11 @@ function setCalendar( idate, fdate ) {
 
 <table class="main"><tr>
 
-  <td class="halfPane"><table class="form">
+  <td class="halfPane">
+  <form name="printFrm" action="./index.php" method="get" onSubmit="return checkRapport()">
+  <input type="hidden" name="a" value="print_rapport" />
+  <input type="hidden" name="dialog" value="1" />
+  <table class="form">
     <tr><th class="title" colspan="2">Edition de rapports</th></tr>
     <tr><th class="category" colspan="2">Choix de la periode</th></tr>
     <tr>
@@ -45,6 +74,12 @@ function setCalendar( idate, fdate ) {
       </td>
     </tr>
     <tr><th class="category" colspan="2">Options sur le rapport</th></tr>
+    <tr><th>Praticien :</th>
+      <td><select name="chir">
+        <option value="0">&mdash; Tous &mdash;</option>
+        {foreach from=$listPrat item=curr_prat}
+        <option value="{$curr_prat->user_id}">{$curr_prat->user_last_name} {$curr_prat->user_first_name}</option>
+        {/foreach}
     <tr><th>Etat des paiements :</th>
       <td><select name="etat">
         <option value="1">Payés</option>
@@ -62,12 +97,13 @@ function setCalendar( idate, fdate ) {
       </select></td>
     </tr>
     <tr><th>Type d'affichage :</th>
-      <td><select name="etat">
+      <td><select name="aff">
         <option value="1">Liste complète</option>
         <option value="0">Totaux</option>
       </select></td>
     </tr>
-  </table></td>
+    <tr><td class="button" colspan="2"><input type="submit" value="imprimer" /></td></tr>
+  </table></form></td>
 
   <td class="halfPane"><table align="center">
 
@@ -96,7 +132,7 @@ function setCalendar( idate, fdate ) {
     </table></td>
 
     <td>
-      <form name="editFrm" action="./index.php?m={$m}" method="post" onSubmit="return checkMediuser()"/>
+      <form name="editFrm" action="./index.php?m={$m}" method="post">
       <input type="hidden" name="dosql" value="do_tarif_aed" />
       <input type="hidden" name="tarif_id" value="{$tarif->tarif_id}" />
       <input type="hidden" name="del" value="0" />
