@@ -10,10 +10,11 @@
 global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
-require_once( $AppUI->getModuleClass('mediusers', 'mediusers') );
+require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 require_once( $AppUI->getModuleClass('mediusers', 'groups') );
-require_once( $AppUI->getModuleClass('admin', 'admin') );
+require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 
 if (!$canEdit) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -66,12 +67,22 @@ if($selConsult) {
   }
 }
 
+// Récupération des modèles de l'utilisateur
+
+$sql = "SELECT *" .
+    		"\nFROM compte_rendu" .
+    		"\nWHERE chir_id = '$chir->user_id'" .
+    		"\nAND type = 'consultation'" .
+    		"\nORDER BY nom";
+$listModele = db_loadObjectList($sql, new CCompteRendu());
+
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 
 $smarty->assign('listPlage', $listPlage);
+$smarty->assign('listModele', $listModele);
 $smarty->assign('consult', $consult);
 $smarty->display('edit_consultation.tpl');
 

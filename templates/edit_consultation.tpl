@@ -1,3 +1,14 @@
+{literal}
+<script language="JavaScript" type="text/javascript">
+
+function editModele(consult, modele) {
+  popup(700, 700, './index.php?m=dPcabinet&a=edit_compte_rendu&consult=' + consult + '&modele=' + modele + '&dialog=1', 'Compte-rendu');
+}
+  
+</script>
+{/literal}
+
+
 <table>
   <tr>
     <td valign="top">
@@ -74,8 +85,25 @@
             </table>
             <table class="form">
               <tr><th colspan="2" class="category">Règlement</th></tr>
-              <tr><th
+              <tr><th>Reste à payer: </th><td>le règlement</td></tr>
             </table>
+          </td>
+          <td valign="top">
+            <table class="form">
+              <tr><th class="category">Compte-Rendu</th></tr>
+              <tr><td>
+              {if $consult->compte_rendu}
+                <a href="#" onclick="editModele({$consult->consultation_id}, 0)">
+                Modifier le compte-rendu</a>
+              {else}
+                <ul>
+                {foreach from=$listModele item=curr_modele}
+                  <li><a href="#" onclick="editModele({$consult->consultation_id}, {$curr_modele->compte_rendu_id})">
+                  {$curr_modele->nom}</a></li>
+                {/foreach}
+                </ul>
+              {/if}
+              </td></tr>
           </td>
         </tr>
       </table>
