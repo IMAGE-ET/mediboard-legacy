@@ -18,8 +18,7 @@ function checkPatient() {
 function printPatient(id) {
   var url = './index.php?m=dPpatients&a=print_patient&dialog=1';
   url = url + '&patient_id=' + id;
-  neo = window.open(url, 'Patient', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
-  if(neo.window.focus){neo.window.focus();}
+  popup(700, 550, url, 'Patient');
 }
 //]]>
 </script>
