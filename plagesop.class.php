@@ -14,33 +14,85 @@ require_once( $AppUI->getSystemClass ('dp' ) );
  */
 class CPlageOp extends CDpObject {
   // DB Table key
-  var $id = NULL;
+  var $id = null;
   
   // DB References
-  var $id_chir = NULL;
-  var $id_anesth = NULL;
-  var $id_spec = NULL;
-  var $id_salle = NULL;
+  var $id_chir = null;
+  var $id_anesth = null;
+  var $id_spec = null;
+  var $id_salle = null;
 
   // DB fields
-  var $date = NULL;
-  var $debut = NULL;
-  var $fin = NULL;
+  var $date = null;
+  var $debut = null;
+  var $fin = null;
     
   // Form Fields
-  var $_date = NULL;
-  var $day = NULL;
-  var $month = NULL;
-  var $year = NULL;
-  var $heuredeb = NULL;
-  var $minutedeb = NULL;
-  var $heurefin = NULL;
-  var $minutefin = NULL;
-  var $repet = NULL;
-  var $double = NULL;
+  var $_date = null;
+  var $day = null;
+  var $month = null;
+  var $year = null;
+  var $heuredeb = null;
+  var $minutedeb = null;
+  var $heurefin = null;
+  var $minutefin = null;
+  var $repet = null;
+  var $double = null;
+  
+  // Object Refernces
+  var $_ref_chir = null;
+  var $_ref_anesth = null;
+  var $_ref_spec = null;
+  var $_ref_salle = null;
+  var $_ref_operations = null;
 
   function CPlageOp() {
     $this->CDpObject( 'plagesop', 'id' );
+  }
+
+  function loadRefs() {
+
+    // Forward references
+    if ($this->id_chir) {
+      require_once("modules/admin/admin.class.php");
+      $this->_ref_chir = new CUser;
+      $this->_ref_chir->load($this->id_chir);
+    }
+
+    if ($this->id_anesth) {
+      require_once("modules/admin/admin.class.php");
+      $this->_ref_anesth = new CUser;
+      $this->_ref_anesth->load($this->id_anesth);
+    }
+    
+    if ($this->id_spec) {
+      require_once("modules/mediusers/functions.class.php");
+      $this->_ref_spec = new CFunctions;
+      $this->_ref_spec->load($this->id_spec);
+    }
+    
+    if ($this->id_salle) {
+      require_once("modules/dpPlanning/salle.class.php");
+      $this->_ref_salle = new CSalle;
+      $this->_ref_salle->load($this->id_salle);
+    }
+
+    // Backward references
+    require_once("modules/dpBloc/salle.class.php");
+    $sql = "SELECT * FROM operations WHERE plageop_id = '$this->id'";
+    $this->_ref_operations = db_loadObjectList($sql, new COperation);
+  }
+
+  // Overload canDelete
+  function canDelete(&$msg, $oid = null) {
+    $tables[] = array (
+      'label' => 'Opérations', 
+      'name' => 'operations', 
+      'idfield' => 'operation_id', 
+      'joinfield' => 'plageop_id'
+    );
+    
+    return true; // CDpObject::canDelete( $msg, $oid, $tables );
   }
 
   function delete() {
@@ -53,20 +105,17 @@ class CPlageOp extends CDpObject {
         return db_error();
       }
       
-      $nyear  = date("Y", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-      $nmonth = date("n", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-      $nday   = date("j", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-
-      $this->year  = $nyear;
-      $this->month = $nmonth;
-      $this->day   = $nday;
+      $nextTime = mktime (0, 0, 0, $this->month, $this->day+7, $this->year);
+      $this->year  = date("Y", $nextTime);
+      $this->month = date("n", $nextTime);
+      $this->day   = date("j", $nextTime);
     }
     
-    return NULL;
+    return null;
   }
   
 /*
- * returns collision message, NULL for no collision
+ * returns collision message, null for no collision
  */
   function hasCollisions() {
     // Get all other plages the same day
@@ -144,25 +193,13 @@ class CPlageOp extends CDpObject {
             return db_error();
         }
 
-        $nyear  = date("Y", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-        $nmonth = date("n", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-        $nday   = date("j", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-        
-        $this->year  = $nyear ;
-        $this->month = $nmonth;
-        $this->day   = $nday  ;
-
-        if ($this->double) {
-          $nyear  = date("Y", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-          $nmonth = date("n", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-          $nday   = date("j", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-          
-          $this->year = $nyear;
-          $this->month = $nmonth;
-          $this->day = $nday;
-
+        if ($this->double)
           $i++;
-        }
+
+        $nextTime = mktime (0, 0, 0, $this->month, $this->day+($this->double ? 14 : 7), $this->year);
+        $this->year  = date("Y", $nextTime);
+        $this->month = date("n", $nextTime);
+        $this->day   = date("j", $nextTime);
       }
     }
     
@@ -181,32 +218,20 @@ class CPlageOp extends CDpObject {
             return db_error();
         }
 
-        $nyear  = date("Y", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-        $nmonth = date("n", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-        $nday   = date("j", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-        
-        $this->year  = $nyear ;
-        $this->month = $nmonth;
-        $this->day   = $nday  ;
-        
-        if (isset($this->double)) {
-          $nyear  = date("Y", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-          $nmonth = date("n", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-          $nday   = date("j", mktime (0,0,0,$this->month,$this->day+7,$this->year));
-
-          $this->year  = $nyear;
-          $this->month = $nmonth;
-          $this->day   = $nday;
-
+        if ($this->double)
           $i++;
-        }
+
+        $nextTime = mktime (0, 0, 0, $this->month, $this->day+($this->double ? 14 : 7), $this->year);
+        $this->year  = date("Y", $nextTime);
+        $this->month = date("n", $nextTime);
+        $this->day   = date("j", $nextTime);
       }
     }
     
     return $msg;
   }
   
-	function load($oid = NULL, $strip = TRUE) {
+	function load($oid = null, $strip = TRUE) {
     if (!parent::load($oid, $strip)) {
       return FALSE;
     }

@@ -23,5 +23,15 @@ class CSalle extends CDpObject {
 		$this->CDpObject( 'sallesbloc', 'id' );
 	}
 
+  function canDelete(&$msg, $oid = null) {
+    $tables[] = array (
+      'label' => 'plages opératoires', 
+      'name' => 'plagesop', 
+      'idfield' => 'operation_id', 
+      'joinfield' => 'id_salle'
+    );
+    
+    return CDpObject::canDelete( $msg, $oid, $tables );
+  }
 }
 ?>
