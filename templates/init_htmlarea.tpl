@@ -1,15 +1,19 @@
 {literal}
+
+<!-- Begin HTML Area Integration -->
+<script type="text/javascript">
+   _editor_url = "./lib/HTMLArea/";
+   _editor_lang = "fr";
+</script>
+<script src="./lib/HTMLArea/htmlarea.js" type="text/javascript"></script>
+<!-- End HTML Area Integration -->
+
 <script language="javascript">
 
-// HTMLArea.loadPlugin("TableOperations");
-// HTMLArea.loadPlugin("SpellChecker");
-// HTMLArea.loadPlugin("FullPage");
-// HTMLArea.loadPlugin("CSS");
-// HTMLArea.loadPlugin("ContextMenu");
-// HTMLArea.loadPlugin("HtmlTidy");
-// HTMLArea.loadPlugin("ListType");
-// HTMLArea.loadPlugin("CharacterMap");
-// HTMLArea.loadPlugin("DynamicCSS");
+function initHTMLArea () {
+  HTMLArea.init(); 
+  HTMLArea.onload = initEditor;
+}
 
 var editor = null;
 
