@@ -19,7 +19,7 @@ function checkGroup() {
 <tr>
   <td class="greedyPane">
 
-		<a href="index.php?m={$m}&tab=2&usergroup=0"><strong>Créer un groupe</strong></a>
+		<a href="index.php?m={$m}&tab={$tab}&usergroup=0"><strong>Créer un groupe</strong></a>
 
     <table class="color">
       
@@ -29,7 +29,7 @@ function checkGroup() {
     
 		{foreach from=$groups item=curr_group}
     <tr>
-      <td><a href="index.php?m={$m}&tab=2&usergroup={$curr_group.group_id}">{$curr_group.text}</a></td>
+      <td><a href="index.php?m={$m}&tab={$tab}&usergroup={$curr_group.group_id}">{$curr_group.text}</a></td>
     </tr>
     {/foreach}
       

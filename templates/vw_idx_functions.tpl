@@ -29,7 +29,7 @@ function setColor(color) {
 <tr>
   <td class="greedyPane">
 
-		<a href="index.php?m=mediusers&tab=1&userfunction=0"><strong>Créer une fonction</strong></a>
+		<a href="index.php?m={$m}&tab={$tab}&userfunction=0"><strong>Créer une fonction</strong></a>
 
     <table class="color">
       
@@ -41,8 +41,8 @@ function setColor(color) {
     
 		{foreach from=$functions item=curr_function}
     <tr>
-      <td><a href="index.php?m=mediusers&tab=1&userfunction={$curr_function.function_id}">{$curr_function.text}</a></td>
-      <td><a href="index.php?m=mediusers&tab=1&userfunction={$curr_function.function_id}">{$curr_function.mygroup}</a></td>
+      <td><a href="index.php?m={$m}&tab={$tab}&userfunction={$curr_function.function_id}">{$curr_function.text}</a></td>
+      <td><a href="index.php?m={$m}&tab={$tab}&userfunction={$curr_function.function_id}">{$curr_function.mygroup}</a></td>
       <td style="background: #{$curr_function.color}" />
     </tr>
     {/foreach}
@@ -53,7 +53,7 @@ function setColor(color) {
   
   <td class="pane">
 
-  	<form name="editFrm" action="./index.php?m=mediusers" method="post" onSubmit="return checkForm()">
+  	<form name="editFrm" action="./index.php?m={$m}" method="post" onSubmit="return checkForm()">
   	<input type="hidden" name="dosql" value="do_functions_aed">
 		<input type="hidden" name="function_id" value="{$functionsel.function_id}">
   	<input type="hidden" name="del" value="0">

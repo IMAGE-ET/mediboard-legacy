@@ -37,7 +37,7 @@ function checkMediuser() {
 <tr>
   <td class="greedyPane">
 
-		<a href="index.php?m={$m}&tab=0&mediuser=0"><strong>Créer un utilisateur</strong></a>
+		<a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser=0"><strong>Créer un utilisateur</strong></a>
 
     <table class="color">
       
@@ -50,10 +50,10 @@ function checkMediuser() {
     
     {foreach from=$users item=curr_user}
     <tr style="background: #{$curr_user.color}">
-      <td><a href="index.php?m={$m}&tab=0&mediuser={$curr_user.id}">{$curr_user.username}</a></td>
-      <td><a href="index.php?m={$m}&tab=0&mediuser={$curr_user.id}">{$curr_user.lastname}</a></td>
-      <td><a href="index.php?m={$m}&tab=0&mediuser={$curr_user.id}">{$curr_user.firstname}</a></td>
-      <td><a href="index.php?m={$m}&tab=0&mediuser={$curr_user.id}">{$curr_user.functionname}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser={$curr_user.id}">{$curr_user.username}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser={$curr_user.id}">{$curr_user.lastname}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser={$curr_user.id}">{$curr_user.firstname}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser={$curr_user.id}">{$curr_user.functionname}</a></td>
     </tr>
     {/foreach}
       
