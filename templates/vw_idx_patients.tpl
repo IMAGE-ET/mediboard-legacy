@@ -97,7 +97,7 @@ function checkPatient() {
         
         <tr>
           <th>Date de naissance:</th>
-          <td>{$patient->dateFormed}</td>
+          <td>{$patient->_jour} / {$patient->_mois} / {$patient->_annee}</td>
         </tr>
         
         <tr>
