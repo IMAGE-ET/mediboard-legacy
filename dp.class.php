@@ -67,7 +67,7 @@ class CDpObject {
  *  @param string $order the SQL order clause, can also be an array of strings
  *  @return the objects array
  */
-  function loadList($where = null, $order = null) {
+  function loadList($where = null, $order = null, $limit = null) {
     $sql = "SELECT * FROM `$this->_tbl`";
 
     if ($where) {
@@ -79,6 +79,10 @@ class CDpObject {
       $sql .= "\nORDER BY ";
       $sql .= is_array($where) ? implode(",\n", $where) : $where;
     }
+    
+    if ($limit) {
+			$sql .= "\nLIMIT $limit";
+		}
       
     return db_loadObjectList($sql, $this);
   }
