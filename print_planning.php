@@ -27,19 +27,15 @@ $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
 $spe = dPgetParam( $_GET, 'spe', 0);
 $conv = dPgetParam( $_GET, 'conv', 0);
+$ordre = dPgetParam( $_GET, 'ordre', 'heure');
+$total = 0;
 
-$dayOfWeekList = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
-$monthList = array("", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet",
-					"Aout", "Septembre", "Octobre", "Novembre", "Décembre");
+// Affichage du titre
+$date = strftime("%A %d %B %Y", mktime(0, 0, 0, $monthd, $dayd, $yeard));
+if($debut != $fin)
+  $date .= " au " . strftime("%A %d %B %Y", mktime(0, 0, 0, $monthf, $dayf, $yearf));
 
-$dayOfWeekd = date("w", mktime(0, 0, 0, $monthd, $dayd, $yeard));
-$dayOfWeekf = date("w", mktime(0, 0, 0, $monthf, $dayf, $yearf));
-$date = $dayOfWeekList[$dayOfWeekd]." $dayd ".$monthList[$monthd]." $yeard";
-if($debut != $fin) {
-  $date .= " au ".$dayOfWeekList[$dayOfWeekf]." $dayf ".$monthList[$monthf]." $yearf";
-}
-
-//On sort les journées
+// On sort les journées
 $sql = "SELECT date_adm
 		FROM operations
 		WHERE date_adm >= '$yeard-$monthd-$dayd'
@@ -48,6 +44,7 @@ $sql = "SELECT date_adm
         ORDER BY date_adm";
 $listDays = db_loadlist($sql);
 
+// Clause de filtre par spécialité
 if($spe) {
   $sql = "SELECT * " .
          "FROM users_mediboard " .
@@ -60,10 +57,10 @@ if($spe) {
   $addSpe .= ")";
 }
 
+// Clause de filtre par chirurgien
 $addChir = $chir ? " AND chir_id = '$chir'" : null;
 
-//On sort les chirurgiens de chaque jour
-$monChrono = new Chronometer();
+// On sort les chirurgiens de chaque jour
 foreach($listDays as $key => $value) {
   $sql = "SELECT chir_id, user_last_name, user_first_name" .
   		" FROM operations" .
@@ -78,27 +75,32 @@ foreach($listDays as $key => $value) {
   		" ORDER BY chir_id";
   $listDays[$key]["listChirs"] = db_loadlist($sql);
   foreach($listDays[$key]["listChirs"] as $key2 => $value2) {
-    $sql = "SELECT operation_id" .
+    $sql = "SELECT operations.operation_id" .
   		  " FROM operations" .
-  		  " WHERE date_adm = '". $value["date_adm"] ."'" .
-  		  " AND chir_id = '". $value2["chir_id"] ."'";
+  		  " LEFT JOIN patients" .
+  		  " ON operations.pat_id = patients.patient_id" .
+  		  " WHERE operations.date_adm = '". $value["date_adm"] ."'" .
+  		  " AND operations.annulee = 0" .
+  		  " AND operations.chir_id = '". $value2["chir_id"] ."'";
     if($type)
-      $sql .= " AND type_adm = '$type'";
+      $sql .= " AND operations.type_adm = '$type'";
     if($conv) {
       if($conv == "o")
-        $sql .= " AND (convalescence IS NOT NULL AND convalescence != '')";
+        $sql .= " AND (operations.convalescence IS NOT NULL AND operations.convalescence != '')";
       else
-        $sql .= " AND (convalescence IS NULL OR convalescence = '')";
+        $sql .= " AND (operations.convalescence IS NULL OR operations.convalescence = '')";
     }
-    $sql .= " ORDER BY time_adm, chir_id, time_operation";
+    if($ordre == 'heure')
+      $sql .= " ORDER BY operations.time_adm, operations.chir_id, operations.time_operation";
+    else
+      $sql .= " ORDER BY patients.nom, patients.prenom, operations.chir_id, operations.time_adm";
     $result = db_loadlist($sql);
+    $total += count($result);
     foreach($result as $key3 => $value3) {
   	  unset($adm);
       $adm = new COperation();
       $adm->load($value3["operation_id"]);
-      $monChrono->start();
       $adm->loadRefs();
-      $monChrono->stop();
       $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $adm;
     }
   }
@@ -110,7 +112,7 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('date', $date);
 $smarty->assign('listDays', $listDays);
-$smarty->assign('monChrono', $monChrono);
+$smarty->assign('total', $total);
 
 $smarty->display('print_planning.tpl');
 

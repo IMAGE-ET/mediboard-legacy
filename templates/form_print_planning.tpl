@@ -37,9 +37,11 @@ function popPlanning() {
   var chir = document.paramFrm.chir.value;
   var spe = document.paramFrm.spe.value;
   var conv = document.paramFrm.conv.value;
+  var ordre = document.paramFrm.ordre.value;
   var url = '?m=dPhospi&a=print_planning&dialog=1';
   url += '&debut=' + debut;
   url += '&fin=' + fin;
+  url += '&ordre=' + ordre;
   url += '&type=' + type;
   url += '&chir=' + chir;
   url += '&spe=' + spe;
@@ -77,13 +79,20 @@ function popPlanning() {
             </a>
           </td>
         </tr>
+        <tr>
+        </tr>
+          <th><label for="paramFrm_ordre">Classement des admissions</label></th>
+          <td><select name="ordre">
+            <option value="heure">par heure d'admission</option>
+            <option value="nom">par nom du patient</option>
+          </select></td>
       </table>
 
     </td>
     <td>
 
       <table class="form">
-        <tr><th class="category" colspan="2">Choix des paramètres de tri</th></tr>
+        <tr><th class="category" colspan="2">Paramètres de filtrage</th></tr>
         <tr>
           <th><label for="paramFrm_type">Type d'admission:</label></th>
           <td><select name="type">

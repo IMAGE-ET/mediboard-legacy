@@ -4,7 +4,7 @@
   {foreach from=$curr_day.listChirs item=curr_chir}
   {if $curr_chir.admissions}
   <tr>
-    <td><b>{$curr_day.date_adm|date_format:"%a %d %b %Y"} - Dr. {$curr_chir.user_last_name} {$curr_chir.user_first_name}</b></td>
+    <td><b>{$curr_day.date_adm|date_format:"%a %d %b %Y"} - Dr. {$curr_chir.user_last_name} {$curr_chir.user_first_name} : {$curr_chir.admissions|@count} admission(s)</b></td>
   </tr>
   <tr>
     <td>
@@ -52,4 +52,5 @@
   {/if}
   {/foreach}
   {/foreach}
+  <tr><th>Total : {$total} admission(s) pour le planning du {$date}</th></tr>
 </table>
