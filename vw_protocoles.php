@@ -7,9 +7,11 @@
 * @author Thomas Despoix
 */
 
+
 require_once("modules/mediusers/mediusers.class.php");
 require_once("modules/mediusers/functions.class.php");
 require_once("modules/mediusers/groups.class.php");
+require_once("modules/dPplanningOp/planning.class.php");
 
 global $AppUI, $canRead, $canEdit, $m;
 

@@ -9,7 +9,7 @@
 
 //require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once("modules/admin/admin.class.php");
+//require_once("modules/admin/admin.class.php");
 require_once("modules/dPpatients/patients.class.php");
 require_once("modules/dPbloc/plagesop.class.php");
 require_once("modules/dPccam/acte.class.php");
