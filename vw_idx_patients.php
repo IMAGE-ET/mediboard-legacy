@@ -41,8 +41,7 @@ else {
 }
 if($_SESSION[$m][$tab]["prenom"] != "" || $_SESSION[$m][$tab]["nom"] != "") {
   $sql = "select * from patients where nom like '%".$_SESSION[$m][$tab]["nom"]."%'
-		and prenom like '%".$_SESSION[$m][$tab]["prenom"]."%'
-		LIMIT 0 , 50";
+		and prenom like '%".$_SESSION[$m][$tab]["prenom"]."%'";
 }
 else {
   $sql = "select * from patients where 0";
