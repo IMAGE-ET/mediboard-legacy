@@ -46,15 +46,14 @@ $sql = "SELECT users.user_username FROM users WHERE users.user_id = '$chir'";
 $result = db_loadlist($sql);
 $id_chir = $result[0]['user_username'];
 
-//Calcul du temps occupé par chaque opération
+// Calcul du temps occupé par chaque opération
 $sql = "SELECT operations.temp_operation AS duree, plagesop.id AS id
 		FROM plagesop
 		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id
+		ON plagesop.id = operations.plageop_id AND operations.annulee != 1
 		WHERE plagesop.id_chir = '$id_chir'
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NOT NULL
-		AND operations.annulee != 1
 		ORDER BY plagesop.date, plagesop.id";
 $result = db_loadlist($sql);
 foreach($result as $key => $value) {
@@ -73,6 +72,7 @@ foreach($result as $key => $value) {
   $duree[$plageop]["min" ] = date("i", $newtime);
 }
 
+// Liste des plages opératoires vides
 $sql = "SELECT plagesop.id AS id, plagesop.date,
 		plagesop.fin AS fin, plagesop.debut AS debut
 		FROM plagesop
@@ -82,6 +82,7 @@ $sql = "SELECT plagesop.id AS id, plagesop.date,
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NULL";
 $result1 = db_loadlist($sql);
+// Liste des plages opératoires non vides
 $sql = "SELECT plagesop.id AS id, plagesop.date,
 		plagesop.fin AS fin, plagesop.debut AS debut
 		FROM plagesop
@@ -102,7 +103,8 @@ foreach($result2 as $key => $value){
   $result[$i] = $value;
   $i++;
 }
-//Tri du tableau par date (tri bulle)
+
+// Tri du tableau par date (tri bulle)
 $size = sizeof($result);
 do {
   $inverse = false;

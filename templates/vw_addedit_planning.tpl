@@ -282,7 +282,6 @@ function printForm() {
     url += '&type_adm='    + eval('type_adm'               );
     url += '&chambre='     + eval('chambre'                ); 
     popup(700, 500, url, 'printAdm');
-    form.submit();
   }
 }
 </script>
@@ -556,7 +555,11 @@ function printForm() {
             <input type="submit" value="Créer" />
           {/if}
           {if !$protocole}
-            <input type="button" value="Imprimer" onClick="printForm()" />
+            {if $op}
+            <input type="button" value="Imprimer" onClick="printForm();" />
+            {else}
+            <input type="button" value="Imprimer et créer" onClick="printForm(); this.form.submit()" />
+            {/if}
           {/if}
           </td>
         </tr>
