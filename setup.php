@@ -11,7 +11,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPadmissions';
-$config['mod_version'] = '1.0.0';
+$config['mod_version'] = '0.1';
 $config['mod_directory'] = 'dPadmissions';
 $config['mod_setup_class'] = 'CSetupdPadmissions';
 $config['mod_type'] = 'user';
