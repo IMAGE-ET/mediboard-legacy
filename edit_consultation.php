@@ -114,6 +114,7 @@ $where[] = "class = 'Consultation'";
 $aidesConsultation = new CAideSaisie();
 $aidesConsultation = $aidesConsultation->loadList($where);
 
+$aides = null;
 foreach ($aidesConsultation as $aideConsultation) {
   $aides[$aideConsultation->field][$aideConsultation->text] = $aideConsultation->name;  
 }
