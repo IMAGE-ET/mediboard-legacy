@@ -70,12 +70,12 @@ class CSetupdPplanningOp {
 			", date_adm date NOT NULL default '0000-00-00'" .
 			", time_adm time NOT NULL default '00:00:00'" .
 			", duree_hospi tinyint(4) unsigned NOT NULL default '0'" .
-			", type_adm enum('comp','ambu') default 'comp'" .
+			", type_adm enum('comp','ambu','exte') default 'comp'" .
 			", chambre enum('o','n') NOT NULL default 'o'" .
 			", ATNC enum('o','n') NOT NULL default 'n'" .
 			", rques text" .
 			", rank tinyint(4) NOT NULL default '0'" .
-			", admis enum('n', 'o') NOT NULL default 'n'" .
+			", admis enum('n','o') NOT NULL default 'n'" .
 			", PRIMARY KEY  (operation_id)" .
 			", UNIQUE KEY operation_id (operation_id)" .
 			") TYPE=MyISAM;";

@@ -16,26 +16,26 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 $spe = dPgetParam( $_GET, 'spe', 0 );
 $name = dPgetParam( $_GET, 'name', '' );
 
-$sql = "select users.user_id as id, users.user_last_name as lastname, users.user_first_name as firstname
-		from users, users_mediboard, functions_mediboard, groups_mediboard
-		where users.user_id = users_mediboard.user_id
-		and users_mediboard.function_id = functions_mediboard.function_id
-		and functions_mediboard.group_id = groups_mediboard.group_id
-		and (groups_mediboard.text = 'chirurgie' or groups_mediboard.text = 'anesthésie')";
+$sql = "SELECT users.user_id AS id, users.user_last_name AS lastname, users.user_first_name AS firstname
+		FROM users, users_mediboard, functions_mediboard, groups_mediboard
+		WHERE users.user_id = users_mediboard.user_id
+		AND users_mediboard.function_id = functions_mediboard.function_id
+		AND functions_mediboard.group_id = groups_mediboard.group_id
+		AND (groups_mediboard.text = 'chirurgie' or groups_mediboard.text = 'anesthésie')";
 if($spe != 0) {
-	$sql .= " and functions_mediboard.function_id = '$spe'";
+	$sql .= " AND functions_mediboard.function_id = '$spe'";
 }
 if($name != '') {
-	$sql .= " and users.user_last_name like '%$name%'";
+	$sql .= " AND users.user_last_name LIKE '$name%'";
 }
-$sql .= " order by users.user_last_name";
+$sql .= " ORDER BY users.user_last_name";
 $list = db_loadlist($sql);
 
-$sql = "select functions_mediboard.function_id as id, functions_mediboard.text as text
-		from functions_mediboard, groups_mediboard
-		where functions_mediboard.group_id = groups_mediboard.group_id
-		and (groups_mediboard.text = 'chirurgie' or groups_mediboard.text = 'anesthésie')
-		order by functions_mediboard.text";
+$sql = "SELECT functions_mediboard.function_id AS id, functions_mediboard.text AS text
+		FROM functions_mediboard, groups_mediboard
+		WHERE functions_mediboard.group_id = groups_mediboard.group_id
+		AND (groups_mediboard.text = 'chirurgie' OR groups_mediboard.text = 'anesthésie')
+		ORDER BY functions_mediboard.text";
 $listspe = db_loadlist($sql);
 
 //Creation de l'objet smarty

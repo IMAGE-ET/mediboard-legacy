@@ -275,7 +275,8 @@ function setCalendar( idate, fdate ) {
           <td>
             <select name="hour_adm">
 			  <option selected>{$op.hour_adm}</option>
-              <option>08</option>
+              <option>07</option>
+			  <option>08</option>
               <option>09</option>
               <option>10</option>
               <option>11</option>
@@ -307,10 +308,16 @@ function setCalendar( idate, fdate ) {
           <td>
 		    {if $op.type_adm == "comp"}
             <input name="type_adm" value="comp" type="radio" checked="checked" />hospitalisation complète<br />
-            <input name="type_adm" value="ambu" type="radio" />Ambulatoire
+            <input name="type_adm" value="ambu" type="radio" />Ambulatoire<br />
+			<input name="type_adm" value="exte" type="radio" />Externe
+			{else if $op.type_adm == "ambu"}
+            <input name="type_adm" value="comp" type="radio" />hospitalisation complète<br />
+            <input name="type_adm" value="ambu" type="radio" checked="checked" />Ambulatoire<br />
+			<input name="type_adm" value="exte" type="radio" />Externe
 			{else}
             <input name="type_adm" value="comp" type="radio" />hospitalisation complète<br />
-            <input name="type_adm" value="ambu" type="radio" checked="checked" />Ambulatoire
+            <input name="type_adm" value="ambu" type="radio" />Ambulatoire<br />
+			<input name="type_adm" value="exte" type="radio" checked="checked" />Externe
 			{/if}
           </td>
         </tr>

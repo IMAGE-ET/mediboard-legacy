@@ -264,6 +264,7 @@ function setCalendar( idate, fdate ) {
           <th>Heure:</th>
           <td>
             <select name="hour_adm">
+			  <option>07</option>
               <option>08</option>
               <option>09</option>
               <option>10</option>
@@ -294,7 +295,8 @@ function setCalendar( idate, fdate ) {
           <th>Admission en:</th>
           <td>
             <input name="type_adm" value="comp" type="radio" checked="checked" />hospitalisation complète<br />
-            <input name="type_adm" value="ambu" type="radio" />Ambulatoire
+            <input name="type_adm" value="ambu" type="radio" />Ambulatoire<br />
+			<input name="type_adm" value="exte" type="radio" />Externe
           </td>
         </tr>
         <tr>

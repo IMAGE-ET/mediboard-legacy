@@ -24,26 +24,26 @@ if(dPgetParam($_GET, "id", "noid") == "noid") {
 else
   $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
 
-$sql = "select operations.operation_id as id, operations.chir_id as chir_id,
-		users.user_first_name as chir_firstname, users.user_last_name as chir_lastname,
-		operations.pat_id as pat_id, patients.nom as pat_lastname, patients.prenom as pat_firstname,
-		operations.CIM10_code as CIM10_code, operations.CCAM_code as CCAM_code,
-		operations.cote as cote, operations.temp_operation as temp_op,
-		operations.plageop_id as plageop_id, plagesop.date as date_op,
-		operations.examen as examen, operations. materiel as materiel,
-		operations.info as info, operations.duree_hospi as duree_hospi,
-		operations.date_anesth as rdv_anesth, operations.time_anesth as time_anesth,
-		operations.date_adm as rdv_adm, operations.time_adm as time_adm,
-		operations.type_adm as type_adm, operations.chambre as chambre, operations.ATNC as ATNC,
-		operations.rques as rques, operations.rank as rank
-		from operations
-		left join users
-		on users.user_id = operations.chir_id
-		left join patients
-		on patients.patient_id = operations.pat_id
-		left join plagesop
-		on plagesop.id = operations.plageop_id
-		where operation_id = '$id'";
+$sql = "SELECT operations.operation_id AS id, operations.chir_id AS chir_id,
+		users.user_first_name AS chir_firstname, users.user_last_name AS chir_lastname,
+		operations.pat_id AS pat_id, patients.nom AS pat_lastname, patients.prenom AS pat_firstname,
+		operations.CIM10_code AS CIM10_code, operations.CCAM_code AS CCAM_code,
+		operations.cote AS cote, operations.temp_operation AS temp_op,
+		operations.plageop_id AS plageop_id, plagesop.date AS date_op,
+		operations.examen AS examen, operations. materiel AS materiel,
+		operations.info AS info, operations.duree_hospi AS duree_hospi,
+		operations.date_anesth AS rdv_anesth, operations.time_anesth AS time_anesth,
+		operations.date_adm AS rdv_adm, operations.time_adm AS time_adm,
+		operations.type_adm AS type_adm, operations.chambre AS chambre, operations.ATNC AS ATNC,
+		operations.rques AS rques, operations.rank AS rank
+		FROM operations
+		LEFT JOIN users
+		ON users.user_id = operations.chir_id
+		LEFT JOIN patients
+		ON patients.patient_id = operations.pat_id
+		LEFT JOIN plagesop
+		ON plagesop.id = operations.plageop_id
+		WHERE operation_id = '$id'";
 $result = db_loadlist($sql);
 if(sizeof($result) == 0) {
   $AppUI->msg = "Acte inexistant";

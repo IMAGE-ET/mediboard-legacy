@@ -13,13 +13,13 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$sql = "select users.user_id as id, users.user_first_name as firstname, users.user_last_name as lastname,
-		groups_mediboard.text
-		from users, users_mediboard, functions_mediboard, groups_mediboard
-        where users.user_id = users_mediboard.user_id
-		and functions_mediboard.function_id = users_mediboard.function_id
-		and functions_mediboard.group_id = groups_mediboard.group_id
-		and users.user_id = '$AppUI->user_id'";
+$sql = "SELECT users.user_id AS id, users.user_first_name AS firstname, users.user_last_name AS lastname,
+		groups_mediboard.text as text
+		FROM users, users_mediboard, functions_mediboard, groups_mediboard
+        WHERE users.user_id = users_mediboard.user_id
+		AND functions_mediboard.function_id = users_mediboard.function_id
+		AND functions_mediboard.group_id = groups_mediboard.group_id
+		AND users.user_id = '$AppUI->user_id'";
 $result = db_loadlist($sql);
 
 if($result[0]["text"] == "Chirurgie" || $result[0]["text"] == "Anesthésie") {

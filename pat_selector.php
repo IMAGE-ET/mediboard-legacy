@@ -15,13 +15,13 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 
 $name = dPgetParam( $_GET, 'name', '' );
 
-$sql = "select patients.patient_id as id, patients.nom as lastname, patients.prenom as firstname,
-		patients.adresse as adresse, patients.ville as ville
-		from patients";
+$sql = "SELECT patients.patient_id AS id, patients.nom AS lastname, patients.prenom AS firstname,
+		patients.adresse AS adresse, patients.ville AS ville
+		FROM patients";
 if($name != '') {
-	$sql .= " where patients.nom like '%$name%'";
+	$sql .= " WHERE patients.nom LIKE '$name%'";
 }
-$sql .= " order by patients.nom";
+$sql .= " ORDER BY patients.nom LIMIT 0 , 100";
 
 $list = db_loadlist($sql);
 
