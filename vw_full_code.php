@@ -9,7 +9,15 @@ require_once("lib/smarty/Smarty.class.php");
 require_once("modules/$m/acte.class.php");
 
 //Creation de l'acte à afficher
-$acte = new Acte(dPgetParam($_GET, "codeacte"));
+if(!isset($_SESSION["codeacte"]))
+{
+  $_SESSION["codeacte"] = "";
+}
+if(dPgetParam($_GET, "codeacte", "") != "")
+{
+  $_SESSION["codeacte"] = dPgetParam($_GET, "codeacte", "");
+}
+$acte = new Acte($_SESSION["codeacte"]);
 
 //Creation de l'objet smarty
 $smarty = new Smarty();
@@ -22,6 +30,7 @@ $smarty->cache_dir = "modules/$m/cache/";
 
 //Mapping des variables
 $smarty->assign('canEdit', $canEdit);
+$smarty->assign('user', $AppUI->user_id);
 $smarty->assign('codeacte', strtoupper($acte->code));
 $smarty->assign('libelle', $acte->libelleLong);
 $smarty->assign('rq', $acte->remarques);

@@ -18,7 +18,7 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
-// detect if a deleete operation has to be processed
+// detect if a delete operation has to be processed
 $del = dPgetParam( $_POST, 'del', 0 );
 
 
@@ -35,7 +35,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );			// message with error flag
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( "Quote deleted", UI_MSG_ALERT);		// message with success flag
+		$AppUI->setMsg( "Favoris supprimé", UI_MSG_ALERT);		// message with success flag
 		$AppUI->redirect( "m=dPccam" );
 	}
 } else {
@@ -44,8 +44,8 @@ if ($del) {
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$isNotNew = @$_POST['dPccam_id'];
-		$AppUI->setMsg( $isNotNew ? 'Quote updated' : 'Quote inserted', UI_MSG_OK);
+		$isNotNew = @$_POST['favoris_id'];
+		$AppUI->setMsg( $isNotNew ? 'Favoris mis à jour' : 'Favoris inséré', UI_MSG_OK);
 	}
 	$AppUI->redirect();
 }

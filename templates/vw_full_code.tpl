@@ -19,7 +19,14 @@
 							{if $canEdit}
 							<tr>
 								<td colspan=2 valign="top" align="center">
-									<b><a href="sql.php?type=addfav&codeacte={$codeacte}">Ajouter à Mes Actes</a></b>
+									<form name="addFavoris" action="./index.php?m=dPccam" method="post">
+									<input type="hidden" name="dosql" value="do_favoris_aed">
+									<input type="hidden" name="del" value="0">
+									<input type="hidden" name="favoris_code" value="{$codeacte}">
+									<input type="hidden" name="favoris_user" value="{$user}">
+									<input class="button" type="submit" name="btnFuseAction" value="Ajouter à mes favoris">
+									</form>
+									<!--<b><a href="sql.php?type=addfav&codeacte={$codeacte}">Ajouter à Mes Actes</a></b>-->
 								</td>
 							</tr>
 							{/if}
@@ -64,7 +71,7 @@
 							</tr>
 							<tr>
 								<td valign="top">
-									<a href="index.php?m=dPccam&tab=2&codeacte={$codeproc}">{$codeproc}</a>
+									<a href="index.php?m=dPccam&tab=2&codeacte={$codeproc}"><b>{$codeproc}</b></a>
 								</td>
 								<td valign="top">
 									{$textproc}

@@ -24,17 +24,35 @@ class CdPccam extends CDpObject {
 
 	// the constructor of the CdPccam class, always combined with the table name and the unique key of the table
 	function CdPccam() {
-		$this->CDpObject( 'favoris', 'favoris_id' );
+		$this->CDpObject( 'ccamfavoris', 'favoris_id' );
 	}
 
 	// overload the delete method of the parent class for adaptation for dPccam's needs
 	function delete() {
-		$sql = "DELETE FROM dPccam WHERE favoris_id = $this->favoris_id";
+		$sql = "DELETE FROM ccamfavoris WHERE favoris_id = '$this->favoris_id'";
 		if (!db_exec( $sql )) {
 			return db_error();
 		} else {
 			return NULL;
 		}
+	}
+	
+	// overload the store method of the parent class for adaptation for dPccam's needs
+	function store() {
+		$sql = "SELECT * FROM ccamfavoris WHERE favoris_code = '$this->favoris_code' and favoris_user = '$this->favoris_user'";
+		$issingle = db_loadList( $sql );
+		if(sizeof($issingle) == 0) {
+			$sql = "INSERT INTO ccamfavoris(favoris_code, favoris_user) values('$this->favoris_code', '$this->favoris_user')";
+			if (!db_exec( $sql )) {
+				return db_error();
+			} else {
+				return NULL;
+			}
+		}
+		else {
+			return "Favoris déja existant";
+		}
+		
 	}
 }
 ?>

@@ -64,11 +64,11 @@ class CSetupdPccam {
 
 	function install() {
 		$sql = "CREATE TABLE `ccamfavoris` (
-  			`favoris_id` int(10) NOT NULL default '',
-			`favoris_user` varchar(20) NOT NULL default '',
-  			`favoris_code` varchar(7) NOT NULL default '',
-  			PRIMARY KEY  (`favoris_id`)
-			) TYPE=MyISAM COMMENT='table des favoris';";
+				`favoris_id` bigint(20) NOT NULL auto_increment,
+				`favoris_user` int(11) NOT NULL default '0',
+				`favoris_code` varchar(7) NOT NULL default '',
+				PRIMARY KEY  (`favoris_id`)
+				) TYPE=MyISAM COMMENT='table des favoris'";
 
 		db_exec( $sql );
 		db_error();
