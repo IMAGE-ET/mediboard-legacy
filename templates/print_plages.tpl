@@ -1,3 +1,5 @@
+<!-- $Id$ -->
+
 <table class="main">
   <tr><th><a href="javascript:window.print()">Planning du {$date}</a></th></tr>
   {foreach from=$listPlage item=curr_plage}
