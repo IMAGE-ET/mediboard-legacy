@@ -60,7 +60,7 @@ class Cplagesop extends CDpObject {
 	}
 	
 	function store() {
-	  if($this->id != NULL) {
+	  if($this->id) {
 	    if(strlen($this->day) == 1)
 	      $this->day = "0".$this->day;
         if(strlen($this->month) == 1)
