@@ -1,7 +1,11 @@
 <table class="main">
   <tr>
     <td>
+      <form name="editFrm" action="./index.php?m=dPpatients" method="post">
 
+      <input type="hidden" name="dosql" value="do_patients_aed">
+      <input type="hidden" name="del" value="0">
+      <input type="hidden" name="patient_id" value="{$patient.patient_id}">
       
       <table class="form">
       
