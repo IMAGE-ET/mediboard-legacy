@@ -237,6 +237,10 @@ table.tbl {
   background-color: #777;
 }
 
+table.tbl a {
+  display: block;
+}
+
 table.tbl th {
   background-color: #888;
   padding: 2px;
@@ -244,6 +248,7 @@ table.tbl th {
   border: outset #ccc 1px;
   font-weight: normal;
   text-align: center;
+  white-space: nowrap;
 }
 
 table.tbl td {

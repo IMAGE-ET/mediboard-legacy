@@ -134,3 +134,17 @@ function insertAt(textarea, str) {
   }
 }
 
+function getElementsByClassName(tagName, className, exactMatch) {
+  var els = document.getElementsByTagName(tagName); 
+  var elsTag = new Array;
+
+  var elIt = 0;
+  while (el = els[elIt++]) {
+    // el.getAttribute("class") DOES NOT work in IE
+    if (exactMatch ? el.className == className : el.className.indexOf(className) != -1) {
+      elsTag.push(el);
+    }
+  }
+  
+  return elsTag;
+}
