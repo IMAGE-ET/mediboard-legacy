@@ -64,6 +64,7 @@ class CSetupdPplanningOp {
 			", time_operation time NOT NULL default '00:00:00'" .
 			", examen text" .
 			", materiel text" .
+            ", commande_mat enum('o', 'n') NOT NULL default 'n'" .
 			", info enum('o','n') NOT NULL default 'n'" .
 			", date_anesth date NOT NULL default '0000-00-00'" .
 			", time_anesth time NOT NULL default '00:00:00'" .

@@ -50,7 +50,6 @@ class Cplanning extends CDpObject {
 
   function delete() {
     $sql = "SELECT rank, plageop_id FROM operations WHERE operation_id = '$this->operation_id'";
-    echo "Premier select :<br>$sql<br>";
     $result = db_loadlist($sql);
     if($result[0]["rank"] != 0) {
       $sql = "SELECT operation_id FROM operations
