@@ -45,38 +45,83 @@ $sql = "SELECT operations.operation_id AS id, operations.chir_id AS chir_id,
 		ON plagesop.id = operations.plageop_id
 		WHERE operation_id = '$id'";
 $result = db_loadlist($sql);
-if(sizeof($result) == 0) {
+if (sizeof($result) == 0) {
   $AppUI->msg = "Acte inexistant";
-  $AppUI->redirect( "m=dPplanningOp&tab=0");
+  $AppUI->redirect( "m=$m&tab=0");
 }
 $op = $result[0];
 
-$op["chir_name"] = "Dr. ".$op["chir_lastname"]." ".$op["chir_firstname"];
-$op["pat_name"] = $op["pat_lastname"]." ".$op["pat_firstname"];
-$op["hour_op"] = substr($op["temp_op"], 0, 2);
-$op["min_op"] = substr($op["temp_op"], 3, 2);
-$op["date_op"] = substr($op["date_op"], 8, 2)."/".substr($op["date_op"], 5, 2)."/".substr($op["date_op"], 0, 4);
-$op["date_rdv_anesth"] = substr($op["rdv_anesth"], 0, 4).substr($op["rdv_anesth"], 5, 2).substr($op["rdv_anesth"], 8, 2);
-$op["rdv_anesth"] = substr($op["rdv_anesth"], 8, 2)."/".substr($op["rdv_anesth"], 5, 2)."/".substr($op["rdv_anesth"], 0, 4);
-$op["hour_anesth"] = substr($op["time_anesth"], 0, 2);
-$op["min_anesth"] = substr($op["time_anesth"], 3, 2);
-$op["date_rdv_adm"] = substr($op["rdv_adm"], 0, 4).substr($op["rdv_adm"], 5, 2).substr($op["rdv_adm"], 8, 2);
-$op["rdv_adm"] = substr($op["rdv_adm"], 8, 2)."/".substr($op["rdv_adm"], 5, 2)."/".substr($op["rdv_adm"], 0, 4);
-$op["hour_adm"] = substr($op["time_adm"], 0, 2);
-$op["min_adm"] = substr($op["time_adm"], 3, 2);
+/*
+require_once("planning.class.php");
 
-//Creation de l'objet smarty
+$planning = new CPlanning;
+$planning->operation_id = $id;
+$planning->load();
+
+require_once($AppUI->getModuleClass('admin'));
+
+$chir = new CUser;
+$chir->user_id = $planning->chir_id;
+$chir->load();
+
+require_once("modules/dpPatients/patients.class.php");
+
+$patient = new CPatient;
+$patient->patient_id = $planning->pat_id;
+$patient->load();
+
+require_once("modules/dpBloc/plagesop.class.php");
+
+$plageOp = new CPlagesOp;
+$plageOp->id = $planning->plageop_id;
+$plageOp->load();
+*/
+
+$op["chir_name"] = "Dr. {$op['chir_lastname']} {$op['chir_firstname']}";
+$op["pat_name" ] = "{$op['pat_lastname']} {$op['pat_firstname']}";
+
+$op["date_op"] = 
+  substr($op["date_op"], 8, 2)."/".
+  substr($op["date_op"], 5, 2)."/".
+  substr($op["date_op"], 0, 4);
+$op["hour_op"] = substr($op["temp_op"], 0, 2);
+$op["min_op" ] = substr($op["temp_op"], 3, 2);
+  
+$op["date_rdv_anesth"] = 
+  substr($op["rdv_anesth"], 0, 4).
+  substr($op["rdv_anesth"], 5, 2).
+  substr($op["rdv_anesth"], 8, 2);
+$op["rdv_anesth"] = 
+  substr($op["rdv_anesth"], 8, 2)."/".
+  substr($op["rdv_anesth"], 5, 2)."/".
+  substr($op["rdv_anesth"], 0, 4);
+$op["hour_anesth"] = substr($op["time_anesth"], 0, 2);
+$op["min_anesth" ] = substr($op["time_anesth"], 3, 2);
+
+$op["date_rdv_adm"] = 
+  substr($op["rdv_adm"], 0, 4).
+  substr($op["rdv_adm"], 5, 2).
+  substr($op["rdv_adm"], 8, 2);
+$op["rdv_adm"] = 
+  substr($op["rdv_adm"], 8, 2)."/".
+  substr($op["rdv_adm"], 5, 2)."/".
+  substr($op["rdv_adm"], 0, 4);
+$op["hour_adm"] = substr($op["time_adm"], 0, 2);
+$op["min_adm" ] = substr($op["time_adm"], 3, 2);
+
+// Création de l'objet smarty
 require_once("lib/smarty/Smarty.class.php");
 $smarty = new Smarty();
 
-//initialisation des repertoires
+// Initialisation des repertoires
 $smarty->template_dir = "modules/$m/templates/";
 $smarty->compile_dir = "modules/$m/templates_c/";
 $smarty->config_dir = "modules/$m/configs/";
 $smarty->cache_dir = "modules/$m/cache/";
 
-//On récupère les informations
+// On récupère les informations
 
+$smarty->assign('m', $m);
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
 $smarty->assign('op', $op);

@@ -16,6 +16,19 @@ function checkForm() {
     popPat();
     return false;
   }
+
+  if (form.CIM10_code.value.length == 0) {
+    alert("Code CIM10 Manquant");
+    popCode('cim10');
+    return false;
+  }
+
+  if (form.CCAM_code.value.length == 0) {
+    alert("Code CCAM Manquant");
+    popCode('ccam');
+    return false;
+  }
+
 /* Bug in IE
   if (form.hour_op.value == 0 && form.min_op.value == 0) {
     alert("Temps opératoire invalide");
@@ -26,6 +39,18 @@ function checkForm() {
   if (form.plageop_id.value == 0) {
     alert("Intervention non planifiée");
     popPlage();
+    return false;
+  }
+
+  if (form.date_rdv_adm.value.length == 0) {
+    alert("Admission: date manquante");
+    popCalendar('rdv_adm', 'rdv_adm');
+    return false;
+  }
+
+  if (form.hour_adm.value.length == 0) {
+    alert("Admission: heure manquante");
+    form.hour_anesth.focus();
     return false;
   }
 
@@ -170,6 +195,7 @@ function printForm() {
 
 <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkForm()">
 
+
 <input type="hidden" name="dosql" value="do_planning_aed" />
 <input type="hidden" name="del" value="0" />
 <input type="hidden" name="chir_id" value="{$chir.id}" />
@@ -225,23 +251,15 @@ function printForm() {
           <th class="mandatory">Temps opératoire:</th>
           <td colspan="2">
             <select name="hour_op">
-              <option>0</option>
-              <option selected>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
+            {foreach from=$hours key=key item=hour}
+            	<option {if ($key == 1)} selected="selected" {/if}>{$key}</option>
+            {/foreach}
             </select>
             :
             <select name="min_op">
-              <option selected>00</option>
-              <option>15</option>
-              <option>30</option>
-              <option>45</option>
+            {foreach from=$mins item=min}
+            	<option>{$min}</option>
+            {/foreach}
             </select>
           </td>
         </tr>
@@ -270,7 +288,7 @@ function printForm() {
 
         <tr>
           <th>Information du patient:</th>
-          <td  colspan="2">
+          <td colspan="2">
             <input name="info" value="o" type="radio" />Oui
             <input name="info" value="n" type="radio" checked="checked" />Non
           </td>
@@ -301,25 +319,15 @@ function printForm() {
           <th>Heure:</th>
           <td>
             <select name="hour_anesth">
-              <option>08</option>
-              <option>09</option>
-              <option>10</option>
-              <option>11</option>
-              <option>12</option>
-              <option>13</option>
-              <option>14</option>
-              <option>15</option>
-              <option>16</option>
-              <option>17</option>
-              <option>18</option>
-              <option>19</option>
+            {foreach from=$hours item=hour}
+            	<option>{$hour}</option>
+            {/foreach}
             </select>
             :
             <select name="min_anesth">
-              <option>00</option>
-              <option>15</option>
-              <option>30</option>
-              <option>45</option>
+            {foreach from=$mins item=min}
+            	<option>{$min}</option>
+            {/foreach}
             </select>
           </td>
         </tr>
@@ -343,26 +351,15 @@ function printForm() {
           <th class="mandatory">Heure:</th>
           <td>
             <select name="hour_adm">
-			        <option>07</option>
-              <option>08</option>
-              <option>09</option>
-              <option>10</option>
-              <option>11</option>
-              <option>12</option>
-              <option>13</option>
-              <option>14</option>
-              <option>15</option>
-              <option>16</option>
-              <option>17</option>
-              <option>18</option>
-              <option>19</option>
+            {foreach from=$hours item=hour}
+            	<option>{$hour}</option>
+            {/foreach}
             </select>
             :
             <select name="min_adm">
-              <option>00</option>
-              <option>15</option>
-              <option>30</option>
-              <option>45</option>
+            {foreach from=$mins item=min}
+            	<option>{$min}</option>
+            {/foreach}
             </select>
           </td>
         </tr>
@@ -370,7 +367,7 @@ function printForm() {
 
         <tr>
           <th>Durée d'hospitalisation:</th>
-          <td><input type"text" name="duree_hospi" size="1" value="0">jours</td>
+          <td><input type"text" name="duree_hospi" size="1" value="0"> jours</td>
         </tr>
         <tr>
           <th>Admission en:</th>

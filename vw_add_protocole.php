@@ -31,6 +31,19 @@ if ($curuser["text"] == "Chirurgie" || $curuser["text"] == "Anesthésie") {
   $chir["name"] = "Dr. {$chir['lastname']} {$chir['firstname']}";
 }
 
+// Heures et minutes
+$star = 7;
+$stop = 20;
+$step = 15;
+
+for ($i = $start; $i < $stop; $i++) {
+    $hours[] = $i;
+}
+
+for ($i = 0; $i < 60; $i += $step) {
+    $mins[] = $i;
+}
+
 // Création de l'objet smarty
 require_once("lib/smarty/Smarty.class.php");
 $smarty = new Smarty();
@@ -48,6 +61,9 @@ $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
 $smarty->assign('chir', $chir);
 $smarty->assign('protocole', true);
+$smarty->assign('hours', $hours);
+$smarty->assign('mins', $mins);
+
 
 //Affichage de la page
 $smarty->display('vw_add_planning.tpl');

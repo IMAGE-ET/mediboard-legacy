@@ -10,12 +10,15 @@
 require_once( $AppUI->getSystemClass ('dp' ) );
 
 class Cplanning extends CDpObject {
-
-  // database fields
+  // DB Table key
   var $operation_id = NULL;
+
+  // DB References
   var $pat_id = NULL;
   var $chir_id = NULL;
   var $plageop_id = NULL;
+
+  // DB fields
   var $CCAM_code = NULL;
   var $CIM10_code = NULL;
   var $cote = NULL;
@@ -34,7 +37,7 @@ class Cplanning extends CDpObject {
   var $rques = NULL;
   var $rank = NULL;
     
-  // form fields
+  // Form fields
   var $hour_op = NULL;
   var $min_op = NULL;
   var $date_rdv_anesth = NULL;
