@@ -10,6 +10,14 @@ function checkForm() {
   return true;
 }
 
+function popColor {
+  var url = "./index.php?m=public";
+  url += "&a=color_selector";
+  url += "&dialog=1";
+  url += "&callback=setColor";
+  popup(320, 250, url, "calwin");
+}
+
 function setColor(color) {
   var f = document.editFrm;
   if (color) {
@@ -23,14 +31,14 @@ function setColor(color) {
 <table class="main">
   <tr>
     <td class="halfPane">
-      <a href="index.php?m={$m}&tab={$tab}&userfunction=0"><strong>Créer une fonction</strong></a>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;userfunction=0"><strong>Créer une fonction</strong></a>
       <table class="color">
       {foreach from=$listGroups item=curr_group}
         <tr><th>Groupe {$curr_group->text} &mdash; {$curr_group->_ref_functions|@count} fonction(s)</th><th>Utilisateurs</th></tr>
         {foreach from=$curr_group->_ref_functions item=curr_function}
         <tr>
-          <td style="background: #fff"><a href="index.php?m={$m}&tab={$tab}&userfunction={$curr_function->function_id}">{$curr_function->text}</a></td>
-          <td style="background: #{$curr_function->color}"><a href="index.php?m={$m}&tab={$tab}&userfunction={$curr_function->function_id}">{$curr_function->_ref_users|@count}</a></td></tr>
+          <td style="background: #fff"><a href="index.php?m={$m}&amp;tab={$tab}&amp;userfunction={$curr_function->function_id}">{$curr_function->text}</a></td>
+          <td style="background: #{$curr_function->color}"><a href="index.php?m={$m}&amp;tab={$tab}&amp;userfunction={$curr_function->function_id}">{$curr_function->_ref_users|@count}</a></td></tr>
         {/foreach}
       {/foreach}
       </table>
@@ -70,7 +78,7 @@ function setColor(color) {
           <th><label for="editFrm_color" title="Couleur de visualisation des fonctions dans les plannings">Couleur:</label></th>
           <td>
             <span id="test" title="test" style="background: #{$userfunction->color};">
-            <a href="#" onClick="popup(320, 250, './index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin');">cliquez ici</a>
+            <a href="#" onClick="popColor()">cliquez ici</a>
             </span>
             <input type="hidden" name="color" value="{$userfunction->color}" />
           </td>
@@ -80,7 +88,7 @@ function setColor(color) {
           {if $userfunction->function_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Valider" />
-            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la fonction', '{$userfunction->text|escape:javascript}')"/>
           {else}
             <input type="submit" name="btnFuseAction" value="Créer">
           {/if}

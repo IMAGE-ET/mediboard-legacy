@@ -17,13 +17,13 @@ function checkGroup() {
 <table class="main">
   <tr>
     <td class="halfPane">
-      <a href="index.php?m={$m}&tab={$tab}&usergroup=0"><strong>Créer un groupe</strong></a>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;usergroup=0"><strong>Créer un groupe</strong></a>
       <table class="tbl">
         <tr><th>liste des groupes</th><th>Fonctions associées</th></tr>
         {foreach from=$listGroups item=curr_group}
         <tr>
-          <td><a href="index.php?m={$m}&tab={$tab}&usergroup={$curr_group->group_id}">{$curr_group->text}</a></td>
-          <td><a href="index.php?m={$m}&tab={$tab}&usergroup={$curr_group->group_id}">{$curr_group->_ref_functions|@count}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;usergroup={$curr_group->group_id}">{$curr_group->text}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;usergroup={$curr_group->group_id}">{$curr_group->_ref_functions|@count}</a></td>
         </tr>
         {/foreach}
       </table>
@@ -52,7 +52,7 @@ function checkGroup() {
           {if $usergroup->group_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Valider" />
-            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le groupe', '{$usergroup->text|escape:javascript}')" />
           {else}
             <input type="submit" name="btnFuseAction" value="Créer" />
           {/if}
