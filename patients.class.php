@@ -11,6 +11,7 @@ require_once( $AppUI->getSystemClass ('dp' ) );
 
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('dPpatients', 'medecin') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 /**
  * The CPatient Class
@@ -57,6 +58,7 @@ class CPatient extends CDpObject {
 
   // Object References
   var $_ref_operations = null;
+  var $_ref_consultations = null;
   var $_ref_medecin_traitant = null;
   var $_ref_medecin1 = null;
   var $_ref_medecin2 = null;
@@ -143,8 +145,12 @@ class CPatient extends CDpObject {
   
   function loadRefs() {
     // Backward references
+    // opérations
     $obj = new COperation();
     $this->_ref_operations = $obj->loadList("pat_id = '$this->patient_id'");
+    // consultations
+    $obj = new CConsultation();
+    $this->_ref_consultations = $obj->loadList("patient_id = '$this->patient_id'");
     // Forward references
     // medecin_traitant
     $obj = new CMedecin();
