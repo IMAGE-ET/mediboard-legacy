@@ -132,6 +132,7 @@ $sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
 $result3 = db_loadlist($sql);
 
 $i = 0;
+unset($result);
 foreach($result1 as $key => $value){
   $result[$i] = $value;
   $i++;
