@@ -1,3 +1,5 @@
+/* $Id$ */
+
 /* XHTML elements */
 
 body {
@@ -118,8 +120,21 @@ input[type=reset]:hover,
 input[type=button]:hover {
   background: #bbb;
 }
+
 select {
   border: 1px black solid;
   font-size: 12px;
   padding: 0;
+}
+
+input,
+select,
+textarea {
+  background: #efe;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background: #fff;
 }
