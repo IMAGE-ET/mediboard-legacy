@@ -99,8 +99,8 @@ class COperation extends CDpObject {
       return FALSE;
     }
 
-    $this->_hour_op = substr($this->temp_operation, 0, 2);
-    $this->_min_op  = substr($this->temp_operation, 3, 2);
+    $this->_hour_op = intval(substr($this->temp_operation, 0, 2));
+    $this->_min_op  = intval(substr($this->temp_operation, 3, 2));
 
     $this->_date_rdv_anesth = 
       substr($this->date_anesth, 0, 4).
