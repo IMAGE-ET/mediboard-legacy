@@ -5,7 +5,8 @@
     <td>
 	  <b>Dr. {$curr_plageop.firstname} {$curr_plageop.lastname} :
 	  {$curr_plageop.salle} de
-	  {$curr_plageop.debut} - {$curr_plageop.fin}</b>
+	  {$curr_plageop.debut} - {$curr_plageop.fin}
+    le {$curr_plageop.date}</b>
 	</td>
   </tr>
   <tr>

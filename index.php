@@ -41,6 +41,7 @@ $tabBox->add( "vw_edit_plages", "Planning du jour" );
 $tabBox->add( "vw_edit_interventions", "Gestion des interventions" );
 $tabBox->add( "vw_idx_materiel", "Commande de materiel" );
 $tabBox->add( "vw_idx_salles", "Gestion des salles" );
+$tabBox->add( "print_planning", "Impression des plannings" );
 
 $tabBox->show();
 

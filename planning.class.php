@@ -23,6 +23,12 @@ class Cplanning
     $this->dayWeekList = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
 	$this->monthList = array("", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout",
 							"Septembre", "Octobre", "Novembre", "Décembre");
+    if(strlen($day) == 1) {
+      $day = "0".$day;
+    }
+    if(strlen($month) == 1) {
+      $month = "0".$month;
+    }
     $this->day = $day;
 	$this->month = $month;
 	$this->year = $year;
@@ -201,7 +207,7 @@ class Cplanning
 	echo "<td rowspan=3 align=\"center\">\n";
 	$today = $this->dayWeekList[date("w", mktime(0, 0, 0, $this->month, $this->day, $this->year))];
 	$tomonth = $this->monthList[$this->month];
-	echo "<a href=\"#\" onclick=\"popPlanning( '$this->day', '$this->month', '$this->year');\">";
+	echo "<a href=\"#\" onclick=\"popPlanning('$this->year$this->month$this->day');\">";
 	echo "<b>$today $this->day $tomonth $this->year</b>";
 	echo "<br /><img src=\"modules/dPbloc/images/print.png\" height=\"15\" width=\"15\" alt=\"imprimer\" border=\"0\">";
 	echo "</a>";
