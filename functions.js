@@ -41,7 +41,10 @@ function prepareForms() {
         if (element.type == "radio") {
           element.id += "_" + element.value;
         }
+        
+        
       }
+
 
       // Focus on first text input
       if (giveFocus && element.type == "text") {
