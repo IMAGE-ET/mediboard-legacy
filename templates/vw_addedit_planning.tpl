@@ -288,8 +288,8 @@ function printForm() {
           <td colspan="2">
             <select name="cote">
               <option {if !$op && $op->cote == "total"} selected="selected" {/if} >total</option>
-              <option {if $op->cote == "droit"    } selected="selected" {/if} >droit     </option>
-              <option {if $op->cote == "gauche"   } selected="selected" {/if} >gauche    </option>
+              <option {if $op->cote == "droit"    } selected="selected" {/if} >droit    </option>
+              <option {if $op->cote == "gauche"   } selected="selected" {/if} >gauche   </option>
               <option {if $op->cote == "bilatéral"} selected="selected" {/if} >bilatéral</option>
             </select>
           </td>
@@ -416,14 +416,14 @@ function printForm() {
           <td><input type"text" name="duree_hospi" size="1" value="{$op->duree_hospi}"> jours</td>
         </tr>
         <tr>
-          <th>Admission en:</th>
+          <th><label for="editFrm_type_adm_comp">{tr}type_adm{/tr}:</label></th>
           <td>
             <input name="type_adm" value="comp" type="radio" {if !$op || $op->type_adm == "comp"} checked="checked" {/if} />
-            <label for="editFrm_type_adm_comp">Hospitalisation complète</label><br />
+            <label for="editFrm_type_adm_comp">{tr}comp{/tr}</label><br />
             <input name="type_adm" value="ambu" type="radio" {if $op->type_adm == "ambu"} checked="checked" {/if} />
-            <label for="editFrm_type_adm_ambu">Ambulatoire</label><br />
+            <label for="editFrm_type_adm_ambu">{tr}ambu{/tr}</label><br />
             <input name="type_adm" value="exte" type="radio" {if $op->type_adm == "exte"} checked="checked" {/if} />
-            <label for="editFrm_type_adm_exte">Externe</label><br />
+            <label for="editFrm_type_adm_exte">{tr}exte{/tr}</label><br />
           </td>
         </tr>
         

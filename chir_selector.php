@@ -38,23 +38,15 @@ $sql = "SELECT functions_mediboard.function_id AS id, functions_mediboard.text A
 		ORDER BY functions_mediboard.text";
 $listspe = db_loadlist($sql);
 
-//Creation de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
-$smarty = new Smarty();
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-//initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-//On récupère les informations
 $smarty->assign('name', $name);
 $smarty->assign('spe', $spe);
 $smarty->assign('listspe', $listspe);
 $smarty->assign('list', $list);
 
-//Affichage de la page
 $smarty->display('chir_selector.tpl');
 
 ?>

@@ -81,20 +81,10 @@ $ccam = mysql_fetch_array($result);
 
 mysql_close();
 
-//Creation de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
-$smarty = new Smarty();
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-//initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-//On récupère les informations
-
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('user', $AppUI->user_id);
 $smarty->assign('patient', $patient);
 $smarty->assign('chirurgien', $chirurgien);
 $smarty->assign('anesthesie', $anesthesie);
@@ -102,7 +92,6 @@ $smarty->assign('admission', $admission);
 $smarty->assign('operation', $operation);
 $smarty->assign('CCAM', $ccam["LIBELLELONG"]);
 
-//Affichage de la page
 $smarty->display('view_planning.tpl');
 
 ?>

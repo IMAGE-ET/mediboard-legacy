@@ -98,20 +98,9 @@ foreach ($protocoles as $key => $value) {
 
 mysql_close();
 
-require_once("lib/smarty/Smarty.class.php");
-
-$smarty = new Smarty();
-
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-$smarty->assign('app', $AppUI);
-$smarty->assign('m', $m);
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('canRead', $canRead);
-$smarty->assign('dialog', $dialog);
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
 $smarty->assign('protocoles', $protocoles);
 $smarty->assign('protSel', $protSel);

@@ -221,17 +221,10 @@ else
   $today = "";
 mysql_close();
 
-require_once("lib/smarty/Smarty.class.php");
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-$smarty = new Smarty();
-
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-$smarty->assign('m', $m);
-$smarty->assign('canEdit', $canEdit);
 $smarty->assign('year', $year);
 $smarty->assign('day', $day);
 $smarty->assign('nday', $nday);
