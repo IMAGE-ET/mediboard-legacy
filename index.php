@@ -1,4 +1,11 @@
-<?php 
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPadmissions
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 $canRead = !getDenyRead( $m );
 $canEdit = !getDenyEdit( $m );

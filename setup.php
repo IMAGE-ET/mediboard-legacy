@@ -1,12 +1,11 @@
-<?php
-/*
- * Name:      dPadmissions
- * Directory: dPadmissions
- * Version:   1.0.0
- * Type:      user
- * UI Name:   Admissions
- * UI Icon:
- */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPadmissions
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 // MODULE CONFIGURATION DEFINITION
 $config = array();
