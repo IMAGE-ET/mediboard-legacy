@@ -20,9 +20,11 @@ $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
 if(dPgetParam($_GET, 'selAff', -1) == -1) {
   if(isset($_SESSION[$m][$tab]["selAff"]))
     $selAff = $_SESSION[$m][$tab]["selAff"];
+  else
+    $selAff = $_SESSION[$m][$tab]["selAff"] = dPgetParam($_GET, 'selAff', 0);
 }
 else
-$selAff = $_SESSION[$m][$tab]["selAff"] = dPgetParam($_GET, 'selAff', 0);
+    $selAff = $_SESSION[$m][$tab]["selAff"] = dPgetParam($_GET, 'selAff', 0);
 if(dPgetParam($_GET, 'day', -1) == -1) {
   if(!isset($_SESSION[$m][$tab]["day"]))
     $day = $_SESSION[$m][$tab]["day"] = date("d");
