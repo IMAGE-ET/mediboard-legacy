@@ -57,20 +57,20 @@ foreach($list as $key => $value) {
   $list[$key]["dateFormed"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
   $list[$key]["day"] = substr($value["date"], 8, 2);
 }
-$sql = "select operations.operation_id, patients.nom as nom, patients.prenom as prenom,
-        operations.admis as admis, users.user_first_name as chir_firstname,
-        users.user_last_name as chir_lastname, operations.time_adm
-		from operations
-		left join patients
-		on operations.pat_id = patients.patient_id
-		left join plagesop
-		on operations.plageop_id = plagesop.id
-		left join users
-		on users.user_username = plagesop.id_chir
-		where operations.date_adm = '$year-$month-$day'";
+$sql = "SELECT operations.operation_id, patients.nom AS nom, patients.prenom AS prenom,
+        operations.admis AS admis, users.user_first_name AS chir_firstname,
+        users.user_last_name AS chir_lastname, operations.time_adm
+		FROM operations
+		LEFT JOIN patients
+		ON operations.pat_id = patients.patient_id
+		LEFT JOIN plagesop
+		ON operations.plageop_id = plagesop.id
+		LEFT JOIN users
+		ON users.user_username = plagesop.id_chir
+		WHERE operations.date_adm = '$year-$month-$day'";
 if($selAff != "0")
   $sql .= " AND operations.admis = '$selAff'";
-$sql .= " order by operations.time_adm";
+$sql .= " ORDER BY operations.time_adm";
 $today = db_loadlist($sql);
 foreach($today as $key => $value) {
   $today[$key]["hour"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);

@@ -94,7 +94,7 @@
             <input type="hidden" name="m" value="dPadmissions" />
             <input type="hidden" name="a" value="do_edit_admis" />
             <input type="hidden" name="id" value="{$curr_adm.operation_id}" />
-			<input type="submit" value="Admis" />
+			<input type="submit" value="Valider l'admission" />
 			</form> 
 		  </td>
 		  {/if}
