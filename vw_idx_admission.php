@@ -68,6 +68,7 @@ $sql = "SELECT operations.date_adm AS date,
 		ON operations.plageop_id = plagesop.id
 		WHERE operations.date_adm LIKE '$year-$month-__'
 		AND operations.admis = 'n'
+		AND operations.annulee = 0
 		GROUP BY operations.date_adm
 		ORDER BY operations.date_adm";
 $list2 = db_loadlist($sql);
@@ -85,6 +86,7 @@ $sql = "SELECT operations.date_adm AS date,
 		ON operations.plageop_id = plagesop.id
 		WHERE operations.date_adm LIKE '$year-$month-__'
 		AND operations.saisie = 'n'
+		AND operations.annulee = 0
 		GROUP BY operations.date_adm
 		ORDER BY operations.date_adm";
 $list3 = db_loadlist($sql);
@@ -107,10 +109,10 @@ foreach($list1 as $key => $value) {
     $list1[$key]["num2"] = 0;
   $i3 = 0;
   $i3fin = sizeof($list3);
-  while(($list3[$i3]["date"] != $value["date"]) && ($i3 < $i3fin)) {
+  while((@$list3[$i3]["date"] != $value["date"]) && ($i3 < $i3fin)) {
     $i3++;
   }
-  if($list3[$i3]["date"] == $value["date"])
+  if(@$list3[$i3]["date"] == $value["date"])
     $list1[$key]["num3"] = $list3[$i3]["num"];
   else
     $list1[$key]["num3"] = 0;
@@ -120,7 +122,8 @@ foreach($list1 as $key => $value) {
 $sql = "SELECT operations.operation_id, patients.nom AS nom, patients.prenom AS prenom,
         operations.admis AS admis, operations.saisie AS saisie, operations.type_adm AS type_adm,
 		operations.depassement AS depassement, users.user_first_name AS chir_firstname,
-        users.user_last_name AS chir_lastname, operations.time_adm
+        users.user_last_name AS chir_lastname, operations.time_adm AS time_adm,
+        operations.annulee AS annulee, operations.modifiee AS modifiee
 		FROM operations
 		LEFT JOIN patients
 		ON operations.pat_id = patients.patient_id
@@ -130,11 +133,13 @@ $sql = "SELECT operations.operation_id, patients.nom AS nom, patients.prenom AS 
 		ON users.user_username = plagesop.id_chir
 		WHERE operations.date_adm = '$year-$month-$day'";
 if($selAdmis != "0")
-  $sql .= " AND operations.admis = '$selAdmis'";
+  $sql .= " AND operations.admis = '$selAdmis'
+		AND operations.annulee = 0";
 if($selSaisis != "0")
-  $sql .= " AND operations.saisie = '$selSaisis'";
+  $sql .= " AND operations.saisie = '$selSaisis'
+		AND operations.annulee = 0";
 if($selTri == "nom")
-  $sql .= " ORDER BY patients.nom, patients.prenom";
+  $sql .= " ORDER BY patients.nom, patients.prenom, operations.time_adm";
 if($selTri == "heure")
   $sql .= " ORDER BY operations.time_adm, patients.nom, patients.prenom";
 $today = db_loadlist($sql);

@@ -81,7 +81,7 @@ function printDepassement(id) {
           <th>DH</th>
         </tr>
         {foreach from=$today item=curr_adm}
-        <tr style="background: {if $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
+        <tr style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
           <td>
             <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             {$curr_adm.nom}
@@ -102,6 +102,9 @@ function printDepassement(id) {
             {$curr_adm.hour}
             </a>
           </td>
+          {if $curr_adm.annulee == 1}
+          <td align="center" colspan=2><b>ANNULE</b></td>
+          {else}
           <td>
             {if $curr_adm.admis == "n"}
             <form name="editAdmFrm{$curr_adm.id}" action="index.php" method="get">
@@ -121,9 +124,13 @@ function printDepassement(id) {
             <input type="hidden" name="id" value="{$curr_adm.operation_id}" />
             <input type="hidden" name="mode" value="saisie" />
             <input type="submit" value="Saisie" />
+            {if $curr_adm.modifiee == 1}
+            <img src="images/icons/rc-gui-status-downgr.png" alt="modifié">
+            {/if}
             </form> 
             {/if}
           </td>
+          {/if}
           <td>{if $curr_adm.depassement}
           <a href="#" onclick="printDepassement({$curr_adm.operation_id})">
           {$curr_adm.depassement} €</a>
