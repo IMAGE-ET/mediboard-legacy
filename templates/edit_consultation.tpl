@@ -148,20 +148,40 @@ function editModele(consult, modele) {
           </td>
           <td valign="top">
             <table class="form">
-              <tr><th class="category">Compte-Rendu</th></tr>
-              <tr><td>
-              {if $consult->compte_rendu}
-                <a href="#" onclick="editModele({$consult->consultation_id}, 0)">
-                Modifier le compte-rendu</a>
-              {else}
-                <ul>
-                {foreach from=$listModele item=curr_modele}
-                  <li><a href="#" onclick="editModele({$consult->consultation_id}, {$curr_modele->compte_rendu_id})">
-                  {$curr_modele->nom}</a></li>
-                {/foreach}
-                </ul>
-              {/if}
-              </td></tr>
+            {if $consult->compte_rendu}
+              <tr><th colspan="2" class="category">Compte-Rendu</th></tr>
+              <tr>
+                <td><a href="#" onclick="editModele({$consult->consultation_id}, 0)">
+                  Modifier le compte-rendu</a></td>
+                <td><form name="delCompteRenduFrm" action="?m={$m}" method="POST">
+                  <input type="hidden" name="m" value="{$m}" />
+                  <input type="hidden" name="del" value="0" />
+                  <input type="hidden" name="dosql" value="do_consultation_aed" />
+                  <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
+                  <input type="hidden" name="plageconsult_id" value="{$consult->plageconsult_id}" />
+                  <input type="hidden" name="patient_id" value="{$consult->patient_id}" />
+                  <input type="hidden" name="heure" value="{$consult->heure}" />
+                  <input type="hidden" name="duree" value="{$consult->duree}" />
+                  <input type="hidden" name="motif" value="{$consult->motif}" />
+                  <input type="hidden" name="rques" value="{$consult->rques}" />
+                  <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
+                  <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
+                  <input type="hidden" name="compte_rendu" value="" />
+                  <img src="modules/dPcabinet/images/trash.png" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {document.delCompteRenduFrm.submit();}{/literal}">
+                  </form></td>
+              </tr>
+            {else}
+              <tr><th colspan="2" class="category">Modèles dispo.</th></tr>
+              {foreach from=$listModele item=curr_modele}
+                <tr>
+                  <td><a href="#" onclick="editModele({$consult->consultation_id}, {$curr_modele->compte_rendu_id})">
+                    {$curr_modele->nom}</a></td>
+                  <td><a href="?m=dPcompteRendu&tab=addedit_modeles&compte_rendu_id={$curr_modele->compte_rendu_id}">
+                    <img src="modules/dPcabinet/images/edit.png"></a></td>
+                </tr>
+              {/foreach}
+            {/if}
+            </table>
           </td>
         </tr>
       </table>
