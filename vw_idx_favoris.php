@@ -15,12 +15,15 @@ $test2[3]["nom"] = "Petit test de block 4";
 
 $smarty = new Smarty();
 
-//$smarty->template_dir = 'tpl/';
+$smarty->template_dir = "modules/$m/tpl/";
+$smarty->compile_dir = "modules/$m/cpl/";
+$smarty->config_dir = "modules/$m/conf/";
+$smarty->cache_dir = "modules/$m/cache/"; 
 
 $smarty->assign('test1', 'voila');
-//$smarty->assign('test2', $test2);
+$smarty->assign('test2', $test2);
 
-$smarty->display('modules/dPccam/tpl/vw_idx_favoris.tpl');
+$smarty->display('vw_idx_favoris.tpl');
 
 /*
 
