@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once( $AppUI->getModuleClass('dPadmin', 'admin') );
+require_once( $AppUI->getModuleClass('admin') );
 
 class CCompteRendu extends CDpObject {
   // DB Table key
@@ -19,6 +19,7 @@ class CCompteRendu extends CDpObject {
   var $chir_id = null;
 
   // DB fields
+  var $nom = null;
   var $type = null;
   var $source = null;
 
