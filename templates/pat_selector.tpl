@@ -50,7 +50,7 @@ function setClose(key, val){
   <td>{$curr_patient.lastname}</td>
   <td>{$curr_patient.firstname}</td>
   <td>{$curr_patient.naissance}</td>
-  <td class="button"><input type="button" class="button" value="selectionner" onclick="setClose({$curr_patient.id}, '{$curr_patient.lastname} {$curr_patient.firstname}')" /></td>
+  <td class="button"><input type="button" class="button" value="selectionner" onclick="setClose({$curr_patient.id}, '{$curr_patient.lastname|escape:javascript} {$curr_patient.firstname|escape:javascript}')" /></td>
 </tr>
 {/foreach}
 </table>

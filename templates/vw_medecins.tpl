@@ -24,9 +24,9 @@ function checkMedecin() {
 function setClose() {ldelim}
   window.opener.setMed(
     "{$medecin->medecin_id}",
-    "{$medecin->nom}",
-    "{$medecin->prenom}",
-    "{$type}");
+    "{$medecin->nom|escape:javascript}",
+    "{$medecin->prenom|escape:javascript}",
+    "{$type|escape:javascript}");
   window.close();
 {rdelim}
 {literal}
