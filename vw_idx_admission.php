@@ -20,6 +20,7 @@ $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
 
 $selAdmis = mbGetValueFromGetOrSession("selAdmis", "0");
 $selSaisis = mbGetValueFromGetOrSession("selSaisis", "0");
+$selTri = mbGetValueFromGetOrSession("selTri", "nom");
 $day = mbGetValueFromGetOrSession("day", date("d"));
 $month = mbGetValueFromGetOrSession("month", date("m"));
 $year = mbGetValueFromGetOrSession("year", date("Y"));
@@ -129,7 +130,10 @@ if($selAdmis != "0")
   $sql .= " AND operations.admis = '$selAdmis'";
 if($selSaisis != "0")
   $sql .= " AND operations.saisie = '$selSaisis'";
-$sql .= " ORDER BY operations.time_adm";
+if($selTri == "nom")
+  $sql .= " ORDER BY patients.nom, patients.prenom";
+if($selTri == "heure")
+  $sql .= " ORDER BY operations.time_adm, patients.nom, patients.prenom";
 $today = db_loadlist($sql);
 foreach($today as $key => $value) {
   $today[$key]["hour"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
@@ -156,6 +160,7 @@ $smarty->assign('pmonth', $pmonth);
 $smarty->assign('pmonthy', $pmonthy);
 $smarty->assign('selAdmis', $selAdmis);
 $smarty->assign('selSaisis', $selSaisis);
+$smarty->assign('selTri', $selTri);
 $smarty->assign('title1', $title1);
 $smarty->assign('title2', $title2);
 $smarty->assign('list1', $list1);

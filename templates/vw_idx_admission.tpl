@@ -25,10 +25,12 @@ function printAdmission(id) {
         <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$pday}&amp;month={$pdaym}&amp;year={$pdayy}"><<</a>
         {$title2}
         <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$nday}&amp;month={$ndaym}&amp;year={$ndayy}">>></a>
-        <i>Admissions affichées :
-        {if $selAdmis == "n"}admissions non effectuées
-        {elseif $selSaisis == "n"}préadmission AS/400 non faite
-        {else}toutes les admissions
+        <i>{if $selAdmis == "n"}Admissions non effectuées
+        {elseif $selSaisis == "n"}Préadmission AS/400 non faite
+        {else}Toutes les admissions
+        {/if}
+        {if $selTri == "nom"}triées par nom
+        {elseif $selTri == "heure"}triées par heure
         {/if}</i>
     </th>
   </tr>
@@ -64,24 +66,12 @@ function printAdmission(id) {
     <td>
       <table class="color">
         <tr>
-          <th>
-            Nom
-          </th>
-          <th>
-            Prénom
-          </th>
-          <th>
-            Chirurgien
-          </th>
-          <th>
-            Heure
-          </th>
-          <th>
-            Admis
-          </th>
-          <th>
-            Saisis
-          </th>
+          <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selTri=nom">Nom</a></th>
+          <th>Prénom</th>
+          <th>Chirurgien</th>
+          <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selTri=heure">Heure</a></th>
+          <th>Admis</th>
+          <th>Saisis</th>
         </tr>
         {foreach from=$today item=curr_adm}
         <tr style="background: {if $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
