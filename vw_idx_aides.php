@@ -9,7 +9,7 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
-require_once( $AppUI->getModuleClass('dpCompteRendu', 'aidesaisie'));
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie'));
 require_once( $AppUI->getModuleClass('mediusers', 'mediusers'));
 
 if (!$canRead) {
