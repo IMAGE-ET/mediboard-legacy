@@ -146,6 +146,21 @@ class CDpObject {
 	}
 
 /**
+ * This functions load all references (bacward an forward) of the object
+ */
+    function loadRefs() {
+      $this->loadRefsBack();
+      $this->loadRefsFwd();
+    }
+
+    function loadRefsBack() {
+    }
+
+    function loadRefsFwd() {
+    }
+ 
+ 
+/**
  *	Generic check method
  *
  *	Can be overloaded/supplemented by the child class
