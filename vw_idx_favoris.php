@@ -8,7 +8,8 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 $user = $AppUI->user_id;
 
 //Recherche des codes favoris
-$query = "select favoris_id, favoris_code from ccamfavoris where favoris_user = '$AppUI->user_id'";
+$query = "select favoris_id, favoris_code from ccamfavoris where favoris_user = '$AppUI->user_id'
+			order by favoris_code";
 $favoris = db_loadList($query);
 
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")

@@ -7,9 +7,7 @@ Distributed under the GNU GPL License
 ******************************************************************
 *                                                                *
 * In order to run dPccam correctly, you have to install a        *
-* database named ccam. The sql files to create this database can *
-* be found there :                                               *
-*   http://openccam.free.fr/pip_0.6/ccam_mysql_sql.zip           *
+* database named ccam (in the ccam_mysql_sql.zip file).          *
 * To access this database, you have to create a new user with    *
 * the 'select, update, delete' privilege on the this database :  *
 *   User : CCAMAdmin                                             *

@@ -55,8 +55,8 @@ class CSetupdPccam {
 			
 				return true;
 
-		default:
-			return false;
+			default:
+				return false;
 		}
 
 		return false;

@@ -26,7 +26,6 @@
 						<input type="hidden" name="favoris_id" value="{$curr_code.id}">
 						<input class="button" type="submit" name="btnFuseAction" value="Retirer de mes favoris">
 						</form>
-						<!--<b><a href="sql.php?type=delfav&menu=favoris&code={$curr_code.code}">retirer</a></b>-->
 					</td>
 				{if $i == 3}
 				</tr>

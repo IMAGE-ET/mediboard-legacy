@@ -34,6 +34,7 @@ $smarty->assign('user', $AppUI->user_id);
 $smarty->assign('codeacte', strtoupper($acte->code));
 $smarty->assign('libelle', $acte->libelleLong);
 $smarty->assign('rq', $acte->remarques);
+echo $acte->remarques[0];
 $smarty->assign('act', $acte->activites);
 $smarty->assign('codeproc', $acte->procedure["code"]);
 $smarty->assign('textproc', $acte->procedure["texte"]);

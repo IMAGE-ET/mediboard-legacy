@@ -1,12 +1,4 @@
 <?php
-// this doSQL script is called from the addedit.php script
-// its purpose is to use the CdPccam class to interoperate with the database (store, edit, delete)
-
-/* the following variables can be retreived via POST from dPccam/addedit.php:
-** int dPccam_id	is '0' if a new database object has to be stored or the id of an existing quote that should be overwritten or deleted in the db
-** str dPccam_quote	the text of the quote that should be stored
-** int del		bool flag, in case of presence the row with the given dPccam_id has to be dropped from db
-*/
 
 // create a new instance of the dPccam class
 $obj = new CdPccam();

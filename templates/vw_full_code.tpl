@@ -26,7 +26,6 @@
 									<input type="hidden" name="favoris_user" value="{$user}">
 									<input class="button" type="submit" name="btnFuseAction" value="Ajouter à mes favoris">
 									</form>
-									<!--<b><a href="sql.php?type=addfav&codeacte={$codeacte}">Ajouter à Mes Actes</a></b>-->
 								</td>
 							</tr>
 							{/if}

@@ -16,12 +16,12 @@ if (isset( $_GET['tab'] )) {
 	// saves the current tab box state
 	$AppUI->setState( "dPccamIdxTab", $_GET['tab'] );
 }
-$tab = $AppUI->getState( "dPccamIdxTab" ) !== NULL ? $AppUI->getState( "dPccamIdxTab" ) : 0;
+$tab = $AppUI->getState( "dPccamIdxTab" ) !== NULL ? $AppUI->getState( "dPccamIdxTab" ) : 1;
 
 // we prepare the User Interface Design with the dPFramework
 
 // setup the title block with Name, Icon and Help
-$titleBlock = new CTitleBlock( "dPccam", "dPccam.png", $m, "$m.$a" );
+$titleBlock = new CTitleBlock( "Aide au codage CCAM", "dPccam.png", $m, "$m.$a" );
 $titleBlock->show();
 
 // now prepare and show the tabbed information boxes with the dPFramework
