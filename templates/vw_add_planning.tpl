@@ -85,7 +85,7 @@ function setCalendar( idate, fdate ) {
 <form name="editFrm" action="?m=dPplanningOp" method="post">
 <input type="hidden" name="dosql" value="do_planning_aed" />
 <input type="hidden" name="del" value="0" />
-<input type="hidden" name="chir_id" value="" />
+<input type="hidden" name="chir_id" value="{$chir.id}" />
 <input type="hidden" name="pat_id" value="" />
 <input type="hidden" name="rank" value="0" />
 
@@ -97,7 +97,7 @@ function setCalendar( idate, fdate ) {
         <tr><th class="category" colspan="3">Informations concernant l'opération</th></tr>
         <tr>
 		      <th class="mandatory">Chirurgien:</th>
-          <td class="readonly"><input type="text" name="chir_name" size="30" value="" readonly="readonly" /></td>
+          <td class="readonly"><input type="text" name="chir_name" size="30" value="{$chir.name}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
         <tr>
