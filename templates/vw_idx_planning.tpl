@@ -12,7 +12,7 @@
   </tr>
   <tr>
     <td>
-	  <table class="tbl">
+	  <table class="color">
 	    <tr>
 		  <th>
 		    Date
@@ -28,7 +28,23 @@
 		  </th>
 		</tr>
 	    {foreach from=$list item=curr_plage}
-		<tr>
+		{if $curr_plage.spe}
+		<tr style="background: #ddd">
+		  <td align="right">
+			{$curr_plage.date}
+		  </td>
+		  <td align="center">
+		    {$curr_plage.horaires}
+		  </td>
+		  <td align="center">
+		    {$curr_plage.operations}
+		  </td>
+		  <td align="center">
+		      Plage de spécialité
+		  </td>
+		</tr>
+		{else}
+		<tr style="background: #fff">
 		  <td align="right">
 		    <a href="index.php?m=dPplanningOp&tab=0&day={$curr_plage.day}&month={$month}&year={$year}">
 			{$curr_plage.date}
@@ -41,13 +57,10 @@
 		    {$curr_plage.operations}
 		  </td>
 		  <td align="center">
-		    {if $curr_plage.occupe == h0}
-			  -
-			{else}
 		      {$curr_plage.occupe}
-			{/if}
 		  </td>
 		</tr>
+		{/if}
 		{/foreach}
 	  </table>
 	</td>

@@ -63,9 +63,14 @@ $dayName = $listDay[$dayOfWeek];
 $monthName = $listMonth[$month - 1];
 $title1 = "$monthName $year";
 $title2 = "$dayName $day $monthName $year";
-$sql = "select user_username from users where user_id = '$AppUI->user_id'";
+$sql = "select users.user_username, functions_mediboard.function_id
+        from users, users_mediboard, functions_mediboard
+        where users.user_id = '$AppUI->user_id'
+        and users.user_id = users_mediboard.user_id
+        and functions_mediboard.function_id = users_mediboard.function_id";
 $result = db_loadlist($sql);
 $user = $result[0]["user_username"];
+$specialite = $result[0]["function_id"];
 
 //Requete SQL pour le planning du mois
 // * temp total de chaque plage
@@ -87,7 +92,7 @@ foreach($result as $key => $value) {
 // * liste des operations triées par plage
 //@todo -c Ajouter la liste des plages de spécialité .
 $sql = "select plagesop.id as id, plagesop.date, 0 as operations,
-		plagesop.fin, plagesop.debut, 0 as busy_time
+		plagesop.fin, plagesop.debut, 0 as busy_time, 0 as spe
 		from plagesop
 		left join operations
 		on plagesop.id = operations.plageop_id
@@ -96,7 +101,7 @@ $sql = "select plagesop.id as id, plagesop.date, 0 as operations,
 		and operations.operation_id IS NULL
 		union
 		select plagesop.id as id, plagesop.date, count(operations.temp_operation) as operations,
-		plagesop.fin, plagesop.debut, SUM(operations.temp_operation) as busy_time
+		plagesop.fin, plagesop.debut, SUM(operations.temp_operation) as busy_time, 0 as spe
 		from plagesop
 		left join operations
 		on plagesop.id = operations.plageop_id
@@ -104,6 +109,14 @@ $sql = "select plagesop.id as id, plagesop.date, 0 as operations,
 		and plagesop.date like '$year-$month-__'
 		and operations.operation_id IS NOT NULL
 		group by operations.plageop_id
+		union
+		select plagesop.id as id, plagesop.date, 0 as operations,
+		plagesop.fin, plagesop.debut, 0 as busy_time, 1 as spe
+		from plagesop
+		left join operations
+		on plagesop.id = operations.plageop_id
+		where plagesop.id_spec = '$specialite'
+		and plagesop.date like '$year-$month-__'
 		order by plagesop.date, plagesop.id";
 $result = db_loadlist($sql);
 
@@ -120,6 +133,7 @@ foreach($result as $key => $value) {
     $list[$key]["occupe"] = $duree[$plageop]["hour"]."h".$duree[$plageop]["min"];
   else
     $list[$key]["occupe"] = "-";
+  $list[$key]["spe"] = $value["spe"];
   //$list[$key]["occupe"] = (substr($value["busy_time"], -6, strlen($value["busy_time"]) - 4))."h".(substr($value["busy_time"], -4, 2));
 }
 
