@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+//require_once( $AppUI->getSystemClass ('dp' ) );
 
 require_once("modules/dPplanningOp/planning.class.php");
 
