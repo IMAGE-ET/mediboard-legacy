@@ -1,45 +1,27 @@
-<?php
+<?php /* $Id$ */
 
 /**
- *	@package dotProject
- *	@subpackage modules
+ *	@package Mediboard
+ *	@subpackage dPbloc
  *	@version $Revision$
-*/
+ *  @author Romain Ollivier
+ */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass('dp'));
 
-class Csalle extends CDpObject {
-
+/**
+ * The CGroups class
+ */
+class CSalle extends CDpObject {
+  // DB Table key
 	var $id = NULL;
-	var $nom = NULL;
+	
+  // DB Fields
+  var $nom = NULL;
 
-	function Csalle() {
+	function CSalle() {
 		$this->CDpObject( 'sallesbloc', 'id' );
 	}
 
-	function delete() {
-		$sql = "DELETE FROM sallesbloc WHERE id = '$this->id'";
-		if (!db_exec( $sql )) {
-			return db_error();
-		} else {
-			return NULL;
-		}
-	}
-	
-	function store() {
-		//@todo -c apeller la fonction superstore pour faire l'insert/update
-		if($this->id != NULL) {
-			$sql = "update sallesbloc set nom = '$this->nom'
-					where id = '$this->id'";
-			db_exec( $sql );
-			return db_error();
-		}
-		else {
-			$sql = "insert into sallesbloc(nom)
-					values('$this->nom')";
-			db_exec( $sql );
-			return db_error();
-		}
-	}
 }
 ?>

@@ -1,65 +1,83 @@
+<!-- $Id$ -->
+
+{literal}
+<script language="javascript">
+function checkSalle() {
+  var form = document.salle;
+    
+  if (form.nom.value.length == 0) {
+    alert("Intitulé manquant");
+    form.nom.focus();
+    return false;
+  }
+    
+  return true;
+}
+</script>
+{/literal}
+
 <table class="main">
-  <tr>
-    <td>
-	  <table class="form">
-	    <tr>
-		  <th class="category" colspan=3>
-		    Modifier une salle
-		  </th>
-		</tr>
-		{foreach from=$list item=curr_salle}
-		<tr>
-          <td>
-		    <form name="editFrm" action="./index.php?m=dPbloc" method="post">
-            <input type="hidden" name="dosql" value="do_salle_aed" />
-			<input type="hidden" name="del" value="0" />
-			<input type="hidden" name="id" value="{$curr_salle.id}" />
-			<input type="text" name="nom" value="{$curr_salle.nom}" />
-		  </td>
-		  <td class="button">
-		    <input type="submit" value="modifier" />
-		    </form>
-		  </td>
-		  <td class="button">
-		    <form name="editFrm" action="./index.php?m=dPbloc" method="post">
-            <input type="hidden" name="dosql" value="do_salle_aed" />
-			<input type="hidden" name="del" value="1" />
-			<input type="hidden" name="id" value="{$curr_salle.id}" />
-			<input type="submit" value="supprimer" />
-		    </form>
-		  </td>
-		</tr>
-	    {/foreach}
-	  </table>
-	</td>
-	<td>
-	  <form name="editFrm" action="./index.php?m=dPbloc" method="post">
-      <input type="hidden" name="dosql" value="do_salle_aed" />
-	  <input type="hidden" name="del" value="0" />
-	  <table class="form">
-	    <tr>
-		  <th class="category" colspan=2>
-		    Ajouter une salle
-		  </th>
-		</tr>
-		<tr>
-		  <th>
-		    Nom:
-		  </th>
-		  <td>
-		    <input type="text" name="nom" value="" />
-		  </td>
-		</tr>
-		<tr>
-		  <td class="button">
-		    <input type="reset" value="Réinitialiser" />
-		  </td>
-		  <td class="button">
-		    <input type="submit" value="Valider" />
-		  </td>
-		</tr>
-	  </table>
-	  </form>
-	</td>
-  </tr>
+
+<tr>
+  <td class="greedyPane">
+
+		<a href="index.php?m={$m}&tab=3&usersalle=0"><strong>Créer une salle</strong></a>
+
+    <table class="color">
+      
+    <tr>
+      <th>liste des salles</th>
+    </tr>
+    
+    {foreach from=$salles item=curr_salle}
+    <tr>
+      <td><a href="index.php?m={$m}&tab=3&usersalle={$curr_salle.id}">{$curr_salle.nom}</a></td>
+    </tr>
+    {/foreach}
+      
+    </table>
+
+  </td>
+  
+  <td class="pane">
+
+    <form name="salle" action="./index.php?m={$m}" method="post" onsubmit="return checkSalle()">
+    <input type="hidden" name="dosql" value="do_salle_aed" />
+		<input type="hidden" name="id" value="{$sallesel.id}" />
+    <input type="hidden" name="del" value="0" />
+
+    <table class="form">
+
+    <tr>
+      <th class="category" colspan="2">
+      {if $sallesel.exist}
+        Modification de la salle &lsquo;{$sallesel.nom}&rsquo;
+      {else}
+        Création d'une salle
+      {/if}
+      </th>
+    </tr>
+
+    <tr>
+      <th class="mandatory">Intitulé:</th>
+      <td><input type="text" name="nom" value="{$sallesel.nom}" /></td>
+    </tr>
+    
+    <tr>
+      <td class="button" colspan="2">
+        {if $sallesel.exist}
+        <input type="reset" value="Réinitialiser" />
+        <input type="submit" value="Valider" />
+        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+        {else}
+        <input type="submit" name="btnFuseAction" value="Créer">
+        {/if}
+      </td>
+    </tr>
+
+    </table>
+
+  </td>
+</tr>
+
 </table>
