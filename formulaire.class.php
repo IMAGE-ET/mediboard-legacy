@@ -98,8 +98,30 @@ class Cformulaire
       $plagesel = $res[0];
     }
 ?>
-<form name='editFrm' action='./index.php?m=dPbloc' method='post'>
 
+<script language="javascript">
+function checkPlage() {
+  var form = document.editFrm;
+    
+  if (form.id_chir.value == 0 && form.id_spec.value == 0) {
+    alert("Merci de choisir un chirurgien ou une spécialité");
+    form.id_chir.focus();
+    return false;
+  }
+  
+  if (form.heurefin.value < form.heuredeb.value || (form.heurefin.value == form.heuredeb.value && form.minutefin.value <= form.minutedeb.value)) {
+    alert("L'heure de début doit être supérieure à la l'heure de fin");
+    form.heurefin.focus();
+    return false;
+  }
+  
+ 
+  return true;
+}
+</script>
+
+
+<form name='editFrm' action='./index.php?m=dPbloc' method='post' onsubmit='return checkPlage()'>
 <input type='hidden' name='dosql' value='do_plagesop_aed'>
 <input type='hidden' name='del' value='0'>
 <input type='hidden' name='id' value='<?php echo $this->id; ?>'>
@@ -110,7 +132,7 @@ class Cformulaire
   </tr>
 
   <tr>
-    <th>Chirurgien:</th>
+    <th class="mandatory">Chirurgien:</th>
     <td>
       <select name='id_chir'>";
       <?php foreach($this->chirurgiens as $value) { ?>
@@ -132,7 +154,7 @@ class Cformulaire
       </select>
     </td>
 
-    <th>début:</th>
+    <th class="mandatory">début:</th>
     <td>
       <select name='heuredeb'>
       <?php foreach($this->listheures as $value) { ?>
@@ -171,7 +193,7 @@ class Cformulaire
       <input type="text" name="year"  value="<?php echo $_SESSION['year' ] ; ?>" readonly="readonly" size='2' />
     </td>
 
-    <th>Fin:</td>
+    <th class="mandatory">Fin:</td>
     <td>
       <select name='heurefin'>
       <?php foreach($this->listheures as $value) { ?>
@@ -192,7 +214,7 @@ class Cformulaire
   </tr>
   
   <tr>
-    <th>Spécialité:</th>
+    <th class="mandatory">Spécialité:</th>
     <td colspan="5">
       <select name='id_spec'>";
       <?php foreach($this->specialites as $value) { ?>
@@ -227,7 +249,7 @@ class Cformulaire
 
 <?php if ($this->tool == "edit") { ?>
 
-<form name='editFrm' action='./index.php?m=dPbloc' method='post'>
+<form name='removeFrm' action='./index.php?m=dPbloc' method='post'>
 
 <input type='hidden' name='dosql' value='do_plagesop_aed' />
 <input type='hidden' name='del' value='1' />
@@ -244,7 +266,7 @@ class Cformulaire
 
 <table class="form">
   <tr>
-    <th class="category" colspan="2">Editer la plage opératoire</th>
+    <th class="category" colspan="2">Supprimer la plage opératoire</th>
   </tr>
   
   <tr>

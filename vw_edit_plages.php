@@ -26,21 +26,24 @@ function popPlanning(day, month, year) {
 <table width="100%">
 	<tr>
 		<td valign="top" rowspan=2>
+
+      <table class="form">
+        <tr><th class="category">Légende</th></tr>
 <?php
-$sql = "select functions_mediboard.text as texte, functions_mediboard.color as color
-		from functions_mediboard, groups_mediboard
-		where groups_mediboard.group_id = functions_mediboard.group_id
-		and (groups_mediboard.text = 'Chirurgie' or groups_mediboard.text = 'Anesthésie')
-		order by groups_mediboard.text, functions_mediboard.text";
+$sql = "SELECT functions_mediboard.text AS texte, functions_mediboard.color AS color
+  FROM functions_mediboard, groups_mediboard
+  WHERE groups_mediboard.group_id = functions_mediboard.group_id
+  AND (groups_mediboard.text = 'Chirurgie' 
+  OR groups_mediboard.text = 'Anesthésie')
+  ORDER BY groups_mediboard.text, functions_mediboard.text";
 $rows = db_loadlist($sql);
-echo "<table width=\"100%\">";
-echo "<tr><td valign=\"top\" align=\"center\"><b><i>Légende</i></b>";
-foreach($rows as $key => $value)
-{
-	echo "<tr><td valign=\"top\" bgcolor=\"#".$value['color']."\">".$value['texte']."</td></tr>";
+
+foreach($rows as $key => $value) {
+	echo "<tr><td style='background: #{$value['color']};'>{$value['texte']}</td></tr>";
 }
-echo "</table>";
 ?>
+      </table>
+
 		</td>
 		<td width="100%" valign="top" align="center">
 <?php
