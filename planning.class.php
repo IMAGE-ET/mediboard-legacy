@@ -49,10 +49,11 @@ class Cplanning extends CDpObject {
   }
 
   function delete() {
-    $sql = "SELECT rank, plageop_id FOM operations WHERE operation_id = '$this->operation_id'";
+    $sql = "SELECT rank, plageop_id FROM operations WHERE operation_id = '$this->operation_id'";
+    echo "Premier select :<br>$sql<br>";
     $result = db_loadlist($sql);
     if($result[0]["rank"] != 0) {
-      $sql = "SELECT operation_id from operations
+      $sql = "SELECT operation_id FROM operations
               WHERE plageop_id = '".$result[0]["plageop_id"]."'
               AND rank != 0
               AND operation_id != '$this->operation_id'
@@ -70,8 +71,8 @@ class Cplanning extends CDpObject {
       return db_error();
     } else {
     return NULL;
+    }
   }
-}
     
   function store() {
     //@todo -c apeller la fonction superstore pour faire l'insert/update
