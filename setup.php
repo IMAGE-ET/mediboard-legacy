@@ -56,8 +56,20 @@ class CSetupdPplanningOp {
 			"  operation_id bigint(20) unsigned NOT NULL auto_increment" .
 			"  patient_id bigint(20) unsigned NOT NULL default '0'" .
 			"  plageop_id bigint(20) unsigned NOT NULL default '0'" .
-			", code_CCAM varchar(7) default NULL" .
-			", code_CIM10 varchar(5) default NULL" .
+			", CCAM_code varchar(7) default NULL" .
+			", CIM10_code varchar(5) default NULL" .
+			", examen text" .
+			", materiel text" .
+			", info enum('o','n') NOT NULL default 'n'" .
+			", date_anesth date NOT NULL default '0000-00-00'" .
+			", time_anesth time NOT NULL default '00:00:00'" .
+			", date_adm date NOT NULL default '0000-00-00'" .
+			", time_adm time NOT NULL default '00:00:00'" .
+			", duree_hospi tinyint(4) unsigned NOT NULL default '0'" .
+			", type_adm enum('comp','ambu') default 'comp'" .
+			", chambre enum('o','n') NOT NULL default 'o'" .
+			", ATNC enum('o','n') NOT NULL default 'n'" .
+			", rques text" .
 			", PRIMARY KEY  (operation_id)" .
 			", UNIQUE KEY operation_id (operation_id)" .
 			") TYPE=MyISAM;";
