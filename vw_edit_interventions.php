@@ -13,16 +13,10 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-if(dPgetParam($_GET, "id", "noid") == "noid") {
-  if(!isset($_SESSION[$m][$tab]["id"])) {
-    $AppUI->msg = "Vous devez choisir une plage opératoire";
-    $AppUI->redirect( "m=dPbloc&tab=1");
-  }
-  else
-    $id = $_SESSION[$m][$tab]["id"];
+if(!($id = mbGetValueFromGetOrSession('id'))) {
+  $AppUI->msg = "Vous devez choisir une plage opératoire";
+  $AppUI->redirect( "m=dPbloc&tab=1");
 }
-else
-  $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
 
 $anesth = dPgetSysVal("AnesthType");
 

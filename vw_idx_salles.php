@@ -20,11 +20,7 @@ $sql = "SELECT *
 $salles = db_loadlist($sql);
 
 // Récupération de la salle à ajouter/editer
-if (isset($_GET["usersalle"])) {
-  $_SESSION[$m][$tab]["usersalle"] = $_GET["usersalle"];
-}
-
-$usersalle = dPgetParam($_SESSION[$m][$tab], "usersalle", 0);
+$usersalle = mbGetValueFromGetOrSession('usersalle', 0);
 
 $sql = "SELECT * 
   FROM sallesbloc 

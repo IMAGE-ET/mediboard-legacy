@@ -9,6 +9,7 @@
 
 //Initialisation du jour choisi
 $add = 0;
+// @todo: Utiliser la fonction set des variables de sessions
 // Year
 if(dPgetParam($_GET, "year", "") == "")
 {
