@@ -54,16 +54,24 @@
 	    {foreach from=$today item=curr_adm}
 		<tr>
 		  <td>
+		    <a href="index.php?m=dPadmissions&tab=1&id={$curr_adm.operation_id}">
 		    {$curr_adm.nom}
+			</a>
 		  </td>
 		  <td>
+		    <a href="index.php?m=dPadmissions&tab=1&id={$curr_adm.operation_id}">
 		    {$curr_adm.prenom}
+			</a>
 		  </td>
 		  <td>
+		    <a href="index.php?m=dPadmissions&tab=1&id={$curr_adm.operation_id}">
 		    Dr. {$curr_adm.chir_lastname} {$curr_adm.chir_firstname}
+			</a>
 		  </td>
 		  <td>
+		    <a href="index.php?m=dPadmissions&tab=1&id={$curr_adm.operation_id}">
 		    {$curr_adm.hour}
+			</a>
 		  </td>
 		</tr>
 		{/foreach}
