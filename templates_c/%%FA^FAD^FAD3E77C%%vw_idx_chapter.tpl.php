@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-12 17:03:24
+<?php /* Smarty version 2.6.3, created on 2004-08-24 15:36:07
          compiled from vw_idx_chapter.tpl */ ?>
 <table width="100%" bgcolor="#cccccc">
 	<th align="center">
@@ -15,7 +15,7 @@
 						<b><?php echo $this->_tpl_vars['curr_chapter']['rom']; ?>
 </b>
 					</td>
-					<td valign="top">
+					<td valign="top" align="left">
 						<a href="index.php?m=dPcim10&tab=2&code=<?php echo $this->_tpl_vars['curr_chapter']['code']; ?>
 "><b><?php echo $this->_tpl_vars['curr_chapter']['text']; ?>
 </b></a>
