@@ -89,6 +89,7 @@ table.form th.category {
 }
 
 table.form td {
+  white-space: nowrap;
   vertical-align: top;
   background: #eee;
   text-align: left;
