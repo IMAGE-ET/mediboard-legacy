@@ -12,7 +12,7 @@ require_once("modules/mediusers/functions.class.php");
 require_once("modules/mediusers/groups.class.php");
 //require_once("modules/admin/admin.class.php");
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );

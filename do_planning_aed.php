@@ -39,20 +39,22 @@ if ($del) {
     $AppUI->setMsg("Protocole supprimé", UI_MSG_OK);
     $AppUI->redirect("m=$m&amp;tab=3");
   }
-} else {
+} 
+else {
 	if ($msg = $obj->store()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-	} else {
-		$isNotNew = @$_POST['operation_id'];
-    
-  if ($obj->plageop_id) {
-		$AppUI->setMsg( $isNotNew ? 'Opération modifiée' : 'Opération créée', UI_MSG_OK);
-  } else {
-		$AppUI->setMsg( $isNotNew ? 'Protocole modifié' : 'Protocole modifié', UI_MSG_OK);
-  }
-    
+    $AppUI->redirect();
 	}
   
-	$AppUI->redirect();
+	$isNotNew = @$_POST['operation_id'];
+  
+	$AppUI->setMsg(
+    $obj->plageop_id ? 
+      ($isNotNew ? 'Opération modifiée' : 'Opération créée') : 
+      ($isNotNew ? 'Protocole modifié'  : 'Protocole créé' ), 
+    UI_MSG_OK);
+
+  $AppUI->redirect();
 }
+
 ?>

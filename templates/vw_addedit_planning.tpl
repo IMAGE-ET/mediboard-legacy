@@ -257,14 +257,20 @@ function printForm() {
         {/if}
         
         <tr>
-          <th class="mandatory"><input type="hidden" name="chir_id" value="{$chir->user_id}" /><label for="editFrm_chir_id">Chirurgien:</label></th>
+          <th class="mandatory">
+            <input type="hidden" name="chir_id" value="{$chir->user_id}" />
+            <label for="editFrm_chir_id">Chirurgien:</label>
+          </th>
           <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if ($chir)}Dr. {$chir->user_last_name} {$chir->user_first_name}{/if}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
 
         {if !$protocole}
         <tr>
-          <th class="mandatory"><input type="hidden" name="pat_id" value="{$pat->patient_id}" /><label for="editFrm_chir_id">Patient:</label></th>
+          <th class="mandatory">
+            <input type="hidden" name="pat_id" value="{$pat->patient_id}" />
+            <label for="editFrm_chir_id">Patient:</label>
+          </th>
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->nom} {$pat->prenom}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
@@ -284,7 +290,7 @@ function printForm() {
 
         {if !$protocole}
         <tr>
-          <th>Coté:</th>
+          <th><label for="editFrm_cote">Coté:</label></th>
           <td colspan="2">
             <select name="cote">
               <option {if !$op && $op->cote == "total"} selected="selected" {/if} >total</option>
@@ -297,7 +303,7 @@ function printForm() {
         {/if}
 
         <tr>
-          <th class="mandatory">Temps opératoire:</th>
+          <th class="mandatory"><label for="editFrm__hour_op">Temps opératoire:</label></th>
           <td colspan="2">
             <select name="_hour_op">
             {foreach from=$hours key=key item=hour}
@@ -315,28 +321,33 @@ function printForm() {
 
         {if !$protocole}
         <tr>
-          <th class="mandatory"><input type="hidden" name="plageop_id" value="{$plage->id}" />Date de l'intervention:</th>
+          <th class="mandatory">
+            <input type="hidden" name="plageop_id" value="{$plage->id}" />
+            <label for="editFrm_date">Date de l'intervention:</label>
+          </th>
           <td class="readonly"><input type="text" name="date" readonly="readonly" size="10" value="{$plage->_date}" /></td>
           <td class="button"><input type="button" value="choisir une date" onclick="popPlage()" /></td>
         </tr>
         {/if}
         
         <tr>
-          <th>Examens complémentaires:</th>
+          <th><label for="editFrm_examen">Examens complémentaires:</label></th>
           <td colspan="2"><textarea name="examen" rows="3">{$op->examen}</textarea></td>
         </tr>
 
         {if !$protocole}
         <tr>
-          <th>Matériel à prévoir:</th>
+          <th><label for="editFrm_materiel">Matériel à prévoir:</label></th>
           <td colspan="2"><textarea name="materiel" rows="3">{$op->materiel}</textarea></td>
         </tr>
 
         <tr>
-          <th>Information du patient:</th>
+          <th><label for="editFrm_info_n">Information du patient:</label></th>
           <td colspan="2">
-            <input name="info" value="o" type="radio" {if $op->info == "o"} checked="checked" {/if}/>Oui
-            <input name="info" value="n" type="radio" {if !$op || $op->info == "n"} checked="checked" {/if}/>Non
+            <input name="info" value="o" type="radio" {if $op->info == "o"} checked="checked" {/if}/>
+            <label for="editFrm_info_o">Oui</label>
+            <input name="info" value="n" type="radio" {if !$op || $op->info == "n"} checked="checked" {/if}/>
+            <label for="editFrm_info_n">Non</label>
           </td>
         </tr>
         {/if}
@@ -351,7 +362,7 @@ function printForm() {
         <tr><th class="category" colspan="3">RDV d'anesthésie</th></tr>
 
         <tr>
-          <th>Date:</th>
+          <th><label for="editFrm__rdv_anesth">Date:</label></th>
           <td class="readonly">
             <input type="hidden" name="_date_rdv_anesth" value="{$op->_date_rdv_anesth}" />
             <input type="text" name="_rdv_anesth" value="{$op->_rdv_anesth}" readonly="readonly" />
@@ -362,7 +373,7 @@ function printForm() {
         </tr>
 
         <tr>
-          <th>Heure:</th>
+          <th><label for="editFrm__hour_anesth">Heure:</label></th>
           <td>
             <select name="_hour_anesth">
             {foreach from=$hours item=hour}
@@ -383,7 +394,7 @@ function printForm() {
 
         {if !$protocole}
         <tr>
-          <th class="mandatory">Date:</th>
+          <th class="mandatory"><label for="editFrm__rdv_adm">Date:</label></th>
           <td class="readonly">
             <input type="hidden" name="_date_rdv_adm" value="{$op->_date_rdv_adm}" />
             <input type="text" name="_rdv_adm" value="{$op->_rdv_adm}" readonly="readonly" />
@@ -394,7 +405,7 @@ function printForm() {
         </tr>
 
         <tr>
-          <th class="mandatory">Heure:</th>
+          <th class="mandatory"><label for="editFrm__hour_adm">Heure:</label></th>
           <td>
             <select name="_hour_adm">
             {foreach from=$hours item=hour}
@@ -412,7 +423,7 @@ function printForm() {
         {/if}
 
         <tr>
-          <th>Durée d'hospitalisation:</th>
+          <th><label for="editFrm_duree_hospi">Durée d'hospitalisation:</label></th>
           <td><input type"text" name="duree_hospi" size="1" value="{$op->duree_hospi}"> jours</td>
         </tr>
         <tr>
@@ -429,7 +440,7 @@ function printForm() {
         
         {if !$protocole}
         <tr>
-          <th>Chambre particulière:</th>
+          <th><label for="editFrm_chambre_o">Chambre particulière:</label></th>
           <td>
             <input name="chambre" value="o" type="radio" {if !$op || $op->chambre == "o"} checked="checked" {/if}/>
             <label for="editFrm_chambre_o">Oui</label>
@@ -439,7 +450,7 @@ function printForm() {
         </tr>
         <tr><th class="category" colspan="3">Autre</th></tr>
         <tr>
-          <th>Risque ATNC:</th>
+          <th><label for="editFrm_ATNC_n">Risque ATNC:</th>
           <td>
             <input name="ATNC" value="o" type="radio" {if $op->ATNC == "o"} checked="checked" {/if} />
             <label for="editFrm_ATNC_o">Oui</label>
@@ -448,7 +459,7 @@ function printForm() {
           </td>
         </tr>
         <tr>
-          <th>Remarques:</th>
+          <th><label for="editFrm_rques">Remarques:</label></th>
           <td><textarea name="rques" rows="3">{$op->rques}</textarea></td>
         </tr>
         {/if}
