@@ -86,6 +86,7 @@ class Cplanning extends CDpObject {
               cote = '$this->cote', temp_operation = '$this->temp_operation',
               examen = '$this->examen', materiel = '$this->materiel', info = '$this->info',
               date_anesth = '$this->date_anesth', time_anesth = '$this->time_anesth',
+              date_adm = '$this->date_adm', time_adm = '$this->time_adm',
               duree_hospi = '$this->duree_hospi', type_adm = '$this->type_adm', chambre = '$this->chambre',
               ATNC = '$this->ATNC', rques = '$this->rques', rank = '$this->rank'
               where operation_id = '$this->operation_id'";
