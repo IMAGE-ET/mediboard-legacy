@@ -191,7 +191,7 @@ function printPatient(id) {
             Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name}</a></td>
           <td>{if $curr_op->annulee}[ANNULE]{else}
           <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-          <img src="modules/dpPatients/images/planning.png" title="modifier"></a>{/if}</td>
+          <img src="modules/dPpatients/images/planning.png" title="modifier"></a>{/if}</td>
         </tr>
         {/foreach}
         {/if}
@@ -205,7 +205,7 @@ function printPatient(id) {
             Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}</a></td>
           <td>{if $curr_consult->annule}[ANNULE]{else}
           <a href="index.php?m=dPcabinet&amp;tab=edit_planning&amp;consultation_id={$curr_consult->consultation_id}">
-          <img src="modules/dpPatients/images/planning.png" title="modifier"></a>{/if}</td>
+          <img src="modules/dPpatients/images/planning.png" title="modifier"></a>{/if}</td>
         </tr>
         {/foreach}
         {/if}
