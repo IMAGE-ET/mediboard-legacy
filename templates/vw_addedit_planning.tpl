@@ -389,6 +389,11 @@ function printForm() {
           <td><textarea name="materiel" rows="3">{$op->materiel}</textarea></td>
           <td><textarea name="convalescence" rows="3">{$op->convalescence}</textarea></td>
         </tr>
+        
+        <tr>
+          <th>Dépassement d'honoraire:</th>
+          <td colspan="2"><input name="depassement" type="text" size="4" value="{$op->depassement}" /> €</td>
+        </tr>
 
         {if !$protocole}
         <tr>

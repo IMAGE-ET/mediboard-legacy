@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.21';
+$config['mod_version'] = '0.22';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -33,6 +33,7 @@ class CSetupdPplanningOp {
 
 	function remove() {
 		db_exec( "DROP TABLE operations;" );
+		db_exec( "DELETE FROM sysval WHERE  sysval_title = 'AnesthType';" );
 
 		return null;
 	}
@@ -42,7 +43,7 @@ class CSetupdPplanningOp {
 		{
 		case "all": {
             $sql = "INSERT INTO sysvals
-                    VALUES (5, 1, 'AnesthType', '1|Rachi\n2|Rachi + bloc\n3|Anesthésie loco-régionnale\n4|Anesthésie locale\n5|Neurolept\n6|Anesthésie générale\n7|Anesthesie generale + bloc\n8|Anesthesie peribulbaire\n0|Non définie')";
+                    VALUES ('', '1', 'AnesthType', '1|Rachi\n2|Rachi + bloc\n3|Anesthésie loco-régionnale\n4|Anesthésie locale\n5|Neurolept\n6|Anesthésie générale\n7|Anesthesie generale + bloc\n8|Anesthesie peribulbaire\n0|Non définie')";
             db_exec( $sql ); db_error();
         }
 		case "0.1": {
@@ -54,6 +55,10 @@ class CSetupdPplanningOp {
         }
         case "0.2": {
         	$sql = "ALTER TABLE `operations` ADD `convalescence` TEXT AFTER `materiel` ;";
+            db_exec( $sql ); db_error();
+        }
+        case "0.21": {
+        	$sql = "ALTER TABLE `operations` ADD `depassement` INT( 4 ) ;;";
             db_exec( $sql ); db_error();
 			return true;
         }

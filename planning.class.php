@@ -48,6 +48,7 @@ class COperation extends CDpObject {
   var $rques = null;
   var $rank = 0;
   var $admis = "n";
+  var $depassement = null;
     
   // Form fields
   var $_hour_op = null;
