@@ -5,18 +5,19 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-if(dPgetParam($_GET, "id", "noid") != "noid")
-{
-  $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", "");
+if(dPgetParam($_GET, "id", "noid") == "noid") {
+  if(!isset($_SESSION[$m][$tab]["id"])) {
+    $AppUI->msg = "Vous devez choisir un patient";
+    $AppUI->redirect( "m=dPpatients&tab=0" );
+  }
+  else
+    $id = $_SESSION[$m][$tab]["id"];
 }
 else
-{
-  $AppUI->msg = "Vous devez choisir un patient";
-  $AppUI->redirect( "m=dPpatients&tab=0" );
-}
+  $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
 
 //Recuperation des patients
-$sql = "select * from patients where patient_id = '".$_SESSION[$m][$tab]["id"]."'";
+$sql = "select * from patients where patient_id = '$id'";
 $patient = db_loadlist($sql);
 
 //Creation de l'objet smarty
