@@ -51,9 +51,7 @@ function popChir() {
   var url = './index.php?m=dPplanningOp';
   url += '&a=chir_selector';
   url += '&dialog=1';
-  
-  neo = window.open(url, 'Chirurgien', 'left=50, top=50, height=250, width=400, resizable=yes');
-  if(neo.window.focus){neo.window.focus();}
+  popup(400, 250, url, 'Chirurgien');
 }
 
 function setChir( key, val ){
@@ -70,9 +68,7 @@ function popPat() {
   var url = './index.php?m=dPpatients';
   url += '&a=pat_selector';
   url += '&dialog=1';
-
-  neo = window.open(url, 'Patient', 'left=50, top=50, width=500, height=500, resizable=yes');
-  if(neo.window.focus){neo.window.focus();}
+  popup(500, 500, url, 'Patient');
 }
 
 function setPat( key, val ) {
@@ -92,8 +88,7 @@ function popRDV() {
   url += '&dialog=1';
   url += '&chir=' + document.editFrm.chir_id.value;
   if(checkChir())
-    neo = window.open(url, 'Plage', 'left=50, top=50, width=600, height=550, resizable=yes');
-    if(neo.window.focus){neo.window.focus();}
+    popup(600, 550, url, 'Plage');
 }
 
 function setRDV( hour, min, id, date, freq ) {
@@ -122,9 +117,7 @@ function popCalendar( field ) {
   url += '&dialog=1';
   url += '&callback=setCalendar';
   url += '&date=' + idate;
-  
-  neo = window.open(url, 'calwin', 'left=250, top=250, width=280, height=250, scrollbars=yes' );
-  if(neo.window.focus){neo.window.focus();}
+  popup(280, 250, url, 'calwin');
 }
 
 function setCalendar( idate, fdate ) {
