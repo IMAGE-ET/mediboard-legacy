@@ -125,7 +125,7 @@ foreach($result as $key => $value) {
   $duree[$plageop]["min"] = date("i", $duree[$plageop]["newtime"]);  
 }
 // * liste des operations triées par plage
-$sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
+/*$sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
 		plagesop.fin, plagesop.debut, 0 AS busy_time, 0 AS spe
 		FROM plagesop
 		LEFT JOIN operations
@@ -152,7 +152,50 @@ $sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
 		WHERE plagesop.id_spec = '$specialite'
 		AND plagesop.date LIKE '$year-$month-__'
 		ORDER BY plagesop.date, plagesop.id";
-$result = db_loadlist($sql);
+*/
+// Nouvelle requete pour assurer la compatibilité avec mySQL 3.X
+$sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
+		plagesop.fin, plagesop.debut, 0 AS busy_time, 0 AS spe
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE (plagesop.id_chir = '$user' OR plagesop.id_spec = '$specialite')
+		AND plagesop.date LIKE '$year-$month-__'
+		AND operations.operation_id IS NULL";
+$result1 = db_loadlist($sql);
+$sql = "SELECT plagesop.id AS id, plagesop.date, COUNT(operations.temp_operation) AS operations,
+		plagesop.fin, plagesop.debut, SUM(operations.temp_operation) AS busy_time, 0 AS spe
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.id_chir = '$user'
+		AND plagesop.date LIKE '$year-$month-__'
+		AND operations.operation_id IS NOT NULL
+		GROUP BY operations.plageop_id";
+$result2 = db_loadlist($sql);
+$i = 0;
+foreach($result1 as $key => $value){
+  $result[$i] = $value;
+  $i++;
+}
+foreach($result2 as $key => $value){
+  $result[$i] = $value;
+  $i++;
+}
+//Tri du tableau par date (tri bulle)
+$size = sizeof($result);
+do {
+  $inverse = false;
+  for($i=0;$i<$size-1;$i++){
+    if($result[$i]["date"]>$result[$i+1]["date"]) {
+      $temp = $result[$i];
+      $result[$i] = $result[$i+1];
+      $result[$i+1] = $temp;
+      $inverse = true;
+    }
+  }
+}
+while($inverse);
 
 //Tri des résultats
 foreach($result as $key => $value) {
