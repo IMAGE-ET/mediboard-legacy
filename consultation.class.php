@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once( $AppUI->getModuleClass('dPadmin', 'admin') );
+require_once( $AppUI->getModuleClass('admin') );
 
 class CConsultation extends CDpObject {
   // DB Table key
