@@ -30,10 +30,15 @@ if (!$consultation_id) {
 $consult = new CConsultation();
 $consult->load($consultation_id);
 $consult->loadRefs();
-$consult->_ref_plageconsult->loadRefs();
+
+$plageconsult =& $consult->_ref_plageconsult;
+$plageconsult->loadRefs();
+
+$patient =& $consult->_ref_patient;
+$patient->loadRefs();
 
 $mediuser = new CMediusers();
-$mediuser->load($consult->_ref_plageconsult->chir_id);
+$mediuser->load($plageconsult->chir_id);
 $mediuser->loadRefs();
 
 // Chargement du template
@@ -42,21 +47,21 @@ $modele->load($compte_rendu_id);
 
 // Gestion du template
 $templateManager = new CTemplateManager;
-$templateManager->addProperty("Praticien - nom"       , $consult->_ref_plageconsult->_ref_chir->user_last_name );
-$templateManager->addProperty("Praticien - prénom"    , $consult->_ref_plageconsult->_ref_chir->user_first_name);
+$templateManager->addProperty("Praticien - nom"       , $plageconsult->_ref_chir->user_last_name );
+$templateManager->addProperty("Praticien - prénom"    , $plageconsult->_ref_chir->user_first_name);
 $templateManager->addProperty("Praticien - spécialité", $mediuser->_ref_function->text);
 
-$templateManager->addProperty("Patient - nom"                    , $consult->_ref_patient->nom             );
-$templateManager->addProperty("Patient - prénom"                 , $consult->_ref_patient->prenom          );
-$templateManager->addProperty("Patient - adresse"                , $consult->_ref_patient->adresse         );
-$templateManager->addProperty("Patient - âge"                    , $consult->_ref_patient->_age            );
-$templateManager->addProperty("Patient - date de naissance"      , $consult->_ref_patient->naissance       );
-$templateManager->addProperty("Patient - médecin traitant"       , $consult->_ref_patient->medecin_traitant);
-$templateManager->addProperty("Patient - médecin correspondant 1", $consult->_ref_patient->medecin1        );
-$templateManager->addProperty("Patient - médecin correspondant 2", $consult->_ref_patient->medecin2        );
-$templateManager->addProperty("Patient - médecin correspondant 3", $consult->_ref_patient->medecin1        );
+$templateManager->addProperty("Patient - nom"                    , $patient->nom             );
+$templateManager->addProperty("Patient - prénom"                 , $patient->prenom          );
+$templateManager->addProperty("Patient - adresse"                , $patient->adresse         );
+$templateManager->addProperty("Patient - âge"                    , $patient->_age            );
+$templateManager->addProperty("Patient - date de naissance"      , $patient->naissance       );
+$templateManager->addProperty("Patient - médecin traitant"       , "Dr. {$patient->_ref_medecin_traitant->nom} {$patient->_ref_medecin_traitant->prenom}");
+$templateManager->addProperty("Patient - médecin correspondant 1", "Dr. {$patient->_ref_medecin1->nom} {$patient->_ref_medecin1->prenom}");
+$templateManager->addProperty("Patient - médecin correspondant 2", "Dr. {$patient->_ref_medecin2->nom} {$patient->_ref_medecin2->prenom}");
+$templateManager->addProperty("Patient - médecin correspondant 3", "Dr. {$patient->_ref_medecin3->nom} {$patient->_ref_medecin3->prenom}");
 
-$templateManager->addProperty("Consultation - date"     , $consult->_ref_plageconsult->date );
+$templateManager->addProperty("Consultation - date"     , $plageconsult->date );
 $templateManager->addProperty("Consultation - heure"    , $consult->heure);
 $templateManager->addProperty("Consultation - motif"    , nl2br($consult->motif));
 $templateManager->addProperty("Consultation - remarques", nl2br($consult->rques));
