@@ -46,17 +46,45 @@ class CTemplateManager {
 	}
   
   function setFields($modeleType) {
+    // Général Patient
+    $this->addProperty("Patient - nom");
+    $this->addProperty("Patient - prénom");
+    $this->addProperty("Patient - adresse");
+    $this->addProperty("Patient - âge");
+    $this->addProperty("Patient - date de naissance");
+    $this->addProperty("Patient - médecin traitant");
+    $this->addProperty("Patient - médecin correspondant 1");
+    $this->addProperty("Patient - médecin correspondant 2");
+    $this->addProperty("Patient - médecin correspondant 3");
+    
+    // Général Praticien
+    $this->addProperty("Praticien - nom");
+    $this->addProperty("Praticien - prénom");
+    $this->addProperty("Praticien - spécialité");
+        
     switch ($modeleType) {
 			case "consultation":
-        $this->addProperty("Date");
-        $this->addProperty("Chirurgien");
-        $this->addProperty("Patient");
-        $this->addProperty("Motif");
-        $this->addProperty("Remarques");
+        $this->addProperty("Consultation - date");
+        $this->addProperty("Consultation - heure");
+        $this->addProperty("Consultation - motif");
+        $this->addProperty("Consultation - remarques");
 				break;
       case "operation":
+        $this->addProperty("Opération - Anesthésiste - nom");
+        $this->addProperty("Opération - Anesthésiste - prénom");
+        $this->addProperty("Opération - CCAM - code");
+        $this->addProperty("Opération - CCAM - description");
+        $this->addProperty("Opération - côté");
+        $this->addProperty("Opération - date");
+        $this->addProperty("Opération - heure");
+        $this->addProperty("Opération - durée");
+        $this->addProperty("Opération - entrée bloc");
+        $this->addProperty("Opération - sortie bloc");
+        $this->addProperty("Opération - matériel");
         break;
       case "hospitalisation":
+        $this->addProperty("Hospitalisation - durée");
+        $this->addProperty("Hospitalisation - examens");
         break;
 		}
 	}
