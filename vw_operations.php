@@ -36,12 +36,21 @@ $sql = "SELECT users.user_last_name AS lastname,
         ORDER BY plagesop.debut";
 $plages = db_loadlist($sql);
 
+//Operation selectionnée
+$sql = "SELECT *
+        FROM operations
+        WHERE operations.operation_id = '$op'";
+$result = db_loadlist($sql);
+$selOp = $result[0];
+
 //Selection des opérations pour chaque plage
+$anesth = dPgetSysVal("AnesthType");
 foreach($plages as $key => $value) {
   $sql = "SELECT operations.time_operation AS heure, operations.temp_operation AS duree,
           operations.CCAM_code AS CCAM_code, operations.cote as cote,
-          operations.examen AS examen, operations.materiel AS materiel,
-          operations.ATNC AS ATNC, patients.nom AS nom, patients.prenom AS prenom
+          operations.rques AS remarques, operations.materiel AS mat,
+          operations.ATNC AS ATNC, operations.type_anesth AS code_anesth,
+          patients.nom AS nom, patients.prenom AS prenom
           FROM operations
           LEFT JOIN patients
           ON operations.pat_id = patients.patient_id
@@ -50,13 +59,19 @@ foreach($plages as $key => $value) {
           ORDER BY operations.rank";
   $plages[$key]["operations"] = db_loadlist($sql);
 }
-
-//Operation selectionnée
-$sql = "SELECT *
-        FROM operations
-        WHERE operations.operation_id = '$op'";
-$result = db_loadlist($sql);
-$selOp = $result[0];
+$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
+  or die("Could not connect");
+mysql_select_db("ccam")
+  or die("Could not select database");
+foreach($plages as $key => $value) {
+  foreach($value["operations"] as $key2 => $value2) {
+    $plages[$key]["operations"][$key2]["type_anesth"] = $anesth[$value2["code_anesth"]];
+    $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";
+    $ccamr = mysql_query($sql);
+    $ccam = mysql_fetch_array($ccamr);
+	$plages[$key]["operations"][$key2]["CCAM_libelle"] = $ccam["LIBELLELONG"];
+  }
+}
 
 //Creation de l'objet smarty
 require_once("lib/smarty/Smarty.class.php");

@@ -1,9 +1,8 @@
 <table class="main">
 
-  <tr colspan="2">
+  <tr>
     <td>
       <form action="index.php" target="_self" name="selection" method="get" encoding="">
-
       <input type="hidden" name="m" value="{$m}">
       <input type="hidden" name="tab" value="0">
       Choisir une salle :
@@ -15,46 +14,43 @@
         </option>
         {/foreach}
       </select>
-  
       </form>
     </td>
   </tr>
 
+  {foreach from=$plages item=curr_plage}
 	<tr>
-
-		<td width="50%">
+		<td>
+      <strong>Dr. {$curr_plage.lastname} {$curr_plage.firstname}
+      de {$curr_plage.debut} à {$curr_plage.fin}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>
 			<table class="tbl">
-        {foreach from=$plages item=curr_plage}
-        <tr>
-          <th colspan="5">
-            <strong>Dr. {$curr_plage.lastname} {$curr_plage.firstname}</strong>
-            {$curr_plage.debut} - {$curr_plage.fin}
-          </th>
-        </tr>
         <tr>
           <th>Heure</th>
-          <th>Patient</th>
           <th>Intervention</th>
           <th>Coté</th>
+          <th>Anesthésie</th>
+          <th>Remarques</th>
+          <th>Patient</th>
           <th>Durée</th>
         </tr>
         {foreach from=$curr_plage.operations item=curr_operation}
         <tr>
           <td>{$curr_operation.heure}</td>
-          <td>{$curr_operation.nom} {$curr_operation.prenom}</td>
-          <td>{$curr_operation.CCAM_code}</td>
+          <td>{$curr_operation.CCAM_libelle} (<i>{$curr_operation.CCAM_code}</i>)</td>
           <td>{$curr_operation.cote}</td>
+          <td>{$curr_operation.type_anesth}</td>
+          <td>{$curr_operation.remarques} {if $curr_operation.mat}({$curr_operation.mat}) {/if}</td>
+          <td>{$curr_operation.nom} {$curr_operation.prenom}</td>
           <td>{$curr_operation.duree}</td>
         </tr>
         {/foreach}
-        {/foreach}
       </table>
 		</td>
-
-    <td width="50%">
-      <table class="form>
-      </table>
-    </td>
 	</tr>
+  {/foreach}
 
 </table>
