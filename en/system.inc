@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"ja"=>"Japanese",
+"upgrade",
 "Abbreviation",
 "Are you sure you want to delete this?",
 "Are you sure?",
@@ -69,9 +69,10 @@
 "inserted",
 "install",
 "it"=>"Italian",
-"pt_br"=>"Portuguese Brazillian",
-"pt"=>"Portugese",
+"ja"=>"Japanese",
 "pl"=>"Polish",
+"pt"=>"Portugese",
+"pt_br"=>"Portuguese Brazillian",
 "remove",
 "sl"=>"Slovenian",
 "system admin",
