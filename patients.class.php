@@ -58,7 +58,7 @@ class Cpatients extends CDpObject {
 	
 	// overload the store method
 	function store() {
-		//@todo -capeller la fonction superstore pour faire l'insert/update
+		//@todo -c apeller la fonction superstore pour faire l'insert/update
 		$this->tel = $this->tel1.$this->tel2.$this->tel3.$this->tel4.$this->tel5;
 		$this->naissance = $this->annee."-".$this->mois."-".$this->jour;
 		if($this->patient_id != NULL) {

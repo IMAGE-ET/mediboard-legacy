@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-09-30 18:11:15
+<?php /* Smarty version 2.6.3, created on 2004-10-05 16:28:19
          compiled from vw_add_patients.tpl */ ?>
 <table class="form">
 <form name="editFrm" action="./index.php?m=dPpatients" method="post">
