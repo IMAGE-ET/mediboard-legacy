@@ -59,8 +59,8 @@ if($spe) {
   }
   $addSpe .= ")";
 }
-if($chir)
-  $addChir .= " AND chir_id = '$chir'";
+
+$addChir = $chir ? " AND chir_id = '$chir'" : null;
 
 //On sort les chirurgiens de chaque jour
 foreach($listDays as $key => $value) {
