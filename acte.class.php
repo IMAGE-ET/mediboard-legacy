@@ -29,13 +29,39 @@ class Acte
   var $incomps; 
   // Associabilite
   var $assos;
-  // Procedure 
+  // Procedure
+  var $procedure; 
   
   // Constructeur
   function Acte($code)
   {
     $this->code = $code;
-  $this->Load();
+  }
+  
+  // Chargement des variables importantes
+  function LoadLite() {
+    $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
+      or die("Could not connect");
+    mysql_select_db("ccam")
+      or die("Could not select database");
+
+    $query = "select * from ACTES where CODE = '$this->code'";
+    $result = mysql_query($query);
+    if(mysql_num_rows($result) == 0)
+    {
+      $this->code = "XXXXXXX";
+      //On rentre les champs de la table actes
+      $this->libelleCourt = "Acte invalide";
+      $this->libelleLong = "Acte invalide";
+    } else {
+      $row = mysql_fetch_array($result);
+      //On rentre les champs de la table actes
+      $this->libelleCourt = $row['LIBELLECOURT'];
+      $this->libelleLong = $row['LIBELLELONG'];
+    }
+    // Reconnect to standard data base
+    do_connect();
+    mysql_close($mysql);
   }
    
   // Chargement des variables

@@ -16,6 +16,7 @@ if (!$canRead) {
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 $codeacte = mbGetValueFromGetOrSession("codeacte");
 $acte = new Acte($codeacte);
+$acte->Load();
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
