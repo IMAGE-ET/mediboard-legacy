@@ -245,6 +245,10 @@ table.tbl a.action {
   display: inline;
 }
 
+table.tbl th a {
+  color: #fff;
+}
+
 table.tbl th {
   background-color: #888;
   padding: 2px;
@@ -961,4 +965,36 @@ table.selectCode td {
   padding: 10px;
   margin: 5px;
   border: #aaa 2px dotted;
+}
+
+  /* @import "./admission.css"; */
+
+table.chambrecollapse,
+table.chambreexpand {
+  width: 100%;
+}
+
+table.chambrecollapse th.chambre {
+  background: #383 url(./images/collapse.gif) no-repeat center left;
+}
+
+table.chambreexpand th.chambre {
+  background: #383 url(./images/expand.gif) no-repeat center left;
+}
+
+table.chambrecollapse td,
+table.chambreexpand td {
+  border: 1px dotted #050;
+}
+
+
+table.chambrecollapse tr.lit td,
+table.chambreexpand tr.lit td {
+  background: #9e9;
+  color: #000;
+}
+
+table.chambrecollapse tr.lit,
+table.chambrecollapse tr.dates {
+  display: none;
 }

@@ -134,6 +134,20 @@ function getElementsByClassName(tagName, className, exactMatch) {
   return elsTag;
 }
 
+function flipElementClass(elementId, firstClass, secondClass) {
+  var element = document.getElementById(elementId);
+  
+  if (element.className == firstClass) {
+    element.className = secondClass;
+    return;
+  }
+
+  if (element.className == secondClass) {
+    element.className = firstClass;
+    return;
+  }
+}
+
 
 function confirmDeletion(form, typeName, objName, msg) {
   if (!typeName) typeName = "";
