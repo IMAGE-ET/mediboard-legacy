@@ -144,7 +144,7 @@ function setColor(color) {
 						<a href="index.php?m=mediusers&tab=1&userfunction={$curr_function.function_id}">{$curr_function.text}</a>
 					</td>
 					<td bgcolor="#d2e5fb">
-						<a href="index.php?m=mediusers&tab=2&usergroup={$curr_function.group_id}">{$curr_function.mygroup}</a>
+						<a href="index.php?m=mediusers&tab=1&userfunction={$curr_function.function_id}">{$curr_function.mygroup}</a>
 					</td>
 					<td bgcolor="#{$curr_function.color}">
 						&nbsp;

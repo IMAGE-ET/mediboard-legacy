@@ -1,9 +1,9 @@
 <table width="100%">
 	<tr>
-		<td valign="top" width="50%" height="100%">
+		<td valign="top" height="100%">
 			<a href="index.php?m=mediusers&tab=0&mediuser=0"><b>Créer un utilisateur</b></a>
 		</td>
-		<td valign="top" rowspan=2 width="50%">
+		<td valign="top" rowspan=2>
 			<table align="center">
 			<form name="mediuser" action="./index.php?m=mediusers" method="post">
 			<input type="hidden" name="dosql" value="do_mediusers_aed">
@@ -105,22 +105,14 @@
 				</tr>
 				<tr>
 					<td align="right">
-						Ancien mot de passe :
-					</td>
-					<td>
-						<input type="password" name="user_oldpassword">
-					</td>
-					<td align="center" rowspan=3>
-						<i>pour ne pas changer de mot de passe,<br>
-						laissez les champs vides</i>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
 						Nouveau mot de passe :
 					</td>
 					<td>
 						<input type="password" name="user_password">
+					</td>
+					<td align="center" rowspan=2>
+						<i>pour ne pas changer de mot de passe,<br>
+						laissez les champs vides</i>
 					</td>
 				</tr>
 				<tr>
@@ -214,9 +206,6 @@
 					<td bgcolor="#5172A5" align="center">
 						<b>fonction</b>
 					</td>
-					<td bgcolor="#5172A5" align="center">
-						<b>e-mail</b>
-					</td>
 				</tr>
 				{foreach from=$users item=curr_user}
 				<tr>
@@ -231,9 +220,6 @@
 					</td>
 					<td bgcolor="#{$curr_user.color}">
 						<a href="index.php?m=mediusers&tab=0&mediuser={$curr_user.id}">{$curr_user.functionname}</a>
-					</td>
-					<td bgcolor="#{$curr_user.color}">
-						<a href="index.php?m=mediusers&tab=0&mediuser={$curr_user.id}">{$curr_user.email}</a>
 					</td>
 				</tr>
 				{/foreach}

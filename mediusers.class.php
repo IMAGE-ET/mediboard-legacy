@@ -23,7 +23,6 @@ class Cmediusers extends CDpObject {
 	var $user_username = NULL;
 	var $user_password = NULL;
 	var $user_password2 = NULL;
-	var $user_oldpassword = NULL;
 	var $user_first_name = NULL;
 	var $user_last_name = NULL;
 	var $user_email = NULL;

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-24 10:43:05
+<?php /* Smarty version 2.6.3, created on 2004-08-26 09:03:12
          compiled from vw_idx_functions.tpl */ ?>
 <?php echo '
 <script language="javascript">
@@ -169,7 +169,7 @@ function setColor(color) {
 </a>
 					</td>
 					<td bgcolor="#d2e5fb">
-						<a href="index.php?m=mediusers&tab=2&usergroup=<?php echo $this->_tpl_vars['curr_function']['group_id']; ?>
+						<a href="index.php?m=mediusers&tab=1&userfunction=<?php echo $this->_tpl_vars['curr_function']['function_id']; ?>
 "><?php echo $this->_tpl_vars['curr_function']['mygroup']; ?>
 </a>
 					</td>

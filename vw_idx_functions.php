@@ -21,7 +21,7 @@ if(dPgetParam($_GET, "userfunction", "") != "")
 $query = "select functions_mediboard.*, groups_mediboard.text as mygroup
 			from functions_mediboard, groups_mediboard
 			where functions_mediboard.group_id = groups_mediboard.group_id
-			order by functions_mediboard.text";
+			order by groups_mediboard.text, functions_mediboard.text";
 $functions = db_loadList($query);
 
 // Récupération de la fonction à ajouter/editer
