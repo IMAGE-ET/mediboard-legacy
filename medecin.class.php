@@ -47,13 +47,7 @@ class CMedecin extends CDpObject {
 		$this->CDpObject( 'medecin', 'medecin_id' );
 	}
   
-  function load($oid = null, $strip = true) {
-    if (!parent::load($oid, $strip)) {
-      return false;
-    }
-
-    // Form fields computation
-
+  function updateFormFields() {
     $this->_tel1 = substr($this->tel, 0, 2);
     $this->_tel2 = substr($this->tel, 2, 2);
     $this->_tel3 = substr($this->tel, 4, 2);
@@ -65,12 +59,9 @@ class CMedecin extends CDpObject {
     $this->_fax3 = substr($this->fax, 4, 2);
     $this->_fax4 = substr($this->fax, 6, 2);
     $this->_fax5 = substr($this->fax, 8, 2);
-
-    return true;
   }
   
-  function store() {
-    // Form fields computation
+  function updateDBFields() {
     $this->tel = 
       $this->_tel1 .
       $this->_tel2 .
@@ -84,8 +75,6 @@ class CMedecin extends CDpObject {
       $this->_fax3 .
       $this->_fax4 .
       $this->_fax5;
-      
-    return parent::store();
   }
 
 	function check() {

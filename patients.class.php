@@ -66,12 +66,7 @@ class CPatient extends CDpObject {
 		$this->CDpObject( 'patients', 'patient_id' );
 	}
   
-  function load($oid = null, $strip = true) {
-    if (!parent::load($oid, $strip)) {
-      return false;
-    }
-
-    // Form fields computation
+  function updateFormFields() {
     $this->_jour  = substr($this->naissance, 8, 2);
     $this->_mois  = substr($this->naissance, 5, 2);
     $this->_annee = substr($this->naissance, 0, 4);
@@ -94,11 +89,9 @@ class CPatient extends CDpObject {
     $journais = substr($this->naissance, 8, 2);
     $jourjour = date("d");
     $this->_age = $anjour-$annais;
-    return true;
   }
   
-  function store() {
-    // Form fields computation
+  function updateDBFields() {
     $this->tel = 
       $this->_tel1 .
       $this->_tel2 .
@@ -116,8 +109,6 @@ class CPatient extends CDpObject {
       $this->_annee . "-" .
       $this->_mois  . "-" .
       $this->_jour;
-      
-    return parent::store();
   }
 
 	function check() {
