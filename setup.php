@@ -59,6 +59,7 @@ class CSetupdPplanningOp {
 			", plageop_id bigint(20) unsigned NOT NULL default '0'" .
 			", CIM10_code varchar(5) default NULL" .
 			", CCAM_code varchar(7) default NULL" .
+			", cote enum('droit','gauche','bilatéral','total') NOT NULL default 'total'" .
 			", temp_operation time NOT NULL default '00:00:00'" .
 			", examen text" .
 			", materiel text" .

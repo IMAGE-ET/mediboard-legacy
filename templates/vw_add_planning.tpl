@@ -115,6 +115,17 @@ function setCalendar( idate, fdate ) {
           <td><input type="text" name="CCAM_code" size="10" value="" /></td>
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
+		<tr>
+		  <th>Coté:</th>
+		  <td colspan=2>
+		    <select name="cote">
+			  <option selected>total</option>
+			  <option>droit</option>
+			  <option>gauche</option>
+			  <option>bilatéral</option>
+			</select>
+		  </td>
+		</tr>
         <tr>
           <th class="mandatory">Temps opératoire:</th>
           <td colspan="2">
