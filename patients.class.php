@@ -77,13 +77,24 @@ class CPatient extends CDpObject {
     return $msg . parent::check();
 	}
 	
+  function canDelete(&$msg, $oid = null) {
+    $tables[] = array (
+      'label' => 'opération(s)', 
+      'name' => 'operations', 
+      'idfield' => 'operation_id', 
+      'joinfield' => 'pat_id'
+    );
+    
+    return parent::canDelete( $msg, $oid, $tables );
+  }
+  
 	function getSiblings() {
       $sql = "SELECT patient_id, nom, prenom, naissance, adresse, ville, CP " .
       		"FROM patients WHERE " .
       		"patient_id != '$this->patient_id' " .
-      		"AND ((nom = '$this->nom'    AND prenom = '$this->prenom') " .
-      		  "OR (nom = '$this->nom'    AND naissance = '$this->naissance') " .
-      		  "OR (prenom = '$this->nom' AND naissance = '$this->naissance'))";
+      		"AND ((nom    = '$this->nom'    AND prenom    = '$this->prenom'   ) " .
+      		  "OR (nom    = '$this->nom'    AND naissance = '$this->naissance') " .
+      		  "OR (prenom = '$this->prenom' AND naissance = '$this->naissance'))";
       $siblings = db_loadlist($sql);
       return $siblings;
     }
