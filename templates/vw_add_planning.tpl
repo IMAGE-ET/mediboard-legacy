@@ -283,8 +283,7 @@ function setCalendar( idate, fdate ) {
       <table class="form">
         <tr>
           <td class="button">
-            <input class="button" type="reset" value="Annuler" />
-            <input class="button" type="submit" value="Valider" />
+            <input class="button" type="submit" value="Créer" />
           </td>
         </tr>
       </table>
