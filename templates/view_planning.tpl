@@ -13,8 +13,8 @@
     <td>
 	  <table class="tbl">
 	    <tr>
-		  <th colspan=4><b>Intervention</b></th>
-		  <th colspan=4><b>Patient</b></th>
+		  <th colspan="5"><b>Intervention</b></th>
+		  <th colspan="3"><b>Patient</b></th>
 		</tr>
 		<tr>
 		  <th>Heure</th>
