@@ -36,7 +36,7 @@ function setClose() {
     <select name="list"  size="14">
       <option value="0" selected="selected">&mdash; Choisir une date &mdash;</option>
     {foreach from=$list item=curr_elem}
-      <option value="{$curr_elem.id}">{$curr_elem.dateFormed}</option>
+      <option value="{$curr_elem.id}" ondblclick="setClose()">{$curr_elem.dateFormed}</option>
     {/foreach}
     </select>
   </td>
