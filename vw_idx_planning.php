@@ -44,6 +44,14 @@ if(dPgetParam($_GET, 'year', -1) == -1) {
 }
 else
 $year = $_SESSION[$m][$tab]["year"] = dPgetParam($_GET, 'year', -1);
+if(dPgetParam($_GET, 'selChir', 0) == 0) {
+  if(!isset($_SESSION[$m][$tab]["selChir"]))
+    $selChir = $_SESSION[$m][$tab]["selChir"] = 0;
+  else
+    $selChir = $_SESSION[$m][$tab]["selChir"];
+}
+else
+$selChir = $_SESSION[$m][$tab]["selChir"] = dPgetParam($_GET, 'selChir', 0);
 
 $nday = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
 $ndaym = date("m", mktime(0, 0, 0, $month, $day + 1, $year));
@@ -63,25 +71,52 @@ $dayName = $listDay[$dayOfWeek];
 $monthName = $listMonth[$month - 1];
 $title1 = "$monthName $year";
 $title2 = "$dayName $day $monthName $year";
-$sql = "select users.user_username, functions_mediboard.function_id
-        from users, users_mediboard, functions_mediboard
-        where users.user_id = '$AppUI->user_id'
-        and users.user_id = users_mediboard.user_id
-        and functions_mediboard.function_id = users_mediboard.function_id";
+$sql = "SELECT users.user_last_name as lastname, users.user_first_name as firstname, users.user_id as id
+        FROM users, users_mediboard, functions_mediboard, groups_mediboard
+        WHERE (groups_mediboard.text = 'Chirurgie' OR groups_mediboard.text = 'Anesthésie')
+        AND users.user_id = users_mediboard.user_id
+        AND users_mediboard.function_id = functions_mediboard.function_id
+        AND functions_mediboard.group_id = groups_mediboard.group_id
+        ORDER BY functions_mediboard.function_id, lastname, firstname";
+$listChir = db_loadlist($sql);
+$isMyPlanning = 1;
+$sql = "SELECT users.user_username, users.user_last_name AS lastname,
+        users.user_first_name as firstname, functions_mediboard.function_id,
+        groups_mediboard.text
+        FROM users, users_mediboard, functions_mediboard, groups_mediboard
+        WHERE users.user_id = '$AppUI->user_id'
+        AND users.user_id = users_mediboard.user_id
+        AND functions_mediboard.function_id = users_mediboard.function_id
+        AND functions_mediboard.group_id = groups_mediboard.group_id";
 $result = db_loadlist($sql);
+if($result[0]["text"] != "Chirurgie" && $result[0]["text"] != "Anesthésie") {
+  if($selChir) {
+    $sql = "SELECT users.user_username, users.user_last_name AS lastname,
+          users.user_first_name as firstname, functions_mediboard.function_id,
+          groups_mediboard.text
+          FROM users, users_mediboard, functions_mediboard, groups_mediboard
+          WHERE users.user_id = '$selChir'
+          AND users.user_id = users_mediboard.user_id
+          AND functions_mediboard.function_id = users_mediboard.function_id
+          AND functions_mediboard.group_id = groups_mediboard.group_id";
+          $result = db_loadlist($sql);
+    }
+  $isMyPlanning = 0;
+}
 $user = $result[0]["user_username"];
+$userName = $result[0]["lastname"]." ".$result[0]["firstname"];
 $specialite = $result[0]["function_id"];
 
 //Requete SQL pour le planning du mois
 // * temp total de chaque plage
-$sql = "select operations.temp_operation as duree, plagesop.id as id
-		from plagesop
-		left join operations
-		on plagesop.id = operations.plageop_id
-		where plagesop.id_chir = '$user'
-		and plagesop.date like '$year-$month-__'
-		and operations.operation_id IS NOT NULL
-		order by plagesop.date, plagesop.id";
+$sql = "SELECT operations.temp_operation as duree, plagesop.id as id
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.id_chir = '$user'
+		AND plagesop.date LIKE '$year-$month-__'
+		AND operations.operation_id IS NOT NULL
+		ORDER BY plagesop.date, plagesop.id";
 $result = db_loadlist($sql);
 foreach($result as $key => $value) {
   $plageop = $value["id"];
@@ -90,34 +125,33 @@ foreach($result as $key => $value) {
   $duree[$plageop]["min"] = date("i", $duree[$plageop]["newtime"]);  
 }
 // * liste des operations triées par plage
-//@todo -c Ajouter la liste des plages de spécialité .
-$sql = "select plagesop.id as id, plagesop.date, 0 as operations,
-		plagesop.fin, plagesop.debut, 0 as busy_time, 0 as spe
-		from plagesop
-		left join operations
-		on plagesop.id = operations.plageop_id
-		where plagesop.id_chir = '$user'
-		and plagesop.date like '$year-$month-__'
-		and operations.operation_id IS NULL
-		union
-		select plagesop.id as id, plagesop.date, count(operations.temp_operation) as operations,
-		plagesop.fin, plagesop.debut, SUM(operations.temp_operation) as busy_time, 0 as spe
-		from plagesop
-		left join operations
-		on plagesop.id = operations.plageop_id
-		where plagesop.id_chir = '$user'
-		and plagesop.date like '$year-$month-__'
-		and operations.operation_id IS NOT NULL
-		group by operations.plageop_id
-		union
-		select plagesop.id as id, plagesop.date, 0 as operations,
-		plagesop.fin, plagesop.debut, 0 as busy_time, 1 as spe
-		from plagesop
-		left join operations
-		on plagesop.id = operations.plageop_id
-		where plagesop.id_spec = '$specialite'
-		and plagesop.date like '$year-$month-__'
-		order by plagesop.date, plagesop.id";
+$sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
+		plagesop.fin, plagesop.debut, 0 AS busy_time, 0 AS spe
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.id_chir = '$user'
+		AND plagesop.date LIKE '$year-$month-__'
+		AND operations.operation_id IS NULL
+		UNION
+		SELECT plagesop.id AS id, plagesop.date, COUNT(operations.temp_operation) AS operations,
+		plagesop.fin, plagesop.debut, SUM(operations.temp_operation) AS busy_time, 0 AS spe
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.id_chir = '$user'
+		AND plagesop.date LIKE '$year-$month-__'
+		AND operations.operation_id IS NOT NULL
+		GROUP BY operations.plageop_id
+		UNION
+		SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
+		plagesop.fin, plagesop.debut, 0 AS busy_time, 1 AS spe
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.id_spec = '$specialite'
+		AND plagesop.date LIKE '$year-$month-__'
+		ORDER BY plagesop.date, plagesop.id";
 $result = db_loadlist($sql);
 
 //Tri des résultats
@@ -138,19 +172,19 @@ foreach($result as $key => $value) {
 }
 
 //Requete SQL pour le planning de la journée
-$sql = "select operations.operation_id as id, operations.pat_id,
+$sql = "SELECT operations.operation_id AS id, operations.pat_id,
 		operations.CCAM_code, operations.temp_operation
-		from plagesop
-		left join operations
-		on plagesop.id = operations.plageop_id
-		where plagesop.date = '$year-$month-$day'
-		and plagesop.id_chir = '$user'";
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.date = '$year-$month-$day'
+		AND plagesop.id_chir = '$user'";
 $result = db_loadlist($sql);
 
 //Tri des résultats
 foreach($result as $key => $value) {
-  $sql = "select nom, prenom from patients
-  		where patient_id = '".$value["pat_id"]."'";
+  $sql = "SELECT nom, prenom FROM patients
+  		WHERE patient_id = '".$value["pat_id"]."'";
   $patient = db_loadlist($sql);
   $today[$key]["id"] = $value["id"];
   $today[$key]["nom"] = $patient[0]["nom"];
@@ -165,7 +199,7 @@ mysql_select_db("ccam")
   or die("Could not select database");
 if(isset($today)) {
   foreach($today as $key => $value) {
-    $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";
+    $sql = "SELECT LIBELLELONG FROM ACTES WHERE CODE = '".$value["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
     $today[$key]["CCAM"] = $ccam["LIBELLELONG"];
@@ -200,8 +234,11 @@ $smarty->assign('nmonthy', $nmonthy);
 $smarty->assign('pmonthd', $pmonthd);
 $smarty->assign('pmonth', $pmonth);
 $smarty->assign('pmonthy', $pmonthy);
+$smarty->assign('userName', $userName);
 $smarty->assign('title1', $title1);
 $smarty->assign('title2', $title2);
+$smarty->assign('isMyPlanning', $isMyPlanning);
+$smarty->assign('listChir', $listChir);
 $smarty->assign('list', $list);
 $smarty->assign('today', $today);
 

@@ -1,4 +1,23 @@
 <table class="main">
+  {if !$isMyPlanning}
+  <tr>
+    <td>
+	<form action="index.php" target="_self" name="selection" method="get" encoding="">
+    <input type="hidden" name="m" value="dPplanningOp">
+    <input type="hidden" name="tab" value="0">
+	  <select name="selChir" onchange="this.form.submit()">
+	    <option value="0" selected="selected">Choix du chirurgien :</option>
+		{foreach from=$listChir item=curr_chir}
+	    <option value="{$curr_chir.id}">{$curr_chir.lastname} {$curr_chir.firstname}</option>
+		{/foreach}
+	  </select>
+    </form>
+	</td>
+	<th>
+	  {$userName}
+	</th>
+  </tr>
+  {/if}
   <tr>
     <th>
 	  <a href="index.php?m=dPplanningOp&tab=0&day={$pmonthd}&month={$pmonth}&year={$pmonthy}"><<</a>
