@@ -1,7 +1,8 @@
 <!-- $Id$ -->
 
 {literal}
-<script language="javascript">
+<script type="text/javascript">
+ //<![CDATA[
 function checkPatient() {
   var form = document.editFrm;
     
@@ -25,6 +26,7 @@ function checkPatient() {
    
   return true;
 }
+//]]>
 </script>
 {/literal}
 
@@ -34,9 +36,9 @@ function checkPatient() {
 
       <form name="editFrm" action="index.php?m={$m}" method="post" onsubmit="return checkPatient()">
 
-      <input type="hidden" name="dosql" value="do_patients_aed">
-      <input type="hidden" name="del" value="0">
-      <input type="hidden" name="patient_id" value="{$patient->patient_id}">
+      <input type="hidden" name="dosql" value="do_patients_aed" />
+      <input type="hidden" name="del" value="0" />
+      <input type="hidden" name="patient_id" value="{$patient->patient_id}" />
       
       <table class="form">
       
@@ -105,18 +107,18 @@ function checkPatient() {
       </tr>
       
       <tr>
-        <th>Code Postal:</td>
+        <th>Code Postal:</th>
         <td><input tabindex="9" type="text" name="cp" value="{$patient->cp}" /></td>
       </tr>
       
       <tr>
-        <th>Téléphone:</td>
+        <th>Téléphone:</th>
         <td>
-          <input tabindex="10" type="text" name="_tel1" size="1" maxlength="2" value="{$patient->tel.0}{$patient->tel.1}"> - 
-          <input tabindex="11" type="text" name="_tel2" size="1" maxlength="2" value="{$patient->tel.2}{$patient->tel.3}"> -
-          <input tabindex="12" type="text" name="_tel3" size="1" maxlength="2" value="{$patient->tel.4}{$patient->tel.5}"> -
-          <input tabindex="13" type="text" name="_tel4" size="1" maxlength="2" value="{$patient->tel.6}{$patient->tel.7}"> -
-          <input tabindex="14" type="text" name="_tel5" size="1" maxlength="2" value="{$patient->tel.8}{$patient->tel.9}">
+          <input tabindex="10" type="text" name="_tel1" size="1" maxlength="2" value="{$patient->tel.0}{$patient->tel.1}" /> - 
+          <input tabindex="11" type="text" name="_tel2" size="1" maxlength="2" value="{$patient->tel.2}{$patient->tel.3}" /> -
+          <input tabindex="12" type="text" name="_tel3" size="1" maxlength="2" value="{$patient->tel.4}{$patient->tel.5}" /> -
+          <input tabindex="13" type="text" name="_tel4" size="1" maxlength="2" value="{$patient->tel.6}{$patient->tel.7}" /> -
+          <input tabindex="14" type="text" name="_tel5" size="1" maxlength="2" value="{$patient->tel.8}{$patient->tel.9}" />
         </td>
       </tr>
       
@@ -129,11 +131,12 @@ function checkPatient() {
           {else}
             <input type="submit" value="Créer" />
           {/if}
-          </form>
         </td>
       </tr>
       
       </table>
+
+      </form>
 
     </td>
   </tr>

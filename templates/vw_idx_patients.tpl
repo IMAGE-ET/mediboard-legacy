@@ -1,7 +1,8 @@
 <!-- $Id$ -->
 
 {literal}
-<script language="javascript">
+<script type="text/javascript">
+//<![CDATA[
 function checkPatient() {
   var form = document.editFrm;
     
@@ -13,6 +14,7 @@ function checkPatient() {
     
   return true;
 }
+//]]>
 </script>
 {/literal}
 
