@@ -47,7 +47,6 @@ class Cplanning
               AND (plagesop.id_chir = users.user_username OR plagesop.id_spec = functions_mediboard.function_id)
               AND users_mediboard.user_id = users.user_id
               AND users_mediboard.function_id = functions_mediboard.function_id
-              AND operations.annulee != 1
               GROUP BY plagesop.id";
 	  $this->salles[$key]['plages'] = db_loadlist($sql);
 	  foreach($this->salles[$key]['plages'] as $key2 => $value2)
