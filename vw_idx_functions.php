@@ -22,6 +22,9 @@ $listGroups = $listGroups->loadList();
 
 foreach($listGroups as $key => $value) {
   $listGroups[$key]->loadRefs();
+  foreach($listGroups[$key]->_ref_functions as $key2 => $value2) {
+    $listGroups[$key]->_ref_functions[$key2]->loadRefs();
+  }
 }
 
 // Récupération de la fonction selectionnée
