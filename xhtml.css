@@ -67,7 +67,7 @@ tr {
 }
 
 h1, .title { /* @todo Remove 'title' class, use h2 instead */
-	font-size: 16pt;
+	font-size: 12pt;
 	font-weight: bold;
 	color: #555;
 	margin: 12px 0px;
