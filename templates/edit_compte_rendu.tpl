@@ -22,7 +22,7 @@
   </tr>
 </table>
 
-<textarea style="width: 99%" id="HTMLArea" name="compte_rendu" rows="40">
+<textarea style="width: 99%" id="htmlarea" name="compte_rendu" rows="40">
   {$templateManager->document}
 </textarea>
 

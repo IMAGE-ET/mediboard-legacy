@@ -48,7 +48,7 @@ if($consult->compte_rendu) {
 $templateManager->initHTMLArea();
 
 // Création du template
-//require_once( $AppUI->getSystemClass('smartydp'));
+require_once( $AppUI->getSystemClass('smartydp'));
 
 $smarty = new CSmartyDP;
 $smarty->assign('templateManager', $templateManager);
