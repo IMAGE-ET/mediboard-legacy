@@ -4,7 +4,7 @@
     <td>
       <form action="index.php" target="_self" name="selection" method="get" encoding="">
       <input type="hidden" name="m" value="{$m}">
-      <input type="hidden" name="tab" value="0">
+      <input type="hidden" name="tab" value="{$t}">
       Choisir une salle :
       <select name="salle" onchange="this.form.submit()">
         <option value="0">Aucune salle</option>
