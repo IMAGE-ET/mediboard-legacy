@@ -7,48 +7,36 @@
 * @author Romain Ollivier
 */
 
-// include the powerful parent class that we want to extend for dPccam
-require_once( $AppUI->getSystemClass ('dp' ) );		// use the dPFramework for easy inclusion of this class here
+require_once($AppUI->getSystemClass('dp'));
 
 /**
- * The dPccam Class
+ * The CFavoriCCAM Class
  */
-class CdPccam extends CDpObject {
-	// link variables to the dPccam object (according to the existing columns in the database table dPccam)
-	var $favoris_id = NULL;	//use NULL for a NEW object, so the database automatically assigns an unique id by 'NOT NULL'-functionality
-	var $favoris_code = NULL;
+class CFavoriCCAM extends CDpObject {
+  // DB Table key
+	var $favoris_id = NULL;
+  
+  // DB References
 	var $favoris_user = NULL;
 
-	// the constructor of the CdPccam class, always combined with the table name and the unique key of the table
-	function CdPccam() {
+  // DB fields
+  var $favoris_code = NULL;
+
+	function CFavoriCCAM() {
 		$this->CDpObject( 'ccamfavoris', 'favoris_id' );
 	}
 
-	// overload the delete method of the parent class for adaptation for dPccam's needs
-	function delete() {
-		$sql = "DELETE FROM ccamfavoris WHERE favoris_id = '$this->favoris_id'";
-		if (!db_exec( $sql )) {
-			return db_error();
-		} else {
-			return NULL;
-		}
-	}
-	
-	// overload the store method of the parent class for adaptation for dPccam's needs
-	function store() {
-		$sql = "SELECT * FROM ccamfavoris WHERE favoris_code = '$this->favoris_code' and favoris_user = '$this->favoris_user'";
-		$issingle = db_loadList( $sql );
-		if(sizeof($issingle) == 0) {
-			$sql = "INSERT INTO ccamfavoris(favoris_code, favoris_user) values('$this->favoris_code', '$this->favoris_user')";
-			if (!db_exec( $sql )) {
-				return db_error();
-			} else {
-				return NULL;
-			}
-		}
-		else {
-			return "Favoris déja existant";
-		}
-	}
+  function check() {
+    $sql = "SELECT * " .
+      "FROM ccamfavoris " .
+      "WHERE favoris_code = '$this->favoris_code' " .
+      "AND favoris_user = '$this->favoris_user'";
+    $copies = db_loadList($sql);
+
+    if (count($copies))
+      return "le favori existe déjà";
+    
+     return $msg . parent::check();
+ }
 }
 ?>

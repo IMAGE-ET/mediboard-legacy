@@ -8,7 +8,7 @@
 */
 
 // create a new instance of the dPccam class
-$obj = new CdPccam();
+$obj = new CFavoriCCAM;
 $msg = '';	// reset the message string
 
 // bind the informations (variables) retrieved via post to the dPccam object
