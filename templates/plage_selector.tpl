@@ -1,6 +1,6 @@
 <script language="javascript">
 function setClose(hour, min) {ldelim}
-  window.opener.setRDV(hour, min, "{$plage->plageconsult_id}", "{$plage->_dateFormated}", "{$plage->freq}");
+  window.opener.setRDV(hour, min, "{$plage->plageconsult_id}", "{$plage->date|date_format:"%d/%m/%Y"}", "{$plage->freq}");
   window.close();
 {rdelim}
 </script>
