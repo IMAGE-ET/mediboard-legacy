@@ -294,6 +294,7 @@ function printForm() {
 <input type="hidden" name="dosql" value="do_planning_aed" />
 <input type="hidden" name="del" value="0" />
 <input type="hidden" name="operation_id" value="{$op->operation_id}" />
+<input type="hidden" name="commande_mat" value="{$op->commande_mat}" />
 <input type="hidden" name="rank" value="{$op->rank}" />
 
 <table class="main">
@@ -314,7 +315,7 @@ function printForm() {
             <input type="hidden" name="chir_id" value="{$chir->user_id}" />
             <label for="editFrm_chir_id">Chirurgien:</label>
           </th>
-          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if ($chir)}Dr. {$chir->user_last_name} {$chir->user_first_name}{/if}" readonly="readonly" /></td>
+          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if ($chir)}{$chir->user_last_name} {$chir->user_first_name}{/if}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
 
