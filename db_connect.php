@@ -5,6 +5,10 @@
 * @todo Encapsulate into a database object
 */
 
+require_once($AppUI->getSystemClass("chrono"));
+
+$dbChrono = new Chronometer;
+
 // load the db specific handlers
 require_once( "{$AppUI->cfg['root_dir']}/includes/db_{$AppUI->cfg['dbtype']}.php" );
 

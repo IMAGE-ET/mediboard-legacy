@@ -43,10 +43,15 @@ function db_insert_id() {
 }
 
 function db_exec( $sql ) {
+  global $dbChrono;
+  $dbChrono->start();
+  
 	$cur = mysql_query( $sql );
 	if( !$cur ) {
 		return false;
 	}
+  
+  $dbChrono->stop();
 	return $cur;
 }
 
