@@ -73,7 +73,7 @@ if ($del) {
 
   while ($repeat--) {
     $msg = null;
-    if ($obj->id) {
+    if ($obj->plageconsult_id) {
       if ($msg = $obj->store()) {
         $not_updated++;
       } 
@@ -115,7 +115,7 @@ if ($del) {
 $complete_msg = implode(" - ", $header);
 if ($body_msg) {
 // Uncomment for more verbose
-// $complete_msg .= $body_msg; 
+//  $complete_msg .= $body_msg; 
 }
 
 $AppUI->setMsg($complete_msg, $msgNo);
