@@ -142,7 +142,7 @@ foreach($plagesop as $key => $value) {
     if($value2["materiel"] != "") {
       switch($value2["commande_mat"]) {
         case "o" : {
-          $plagesop[$key]["operations"][$key2]["mat"] = "<i><b>Materiel commandé :</b> ".$value2["materiel"]."</i>";
+          $plagesop[$key]["operations"][$key2]["mat"] = $value2["materiel"];
           break;
         }
         case "n" : {
