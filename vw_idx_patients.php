@@ -6,33 +6,48 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 }
 
 //Keywords initialisation
-if(!isset($_SESSION["findpat"]["nom"]))
+if(!isset($_SESSION[$m][$tab]["nom"]))
 {
-  $_SESSION["findpat"]["nom"] = "";
+  $_SESSION[$m][$tab]["nom"] = "";
 }
 if(dPgetParam($_GET, "nom", "nonom") != "nonom")
 {
-  $_SESSION["findpat"]["nom"] = dPgetParam($_GET, "nom", "");
+  $_SESSION[$m][$tab]["nom"] = dPgetParam($_GET, "nom", "");
 }
-if(!isset($_SESSION["findpat"]["prenom"]))
+if(!isset($_SESSION[$m][$tab]["prenom"]))
 {
-  $_SESSION["findpat"]["prenom"] = "";
+  $_SESSION[$m][$tab]["prenom"] = "";
 }
 if(dPgetParam($_GET, "prenom", "noprenom") != "noprenom")
 {
-  $_SESSION["findpat"]["prenom"] = dPgetParam($_GET, "prenom", "");
+  $_SESSION[$m][$tab]["prenom"] = dPgetParam($_GET, "prenom", "");
+}
+if(!isset($_SESSION[$m][$tab]["id"]))
+{
+  $_SESSION[$m][$tab]["id"] = "";
+}
+if(dPgetParam($_GET, "id", "noid") != "noid")
+{
+  $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", "");
 }
 
-//Recuperation despatients
-if($_SESSION["findpat"]["prenom"] != "" || $_SESSION["findpat"]["nom"] != "") {
-  $sql = "select * from patients where nom like '%".$_SESSION["findpat"]["nom"]."%'
-		and prenom like '%".$_SESSION["findpat"]["prenom"]."%'
-		LIMIT 0 , 30";
+//Recuperation des patients
+if($_SESSION[$m][$tab]["id"] != "") {
+  $sql = "select * from patients where patient_id = '".$_SESSION[$m][$tab]["id"]."'";
+  $patient = db_loadlist($sql);
+}
+else {
+  $patient = "";
+}
+if($_SESSION[$m][$tab]["prenom"] != "" || $_SESSION[$m][$tab]["nom"] != "") {
+  $sql = "select * from patients where nom like '%".$_SESSION[$m][$tab]["nom"]."%'
+		and prenom like '%".$_SESSION[$m][$tab]["prenom"]."%'
+		LIMIT 0 , 50";
 }
 else {
   $sql = "select * from patients where 0";
 }
-  $patients = db_loadlist($sql);
+$patients = db_loadlist($sql);
 
 //Creation de l'objet smarty
 require_once("lib/smarty/Smarty.class.php");
@@ -48,9 +63,10 @@ $smarty->cache_dir = "modules/$m/cache/";
 
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
-$smarty->assign('nom', $_SESSION["findpat"]["nom"]);
-$smarty->assign('prenom', $_SESSION["findpat"]["prenom"]);
+$smarty->assign('nom', $_SESSION[$m][$tab]["nom"]);
+$smarty->assign('prenom', $_SESSION[$m][$tab]["prenom"]);
 $smarty->assign('patients', $patients);
+$smarty->assign('patient', $patient[0]);
 
 //Affichage de la page
 $smarty->display('vw_idx_patients.tpl');

@@ -48,7 +48,6 @@ class Cpatients extends CDpObject {
 
 	// overload the delete method of the parent class for adaptation for dPccam's needs
 	function delete() {
-		$_SESSION["patient"] = 0;
 		$sql = "DELETE FROM patients WHERE patient_id = '$this->patient_id'";
 		if (!db_exec( $sql )) {
 			return db_error();
@@ -59,11 +58,12 @@ class Cpatients extends CDpObject {
 	
 	// overload the store method
 	function store() {
+		//@todo -capeller la fonction superstore pour faire l'insert/update
 		$this->tel = $this->tel1.$this->tel2.$this->tel3.$this->tel4.$this->tel5;
 		$this->naissance = $this->annee."-".$this->mois."-".$this->jour;
 		if($this->patient_id != NULL) {
 			$sql = "update patients set nom = '$this->nom', prenom = '$this->prenom', naissance = '$this->naissance',
-					sexe = '$this->sexe', adresse = '$this->adresse', ville = $this->ville, cp = '$this->cp', tel = '$this->tel',
+					sexe = '$this->sexe', adresse = '$this->adresse', ville = '$this->ville', cp = '$this->cp', tel = '$this->tel',
 					medecin_traitant = '$this->medecin_traitant', incapable_majeur = '$this->incapable_majeur',
 					ATNC = '$this->ATNC', matricule = '$this->matricule', SHS = '$this->SHS'
 					where patient_id = '$this->patient_id'";
