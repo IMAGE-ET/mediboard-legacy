@@ -1,0 +1,44 @@
+<?php
+
+// create a new instance of the dPcim10 class
+$obj = new CdPcim10();
+$msg = '';	// reset the message string
+
+// bind the informations (variables) retrieved via post to the dPcim10 object
+if (!$obj->bind( $_POST )) {
+	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
+	$AppUI->redirect();
+}
+
+// detect if a delete operation has to be processed
+$del = dPgetParam( $_POST, 'del', 0 );
+
+
+if ($del) {
+	// check if there are dependencies on this object (not relevant for dPcim10, left here for show-purposes)
+	if (!$obj->canDelete( $msg )) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+		$AppUI->redirect();
+	}
+
+	// see how easy it is to run database commands with the object oriented architecture !
+	// simply delete a quote from db and have detailed error or success report
+	if (($msg = $obj->delete())) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );			// message with error flag
+		$AppUI->redirect();
+	} else {
+		$AppUI->setMsg( "Favoris supprimé", UI_MSG_ALERT);		// message with success flag
+		$AppUI->redirect( "m=dPcim10" );
+	}
+} else {
+	// simply store the added/edited quote in database via the store method of the dPcim10 child class of the CDpObject provided ba the dPFramework
+	// no sql command is necessary here! :-)
+	if (($msg = $obj->store())) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+	} else {
+		$isNotNew = @$_POST['favoris_id'];
+		$AppUI->setMsg( $isNotNew ? 'Favoris mis à jour' : 'Favoris inséré', UI_MSG_OK);
+	}
+	$AppUI->redirect();
+}
+?>
