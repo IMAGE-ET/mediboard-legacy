@@ -21,11 +21,14 @@
 		  <td width="50%">
 		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op.id}">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
-			Admission le {$curr_op.date_adm|date_format:"%a %d %b"} à {$curr_op.time_adm}
-			<br />
-            Côté : {$curr_op.cote}
+			Admission le {$curr_op.date_adm|date_format:"%a %d %b"} à {$curr_op.time_adm} ({$curr_op.type_adm|truncate:1:""|capitalize})
             <br />
 			Durée : {$curr_op.duree}
+		  </td>
+		  <td class="text">
+			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
+			<br />
+            Côté : {$curr_op.cote}
             <br />
             <form name="editFrm{$curr_op.id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
@@ -40,9 +43,6 @@
             </select>
             <input type="submit" value="changer" />
             </form>
-		  </td>
-		  <td class="text">
-			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
 		  </td>
 		  <td>
 		    {if $curr_op.annulee}
@@ -76,9 +76,7 @@
             </a>
 		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op.id}">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
-			Admission le {$curr_op.date_adm|date_format:"%a %d %b"} à {$curr_op.time_adm}
-			<br />
-            Côté : {$curr_op.cote}
+			Admission le {$curr_op.date_adm|date_format:"%a %d %b"} à {$curr_op.time_adm} ({$curr_op.type_adm|truncate:1:""|capitalize})
             <br />
 			Durée : {$curr_op.duree}
 			<br />
@@ -98,6 +96,11 @@
 			</select>
 			<input type="submit" value="changer" />
 			</form>
+		  </td>
+		  <td class="text">
+			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
+			<br />
+            Côté : {$curr_op.cote}
             <br />
             <form name="editFrm{$curr_op.id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
@@ -112,9 +115,6 @@
             </select>
             <input type="submit" value="changer" />
             </form>
-		  </td>
-		  <td class="text">
-			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
 		  </td>
 		  <td>
 		    {if $curr_op.rank != 1}

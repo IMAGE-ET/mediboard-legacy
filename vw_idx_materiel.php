@@ -19,7 +19,7 @@ $todayf = date("d/m/Y");
 // Récupération des opérations
 $sql = "SELECT plagesop.date as date, users.user_last_name as chir_lastname, users.user_first_name as chir_firstname,
         patients.nom as pat_lastname, patients.prenom as pat_firstname, operations.CCAM_code as CCAM_code,
-        operations.materiel as materiel, operations.operation_id as id
+        operations.materiel as materiel, operations.cote AS cote, operations.operation_id as id
         FROM operations
         LEFT JOIN patients ON operations.pat_id = patients.patient_id
         LEFT JOIN users ON operations.chir_id = users.user_id

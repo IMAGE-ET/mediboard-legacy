@@ -23,9 +23,9 @@ $monthf = intval(substr($fin, 4, 2));
 $yearf = substr($fin, 0, 4);
 
 // Récupération des opérations
-$sql = "SELECT plagesop.date as date, users.user_last_name as chir_lastname, users.user_first_name as chir_firstname,
-        patients.nom as pat_lastname, patients.prenom as pat_firstname, operations.CCAM_code as CCAM_code,
-        operations.materiel as materiel, operations.operation_id as id
+$sql = "SELECT plagesop.date AS date, users.user_last_name AS chir_lastname, users.user_first_name AS chir_firstname,
+        patients.nom AS pat_lastname, patients.prenom AS pat_firstname, operations.CCAM_code AS CCAM_code,
+        operations.materiel AS materiel, operations.cote AS cote, operations.operation_id AS id
         FROM operations
         LEFT JOIN patients ON operations.pat_id = patients.patient_id
         LEFT JOIN users ON operations.chir_id = users.user_id
@@ -38,9 +38,9 @@ $sql = "SELECT plagesop.date as date, users.user_last_name as chir_lastname, use
         ORDER BY plagesop.date, operations.rank";
 $op1 = db_loadlist($sql);
 
-$sql = "SELECT plagesop.date as date, users.user_last_name as chir_lastname, users.user_first_name as chir_firstname,
-        patients.nom as pat_lastname, patients.prenom as pat_firstname, operations.CCAM_code as CCAM_code,
-        operations.materiel as materiel, operations.operation_id as id
+$sql = "SELECT plagesop.date AS date, users.user_last_name AS chir_lastname, users.user_first_name AS chir_firstname,
+        patients.nom AS pat_lastname, patients.prenom AS pat_firstname, operations.CCAM_code AS CCAM_code,
+        operations.materiel AS materiel, operations.cote AS cote, operations.operation_id AS id
         FROM operations
         LEFT JOIN patients ON operations.pat_id = patients.patient_id
         LEFT JOIN users ON operations.chir_id = users.user_id

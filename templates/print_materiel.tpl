@@ -17,8 +17,8 @@
 		  <td>{$curr_op.dateFormed}</td>
 		  <td>{$curr_op.chir_name}</td>
 		  <td>{$curr_op.pat_name}</td>
-		  <td>{$curr_op.CCAM} <i>({$curr_op.CCAM_code})</i></td>
-		  <td>{$curr_op.materiel}</td>
+		  <td class="text">{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i> (Côté : {$curr_op.cote})</td>
+		  <td class="text">{$curr_op.materiel}</td>
 		</tr>
 		{/foreach}
 	  </table>
@@ -40,7 +40,7 @@
 		  <td>{$curr_op.dateFormed}</td>
 		  <td>{$curr_op.chir_name}</td>
 		  <td>{$curr_op.pat_name}</td>
-		  <td class="text">{$curr_op.CCAM} <i>({$curr_op.CCAM_code})</i></td>
+		  <td class="text">{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i> (Côté : {$curr_op.cote})</td>
 		  <td class="text">{$curr_op.materiel}</td>
 		</tr>
 		{/foreach}
