@@ -7,7 +7,7 @@ function checkPlage() {
     
   if (form.id_chir.value == -1) {
     alert("Merci de choisir un chirurgien");
-    form.cjir_id.focus();
+    form.chir_id.focus();
     return false;
   }
   
@@ -86,7 +86,7 @@ function checkPlage() {
         {/foreach}
         <tr>
           <td colspan="8">
-            <form name='editFrm' action='./index.php?m=dPcabinet' method='post' onsubmit='return checkPlage()'>
+            <form name='editFrm' action='?m=dPcabinet' method='post' onsubmit='return checkPlage()'>
 
             <input type='hidden' name='dosql' value='do_plageconsult_aed' />
             <input type='hidden' name='del' value='0' />
