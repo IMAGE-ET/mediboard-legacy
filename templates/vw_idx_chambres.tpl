@@ -5,6 +5,7 @@ function checkFrm() {
   var field = null;
     
   if (field = form.nom) {
+  	alert(field.value);
     if (field.value.length == 0) {
       alert("Intitulé manquant");
       field.focus();
@@ -14,6 +15,22 @@ function checkFrm() {
     
   return true;
 }
+
+function checkLit() {
+  var form = document.editLit;
+  var field = null;
+    
+  if (field = form.nom) {
+    if (field.value.length == 0) {
+      alert("Intitulé manquant");
+      field.focus();
+      return false;
+    }
+  }
+    
+  return true;
+}
+
 </script>
 {/literal}
 
@@ -50,7 +67,7 @@ function checkFrm() {
   
   <td class="halfPane">
 
-    <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkGroup()">
+    <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkFrm()">
 
     <input type="hidden" name="dosql" value="do_chambre_aed" />
     <input type="hidden" name="chambre_id" value="{$chambreSel->chambre_id}" />
@@ -86,16 +103,10 @@ function checkFrm() {
 	</tr>
 	    
     <tr>
-      <th><label for="editFrm_caracteristiques" title="Caracteristiques du chambre.">Caracteristiques:</label></th>
+      <th><label for="editFrm_caracteristiques" title="Caracteristiques du chambre.">Caractéristiques:</label></th>
       <td>
         <textarea name="caracteristiques" rows="4">{$chambreSel->caracteristiques}</textarea></td>
     </tr>
-
-    {if $chambreSel->chambre_id}
-    <tr>
-      <th class="category" colspan="2">Chambres</th>
-    </tr>
-    {/if}    
 
     <tr>
       <td class="button" colspan="2">
@@ -109,6 +120,37 @@ function checkFrm() {
       </td>
     </tr>
 
+    {if $chambreSel->chambre_id}
+    <tr>
+      <th class="category" colspan="2">Lits</th>
+    {foreach from=$chambreSel->_ref_lits item=curr_lit}
+    <tr>
+      <th>Lit:</th>
+      <td>{$curr_lit->nom}</td>
+    </tr>
+	{/foreach}
+    <tr>
+      <td>Ajouter un lit:
+      <td>
+        <form name="editLit" action="?m={$m}" method="post" onsubmit="return checkLit()">
+
+        <input type="hidden" name="dosql" value="do_lit_aed" />
+        <input type="hidden" name="lit_id" value="{$litSel->lit_id}" />
+        <input type="hidden" name="chambre_id" value="{$chambreSel->chambre_id}" />
+        <input type="hidden" name="del" value="0" />
+        <input type="text" name="nom" value="{$litSel->nom}" />
+        {if $chambreSel->chambre_id}
+        <input type="submit" value="Modifier" />
+        {else}
+        <input type="submit" value="Créer" />
+        {/if}
+
+        </form>
+      </td>
+    </tr>
+    {/if}    
+
+	
     </table>
 
   </td>
