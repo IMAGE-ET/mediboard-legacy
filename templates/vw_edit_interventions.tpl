@@ -38,7 +38,7 @@ function popOp(id) {
 		  </td>
 		  <td>
 		    <a href="index.php?m={$module}&a=do_order_op&cmd=insert&id={$curr_op.id}">
-		    <img src="./modules/{$module}/images/tick.png" width="" height="" alt="ajouter" border="0" />
+		    <img src="./modules/{$module}/images/tick.png" width="12" height="12" alt="ajouter" border="0" />
 			</a>
 		  </td>
 		</tr>
@@ -89,7 +89,7 @@ function popOp(id) {
 		  <td>
 		    {if $curr_op.rank != 1}
 		    <a href="index.php?m={$module}&a=do_order_op&cmd=up&id={$curr_op.id}">
-		    <img src="./modules/{$module}/images/uparrow.png" width="" height="" alt="monter" border="0" />
+		    <img src="./modules/{$module}/images/uparrow.png" width="12" height="12" alt="monter" border="0" />
 			</a>
 			{/if}
 			{if $curr_op.rank != 1 and $curr_op.rank != $max}
@@ -97,7 +97,7 @@ function popOp(id) {
 			{/if}
 			{if $curr_op.rank != $max}
 		    <a href="index.php?m={$module}&a=do_order_op&cmd=down&id={$curr_op.id}">
-		    <img src="./modules/{$module}/images/downarrow.png" width="" height="" alt="descendre" border="0" />
+		    <img src="./modules/{$module}/images/downarrow.png" width="12" height="12" alt="descendre" border="0" />
 			</a>
 			{/if}
 		  </td>
