@@ -3,6 +3,15 @@
 {literal}
 <script type="text/javascript">
  //<![CDATA[
+function confirmCreation(id) {
+  var form = document.editFrm;
+  check = confirm("{/literal}{$textSiblings}{literal}");
+  if(!check) {
+    form.del.value = 1;
+    form.submit();
+  }
+}
+
 function checkPatient() {
   var form = document.editFrm;
     
@@ -141,3 +150,9 @@ function checkPatient() {
     </td>
   </tr>
 </table>
+
+{if $textSiblings}
+<script type="text/javascript">
+  confirmCreation();
+</script>
+{/if}

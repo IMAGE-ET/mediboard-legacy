@@ -38,13 +38,12 @@ if ($del) {
 		$AppUI->redirect( "m=$m&tab=0" );
 	}
 } else {
-	// simply store the added/edited quote in database via the store method of the dPccam child class of the CDpObject provided ba the dPFramework
-	// no sql command is necessary here! :-)
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['patient_id'];
 		$AppUI->setMsg( $isNotNew ? 'Patient modifié' : 'Patient créé', UI_MSG_OK);
+		if(!$isNotNew){$AppUI->redirect( "m=$m&created=$obj->patient_id" );}
 	}
 	$AppUI->redirect();
 }

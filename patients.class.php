@@ -76,6 +76,16 @@ class CPatient extends CDpObject {
         
     return $msg . parent::check();
 	}
-
+	
+	function getSiblings() {
+      $sql = "SELECT patient_id, nom, prenom, naissance, adresse, ville, CP " .
+      		"FROM patients WHERE " .
+      		"patient_id != '$this->patient_id' " .
+      		"AND ((nom = '$this->nom'    AND prenom = '$this->prenom') " .
+      		  "OR (nom = '$this->nom'    AND naissance = '$this->naissance') " .
+      		  "OR (prenom = '$this->nom' AND naissance = '$this->naissance'))";
+      $siblings = db_loadlist($sql);
+      return $siblings;
+    }
 }
 ?>
