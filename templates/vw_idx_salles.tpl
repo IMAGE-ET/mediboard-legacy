@@ -4,12 +4,15 @@
 <script language="javascript">
 function checkSalle() {
   var form = document.salle;
-    
-  if (form.nom.value.length == 0) {
-    alert("Intitulé manquant");
-    form.nom.focus();
-    return false;
-  }
+  var field = null;
+  
+  if (field = form.nom) {
+    if (field.value.length == 0) {
+      alert("Intitulé manquant");
+      field.focus();
+      return false;
+    }
+  }   
     
   return true;
 }
@@ -19,11 +22,11 @@ function checkSalle() {
 <table class="main">
 
 <tr>
-  <td class="greedyPane">
+  <td class="halfPane">
 
-		<a href="index.php?m={$m}&tab={$tab}&usersalle=0"><strong>Créer une salle</strong></a>
+    <a href="index.php?m={$m}&amp;tab={$tab}&amp;salle_id=0"><strong>Créer une salle</strong></a>
 
-    <table class="color">
+    <table class="tbl">
       
     <tr>
       <th>liste des salles</th>
@@ -31,7 +34,7 @@ function checkSalle() {
     
     {foreach from=$salles item=curr_salle}
     <tr>
-      <td><a href="index.php?m={$m}&tab={$tab}&usersalle={$curr_salle.id}">{$curr_salle.nom}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;salle_id={$curr_salle->id}">{$curr_salle->nom}</a></td>
     </tr>
     {/foreach}
       
@@ -39,19 +42,19 @@ function checkSalle() {
 
   </td>
   
-  <td class="pane">
+  <td class="halfPane">
 
     <form name="salle" action="./index.php?m={$m}" method="post" onsubmit="return checkSalle()">
     <input type="hidden" name="dosql" value="do_salle_aed" />
-		<input type="hidden" name="id" value="{$sallesel.id}" />
+    <input type="hidden" name="id" value="{$salleSel->id}" />
     <input type="hidden" name="del" value="0" />
 
     <table class="form">
 
     <tr>
       <th class="category" colspan="2">
-      {if $sallesel.exist}
-        Modification de la salle &lsquo;{$sallesel.nom}&rsquo;
+      {if $salleSel->id}
+        Modification de la salle &lsquo;{$salleSel->nom}&rsquo;
       {else}
         Création d'une salle
       {/if}
@@ -60,15 +63,15 @@ function checkSalle() {
 
     <tr>
       <th class="mandatory">Intitulé:</th>
-      <td><input type="text" name="nom" value="{$sallesel.nom}" /></td>
+      <td><input type="text" name="nom" value="{$salleSel->nom}" /></td>
     </tr>
     
     <tr>
       <td class="button" colspan="2">
-        {if $sallesel.exist}
+        {if $salleSel->id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la salle', '{$salleSel->nom|escape:javascript}')""/>
         {else}
         <input type="submit" name="btnFuseAction" value="Créer">
         {/if}

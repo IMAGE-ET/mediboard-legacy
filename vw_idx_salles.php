@@ -7,34 +7,29 @@
  *  @author Romain Ollivier
  */
  
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
+
+require_once($AppUI->getModuleClass($m, 'salle'));
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 // Récupération des salles
-$sql = "SELECT * 
-  FROM sallesbloc
-  ORDER BY nom";
-$salles = db_loadlist($sql);
+$order[] = "nom";
+$salles = new CSalle;
+$salles = $salles->loadList(null, $order); 
 
 // Récupération de la salle à ajouter/editer
-$usersalle = mbGetValueFromGetOrSession('usersalle', 0);
-
-$sql = "SELECT * 
-  FROM sallesbloc 
-  WHERE id = '$usersalle'";
-$result = db_exec($sql);
-$sallesel = db_fetch_array($result);
-$sallesel["exist"] = $usersalle;
+$salleSel = new CSalle;
+$salleSel->load(mbGetValueFromGetOrSession('salle_id'));
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('salles', $salles);
-$smarty->assign('sallesel', $sallesel);
+$smarty->assign('salleSel', $salleSel);
 
 $smarty->display('vw_idx_salles.tpl');
 

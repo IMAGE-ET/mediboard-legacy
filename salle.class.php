@@ -28,7 +28,7 @@ class CSalle extends CDpObject {
     $tables[] = array (
       'label' => 'plages opératoires', 
       'name' => 'plagesop', 
-      'idfield' => 'operation_id', 
+      'idfield' => 'id', 
       'joinfield' => 'id_salle'
     );
     
