@@ -35,6 +35,7 @@
   
   <tr><th>Date d'admission: </th><td>{$admission->date_adm|date_format:"%d/%m/%Y"} à {$admission->_hour_adm}h{$admission->_min_adm}</td></tr>
   <tr><th>Durée d'hospitalisation: </th><td>{$admission->duree_hospi} jours</td></tr>
+  <tr><th>Bilan pré-opératoire: </th><td class="text">{$admission->examen}</td></tr>
   <tr><th>Admission en: </th><td>{$admission->type_adm}</td></tr>
   <tr><th>Chambre particulière: </th><td>{$admission->chambre}</td></tr>
   
