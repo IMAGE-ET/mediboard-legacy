@@ -138,3 +138,8 @@ select:focus,
 textarea:focus {
   background: #fff;
 }
+
+label:hover {
+  border-bottom: 1px dotted #888;
+  cursor: help;
+}
