@@ -10,6 +10,9 @@ function confirmCreation(id) {
     form.del.value = 1;
     form.submit();
   }
+  else {
+    window.location.href = 'index.php?m=dPpatients&tab=vw_idx_patients&id=' + id + '&nom=&prenom='
+  }
 }
 
 function checkPatient() {
@@ -238,6 +241,6 @@ function setMed( key, nom, prenom, type ){
 
 {if $textSiblings}
 <script type="text/javascript">
-  confirmCreation();
+  confirmCreation({$created});
 </script>
 {/if}

@@ -28,6 +28,7 @@ if($created = dPgetParam($_GET, 'created', 0)){
   if(count($siblings) == 0) {
   	$textSiblings = NULL;
   	$patient = NULL;
+  	$AppUI->redirect( "m=dPpatients&tab=vw_idx_patients&id=$created&nom=&prenom=" );
   }
   else {
   	$textSiblings = "Risque de doublons :\\n";
@@ -45,6 +46,7 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('patient', $patient);
+$smarty->assign('created', $created);
 $smarty->assign('textSiblings', $textSiblings);
 
 $smarty->display('vw_edit_patients.tpl');
