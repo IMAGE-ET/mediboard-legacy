@@ -1,4 +1,11 @@
-<?php /* PUBLIC $Id$ */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPplanningOp
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
@@ -14,7 +21,7 @@ $sql = "select users.user_id as id, users.user_last_name as lastname, users.user
 		where users.user_id = users_mediboard.user_id
 		and users_mediboard.function_id = functions_mediboard.function_id
 		and functions_mediboard.group_id = groups_mediboard.group_id
-		and groups_mediboard.text = 'chirurgie'";
+		and (groups_mediboard.text = 'chirurgie' or groups_mediboard.text = 'anesthésie')";
 if($spe != 0) {
 	$sql .= " and functions_mediboard.function_id = '$spe'";
 }
@@ -27,7 +34,7 @@ $list = db_loadlist($sql);
 $sql = "select functions_mediboard.function_id as id, functions_mediboard.text as text
 		from functions_mediboard, groups_mediboard
 		where functions_mediboard.group_id = groups_mediboard.group_id
-		and groups_mediboard.text = 'chirurgie'
+		and (groups_mediboard.text = 'chirurgie' or groups_mediboard.text = 'anesthésie')
 		order by functions_mediboard.text";
 $listspe = db_loadlist($sql);
 

@@ -1,4 +1,12 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPplanningOp
+* @version $Revision$
+* @author Romain Ollivier
+*/
+
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
@@ -14,7 +22,7 @@ $sql = "select users.user_id as id, users.user_first_name as firstname, users.us
 		and users.user_id = '$AppUI->user_id'";
 $result = db_loadlist($sql);
 
-if($result[0]["text"] == "Chirurgie") {
+if($result[0]["text"] == "Chirurgie" || $result[0]["text"] == "Anesthésie") {
   $chir = $result[0];
   $chir["name"] = "Dr. ".$chir["lastname"]." ".$chir["firstname"];
 }
