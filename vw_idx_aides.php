@@ -18,7 +18,7 @@ if (!$canRead) {
 
 // Utilisateurs modifiables
 $users = new CMediusers;
-$users = $users->loadListFromGroup(null, PERM_EDIT);
+$users = $users->loadListFromType(null, PERM_EDIT);
 
 // Modules, classes & fields
 $modules = array (
