@@ -95,7 +95,7 @@ function checkPatient() {
         
         <tr>
           <th>Date de naissance:</th>
-          <td>{$patient.naissance|date_format:"%d-%m-%Y"}</td>
+          <td>{$patient.dateFormed}</td>
         </tr>
         
         <tr>
