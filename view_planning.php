@@ -94,6 +94,7 @@ foreach($plagesop as $key=>$value) {
           operations.rques AS rques, operations.materiel AS materiel, operations.rank AS rank,
           operations.commande_mat AS commande_mat, operations.type_anesth AS type_anesth,
           operations.examen AS examen, operations.type_adm AS adm, operations.annulee AS annulee,
+          operations.operation_id AS id,
           patients.nom AS lastname, patients.prenom AS firstname, patients.sexe AS sexe,
           patients.naissance AS naissance
           FROM operations

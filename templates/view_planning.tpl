@@ -1,3 +1,19 @@
+<!-- $Id$ -->
+
+{literal}
+<script type="text/javascript">
+//<![CDATA[
+
+function printAdmission(id) {
+  var url = './index.php?m=dPadmissions&a=print_admission&dialog=1';
+  url = url + '&id=' + id;
+  popup(700, 550, url, 'Patient');
+}
+
+//]]>
+</script>
+{/literal}
+
 <table class="main">
   <tr><th><a href="javascript:window.print()">Planning du {$date}</a></th></tr>
   {foreach from=$plagesop item=curr_plageop}
@@ -41,9 +57,9 @@
           <td>{$curr_op.adm|truncate:1:""|capitalize}</td>
 		  <td class="text">{$curr_op.rques|nl2br}</td>
 		  <td class="text">{$curr_op.mat|nl2br}</td>
-		  <td>{$curr_op.lastname}</td>
-		  <td>{$curr_op.firstname}</td>
-		  <td>{$curr_op.age} ans</td>
+		  <td><a href="#" onclick="printAdmission({$curr_op.id})">{$curr_op.lastname}</a></td>
+		  <td><a href="#" onclick="printAdmission({$curr_op.id})">{$curr_op.firstname}</a></td>
+		  <td><a href="#" onclick="printAdmission({$curr_op.id})">{$curr_op.age} ans</a></td>
 		  <td></td>
 		</tr>
 		{/foreach}
