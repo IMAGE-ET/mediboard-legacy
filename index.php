@@ -7,26 +7,35 @@
 * @author Romain Ollivier
 */
 
-$canRead = !getDenyRead( $m );
-$canEdit = !getDenyEdit( $m );
+// [Begin] non-module specific code
+ 
+$canRead = !getDenyRead($m);
+$canEdit = !getDenyEdit($m);
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=public&a=access_denied" );
 }
 
 $AppUI->savePlace();
 
-if (isset( $_GET['tab'] )) {
-	$AppUI->setState( 'dPadmissionsIdxTab', $_GET['tab'] );
+if (isset($_GET['tab'])) {
+  $AppUI->setState("{$m}IdxTab", $_GET['tab']);
 }
-$tab = $AppUI->getState( 'dPadmissionsIdxTab' ) !== NULL ? $AppUI->getState( 'dPadmissionsIdxTab' ) : 0;
-$active = intval( !$AppUI->getState( 'dPadmissionsIdxTab' ) );
 
-$titleBlock = new CTitleBlock( 'Gestion des admissions', 'dPadmissions.png', $m, "$m.$a" );
+$tab = $AppUI->getState("{$m}IdxTab");
+if (!$tab) {
+  $tab = 0;
+}
+
+$active = intval(!$tab);
+
+// [End] non-module specific code
+
+$titleBlock = new CTitleBlock( 'Gestion des admissions', "$m.png", $m, "$m.$a" );
 $titleBlock->addCell();
 $titleBlock->show();
 
-$tabBox = new CTabBox( "?m=dPadmissions", "{$AppUI->cfg['root_dir']}/modules/dPadmissions/", $tab );
+$tabBox = new CTabBox( "?m=$m", "{$AppUI->cfg['root_dir']}/modules/$m/", $tab );
 $tabBox->add( 'vw_idx_admission', 'Consultation de admissions' );
 $tabBox->add( 'vw_dtl_admission', 'Détails' );
 $tabBox->show();
