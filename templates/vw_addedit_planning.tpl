@@ -257,7 +257,7 @@ function setCalendar( idate, fdate ) {
   fld_date = eval( 'document.editFrm._date' + calendarField );
   fld_fdate = eval( 'document.editFrm.' + calendarField );
   if((calendarField == '_rdv_adm') && (fld_date.value != idate))
-    mofifOp();
+    modifOp();
   fld_date.value = idate;
   fld_fdate.value = fdate;
 }
