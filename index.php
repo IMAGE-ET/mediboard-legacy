@@ -26,9 +26,10 @@ $titleBlock = new CTitleBlock( 'Gestion des comptes-rendus', 'dPcompteRendu.png'
 $titleBlock->addCell();
 $titleBlock->show();
 
-$tabBox = new CTabBox( "?m=dPcompteRendu", "{$AppUI->cfg['root_dir']}/modules/dPcompteRendu/", $tab );
-$tabBox->add( 'vw_modeles', 'liste des modeles' );
-$tabBox->add( 'addedit_modeles', 'Edition des modeles' );
+$tabBox = new CTabBox( "?m=$m", "{$AppUI->cfg['root_dir']}/modules/$m/", $tab );
+$tabBox->add('vw_modeles', 'liste des modèles');
+$tabBox->add('addedit_modeles', 'Edition des modèles');
+$tabBox->add('vw_idx_aides', 'Aides à la saisie');
 $tabBox->show();
 
 ?>
