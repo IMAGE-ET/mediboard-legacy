@@ -89,6 +89,13 @@ $consult = new CConsultation();
 if($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
+  foreach($consult->_ref_files as $key => $value) {
+    $temp = round($value->file_size / 1024, 2);
+    if($temp > 1)
+      $consult->_ref_files[$key]->file_size = $temp." KB";
+    else
+      $consult->_ref_files[$key]->file_size = $value->file_size." Bytes";
+  }
   $consult->_ref_patient->loadRefs();
   foreach($consult->_ref_patient->_ref_consultations as $key => $value) {
     $consult->_ref_patient->_ref_consultations[$key]->loadRefs();

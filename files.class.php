@@ -50,12 +50,12 @@ class CFile extends CDpObject {
 		  @unlink( "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation/$this->file_real_filename" );
 	    }
 	// delete any index entries
-		$sql = "DELETE FROM files_index WHERE file_id = $this->file_id";
+		$sql = "DELETE FROM files_index_mediboard WHERE file_id = $this->file_id";
 		if (!db_exec( $sql )) {
 			return db_error();
 		}
 	// delete the main table reference
-		$sql = "DELETE FROM files WHERE file_id = $this->file_id";
+		$sql = "DELETE FROM files_mediboard WHERE file_id = $this->file_id";
 		if (!db_exec( $sql )) {
 			return db_error();
 		}

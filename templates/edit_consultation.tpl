@@ -69,23 +69,30 @@ function editModele(consult, modele) {
         <tr>
           <td valign="top">
             <table class="form">
-              <tr><th colspan="2" class="category">Patient</th></tr>
+              <tr><th colspan="2" class="category"><a href="?m=dPpatients&tab=0&id={$consult->_ref_patient->patient_id}">Patient</a></th></tr>
               <tr><th>Nom :</th><td>{$consult->_ref_patient->nom}</td></tr>
               <tr><th>Prénom :</th><td>{$consult->_ref_patient->prenom}</th></tr>
               <tr><th>Age :</th><td>{$consult->_ref_patient->_age} ans</td><tr>
             </table>
             <table class="form">
-              <tr><th colspan="2" class="category">Fichiers liés</th></tr>
-              <tr><td colspan="2"><ul>
-                {foreach from=$consult->_ref_files item=curr_file}
-                <li><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></li>
-                {/foreach}
-              </ul></td></tr>
-              <tr><td><form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+              <tr><th colspan="3" class="category">Fichiers liés</th></tr>
+              {foreach from=$consult->_ref_files item=curr_file}
+              <tr>
+                <td><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></td>
+                <td>{$curr_file->file_size}</td>
+                <td class="button"><form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+                  <input type="hidden" name="dosql" value="do_file_aed" />
+	              <input type="hidden" name="del" value="1" />
+	              <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
+	              <input type="button" value="supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.submit();}{/literal}"/>
+	              </form></td>
+	          </tr>
+              {/foreach}
+              <tr><td colspan="2"><form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
               <input type="hidden" name="dosql" value="do_file_aed" />
 	          <input type="hidden" name="del" value="0" />
 	          <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />
-              <input type="file" name="formfile"></td>
+              <input type="file" name="formfile" /></td>
               <td class="button"><input type="submit" value="ajouter">
               </form></td></tr>
             </table>

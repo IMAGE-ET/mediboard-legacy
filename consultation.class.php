@@ -34,7 +34,6 @@ class CConsultation extends CDpObject {
   // Form fields
   var $_hour = null;
   var $_min = null;
-  var $_duree = null;
 
   // Object References
   var $_ref_patient = null;
@@ -48,12 +47,10 @@ class CConsultation extends CDpObject {
   function updateFormFields() {
     $this->_hour = intval(substr($this->heure, 0, 2));
     $this->_min  = intval(substr($this->heure, 3, 2));
-    $this->_duree  = intval(substr($this->duree, 3, 2));
   }
   
   function updateDBFields() {
     $this->heure = $this->_hour.":".$this->_min.":00";
-    $this->duree = "00:".$this->_min_duree.":00";
   }
   
   function loadRefs() {

@@ -23,7 +23,7 @@ function checkForm() {
   if (field = form.plageconsult_id)
     if (field.value == 0) {
       alert("Jour de consultation non selectionné");
-      popPlage();
+      popRDV();
       return false;
     }
 
@@ -145,10 +145,18 @@ function setCalendar( idate, fdate ) {
         
         <tr>
           <th class="mandatory">
+            {if $chir}
+            <input type="hidden" name="chir_id" value="{$chir->user_id}" />
+            {else}
             <input type="hidden" name="chir_id" value="{$consult->_ref_plageconsult->_ref_chir->user_id}" />
+            {/if}
             <label for="editFrm_chir_id">Chirurgien:</label>
           </th>
+          {if $chir}
+          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$chir->user_last_name} {$chir->user_first_name}" readonly="readonly" /></td>
+          {else}
           <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$consult->_ref_plageconsult->_ref_chir->user_last_name} {$consult->_ref_plageconsult->_ref_chir->user_first_name}" readonly="readonly" /></td>
+          {/if}
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
 
@@ -198,10 +206,10 @@ function setCalendar( idate, fdate ) {
         <tr>
           <th><label for="editFrm__duree">Durée:</label></th>
           <td>
-            <input type="hidden" name="duree" value="" />
-            <select name="_mult">
-              <option value="1" {if $consult->_mult == 1} selected="selected" {/if}>simple</option>
-              <option value="2" {if $consult->_mult == 2} selected="selected" {/if}>double</option>
+            <select name="duree">
+              <option value="1" {if $consult->duree == 1} selected="selected" {/if}>simple</option>
+              <option value="2" {if $consult->duree == 2} selected="selected" {/if}>double</option>
+              <option value="3" {if $consult->duree == 3} selected="selected" {/if}>triple</option>
             </select>
           </td>
         </tr>
@@ -220,8 +228,7 @@ function setCalendar( idate, fdate ) {
           {if $consult->consultation_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Compte-Rendu" onclick="popup(700, 700, './index.php?m={$m}&a=vw_compta&dialog=1', 'Compte-rendu')"/>
-            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
           {else}
             <input type="submit" value="Créer" />
           {/if}

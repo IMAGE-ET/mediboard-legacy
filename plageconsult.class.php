@@ -103,6 +103,9 @@ class CPlageconsult extends CDpObject {
     if ($msg = $this->hasCollisions()) {
       return $msg;
     }
+    if(!$this->canDelete($msg)) {
+      return $msg;
+    }
     return parent::store();
   }
   
@@ -137,27 +140,14 @@ class CPlageconsult extends CDpObject {
     $this->_month = date("m", $nextTime);
     $this->_day   = date("d", $nextTime);
     $this->updateDBFields();
-    //mbTrace("apres l'update DB fields", $this);
-    //$this->date = $this->_year."-".$this->_month."-".$this->_day;
     $this->updateFormFields();
-    //mbTrace("apres l'update Form fields", $this);
     $sql = "SELECT plageconsult_id" .
       "\nFROM plageconsult" .
       "\nWHERE date = '$this->date'" .
       "\nAND chir_id = '$this->chir_id'" .
       "\nAND (debut = '$this->debut' OR fin = '$this->fin')";
     $row = db_loadlist($sql); 
-    $this->plageconsult_id = @$row[0]['plageconsult_id']; 
-    //$this->plageconsult_id = @$row[0]['plageconsult_id'];
-    //$debut = $this->debut;
-    //$fin = $this->fin;
-    //$msg = $this->load(@$row[0]['plageconsult_id']);
-    //$this->debut = $debut;
-    //$this->fin = $fin;
-    //$this->updateFormFields();
-    //$this->updateDBFields();
-    //mbTrace("apres le load + Form + DB", $this);
-    //exit(0);
+    $this->plageconsult_id = @$row[0]['plageconsult_id'];
     return $msg;
   }    
 }

@@ -194,7 +194,7 @@ function checkPlage() {
                 <td><input type='text' name='_repeat' size="1" value='1' /> semaine(s)</td>
               </tr>
               <tr>
-                <td class="button" colspan="2"><input type='submit' value='Supprimer' /></td>
+                <td class="button" colspan="2"><input type='button' value='Supprimer' onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.submit();}{/literal}" /></td>
               </tr>
             </table>
           </form>

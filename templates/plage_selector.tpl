@@ -48,7 +48,7 @@ function setClose(hour, min) {ldelim}
           {if $curr_patient.patient}{$curr_patient.patient}<br />{else}-{/if}
         {/foreach}</td>
         <td>{foreach from=$curr_place.patient item=curr_patient}
-          {$curr_patient.duree}{if $curr_patient.duree}mn<br />{else}-{/if}
+          {$curr_patient.duree}{if $curr_patient.duree}<br />{else}-{/if}
         {/foreach}</td>
       </tr>
       {/foreach}
