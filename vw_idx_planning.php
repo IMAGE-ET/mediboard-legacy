@@ -122,14 +122,16 @@ $sql = "SELECT plagesop.id AS id, plagesop.date, COUNT(operations.temp_operation
 		GROUP BY operations.plageop_id";
 $result2 = db_loadlist($sql);
 //  Plages de spécialité
-$sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
-		plagesop.fin, plagesop.debut, 0 AS busy_time, 1 AS spe
-		FROM plagesop
-		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_spec = '$specialite'
-		AND plagesop.date LIKE '$year-$month-__'";
-$result3 = db_loadlist($sql);
+if($selChirLogin) {
+  $sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
+          plagesop.fin, plagesop.debut, 0 AS busy_time, 1 AS spe
+		  FROM plagesop
+		  LEFT JOIN operations
+		  ON plagesop.id = operations.plageop_id
+		  WHERE plagesop.id_spec = '$specialite'
+		  AND plagesop.date LIKE '$year-$month-__'";
+ $result3 = db_loadlist($sql);
+}
 
 $i = 0;
 unset($result);
@@ -141,9 +143,11 @@ foreach($result2 as $key => $value){
   $result[$i] = $value;
   $i++;
 }
-foreach($result3 as $key => $value){
-  $result[$i] = $value;
-  $i++;
+if($selChirLogin) {
+  foreach($result3 as $key => $value){
+    $result[$i] = $value;
+    $i++;
+  }
 }
 //Tri du tableau par date (tri bulle)
 $size = sizeof($result);
