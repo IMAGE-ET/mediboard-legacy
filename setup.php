@@ -53,11 +53,11 @@ class CSetupdPprotocoles {
 
 	function install() {
 		$sql = "CREATE TABLE protocoles ( " .
-			"  protocoles_id int(11) unsigned NOT NULL auto_increment" .
+			"  protocole_id int(11) unsigned NOT NULL auto_increment" .
 			", code_CCAM varchar(7) NOT NULL default ''" .
 			", duree tinyint(4) default NULL" .
-			", PRIMARY KEY  (dPprotocoles_id)" .
-			", UNIQUE KEY protocoles_id (protocoles_id)" .
+			", PRIMARY KEY  (protocole_id)" .
+			", UNIQUE KEY protocole_id (protocole_id)" .
 			") TYPE=MyISAM;";
 		db_exec( $sql ); db_error();
 		return null;
