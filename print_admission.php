@@ -22,8 +22,6 @@ $admission->load($id);
 $admission->loadRefs();
 $admission->_ref_pat->loadRefs();
 
-//mbTrace("admission", $admission);
-
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
