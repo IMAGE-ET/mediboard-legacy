@@ -1,5 +1,11 @@
 // $Id$
 
+function popup(width, height, url, name) {
+  params = 'left=50, top=50, height=' + height + ', width=' + width + ', resizable=yes, scrollbars=yes';
+  neo = window.open(url, name, params);
+  neo.window.focus();
+}
+
 function prepareForms() {
   var msg = "Rapport: ";
   
