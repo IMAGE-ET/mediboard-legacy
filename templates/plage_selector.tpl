@@ -20,7 +20,7 @@ function setClose(){
 <tr>
   <th class="category" colspan="2">
     <a href="index.php?m=dPplanningOp&a=plage_selector&dialog=1&hour={$hour}&min={$min}&chir={$chir}&month={$pmonth}&year={$pyear}"><<</a>
-    {$month} / {$year}
+    {$nameMonth} {$year}
     <a href="index.php?m=dPplanningOp&a=plage_selector&dialog=1&hour={$hour}&min={$min}&chir={$chir}&month={$nmonth}&year={$nyear}">>></a>
   </th>
 </tr>

@@ -38,19 +38,23 @@ $hour = dPgetParam( $_GET, 'hour', "25");
 $min = dPgetParam($_GET, 'min', "00");
 $temp_op = $hour.$min."00";
 $today = date("Y-m-d");
+$monthList = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+                   "Juillet", "Aout", "Septembre", "Octobre", "Novembre",
+                   "Décembre");
+$nameMonth = $monthList[$month-1];
 
-$sql = "select users.user_username from users where users.user_id = '$chir'";
+$sql = "SELECT users.user_username FROM users WHERE users.user_id = '$chir'";
 $result = db_loadlist($sql);
 $id_chir = $result[0][user_username];
 
-$sql = "select operations.temp_operation as duree, plagesop.id as id
-		from plagesop
-		left join operations
-		on plagesop.id = operations.plageop_id
-		where plagesop.id_chir = '$id_chir'
-		and plagesop.date like '$year-$month-__'
-		and operations.operation_id IS NOT NULL
-		order by plagesop.date, plagesop.id";
+$sql = "SELECT operations.temp_operation AS duree, plagesop.id AS id
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.id_chir = '$id_chir'
+		AND plagesop.date LIKE '$year-$month-__'
+		AND operations.operation_id IS NOT NULL
+		ORDER BY plagesop.date, plagesop.id";
 $result = db_loadlist($sql);
 foreach($result as $key => $value) {
   $plageop = $value["id"];
@@ -61,27 +65,27 @@ foreach($result as $key => $value) {
   //$duree[$plageop]["duree"] = date("Hms", $duree[$plageop]["newtime"]);
 }
 
-$sql = "select plagesop.id as id, plagesop.date, operations.temp_operation,
-		plagesop.fin - plagesop.debut as free_time, 0 as busy_time
-		from plagesop
-		left join operations
-		on plagesop.id = operations.plageop_id
-		where plagesop.id_chir = '$id_chir'
-		and plagesop.date like '$year-$month-__'
-		and operations.operation_id IS NULL
-		and plagesop.date > '$today'
-		union
-		select plagesop.id as id, plagesop.date, operations.temp_operation,
-		plagesop.fin - plagesop.debut as free_time, SUM(operations.temp_operation) as busy_time
-		from plagesop
-		left join operations
-		on plagesop.id = operations.plageop_id
-		where plagesop.id_chir = '$id_chir'
-		and plagesop.date like '$year-$month-__'
-		and operations.operation_id IS NOT NULL
-		and plagesop.date > '$today'
-		group by operations.plageop_id
-		order by plagesop.date, plagesop.id";
+$sql = "SELECT plagesop.id AS id, plagesop.date, operations.temp_operation,
+		plagesop.fin - plagesop.debut as free_time, 0 AS busy_time
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.id_chir = '$id_chir'
+		AND plagesop.date LIKE '$year-$month-__'
+		AND operations.operation_id IS NULL
+		AND plagesop.date > '$today'
+		UNION
+		SELECT plagesop.id AS id, plagesop.date, operations.temp_operation,
+		plagesop.fin - plagesop.debut AS free_time, SUM(operations.temp_operation) AS busy_time
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.id_chir = '$id_chir'
+		AND plagesop.date LIKE '$year-$month-__'
+		AND operations.operation_id IS NOT NULL
+		AND plagesop.date > '$today'
+		GROUP BY operations.plageop_id
+		ORDER BY plagesop.date, plagesop.id";
 $result = db_loadlist($sql);
 
 $i = 0;
@@ -125,6 +129,7 @@ $smarty->cache_dir = "modules/$m/cache/";
 
 //On récupère les informations
 $smarty->assign('month', $month);
+$smarty->assign('nameMonth', $nameMonth);
 $smarty->assign('pmonth', $pmonth);
 $smarty->assign('nmonth', $nmonth);
 $smarty->assign('year', $year);
