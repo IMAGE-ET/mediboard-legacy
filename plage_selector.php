@@ -1,4 +1,11 @@
-<?php /* PUBLIC $Id$ */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPplanningOp
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
@@ -36,7 +43,25 @@ $sql = "select users.user_username from users where users.user_id = '$chir'";
 $result = db_loadlist($sql);
 $id_chir = $result[0][user_username];
 
-$sql = "select plagesop.id, plagesop.date, operations.temp_operation,
+$sql = "select operations.temp_operation as duree, plagesop.id as id
+		from plagesop
+		left join operations
+		on plagesop.id = operations.plageop_id
+		where plagesop.id_chir = '$id_chir'
+		and plagesop.date like '$year-$month-__'
+		and operations.operation_id IS NOT NULL
+		order by plagesop.date, plagesop.id";
+$result = db_loadlist($sql);
+foreach($result as $key => $value) {
+  $plageop = $value["id"];
+  $duree[$plageop]["newtime"] = mktime($duree[$plageop]["hour"] + substr($value["duree"], 0, 2), $duree[$plageop]["min"] + substr($value["duree"], 3, 2), 0, $month, $day, $year);
+  $duree[$plageop]["hour"] = date("H", $duree[$plageop]["newtime"]);
+  $duree[$plageop]["min"] = date("i", $duree[$plageop]["newtime"]);
+  //$duree[$plageop]["newtime"] = mktime(substr($duree[$plageop]["duree"], 0, 2) + substr($value["duree"], 0, 2), substr($duree[$plageop]["duree"], 3, 2) + substr($value["duree"], 3, 2), 0, $month, date("d"), $year);
+  //$duree[$plageop]["duree"] = date("Hms", $duree[$plageop]["newtime"]);
+}
+
+$sql = "select plagesop.id as id, plagesop.date, operations.temp_operation,
 		plagesop.fin - plagesop.debut as free_time, 0 as busy_time
 		from plagesop
 		left join operations
@@ -46,7 +71,7 @@ $sql = "select plagesop.id, plagesop.date, operations.temp_operation,
 		and operations.operation_id IS NULL
 		and plagesop.date > '$today'
 		union
-		select plagesop.id, plagesop.date, operations.temp_operation,
+		select plagesop.id as id, plagesop.date, operations.temp_operation,
 		plagesop.fin - plagesop.debut as free_time, SUM(operations.temp_operation) as busy_time
 		from plagesop
 		left join operations
@@ -61,9 +86,35 @@ $result = db_loadlist($sql);
 
 $i = 0;
 foreach($result as $key => $value) {
-  if(($value[free_time] - $value[busy_time]) >= $temp_op) {
+  $plageop = $value["id"];
+  $time_left = (substr($value["free_time"], 0, -4) - $duree[$plageop]["hour"]);
+  echo "La durée des operations est : ".$duree[$plageop]["hour"].$duree[$plageop]["min"]."
+        <br>free_time : ".$value["free_time"]."
+        <br>time_left (apres heure) : $time_left";
+  switch(substr($value["free_time"], -4, 2) - $duree[$plageop]["min"]) {
+    case "85" : {
+      $time_left .= "4500";
+      break;
+    }
+    case "60" : {
+      $time_left .= "3000";
+      break;
+    }
+    default : {
+      $time_left .= (substr($value["free_time"], -4, 2) - $duree[$plageop]["min"]);
+      if(strlen(substr($value["free_time"], -4, 2) - substr($duree[$plageop]["duree"], -4, 2)) == 1)
+        $time_left.= "000";
+      else
+        $time_left.= "00";
+      break;
+    }
+  }
+  echo "<br>time_left (apres minutes): $time_left
+        <br>temp_op : $temp_op
+        <br>";
+  if($time_left >= $temp_op) {
     $list[$i] = $value;
-	$list[$i][dateFormed] = substr($value[date], 8, 2)."/".substr($value[date], 5, 2)."/".substr($value[date], 0, 4);
+	$list[$i]["dateFormed"] = substr($value["date"], 8, 2)."/".substr($value["date"], 5, 2)."/".substr($value["date"], 0, 4);
 	$i++;
   }
 }
