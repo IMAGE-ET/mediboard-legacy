@@ -177,6 +177,10 @@ function isMbModuleEditAll($module) {
 }
 
 function isMbAllowed($perm_type, $mod, $item_id) {
+  if ($perm_type == PERM_READ and isMbAllowed(PERM_EDIT, $mod, $item_id)) {
+    return true;
+	}
+  
   global $fastMbPerms;
 
   assert($mod != 'all');
@@ -191,7 +195,7 @@ function isMbAllowed($perm_type, $mod, $item_id) {
 }
 
 function canMbRead($mod, $item_id) {
-  return isMbAllowed(PERM_READ, $mod, $item_id) or isMbAllowed(PERM_EDIT, $mod, $item_id);
+  return isMbAllowed(PERM_READ, $mod, $item_id);
 }
 
 function canMbEdit($mod, $item_id) {
