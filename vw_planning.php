@@ -11,26 +11,18 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('mediusers', 'functions') );
-require_once( $AppUI->getModuleClass('mediusers', 'groups') );
 
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// L'utilisateur est-il chirurgien?
-$mediuser = new CMediusers;
+// L'utilisateur est-il praticien?
+$chir = null;
+$mediuser = new CMediusers();
 $mediuser->load($AppUI->user_id);
-$function = new CFunctions;
-$function->load($mediuser->function_id);
-$group = new CGroups;
-$group->load($function->group_id);
-if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
-  $chir = new CUser;
-  $chir->load($AppUI->user_id);
+if ($mediuser->isPraticien()) {
+  $chir = $mediuser->createUser();
 }
-else
-  $chir = null;
 
 // Chirurgien selectionné
 $chirSel = mbGetValueFromGetOrSession("chirSel", -1);
