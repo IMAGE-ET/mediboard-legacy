@@ -163,6 +163,7 @@ class CMediusers extends CDpObject {
 
   function loadListFromType($user_types = null, $perm_type = null, $function_id = null, $name = null) {
     global $utypes_flip;
+    mbTrace("User types flipped ", $utypes_flip);
     $sql = "SELECT *" .
       "\nFROM users, users_mediboard" .
       "\nWHERE users.user_id = users_mediboard.user_id";
@@ -209,15 +210,15 @@ class CMediusers extends CDpObject {
   }
 
   function loadChirurgiens($perm_type = null, $function_id = null, $name = null) {
-    return $this->loadListFromType(array("Chirurgie"), $perm_type, $function_id, $name);
+    return $this->loadListFromType(array("Chirurgien"), $perm_type, $function_id, $name);
   }
   
   function loadAnesthesistes($perm_type = null, $function_id = null, $name = null) {
-    return $this->loadListFromType(array("Anesthésie"), $perm_type, $function_id, $name);
+    return $this->loadListFromType(array("Anesthésiste"), $perm_type, $function_id, $name);
   }
   
   function loadPraticiens($perm_type = null, $function_id = null, $name = null) {
-    return $this->loadListFromType(array("Chirurgie", "Anesthésie"), $perm_type, $function_id, $name);
+    return $this->loadListFromType(array("Chirurgien", "Anesthésiste"), $perm_type, $function_id, $name);
   }
   
   function isFromType($user_types) {
@@ -226,7 +227,7 @@ class CMediusers extends CDpObject {
   }
   
   function isPraticien () {
-		return $this->isFromType(array("Chirurgie", "Anesthésie"));
+		return $this->isFromType(array("Chirurgien", "Anesthésiste"));
 	}
 }
 
