@@ -22,6 +22,7 @@ class CDoObjectAddEdit {
     
     $this->className = $className;
     $this->objectKeyGetVarName = $objectKeyGetVarName;
+    $this->redirect = "m={$m}";
     $this->redirectDelete = "m={$m}";
     $this->createMsg = "Object of type $className created";
     $this->modifyMsg = "Object of type $className modified";
