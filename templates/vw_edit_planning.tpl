@@ -325,6 +325,7 @@ function setCalendar( idate, fdate ) {
           <td class="button">
             <input class="button" type="reset" value="Réinitialiser" />
             <input class="button" type="submit" value="Modifier" />
+			<input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
           </td>
         </tr>
       </table>
