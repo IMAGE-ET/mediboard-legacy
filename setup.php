@@ -1,0 +1,67 @@
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPprotocoles
+* @version $Revision$
+* @author Romain Ollivier
+*/
+
+// MODULE CONFIGURATION DEFINITION
+$config = array();
+$config['mod_name'] = 'dPprotocoles';
+$config['mod_version'] = '0.1';
+$config['mod_directory'] = 'dPprotocoles';
+$config['mod_setup_class'] = 'CSetupdPprotocoles';
+$config['mod_type'] = 'user';
+$config['mod_ui_name'] = 'Protocoles';
+$config['mod_ui_icon'] = 'dPprotocoles.png';
+$config['mod_description'] = 'Gestion des protocoles opératoires';
+$config['mod_config'] = true;
+
+if (@$a == 'setup') {
+	echo dPshowModuleConfig( $config );
+}
+
+class CSetupdPprotocoles {
+
+	function configure() {
+	global $AppUI;
+		$AppUI->redirect( 'm=dPprotocoles&a=configure' );
+  		return true;
+	}
+
+	function remove() {
+		db_exec( "DROP TABLE protocoles;" );
+
+		return null;
+	}
+
+	function upgrade( $old_version ) {
+		switch ( $old_version )
+		{
+		case "all":		// upgrade from scratch (called from install)
+		case "0.9":		//do some alter table commands
+		case "1.0":
+			return true;
+		default:
+			return false;
+		}
+		return false;
+	}
+
+	function install() {
+		$sql = "CREATE TABLE protocoles ( " .
+			"  protocole_id int(11) unsigned NOT NULL auto_increment" .
+			", code_CCAM varchar(7) NOT NULL default ''" .
+			", duree tinyint(4) default NULL" .
+			", rques text" .
+			", PRIMARY KEY (protocole_id)" .
+			", UNIQUE KEY protocole_id (protocole_id)" .
+			") TYPE=MyISAM;";
+		db_exec( $sql ); db_error();
+		return null;
+	}
+}
+
+?>
