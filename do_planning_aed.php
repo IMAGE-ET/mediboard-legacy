@@ -25,20 +25,34 @@ if ($del) {
 		$AppUI->redirect();
 	}
 
-	if (($msg = $obj->delete())) {
+	if ($msg = $obj->delete()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
-	} else {
-		$AppUI->setMsg( "Admission supprimée", UI_MSG_ALERT);
-		$AppUI->redirect( "m=dPplanningOp" );
 	}
+
+  if ($obj->plageop_id) {
+    $_SESSION[$m]["operation_id"] = NULL;
+    $AppUI->setMsg("Opération supprimée", UI_MSG_OK);
+    $AppUI->redirect("m=$m&amp;tab=0");
+  } else {
+    $_SESSION[$m]["protocole_id"] = NULL;
+    $AppUI->setMsg("Protocole supprimé", UI_MSG_OK);
+    $AppUI->redirect("m=$m&amp;tab=3");
+  }
 } else {
-	if (($msg = $obj->store())) {
+	if ($msg = $obj->store()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['operation_id'];
-		$AppUI->setMsg( $isNotNew ? 'Admission modifiée' : 'Admission créée', UI_MSG_OK);
+    
+  if ($obj->plageop_id) {
+		$AppUI->setMsg( $isNotNew ? 'Opération modifiée' : 'Opération créée', UI_MSG_OK);
+  } else {
+		$AppUI->setMsg( $isNotNew ? 'Protocole modifié' : 'Protocole modifié', UI_MSG_OK);
+  }
+    
 	}
+  
 	$AppUI->redirect();
 }
 ?>

@@ -249,7 +249,7 @@ function printForm() {
           	  <option {if !$op && $op->cote == "total"} selected="selected" {/if} >total</option>
           	  <option {if $op->cote == "droit"    } selected="selected" {/if} >droit     </option>
           	  <option {if $op->cote == "gauche"   } selected="selected" {/if} >gauche    </option>
-          	  <option {if $op->cote == "bilatéral"} selected="selected" {/if} >bilatereal</option>
+          	  <option {if $op->cote == "bilatéral"} selected="selected" {/if} >bilatéral</option>
           	</select>
           </td>
         </tr>
