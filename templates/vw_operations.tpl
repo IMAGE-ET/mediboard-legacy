@@ -19,15 +19,15 @@
   </tr>
 
   {foreach from=$plages item=curr_plage}
-	<tr>
-		<td>
+  <tr>
+    <td>
       <strong>Dr. {$curr_plage.lastname} {$curr_plage.firstname}
       de {$curr_plage.debut} à {$curr_plage.fin}</strong>
     </td>
   </tr>
   <tr>
     <td>
-			<table class="tbl">
+	  <table class="tbl">
         <tr>
           <th>Heure</th>
           <th>Intervention</th>
@@ -36,6 +36,8 @@
           <th>Remarques</th>
           <th>Patient</th>
           <th>Durée</th>
+          <th>Entrée en salle</th>
+          <th>Sortie de salle</th>
         </tr>
         {foreach from=$curr_plage.operations item=curr_operation}
         <tr>
@@ -46,11 +48,35 @@
           <td>{$curr_operation.remarques} {if $curr_operation.mat}({$curr_operation.mat}) {/if}</td>
           <td>{$curr_operation.nom} {$curr_operation.prenom}</td>
           <td>{$curr_operation.duree}</td>
+          <td align="center">
+            {if $curr_operation.entree}
+            {$curr_operation.entree}
+            {else}
+			<form name="editFrm{$curr_operation.id}" action="index.php" method="get">
+              <input type="hidden" name="m" value="dPsalleOp" />
+              <input type="hidden" name="a" value="do_set_hours" />
+              <input type="hidden" name="entree" value="{$curr_operation.id}" />
+              <input type="submit" value="Entrée" />
+            </form>
+            {/if}
+          </td>
+          <td align="center">
+            {if $curr_operation.sortie}
+            {$curr_operation.sortie}
+            {else}
+            <form name="editFrm{$curr_operation.id}" action="index.php" method="get">
+              <input type="hidden" name="m" value="dPsalleOp" />
+              <input type="hidden" name="a" value="do_set_hours" />
+              <input type="hidden" name="sortie" value="{$curr_operation.id}" />
+              <input type="submit" value="Sortie" />
+            </form>
+            {/if}
+          </td>
         </tr>
         {/foreach}
       </table>
-		</td>
-	</tr>
+    </td>
+  </tr>
   {/foreach}
 
 </table>
