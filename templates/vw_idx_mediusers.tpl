@@ -1,5 +1,9 @@
 {literal}
 <script language="javascript">
+function pageMain() {
+  toggleFunction({/literal}{$mediuserSel->function_id}{literal});
+}
+
 function checkMediuser() {
   var form = document.mediuser;
   var field = null;
@@ -36,6 +40,55 @@ function checkMediuser() {
   
   return true;
 }
+
+function collapseFunctions() {
+  var trs = getElementsByClassName("tr", "function", false);
+  
+  var trsIt = 0;
+  while (tr = trs[trsIt++]) {
+    tr.style.display = "none";
+  }
+  
+  var imgs = getElementsByClassName("img", "action");
+
+  imgIt = 0;
+  while (img = imgs[imgIt++]) {
+    img.src = img.src.replace(/collapse/, "expand");
+  }
+}
+
+function expandFunctions() {
+  var trs = getElementsByClassName("tr", "function", false);
+  
+  var trsIt = 0;
+  while (tr = trs[trsIt++]) {
+    tr.style.display = "";
+  }
+  
+  var imgs = getElementsByClassName("img", "action");
+  
+  imgIt = 0;
+  while (img = imgs[imgIt++]) {
+    img.src = img.src.replace(/expand/, "collapse");
+  }
+}
+
+function toggleFunction(function_id) {
+  var trs = getElementsByClassName("tr", "function" + function_id, true);
+  
+  var trsIt = 0;
+  while (tr = trs[trsIt++]) {
+    tr.style.display = tr.style.display == "none" ? "" : "none";
+  }
+  
+  var img = document.getElementById("function" + function_id);
+  if (img.src.indexOf("expand") != -1) {
+    img.src = img.src.replace(/expand/, "collapse");
+  } else {
+    img.src = img.src.replace(/collapse/, "expand");
+  }
+}
+
 </script>
 {/literal}
 
@@ -44,11 +97,15 @@ function checkMediuser() {
 <tr>
   <td class="greedyPane">
 
-		<a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id=0"><strong>Créer un utilisateur</strong></a>
+    <a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id=0"><strong>Créer un utilisateur</strong></a>
 
     <table class="tbl">
       
     <tr>
+      <th style="width: 32px;">
+        <img src="modules/{$m}/images/collapse.gif" onclick="collapseFunctions()" />
+        <img src="modules/{$m}/images/expand.gif"  onclick="expandFunctions()" />
+      </th>
       <th>Utilisateur</th>
       <th>Nom</th>
       <th>Prénom</th>
@@ -57,14 +114,18 @@ function checkMediuser() {
     
     {foreach from=$functions item=curr_function}
     <tr>
-      <td colspan="4" style="background: #{$curr_function->color}">
+      <td style="background: #{$curr_function->color}" onclick="toggleFunction({$curr_function->function_id})">
+        <img class="action" id="function{$curr_function->function_id}" src="modules/{$m}/images/expand.gif"  style="background: #{$curr_function->color}"/>
+      </td>
+      <td colspan="4" style="background: #{$curr_function->color}" >
         <strong>{$curr_function->text}</strong> -
         {$curr_function->_ref_users|@count} utilisateur(s) -
         groupe {$curr_function->_ref_group->text}
       </td>
     </tr>
     {foreach from=$curr_function->_ref_users item=curr_user}
-    <tr>
+    <tr class="function{$curr_function->function_id}" style="display: none">
+      <td style="background: #{$curr_function->color}"></td>
       {eval var=$curr_user->user_id assign=user_id}
       {assign var="href" value="index.php?m=$m&amp;tab=$tab&amp;user_id=$user_id"}
       <td><a href="{$href}">{$curr_user->_user_username}</a></td>

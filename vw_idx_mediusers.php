@@ -22,8 +22,9 @@ $mediuserSel = new CMediusers;
 $mediuserSel->load(mbGetValueFromGetOrSession("user_id"));
 
 // Récupération des fonctions
+$order = array("group_id", "text");
 $functions = new CFunctions;
-$functions = $functions->loadList();
+$functions = $functions->loadList(null, $order);
 
 // Récuperation des utilisateurs
 foreach ($functions as $key => $function) {
@@ -31,8 +32,11 @@ foreach ($functions as $key => $function) {
 }
   
 // Récupération des profils
+$where = array (
+  "user_username" => "LIKE '>> %'"
+);
 $profiles = new CUser();
-$profiles = $profiles->loadList("users.user_username LIKE '>> %'");
+$profiles = $profiles->loadList($where);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
