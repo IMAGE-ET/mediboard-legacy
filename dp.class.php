@@ -62,16 +62,37 @@ class CDpObject {
 	}
 
 /**
- *  loads a list of objects according to a SQL where clause
- *  @param string $where the SQL where clause
+ *  loads a list of objects matching a SQL where clause
+ *  @param string $where the SQL where clause, can also be an array of strings
+ *  @param string $order the SQL order clause, can also be an array of strings
  *  @return the objects array
  */
-  function loadList($where = null) {
-    $sql = "SELECT * FROM $this->_tbl";
-    if ($where)
-      $sql .= " WHERE $where";
+  function loadList($where = null, $order = null) {
+    $sql = "SELECT * FROM `$this->_tbl`";
+
+    if ($where) {
+      $sql .= "\nWHERE ";
+      $sql .= is_array($where) ? implode("\nAND ", $where) : $where;
+    }
+      
+    if ($order) {
+      $sql .= "\nORDER BY ";
+      $sql .= is_array($where) ? implode(",\n", $where) : $where;
+    }
       
     return db_loadObjectList($sql, $this);
+  }
+
+/**
+ *  loads the first object matching a SQL where clause
+ *  @param string $where the SQL where clause, can also be an array of strings
+ *  @param string $order the SQL order clause, can also be an array of strings
+ *  @return a copy of the object
+ */
+  function loadObject($where = null, $order = null) {
+    $list =& $this->loadList($where, $order);
+    $this = @$list[0];
+    return $this;
   }
 
 /**
