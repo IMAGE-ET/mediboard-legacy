@@ -68,11 +68,18 @@
 	padding: 3px 4px;
 }
 
+#nav li.selected a {
+	text-decoration: none;
+	background: #aaa;
+	padding: 2px 3px;
+	border: 1px inset #888;
+}
+
 #nav a:hover {
 	text-decoration: none;
-	background-color: #eee;
+	background: #ddd;
 	padding: 2px 3px;
-	border: 1px solid #888;
+	border: 1px outset #ddd;
 }
 
 #nav img {
