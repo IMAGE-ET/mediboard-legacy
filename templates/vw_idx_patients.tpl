@@ -23,7 +23,7 @@ function checkPatient() {
     <td class="greedyPane">
     
       <form name="find" action="./index.php" method="get">
-      <input type="hidden" name="m" value="dPpatients" />
+      <input type="hidden" name="m" value="{$m}" />
       
       <table class="form">
         <tr>
@@ -57,10 +57,10 @@ function checkPatient() {
 
         {foreach from=$patients item=curr_patient}
         <tr>
-          <td><a href="index.php?m={$m}&tab=0&id={$curr_patient.patient_id}">{$curr_patient.nom}</a></td>
-          <td><a href="index.php?m={$m}&tab=0&id={$curr_patient.patient_id}">{$curr_patient.prenom}</a></td>
-          <td><a href="index.php?m={$m}&tab=0&id={$curr_patient.patient_id}">{$curr_patient.adresse}</a></td>
-          <td><a href="index.php?m={$m}&tab=0&id={$curr_patient.patient_id}">{$curr_patient.ville}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient.patient_id}">{$curr_patient.nom}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient.patient_id}">{$curr_patient.prenom}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient.patient_id}">{$curr_patient.adresse}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient.patient_id}">{$curr_patient.ville}</a></td>
         </tr>
         {/foreach}
         
@@ -141,8 +141,8 @@ function checkPatient() {
         <tr>
           <td class="button" colspan="4">
             <form name="modif" action="./index.php" method="get">
-            <input type="hidden" name="m" value="dPpatients" />
-            <input type="hidden" name="tab" value="1" />
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="tab" value="vw_edit_patients" />
             <input type="hidden" name="id" value="{$patient->patient_id}" />
             <input type="submit" value="Modifier" />
             </form>
