@@ -42,6 +42,8 @@ class CSmartyDP extends Smarty {
     $this->config_dir = "modules/$m/configs/";
     $this->cache_dir = "modules/$m/cache/";
     
+    $this->debugging = true;
+
     // Standard data assignment
     $this->assign("app", $AppUI);
     $this->assign("user", $AppUI->user_id); // shouldn't be necessary

@@ -77,7 +77,7 @@ class CDpObject {
       
     if ($order) {
       $sql .= "\nORDER BY ";
-      $sql .= is_array($where) ? implode(",\n", $where) : $where;
+      $sql .= is_array($order) ? implode(",\n", $order) : $order;
     }
     
     if ($limit) {
@@ -214,7 +214,7 @@ class CDpObject {
 			$sql = "SELECT $this->_tbl.$select " .
           "FROM $this->_tbl " .
           "$join " .
-          "\nWHERE $this->_tbl.$k = ".$this->$k." GROUP BY $this->_tbl.$k";
+          "\nWHERE $this->_tbl.$k = '".$this->$k."' GROUP BY $this->_tbl.$k";
     
 			$obj = null;
 			if (!db_loadObject( $sql, $obj )) {
