@@ -40,7 +40,10 @@ $sql = "SELECT *
         FROM operations
         WHERE operations.operation_id = '$op'";
 $result = db_loadlist($sql);
-$selOp = $result[0];
+if(count($result) > 0)
+  $selOp = $result[0];
+else
+  $selOp = null;
 
 //Selection des opérations pour chaque plage
 $anesth = dPgetSysVal("AnesthType");
