@@ -10,6 +10,9 @@
 require_once( $AppUI->getSystemClass ('dp' ) );
 
 require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 
 class CConsultation extends CDpObject {
   // DB Table key
