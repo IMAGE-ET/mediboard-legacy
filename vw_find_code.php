@@ -27,7 +27,7 @@ mysql_select_db("ccam")
 
 //Création de la requête
 //$query = "select CODE, LIBELLELONG, CODEACTE, TEXTE from ACTES, NOTES where 0";
-$query = "select CODE, LIBELLELONG from ACTES where 0";
+$query = "SELECT CODE, LIBELLELONG FROM ACTES WHERE 0";
 
 //Si un autre élément est remplis
 if($code != "" || $clefs != "" || $selacces != "0" || $seltopo1 != "0")
@@ -36,7 +36,7 @@ if($code != "" || $clefs != "" || $selacces != "0" || $seltopo1 != "0")
   //On fait la recherche sur le code
   if($code != "")
   {
-	$query .= " and CODE like '" . addslashes($code) . "%'";
+	$query .= " AND CODE LIKE '" . addslashes($code) . "%'";
   }
   //On explode les mots clefs
   if($clefs != "")
@@ -44,30 +44,30 @@ if($code != "" || $clefs != "" || $selacces != "0" || $seltopo1 != "0")
     $listeClefs = explode(" ", $clefs);
     foreach($listeClefs as $key => $value)
     {
-      $query .= " and (LIBELLELONG like '%" .  addslashes($value) . "%')";
+      $query .= " AND (LIBELLELONG LIKE '%" .  addslashes($value) . "%')";
 	  //$query .= " or (CODEACTE = CODE and TEXTE like '%" .  addslashes($value) . "%'))";
     }
   }
   //On tris selon les voies d'accès
   if($selacces != "0")
   {
-    $query .= " and CODE like '___" . $selacces . "___'";
+    $query .= " AND CODE LIKE '___" . $selacces . "___'";
   }
   //On tris selon les topologies de niveau 1 ou 2
   if($seltopo1 != "0")
   {
     if($seltopo2 != "0")
     {
-      $query .= " and CODE like '" . $seltopo2 . "_____'";
+      $query .= " AND CODE LIKE '" . $seltopo2 . "_____'";
     }
     else
     {
-      $query .= " and CODE like '" . $seltopo1 . "______'";
+      $query .= " AND CODE LIKE '" . $seltopo1 . "______'";
     }
   }
   $query .= ")";
 }
-$query .= " order by CODE limit 0 , 100";
+$query .= " ORDER BY CODE LIMIT 0 , 100";
 
 //Codes correspondants à la requete
 $result = mysql_query($query);
@@ -108,7 +108,7 @@ while($row = mysql_fetch_array($result))
 }
 
 //On récupère les systèmes correspondants à l'appareil : topographie2
-$query = "select * from TOPOGRAPHIE2 where PERE = '" . $seltopo1 . "'";
+$query = "SELECT * FROM TOPOGRAPHIE2 WHERE PERE = '" . $seltopo1 . "'";
 $result = mysql_query($query);
 
 $topo2[0]["code"] = "0";
