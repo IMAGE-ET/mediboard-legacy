@@ -75,6 +75,37 @@ class CUser extends CDpObject {
 			return null;
 		}
 	}
+  
+  /**
+	 * @return string error message when necessary, null otherwise
+	 */
+  function copyPermissionsFrom($user_id, $delExistingPerms = false) {
+    $export = var_export($this, true); echo "<pre>This: $export</pre>";
+
+    if (!$user_id) {
+			return null;
+		}    
+ 
+    // Delete existing permissions
+    if ($delExistingPerms) {
+      if (!db_delete( 'permissions', 'permission_user', $this->user_id )) {
+        return "Can't delete permissions";
+      }
+		}    
+
+    // Get other user's permissions 
+    $perms = new CPermission;
+    $perms = $perms->loadList("permission_user = $user_id");
+
+    // Copy them
+    foreach($perms as $perm) {
+      $perm->permission_id = null;
+      $perm->permission_user = $this->user_id;
+      $perm->store();
+    }
+    
+    return null;
+  }
 }
 
 /**
