@@ -50,6 +50,7 @@ function setCode( key, type ){
 function popPlanning() {
   var debut = document.paramFrm.date_debut.value;
   var fin = document.paramFrm.date_fin.value;
+  var vide = document.paramFrm.vide.checked;
   var type = document.paramFrm.type.value;
   var chir = document.paramFrm.chir.value;
   var salle = document.paramFrm.salle.value;
@@ -57,6 +58,7 @@ function popPlanning() {
   var url = './index.php?m=dPbloc&a=view_planning&dialog=1';
   url = url + '&debut=' + debut;
   url = url + '&fin=' + fin;
+  url = url + '&vide=' + vide;
   url = url + '&type=' + type;
   url = url + '&chir=' + chir;
   url = url + '&salle=' + salle;
@@ -93,6 +95,10 @@ function popPlanning() {
               <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
             </a>
           </td>
+        </tr>
+        <tr>
+          <th>Afficher les plages vides</th>
+          <td><input type="checkbox" name="vide" /></td>
         </tr>
       </table>
 

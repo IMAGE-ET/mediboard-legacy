@@ -21,6 +21,7 @@ $fin = dPgetParam( $_GET, 'fin', date("Ymd") );
 $dayf = substr($fin, 6, 2);
 $monthf = substr($fin, 4, 2);
 $yearf = substr($fin, 0, 4);
+$vide = dPgetParam( $_GET, 'vide', false );
 $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
 $salle = dPgetParam( $_GET, 'salle', 0 );
@@ -95,7 +96,7 @@ foreach($plagesop as $key=>$value) {
   }
   $sql .= " ORDER BY operations.rank";
   $plagesop[$key]["operations"] = db_loadlist($sql);
-  if(sizeof($plagesop[$key]["operations"]) == 0) {
+  if((sizeof($plagesop[$key]["operations"]) == 0) && ($vide == "false")) {
     unset($plagesop[$key]);
   }
 }
