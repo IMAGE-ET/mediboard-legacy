@@ -110,7 +110,7 @@ foreach($plagesop as $key=>$value) {
     }
   }
   if($CCAM != "") {
-    $sql .= " AND operations.CCAM_code = '$CCAM'";
+    $sql .= " AND operations.CCAM_code LIKE '$CCAM%'";
   }
   $sql .= " ORDER BY operations.rank";
   $plagesop[$key]["operations"] = db_loadlist($sql);

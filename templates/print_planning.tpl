@@ -5,7 +5,7 @@
 function checkForm() {
   var form = document.paramFrm;
     
-  if (form.debut.value > form.fin.value) {
+  if (form.date_debut.value > form.date_fin.value) {
     alert("Date de début superieure à la date de fin");
     return false;
   }
