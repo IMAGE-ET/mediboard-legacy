@@ -44,21 +44,30 @@ function checkLit() {
     <table class="tbl">
       
     <tr>
-      <th colspan="3">Liste des chambres</th>
+      <th colspan="4">Liste des chambres</th>
     </tr>
     
     <tr>
       <th>Intitulé</th>
       <th>Caracteristiques</th>
-      <th>Service</th>
+      <th>Lits disponibles</th>
     </tr>
     
-	{foreach from=$chambres item=curr_chambre}
+	{foreach from=$services item=curr_service}
+	<tr class="groupcollapse" id="group{$service->service_id}">
+	  <td colspan="4">{$curr_service->nom}</td>
+	</tr>
+	{foreach from=$curr_service->_ref_chambres item=curr_chambre}
     <tr>
       <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_chambre->chambre_id}">{$curr_chambre->nom}</a></td>
       <td class="text">{$curr_chambre->caracteristiques|nl2br}</td>
-      <td><a href="index.php?m={$m}&amp;tab=vw_idx_services&amp;service_id={$curr_chambre->_ref_service->service_id}">{$curr_chambre->_ref_service->nom}</td>
+      <td>
+      {foreach from=$curr_chambre->_ref_lits item=curr_lit}
+        <a href="?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_lit->chambre_id}&amp;lit_id={$curr_lit->lit_id}">{$curr_lit->nom}</a>
+      {/foreach}
+      </td>
     </tr>
+    {/foreach}
     {/foreach}
       
     </table>
@@ -120,17 +129,23 @@ function checkLit() {
       </td>
     </tr>
 
+    </table>
+
+	</form>
+    
+    <table class="form">
+
     {if $chambreSel->chambre_id}
     <tr>
       <th class="category" colspan="2">Lits</th>
     {foreach from=$chambreSel->_ref_lits item=curr_lit}
     <tr>
       <th>Lit:</th>
-      <td>{$curr_lit->nom}</td>
+      <td><a href="?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_lit->chambre_id}&amp;lit_id={$curr_lit->lit_id}">{$curr_lit->nom}</a></td>
     </tr>
 	{/foreach}
     <tr>
-      <td>Ajouter un lit:
+      <td><strong><a href="?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_lit->chambre_id}&amp;lit_id=0">Ajouter un lit:<a/></strong>
       <td>
         <form name="editLit" action="?m={$m}" method="post" onsubmit="return checkLit()">
 
@@ -139,7 +154,7 @@ function checkLit() {
         <input type="hidden" name="chambre_id" value="{$chambreSel->chambre_id}" />
         <input type="hidden" name="del" value="0" />
         <input type="text" name="nom" value="{$litSel->nom}" />
-        {if $chambreSel->chambre_id}
+        {if $litSel->lit_id}
         <input type="submit" value="Modifier" />
         {else}
         <input type="submit" value="Créer" />

@@ -9,7 +9,7 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
-require_once($AppUI->getModuleClass("dPhospi", "chambre"));
+require_once($AppUI->getModuleClass("dPhospi", "service"));
 
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
@@ -25,15 +25,17 @@ $litSel = new CLit;
 $litSel->load(mbGetValueFromGetOrSession("lit_id"));
 $litSel->loadRefs();
 
-// Récupération des chambres
-$chambres = new CChambre;
-$chambres = $chambres->loadList();
-foreach ($chambres as $key => $chambre) {
-  $chambres[$key]->loadRefs();
-}
-
+// Récupération des chambres/services
 $services = new CService;
 $services = $services->loadList();
+foreach ($services as $service_id => $service) {
+  $services[$service_id]->loadRefs();
+  $chambres =& $services[$service_id]->_ref_chambres;
+  foreach ($chambres as $chambre_id => $chambre) {
+	  $chambres[$chambre_id]->loadRefs();
+	}
+	
+}
 
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));
@@ -41,7 +43,6 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('chambreSel', $chambreSel);
 $smarty->assign('litSel', $litSel);
-$smarty->assign('chambres', $chambres);
 $smarty->assign('services', $services);
 
 $smarty->display('vw_idx_chambres.tpl');
