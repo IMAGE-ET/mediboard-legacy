@@ -1,5 +1,5 @@
 <table class="form">
-  <tr><th class="category" colspan="3"><a href="window.print()">Fiche d'admission</a></th></tr>
+  <tr><th class="category" colspan="3"><a href="javascript:window.print()">Fiche d'admission</a></th></tr>
   <tr>
     <th class="category" style="width: 33%">Patient</th>
     <th class="category" style="width: 33%">Type d'intervention</th>
