@@ -564,8 +564,8 @@ function printForm() {
           {if $op}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
-            <input type="button" value="Annuler" onclick="{literal}if (confirm('Veuillez confirmer l\'annulation')) {this.form.annulee.value = 1; this.form.rank.value = 0; this.form.submit();}{/literal}" />
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la fonction', '{$userfunction->text|escape:javascript}')" />
+            <input type="button" value="Annuler" onclick="{literal}if (confirm('Veuillez confirmer l\'annulation')) {var f = this.form; f.annulee.value = 1; f.rank.value = 0; f.submit();}{/literal}" />
           {else}
             <input type="submit" value="Créer" />
           {/if}
