@@ -168,7 +168,7 @@ class Cplagesop extends CDpObject {
         $sql = "SELECT * " .
             "FROM plagesop " .
             "WHERE id_salle = '$this->id_salle' " .
-            "AND date = '$date";
+            "AND date = '$date'";
         $row = db_loadlist($sql);
 
         $noCollision = TRUE;

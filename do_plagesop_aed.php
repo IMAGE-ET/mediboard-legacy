@@ -18,8 +18,6 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
-$export = var_export($obj, true); echo "<pre>$export</pre>";
-
 // detect if a delete operation has to be processed
 $del = dPgetParam( $_POST, 'del', 0 );
 
