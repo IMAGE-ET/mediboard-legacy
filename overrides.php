@@ -71,9 +71,6 @@ class CTitleBlock extends CTitleBlock_core {
 //
 class CTabBox extends CTabBox_core {
   function show( $extra='' ) {
-    echo "<br />actve before: "; var_export($this->active);
-    $this->checkActive();
-    echo "<br />actve after: "; var_export($this->active);
     
     global $AppUI;
     
