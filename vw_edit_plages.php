@@ -39,7 +39,7 @@ $sql = "SELECT functions_mediboard.text AS texte, functions_mediboard.color AS c
 $rows = db_loadlist($sql);
 
 foreach($rows as $key => $value) {
-	echo "<tr><td style='background: #{$value['color']};'>{$value['texte']}</td></tr>";
+	echo "<tr><td class='text' style='background: #{$value['color']};'>{$value['texte']}</td></tr>";
 }
 ?>
       </table>
