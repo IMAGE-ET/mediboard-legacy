@@ -12,7 +12,7 @@ require_once( $AppUI->getSystemClass ('dp' ) );
 /**
  * The plagesop Class
  */
-class Cplagesop extends CDpObject {
+class CPlageOp extends CDpObject {
   // DB Table key
   var $id = NULL;
   
@@ -39,7 +39,7 @@ class Cplagesop extends CDpObject {
   var $repet = NULL;
   var $double = NULL;
 
-  function Cplagesop() {
+  function CPlageOp() {
     $this->CDpObject( 'plagesop', 'id' );
   }
 
@@ -65,6 +65,28 @@ class Cplagesop extends CDpObject {
     return NULL;
   }
   
+/*
+ * returns collision message, NULL for no collision
+ */
+  function hasCollisions() {
+    // Get all other plages the same day
+    $sql = "SELECT * FROM plagesop " .
+        "WHERE id_salle = '$this->id_salle' " .
+        "AND date = '$this->date' " .
+        "AND id != '$this->id'";
+    $row = db_loadlist($sql);
+
+    foreach ($row as $key => $value) {
+      if (($value['debut'] < $this->fin and $value['fin'] > $this->fin)
+        or($value['debut'] < $this->debut and $value['fin'] > $this->debut)
+        or($value['debut'] >= $this->debut and $value['fin'] <= $this->fin)) {
+        $msg .= "\n<br/>Collision avec la plage du $this->date, de {$value['debut']} à {$value['fin']}";
+      }
+    }
+
+    return $msg;   
+  }
+  
   function store() {
     // 2 chars for the day
     if (strlen($this->day) == 1) {
@@ -81,8 +103,8 @@ class Cplagesop extends CDpObject {
       $this->minutefin = "00";
     }
     
-    $horaireDeb = $this->heuredeb.":".$this->minutedeb.":00";
-    $horaireFin = $this->heurefin.":".$this->minutefin.":00";
+    $this->debut = $this->heuredeb.":".$this->minutedeb.":00";
+    $this->fin = $this->heurefin.":".$this->minutefin.":00";
 
     if ($this->id) {
       $sql = "SELECT * FROM plagesop WHERE id = '$this->id'";
@@ -93,46 +115,31 @@ class Cplagesop extends CDpObject {
       
       for ($i = 0; $i < $this->repet; $i++) {
         
-        $date = $this->year."-".$this->month."-".$this->day;
+        $this->date = $this->year."-".$this->month."-".$this->day;
         
         // Get ID
         $sql = "SELECT * FROM plagesop " .
-            "WHERE date = '$date' " .
+            "WHERE date = '$this->date' " .
             "AND id_salle = '$sallebase'" .
             ($chirbase != '0' ? " AND id_chir = '$chirbase'" : " AND id_spec = '$specbase'");
 
         $row = db_loadlist($sql);
-        $id = $row[0]['id'];
+        $this->id = $row[0]['id'];
 
-        // Get all others the same day
-        $sql = "SELECT * FROM plagesop " .
-            "WHERE id_salle = '$this->id_salle' " .
-            "AND date = '$date' " .
-            "AND id != '$id'";
-        $row = db_loadlist($sql);
-
-        $noCollision = TRUE;
-
-        foreach ($row as $key => $value) {
-          if ($value['debut'] < $horaireFin and $value['fin'] > $horaireFin)
-            $noCollision = FALSE;
-          if ($value['debut'] < $horaireDeb and $value['fin'] > $horaireDeb)
-            $noCollision = FALSE;
-          if ($value['debut'] >= $horaireDeb and $value['fin'] <= $horaireFin)
-            $noCollision = FALSE;
+        if ($col = $this->hasCollisions()) {
+          $msg .= $col;
         }
-
-        if ($noCollision) {
-            $sql = "UPDATE plagesop SET
-              id_chir = '$this->id_chir',
-              id_anesth = '".$this->id_anesth."',
-              id_spec = '".$this->id_spec."',
-              id_salle = '".$this->id_salle."',
-              date = '$date',
-              debut = '$horaireDeb',
-              fin = '$horaireFin'
-              WHERE id = '$id'";
-
+        else {
+          $sql = "UPDATE plagesop SET
+            id_chir = '$this->id_chir',
+            id_anesth = '$this->id_anesth',
+            id_spec = '$this->id_spec',
+            id_salle = '$this->id_salle',
+            date = '$this->date',
+            debut = '$this->debut',
+            fin = '$this->fin'
+            WHERE id = '$this->id'";
+            
           if (!db_exec($sql))
             return db_error();
         }
@@ -160,35 +167,18 @@ class Cplagesop extends CDpObject {
     }
     
     else {
-      for ($i = 0; $i < $this->repet; $i++)
-      {
+      for ($i = 0; $i < $this->repet; $i++) {
+        $this->date = $this->year."-".$this->month."-".$this->day;
         
-        $date = $this->year."-".$this->month."-".$this->day;
-        
-        $sql = "SELECT * " .
-            "FROM plagesop " .
-            "WHERE id_salle = '$this->id_salle' " .
-            "AND date = '$date'";
-        $row = db_loadlist($sql);
-
-        $noCollision = TRUE;
-        
-        foreach ($row as $key => $value) {
-          if ($value['debut'] < $horaireFin and $value['fin'] > $horaireFin)
-            $noCollision = FALSE;
-          if ($value['debut'] < $horaireDeb and $value['fin'] > $horaireDeb)
-            $noCollision = FALSE;
-          if ($value['debut'] >= $horaireDeb and $value['fin'] <= $horaireFin)
-            $noCollision = FALSE;
+        if ($col = $this->hasCollisions()) {
+          $msg .= $col;
         }
-        
-        if ($noCollision)
-        {
-            $sql = "INSERT INTO plagesop(id_chir, id_anesth, id_spec, id_salle, date, debut, fin) " .
-                "VALUES('$this->id_chir', '$this->id_anesth', '$this->id_spec', '$this->id_salle', '$date', '$horaireDeb', '$horaireFin')";
-      
-            if (!db_exec($sql))
-              return db_error();
+        else {
+          $sql = "INSERT INTO plagesop(id_chir, id_anesth, id_spec, id_salle, date, debut, fin) " .
+              "VALUES('$this->id_chir', '$this->id_anesth', '$this->id_spec', '$this->id_salle', '$this->date', '$this->debut', '$this->fin')";
+    
+          if (!db_exec($sql))
+            return db_error();
         }
 
         $nyear  = date("Y", mktime (0,0,0,$this->month,$this->day+7,$this->year));
@@ -212,6 +202,8 @@ class Cplagesop extends CDpObject {
         }
       }
     }
+    
+    return $msg;
   }
   
 	function load($oid = NULL, $strip = TRUE) {

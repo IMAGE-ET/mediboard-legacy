@@ -9,7 +9,7 @@
 
 require_once("plagesop.class.php");
 // create a new instance of the dPccam class
-$obj = new Cplagesop();
+$obj = new CPlageOp();
 $msg = '';	// reset the message string
 
 // bind the informations (variables) retrieved via post to the dPccam object
