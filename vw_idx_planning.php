@@ -62,7 +62,7 @@ $selChirLogin = null;
 $specialite = null;
 if ($selPrat->isPraticien()) {
   $selChirLogin = $selPrat->_user_username;
-  $specialite = $selPrat->_ref_function->function_id;
+  $specialite = $selPrat->function_id;
 }
 
 // Tous les praticiens
