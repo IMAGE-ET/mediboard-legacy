@@ -1,0 +1,38 @@
+<table class="main">
+  <tr><th><a href="javascript:window.print()">Planning du {$date}</a></th></tr>
+  {foreach from=$listPlage item=curr_plage}
+  <tr>
+    <td><b>{$curr_plage->date|date_format:"%d/%m/%Y"} - Dr. {$curr_plage->_ref_chir->user_last_name} {$curr_plage->_ref_chir->user_first_name}</b></td>
+  </tr>
+  <tr>
+    <td>
+	  <table class="tbl">
+	    <tr>
+		  <th rowspan="2"><b>Heure</b></th>
+		  <th colspan="3"><b>Patient</b></th>
+		  <th colspan="3"><b>Consultation</b></th>
+		</tr>
+		<tr>
+		  <th>Nom</th>
+		  <th>Prénom</th>
+          <th>Age</th>
+          <th>Motif</th>
+		  <th>Remarques</th>
+		  <th>Comptes-rendu</th>
+		</tr>
+		{foreach from=$curr_plage->_ref_consultations item=curr_consult}
+		<tr>
+		  <td>{$curr_consult->heure}</td>
+		  <td>{$curr_consult->_ref_patient->nom}</td>
+          <td>{$curr_consult->_ref_patient->prenom}</td>
+          <td>{$curr_consult->_ref_patient->_age} ans</td>
+          <td>{$curr_consult->motif|nl2br}</td>
+          <td>{$curr_consult->rques|nl2br}</td>
+          <td>{if $curr_consult->compte_rendu}oui{else}non{/if}</td>
+		</tr>
+		{/foreach}
+	  </table>
+	</td>
+  </tr>
+  {/foreach}
+</table>
