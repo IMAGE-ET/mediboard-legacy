@@ -126,14 +126,28 @@ class CAppUI {
 * @param string $name The class root file name (excluding .class.php)
 * @return string The path to the include file
  */
-	function getModuleClass($name = null, $file = null) {
-		if ($name) {
-			if ($root = $this->getConfig( 'root_dir' )) {
+  function getModuleClass($name = null, $file = null) {
+    if ($name) {
+      if ($root = $this->getConfig( 'root_dir' )) {
         $filename = $file ? $file : $name;
-				return "$root/modules/$name/$filename.class.php";
-			}
-		}
-	}
+        return "$root/modules/$name/$filename.class.php";
+      }
+    }
+  }
+  
+/**
+* Used to load a php module function file from the funciton directory
+* @param string $name module (excluding _func.php)
+* @return string The path to the include file
+ */
+  function getModuleFunctions($name = null) {
+    if ($name) {
+      if ($root = $this->getConfig( 'root_dir' )) {
+        return "$root/functions/{$name}_func.php";
+      }
+    }
+  }
+  
 
 /**
 * Sets the internal confuration settings array.
