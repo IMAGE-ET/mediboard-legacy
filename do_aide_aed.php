@@ -7,7 +7,7 @@
 * @author Thomas Despoix
 */
 
-require_once( $AppUI->getModuleClass('dpCompteRendu', 'aidesaisie'));
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie'));
 
 $obj = new CAideSaisie();
 $msg = null;
