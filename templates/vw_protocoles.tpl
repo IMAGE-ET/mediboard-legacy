@@ -1,21 +1,12 @@
 <!-- $Id$ -->
 
 <script language="javascript">
-function setClose() {ldelim}
-  window.opener.setProtocole(
-    "{$chirSel->user_id}",
-    "{$chirSel->user_last_name}",
-    "{$chirSel->user_first_name}",
-    "{$protSel->CCAM_code}",
-    "{$protSel->_hour_op}",
-    "{$protSel->_min_op}",
-    "{$protSel->examen|escape:javascript}",
-    "{$protSel->materiel|escape:javascript}",
-    "{$protSel->convalescence|escape:javascript}",
-    "{$protSel->depassement}",
-    "{$protSel->type_adm}",
-    "{$protSel->duree_hospi}",
-    "{$protSel->rques|escape:javascript}");
+function setClose(user_id, user_last_name, user_first_name, CCAM_code,
+                  _hour_op, _min_op, examen, materiel, convalescence,
+                  depassement, type_adm, duree_hospi, rques) {ldelim}
+  window.opener.setProtocole(user_id, user_last_name, user_first_name, CCAM_code,
+                             _hour_op, _min_op, examen, materiel, convalescence,
+                             depassement, type_adm, duree_hospi, rques)
   window.close();
 {rdelim}
 </script>
@@ -62,7 +53,11 @@ function setClose() {ldelim}
   </tr>
 
   <tr>
+    {if $dialog}
+    <td class="greedyPane">
+    {else}
     <td class="halfPane">
+    {/if}
 
       <table class="tbl">
         <tr>
@@ -72,10 +67,26 @@ function setClose() {ldelim}
         {foreach item=curr_protocole from=$protocoles}
         <tr>    
           <td class="text">
-            <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab={$tab}{/if}&amp;protocole_id={$curr_protocole.operation_id}">
-              <strong>{$curr_protocole.lastname} {$curr_protocole.firstname} &mdash; {$curr_protocole.CCAM_code}</strong>
+            {if $dialog}
+            <a href="#" onclick="setClose('{$protSel->_ref_chir->user_id}',
+                                '{$curr_protocole->_ref_chir->user_last_name}',
+                                '{$curr_protocole->_ref_chir->user_first_name}',
+                                '{$curr_protocole->CCAM_code}',
+                                '{$curr_protocole->_hour_op}',
+                                '{$curr_protocole->_min_op}',
+                                '{$curr_protocole->examen|escape:javascript}',
+                                '{$curr_protocole->materiel|escape:javascript}',
+                                '{$curr_protocole->convalescence|escape:javascript}',
+                                '{$curr_protocole->depassement}',
+                                '{$curr_protocole->type_adm}',
+                                '{$curr_protocole->duree_hospi}',
+                                '{$curr_protocole->rques|escape:javascript}')">
+            {else}
+            <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab={$tab}{/if}&amp;protocole_id={$curr_protocole->operation_id}">
+            {/if}
+              <strong>{$curr_protocole->_ref_chir->user_last_name} {$curr_protocole->_ref_chir->user_first_name} &mdash; {$curr_protocole->_ext_code_ccam->code}</strong>
             </a>
-            <br />{$curr_protocole.CCAM_libelle}
+            <br />{$curr_protocole->_ext_code_ccam->libelleLong}
           </td>
         </tr>
         {/foreach}
@@ -85,7 +96,7 @@ function setClose() {ldelim}
     </td>
     <td class="halfPane">
 
-      {if $protSel}
+      {if $protSel && !$dialog}
       <table class="form">
         <tr>
           <th class="category" colspan="2">Détails du protocole</th>
@@ -93,12 +104,12 @@ function setClose() {ldelim}
 
         <tr>
           <th>Chirurgien:</th>
-          <td colspan="3"><strong>{$chirSel->user_last_name} {$chirSel->user_first_name}</strong></td>
+          <td colspan="3"><strong>{$protSel->_ref_chir->user_last_name} {$protSel->_ref_chir->user_first_name}</strong></td>
         </tr>
         
         <tr>
           <th>Code CCAM:</th>
-          <td class="text"><strong>{$ccamSel.CODE}</strong><br />{$ccamSel.LIBELLELONG}</td>
+          <td class="text"><strong>{$protSel->_ext_code_ccam->code}</strong><br />{$protSel->_ext_code_ccam->libelleLong}</td>
         </tr>
         
         <tr>
@@ -171,26 +182,17 @@ function setClose() {ldelim}
         </tr>
         {/if}
 
-        {if $dialog}
-          <tr>
-            <td class="button" colspan="3">
-              <input type="button" value="Sélectionner ce protocole" onclick="setClose()" />
-            </td>
-        {else}
-          {if $canEdit}
-          <tr>
-            <td class="button" colspan="2">
-              <form name="modif" action="./index.php" method="get">
-              
-              <input type="hidden" name="m" value="{$m}" />
-              <input type="hidden" name="tab" value="vw_edit_protocole" />
-              <input type="hidden" name="protocole_id" value="{$protSel->operation_id}" />
-              <input type="submit" value="Modifier" />
-              
-              </form>
-            </td>
-          </tr>
-          {/if}
+        {if $canEdit}
+        <tr>
+          <td class="button" colspan="2">
+            <form name="modif" action="./index.php" method="get">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="tab" value="vw_edit_protocole" />
+            <input type="hidden" name="protocole_id" value="{$protSel->operation_id}" />
+            <input type="submit" value="Modifier" />
+            </form>
+          </td>
+        </tr>
         {/if}
       
       </table>

@@ -42,10 +42,8 @@ $codes = db_loadlist($sql);
 // Protocoles disponibles
 $sql = "
   SELECT 
-  	operations.operation_id AS operation_id, 
-  	operations.chir_id AS chir_id, 
-  	operations.CCAM_code AS CCAM_code, 
-  	users.user_first_name AS firstname,
+  	operations.operation_id AS operation_id,
+  	operations.CCAM_code AS CCAM_code,
   	users.user_last_name AS lastname
   FROM operations, users
   WHERE operations.chir_id = users.user_id
@@ -62,47 +60,27 @@ if ($chir_id) {
   $sql .= " AND operations.chir_id = '$chir_id'";
 }
 
-if ($CCAM_code = mbGetValueFromGetOrSession("CCAM_code")) {
+if ($CCAM_code = dPgetParam($_GET, "CCAM_code", null)) {
   $sql .= " AND operations.CCAM_code = '$CCAM_code'";
 }
 
 $sql .= " ORDER BY users.user_last_name, operations.CCAM_code";
 
-$protocoles = db_loadlist($sql);
+$sqlprotocoles = db_loadlist($sql);
+$protocoles = array();
+foreach($sqlprotocoles as $key => $value) {
+  $protocoles[$key] = new COperation;
+  $protocoles[$key]->load($sqlprotocoles[$key]["operation_id"]);
+  $protocoles[$key]->loadRefs();
+}
 
 // Protocole selectionné
 if ($protocole_id = mbGetValueFromGetOrSession("protocole_id")) {
   $protSel = new COperation;
   $protSel->load($protocole_id);
-
-  // Chirurgien sélectionné
-  $chirSel = new CUser;
-  $chirSel->load($protSel->chir_id);
-
-  // Récupération des libéllés CCAM
-  mysql_connect("localhost", "CCAMAdmin", "AdminCCAM") or die("Could not connect");
-  mysql_select_db("ccam") or die("Could not select database");
-  $sql = "
-    select CODE, LIBELLELONG 
-    from ACTES 
-    where CODE = '$protSel->CCAM_code'";
-  $result = mysql_query($sql);
-  $ccamSel = mysql_fetch_array($result);
-  mysql_close();
-}
-
-// Récupération des libéllés CCAM
-mysql_connect("localhost", "CCAMAdmin", "AdminCCAM") or die("Could not connect");
-mysql_select_db("ccam") or die("Could not select database");
-
-foreach ($protocoles as $key => $value) {
-  $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";
-  $result = mysql_query($sql);
-  $ccam = mysql_fetch_array($result);
-  $protocoles[$key]["CCAM_libelle"] = $ccam["LIBELLELONG"];
-}
-
-mysql_close();
+  $protSel->loadRefs();
+} else
+  $protSel = null;
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
@@ -110,8 +88,6 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('protocoles', $protocoles);
 $smarty->assign('protSel', $protSel);
-$smarty->assign('ccamSel', $ccamSel);
-$smarty->assign('chirSel', $chirSel);
 $smarty->assign('chirs', $chirs);
 $smarty->assign('chir_id', $chir_id);
 $smarty->assign('codes', $codes);
