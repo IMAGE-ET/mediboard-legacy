@@ -42,7 +42,7 @@ $sql= "SELECT *
 $groups = db_loadList($sql);
 
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('functions', $functions);

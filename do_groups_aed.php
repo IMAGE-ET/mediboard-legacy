@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-require_once("groups.class.php");
+require_once( $AppUI->getModuleClass('mediusers', 'groups') );
 
 $obj = new Cgroups();
 $msg = '';

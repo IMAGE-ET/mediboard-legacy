@@ -70,7 +70,7 @@ $query = "SELECT functions_mediboard.*,
 $functions = db_loadList($query);
 
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('usersel', $usersel);

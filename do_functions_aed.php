@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-require_once("functions.class.php");
+require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 
 $obj = new CFunctions;
 $msg = '';

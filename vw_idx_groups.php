@@ -30,7 +30,7 @@ $groupsel = db_fetch_array($result);
 $groupsel["exist"] = $usergroup;
 
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('groups', $groups);
