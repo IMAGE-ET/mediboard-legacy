@@ -34,16 +34,17 @@ echo $calendar->display();
 <?php
 $listSpec = new CFunctions();
 $listSpec = $listSpec->loadSpecialites();
+
+// Création du template
+require_once( $AppUI->getSystemClass('smartydp'));
+$smarty = new CSmartyDP;
+
+$smarty->assign('listSpec', $listSpec);
+
+$smarty->display('vw_idx_planning.tpl');
+
 ?>
 
-      <table class="tbl">
-        <tr><th>Liste des spécialités</th></tr>
-        <?php foreach($listSpec as $curr_spec) { ?>
-        <tr>
-          <td class="text" style="background: #<?php echo $curr_spec->color; ?>;"><?php echo $curr_spec->text; ?></td>
-        </tr>
-        <?php } ?>
-      </table>
 		</td>
 	</tr>
 </table>
