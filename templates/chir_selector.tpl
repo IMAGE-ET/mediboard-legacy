@@ -38,7 +38,7 @@ function setClose(){
 
 <tr>
   <th>Nom:</th>
-  <td><input name="name" value="{$name}" size="30" onBlur="this.form.submit()" /></td>
+  <td><input name="name" value="{$name}" size="30" /> <input type="submit" value="rechercher" /></td>
 </tr>
 
 <tr>
