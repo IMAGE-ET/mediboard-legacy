@@ -16,7 +16,7 @@ class CTemplateManager {
   var $template = null;
   var $document = null;
   
-  var $valueMode = true;
+  var $valueMode = true; // @todo: changer en applyMode
   
   function CTemplateManager() {
   }
@@ -32,7 +32,10 @@ class CTemplateManager {
   function applyTemplate($template) {
     assert(is_a($template, "CCompteRendu"));
     
-    $this->SetFields($template->type);
+    if (!$this->valueMode) {
+      $this->SetFields($template->type);
+		}
+
     $this->renderDocument($template->source);
   }
   
@@ -59,9 +62,7 @@ class CTemplateManager {
 	}
   
   function renderDocument($source) {
-    assert(is_string($source));
-
-    // render
+    
     foreach($this->properties as $property) {
       $fields[] = $property['fieldHTML'];
       $values[] = $property['valueHTML'];
