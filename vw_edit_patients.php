@@ -5,14 +5,14 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-
 if(dPgetParam($_GET, "id", "noid") != "noid")
 {
   $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", "");
 }
 else
 {
-	$AppUI->redirect( "m=dPpatients&tab=0" );
+  $AppUI->msg = "Vous devez choisir un patient";
+  $AppUI->redirect( "m=dPpatients&tab=0" );
 }
 
 //Recuperation des patients
