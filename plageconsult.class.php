@@ -120,11 +120,14 @@ class CPlageconsult extends CDpObject {
     $this->_hour_fin = intval(substr($this->fin, 0, 2));
     $this->_min_fin  = intval(substr($this->fin, 3, 2));
     $this->_freq     = substr($this->freq, 3, 2);
-    $this->_day      = substr($this->date, 8, 2);
-    $this->_month    = substr($this->date, 5, 2);
-    $this->_year     = substr($this->date, 0, 4);
-    $this->_jour     = date("w", mktime(0, 0, 0, $this->_month, $this->_day-1, $this->_year));
+    $currday = substr($this->date, 8, 2);
+    $currmonth = substr($this->date, 5, 2);
+    $curryear = substr($this->date, 0, 4);
+    $this->_jour     = date("w", mktime(0, 0, 0, $currmonth, $currday-1, $curryear));
     $this->_jour     = intval($this->_jour);
+    $this->_day      = date("d", mktime(0, 0, 0, $currmonth, $currday-$this->_jour, $curryear));
+    $this->_month    = $currmonth;
+    $this->_year     = $curryear;
     $this->_dateFormated = date("d/m/Y", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
   }
   
@@ -136,25 +139,33 @@ class CPlageconsult extends CDpObject {
   }
   
   function becomeNext() {
+    mbTrace("au début du becomeNext", $this);
     $nextTime = mktime (0, 0, 0, $this->_month, $this->_day+7, $this->_year);
     $this->_year  = date("Y", $nextTime);
     $this->_month = date("m", $nextTime);
     $this->_day   = date("d", $nextTime);
-    $this->date = $this->_year."-".$this->_month."-".$this->_day;
+    $this->updateDBFields();
+    //mbTrace("apres l'update DB fields", $this);
+    //$this->date = $this->_year."-".$this->_month."-".$this->_day;
+    $this->updateFormFields();
+    //mbTrace("apres l'update Form fields", $this);
     $sql = "SELECT plageconsult_id" .
       "\nFROM plageconsult" .
       "\nWHERE date = '$this->date'" .
       "\nAND chir_id = '$this->chir_id'" .
       "\nAND (debut = '$this->debut' OR fin = '$this->fin')";
-    $row = db_loadlist($sql);    
-    $this->plageconsult_id = @$row[0]['plageconsult_id'];
-    $debut = $this->debut;
-    $fin = $this->fin;
-    $msg = $this->load();
-    $this->debut = $debut;
-    $this->fin = $fin;
-    $this->updateFormFields();
-    $this->updateDBFields();
+    $row = db_loadlist($sql); 
+    $this->plageconsult_id = @$row[0]['plageconsult_id']; 
+    //$this->plageconsult_id = @$row[0]['plageconsult_id'];
+    //$debut = $this->debut;
+    //$fin = $this->fin;
+    //$msg = $this->load(@$row[0]['plageconsult_id']);
+    //$this->debut = $debut;
+    //$this->fin = $fin;
+    //$this->updateFormFields();
+    //$this->updateDBFields();
+    //mbTrace("apres le load + Form + DB", $this);
+    //exit(0);
     return $msg;
   }    
 }
