@@ -4,45 +4,45 @@
 * User Class
 */
 class CUser extends CDpObject {
-	var $user_id = NULL;
-	var $user_username = NULL;
-	var $user_password = NULL;
-	var $user_parent = NULL;
-	var $user_type = NULL;
-	var $user_first_name = NULL;
-	var $user_last_name = NULL;
-	var $user_company = NULL;
-	var $user_department = NULL;
-	var $user_email = NULL;
-	var $user_phone = NULL;
-	var $user_home_phone = NULL;
-	var $user_mobile = NULL;
-	var $user_address1 = NULL;
-	var $user_address2 = NULL;
-	var $user_city = NULL;
-	var $user_state = NULL;
-	var $user_zip = NULL;
-	var $user_country = NULL;
-	var $user_icq = NULL;
-	var $user_aol = NULL;
-	var $user_birthday = NULL;
-	var $user_pic = NULL;
-	var $user_owner = NULL;
-	var $user_signature = NULL;
+	var $user_id = null;
+	var $user_username = null;
+	var $user_password = null;
+	var $user_parent = null;
+	var $user_type = null;
+	var $user_first_name = null;
+	var $user_last_name = null;
+	var $user_company = null;
+	var $user_department = null;
+	var $user_email = null;
+	var $user_phone = null;
+	var $user_home_phone = null;
+	var $user_mobile = null;
+	var $user_address1 = null;
+	var $user_address2 = null;
+	var $user_city = null;
+	var $user_state = null;
+	var $user_zip = null;
+	var $user_country = null;
+	var $user_icq = null;
+	var $user_aol = null;
+	var $user_birthday = null;
+	var $user_pic = null;
+	var $user_owner = null;
+	var $user_signature = null;
 
 	function CUser() {
 		$this->CDpObject( 'users', 'user_id' );
 	}
 
 	function check() {
-		if ($this->user_id === NULL) {
-			return 'user id is NULL';
+		if ($this->user_id === null) {
+			return 'user id is null';
 		}
-		if ($this->user_password !== NULL) {
+		if ($this->user_password !== null) {
 			$this->user_password = db_escape( trim( $this->user_password ) );
 		}
 		// TODO MORE
-		return NULL; // object is ok
+		return null; // object is ok
 	}
 
 	function store() {
@@ -72,7 +72,7 @@ class CUser extends CDpObject {
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 }
@@ -80,16 +80,128 @@ class CUser extends CDpObject {
 /**
 * Permissions class
 */
-class CPermission extends CDpObject {
-	var $permission_id = NULL;
-	var $permission_user = NULL;
-	var $permission_grant_on = NULL;
-	var $permission_item = NULL;
-	var $permission_value = NULL;
 
+// Permission flags used in the DB
+define( 'PERM_EDIT', '-1' );
+define( 'PERM_DENY', '0' );
+define( 'PERM_READ', '1' );
+
+define( 'PERM_ALL', '-1' );
+
+// Flags for Mediboard modules 
+define ('HIDDEN_READNONE_EDITNONE' ,  0); // PERM_DENY in dotProject
+define ('HIDDEN_READNONE_EDITALL'  ,  2);
+define ('HIDDEN_READALL_EDITNONE'  ,  3);
+define ('HIDDEN_READALL_EDITALL'   ,  4);
+define ('VISIBLE_READNONE_EDITNONE',  5);
+define ('VISIBLE_READNONE_EDITALL' ,  6);
+define ('VISIBLE_READALL_EDITNONE' ,  1); // PERM_READ in dotProject
+define ('VISIBLE_READALL_EDITALL'  , -1); // PERM_EDIT 
+
+// Access
+$module_permission_matrix = 
+  array( // _module_visible
+    false => array ( // _module_readall
+      false => array ( // _module_editall
+        false => HIDDEN_READNONE_EDITNONE,
+        true  => HIDDEN_READNONE_EDITALL
+      ),
+      true => array ( // _module_editall
+        false => HIDDEN_READALL_EDITNONE,
+        true  => HIDDEN_READALL_EDITALL
+      )
+    ),
+    true => array ( // _module_readall
+      false => array ( // _module_editall
+        false => VISIBLE_READNONE_EDITNONE,
+        true  => VISIBLE_READNONE_EDITALL
+      ),
+      true => array ( // _module_editall
+        false => VISIBLE_READALL_EDITNONE,
+        true  => VISIBLE_READALL_EDITALL
+      )
+    )
+  );
+
+class CPermission extends CDpObject {
+  // DB Table key
+	var $permission_id = null;
+
+  // DB Fields
+	var $permission_user = null;
+	var $permission_grant_on = "all";
+	var $permission_item = PERM_ALL;
+	var $permission_value = PERM_EDIT;
+
+  // DB Form Fields
+  var $_module_visible = null;
+  var $_module_editall = null;
+  var $_module_readall = null;
+  var $_item_deny = null;
+  var $_item_read = null;
+  var $_item_edit = null;
+  
 	function CPermission() {
 		$this->CDpObject( 'permissions', 'permission_id' );
 	}
+  
+  function store() {
+    $this->updateDBFields();
+    
+    return parent::store();
+  }
+  
+  function load($oid = null, $strip = TRUE) {
+    if (!parent::load($oid, $strip)) {
+      return false;
+    }
+    
+    $this->updateFormFields();
+
+    return true;
+  }
+  
+  function updateFormFields() {
+    if ($this->permission_item == PERM_ALL) {
+      switch ($this->permission_value) {
+        case HIDDEN_READNONE_EDITNONE : $this->_module_visible = false; $this->_module_readall = false; $this->_module_editall = false; break;
+        case HIDDEN_READNONE_EDITALL  : $this->_module_visible = false; $this->_module_readall = false; $this->_module_editall = true ; break;
+        case HIDDEN_READALL_EDITNONE  : $this->_module_visible = false; $this->_module_readall = true ; $this->_module_editall = false; break;
+        case HIDDEN_READALL_EDITALL   : $this->_module_visible = false; $this->_module_readall = true ; $this->_module_editall = true ; break;
+        case VISIBLE_READNONE_EDITNONE: $this->_module_visible = true ; $this->_module_readall = false; $this->_module_editall = false; break;
+        case VISIBLE_READNONE_EDITALL : $this->_module_visible = true ; $this->_module_readall = false; $this->_module_editall = true ; break;
+        case VISIBLE_READALL_EDITNONE : $this->_module_visible = true ; $this->_module_readall = true ; $this->_module_editall = false; break;
+        case VISIBLE_READALL_EDITALL  : $this->_module_visible = true ; $this->_module_readall = true ; $this->_module_editall = true ; break;
+      }
+
+      $this->_item_deny = null;
+      $this->_item_read = null;
+      $this->_item_edit = null;
+		} else {
+      $this->_item_deny = $this->permission_value == PERM_DENY;
+      $this->_item_read = $this->permission_value == PERM_READ;
+      $this->_item_edit = $this->permission_value == PERM_EDIT;
+            
+      $this->_module_visible = null; 
+      $this->_module_readall = null; 
+      $this->_module_editall = null;
+    return;
+    }
+  }
+  
+  function updateDBFields() {
+    if ($this->permission_item != PERM_ALL) {
+      return;
+    }
+ 
+    $this->_module_visible = $this->_module_visible ? 1 : 0; 
+    $this->_module_readall = $this->_module_readall ? 1 : 0;
+    $this->_module_editall = $this->_module_editall ? 1 : 0;
+    
+    global $module_permission_matrix;
+       
+    $this->permission_value = $module_permission_matrix[$this->_module_visible][$this->_module_readall][$this->_module_editall];
+  }
 }
 
 ?>

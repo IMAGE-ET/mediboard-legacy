@@ -22,7 +22,6 @@
   <tr>
     <td>
       <select name="list" size="8">
-        <option value="0">&mdash {tr}all{/tr} &mdash</option>
         {html_options options=$list}
       </select>
     </td>

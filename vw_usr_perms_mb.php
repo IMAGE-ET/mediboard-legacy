@@ -1,6 +1,10 @@
 <?php /* ADMIN $Id$ */
 global $AppUI, $user_id, $canEdit, $tab;
 
+// Get the installed modules
+$modules = $AppUI->getActiveModules( 'modules' );
+$modules["all"] = "All Modules";
+
 $pgos["files"] = array(
   "table"       => "files", 
   "table_alias" => "fi", 
@@ -50,12 +54,22 @@ $pgos["mediusers"] = array(
   "name_field"  => "text"
 );
 
-$pvs = array(
-'-1' => 'read-write',
-'0'  => 'deny',
-'1'  => 'read only'
+$permItemValues = array(
+  PERM_EDIT => "ReadWrite",
+  PERM_DENY => "Deny",
+  PERM_READ => "ReadOnly"
 );
 
+$permModuleValues = array(
+  HIDDEN_READNONE_EDITNONE => "HiddenReadNoneEditNone",
+  HIDDEN_READNONE_EDITALL  => "HiddenReadNoneEditAll",
+  HIDDEN_READALL_EDITNONE  => "HiddenReadAllEditNone",
+  HIDDEN_READALL_EDITALL   => "HiddenReadAllEditAll",
+  VISIBLE_READNONE_EDITNONE=> "VisibleReadNoneEditNone",
+  VISIBLE_READNONE_EDITALL => "VisibleReadNoneEditAll",
+  VISIBLE_READALL_EDITNONE => "VisibleReadAllEditNone",
+  VISIBLE_READALL_EDITALL  => "VisibleReadAllEditAll"
+);
 
 // Get existing user permissions
 $sql = "SELECT ";
@@ -73,58 +87,56 @@ foreach($pgos as $module => $pgo) {
     "AND '{$module}' = p.permission_grant_on ";
 }  
 
-$sql .= "\nWHERE p.permission_user = $user_id";
+$sql .= "\nWHERE p.permission_user = $user_id ORDER BY p.permission_grant_on, p.permission_item";
 $res = db_exec($sql);
 
-// Get the projects into an temp array
+// Get user perms
 while ($row = db_fetch_assoc( $res )) {
-  // Older dotProject version
-	$item = @$row[@$pgos[$row['permission_grant_on']]];
-	if (!$item) {
-		$item = $row['permission_item'];
-	}
-	if ($item == -1) {
-		$item = 'all';
-	}
-	$tarr[] = array_merge( $row, array( 'grant_item'=>$item ) );
-
   // Mediboard version 
-  $module = $row['permission_grant_on'];
+  $module = $row["permission_grant_on"];
   $name_field = @$pgos[$module]["name_field"];
-  $item_name = $row["permission_item"] == -1 ? "all" : $row[$name_field];
-  $perms[] = array (
+  $item_name = $row["permission_item"] == PERM_ALL ? "module" : $row[$name_field];
+  $perm_value_name = $row["permission_item"] == PERM_ALL ? $permModuleValues[$row["permission_value"]] : $permItemValues[$row["permission_value"]];
+  
+  $userPerms[] = array (
     "perm_id" => $row["permission_id"],
     "perm_item" => $row["permission_item"],
     "perm_value" => $row["permission_value"],
     "perm_module" => $module,
+    "perm_module_name" => $modules[$module],
     "perm_item_name" => $item_name,
-    "perm_value_name" => $pvs[$row["permission_value"]]
+    "perm_value_name" => $perm_value_name
   );
 }
 
-// pull list of users for permission duplication from template user
+// Pull list of users for permission duplication from template user
 // prevent from copying from users with no permissions
-$sql = "SELECT DISTINCT(user_id), user_username FROM users, permissions
-	WHERE user_id != $user_id AND permission_user = user_id ORDER BY user_username";
-$res = db_loadList( $sql );
+$sql = "SELECT DISTINCT(user_id), user_username " .
+  "FROM users, permissions " .
+  "WHERE user_id != $user_id " .
+  "AND permission_user = user_id " .
+  "ORDER BY user_username";
+$res = db_loadList($sql);
 
 // Creates the array of other users
 foreach ( $res as $row ) {
 	$otherUsers[$row['user_username']]= $row['user_username'];
 }
 
-// read the installed modules
-$modules = $AppUI->getActiveModules( 'modules' );
-$modules["all"] = "all";
+// Create Perm object to Edit
+$permSel = new CPermission;
+$permSel->load(mbGetValueFromGetOrSession("perm_id"));
 
 // Template creation
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('user_id', $user_id);
-$smarty->assign('pvs', $pvs);
+$smarty->assign('permItemValues', $permItemValues);
+$smarty->assign('permModuleValues', $permModuleValues);
 $smarty->assign('pgos', $pgos);
-$smarty->assign('perms', $perms);
+$smarty->assign('userPerms', $userPerms);
+$smarty->assign('permSel', $permSel);
 $smarty->assign('otherUsers', $otherUsers);
 $smarty->assign('modules', $modules);
 
