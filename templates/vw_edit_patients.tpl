@@ -224,7 +224,7 @@ function setMed( key, nom, prenom, type ){
           {if $patient->patient_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Valider" />
-            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le patient', '{$patient->nom|escape:javascript} {$patient->prenom|escape:javascript}')"/>
           {else}
             <input tabindex="31" type="submit" value="Créer" />
           {/if}

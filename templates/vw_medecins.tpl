@@ -172,7 +172,7 @@ function setClose() {ldelim}
             {if $medecin->medecin_id}
             <input type="hidden" name="medecin_id" value="{$medecin->medecin_id}" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le médecin', '{$medecin->nom|escape:javascript} {$medecin->prenom|escape:javascript}')"/>
             {else}
             <input type="submit" value="Créer" />
             {/if}
