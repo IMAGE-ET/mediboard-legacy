@@ -102,7 +102,6 @@ class CPlageOp extends CDpObject {
         "AND date = '$this->date' " .
         "AND id != '$this->id'";
     $row = db_loadlist($sql);
-
     $msg = null;
     foreach ($row as $key => $value) {
       if (($value['debut'] < $this->fin and $value['fin'] > $this->fin)
@@ -111,41 +110,40 @@ class CPlageOp extends CDpObject {
         $msg .= "Collision avec la plage du $this->date, de {$value['debut']} à {$value['fin']}. ";
       }
     }
-
     return $msg;   
   }
   
   function store () {
-    $this->debut = $this->_heuredeb.":".$this->_minutedeb.":00";
-    $this->fin   = $this->_heurefin.":".$this->_minutefin.":00";
-    
-    $this->date = $this->_year."-".$this->_month."-".$this->_day;
-    
     if ($msg = $this->hasCollisions()) {
       return $msg;
     }
-    
-		return parent::store();
-	}
+    $this->updateDBFields();    
+	return parent::store();
+  }
   
-	function load($oid = null, $strip = true) {
+  function load($oid = null, $strip = true) {
     if (!parent::load($oid, $strip)) {
       return false;
     }
-    
+    $this->updateFormFields();
+    return true;
+  }
+  
+  function updateFormFields() {
     $this->_year  = substr($this->date, 0, 4);
     $this->_month = substr($this->date, 5, 2);
     $this->_day   = substr($this->date, 8, 2);
-
     $this->_date = "$this->_day/$this->_month/$this->_year";
-
     $this->_heuredeb  = substr($this->debut, 0, 2);
     $this->_minutedeb = substr($this->debut, 3, 2);
-    
     $this->_heurefin  = substr($this->fin, 0, 2);
     $this->_minutefin = substr($this->fin, 3, 2);
-    
-    return true;
+  }
+  
+  function updateDBFields() {
+    $this->debut = $this->_heuredeb.":".$this->_minutedeb.":00";
+    $this->fin   = $this->_heurefin.":".$this->_minutefin.":00";
+    $this->date = $this->_year."-".$this->_month."-".$this->_day;
   }
   
   function becomeNext() {
@@ -154,17 +152,20 @@ class CPlageOp extends CDpObject {
     $this->_month = date("m", $nextTime);
     $this->_day   = date("d", $nextTime);
     $this->date = $this->_year."-".$this->_month."-".$this->_day;   
-
     $sql = "SELECT id" .
       "\nFROM plagesop" .
       "\nWHERE date = '{$this->date}'" .
       "\nAND id_salle = '{$this->id_salle}'" .
       ($this->id_chir ? "\nAND id_chir = '$this->id_chir'" : "\nAND id_spec = '$this->id_spec'");
-    
     $row = db_loadlist($sql);
     $this->id = @$row[0]['id'];
-    
-    return $this->load();
+    $debut = $this->debut;
+    $fin = $this->fin;
+    $msg = $this->load();
+    $this->debut = $debut;
+    $this->fin = $fin;
+    $this->updateFormFields();
+    return $msg;
   }    
 }
 ?>
