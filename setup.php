@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPhospi';
-$config['mod_version'] = '0.1.1';
+$config['mod_version'] = '0.11';
 $config['mod_directory'] = 'dPhospi';
 $config['mod_setup_class'] = 'CSetupdPhospi';
 $config['mod_type'] = 'user';
@@ -46,6 +46,34 @@ class CSetupdPhospi {
           "\n`description` TEXT," .
           "\nPRIMARY KEY ( `service_id` ))";
       db_exec($sql); db_error($sql);
+
+      $sql = "CREATE TABLE `chambre` (" .
+          "\n`chambre_id` INT NOT NULL AUTO_INCREMENT ," .
+          "\n`service_id` INT NOT NULL ," .
+          "\n`nom` VARCHAR( 50 ) ," .
+          "\n`caracteristiques` SET( 'cote_rue', 'fenetre', 'lit_accompagnant' ) ," .
+          "\nPRIMARY KEY ( `chambre_id` ) ," .
+          "\nINDEX ( `service_id` ))";
+      db_exec($sql); db_error($sql);
+
+      $sql = "CREATE TABLE `lit` (" .
+          "\n`lit_id` INT," .
+          "\n`chambre_id` INT," .
+          "\n`nom` VARCHAR( 50 ) NOT NULL ," .
+          "\nPRIMARY KEY ( `lit_id` ) ," .
+          "\nINDEX ( `chambre_id` ))";
+      db_exec($sql); db_error($sql);
+                    
+      $sql = "CREATE TABLE `affectation` (" .
+          "\n`affectation_id` INT NOT NULL ," .
+          "\n`lit_id` INT NOT NULL ," .
+          "\n`operation_id` INT NOT NULL ," .
+          "\n`entree` DATETIME NOT NULL ," .
+          "\n`sortie` DATETIME NOT NULL ," .
+          "\nPRIMARY KEY ( `affectation_id` ) ," .
+          "\nINDEX ( `lit_id` , `operation_id` ))";
+      db_exec($sql); db_error($sql);
+                    
     case "0.11": 
 			return true;
     }
