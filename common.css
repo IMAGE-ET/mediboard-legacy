@@ -104,6 +104,10 @@ table.tbl td {
   white-space: nowrap;
 }
 
+table.tbl td.text {
+  white-space: normal;
+}
+
 /* a 'colorized' table */
 
 table.color {
