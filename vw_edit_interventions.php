@@ -1,4 +1,11 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPbloc
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
@@ -17,9 +24,9 @@ if(dPgetParam($_GET, "id", "noid") == "noid") {
 else
   $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
 
-$sql = "select users.user_first_name as firstname,
-		users.user_last_name as lastname, plagesop.date as date,
-		sallesbloc.nom as salle
+$sql = "select plagesop.debut as debut, plagesop.fin as fin,
+        users.user_first_name as firstname, users.user_last_name as lastname,
+        plagesop.date as date, sallesbloc.nom as salle
 		from plagesop
 		left join users
 		on plagesop.id_chir = users.user_username
@@ -29,6 +36,7 @@ $sql = "select users.user_first_name as firstname,
 $result = db_loadlist($sql);
 $title = $result[0];
 $title["dateFormed"] = substr($title["date"], 8, 2)." / ".substr($title["date"], 5, 2)." / ".substr($title["date"], 0, 4);
+$title["plage"] = substr($title["debut"], 0, 2)."h".substr($title["debut"], 3, 2)." - ".substr($title["fin"], 0, 2)."h".substr($title["fin"], 3, 2);
 
 $sql = "select operations.operation_id as id, patients.prenom as firstname, patients.nom as lastname,
 		operations.CCAM_code as CCAM_code, operations.temp_operation as temps
@@ -41,7 +49,8 @@ $sql = "select operations.operation_id as id, patients.prenom as firstname, pati
 		order by operations.temp_operation";
 $list1 = db_loadlist($sql);
 $sql = "select operations.operation_id as id, patients.prenom as firstname, patients.nom as lastname,
-		operations.CCAM_code as CCAM_code, operations.temp_operation as temps, operations.rank as rank
+		operations.CCAM_code as CCAM_code, operations.temp_operation as temps, operations.time_operation as heure,
+        plagesop.debut as debut, plagesop.fin as fin, operations.rank as rank
 		from operations
 		left join patients
 		on operations.pat_id = patients.patient_id
@@ -73,6 +82,15 @@ if(isset($list2)) {
     $ccam = mysql_fetch_array($ccamr);
     $list2[$key]["CCAM"] = $ccam["LIBELLELONG"];
 	$list2[$key]["duree"] = substr($value["temps"], 0, 2)."h".substr($value["temps"], 3, 2);
+	$list2[$key]["hour"] = substr($value["heure"], 0, 2);
+	$list2[$key]["min"] = substr($value["heure"], 3, 2);
+    $j = 0;
+    for($i = substr($value["debut"], 0, 2) ; $i < substr($value["fin"], 0, 2) ; $i++) {
+      if(strlen($i) == 1)
+        $i = "0".$i;
+	  $list2[$key]["listhour"][$j] = $i;
+      $j++;
+    }
   }
 }
 else

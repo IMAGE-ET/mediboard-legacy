@@ -39,7 +39,7 @@ $plagesop = db_loadlist($sql);
 foreach($plagesop as $key=>$value) {
   $plagesop[$key]["debut"] = substr($value["debut"], 0, 2)."h".substr($value["debut"], 3, 2);
   $plagesop[$key]["fin"] = substr($value["fin"], 0, 2)."h".substr($value["fin"], 3, 2);
-  $sql = "select operations.temp_operation as duree, operations.cote as cote,
+  $sql = "select operations.temp_operation as duree, operations.cote as cote, operations.time_operation as heure,
   		operations.CCAM_code as CCAM_code, patients.nom as lastname, patients.prenom as firstname,
 		patients.sexe as sexe, patients.naissance as naissance
   		from operations
@@ -59,7 +59,8 @@ mysql_select_db("ccam")
 foreach($plagesop as $key=>$value) {
   foreach($value["operations"] as $key2=>$value2) {
     $plagesop[$key]["operations"][$key2]["naissance"] = substr($value2["naissance"], 8, 2)." / ".substr($value2["naissance"], 5, 2)." / ".substr($value2["naissance"], 0, 4);
-	$sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";
+	$plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
+    $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
 	$plagesop[$key]["operations"][$key2]["CCAM"] = $ccam["LIBELLELONG"];

@@ -11,9 +11,9 @@ function popOp(id) {
     <th colspan=2>
 	  Dr. {$title.firstname} {$title.lastname}
 	  <br />
-	  {$title.salle}
-	  <br />
 	  {$title.dateFormed}
+	  <br />
+	  {$title.salle} : {$title.plage}
 	</th>
   </tr>
   <tr>
@@ -46,7 +46,7 @@ function popOp(id) {
 	  </table>
 	</td>
 	<td width="50%">
-	  <table class="tbl">
+	  <table class="tbl"
 	    <tr>
 		  <th colspan=3>
 		    Ordre des interventions
@@ -55,12 +55,33 @@ function popOp(id) {
 		{foreach from=$list2 item=curr_op}
 		<tr>
 		  <td width="50%">
+			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
+            <input type="hidden" name="m" value="{$module}" />
+            <input type="hidden" name="a" value="do_order_op" />
+            <input type="hidden" name="cmd" value="sethour" />
+            <input type="hidden" name="id" value="{$curr_op.id}" />
 		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.firstname} {$curr_op.lastname}</a></b>
 			<br />
 			Code CCAM : {$curr_op.CCAM_code}
 			<br />
 			Durée : {$curr_op.duree}
 			<br />
+			<select name="hour">
+			  <option selected="selected">{$curr_op.hour}</option>
+			  {foreach from=$curr_op.listhour item=curr_hour}
+			  <option>{$curr_hour}</option>
+			  {/foreach}
+			</select>
+			h
+			<select name="min">
+			  <option selected="selected">{$curr_op.min}</option>
+			  <option>00</option>
+			  <option>15</option>
+			  <option>30</option>
+			  <option>45</option>
+			</select>
+			<input type="submit" value="changer" />
+			</form>
 		  </td>
 		  <td>
 			<i>{$curr_op.CCAM}</i>
