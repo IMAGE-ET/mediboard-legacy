@@ -9,58 +9,86 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
+require_once("modules/dPplanningOp/planning.class.php");
+
 /**
  * The CPatient Class
  */
 class CPatient extends CDpObject {
   // DB Table key
-	var $patient_id = NULL;
+	var $patient_id = null;
 
   // DB Fields
-	var $nom = NULL;
-	var $prenom = NULL;
-	var $naissance = NULL;
-	var $sexe = NULL;
-	var $adresse = NULL;
-	var $ville = NULL;
-	var $cp = NULL;
-	var $tel = NULL;
-	var $medecin_traitant = NULL;
-	var $incapable_majeur = NULL;
-	var $ATNC = NULL;
-	var $matricule = NULL;
-	var $SHS = NULL;
+	var $nom = null;
+	var $prenom = null;
+	var $naissance = null;
+	var $sexe = null;
+	var $adresse = null;
+	var $ville = null;
+	var $cp = null;
+	var $tel = null;
+	var $medecin_traitant = null;
+	var $incapable_majeur = null;
+	var $ATNC = null;
+	var $matricule = null;
+	var $SHS = null;
 
   // Form fields
-	var $_jour = NULL;
-	var $_mois = NULL;
-	var $_annee = NULL;
-	var $_tel1 = NULL;
-	var $_tel2 = NULL;
-	var $_tel3 = NULL;
-	var $_tel4 = NULL;
-	var $_tel5 = NULL;
+	var $_jour = null;
+	var $_mois = null;
+	var $_annee = null;
+	var $_tel1 = null;
+	var $_tel2 = null;
+	var $_tel3 = null;
+	var $_tel4 = null;
+	var $_tel5 = null;
+
+  // Object Refernces
+  var $_ref_operations = null;
 
 	function CPatient() {
 		$this->CDpObject( 'patients', 'patient_id' );
 	}
+  
+  function load($oid = null, $strip = true) {
+    if (!parent::load($oid, $strip)) {
+      return false;
+    }
 
-	function check() {
-    // Data Computation
-		$this->tel = 
+    // Form fields computation
+    $this->_jour  = substr($this->naissance, 8, 2);
+    $this->_mois  = substr($this->naissance, 5, 2);
+    $this->_annee = substr($this->naissance, 0, 4);
+
+    $this->_tel1 = substr($this->tel, 0, 2);
+    $this->_tel2 = substr($this->tel, 2, 2);
+    $this->_tel3 = substr($this->tel, 4, 2);
+    $this->_tel4 = substr($this->tel, 6, 2);
+    $this->_tel5 = substr($this->tel, 8, 2);
+
+    return true;
+  }
+  
+  function store() {
+    // Form fields computation
+    $this->tel = 
       $this->_tel1 .
       $this->_tel2 .
       $this->_tel3 .
       $this->_tel4 .
       $this->_tel5;
 
-		$this->naissance = 
+    $this->naissance = 
       $this->_annee . "-" .
       $this->_mois  . "-" .
       $this->_jour;
       
+    return parent::store();
+  }
+
+	function check() {
     // Data checking
-    $msg = NULL;
+    $msg = null;
 
     if (!strlen($this->nom)) {
       $msg .= "Nom invalide: '$this->nom'<br />";
@@ -87,6 +115,13 @@ class CPatient extends CDpObject {
     
     return parent::canDelete( $msg, $oid, $tables );
   }
+  
+  function loadRefs() {
+    // Backward references
+    $sql = "SELECT * FROM operations WHERE pat_id = '$this->patient_id'";
+    $this->_ref_operations = db_loadObjectList($sql, new COperation);
+  }
+  
   
 	function getSiblings() {
       $sql = "SELECT patient_id, nom, prenom, naissance, adresse, ville, CP " .

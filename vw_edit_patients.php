@@ -20,16 +20,14 @@ require_once("patients.class.php");
 
 $patient = new CPatient;
 $patient->load($patient_id);
+$patient->loadRefs();
+
+$export = var_export($patient, true); echo "<pre>patient: $export</pre>";
 
 if (!$patient->patient_id) {
   $AppUI->setmsg("Vous devez choisir un patient", UI_MSG_ALERT);
-  $AppUI->redirect("m=$m&tab=0");
+  $AppUI->redirect("m=$m&tab=vw_idx_patients");
 }
-
-// Date formatting
-$patient->_jour  = substr($patient->naissance, 8, 2);
-$patient->_mois  = substr($patient->naissance, 5, 2);
-$patient->_annee = substr($patient->naissance, 0, 4);
 
 // Création du template
 require_once("classes/smartydp.class.php");
