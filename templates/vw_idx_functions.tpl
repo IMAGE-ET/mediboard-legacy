@@ -92,7 +92,7 @@ function setColor(color) {
       <th><label for="editFrm_color" title="Couleur de visualisation des fonctions dans les plannings">Couleur:</label></th>
       <td>
         <span id="test" title="test" style="background: #{$functionsel.color};">
-          <a href="#" onClick="window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">cliquez ici</a>
+          <a href="#" onClick="popup(320, 250, './index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin');">cliquez ici</a>
         </span>
         <input type="hidden" name="color" value="{$functionsel.color}" />
       </td>
