@@ -1,14 +1,3 @@
-/* contacts table */
+/* $Id$ */
 
-table.contacts {
-	background-color: #888;
-}
-
-table.contacts td {
-	background-color: #def;
-}
-
-table.contacts td.hilite {
-	background-color: #fff;
-}
-
+/* Appended in main.css to prevent @import hasardous behaviour with Mandrake */
