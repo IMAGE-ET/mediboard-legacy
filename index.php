@@ -2,7 +2,7 @@
 
 /**
 * @package Mediboard
-* @subpackage dPprotocoles
+* @subpackage dPsalleOp
 * @version $Revision$
 * @author Romain Ollivier
 */
@@ -20,7 +20,7 @@ if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'dPsalleOpIdxTab', $_GET['tab'] );
 }
 $tab = $AppUI->getState( 'dPsalleOpIdxTab' ) !== NULL ? $AppUI->getState( 'dPsalleOpIdxTab' ) : 0;
-$active = intval( !$AppUI->getState( 'dPprotocolesIdxTab' ) );
+$active = intval( !$AppUI->getState( 'dPsalleOpIdxTab' ) );
 
 $titleBlock = new CTitleBlock( 'Gestion des salles d\'operation', 'dPsalleOp.png', $m, "$m.$a" );
 $titleBlock->addCell();
