@@ -19,8 +19,9 @@ $smarty->cache_dir = "modules/$m/cache/";
 
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
+$smarty->assign('patient', NULL);
 
 //Affichage de la page
-$smarty->display('vw_add_patients.tpl');
+$smarty->display('vw_edit_patients.tpl');
 
 ?>

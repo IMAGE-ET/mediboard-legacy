@@ -61,6 +61,7 @@ $smarty->cache_dir = "modules/$m/cache/";
 
 //On récupère les informations
 
+$smarty->assign('m', $m);
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
 $smarty->assign('nom', $_SESSION[$m][$tab]["nom"]);
