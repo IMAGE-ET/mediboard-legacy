@@ -157,12 +157,20 @@ class CMediusers extends CDpObject {
     $perm->store();
   }
 
-  function loadListFromGroup($groups = null, $perm_type = null) {
+  function loadListFromGroup($groups = null, $perm_type = null, $function_id = null, $name = null) {
     $sql = "SELECT *" .
       "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
       "\nWHERE users.user_id = users_mediboard.user_id" .
       "\nAND users_mediboard.function_id = functions_mediboard.function_id";
 
+    if ($function_id) {
+      $sql .= "\nAND users_mediboard.function_id = $function_id";
+    }
+    
+    if ($function_id) {
+      $sql .= "\nAND users.user_last_name LIKE '$name%'";
+    }
+    
     if (is_array($groups)) {
       foreach ($groups as $key => $value) {
         $groups[$key] = "'$value'";
@@ -197,16 +205,16 @@ class CMediusers extends CDpObject {
     
   }
   
-  function loadChirurgiens($perm_type = null) {
-    return $this->loadListFromGroup(array("Chirurgie"), $perm_type);
+  function loadChirurgiens($perm_type = null, $function_id = null, $name = null) {
+    return $this->loadListFromGroup(array("Chirurgie"), $perm_type, $function_id, $name);
   }
   
-  function loadAnesthesistes($perm_type = null) {
-    return $this->loadListFromGroup(array("Anesthésie"), $perm_type);
+  function loadAnesthesistes($perm_type = null, $function_id = null, $name = null) {
+    return $this->loadListFromGroup(array("Anesthésie"), $perm_type, $function_id, $name);
   }
   
-  function loadChirAnest($perm_type = null) {
-    return $this->loadListFromGroup(array("Chirurgie", "Anesthésie"), $perm_type);
+  function loadPraticiens($perm_type = null, $function_id = null, $name = null) {
+    return $this->loadListFromGroup(array("Chirurgie", "Anesthésie"), $perm_type, $function_id, $name);
   }
 }
 

@@ -45,14 +45,27 @@ class CFunctions extends CDpObject {
     return CDpObject::canDelete( $msg, $oid, $tables );
   }
 
-  function loadSpecialites () {
+  function loadSpecialites ($perm_type = null) {
     $sql = "SELECT *" .
       "\nFROM $this->_tbl, groups_mediboard" .
       "\nWHERE $this->_tbl.group_id = groups_mediboard.group_id" .
       "\nAND groups_mediboard.text IN ('Chirurgie', 'Anesthésie')" .
       "\nORDER BY $this->_tbl.text";
   
-    return db_loadObjectList($sql, $this);
+    $basespecs = db_loadObjectList($sql, $this);
+
+    // Filter with permissions
+    if ($perm_type) {
+      foreach ($basespecs as $spec) {
+        if (isMbAllowed($perm_type, "mediusers", $spec->function_id)) {
+          $specs[] = $spec;
+        }          
+      }
+    } else {
+      $specs = $basespecs;
+    }
+
+    return $specs;
   }
 }
 ?>
