@@ -167,32 +167,33 @@ function printPatient(id) {
           </td>
         </tr>
         {/if}
-        
-        {if $patient->_ref_operations}
-        <table class="tbl">
-          <tr> 
-	        <th>Date</th>
-	        <th>Praticien</th>
-	      </tr>
-        
+
+        <table class="form">
+          {if $patient->_ref_operations}
+          <tr><th colspan="2" class="category">Interventions</th></tr>
+          <tr><th class="category">Date</th><th class="category">Praticien</th></tr>
           {foreach from=$patient->_ref_operations item=curr_op}
           <tr>
-            <td>
-              <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-                {$curr_op->_ref_plageop->_date}
-              </a>
-            </td>
-            <td>
-              <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-                Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name} 
-              </a>
-            </td>
+            <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+              {$curr_op->_ref_plageop->date}</a></td>
+            <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+              Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name}</a></td>
           </tr>
-
           {/foreach}
-  
-        </table>      
-        {/if}
+          {/if}
+          {if $patient->_ref_operations}
+          <tr><th class="category" colspan="2">Consultations</th></tr>
+          <tr><th class="category">Date</th><th class="category">Praticien</th></tr>
+          {foreach from=$patient->_ref_consultations item=curr_consult}
+          <tr>
+            <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+              {$curr_consult->_ref_plageconsult->date}</a></td>
+            <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+              Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}</a></td>
+          </tr>
+          {/foreach}
+          {/if}
+        </table>
       </table>
     </td>
     {/if}

@@ -10,6 +10,8 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
@@ -29,8 +31,13 @@ else {
 }
 
 if($patient->patient_id) {
-  foreach ($patient->_ref_operations as $key => $op)
-    $patient->_ref_operations[$key]->loadRefs();
+  foreach ($patient->_ref_operations as $key1 => $op) {
+    $patient->_ref_operations[$key1]->loadRefs();
+  }
+  foreach ($patient->_ref_consultations as $key2 => $consult) {
+    $patient->_ref_consultations[$key2]->loadRefs();
+    $patient->_ref_consultations[$key2]->_ref_plageconsult->loadRefs();
+  }
 }
 
 // Récuperation des patients recherchés
