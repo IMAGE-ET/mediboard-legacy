@@ -82,7 +82,15 @@ $adm["dateAnesth"] = $rdv_anesth;
 $adm["hourAnesth"] = "$hour_anesth h";
 if($min_anesth)
    $adm["hourAnesth"] .= " $min_anesth";
-$adm["CCAM"] = $CCAM_code;
+$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
+  or die("Could not connect");
+mysql_select_db("ccam")
+  or die("Could not select database");
+$sql = "select LIBELLELONG from ACTES where CODE = '$CCAM_code'";
+$ccamr = mysql_query($sql);
+$ccam = mysql_fetch_array($ccamr);
+$adm["CCAM"] = $ccam["LIBELLELONG"];
+mysql_close();
 
 // Création du template
 require_once("classes/smartydp.class.php");
