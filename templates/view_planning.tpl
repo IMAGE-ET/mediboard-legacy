@@ -3,9 +3,9 @@
   {foreach from=$plagesop item=curr_plageop}
   <tr>
     <td>
-	  Dr. {$curr_plageop.firstname} {$curr_plageop.lastname} :
+	  <b>Dr. {$curr_plageop.firstname} {$curr_plageop.lastname} :
 	  {$curr_plageop.salle} de
-	  {$curr_plageop.debut} - {$curr_plageop.fin}
+	  {$curr_plageop.debut} - {$curr_plageop.fin}</b>
 	</td>
   </tr>
   <tr>
@@ -29,7 +29,11 @@
 		  <td>{$curr_op.heure}</td>
 		  <td>{$curr_op.CCAM} <i>({$curr_op.CCAM_code})</i></td>
 		  <td>{$curr_op.cote}</td>
-		  <td>{$curr_op.rques}</td>
+		  <td>
+		    {$curr_op.rques}
+			<br />
+		    {$curr_op.materiel}
+		  </td>
 		  <td>{$curr_op.lastname}</td>
 		  <td>{$curr_op.firstname}</td>
 		  <td>{$curr_op.age} ans</td>

@@ -48,8 +48,9 @@ foreach($plagesop as $key=>$value) {
   $plagesop[$key]["debut"] = substr($value["debut"], 0, 2)."h".substr($value["debut"], 3, 2);
   $plagesop[$key]["fin"] = substr($value["fin"], 0, 2)."h".substr($value["fin"], 3, 2);
   $sql = "select operations.temp_operation as duree, operations.cote as cote, operations.time_operation as heure,
-  		operations.CCAM_code as CCAM_code, operations.rques as rques, patients.nom as lastname,
-        patients.prenom as firstname, patients.sexe as sexe, patients.naissance as naissance
+  		operations.CCAM_code as CCAM_code, operations.rques as rques, operations.materiel as materiel, 
+        operations.commande_mat as commande_mat, patients.nom as lastname, patients.prenom as firstname,
+        patients.sexe as sexe, patients.naissance as naissance
   		from operations
 		left join patients
 		on operations.pat_id = patients.patient_id
@@ -64,8 +65,8 @@ $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
   or die("Could not connect");
 mysql_select_db("ccam")
   or die("Could not select database");
-foreach($plagesop as $key=>$value) {
-  foreach($value["operations"] as $key2=>$value2) {
+foreach($plagesop as $key => $value) {
+  foreach($value["operations"] as $key2 => $value2) {
     $annais = substr($value2["naissance"], 0, 4);
     $anjour = date("Y");
     $moisnais = substr($value2["naissance"], 5, 2);
@@ -77,6 +78,13 @@ foreach($plagesop as $key=>$value) {
     if ($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
     $plagesop[$key]["operations"][$key2]["age"] = $age;
 	$plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
+    if($value2["materiel"] != "") {
+      if($value["commande_mat"] == "o") {
+        $plagesop[$key]["operations"][$key2]["materiel"] = "<i><b>Materiel commandé :</b> ".$value2["materiel"]."</i>";
+      } else {
+        $plagesop[$key]["operations"][$key2]["materiel"] = "<i><b>Materiel manquant :</b> ".$value2["materiel"]."</i>";
+      }
+    }
     $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
