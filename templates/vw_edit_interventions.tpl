@@ -1,7 +1,7 @@
 {literal}
 <script language="javascript">
 function popOp(id) {
-  window.open('./index.php?m=dPbloc&a=view_operation&dialog=1&id='+id, 'Intervention', 'left=50,top=50,height=250,width=700,resizable');
+  window.open('./index.php?m=dPbloc&a=view_operation&dialog=1&id='+id, 'Intervention', 'left=50,top=50,height=320,width=700,resizable');
 }
 </script>
 {/literal}

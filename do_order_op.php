@@ -1,4 +1,11 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPbloc
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 $cmd = dPgetParam( $_GET, 'cmd', '0' );
 $id = dPgetParam( $_GET, 'id', '0' );
@@ -69,6 +76,15 @@ switch($cmd)
       db_exec($sql);
       $i++;
     }
+    break;
+  }
+  case "modrques" : {
+    $rques = dPgetParam( $_GET, 'rques', '00' );
+    $sql = "UPDATE operations
+            SET rques = '$rques'
+            WHERE operations.operation_id = '$id'";
+    $result = db_exec($sql);
+    $AppUI->redirect("m=dPbloc&a=view_operation&dialog=1&id=$id");
     break;
   }
 }

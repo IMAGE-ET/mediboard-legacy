@@ -107,7 +107,17 @@
         </tr>
         <tr>
           <th>Remarques:</th>
-          <td>{$op.rques}</td>
+          <td>
+			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
+            <input type="hidden" name="m" value="dPbloc" />
+            <input type="hidden" name="a" value="do_order_op" />
+            <input type="hidden" name="cmd" value="modrques" />
+            <input type="hidden" name="id" value="{$op.id}" />
+		    <textarea name="rques" cols="30" rows="3">{$op.rques}</textarea>
+			<br />
+			<input type="submit" value="modifier" />
+			</form>
+	      </td>
         </tr>
 
       </table>

@@ -1,4 +1,12 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPbloc
+* @version $Revision$
+* @author Romain Ollivier
+*/
+
 include_once("modules/dPbloc/checkDate.php");
 require_once("modules/dPbloc/planning.class.php");
 require_once("modules/dPbloc/calendar.class.php");
@@ -11,7 +19,7 @@ $formulaire = new Cformulaire(dPgetParam($_GET, "tool", ""), dPgetParam($_GET, "
 
 <script language="javascript">
 function popPlanning(day, month, year) {
-  window.open('./index.php?m=dPbloc&a=view_planning&dialog=1&day='+day+'&month='+month+'&year='+year, 'Planning du jour', 'left=10,top=10,height=550,width=700,resizable');
+  window.open('./index.php?m=dPbloc&a=view_planning&dialog=1&day='+day+'&month='+month+'&year='+year, 'Planning du jour', 'left=10,top=10,height=550,width=700,resizable,scrollbars=1');
 }
 </script>
 

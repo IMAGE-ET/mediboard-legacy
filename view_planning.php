@@ -1,4 +1,12 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPbloc
+* @version $Revision$
+* @author Romain Ollivier
+*/
+
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
@@ -40,8 +48,8 @@ foreach($plagesop as $key=>$value) {
   $plagesop[$key]["debut"] = substr($value["debut"], 0, 2)."h".substr($value["debut"], 3, 2);
   $plagesop[$key]["fin"] = substr($value["fin"], 0, 2)."h".substr($value["fin"], 3, 2);
   $sql = "select operations.temp_operation as duree, operations.cote as cote, operations.time_operation as heure,
-  		operations.CCAM_code as CCAM_code, patients.nom as lastname, patients.prenom as firstname,
-		patients.sexe as sexe, patients.naissance as naissance
+  		operations.CCAM_code as CCAM_code, operations.rques as rques, patients.nom as lastname,
+        patients.prenom as firstname, patients.sexe as sexe, patients.naissance as naissance
   		from operations
 		left join patients
 		on operations.pat_id = patients.patient_id
@@ -58,7 +66,16 @@ mysql_select_db("ccam")
   or die("Could not select database");
 foreach($plagesop as $key=>$value) {
   foreach($value["operations"] as $key2=>$value2) {
-    $plagesop[$key]["operations"][$key2]["naissance"] = substr($value2["naissance"], 8, 2)." / ".substr($value2["naissance"], 5, 2)." / ".substr($value2["naissance"], 0, 4);
+    $annais = substr($value2["naissance"], 0, 4);
+    $anjour = date("Y");
+    $moisnais = substr($value2["naissance"], 5, 2);
+    $moisjour = date("m");
+    $journais = substr($value2["naissance"], 8, 2);
+    $jourjour = date("d");
+    $age = $anjour-$annais;
+    if ($moisjour<$moisnais){$age=$age-1;}
+    if ($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
+    $plagesop[$key]["operations"][$key2]["age"] = $age;
 	$plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
     $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";
     $ccamr = mysql_query($sql);

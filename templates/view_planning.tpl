@@ -3,10 +3,8 @@
   {foreach from=$plagesop item=curr_plageop}
   <tr>
     <td>
-	  Dr. {$curr_plageop.firstname} {$curr_plageop.lastname}
-	  <br />
-	  {$curr_plageop.salle}
-	  <br />
+	  Dr. {$curr_plageop.firstname} {$curr_plageop.lastname} :
+	  {$curr_plageop.salle} de
 	  {$curr_plageop.debut} - {$curr_plageop.fin}
 	</td>
   </tr>
@@ -21,20 +19,20 @@
 		  <th>Heure</th>
 		  <th>Intervention</th>
 		  <th>Coté</th>
+		  <th>Remarques</th>
 		  <th>Nom</th>
 		  <th>Prénom</th>
-		  <th>Sexe</th>
-		  <th>Date de naissance</th>
+		  <th>Age</th>
 		</tr>
 		{foreach from=$curr_plageop.operations item=curr_op}
 		<tr>
 		  <td>{$curr_op.heure}</td>
 		  <td>{$curr_op.CCAM} <i>({$curr_op.CCAM_code})</i></td>
 		  <td>{$curr_op.cote}</td>
+		  <td>{$curr_op.rques}</td>
 		  <td>{$curr_op.lastname}</td>
 		  <td>{$curr_op.firstname}</td>
-		  <td>{$curr_op.sexe}</td>
-		  <td>{$curr_op.naissance}</td>
+		  <td>{$curr_op.age} ans</td>
 		</tr>
 		{/foreach}
 	  </table>
