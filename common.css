@@ -137,13 +137,13 @@ a.hdr:visited {
 /* tabbed boxes */
 
 td.tabon {
-  background: #ace;
+  background: #ccc;
   border: outset #fff 2px;
   border-bottom: none;
 }
 
 td.taboff {
-  background: #def;
+  background: #ccc;
   border: solid #ccc 1px;
   border-bottom: 2px;
 }
@@ -153,7 +153,7 @@ td.tabsp {
 }
 
 td.tabox {
-  background-color: #ace;
+  background-color: #ccc;
   border: solid #ccc 2px;
   border-top: none;
 }

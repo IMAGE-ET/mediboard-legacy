@@ -19,6 +19,7 @@ class CTabBox extends CTabBox_core {
 		reset( $this->tabs );
 		$s = '';
 		// tabbed / flat view options
+		/*
 		if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
 			$s .= "<table border='0' cellpadding='2' cellspacing='0' width='100%'>\n";
 			$s .= "<tr>\n";
@@ -34,6 +35,7 @@ class CTabBox extends CTabBox_core {
 				echo "<img src='./images/shim.gif' height='10' width='1' alt='' />";
 			}
 		}
+		*/
 
 		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
 		// flat view, active = -1
@@ -58,9 +60,9 @@ class CTabBox extends CTabBox_core {
 				$class = ($k == $this->active) ? "tabon" : "taboff";
 				$sel = ($k == $this->active) ? "Selected" : "";
 				$value = $AppUI->_($v[1]);
-				$s .= "<td height='28' valign='middle' width='3'><img src='./style/$uistyle/images/tab".$sel."Left.png' width='3' height='28' border='0' alt='' /></td>";
+				$s .= "<td height='28' valign='middle'><img src='./style/$uistyle/images/tab".$sel."Left.png' height='28' border='0' alt='' /></td>";
 				$s .= "<td valign='middle' nowrap='nowrap' background='./style/$uistyle/images/tab".$sel."Bg.png'>&nbsp;<a href='".$this->baseHRef."tab=$k'>$value</a>&nbsp;</td>";
-				$s .= "<td valign='middle' width='3'><img src='./style/$uistyle/images/tab".$sel."Right.png' width='3 height='28' border='0' alt='' /></td>";
+				$s .= "<td valign='middle'><img src='./style/$uistyle/images/tab".$sel."Right.png' height='28' border='0' alt='' /></td>";
 				$s .= "<td width='3' class='tabsp'><img src='./images/shim.gif' height='1' width='3' /></td>";
 			}
 			$s .= "</table></td></tr>";
