@@ -1,40 +1,43 @@
-<table class="form">
-  <tr><th class="category" colspan="3"><a href="javascript:window.print()">Fiche d'admission</a></th></tr>
-  <tr>
-    <th class="category" style="width: 33%">Patient</th>
-    <th class="category" style="width: 33%">Type d'intervention</th>
-    <th class="category" style="width: 33%">Chirurgien</th>
-  </tr>
-
-  <tr>
-    <td>{$patient.nom} {$patient.prenom}</td>
-    <td class="text" rowspan="2">{$CCAM}</td>
-    <td>Dr. {$chirurgien.firstname} {$chirurgien.lastname}</td>
-  </tr>
-
-  <tr>
-    <td>{$patient.adresse}<br />{$patient.CP} {$patient.ville}</td>
-    <td>{$chirurgien.specialite}</td>
-  </tr>
-
-  <tr>
-    <th class="category">RDV d'anesthésie</th>
-    <th class="category">Admission</th>
-    <th class="category">Intervention</th>
-  </tr>
+<table class="form" id="admission">
+  <tr><th class="title" colspan="2"><a href="javascript:window.print()">Fiche d'admission</a></th></tr>
+  <tr><td class="info" colspan="2">(Prière de vous munir pour la consultation d'anesthésie de la photocopie
+                       de vos cartes de sécurité sociale, de mutuelle et du résultat de votre
+                       bilan sanguin et la liste des médicaments que vous prennez)</td></tr>
   
-  <tr>
-    <td>Rendez-vous le {$anesthesie.date}</td>
-    <td>Rendez-vous le {$admission.date}</td>
-    <td rowspan=3>Planifié le {$operation.date}</td>
-  </tr>
-
-  <tr>
-    <td rowspan="2">à {$anesthesie.heure}</td>
-    <td>à {$admission.heure}</td>
-  </tr>
-
-  <tr>
-    <td>hospitalisation de {$admission.duree} jours en {$admission.type}</td>
-  </tr>
+  <tr><th>Date: </th><td>{$adm.today}</td></tr>
+  <tr><th>Chirurgien: </th><td>Dr. {$adm.chirName}</td></tr>
+  
+  <tr><th class="category" colspan="2">Renseignements concernant le patient</th></tr>
+  
+  <tr><th>Nom / Prenom: </th><td>{$adm.patName} {$adm.patFirst}</td></tr>
+  <tr><th>Date de naissance / Sexe: </th><td>né(e) le {$adm.naissance} de sexe {$adm.sexe}</td></tr>
+  <tr><th>Incapable majeur: </th><td>{$adm.inc}</td></tr>
+  <tr><th>Telephone: </th><td>{$adm.tel}</td></tr>
+  <tr><th>Medecin traitant: </th><td>{$adm.medTrait}</td></tr>
+  <tr><th>Adresse: </th><td>{$adm.adresse} - {$adm.cp} {$adm.ville}</td></tr>
+  
+  <tr><th class="category" colspan="2">Renseignements relatifs à l'hospitalisation</th></tr>
+  
+  <tr><th>Admission: </th><td>le {$adm.dateAdm} à {$adm.hourAdm}</td></tr>
+  <tr><th>Hospitalisation: </th><td>{$adm.hospi}</td></tr>
+  <tr><th>Chambre seule: </th><td>{$adm.chambre}</td></tr>
+  <tr><th>Date d'intervention: </th><td>{$adm.dateOp}</td></tr>
+  <tr><th>Diagnostic: </th><td>{$adm.CCAM}</td></tr>
+  <tr><th>Durée prévue d'hospitalisation: </th><td>{$adm.dureeHospi} jours</td></tr>
+  
+  <tr><th class="category" colspan="2">Rendez vous d'anesthésie</th></tr>
+  
+  <tr><th>Date: </th><td>le {$adm.dateAnesth} à {$adm.hourAnesth}</td><tr>
+  
+  <tr><td class="info" colspan="2"><b>Pour votre hospitalisation, prière de vous munir de :</b>
+                                   <ul>
+                                     <li>Carte Vitale ou, à défaut, attestation de sécurité
+                                         sociale, carte de mutuelle accompagnée de la prise
+                                         en charge le cas échéant.</li>
+                                     <li>Tous examens en votre possession (analyse, radio,
+                                         carte de groupe sanguin...).</li>
+                                      <li>Prévoir linge et nécessaire de toilette.</li>
+                                      <li>Vos médicaments éventuellement</li>
+                                    </ul>
+  </td></tr>
 </table>
