@@ -13,15 +13,16 @@
     <td>
 	  <table class="tbl">
 	    <tr>
-		  <th colspan="5"><b>Intervention</b></th>
+		  <th colspan="6"><b>Intervention</b></th>
 		  <th colspan="3"><b>Patient</b></th>
 		</tr>
 		<tr>
 		  <th>Heure</th>
 		  <th>Intervention</th>
 		  <th>Coté</th>
-      <th>Anesthésie</th>
+          <th>Anesthésie</th>
 		  <th>Remarques</th>
+		  <th>Examens</th>
 		  <th>Nom</th>
 		  <th>Prénom</th>
 		  <th>Age</th>
@@ -31,8 +32,9 @@
 		  <td>{$curr_op.heure}</td>
 		  <td>{$curr_op.CCAM} <i>({$curr_op.CCAM_code})</i></td>
 		  <td>{$curr_op.cote}</td>
-      <td>{$curr_op.lu_type_anesth}</td>
+          <td>{$curr_op.lu_type_anesth}</td>
 		  <td>{$curr_op.rques} {if $curr_op.mat}({$curr_op.mat}){/if}</td>
+		  <td>{$curr_op.examen}</td>
 		  <td>{$curr_op.lastname}</td>
 		  <td>{$curr_op.firstname}</td>
 		  <td>{$curr_op.age} ans</td>

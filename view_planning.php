@@ -14,12 +14,12 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 }
 
 $debut = dPgetParam( $_GET, 'debut', date("Ymd") );
-$dayd = substr($debut, 6, 2);
-$monthd = substr($debut, 4, 2);
+$dayd = intval(substr($debut, 6, 2));
+$monthd = intval(substr($debut, 4, 2));
 $yeard = substr($debut, 0, 4);
 $fin = dPgetParam( $_GET, 'fin', date("Ymd") );
-$dayf = substr($fin, 6, 2);
-$monthf = substr($fin, 4, 2);
+$dayf = intval(substr($fin, 6, 2));
+$monthf = intval(substr($fin, 4, 2));
 $yearf = substr($fin, 0, 4);
 $vide = dPgetParam( $_GET, 'vide', false );
 $type = dPgetParam( $_GET, 'type', 0 );
@@ -77,6 +77,7 @@ foreach($plagesop as $key=>$value) {
   $sql = "SELECT operations.temp_operation AS duree, operations.cote AS cote, operations.time_operation AS heure,
           operations.CCAM_code AS CCAM_code, operations.rques AS rques, operations.materiel AS materiel, 
           operations.commande_mat AS commande_mat, operations.type_anesth AS type_anesth,
+          operations.examen AS examen,
           patients.nom AS lastname, patients.prenom AS firstname, patients.sexe AS sexe,
           patients.naissance AS naissance
           FROM operations
