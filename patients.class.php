@@ -1,39 +1,28 @@
 <?php
-// use the dPFramework to have easy database operations (store, delete etc.) by using its ObjectOrientedDesign
-// therefore we have to create a child class for the module dPccam
-
-// a class named (like this) in the form: module/module.class.php is automatically loaded by the dPFramework
 
 /**
  *	@package dotProject
  *	@subpackage modules
  *	@version $Revision$
-*/
+ */
 
-// include the powerful parent class that we want to extend for dPccam
-require_once( $AppUI->getSystemClass ('dp' ) );		// use the dPFramework for easy inclusion of this class here
+require_once( $AppUI->getSystemClass ('dp' ) );
 
 /**
- * The dPccam Class
+ * The CPatient Class
  */
-class Cpatients extends CDpObject {
-	// link variables to the dPccam object (according to the existing columns in the database table dPccam)
-	var $patient_id = NULL;	//use NULL for a NEW object, so the database automatically assigns an unique id by 'NOT NULL'-functionality
+class CPatient extends CDpObject {
+  // DB Table key
+	var $patient_id = NULL;
+
+  // DB Fields
 	var $nom = NULL;
 	var $prenom = NULL;
-	var $jour = NULL;
-	var $mois = NULL;
-	var $annee = NULL;
 	var $naissance = NULL;
 	var $sexe = NULL;
 	var $adresse = NULL;
 	var $ville = NULL;
 	var $cp = NULL;
-	var $tel1 = NULL;
-	var $tel2 = NULL;
-	var $tel3 = NULL;
-	var $tel4 = NULL;
-	var $tel5 = NULL;
 	var $tel = NULL;
 	var $medecin_traitant = NULL;
 	var $incapable_majeur = NULL;
@@ -41,44 +30,51 @@ class Cpatients extends CDpObject {
 	var $matricule = NULL;
 	var $SHS = NULL;
 
-	// the constructor of the CdPccam class, always combined with the table name and the unique key of the table
-	function Cpatients() {
+  // Form fields
+	var $_jour = NULL;
+	var $_mois = NULL;
+	var $_annee = NULL;
+	var $_tel1 = NULL;
+	var $_tel2 = NULL;
+	var $_tel3 = NULL;
+	var $_tel4 = NULL;
+	var $_tel5 = NULL;
+
+	function CPatient() {
 		$this->CDpObject( 'patients', 'patient_id' );
 	}
 
-	// overload the delete method of the parent class for adaptation for dPccam's needs
-	function delete() {
-		$sql = "DELETE FROM patients WHERE patient_id = '$this->patient_id'";
-		if (!db_exec( $sql )) {
-			return db_error();
-		} else {
-			return NULL;
-		}
+	function check() {
+    // Data Computation
+		$this->tel = 
+      $this->_tel1 .
+      $this->_tel2 .
+      $this->_tel3 .
+      $this->_tel4 .
+      $this->_tel5;
+
+		$this->naissance = 
+      $this->_annee . "-" .
+      $this->_mois  . "-" .
+      $this->_jour;
+      
+    // Data checking
+    $msg = NULL;
+
+    if (!strlen($this->nom)) {
+      $msg .= "Nom invalide: '$this->nom'<br />";
+    }
+
+    if (!strlen($this->prenom)) {
+      $msg .= "Nom invalide: '$this->prenom'<br />";
+    }
+    
+    if (!ereg ("([1-2])([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{3})([0-9]{3})([0-9]{2})", $this->matricule)) {
+      $msg .= "Matricule invalide: '$this->matricule'<br />";
+    }
+        
+    return $msg . parent::check();
 	}
-	
-	// overload the store method
-	function store() {
-		//@todo -c apeller la fonction superstore pour faire l'insert/update
-		$this->tel = $this->tel1.$this->tel2.$this->tel3.$this->tel4.$this->tel5;
-		$this->naissance = $this->annee."-".$this->mois."-".$this->jour;
-		if($this->patient_id != NULL) {
-			$sql = "update patients set nom = '$this->nom', prenom = '$this->prenom', naissance = '$this->naissance',
-					sexe = '$this->sexe', adresse = '$this->adresse', ville = '$this->ville', cp = '$this->cp', tel = '$this->tel',
-					medecin_traitant = '$this->medecin_traitant', incapable_majeur = '$this->incapable_majeur',
-					ATNC = '$this->ATNC', matricule = '$this->matricule', SHS = '$this->SHS'
-					where patient_id = '$this->patient_id'";
-			db_exec( $sql );
-			return db_error();
-		}
-		else {
-			$sql = "insert into patients(nom, prenom, naissance, sexe, adresse, ville, cp, tel, medecin_traitant,
-					incapable_majeur, ATNC, matricule, SHS)
-					values('$this->nom', '$this->prenom', '$this->naissance', '$this->sexe', '$this->adresse',
-					'$this->ville', '$this->cp', '$this->tel', '$this->medecin_traitant',
-					'$this->incapable_majeur', '$this->ATNC', '$this->matricule', '$this->SHS')";
-			db_exec( $sql );
-			return db_error();
-		}
-	}
+
 }
 ?>

@@ -38,9 +38,9 @@
       <tr>
         <th>Date de naissance:</th>
         <td>
-          <input type="text" name="jour"  size="1" value="{$patient.naissance|date_format:"%d"}" /> -
-          <input type="text" name="mois"  size="1" value="{$patient.naissance|date_format:"%m"}" /> -
-          <input type="text" name="annee" size="2" value="{$patient.naissance|date_format:"%Y"}" />
+          <input type="text" name="_jour"  size="1" value="{$patient.naissance|date_format:"%d"}" /> -
+          <input type="text" name="_mois"  size="1" value="{$patient.naissance|date_format:"%m"}" /> -
+          <input type="text" name="_annee" size="2" value="{$patient.naissance|date_format:"%Y"}" />
         </td>
       </tr>
       
@@ -82,11 +82,11 @@
       <tr>
         <th>Téléphone:</td>
         <td>
-          <input type="text" name="tel1" size="1" value="{$patient.tel.0}{$patient.tel.1}"> - 
-          <input type="text" name="tel2" size="1" value="{$patient.tel.2}{$patient.tel.3}"> -
-          <input type="text" name="tel3" size="1" value="{$patient.tel.4}{$patient.tel.5}"> -
-          <input type="text" name="tel4" size="1" value="{$patient.tel.6}{$patient.tel.7}"> -
-          <input type="text" name="tel5" size="1" value="{$patient.tel.8}{$patient.tel.9}">
+          <input type="text" name="_tel1" size="1" value="{$patient.tel.0}{$patient.tel.1}"> - 
+          <input type="text" name="_tel2" size="1" value="{$patient.tel.2}{$patient.tel.3}"> -
+          <input type="text" name="_tel3" size="1" value="{$patient.tel.4}{$patient.tel.5}"> -
+          <input type="text" name="_tel4" size="1" value="{$patient.tel.6}{$patient.tel.7}"> -
+          <input type="text" name="_tel5" size="1" value="{$patient.tel.8}{$patient.tel.9}">
         </td>
       </tr>
       
