@@ -39,7 +39,7 @@ mysql_select_db("ccam")
 foreach($op as $key => $value) {
   $op[$key]["chir_name"] = "Dr. ".$value["chir_lastname"]." ".$value["chir_firstname"];
   $op[$key]["pat_name"] = $value["pat_lastname"]." ".$value["pat_firstname"];
-  $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";
+  $sql = "select LIBELLELONG from actes where CODE = '".$value["CCAM_code"]."'";
   $ccamr = mysql_query($sql);
   $ccam = mysql_fetch_array($ccamr);
   $op[$key]["CCAM"] = $ccam["LIBELLELONG"];

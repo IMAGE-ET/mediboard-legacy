@@ -62,7 +62,7 @@ foreach($op1 as $key => $value) {
   $op1[$key]["dateFormed"] = substr($value["date"], 8, 2)."/".substr($value["date"], 5, 2)."/".substr($value["date"], 0, 4);
   $op1[$key]["chir_name"] = "Dr. ".$value["chir_lastname"]." ".$value["chir_firstname"];
   $op1[$key]["pat_name"] = $value["pat_lastname"]." ".$value["pat_firstname"];
-  $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";
+  $sql = "select LIBELLELONG from actes where CODE = '".$value["CCAM_code"]."'";
   $ccamr = mysql_query($sql);
   $ccam = mysql_fetch_array($ccamr);
   $op1[$key]["CCAM"] = $ccam["LIBELLELONG"];
@@ -71,7 +71,7 @@ foreach($op2 as $key => $value) {
   $op2[$key]["dateFormed"] = substr($value["date"], 8, 2)."/".substr($value["date"], 5, 2)."/".substr($value["date"], 0, 4);
   $op2[$key]["chir_name"] = "Dr. ".$value["chir_lastname"]." ".$value["chir_firstname"];
   $op2[$key]["pat_name"] = $value["pat_lastname"]." ".$value["pat_firstname"];
-  $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";
+  $sql = "select LIBELLELONG from actes where CODE = '".$value["CCAM_code"]."'";
   $ccamr = mysql_query($sql);
   $ccam = mysql_fetch_array($ccamr);
   $op2[$key]["CCAM"] = $ccam["LIBELLELONG"];

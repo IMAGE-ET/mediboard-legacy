@@ -80,7 +80,7 @@ if(isset($list1)) {
     if($moisjour<$moisnais){$age=$age-1;}
     if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
     $list1[$key]["age"] = $age;
-    $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";
+    $sql = "select LIBELLELONG from actes where CODE = '".$value["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
     $list1[$key]["CCAM"] = $ccam["LIBELLELONG"];
@@ -106,7 +106,7 @@ if(isset($list2)) {
     if($moisjour<$moisnais){$age=$age-1;}
     if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
     $list2[$key]["age"] = $age;
-    $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";
+    $sql = "select LIBELLELONG from actes where CODE = '".$value["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
     $list2[$key]["CCAM"] = $ccam["LIBELLELONG"];

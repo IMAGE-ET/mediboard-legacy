@@ -160,12 +160,12 @@ foreach($plagesop as $key => $value) {
     } else {
       $plagesop[$key]["operations"][$key2]["mat"] = "";
     }
-    $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";
+    $sql = "select LIBELLELONG from actes where CODE = '".$value2["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
 	$plagesop[$key]["operations"][$key2]["CCAM"] = $ccam["LIBELLELONG"];
 	
-    $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code2"]."'";
+    $sql = "select LIBELLELONG from actes where CODE = '".$value2["CCAM_code2"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
 	$plagesop[$key]["operations"][$key2]["CCAM2"] = $ccam["LIBELLELONG"];
