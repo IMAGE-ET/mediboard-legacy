@@ -55,7 +55,7 @@ function popPermItem() {
 	url+= '&dialog=1';
 	url+= '&callback=setPermItem';
 	url+= '&table=' + tables[pgo];
-	window.open(url, 'selector', 'left=50, top=50, height=250, width=400, resizable=yes')
+	popup(400, 250, url, 'selector');
 }
 
 // Callback function for the generic selector
