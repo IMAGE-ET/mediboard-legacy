@@ -76,8 +76,9 @@ foreach($plagesop as $key=>$value) {
   $plagesop[$key]["date"] = $dayOfWeekList[$curr_dayOfWeek]." $curr_day ".$monthList[$curr_intmonth]." $curr_year";
   $sql = "SELECT operations.temp_operation AS duree, operations.cote AS cote, operations.time_operation AS heure,
           operations.CCAM_code AS CCAM_code, operations.rques AS rques, operations.materiel AS materiel, 
-          operations.commande_mat AS commande_mat, patients.nom AS lastname, patients.prenom AS firstname,
-          patients.sexe AS sexe, patients.naissance AS naissance
+          operations.commande_mat AS commande_mat, operations.type_anesth AS type_anesth,
+          patients.nom AS lastname, patients.prenom AS firstname, patients.sexe AS sexe,
+          patients.naissance AS naissance
           FROM operations
           LEFT JOIN patients
           ON operations.pat_id = patients.patient_id
@@ -103,6 +104,7 @@ foreach($plagesop as $key=>$value) {
 }
 
 //On rectifie quelques champs des opérations
+$anesth = dPgetSysVal("AnesthType");
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
   or die("Could not connect");
 mysql_select_db("ccam")
@@ -120,6 +122,7 @@ foreach($plagesop as $key => $value) {
     if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
     $plagesop[$key]["operations"][$key2]["age"] = $age;
 	$plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
+    $plagesop[$key]["operations"][$key2]["lu_type_anesth"] = $anesth[$value2["type_anesth"]];
     if($value2["materiel"] != "") {
       switch($value2["commande_mat"]) {
         case "o" : {

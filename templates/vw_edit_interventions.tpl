@@ -86,6 +86,20 @@ function popOp(id) {
 			</select>
 			<input type="submit" value="changer" />
 			</form>
+      <br />
+      <form name="editFrm{$curr_op.id}" action="index.php" method="get">
+            <input type="hidden" name="m" value="{$module}" />
+            <input type="hidden" name="a" value="do_order_op" />
+            <input type="hidden" name="cmd" value="setanesth" />
+            <input type="hidden" name="id" value="{$curr_op.id}" />
+      <select name="type">
+        <option value="NULL">-- Anesthésie</option>
+        {foreach from=$anesth item=curr_anesth}
+        <option {if $curr_op.lu_type_anesth == $curr_anesth} selected="selected" {/if}>{$curr_anesth}</option>
+        {/foreach}
+      </select>
+      <input type="submit" value="changer" />
+      </form>
 		  </td>
 		  <td>
 			<i>{$curr_op.CCAM}</i>

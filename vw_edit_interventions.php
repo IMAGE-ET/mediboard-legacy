@@ -24,6 +24,8 @@ if(dPgetParam($_GET, "id", "noid") == "noid") {
 else
   $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
 
+$anesth = dPgetSysVal("AnesthType");
+
 $sql = "SELECT plagesop.debut AS debut, plagesop.fin AS fin,
         users.user_first_name AS firstname, users.user_last_name AS lastname,
         plagesop.date AS date, sallesbloc.nom AS salle
@@ -50,7 +52,8 @@ $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, pati
 $list1 = db_loadlist($sql);
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
 		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote,
-        operations.time_operation AS heure, plagesop.debut AS debut, plagesop.fin AS fin, operations.rank AS rank
+        operations.time_operation AS heure, plagesop.debut AS debut, plagesop.fin AS fin, operations.rank AS rank,
+        operations.type_anesth AS type_anesth
 		FROM operations
 		LEFT JOIN patients
 		ON operations.pat_id = patients.patient_id
@@ -84,6 +87,7 @@ if(isset($list2)) {
 	$list2[$key]["duree"] = substr($value["temps"], 0, 2)."h".substr($value["temps"], 3, 2);
 	$list2[$key]["hour"] = substr($value["heure"], 0, 2);
 	$list2[$key]["min"] = substr($value["heure"], 3, 2);
+    $list2[$key]["lu_type_anesth"] = $anesth[$list2[$key]["type_anesth"]];
     $j = 0;
     for($i = substr($value["debut"], 0, 2) ; $i < substr($value["fin"], 0, 2) ; $i++) {
       if(strlen($i) == 1)
@@ -112,6 +116,7 @@ $smarty->assign('canEdit', $canEdit);
 $smarty->assign('module', $m);
 $smarty->assign('user', $AppUI->user_id);
 $smarty->assign('title', $title);
+$smarty->assign('anesth', $anesth);
 $smarty->assign('list1', $list1);
 $smarty->assign('list2', $list2);
 $smarty->assign('max', sizeof($list2));

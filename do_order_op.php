@@ -136,6 +136,22 @@ switch($cmd)
     }
     break;
   }
+  case "setanesth" : {
+    $type = dPgetParam( $_GET, 'type', NULL);
+    $anesth = dPgetSysVal("AnesthType");
+    foreach($anesth as $key => $value) {
+      if(trim($value) == $type) {
+        $lu = $key;
+      }
+    }
+    if(!isset($lu))
+      $lu = NULL;
+    $sql = "UPDATE operations
+            SET type_anesth = '$lu'
+            WHERE operations.operation_id = '$id'";
+    $result = db_exec($sql);
+    break;
+  }
   case "modrques" : {
     $rques = dPgetParam( $_GET, 'rques', '00' );
     $sql = "UPDATE operations
