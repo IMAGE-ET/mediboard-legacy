@@ -2,7 +2,8 @@
   <tr><th class="title" colspan="2"><a href="javascript:window.print()">Fiche d'admission</a></th></tr>
   <tr><td class="info" colspan="2">(Prière de vous munir pour la consultation d'anesthésie de la photocopie
                        de vos cartes de sécurité sociale, de mutuelle et du résultat de votre
-                       bilan sanguin et la liste des médicaments que vous prennez)</td></tr>
+                       bilan sanguin et la liste des médicaments que vous prennez)<br />
+                       Pour tout renseignement, téléphonez au 05 46 00 77 08</td></tr>
   
   <tr><th>Date: </th><td>{$adm.today}</td></tr>
   <tr><th>Chirurgien: </th><td>Dr. {$adm.chirName}</td></tr>
@@ -22,12 +23,14 @@
   <tr><th>Hospitalisation: </th><td>{$adm.hospi}</td></tr>
   <tr><th>Chambre seule: </th><td>{$adm.chambre}</td></tr>
   <tr><th>Date d'intervention: </th><td>{$adm.dateOp}</td></tr>
-  <tr><th>Diagnostic: </th><td>{$adm.CCAM}</td></tr>
+  <tr><th>Diagnostic: </th><td class="text">{$adm.CCAM}</td></tr>
+  <tr><th>Coté: </th><td>{$adm.cote}</td></tr>
   <tr><th>Durée prévue d'hospitalisation: </th><td>{$adm.dureeHospi} jours</td></tr>
   
   <tr><th class="category" colspan="2">Rendez vous d'anesthésie</th></tr>
   
-  <tr><th>Date: </th><td>le {$adm.dateAnesth} à {$adm.hourAnesth}</td><tr>
+  <tr><th>Date: </th><td class="text"><!--le {$adm.dateAnesth} à {$adm.hourAnesth}-->
+                                      pour prendre rendez-vous, veuillez téléphoner au<br />05 46 00 77 08</td><tr>
   
   <tr><td class="info" colspan="2"><b>Pour votre hospitalisation, prière de vous munir de :</b>
                                    <ul>

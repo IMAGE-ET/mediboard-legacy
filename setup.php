@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.2';
+$config['mod_version'] = '0.21';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -51,6 +51,9 @@ class CSetupdPplanningOp {
                     ADD type_anesth TINYINT AFTER time_anesth ,
                     ADD saisie ENUM( 'n', 'o' ) DEFAULT 'n' NOT NULL ,
                     CHANGE plageop_id plageop_id BIGINT( 20 ) UNSIGNED";
+        }
+        case "0.2": {
+        	$sql = "ALTER TABLE `operations` ADD `convalescence` TEXT AFTER `materiel` ;";
             db_exec( $sql ); db_error();
 			return true;
         }
@@ -91,7 +94,7 @@ class CSetupdPplanningOp {
 			", UNIQUE KEY operation_id (operation_id)" .
 			") TYPE=MyISAM;";
 		db_exec( $sql ); db_error();
-        upgrade("all");
+        $this->upgrade("all");
 		return null;
 	}
 }

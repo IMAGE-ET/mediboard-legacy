@@ -33,6 +33,7 @@ class COperation extends CDpObject {
   var $time_operation = null;
   var $examen = null;
   var $materiel = null;
+  var $convalescence = null;
   var $commande_mat = "n";
   var $info = null;
   var $date_anesth = null;

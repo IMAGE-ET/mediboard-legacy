@@ -93,8 +93,7 @@ $sql = "SELECT plagesop.id AS id, plagesop.date,
 		ON plagesop.id = operations.plageop_id
 		WHERE plagesop.id_chir = '$id_chir'
 		AND plagesop.date LIKE '$year-$month-__'
-		AND operations.operation_id IS NULL
-		AND plagesop.date > '$today'";
+		AND operations.operation_id IS NULL";
 $result1 = db_loadlist($sql);
 $sql = "SELECT plagesop.id AS id, plagesop.date,
 		plagesop.fin AS fin, plagesop.debut AS debut
@@ -104,7 +103,6 @@ $sql = "SELECT plagesop.id AS id, plagesop.date,
 		WHERE plagesop.id_chir = '$id_chir'
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NOT NULL
-		AND plagesop.date > '$today'
 		GROUP BY operations.plageop_id";
 $result2 = db_loadlist($sql);
 unset($result);

@@ -9,6 +9,7 @@ function setClose() {ldelim}
     "{$protSel->_min_op}",
     "{$protSel->examen|escape:javascript}",
     "{$protSel->materiel|escape:javascript}",
+    "{$protSel->convalescence|escape:javascript}",
     "{$protSel->type_adm}",
     "{$protSel->duree_hospi}");
   window.close();

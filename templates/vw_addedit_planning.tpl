@@ -165,7 +165,7 @@ function setPlage( key, val, adm ) {
     window.plageop_id = key;
     window.date = val;
     var sdate = val;
-    var date = new Date(sdate.slice(6, 10), sdate.slice(3,5), sdate.slice(0,2));
+    var date = new Date(parseInt(sdate.slice(6, 10)), parseInt(sdate.slice(3,5)) - 1, parseInt(sdate.slice(0,2)));
     if(adm) {
       date.setDate(parseInt(date.getDate()) - 1);
     }
@@ -173,7 +173,7 @@ function setPlage( key, val, adm ) {
     if(day.length == 1) {
       day = "0" + day;
     }
-    var month = "" + date.getMonth();
+    var month = "" + (date.getMonth() + 1);
     if(month.length == 1) {
       month = "0" + month;
     }
@@ -202,6 +202,7 @@ function setProtocole(
     prot_min_op,
     prot_examen,
     prot_materiel,
+    prot_convalescence,
     prot_type_adm,
     prot_duree_hospi) {
 
@@ -214,6 +215,7 @@ function setProtocole(
   f._min_op.value = prot_min_op;
   f.examen.value = prot_examen;
   f.materiel.value= prot_materiel;
+  f.convalescence.value= prot_convalescence;
   f.type_adm.value = prot_type_adm;
   f.duree_hospi.value = prot_duree_hospi;
 }
@@ -339,10 +341,10 @@ function printForm() {
           <th class="mandatory"><label for="editFrm_cote">Coté:</label></th>
           <td colspan="2">
             <select name="cote">
-              <option {if !$op && $op->cote == "total"} selected="selected" {/if} >total</option>
-              <option {if $op->cote == "droit"    } selected="selected" {/if} >droit    </option>
-              <option {if $op->cote == "gauche"   } selected="selected" {/if} >gauche   </option>
-              <option {if $op->cote == "bilatéral"} selected="selected" {/if} >bilatéral</option>
+              <option value="total"     {if !$op || $op->cote == "total"} selected="selected" {/if} >total</option>
+              <option value="droit"     {if $op->cote == "droit"        } selected="selected" {/if} >droit    </option>
+              <option value="gauche"    {if $op->cote == "gauche"       } selected="selected" {/if} >gauche   </option>
+              <option value="bilatéral" {if $op->cote == "bilatéral"    } selected="selected" {/if} >bilatéral</option>
             </select>
           </td>
         </tr>
@@ -377,13 +379,15 @@ function printForm() {
         {/if}
         
         <tr>
-          <th><label for="editFrm_examen">Examens complémentaires:</label></th>
-          <td colspan="2"><textarea name="examen" rows="3">{$op->examen}</textarea></td>
+          <td class="text"><label for="editFrm_examen">Examens complémentaires</label></td>
+          <td class="text"><label for="editFrm_materiel">Matériel à prévoir</label></td>
+          <td class="text"><label for="editFrm_convalescence">Convalescence</label></td>
         </tr>
 
         <tr>
-          <th><label for="editFrm_materiel">Matériel à prévoir:</label></th>
-          <td colspan="2"><textarea name="materiel" rows="3">{$op->materiel}</textarea></td>
+          <td><textarea name="examen" rows="3">{$op->examen}</textarea></td>
+          <td><textarea name="materiel" rows="3">{$op->materiel}</textarea></td>
+          <td><textarea name="convalescence" rows="3">{$op->convalescence}</textarea></td>
         </tr>
 
         {if !$protocole}
@@ -455,13 +459,13 @@ function printForm() {
           <td>
             <select name="_hour_adm">
             {foreach from=$hours item=hour}
-              <option {if $op->_hour_adm == $hour} selected="selected" {/if}>{$hour}</option>
+              <option value="{$hour}" {if $op->_hour_adm == $hour} selected="selected" {/if}>{$hour}</option>
             {/foreach}
             </select>
             :
             <select name="_min_adm">
             {foreach from=$mins item=min}
-              <option {if $op->_min_adm == $min} selected="selected" {/if}>{$min}</option>
+              <option value="{$min}" {if $op->_min_adm == $min} selected="selected" {/if}>{$min}</option>
             {/foreach}
             </select>
           </td>

@@ -64,6 +64,7 @@ $adm["ville"] = $pat->ville;
 
 $adm["today"] = date("d/m/Y");
 $adm["dateAdm"] = $rdv_adm;
+$adm["cote"] = $cote;
 $adm["hourAdm"] = "$hour_adm h";
 if($min_adm)
   $adm["hourAdm"] .= " $min_adm";
