@@ -16,6 +16,7 @@ class CDoObjectAddEdit {
   var $deleteMsg = null;
   var $redirect = null;
   var $redirectDelete = null;
+  var $_obj = null;
     
   function CDoObjectAddEdit($className, $objectKeyGetVarName) {
     global $m;
@@ -29,42 +30,56 @@ class CDoObjectAddEdit {
     $this->deleteMsg = "Object of type $className deleted";
   }
   
-  function doIt() {
+  function doBind() {
     global $AppUI;
     
     // Object binding
-    $obj = new $this->className();
-    if (!$obj->bind( $_POST )) {
-      $AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
+    $this->_obj = new $this->className();
+    if (!$this->_obj->bind( $_POST )) {
+      $AppUI->setMsg( $this->_obj->getError(), UI_MSG_ERROR );
       $AppUI->redirect($this->redirect);
     }
+  }
+  
+  function doDelete() {
+    global $AppUI;
+
+    if (!$this->_obj->canDelete( $msg )) {
+      $AppUI->setMsg( $msg, UI_MSG_ERROR );
+      $AppUI->redirect();
+    }
     
-    $del = intval( dPgetParam( $_POST, 'del', 0 ) );
-    if ($del) {
-      if (!$obj->canDelete( $msg )) {
-        $AppUI->setMsg( $msg, UI_MSG_ERROR );
-        $AppUI->redirect();
-      }
-      
-      if ($msg = $obj->delete()) {
-        $AppUI->setMsg( $msg, UI_MSG_ERROR );
-        $AppUI->redirect($this->redirect);
-      } else {
-        mbSetValueToSession($this->objectKeyGetVarName);
-        $AppUI->setMsg($this->deleteMsg, UI_MSG_ALERT);
-        $AppUI->redirect($this->redirectDelete);
-      }
-    } else {
-      
-      if ($msg = $obj->store()) {
-        $AppUI->setMsg($msg, UI_MSG_ERROR);
-      } else {
-        $isNotNew = @$_POST[$this->objectKeyGetVarName];
-        $AppUI->setMsg( $isNotNew ? $this->createMsg : $this->createMsg, UI_MSG_OK);
-      }
-    
+    if ($msg = $this->_obj->delete()) {
+      $AppUI->setMsg( $msg, UI_MSG_ERROR );
       $AppUI->redirect($this->redirect);
-    }  
+    } else {
+      mbSetValueToSession($this->objectKeyGetVarName);
+      $AppUI->setMsg($this->deleteMsg, UI_MSG_ALERT);
+      $AppUI->redirect($this->redirectDelete);
+    }
+  }
+  
+  function doStore () {
+    global $AppUI;
+
+    if ($msg = $this->_obj->store()) {
+      $AppUI->setMsg($msg, UI_MSG_ERROR);
+    } else {
+      $isNotNew = @$_POST[$this->objectKeyGetVarName];
+      $AppUI->setMsg( $isNotNew ? $this->createMsg : $this->createMsg, UI_MSG_OK);
+    }
+  
+    $AppUI->redirect($this->redirect);
+	}
+  
+  function doIt() {
+    $this->doBind();
+    
+    if (intval(dPgetParam($_POST, 'del'))) {
+      $this->doDelete();
+    } else {
+      $this->doStore();
+    }
   }
   
 }
