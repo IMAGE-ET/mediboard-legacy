@@ -76,6 +76,12 @@ function printAdmission(id) {
           <th>
             Heure
           </th>
+          <th>
+            Admis
+          </th>
+          <th>
+            Saisis
+          </th>
         </tr>
         {foreach from=$today item=curr_adm}
         <tr>
@@ -109,6 +115,8 @@ function printAdmission(id) {
             <input type="submit" value="Admis" />
             </form> 
             {/if}
+          </td>
+          <td>
             {if $curr_adm.saisie == "n"}
             <form name="editSaisFrm{$curr_adm.id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
