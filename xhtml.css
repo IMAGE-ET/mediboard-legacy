@@ -1,0 +1,105 @@
+/* XHTML elements */
+
+body {
+	font-family: Osaka, Arial, verdana, Sans-Serif;
+	font-size: 10pt;
+	background-color: #efe;
+	background: url(./images/bodyGradient.jpg) no-repeat center;
+	margin: 0px;
+}
+
+img {
+	border: none;
+}
+
+ul {
+	margin-left: 25px;
+}
+
+dl {
+	margin-top: 0px; 
+	padding-left: 1px;
+}
+
+dt {
+	margin-top: 5px;
+	color: #009;
+	font-weight: bold;
+}
+
+dd {
+	margin-bottom: 0px; 
+	margin-left: 12px;
+}
+
+em {
+	font-weight: bold;
+	text-decoration: none;
+	font-style: normal;
+}
+
+a:link {
+	color: #555;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #555;
+	text-decoration: none;
+}
+
+a:active {
+	color: #555;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #555;
+	text-decoration: underline;
+}
+
+td {
+	font-size: 10pt;
+}
+
+tr {
+	font-size: 10pt
+}
+
+h1, .title { /* @todo Remove 'title' class, use h2 instead */
+	font-size: 16pt;
+	font-weight: bold;
+	color: #555;
+	margin: 12px 0px;
+}
+
+h2, .subtitle { /* @todo Remove 'subtitile' class, use h2 instead */
+	font-size: 14pt;
+	font-weight: bold;
+	color: #494;
+	margin: 8px 10px;
+}
+
+h3 {
+	font-size: 12pt;
+	font-weight: bold;
+	color: #449;
+	margin: 4px 20px;
+}
+
+form {
+	margin: 0px;
+}
+
+textarea {
+	font-family: Osaka, Arial, verdana, Sans-Serif;
+	font-size: 10pt;
+	width: 100%;
+}
+
+select,
+input {
+	border: 1px black solid;
+	font-size: 10pt;
+	padding: 1px 2px;
+}

@@ -1,0 +1,107 @@
+/* Standard table 'spreadsheet' style */
+
+/* @todo CSS table.tbl factorization done: clean up HTML code */
+
+table.tbl {
+	width: 100%;
+	border: 0px;
+	border-spacing: 1px;
+	background: #9ce;
+}
+
+table.tbl th {
+	background-color: #888;
+	padding: 2px;
+	color: #fff;
+	border: outset #ccc 1px;
+	font-weight: normal;
+	text-align: center;
+}
+
+table.tbl td {
+	background-color: #fff;
+	padding: 2px;
+}
+
+/* a 'standard' table */
+
+table.std {
+	border: solid #8c8 3px;
+	background: #eef;
+}
+table.std th {
+	background-color: #888;
+	color: #fff;
+	border: outset #ccc 1px;
+}
+
+table.std td.hilite {
+	background-color: #fff;
+}
+
+/* Form tables */
+
+tr.field th {
+  background-color: transparent;
+  color: #000;
+  border: none;
+  white-space: nowrap;
+  text-align: right;
+  font-weight: normal;
+} 
+
+tr.field td {
+  white-space: nowrap;
+  text-align: left;
+} 
+
+td.submit {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* links in header blocks */
+
+a.hdr:link, 
+a.hdr:active, 
+a.hdr:visited {
+	color: #fff;
+}
+
+/* tabbed boxes */
+
+td.tabon {
+	background: #ace;
+	border: outset #fff 2px;
+	border-bottom: none;
+}
+
+td.taboff {
+	background: #def;
+	border: solid #ccc 1px;
+	border-bottom: 2px;
+}
+
+td.tabsp {
+	border-bottom: solid #ccc 2px;
+}
+
+td.tabox {
+	background-color: #ace;
+	border: solid #ccc 2px;
+	border-top: none;
+}
+
+/* Message styles */
+
+.warning {
+	color: #f00;
+}
+
+.error {
+	color: #f00;
+}
+
+.message {
+	color: #888;
+}

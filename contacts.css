@@ -1,0 +1,14 @@
+/* contacts table */
+
+table.contacts {
+	background-color: #888;
+}
+
+table.contacts td {
+	background-color: #def;
+}
+
+table.contacts td.hilite {
+	background-color: #fff;
+}
+

@@ -1,0 +1,124 @@
+/* Global header */
+
+
+#header {
+  width: 100%;
+  border-spacing: 0px;
+  border: none;
+}
+
+#header td,
+#header td {
+  padding: 0px;
+}
+
+/* Banner */
+
+#banner {
+  background: url(./images/titleGradient.jpg) no-repeat center;
+}
+
+#banner h1 {
+  float: left;
+  margin: 10px 20px 0px;
+}
+
+#banner a {
+  float: right;
+}
+
+#banner img {
+  verical-align: middle;
+}
+
+/* Navigation */
+
+#nav {
+	border: 1px solid #999;
+	background-color: #ccc;
+	color: #fff;
+	text-align: left;
+}
+
+#nav a {
+	font-weight: bold;
+	font-variant: small-caps;
+	font-size: 12pt;
+}
+
+#nav table {
+	width: 100%;
+	border-spacing: 0px;
+}
+
+#nav td {
+	padding: 3px;
+	vertical-align: middle;
+}
+
+#nav ul {
+	margin: 4px;
+	padding: 0px;
+	list-style-type: none;
+}
+
+#nav img {
+	display: block;
+	margin: auto;
+	width: 48px;
+}
+
+#nav li {
+	display: inline;
+	margin: 0px 2px;
+}
+
+#nav a {
+	display: block;
+	float: left;
+	padding: 6px 8px;
+}
+
+#nav a:hover {
+	text-decoration: none;
+	background-color: #eee;
+	padding: 5px 7px;
+	border: 1px solid #888;
+}
+
+/* Creation */
+
+#new {
+	white-space: nowrap;
+	text-align: right;
+	vertical-align: top;	
+}
+
+/* User */
+
+#user table {
+	border-spacing: 0px;
+	border: 2px;
+	width: 100%;
+	border-bottom: 1px dashed black;
+}
+
+#user td {
+	padding: 3px;
+	
+}
+
+#userWelcome {
+	width: 100%;
+}
+
+#userMenu {
+	white-space: nowrap;
+}
+
+/* Main -- table -- pane */
+
+#main {
+	width: 100%;
+	border-spacing: 0px
+}

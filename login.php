@@ -10,53 +10,54 @@
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
-	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
-	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
+	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/mb_icon.ico" type="image/ico" />
 </head>
 
-<body bgcolor="#ffffff" onload="document.loginform.username.focus();">
-<div align="center"><img src="./style/mediboard_style/images/LogoMediboard.jpg" border="0" alt="MediBoard" /></div>
-<br /><br />
-<div align="center"><h1>Logiciel de gestion des structures de santé</h1></div>
-<br /><br /><br /><br />
-<form action="./index.php" method="post" name="loginform">
-<table align="center" border="0" width="250" cellpadding="6" cellspacing="0" class="std">
-<input type="hidden" name="login" value="<?php echo time();?>" />
-<input type="hidden" name="redirect" value="<?php echo $redirect;?>" />
-<tr>
-	<th colspan="2"><em><?php echo $AppUI->cfg['company_name'];?></em></th>
-</tr>
-<tr>
-	<td align="right" nowrap><?php echo $AppUI->_('Username');?>:</td>
-	<td align="left" nowrap><input type="text" size="25" maxlength="20" name="username" class="text" /></td>
-</tr>
-<tr>
-	<td align="right" nowrap><?php echo $AppUI->_('Password');?>:</td>
-	<td align="left" nowrap><input type="password" size="25" maxlength="32" name="password" class="text" /></td>
-</tr>
-<tr>
-	<td align="left" nowrap><a href="http://www.dotproject.net/"><img src="./style/default/images/dp_icon.gif" width="120" height="20" border="0" alt="dotProject logo" /></a></td>
-	<td align="right" valign="bottom" nowrap><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
-</tr>
-</table>
-<div align="center">
-	<span style="font-size:7pt"><a href="http://www.openxtrem.com" target="_blank">Provided by openXtrem</a></span>
-</div>
-<?php if (@$AppUI->getVersion()) { ?>
-<div align="center">
-	<span style="font-size:7pt">Version <?php echo @$AppUI->getVersion();?></span>
-</div>
-<?php } ?>
+<body onload="document.login.username.focus();">
+<div id="login">
+<form name="login" action="./index.php" method="post">
+	<input type="hidden" name="login" value="<?php echo time();?>" />
+	<input type="hidden" name="redirect" value="<?php echo $redirect;?>" />
+	<table class="std">
+		<tr><th colspan="2"><?php echo $AppUI->cfg['company_name'];?></th></tr>
+		<tr><td colspan="2"><a href="http://mediboard.sourceforge.net/"><img src="./style/mediboard/images/mbNormal.png" alt="MediBoard logo" /></a></td></tr>
+		<tr><th colspan="2"><?php echo $AppUI->_('PoweredBy');?></th></tr>
+		<tr>
+			<td id="poweredBy" colspan="2">
+				<a href="http://www.dotproject.net/"><img src="./style/mediboard/images/dp_icon.gif" alt="dotProject logo" /></a>
+				<p>Version <?php echo @$AppUI->getVersion();?></p>
+			</td>
+		</tr>
+		<tr><th colspan="2"><?php echo $AppUI->_('PleaseLogin');?></th></tr>
+		<tr class="field">
+			<th><?php echo $AppUI->_('Username');?>:</th>
+			<td><input type="text" size="25" maxlength="20" name="username" class="text" /></td>
+		</tr>
+		<tr class="field">
+			<th><?php echo $AppUI->_('Password');?>:</th>
+			<td><input type="password" size="25" maxlength="32" name="password" class="text" /></td>
+		</tr>
+		<tr>
+			<td class="submit" colspan="2"><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
+		</tr>
+	</table>
 </form>
-<div align="center">
+</div>
+<div>
 <?php
-	echo '<span class="error">'.$AppUI->getMsg().'</span>';
+	$errorMsg = $AppUI->getMsg();
+	if ($errorMsg)
+	    echo "<div class='error'>Error: $errorMsg</div>";
 
-	$msg = '';
-	$msg .=  phpversion() < '4.1' ? '<br /><span class="warning">WARNING: dotproject is NOT SUPPORT for this PHP Version ('.phpversion().')</span>' : '';
-	$msg .= function_exists( 'mysql_pconnect' ) ? '': '<br /><span class="warning">WARNING: PHP may not be compiled with MySQL support.  This will prevent proper operation of dotProject.  Please check you system setup.</span>';
-	echo $msg;
+	$phpVersion = phpversion();
+	if ($phpVersion < "4.1")
+		echo "<div class='warning'>Warning: dotproject is NOT SUPPORT for this PHP Version ($phpVersion)</div>";
+
+	if (!function_exists("mysql_pconnect"))
+		echo "<div class='warning'>Warning: PHP may not be compiled with MySQL support.  This will prevent proper operation of dotProject.  Please check you system setup.</div>";
+
 ?>
 </div>
+
 </body>
 </html>
