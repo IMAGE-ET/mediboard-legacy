@@ -23,6 +23,11 @@ $sql = "SELECT users.user_last_name as lastname, users.user_first_name as firstn
         AND functions_mediboard.group_id = groups_mediboard.group_id
         ORDER BY lastname, firstname";
 $listChir = db_loadlist($sql);
+$sql = "SELECT functions_mediboard.function_id AS id, functions_mediboard.text AS text " .
+		"FROM functions_mediboard, groups_mediboard " .
+		"WHERE functions_mediboard.group_id = groups_mediboard.group_id " .
+		"AND (groups_mediboard.text = 'Chirurgie' OR groups_mediboard.text = 'Anesthesie')";
+$listSpe = db_loadlist($sql);
 $sql = "SELECT id, nom
         FROM sallesbloc
         ORDER BY nom";
@@ -35,6 +40,7 @@ $smarty = new CSmartyDP;
 $smarty->assign('todayi', $todayi);
 $smarty->assign('todayf', $todayf);
 $smarty->assign('listChir', $listChir);
+$smarty->assign('listSpe', $listSpe);
 $smarty->assign('listSalles', $listSalles);
 
 $smarty->display('print_planning.tpl');

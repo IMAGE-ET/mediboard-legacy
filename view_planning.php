@@ -24,6 +24,7 @@ $yearf = substr($fin, 0, 4);
 $vide = dPgetParam( $_GET, 'vide', false );
 $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
+$spe = dPgetParam( $_GET, 'spe', 0);
 $salle = dPgetParam( $_GET, 'salle', 0 );
 $CCAM = dPgetParam( $_GET, 'CCAM', "" );
 
@@ -56,6 +57,20 @@ if($chir) {
            WHERE user_id = '$chir'";
   $chir_id = db_loadlist($sql2);
   $sql .= " AND plagesop.id_chir = '".$chir_id[0]["user_username"]."'";
+}
+if($spe) {
+  $sql2 = "SELECT user_username " .
+  		"FROM users, users_mediboard " .
+  		"WHERE users.user_id = users_mediboard.user_id " .
+  		"AND users_mediboard.function_id = '$spe'";
+  $listChirs = db_loadlist($sql2);
+  if(count($listChirs) > 0) {
+    $sql .= " AND (0";
+    foreach($listChirs as $key => $value) {
+      $sql .= " OR plagesop.id_chir = '".$value["user_username"]."'";
+    }
+    $sql .= ")";
+  }
 }
 if($salle) {
   $sql .= " AND plagesop.id_salle = '$salle'";

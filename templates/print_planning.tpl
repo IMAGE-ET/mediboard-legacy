@@ -51,18 +51,20 @@ function popPlanning() {
   var debut = document.paramFrm.date_debut.value;
   var fin = document.paramFrm.date_fin.value;
   var vide = document.paramFrm.vide.checked;
+  var CCAM = document.paramFrm.CCAM_code.value;
   var type = document.paramFrm.type.value;
   var chir = document.paramFrm.chir.value;
+  var spe = document.paramFrm.spe.value;
   var salle = document.paramFrm.salle.value;
-  var CCAM = document.paramFrm.CCAM_code.value;
   var url = './index.php?m=dPbloc&a=view_planning&dialog=1';
   url = url + '&debut=' + debut;
   url = url + '&fin=' + fin;
   url = url + '&vide=' + vide;
+  url = url + '&CCAM=' + CCAM;
   url = url + '&type=' + type;
   url = url + '&chir=' + chir;
+  url = url + '&spe=' + spe;
   url = url + '&salle=' + salle;
-  url = url + '&CCAM=' + CCAM;
   window.open(url, 'Planning', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
 }
 </script>
@@ -75,10 +77,10 @@ function popPlanning() {
     <td>
 
       <table class="form">
-        <tr><th class="category" colspan="2">Choix de la periode</th></tr>
+        <tr><th class="category" colspan="3">Choix de la periode</th></tr>
         <tr>
-		      <th>Début:</th>
-          <td class="readonly">
+          <th>Début:</th>
+          <td class="readonly" colspan="2">
             <input type="hidden" name="date_debut" value="{$todayi}" />
             <input type="text" name="debut" value="{$todayf}" readonly="readonly" />
             <a href="#" onClick="popCalendar( 'debut', 'debut');">
@@ -87,8 +89,8 @@ function popPlanning() {
           </td>
         </tr>
         <tr>
-		      <th>Fin:</th>
-          <td class="readonly">
+          <th>Fin:</th>
+          <td class="readonly" colspan="2">
             <input type="hidden" name="date_fin" value="{$todayi}" />
             <input type="text" name="fin" value="{$todayf}" readonly="readonly" />
             <a href="#" onClick="popCalendar( 'fin', 'fin');">
@@ -98,7 +100,12 @@ function popPlanning() {
         </tr>
         <tr>
           <th>Afficher les plages vides</th>
-          <td><input type="checkbox" name="vide" /></td>
+          <td colspan="2"><input type="checkbox" name="vide" /></td>
+        </tr>
+        <tr>
+          <th>Code CCAM:</th>
+          <td><input type="text" name="CCAM_code" size="10" value="" /></td>
+          <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
       </table>
 
@@ -106,10 +113,10 @@ function popPlanning() {
     <td>
 
       <table class="form">
-        <tr><th class="category" colspan="3">Choix des paramètres de tri</th></tr>
+        <tr><th class="category" colspan="2">Choix des paramètres de tri</th></tr>
         <tr>
           <th>Affichage des interventions:</th>
-          <td colspan="2"><select name="type">
+          <td><select name="type">
             <option value="0">-- Toutes</option>
             <option value="1">insérées dans le planning</option>
             <option value="2">à insérer dans le planning</option>
@@ -117,26 +124,30 @@ function popPlanning() {
         </tr>
         <tr>
           <th>Chirurgien:</th>
-          <td colspan="2"><select name="chir">
+          <td><select name="chir">
             <option value="0">-- Tous</option>
             {foreach from=$listChir item=curr_chir}
 	            <option value="{$curr_chir.id}">{$curr_chir.lastname} {$curr_chir.firstname}</option>
-		        {/foreach}
+            {/foreach}
+          </select></td>
+        </tr>
+        <tr>
+          <th>Specialité:</th>
+          <td><select name="spe">
+            <option value="0">-- Toutes</option>
+            {foreach from=$listSpe item=curr_spe}
+	            <option value="{$curr_spe.id}">{$curr_spe.text}</option>
+            {/foreach}
           </select></td>
         </tr>
         <tr>
           <th>Salle:</th>
-          <td colspan="2"><select name="salle">
+          <td><select name="salle">
             <option value="0">-- Toutes</option>
             {foreach from=$listSalles item=curr_salle}
 	            <option value="{$curr_salle.id}">{$curr_salle.nom}</option>
-		        {/foreach}
+            {/foreach}
           </select></td>
-        </tr>
-        <tr>
-          <th>Code CCAM:</th>
-          <td><input type="text" name="CCAM_code" size="10" value="" /></td>
-          <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
       </table>
 
