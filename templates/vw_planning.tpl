@@ -160,6 +160,29 @@ function checkPlage() {
             </form>
           </td>
         </tr>
+        {if $plageconsult_id != -1}
+        <tr>
+          <td colspan="8">
+          <form name='removeFrm' action='./index.php?m=dPcabinet' method='post'>
+          <input type='hidden' name='dosql' value='do_plageconsult_aed' />
+          <input type='hidden' name='del' value='1' />
+          <input type='hidden' name='plageconsult_id' value='{$plageconsult_id}' />
+            <table class="form">
+              <tr>
+                <th class="category" colspan="2">Supprimer cette plage</th>
+              </tr>
+              <tr>
+                <th>Supprimer cette plage pendant</th>
+                <td><input type='text' name='_repeat' size="1" value='1' /> semaine(s)</td>
+              </tr>
+              <tr>
+                <td class="button" colspan="2"><input type='submit' value='Supprimer' /></td>
+              </tr>
+            </table>
+          </form>
+          </td>
+        </tr>
+        {/if}
       </table>
     </td>
     <td>

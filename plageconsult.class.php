@@ -68,7 +68,7 @@ class CPlageconsult extends CDpObject {
   function hasCollisions() {
     // Get all other plages the same day
     $sql = "SELECT * FROM plageconsult " .
-        "WHERE chir_id = '$this->id_chir' " .
+        "WHERE chir_id = '$this->chir_id' " .
         "AND date = '$this->date' " .
         "AND plageconsult_id != '$this->plageconsult_id'";
     $row = db_loadlist($sql);
@@ -113,7 +113,7 @@ class CPlageconsult extends CDpObject {
     $this->_month    = substr($this->date, 5, 2);
     $this->_year     = substr($this->date, 0, 4);
     $this->_jour     = date("w", mktime(0, 0, 0, $this->_month, $this->_day-1, $this->_year));
-    $this->_jour     = (intval($this->_jour));
+    $this->_jour     = intval($this->_jour);
     
     return true;
   }
@@ -127,11 +127,12 @@ class CPlageconsult extends CDpObject {
 
     $sql = "SELECT plageconsult_id" .
       "\nFROM plageconsult" .
-      "\nWHERE date = '{$this->date}'" .
-      "\nAND chir_id = '{$this->chir_id}'";
+      "\nWHERE date = '$this->date'" .
+      "\nAND chir_id = '$this->chir_id'" .
+      "\nAND (debut = '$this->debut' OR fin = '$this->fin')";
     
     $row = db_loadlist($sql);
-    $this->plageop_id = @$row[0]['plageconsult_id'];
+    $this->plageconsult_id = @$row[0]['plageconsult_id'];
     
     return $this->load();
   }    

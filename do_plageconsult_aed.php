@@ -33,7 +33,7 @@ if ($del) {
 
   while ($repeat--) {
     $msg = NULL;
-    if ($obj->id) {
+    if ($obj->plageconsult_id) {
       if ($obj->canDelete($msg)) {
         if ($msg = $obj->delete()) {
           $not_deleted++;
@@ -97,9 +97,9 @@ if ($del) {
     $obj->becomeNext();
     
     if ($double) {
-			$repeat--;
+	  $repeat--;
       $obj->becomeNext();
-		}
+	}
   }
   
   if ($created) $header [] = "$created plage(s) créée(s)";
