@@ -11,10 +11,6 @@ GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
-
 $id = mbGetValueFromGetOrSession("id");
 
 $admission = new Coperation();

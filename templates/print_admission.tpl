@@ -44,8 +44,9 @@
   <tr><th>Date d'intervention: </th><td>{$admission->_ref_plageop->_day}/{$admission->_ref_plageop->_month}/{$admission->_ref_plageop->_year}</td></tr>
   <tr><th>Acte CCAM: </th><td class="text">{$admission->_ext_code_ccam->libelleLong} <i>({$admission->CCAM_code})</i></td></tr>
   <tr><th>Coté: </th><td>{$admission->cote}</td></tr>
+  <!-- Pas d'affichage des dépassements pour l'instant -->
   {if $admission->depassement}
-  <tr><th>Dépassement d'honoraires: </th><td>{$admission->depassement} €</td></tr>
+  <!-- <tr><th>Dépassement d'honoraires: </th><td>{$admission->depassement} €</td></tr> -->
   {/if}
 
 </table>
