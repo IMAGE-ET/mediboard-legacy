@@ -32,12 +32,12 @@
 		{foreach from=$curr_plageop.operations item=curr_op}
 		<tr>
 		  <td>{$curr_op.heure}</td>
-		  <td>{$curr_op.CCAM} <i>({$curr_op.CCAM_code})</i></td>
+		  <td>{$curr_op.CCAM|truncate:80:"...":false} <i>({$curr_op.CCAM_code})</i></td>
 		  <td>{$curr_op.cote|truncate:1:""|capitalize}</td>
           <td>{$curr_op.lu_type_anesth}</td>
           <td>{$curr_op.adm|truncate:1:""|capitalize}</td>
-		  <td>{$curr_op.rques|nl2br:php}</td>
-		  <td>{$curr_op.mat|nl2br:php}</td>
+		  <td>{$curr_op.rques|nl2br}</td>
+		  <td>{$curr_op.mat|nl2br}</td>
 		  <td>{$curr_op.lastname}</td>
 		  <td>{$curr_op.firstname}</td>
 		  <td>{$curr_op.age} ans</td>
