@@ -13,8 +13,11 @@ function popCode(type) {
   window.open('./index.php?m=dPplanningOp&a=code_selector&dialog=1&type='+type+'&chir='+chir, 'CIM10', 'left=50,top=50,height=500,width=600,resizable');
 }
 
-function popDate() {
-  window.open('./index.php?m=dPplanningOp&a=date_selector&dialog=1', 'Date', 'left=50,top=50,height=250,width=400,resizable');
+function popPlage() {
+  var chir = document.editFrm.chir_id.value;
+  var hour = document.editFrm.hour_op.value;
+  var min = document.editFrm.min_op.value;
+  window.open('./index.php?m=dPplanningOp&a=plage_selector&dialog=1&hour='+hour+'&min='+min+'&chir='+chir, 'Plage', 'left=50,top=50,height=250,width=400,resizable');
 }
 
 function setChir( key, val ){
@@ -51,13 +54,13 @@ function setCode( key, type ){
     }
 }
 
-function setDate( key, val ){
+function setPlage( key, val ){
   var f = document.editFrm;
    if (key != '') {
     f.plageop_id.value = key
     f.date.value = val;
     window.plageop_id = key;
-      window.date = val;
+    window.date = val;
     }
 }
 
@@ -80,6 +83,8 @@ function setCalendar( idate, fdate ) {
 {/literal}
 
 <form name="editFrm" action="?m=dPplanningOp" method="post">
+<input type="hidden" name="dosql" value="do_planning_aed" />
+<input type="hidden" name="del" value="0" />
 <input type="hidden" name="chir_id" value="" />
 <input type="hidden" name="pat_id" value="" />
 
@@ -113,7 +118,8 @@ function setCalendar( idate, fdate ) {
           <th class="mandatory">Temps opératoire:</th>
           <td colspan="2">
             <select name="hour_op">
-              <option>1</option>
+              <option>0</option>
+              <option selected>1</option>
               <option>2</option>
               <option>3</option>
               <option>4</option>
@@ -125,7 +131,7 @@ function setCalendar( idate, fdate ) {
             </select>
             :
             <select name="min_op">
-              <option>00</option>
+              <option selected>00</option>
               <option>15</option>
               <option>30</option>
               <option>45</option>
@@ -138,7 +144,7 @@ function setCalendar( idate, fdate ) {
             <input type="hidden" name="plageop_id" value="" />
             <input type="text" name="date" readonly="readonly" size="10" value="JJ/MM/AAAA" />
           </td>
-          <td class="button"><input type="button" value="choisir une date" onclick="popDate()" /></td>
+          <td class="button"><input type="button" value="choisir une date" onclick="popPlage()" /></td>
         </tr>
         <tr>
           <th>Examens complémentaires:</th>
@@ -151,8 +157,8 @@ function setCalendar( idate, fdate ) {
         <tr>
           <th>Information du patient:</th>
           <td>
-            <input name="info" value="oui" type="radio" />Oui
-            <input name="info" value="non" type="radio" checked="checked" />Non
+            <input name="info" value="o" type="radio" />Oui
+            <input name="info" value="n" type="radio" checked="checked" />Non
           </td>
         </tr>
       </table>
@@ -249,16 +255,16 @@ function setCalendar( idate, fdate ) {
         <tr>
           <th>Chambre particulière:</th>
           <td>
-            <input name="chambre" value="oui" type="radio" checked="checked" />Oui
-            <input name="chambre" value="non" type="radio" />Non
+            <input name="chambre" value="o" type="radio" checked="checked" />Oui
+            <input name="chambre" value="n" type="radio" />Non
           </td>
         </tr>
         <tr><th class="category" colspan="3">Autre</th></tr>
         <tr>
           <th>Risque ATNC:</th>
           <td>
-            <input name="ATNC" value="oui" type="radio" />Oui
-            <input name="ATNC" value="non" type="radio" checked="checked" />Non
+            <input name="ATNC" value="o" type="radio" />Oui
+            <input name="ATNC" value="n" type="radio" checked="checked" />Non
           </td>
         </tr>
         <tr>
