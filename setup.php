@@ -107,7 +107,7 @@ class CSetupdPcabinet {
                 KEY idx_wcnt (word_placement)
                 ) TYPE=MyISAM;";
 		db_exec( $sql ); db_error();
-        //upgrade("all");
+        $this->upgrade("all");
 		return null;
 	}
 }
