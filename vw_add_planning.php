@@ -19,7 +19,7 @@ if (!$canRead) {
 
 // A t'on fourni l'id du patient et du chirurgien?
 $chir = null;
-$chir_id = dPgetParam($_GET, "chir_id");
+$chir_id = mbGetValueFromGetOrSession("chir_id", null);
 if ($chir_id) {
   $chir = new CUser;
   $chir->load($chir_id);
