@@ -38,7 +38,7 @@
 							{foreach from=$rq item=curr_rq}
 							<tr>
 								<td colspan=2 valign="top">
-									<i>{$curr_rq.val}</i>
+									<i>{$curr_rq}</i>
 								</td>
 							</tr>
 							{/foreach}

@@ -52,7 +52,6 @@ class CdPccam extends CDpObject {
 		else {
 			return "Favoris déja existant";
 		}
-		
 	}
 }
 ?>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-04 15:03:34
+<?php /* Smarty version 2.6.3, created on 2004-08-24 11:23:29
          compiled from vw_full_code.tpl */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'nl2br', 'vw_full_code.tpl', 96, false),)), $this); ?>
@@ -48,7 +48,7 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'nl2br', 'vw
 ?>
 							<tr>
 								<td colspan=2 valign="top">
-									<i><?php echo $this->_tpl_vars['curr_rq']['val']; ?>
+									<i><?php echo $this->_tpl_vars['curr_rq']; ?>
 </i>
 								</td>
 							</tr>
