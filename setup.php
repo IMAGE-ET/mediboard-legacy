@@ -33,7 +33,7 @@ class CSetupdPprotocoles {
 	}
 
 	function remove() {
-		db_exec( "DROP TABLE dPprotocoles;" );
+		db_exec( "DROP TABLE protocoles;" );
 
 		return null;
 	}
@@ -55,7 +55,7 @@ class CSetupdPprotocoles {
 		$sql = "CREATE TABLE protocoles ( " .
 			"  protocoles_id int(11) unsigned NOT NULL auto_increment" .
 			", code_CCAM varchar(7) NOT NULL default ''" .
-			", duree tinyint(4) default NULL"
+			", duree tinyint(4) default NULL" .
 			", PRIMARY KEY  (dPprotocoles_id)" .
 			", UNIQUE KEY protocoles_id (protocoles_id)" .
 			") TYPE=MyISAM;";
