@@ -9,8 +9,12 @@ function prepareForms() {
 
     var elementIt = 0;
     while (element = form.elements[elementIt++]) {
-      // create id for each element
+      // Create id for each element
       element.id = form.name + "_" + element.name;
+      
+      if (element.type == "radio") {
+        element.id += "_" + element.value;
+      }
 
       // Focus on first non hidden input
       if (bGiveFocus && element.type == "text") {
