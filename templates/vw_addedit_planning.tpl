@@ -482,7 +482,9 @@ function printForm() {
           {else}
             <input type="submit" value="Créer" />
           {/if}
+          {if !$protocole}
             <input type="button" value="Imprimer" onClick="printForm()" />
+          {/if}
           </td>
         </tr>
       </table>
