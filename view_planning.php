@@ -60,7 +60,7 @@ if($chir) {
 if($salle) {
   $sql .= " AND plagesop.id_salle = '$salle'";
 }
-$sql .= " ORDER BY plagesop.id_salle, plagesop.debut";
+$sql .= " ORDER BY plagesop.date, plagesop.id_salle, plagesop.debut";
 $plagesop = db_loadlist($sql);
 
 //Operations de chaque plage
@@ -69,10 +69,11 @@ foreach($plagesop as $key=>$value) {
   $plagesop[$key]["debut"] = substr($value["debut"], 0, 2)."h".substr($value["debut"], 3, 2);
   $plagesop[$key]["fin"] = substr($value["fin"], 0, 2)."h".substr($value["fin"], 3, 2);
   $curr_day = substr($value["date"], 8, 2);
-  $curr_month = substr($value["date"], 5, 2);;
-  $curr_year = substr($value["date"], 0, 4);;
+  $curr_month = substr($value["date"], 5, 2);
+  $curr_intmonth = intval($curr_month);
+  $curr_year = substr($value["date"], 0, 4);
   $curr_dayOfWeek = date("w", mktime(0, 0, 0, $curr_month, $curr_day, $curr_year));
-  $plagesop[$key]["date"] = $dayOfWeekList[$curr_dayOfWeek]." $curr_day ".$monthList[$curr_month]." $curr_year";
+  $plagesop[$key]["date"] = $dayOfWeekList[$curr_dayOfWeek]." $curr_day ".$monthList[$curr_intmonth]." $curr_year";
   $sql = "SELECT operations.temp_operation AS duree, operations.cote AS cote, operations.time_operation AS heure,
           operations.CCAM_code AS CCAM_code, operations.rques AS rques, operations.materiel AS materiel, 
           operations.commande_mat AS commande_mat, patients.nom AS lastname, patients.prenom AS firstname,
