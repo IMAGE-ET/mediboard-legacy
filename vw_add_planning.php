@@ -13,6 +13,7 @@ require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 require_once( $AppUI->getModuleClass('mediusers', 'groups') );
 require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
@@ -33,6 +34,20 @@ if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
   $chir->load($AppUI->user_id);
 }
 
+// A t'on fourni l'id du patient et du chirurgien?
+$chir_id = dPgetParam($_GET, "chir_id", 0);
+$pat_id = dPgetParam($_GET, "pat_id", 0);
+if($chir_id) {
+  $chir = new CUser;
+  $chir->load($chir_id);
+}
+if($pat_id) {
+  $pat = new CPatient;
+  $pat->load($pat_id);
+}
+  
+$pat_id = dPgetParam($_GET, "pat_id", 0);
+
 // Heures & minutes
 $start = 7;
 $stop = 20;
@@ -51,6 +66,7 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('chir', $chir);
+$smarty->assign('pat', $pat);
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);
 

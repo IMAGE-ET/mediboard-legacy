@@ -3,7 +3,7 @@
   <tr><td class="info" colspan="2">(Prière de vous munir pour la consultation d'anesthésie de la photocopie
                        de vos cartes de sécurité sociale, de mutuelle et du résultat de votre
                        bilan sanguin et la liste des médicaments que vous prennez)<br />
-                       Pour tout renseignement, téléphonez au 05 46 00 77 08</td></tr>
+                       Pour tout renseignement, téléphonez au 05 46 00 40 40</td></tr>
   
   <tr><th>Date: </th><td>{$adm.today}</td></tr>
   <tr><th>Chirurgien: </th><td>Dr. {$adm.chirName}</td></tr>
