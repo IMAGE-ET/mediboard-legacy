@@ -81,7 +81,7 @@
           <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.nom}      </a></td>
           <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.prenom}   </a></td>
           <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.CCAM_code}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.CCAM}     </a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.CCAM}     </a></td>
           <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.heure}</a></td>
           <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.temps}</a></td>
         </tr>
