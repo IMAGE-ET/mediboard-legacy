@@ -71,6 +71,7 @@ class CSetupdPccam {
 
 		db_exec( $sql );
 		db_error();
+		$this->upgrade("all");
 		
 		return null;
 	}
