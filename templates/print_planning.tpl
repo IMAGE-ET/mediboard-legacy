@@ -4,7 +4,7 @@
   {foreach from=$curr_day.listChirs item=curr_chir}
   {if $curr_chir.admissions}
   <tr>
-    <td><b>{$curr_day.date_adm|date_format:"%d/%m/%Y"} - Dr. {$curr_chir.user_last_name} {$curr_chir.user_first_name}</b></td>
+    <td><b>{$curr_day.date_adm|date_format:"%a %d %b %Y"} - Dr. {$curr_chir.user_last_name} {$curr_chir.user_first_name}</b></td>
   </tr>
   <tr>
     <td>
@@ -38,7 +38,7 @@
           <td class="text">{$curr_adm->convalescence|nl2br}</td>
           <td>{$curr_adm->chambre}</td>
           <td class="text">{$curr_adm->rques}</td>
-          <td>{$curr_adm->_ref_plageop->_date}</td>
+          <td>{$curr_adm->_ref_plageop->date|date_format:"%d/%m/%Y"}</td>
           <td>{if $curr_adm->time_operation != "00:00:00"}{$curr_adm->time_operation|truncate:5:""}{/if}</td>
           <td class="text">{$curr_adm->_ext_code_ccam->libelleLong|truncate:80:"...":false} <i>({$curr_adm->CCAM_code})</i></td>
           <td>{$curr_adm->cote|truncate:1:""|capitalize}</td>

@@ -97,7 +97,6 @@ foreach($listDays as $key => $value) {
       $adm->load($value3["operation_id"]);
       $adm->loadRefs();
       $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $adm;
-      //$listDays[$key]["listChirs"][$key2]["admissions"][$key3]->loadRefs();
     }
   }
 }
