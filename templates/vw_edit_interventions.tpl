@@ -41,7 +41,7 @@
             <input type="submit" value="changer" />
             </form>
 		  </td>
-		  <td>
+		  <td class="text">
 			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
 		  </td>
 		  <td>
@@ -109,7 +109,7 @@
             <input type="submit" value="changer" />
             </form>
 		  </td>
-		  <td>
+		  <td class="text">
 			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
 		  </td>
 		  <td>
