@@ -15,7 +15,7 @@ if (isset( $_GET['tab'] )) {
 $tab = $AppUI->getState( 'dPadmissionsIdxTab' ) !== NULL ? $AppUI->getState( 'dPadmissionsIdxTab' ) : 0;
 $active = intval( !$AppUI->getState( 'dPadmissionsIdxTab' ) );
 
-$titleBlock = new CTitleBlock( 'dPadmissions', 'dPadmissions.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Gestion des admissions', 'dPadmissions.png', $m, "$m.$a" );
 $titleBlock->addCell();
 $titleBlock->show();
 
