@@ -47,10 +47,8 @@ function prepareForms() {
 //  alert (msg);
   
   // HTMLArea initialisation
-  if (initEditor) {
-    HTMLArea.init(); 
-    HTMLArea.onload = initEditor;
-  }
+  HTMLArea.init(); 
+  HTMLArea.onload = initEditor;
 }
 
 function initEditor() {
