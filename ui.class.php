@@ -665,6 +665,35 @@ class CTabBox_core {
 	function add( $file, $title ) {
 		$this->tabs[] = array( $file, $title );
 	}
+  
+/**
+* Checks active index
+*/
+  function checkActive() {
+    // Turns active string file into active int index
+    if (is_string($this->active)) {
+      foreach ($this->tabs as $index => $tab) {
+        if ($this->active == $tab[0]) {
+          $this->active = (int) $index;
+          return;
+        }
+      }
+    }
+    
+    // Checks boundaries
+    if (is_numeric($this->active)) {
+      $this->active = (int) $this->active;
+      
+      if (count($this->tabs)-1 >= $this->active ) {
+        return;      
+      }
+
+    }
+
+    // Every other case
+    $this->active = 0;
+  }
+  
 /**
 * Displays the tabbed box
 *
