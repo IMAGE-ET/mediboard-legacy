@@ -53,7 +53,7 @@ if ($del) {
   // copy permissions
   if ($profile_id = dPgetParam($_POST, "_profile_id")) {
 		$user = new CUser;
-    $user->user_id = $obj->user_id;
+    $user->load($obj->user_id);
     $msg = $user->copyPermissionsFrom($profile_id, true);
 	}
     

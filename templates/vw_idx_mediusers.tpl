@@ -46,22 +46,29 @@ function checkMediuser() {
 
 		<a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id=0"><strong>Créer un utilisateur</strong></a>
 
-    <table class="color">
+    <table class="tbl">
       
     <tr>
-      <th>login</th>
-      <th>nom</th>
-      <th>prenom</th>
-      <th>fonction</th>
+      <th>Utilisateur</th>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Type</th>
     </tr>
     
-    {foreach from=$users item=curr_user}
-    <tr style="background: #{$curr_user.color}">
-      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id={$curr_user.id}">{$curr_user.username}</a></td>
-      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id={$curr_user.id}">{$curr_user.lastname}</a></td>
-      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id={$curr_user.id}">{$curr_user.firstname}</a></td>
-      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id={$curr_user.id}">{$curr_user.functionname}</a></td>
+    {foreach from=$functions item=curr_function}
+    <tr>
+      <td colspan="4" style="background: #{$curr_function->color}"><strong>{$curr_function->text}</strong></td>
     </tr>
+    {foreach from=$curr_function->_ref_users item=curr_user}
+    <tr>
+      {eval var=$curr_user->user_id assign=user_id}
+      {assign var="href" value="index.php?m=$m&amp;tab=$tab&amp;user_id=$user_id"}
+      <td><a href="{$href}">{$curr_user->_user_username}</a></td>
+      <td><a href="{$href}">{$curr_user->_user_last_name}</a></td>
+      <td><a href="{$href}">{$curr_user->_user_first_name}</a></td>
+      <td><a href="{$href}">{$curr_user->_user_type}</a></td>
+    </tr>
+    {/foreach}
     {/foreach}
       
     </table>
@@ -106,9 +113,10 @@ function checkMediuser() {
       <th class="mandatory"><label for="mediuser_function_id" title="Fonction de l'utilisateur au sein de l'établissement. Obligatoire">Fonction:</th>
       <td>
         <select name="function_id">
+          <option>&mdash; Choisir une fonction &mdash;</option>
         {foreach from=$functions item=curr_function}
-          <option value="{$curr_function.function_id}" {if $curr_function.function_id == $mediuserSel->function_id} selected="selected" {/if}>
-            {$curr_function.text}
+          <option value="{$curr_function->function_id}" {if $curr_function->function_id == $mediuserSel->function_id} selected="selected" {/if}>
+            {$curr_function->text}
           </option>
         {/foreach}
         </select>

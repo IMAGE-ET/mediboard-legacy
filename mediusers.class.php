@@ -7,9 +7,14 @@
  *  @author Romain Ollivier
  */
 
+global $utypes, $utypes_flip;
+
 require_once($AppUI->getSystemClass('dp'));
 require_once($AppUI->getModuleClass('admin'));
 require_once($AppUI->getModuleClass('mediusers', "functions"));
+require_once($AppUI->getModuleFunctions('admin'));
+
+$utypes_flip = array_flip($utypes);
 
 /**
  * The CMediuser class
@@ -22,6 +27,7 @@ class CMediusers extends CDpObject {
 	var $function_id = null;
 
   // dotProject user fields
+  var $_user_type       = null;
 	var $_user_username   = null;
 	var $_user_password   = null;
 	var $_user_first_name = null;
@@ -29,7 +35,7 @@ class CMediusers extends CDpObject {
 	var $_user_email      = null;
 	var $_user_phone      = null;
   
-  // Objetc references
+  // Object references
   var $_ref_function = null;
 
 	function CMediusers() {
@@ -40,6 +46,7 @@ class CMediusers extends CDpObject {
     $user = new CUser();
     $user->user_id = $this->user_id;
     
+    $user->user_type       = $this->_user_type      ;
     $user->user_username   = $this->_user_username  ;
     $user->user_password   = $this->_user_password  ;
     $user->user_first_name = $this->_user_first_name;
@@ -81,17 +88,21 @@ class CMediusers extends CDpObject {
     // @todo delete Favoris CCAM et CIM en cascade
     
     // Delete corresponding dP user first
-    $dPuser = $this->createUser();
-    if ($msg = $dPuser->delete()) {
-      return $msg;
+    if ($this->canDelete($msg)) {
+      $dPuser = $this->createUser();
+      if ($msg = $dPuser->delete()) {
+        return $msg;
+      }
     }
 
     return parent::delete();
 	}
 
   function updateFormFields() {
+    global $utypes;
     $user = new CUser();
     if ($user->load($this->user_id)) {
+      $this->_user_type       = $utypes[$user->user_type];
       $this->_user_username   = $user->user_username  ;
       $this->_user_password   = $user->user_password  ;
       $this->_user_first_name = $user->user_first_name;
@@ -150,13 +161,12 @@ class CMediusers extends CDpObject {
     $perm->store();
   }
 
-  function loadListFromGroup($groups = null, $perm_type = null, $function_id = null, $name = null) {
+  function loadListFromType($user_types = null, $perm_type = null, $function_id = null, $name = null) {
+    global $utypes_flip;
     $sql = "SELECT *" .
-      "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
-      "\nWHERE users.user_id = users_mediboard.user_id" .
-      "\nAND users_mediboard.function_id = functions_mediboard.function_id" .
-      "\nAND functions_mediboard.group_id = groups_mediboard.group_id";
-
+      "\nFROM users, users_mediboard" .
+      "\nWHERE users.user_id = users_mediboard.user_id";
+      
     if ($function_id) {
       $sql .= "\nAND users_mediboard.function_id = $function_id";
     }
@@ -165,20 +175,21 @@ class CMediusers extends CDpObject {
       $sql .= "\nAND users.user_last_name LIKE '$name%'";
     }
     
-    if (is_array($groups)) {
-      foreach ($groups as $key => $value) {
-        $groups[$key] = "'$value'";
+    if (is_array($user_types)) {
+      foreach ($user_types as $key => $value) {
+        $value = $utypes_flip[$value];
+        $user_types[$key] = "'$value'";
       }
       
-      $inClause = implode(", ", $groups);
-      $sql .= "\nAND groups_mediboard.text IN ($inClause)";
+      $inClause = implode(", ", $user_types);
+      $sql .= "\nAND users.user_type IN ($inClause)";
     }
 
     $sql .= "\nORDER BY users.user_last_name";
 
     // Get all users
     $baseusers = db_loadObjectList($sql, new CUser);
-    $mediusers =  db_loadObjectList($sql, new CMediusers);
+    $mediusers = db_loadObjectList($sql, new CMediusers);
    
     $users = array();
      
@@ -196,34 +207,26 @@ class CMediusers extends CDpObject {
     return $users;
     
   }
-  
+
   function loadChirurgiens($perm_type = null, $function_id = null, $name = null) {
-    return $this->loadListFromGroup(array("Chirurgie"), $perm_type, $function_id, $name);
+    return $this->loadListFromType(array("Chirurgie"), $perm_type, $function_id, $name);
   }
   
   function loadAnesthesistes($perm_type = null, $function_id = null, $name = null) {
-    return $this->loadListFromGroup(array("Anesthésie"), $perm_type, $function_id, $name);
+    return $this->loadListFromType(array("Anesthésie"), $perm_type, $function_id, $name);
   }
   
   function loadPraticiens($perm_type = null, $function_id = null, $name = null) {
-    return $this->loadListFromGroup(array("Chirurgie", "Anesthésie"), $perm_type, $function_id, $name);
+    return $this->loadListFromType(array("Chirurgie", "Anesthésie"), $perm_type, $function_id, $name);
   }
   
-  function isFromGroup($groups) {
-    if (!$function =& $this->_ref_function) {
-      $this->loadRefs();
-    }
-    
-    if (!$group =& $function->_ref_group) {
-      $function->loadRefs();
-    }
-    
+  function isFromType($user_types) {
     // Warning: !== operator
-    return array_search($group->text, $groups) !== false; 
+    return array_search($this->_user_type, $user_types) !== false; 
   }
   
   function isPraticien () {
-		return $this->isFromGroup(array("Chirurgie", "Anesthésie"));
+		return $this->isFromType(array("Chirurgie", "Anesthésie"));
 	}
 }
 

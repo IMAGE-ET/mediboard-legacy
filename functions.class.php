@@ -9,6 +9,7 @@
 
 require_once($AppUI->getSystemClass('dp'));
 require_once($AppUI->getModuleClass('mediusers', 'groups'));
+require_once($AppUI->getModuleClass('mediusers', 'mediusers'));
 
 /**
  * The CFunctions Class
@@ -26,6 +27,7 @@ class CFunctions extends CDpObject {
   
   // Object References
   var $_ref_group = null;
+  var $_ref_users = null;
 
 	function CFunctions() {
 		$this->CDpObject('functions_mediboard', 'function_id');
@@ -51,9 +53,14 @@ class CFunctions extends CDpObject {
 
   function loadRefs() {
     // Forward references
-    $this->_ref_group = new Cgroups();
+    $this->_ref_group = new CGroups();
     $this->_ref_group->load($this->group_id);
     
+    // Backward references
+    $where = array(
+      "function_id" => "= '$this->function_id'");
+    $this->_ref_users = new CMediusers;
+    $this->_ref_users = $this->_ref_users->loadList($where);
   }
   
   function loadSpecialites ($perm_type = null) {
