@@ -9,7 +9,7 @@
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
-	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/mb_icon.ico" type="image/ico" />
+	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
 </head>
 
 <body onload="document.login.username.focus();">

@@ -15,7 +15,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
-	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/mb_icon.ico" type="image/ico" />
+	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
 	<title>Mediboard :: Système de gestion des structures de santé</title>
 </head>
 
