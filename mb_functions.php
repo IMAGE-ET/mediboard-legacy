@@ -16,9 +16,6 @@
 function mbGetValueFromGetOrSession($valName, $valDefault = NULL) {
   global $m;
 
-//  echo "<br />_GET[$valName] = " . $_GET[$valName];
-//  echo "<br />_SESSION[$m][$valName] = " . $_SESSION[$m][$valName];
-
   if (isset($_GET[$valName])) {
     $_SESSION[$m][$valName] = $_GET[$valName];
   }
@@ -44,6 +41,8 @@ function mbSetValueToSession($valName, $value = NULL) {
  **/
 function mbTrace($label, &$var, $die = false) {
   $export = var_export($var, true); 
+  $export = htmlspecialchars($export);
+  
   echo "<pre>$label: $export</pre>";
 
   if ($die) {
