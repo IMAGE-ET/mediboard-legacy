@@ -18,7 +18,8 @@ var calWin = null;
 function popCalendar( field ){
   calendarField = field;
   idate = eval( 'document.paramFrm.date_' + field + '.value' );
-  window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=280, height=250, scollbars=false' );
+  neo = window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=280, height=250, scollbars=false' );
+  if(neo.window.focus){neo.window.focus();}
 }
 
 function setCalendar( idate, fdate ) {
@@ -42,7 +43,8 @@ function popPlanning() {
   url = url + '&chir=' + chir;
   url = url + '&spe=' + spe;
   url = url + '&conv=' + conv;
-  window.open(url, 'Planning', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
+  neo = window.open(url, 'Planning', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
+  if(neo.window.focus){neo.window.focus();}
 }
 </script>
 {/literal}
