@@ -72,6 +72,7 @@ $query .= " ORDER BY CODE LIMIT 0 , 100";
 //Codes correspondants à la requete
 $result = mysql_query($query);
 $i = 0;
+$codes = array();
 while($row = mysql_fetch_array($result))
 {
   $codes[$i]["code"] = $row['CODE'];
