@@ -148,3 +148,16 @@ function getElementsByClassName(tagName, className, exactMatch) {
   
   return elsTag;
 }
+
+
+function confirmDeletion(form, typeName, objName, msg) {
+  if (!typeName) typeName = "";
+  if (!objName) objName = "";
+  if (!msg) msg = "Voulez-vous réellement supprimer ";
+  
+  if (objName.length) objName = " '" + objName + "'";
+  if (confirm(msg + typeName + objName + " ?" )) {
+  	form.del.value = 1; 
+  	form.submit();
+  }
+}
