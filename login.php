@@ -19,7 +19,7 @@
 	<input type="hidden" name="redirect" value="<?php echo $redirect;?>" />
 	<table class="std">
 		<tr><th colspan="2"><?php echo $AppUI->cfg['company_name'];?></th></tr>
-		<tr><td colspan="2"><a href="http://mediboard.sourceforge.net/"><img src="./style/mediboard/images/mbNormal.gif" alt="MediBoard logo" /></a></td></tr>
+		<tr><td colspan="2"><a href="http://www.mediboard.org/" target="_blank"><img src="./style/mediboard/images/mbNormal.gif" alt="MediBoard logo" /></a></td></tr>
 		<tr><th colspan="2"><?php echo $AppUI->_('PoweredBy');?></th></tr>
 		<tr>
 			<td id="poweredBy" colspan="2">

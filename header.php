@@ -32,7 +32,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <tr>
 	<td id="banner">
 		<h1>MediBoard :: Système de gestion des structures de santé</h1>
-		<a href='http://www.openxtrem.com/public/index.php?option=content&task=view&id=7&Itemid=32' target='_blank'><img src="style/<?php echo $uistyle;?>/images/mbSmall.gif" /></a>
+		<a href='http://www.mediboard.org' target='_blank'><img src="style/<?php echo $uistyle;?>/images/mbSmall.gif" /></a>
 	</td>
 </tr>
 <tr>
