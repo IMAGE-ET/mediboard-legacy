@@ -63,7 +63,6 @@ class CTabBox extends CTabBox_core {
 				$s .= "<td height='28' valign='middle'><img src='./style/$uistyle/images/tab".$sel."Left.png' height='28' border='0' alt='' /></td>";
 				$s .= "<td valign='middle' nowrap='nowrap' background='./style/$uistyle/images/tab".$sel."Bg.png'>&nbsp;<a href='".$this->baseHRef."tab=$k'>$value</a>&nbsp;</td>";
 				$s .= "<td valign='middle'><img src='./style/$uistyle/images/tab".$sel."Right.png' height='28' border='0' alt='' /></td>";
-				$s .= "<td width='3' class='tabsp'><img src='./images/shim.gif' height='1' width='3' /></td>";
 			}
 			$s .= "</table></td></tr>";
 			$colspan = (count($this->tabs)*4 + 1);
