@@ -60,6 +60,7 @@ foreach ($nav as $module) {
 						<input type="hidden" name="a" value="addedit" />
 
 <?php
+/*
 	$newItem[""] = "- New Item -";
 	$newItem["companies"] = "Company";
 	$newItem["contacts"] = "Contact";
@@ -78,7 +79,7 @@ foreach ($nav as $module) {
 	}
 	if (isset( $file_id )) {
 		echo "<input type='hidden' name='file_id' value='$file_id' />";
-	}
+	}*/
 ?>
 					</form>
 				</td>
