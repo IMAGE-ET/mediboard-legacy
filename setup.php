@@ -1,12 +1,11 @@
-<?php
-/*
- * Name:      dPbloc
- * Directory: dPbloc
- * Version:   1.0.0
- * Type:      user
- * UI Name:   dPbloc
- * UI Icon:   dPbloc.png
- */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPbloc
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 // MODULE CONFIGURATION DEFINITION
 $config = array();

@@ -1,4 +1,12 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPbloc
+* @version $Revision$
+* @author Romain Ollivier
+*/
+
 include_once("modules/dPbloc/checkDate.php");
 require_once("modules/dPbloc/planning.class.php");
 require_once("modules/dPbloc/calendar.class.php");

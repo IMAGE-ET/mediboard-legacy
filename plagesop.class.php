@@ -1,4 +1,12 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPbloc
+* @version $Revision$
+* @author Romain Ollivier
+*/
+
 // use the dPFramework to have easy database operations (store, delete etc.) by using its ObjectOrientedDesign
 // therefore we have to create a child class for the module plagesop
 
