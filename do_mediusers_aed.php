@@ -27,23 +27,38 @@ if ($del) {
 	}
 
 	// delete object
-	if (($msg = $obj->delete())) {
+	if ($msg = $obj->delete()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-    $_SESSION[$m][$tab]["mediuser"] = 0;
+    $_SESSION[$m]["user_id"] = null;
 		$AppUI->setMsg( "Utilisateur supprimé", UI_MSG_ALERT);
 		$AppUI->redirect( "m=$m" );
 	}
   
 } else {
+  // delete older function permission
+  $old = new CMediusers();
+  $old->load($obj->user_id);
+  $old->delFunctionPermission();
+
   // Store object
-	if (($msg = $obj->store())) {
+	if ($msg = $obj->store()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['user_id'];
-		$AppUI->setMsg( $isNotNew ? 'Utilisateur mis à jour' : 'Utilisateur insérée', UI_MSG_OK);
+		$AppUI->setMsg( $isNotNew ? 'Utilisateur mis à jour' : 'Utilisateur inséré', UI_MSG_OK);
 	}
+  
+  // copy permissions
+  if ($profile_id = dPgetParam($_POST, "_profile_id")) {
+		$user = new CUser;
+    $user->user_id = $obj->user_id;
+    $msg = $user->copyPermissionsFrom($profile_id, true);
+	}
+    
+  $obj->insFunctionPermission();
+  
 	$AppUI->redirect();
 }
 ?>

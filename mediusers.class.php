@@ -9,26 +9,28 @@
 
 require_once($AppUI->getSystemClass('dp'));
 require_once($AppUI->getModuleClass('admin'));
+require_once($AppUI->getModuleClass('mediusers', "functions"));
 
 /**
  * The CMediuser class
  */
 class CMediusers extends CDpObject {
   // DB Table key
-	var $user_id = NULL;
+	var $user_id = null;
 
   // DB References
-	var $function_id = NULL;
+	var $function_id = null;
 
   // dotProject user fields
-	var $_user_username   = NULL;
-	var $_user_password   = NULL;
-	var $_user_first_name = NULL;
-	var $_user_last_name  = NULL;
-	var $_user_email      = NULL;
-	var $_user_phone      = NULL;
+	var $_user_username   = null;
+	var $_user_password   = null;
+	var $_user_first_name = null;
+	var $_user_last_name  = null;
+	var $_user_email      = null;
+	var $_user_phone      = null;
   
- 
+  var $_ref_function = null;
+
 	function CMediusers() {
 		$this->CDpObject( 'users_mediboard', 'user_id' );
 	}
@@ -86,6 +88,32 @@ class CMediusers extends CDpObject {
     return parent::delete();
 	}
 
+  function load($oid = null, $strip = true) {
+    if (!parent::load($oid, $strip)) {
+      return false;
+    }
+
+    $user = new CUser();
+    if (!$user->load($this->user_id, $strip)) {
+      return false;
+    }
+    
+    $this->_user_username   = $user->user_username  ;
+    $this->_user_password   = $user->user_password  ;
+    $this->_user_first_name = $user->user_first_name;
+    $this->_user_last_name  = $user->user_last_name ;
+    $this->_user_email      = $user->user_email     ;
+    $this->_user_phone      = $user->user_phone     ;
+    
+    return true;
+  }
+
+  function loadRefs() {
+    // Forward references
+    $this->_ref_function = new CFunctions;
+    $this->_ref_function->load($this->function_id);
+  }
+  
 	function store() {
     // Store corresponding dP user first
     $dPuser = $this->createUser();
@@ -109,6 +137,26 @@ class CMediusers extends CDpObject {
     return db_error();
   }
   
+  function delFunctionPermission() {
+    $where = array(
+      "permission_user = '$this->user_id'", 
+      "permission_grant_on = 'mediusers'",
+      "permission_item = '$this->function_id'");
+    
+    $perm = new CPermission;
+    if ($perm->loadObject()) {
+      $perm->delete();
+    }
+  }
+  
+  function insFunctionPermission() {
+    $perm = new CPermission;
+    $perm->permission_user = $this->user_id; 
+    $perm->permission_grant_on = 'mediusers';
+    $perm->permission_item = $this->function_id;
+    $perm->store();
+  }
+
   function loadListFromGroup($groups = null, $perm_type = null) {
     $sql = "SELECT *" .
       "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .

@@ -2,30 +2,37 @@
 <script language="javascript">
 function checkMediuser() {
   var form = document.mediuser;
+  var field = null;
     
-  if (form._user_username.value.length < 3) {
-    alert("Nom utilisateur trop court");
-    form._user_username.focus();
-    return false;
-  }
+  if (field = form._user_username)
+    if (field.value.length < 3) {
+      alert("Nom utilisateur trop court");
+      field.focus();
+      return false;
+    }
   
-  if (form._user_password.value.length < 4) {
-    alert("Mot de passe trop court");
-    form._user_password.focus();
-    return false;
-  } 
+  if (field = form._user_password)
+    if (field.value.length < 4) {
+      alert("Mot de passe trop court");
+      field.focus();
+      return false;
+    } 
   
-  if (form._user_password.value !=  form._user_password2.value) {
-    alert("Les deux mots de passe diffèrent");
-    form._user_password.focus();
-    return false;
-  } 
-  
-  if (form._user_last_name.value.length == 0) {
-    alert("Nom manquant");
-    form._user_last_name.focus();
-    return false;
-  }
+  var pass = form._user_password;
+  var pass2 = form._user_password2;
+  if (pass && pass2)
+    if (pass.value !=  pass2.value) {
+      alert("Les deux mots de passe diffèrent");
+      pass.focus();
+      return false;
+    } 
+
+  if (field = form._user_last_name)
+    if (field.value.length == 0) {
+      alert("Nom manquant");
+      field.focus();
+      return false;
+    }
   
   return true;
 }
@@ -37,7 +44,7 @@ function checkMediuser() {
 <tr>
   <td class="greedyPane">
 
-		<a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser=0"><strong>Créer un utilisateur</strong></a>
+		<a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id=0"><strong>Créer un utilisateur</strong></a>
 
     <table class="color">
       
@@ -50,10 +57,10 @@ function checkMediuser() {
     
     {foreach from=$users item=curr_user}
     <tr style="background: #{$curr_user.color}">
-      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser={$curr_user.id}">{$curr_user.username}</a></td>
-      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser={$curr_user.id}">{$curr_user.lastname}</a></td>
-      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser={$curr_user.id}">{$curr_user.firstname}</a></td>
-      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;mediuser={$curr_user.id}">{$curr_user.functionname}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id={$curr_user.id}">{$curr_user.username}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id={$curr_user.id}">{$curr_user.lastname}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id={$curr_user.id}">{$curr_user.firstname}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;user_id={$curr_user.id}">{$curr_user.functionname}</a></td>
     </tr>
     {/foreach}
       
@@ -65,15 +72,15 @@ function checkMediuser() {
 
     <form name="mediuser" action="./index.php?m={$m}" method="post" onSubmit="return checkMediuser()"/>
     <input type="hidden" name="dosql" value="do_mediusers_aed" />
-    <input type="hidden" name="user_id" value="{$usersel.id}" />
+    <input type="hidden" name="user_id" value="{$mediuserSel->user_id}" />
     <input type="hidden" name="del" value="0" />
 
     <table class="form">
 
     <tr>
       <th class="category" colspan="2">
-        {if $usersel.exist}
-        Modification de l'utilisateur &lsquo;{$usersel.username}&rsquo;
+        {if $mediuserSel->user_id}
+        Modification de l'utilisateur &lsquo;{$mediuserSel->_user_username}&rsquo;
         {else}
         Création d'un nouvel utilisateur
         {/if}
@@ -82,25 +89,25 @@ function checkMediuser() {
 
     <tr>
       <th class="mandatory"><label for="mediuser__user_username" title="Nom du compte pour se connecter à Mediboard. Obligatoire">Login:</label></th>
-      <td><input type="text" name="_user_username" value="{$usersel.username}" /></td>
+      <td><input type="text" name="_user_username" value="{$mediuserSel->_user_username}" /></td>
     </tr>
     
     <tr>
       <th class="mandatory"><label for="mediuser__user_password" title="Mot de passe pour se connecter à Mediboard. Obligatoire">Mot de passe:</label></th>
-      <td><input type="password" name="_user_password" value="{$usersel.password}" /></td>
+      <td><input type="password" name="_user_password" value="{$mediuserSel->_user_password}" /></td>
     </tr>
     
     <tr>
       <th class="mandatory"><label for="mediuser__user_password2" title="Re-saisir le mot de passe pour confimer. Obligatoire">Mot de passe (vérif.):</label></th>
-      <td><input type="password" name="_user_password2" value="{$usersel.password}" /></td>
+      <td><input type="password" name="_user_password2" value="{$mediuserSel->_user_password}" /></td>
     </tr>
     
     <tr>
-      <th class="mandatory"><label for="mediuser_fonction_id" title="Fonction de l'utilisateur au sein de l'établissement. Obligatoire">Fonction:</th>
+      <th class="mandatory"><label for="mediuser_function_id" title="Fonction de l'utilisateur au sein de l'établissement. Obligatoire">Fonction:</th>
       <td>
         <select name="function_id">
         {foreach from=$functions item=curr_function}
-          <option value="{$curr_function.function_id}" {if $curr_function.function_id == $usersel.function} selected="selected" {/if}>
+          <option value="{$curr_function.function_id}" {if $curr_function.function_id == $mediuserSel->function_id} selected="selected" {/if}>
             {$curr_function.text}
           </option>
         {/foreach}
@@ -109,31 +116,44 @@ function checkMediuser() {
     </tr>
 
     <tr>
+      <th><label for="mediuser__profile_id" title="Profil de droits utilisateur. Obligatoire">Profil:</label></th>
+      <td>
+        <select name="_profile_id">
+          <option value="0">&mdash; Choisir un profil</option>	
+        {foreach from=$profiles item=curr_profile}
+          <option value="{$curr_profile->user_id}">{$curr_profile->user_username}</option>
+        {/foreach}
+        </select>
+      </td>
+    </tr>
+    
+    <tr>
       <th class="mandatory"><label for="mediuser__user_last_name" title="Nom de famille de l'utilisateur. Obligatoire">Nom:</label></th>
-      <td><input type="text" name="_user_last_name" value="{$usersel.lastname}" /></td>
+      <td><input type="text" name="_user_last_name" value="{$mediuserSel->_user_last_name}" /></td>
     </tr>
     
     <tr>
       <th><label for="mediuser__user_first_name" title="Prénom de l'utilisateur">Prénom:</label></th>
-      <td><input type="text" name="_user_first_name" value="{$usersel.firstname}" /></td>
+      <td><input type="text" name="_user_first_name" value="{$mediuserSel->_user_first_name}" /></td>
     </tr>
     
     <tr>
       <th><label for="mediuser__user_email" title="Email de l'utilisateur">Email:</label></th>
-      <td><input type="text" name="_user_email" value="{$usersel.email}" /></td>
+      <td><input type="text" name="_user_email" value="{$mediuserSel->_user_email}" /></td>
     </tr>
 
     <tr>
       <th><label for="mediuser__user_phone" title="Numéro de téléphone de l'utilisateur">Tél:</label></th>
-      <td><input type="text" name="_user_phone" value="{$usersel.phone}" /></td>
+      <td><input type="text" name="_user_phone" value="{$mediuserSel->_user_phone}" /></td>
     </tr>
     
+
     <tr>
       <td class="button" colspan="2">
-        {if $usersel.exist}
+        {if $mediuserSel->user_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
         {else}
         <input type="submit" name="btnFuseAction" value="Créer">
         {/if}
