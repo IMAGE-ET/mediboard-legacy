@@ -5,6 +5,8 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/html" xml:lang="en" lang="en">
 <head>
+	<title>Mediboard :: Système de gestion des structures de santé</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
 	<meta name="Description" content="dotProject Mediboard Style" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
@@ -15,9 +17,11 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 
 <body onload="this.focus();">
 
-<?php if (!$dialog) {
-	// top navigation menu
-	$nav = $AppUI->getMenuModules();
+<?php 
+	$dialog = dPgetParam( $_GET, 'dialog', 0 );
+	if (!$dialog) {
+		// top navigation menu
+		$nav = $AppUI->getMenuModules();
 ?>
 
 <table id="header">

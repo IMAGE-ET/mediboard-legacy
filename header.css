@@ -37,12 +37,6 @@
 	text-align: left;
 }
 
-#nav a {
-	font-weight: bold;
-	font-variant: small-caps;
-	font-size: 12pt;
-}
-
 #nav table {
 	width: 100%;
 	border-spacing: 0px;
@@ -59,12 +53,6 @@
 	list-style-type: none;
 }
 
-#nav img {
-	display: block;
-	margin: auto;
-	width: 48px;
-}
-
 #nav li {
 	display: inline;
 	margin: 0px 2px;
@@ -73,6 +61,10 @@
 #nav a {
 	display: block;
 	float: left;
+	text-align: center;
+	font-weight: bold;
+	font-variant: small-caps;
+	font-size: 12pt;
 	padding: 6px 8px;
 }
 
@@ -82,6 +74,24 @@
 	padding: 5px 7px;
 	border: 1px solid #888;
 }
+
+#nav img {
+	display: block;
+	margin: auto;
+	width: 48px;
+}
+
+	/* ---- Begin Patch for damned IE that never works ---- */
+	
+	#nav li a {
+		width: 6em;
+	}
+	
+	#nav li>a {
+		width: auto;
+	}
+	
+	/* ---- End patch ---- */
 
 /* Creation */
 
