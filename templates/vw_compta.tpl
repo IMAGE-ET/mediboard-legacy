@@ -9,19 +9,15 @@ function checkRapport(){
     alert("Date de début superieure à la date de fin");
     return false;
   }
-  var debut = form.date_debut.value;
-  var fin = form.date_fin.value;
-  var chir = form.chir.value;
-  var etat = form.etat.value;
-  var type = form.type.value;
-  var aff = form.aff.value;
+
   var url = './index.php?m=dPcabinet&a=print_rapport&dialog=1';
-  url = url + '&debut=' + debut;
-  url = url + '&fin=' + fin;
-  url = url + '&chir=' + chir;
-  url = url + '&etat=' + etat;
-  url = url + '&type=' + type;
-  url = url + '&aff=' + aff;
+  url += '&debut=' + form.date_debut.value;
+  url += '&fin='   + form.date_fin.value;
+  url += '&chir='  + form.chir.value;
+  url += '&etat='  + form.etat.value;
+  url += '&type='  + form.type.value;
+  url += '&aff='   + form.aff.value;
+
   popup(700, 550, url, 'Rapport');
   
   return false;
@@ -158,7 +154,7 @@ function setCalendar( idate, fdate ) {
         <tr><td class="button" colspan="2">
           {if $tarif->tarif_id}
           <input type="submit" value="Modifier" />
-          <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
+          <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le tarif', '{$tarif->description|escape:javascript}')" />
           {else}
           <input type="submit" name="btnFuseAction" value="Créer">
           {/if}

@@ -195,7 +195,9 @@ function checkPlage() {
                 <td><input type='text' name='_repeat' size="1" value='1' /> semaine(s)</td>
               </tr>
               <tr>
-                <td class="button" colspan="2"><input type='button' value='Supprimer' onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.submit();}{/literal}" /></td>
+                <td class="button" colspan="2">
+                  <input type='button' value='Supprimer' onclick="confirmDeletion(this.form, 'la plage de consultations du', '{$plageSel->date|date_format:"%A %d %B %Y"}')" />
+                </td>
               </tr>
             </table>
           </form>
@@ -261,11 +263,17 @@ function checkPlage() {
             <input type="hidden" name="annule" value="1" />
             </form>
             
-            <a href="{$href_planning}"><img src="modules/{$m}/images/planning.png" title="Modifier le rendez-vous"></a>
+            <a class="action" href="{$href_planning}">
+              <img src="modules/{$m}/images/planning.png" title="Modifier le rendez-vous">
+            </a>
 
 			{if $curr_consult->chrono == $smarty.const.CC_PLANIFIE}
-            <img src="modules/{$m}/images/check.png" title="Notifier l'arrivée du patient" onclick="document.etatFrm{$curr_consult->consultation_id}.submit();">
-            <img src="modules/{$m}/images/cancel.png" title="Annuler ce rendez-vous" onclick="document.cancelFrm{$curr_consult->consultation_id}.submit();">
+            <a class="action" href="javascript:document.etatFrm{$curr_consult->consultation_id}.submit()">
+              <img src="modules/{$m}/images/check.png" title="Notifier l'arrivée du patient">
+            </a>
+            <a class="action" href="javascript:document.cancelFrm{$curr_consult->consultation_id}.submit()">
+              <img src="modules/{$m}/images/cancel.png" title="Annuler ce rendez-vous">
+            </a>
             {/if}
           </td>
           <td {$style}>{$curr_consult->_etat}</td>

@@ -312,7 +312,7 @@ function supprimerCompteRendu() {
                   <input type="hidden" name="dosql" value="do_file_aed" />
 	              <input type="hidden" name="del" value="1" />
 	              <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
-	              <input type="button" value="supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.submit();}{/literal}"/>
+	              <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
 
 	              </form>
 	            </td>

@@ -232,7 +232,7 @@ function setCalendar( idate, fdate ) {
           {if $consult->consultation_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la consultation de', '{$consult->_ref_patient->nom|escape:javascript}' + ' ' + '{$consult->_ref_patient->prenom|escape:javascript}')" />
           {else}
             <input type="submit" value="Créer" />
           {/if}
