@@ -63,27 +63,47 @@ class CDpObject {
 
 /**
  *  loads a list of objects matching a SQL where clause
- *  @param string $where the SQL where clause, can also be an array of strings
- *  @param string $order the SQL order clause, can also be an array of strings
+ *  @param string $where: the SQL where clause, 
+ *     can also be an array of where clauses as string
+ *     can also be an array of where clauses as field => equation
+ *  @string $order: the SQL order field, 
+ *     can  also be an array of order fields
  *  @return the objects array
  */
   function loadList($where = null, $order = null, $limit = null) {
     $sql = "SELECT * FROM `$this->_tbl`";
 
+    // Where clauses
+    if (is_array($where)) {
+      foreach ($where as $field => $eq) {
+        if (is_string($field)) {
+          $where[$field] = "`$field` $eq";
+        }
+      }
+		}
+    
     if ($where) {
       $sql .= "\nWHERE ";
       $sql .= is_array($where) ? implode("\nAND ", $where) : $where;
     }
       
-    if ($order) {
-      $sql .= "\nORDER BY ";
-      $sql .= is_array($order) ? implode(",\n", $order) : $order;
+    // Order by fields
+    if (is_array($where)) {
+      foreach ($where as $key => $field) {
+        $where[$key] = "`$field`";
+      }
     }
     
+    if ($order) {
+      $sql .= "\nORDER BY ";
+      $sql .= is_array($order) ? implode(", ", $order) : $order;
+    }
+    
+    // Limits
     if ($limit) {
 			$sql .= "\nLIMIT $limit";
 		}
-      
+    
     return db_loadObjectList($sql, $this);
   }
 
