@@ -71,12 +71,12 @@ function setColor(color) {
     </tr>
 
     <tr>
-      <th class="mandatory">Intitulé:</th>
+      <th class="mandatory"><label for="editFrm_text" title="Intitulé de la fonction. Obligatoire">Intitulé:</label></th>
       <td><input type="text" name="text" value="{$functionsel.text}" /></td>
     </tr>
     
     <tr>
-      <th class="mandatory">Groupe:</th>
+      <th class="mandatory"><label for="editFrm_group_id" title="Groupe auquel se rattache la fonction">Groupe:</label></th>
       <td>
       	<select name="group_id">
       	{foreach from=$groups item=curr_group}
@@ -91,20 +91,22 @@ function setColor(color) {
     <tr>
       <th>Couleur:</th>
       <td>
-        <span id="test" title="test" style="background: #{$functionsel.color};"><a href="#" onClick="window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">cliquez ici</a></span>
+        <span id="test" title="test" style="background: #{$functionsel.color};">
+          <a href="#" onClick="window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">cliquez ici</a>
+        </span>
         <input type="hidden" name="color" value="{$functionsel.color}" />
       </td>
     </tr>
     
     <tr>
       <td class="button" colspan="2">
-        {if $functionsel.exist}
-            <input type="reset" value="Réinitialiser" />
-            <input type="submit" value="Valider" />
-            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
-        {else}
+      {if $functionsel.exist}
+        <input type="reset" value="Réinitialiser" />
+        <input type="submit" value="Valider" />
+        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+      {else}
         <input type="submit" name="btnFuseAction" value="Créer">
-        {/if}
+      {/if}
       </td>
     </tr>
 
