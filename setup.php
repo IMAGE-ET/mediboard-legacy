@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.22';
+$config['mod_version'] = '0.23';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -48,14 +48,22 @@ class CSetupdPcabinet {
 		  $sql = "ALTER TABLE plageconsult ADD freq TIME DEFAULT '00:15:00' NOT NULL AFTER date ;";
 		  db_exec( $sql ); db_error();
 		case "0.2":
-          $sql = "ALTER TABLE consultation ADD compte_rendu TEXT DEFAULT NULL";
-          db_exec( $sql ); db_error();
-        case "0.21":
-          $sql = "ALTER TABLE consultation CHANGE duree duree TINYINT DEFAULT '1' NOT NULL ";
-          db_exec( $sql ); db_error();
-          $sql = "UPDATE consultation SET duree='1' ";
-          db_exec( $sql ); db_error();
-        case "0.22":
+      $sql = "ALTER TABLE consultation ADD compte_rendu TEXT DEFAULT NULL";
+      db_exec( $sql ); db_error();
+    case "0.21":
+      $sql = "ALTER TABLE consultation CHANGE duree duree TINYINT DEFAULT '1' NOT NULL ";
+      db_exec( $sql ); db_error();
+      $sql = "UPDATE consultation SET duree='1' ";
+      db_exec( $sql ); db_error();
+    case "0.22":
+      $sql = "ALTER TABLE `consultation` ADD `chrono` ENUM( 'planifie', 'patient_arrive', 'en_cours', 'termine' )," .
+          "\nADD `annule` TINYINT," .
+          "\nADD `paye` TINYINT," .
+          "\nADD `cr_valide` TINYINT," .
+          "\nADD `examen` TEXT," .
+          "\nADD `traitement` TEXT";
+      db_exec( $sql ); db_error();
+    case "0.23":
 			return true;
 		default:
 			return false;
@@ -117,7 +125,7 @@ class CSetupdPcabinet {
                 KEY idx_wcnt (word_placement)
                 ) TYPE=MyISAM;";
 		db_exec( $sql ); db_error();
-        $this->upgrade("all");
+    $this->upgrade("all");
 		return null;
 	}
 }

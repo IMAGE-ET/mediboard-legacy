@@ -99,7 +99,7 @@ function newConsultation() {
               <tr><th>Age :</th><td>{$consult->_ref_patient->_age} ans</td><tr>
             </table>
 
-            <form name="motifRquesFrm" action="?m={$m}" method="POST">
+            <form name="editFrm" action="?m={$m}" method="POST">
 
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="del" value="0" />
@@ -115,11 +115,29 @@ function newConsultation() {
 
             <table class="form">
               <tr><th colspan="2" class="category">Consultation</th></tr>
-              <tr><th>Motif :</th>
-              <td><textarea name="motif">{$consult->motif}</textarea></td></tr>
-              <tr><th>Remarques :</th>
-              <td><textarea name="rques">{$consult->rques}</textarea></td></tr>
-              <td colspan="2" class="button"><input type="submit" value="modifier"></td>
+              <tr>
+              	<th><label for="editFrm_motif" title="Motif de la consultation">Motif :</label></th>
+              	<td><textarea name="motif">{$consult->motif}</textarea></td>
+              </tr>
+              
+              <tr>
+              	<th><label for="editFrm_rques" title="Remarques concernant la consultation">Remarques :</label></th>
+              	<td><textarea name="rques">{$consult->rques}</textarea></td>
+              </tr>
+              
+              <tr>
+              	<th><label for="editFrm_examen" title="Bilan de l'examen clinique">Examens :</label></th>
+              	<td><textarea name="examen">{$consult->examen}</textarea></td>
+              </tr>
+              
+              <tr>
+              	<th><label for="editFrm_" title="title">Traitements :</label></th>
+              	<td><textarea name="traitement">{$consult->traitement}</textarea></td>
+              </tr>
+              
+              <tr>
+                <td colspan="2" class="button"><input type="submit" value="modifier"></td>
+              </tr>
             </table>
 
             </form>

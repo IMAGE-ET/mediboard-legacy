@@ -14,6 +14,12 @@ require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 
+// Enum for Consultation.chrono
+define("CC_PLANIFIE", "planifie");
+define("CC_PATIENT_ARRIVE", "patient_arrive");
+define("CC_EN_COURS", "en_cours");
+define("CC_TERMINE", "termine");
+
 class CConsultation extends CDpObject {
   // DB Table key
   var $consultation_id = null;
@@ -27,8 +33,14 @@ class CConsultation extends CDpObject {
   var $duree = null;
   var $secteur1 = null;
   var $secteur2 = null;
+  var $chrono = null;
+  var $annule = null;
+  var $paye = null;
+  var $cr_valide = null;
   var $motif = null;
   var $rques = null;
+  var $examen = null;
+  var $traitement = null;
   var $compte_rendu = null;
 
   // Form fields
