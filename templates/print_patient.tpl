@@ -6,17 +6,22 @@
   <tr><th class="category" colspan="2">Informations sur le patient</th></tr>
   
   <tr><th>Nom / Prenom: </th><td>{$patient->nom} {$patient->prenom}</td></tr>
-  <tr><th>Date de naissance / Sexe: </th><td>né(e) le {$patient->_jour}/{$patient->_mois}/{$patient->_annee} de sexe {$patient->sexe}</td></tr>
-  <tr><th>Incapable majeur: </th><td>{$patient->incapable_majeur}</td></tr>
+  <tr><th>Date de naissance / Sexe: </th><td>né(e) le {$patient->_jour}/{$patient->_mois}/{$patient->_annee}
+  de sexe {if $patient->sexe == "m"} masculin {else} féminin {/if}</td></tr>
+  <tr><th>Incapable majeur: </th><td>{if $patient->incapable_majeur == "n"} non {else} oui {/if}</td></tr>
   <tr><th>Telephone: </th><td>{$patient->tel}</td></tr>
   <tr><th>Portable: </th><td>{$patient->tel2}</td></tr>
   <tr><th>Adresse: </th><td>{$patient->adresse} - {$patient->cp} {$patient->ville}</td></tr>
-  <tr><th>Remarques: </th><td>{$patient->rques|nl2br:php}</td></tr>
+  <tr><th>Remarques: </th><td>{$patient->rques|nl2br}</td></tr>
   
+  {if $patient->_ref_medecin_traitant || $patient->_ref_medecin1 || $patient->_ref_medecin2 || $patient->_ref_medecin3}
   <tr><th class="category" colspan="2">Medecins correspondants</th></tr>
+  {/if}
   
+  {if $patient->_ref_medecin_traitant}
   <tr><th>Medecin traitant: </th><td>{$patient->_ref_medecin_traitant->nom} {$patient->_ref_medecin_traitant->prenom}</td></tr>
   <tr><th></th><td>{$patient->_ref_medecin_traitant->adresse} - {$patient->_ref_medecin_traitant->cp} {$patient->_ref_medecin_traitant->ville}</td></tr>
+  {/if}
   {if $patient->_ref_medecin1}
   <tr><th>Medecin correspondant 1: </th><td>{$patient->_ref_medecin1->nom} {$patient->_ref_medecin1->prenom}</td></tr>
   <tr><th></th><td>{$patient->_ref_medecin1->adresse} - {$patient->_ref_medecin1->cp} {$patient->_ref_medecin1->ville}</td></tr>
