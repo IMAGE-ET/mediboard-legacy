@@ -34,10 +34,10 @@ $mediusers = new CMediusers();
 $listPrat = $mediusers->loadPraticiens(PERM_EDIT);
 
 // Liste des types de compte rendu
-$listType = array('consultation', 'opération', 'hospitalisation', 'autre');
+$listType = array('consultation', 'operation', 'hospitalisation', 'autre');
 
 // L'utilisateur est-il chirurgien?
-if(!$prat_id) {
+if (!$prat_id) {
   $mediuser = new CMediusers;
   $mediuser->load($AppUI->user_id);
 
@@ -57,33 +57,25 @@ if(!$prat_id) {
 $compte_rendu = new CCompteRendu();
 $compte_rendu->load($compte_rendu_id);
 
-// Gestion du modele
+// Gestion du modèle
 if($compte_rendu->compte_rendu_id) {
-  $template = $compte_rendu->source;
-  if(!$template) {
-    $template = "";
-  }
   $templateManager = new CTemplateManager;
-  $templateManager->addProperty("Date", "{$consult->_ref_plageconsult->date}");
-  $templateManager->addProperty("Chirurgien", "Dr. {$consult->_ref_plageconsult->_ref_chir->user_last_name} {$consult->_ref_plageconsult->_ref_chir->user_first_name}");
-  $templateManager->addProperty("Patient", "{$consult->_ref_patient->nom} {$consult->_ref_patient->prenom}");
-  $templateManager->addProperty("Motif", nl2br($consult->motif));
-  $templateManager->addProperty("Remarques", nl2br($consult->rques));
   $templateManager->valueMode = false;
-  $templateManager->apply($template);
-} else
-  $templateManager = null;
+  $templateManager->applyTemplate($compte_rendu);
+  $templateManager->initHTMLArea();
+}
 
 // Création du template
 require_once("classes/smartydp.class.php");
 $smarty = new CSmartyDP;
+
+$smarty->debugging = true;
 
 $smarty->assign('prat_id', $prat_id);
 $smarty->assign('compte_rendu_id', $compte_rendu_id);
 $smarty->assign('listPrat', $listPrat);
 $smarty->assign('listType', $listType);
 $smarty->assign('compte_rendu', $compte_rendu);
-$smarty->assign('templateManager', $templateManager);
 
 $smarty->display('addedit_modeles.tpl');
 
