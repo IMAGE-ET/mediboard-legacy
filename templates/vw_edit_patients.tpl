@@ -123,11 +123,11 @@ function checkPatient() {
       <tr>
         <th>Téléphone:</th>
         <td>
-          <input tabindex="10" type="text" name="_tel1" size="1" maxlength="2" value="{$patient->tel.0}{$patient->tel.1}" /> - 
-          <input tabindex="11" type="text" name="_tel2" size="1" maxlength="2" value="{$patient->tel.2}{$patient->tel.3}" /> -
-          <input tabindex="12" type="text" name="_tel3" size="1" maxlength="2" value="{$patient->tel.4}{$patient->tel.5}" /> -
-          <input tabindex="13" type="text" name="_tel4" size="1" maxlength="2" value="{$patient->tel.6}{$patient->tel.7}" /> -
-          <input tabindex="14" type="text" name="_tel5" size="1" maxlength="2" value="{$patient->tel.8}{$patient->tel.9}" />
+          <input tabindex="10" type="text" name="_tel1" size="1" maxlength="2" value="{$patient->_tel1}" /> - 
+          <input tabindex="11" type="text" name="_tel2" size="1" maxlength="2" value="{$patient->_tel2}" /> -
+          <input tabindex="12" type="text" name="_tel3" size="1" maxlength="2" value="{$patient->_tel3}" /> -
+          <input tabindex="13" type="text" name="_tel4" size="1" maxlength="2" value="{$patient->_tel4}" /> -
+          <input tabindex="14" type="text" name="_tel5" size="1" maxlength="2" value="{$patient->_tel5}" />
         </td>
       </tr>
       

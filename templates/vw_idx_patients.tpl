@@ -156,5 +156,19 @@ function checkPatient() {
     {/if}
 
   </tr>
+  {if $patient->_ref_operations}
+  <tr>
+    <td class="pane"></td>
+    <td class="pane">
+      <table class="form">
+        <tr><th>Interventions</th></tr>
+        <tr><th>Date</th><th>code CCAM</th></tr>
+        {foreach from=$patient->_ref_operations item=curr_op}
+        <tr>
+          <td>{curr_op->date}</td><td>{curr_op->CCAM_code}</td>
+        </tr>
+          {/foreach}
+      </table>
+    </td>
 </table>
       
