@@ -7,12 +7,11 @@
 * @author Romain Ollivier
 */
 
+
 require_once("modules/admin/admin.class.php");
 require_once("modules/dPpatients/patients.class.php");
 require_once("modules/dPbloc/plagesop.class.php");
-
-require_once("planning.class.php");
-
+require_once("modules/dPplanningOp/planning.class.php");
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {
@@ -23,7 +22,7 @@ $operation_id = mbGetValueFromGetOrSession("operation_id");
 
 if(!$operation_id) {
   $AppUI->setMsg("Vous devez choisir une opération", UI_MSG_ALERT);
-  $AppUI->redirect( "m=$m&tab=0");
+  $AppUI->redirect( "m=$m&tab=vw_idx_planning");
 }
 
 $op = new COperation;
