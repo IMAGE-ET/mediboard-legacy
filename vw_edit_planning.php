@@ -79,6 +79,7 @@ $smarty->cache_dir = "modules/$m/cache/";
 
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
+$smarty->assign('m', $m);
 $smarty->assign('op', $op);
 
 //Affichage de la page
