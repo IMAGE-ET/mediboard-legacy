@@ -2,24 +2,24 @@
 <script language="JavaScript" type="text/javascript">
 
 function editModele(consult, modele) {
-  $url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
-  $url += '&consult=' + consult;
-  $url += '&modele=' + modele;
+  var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
+  url = url + '&consult=' + consult;
+  url = url + '&modele=' + modele;
   popup(700, 700, url, 'Compte-rendu');
 }
 
 function newOperation() {
-  $url = '?m=dPplanningOp&tab=vw_add_planning';
-  $url += '&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}'
-  $url += '&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}'
-  window.location.href = $url;
+  var url = '?m=dPplanningOp&tab=vw_add_planning';
+  url = url + '&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}'
+  url = url + '&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}'
+  window.location.href = url;
 }
 
 function newConsultation() {
-  $url = '?m=dPcabinet&tab=add_planning';
-  $url += '&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}'
-  $url += '&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}'
-  window.location.href = $url;
+  var url = '?m=dPcabinet&tab=add_planning';
+  url = url + '&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}'
+  url = url + '&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}'
+  window.location.href = url;
 }
 
 </script>
