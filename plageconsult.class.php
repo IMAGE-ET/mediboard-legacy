@@ -21,6 +21,7 @@ class CPlageconsult extends CDpObject {
 
   // DB fields
   var $date = null;
+  var $freq = null;
   var $debut = null;
   var $fin = null;
 
@@ -29,10 +30,12 @@ class CPlageconsult extends CDpObject {
   var $_min_deb = null;
   var $_hour_fin = null;
   var $_min_fin = null;
+  var $_freq = null;
   var $_jour = null;
   var $_year = null;
   var $_month = null;
   var $_day = null;
+  var $_dateFormated = null;
 
   // Object References
   var $_ref_chir = null;
@@ -44,11 +47,24 @@ class CPlageconsult extends CDpObject {
   
   function loadRefs() {
     // Forward references
-    $this->_ref_chir = new CUser;
+    $this->_ref_chir = new CUser();
     $this->_ref_chir->load($this->chir_id);
     // Backward references
-    $sql = "SELECT * FROM consultation WHERE plageconsult_id = '$this->plageconsult_id'";
+    $sql = "SELECT *" .
+    		"\nFROM consultation" .
+    		"\nWHERE plageconsult_id = '$this->plageconsult_id'" .
+    		"\nORDER BY heure";
     $this->_ref_consultations = db_loadObjectList($sql, new CConsultation());
+  }
+  
+  function check() {
+  	$oldValues = new CPlageconsult();
+  	$oldValues->load($this->plageconsult_id);
+  	$oldValues->loadRefs();
+  	if(($oldValues->_freq != $this->_freq) && (count($oldValues->_ref_consultations) > 0))
+  	  return false;
+  	else
+  	  return parent::check();
   }
   
   function canDelete(&$msg, $oid = null) {
@@ -103,16 +119,19 @@ class CPlageconsult extends CDpObject {
     $this->_min_deb  = intval(substr($this->debut, 3, 2));
     $this->_hour_fin = intval(substr($this->fin, 0, 2));
     $this->_min_fin  = intval(substr($this->fin, 3, 2));
+    $this->_freq     = substr($this->freq, 3, 2);
     $this->_day      = substr($this->date, 8, 2);
     $this->_month    = substr($this->date, 5, 2);
     $this->_year     = substr($this->date, 0, 4);
     $this->_jour     = date("w", mktime(0, 0, 0, $this->_month, $this->_day-1, $this->_year));
     $this->_jour     = intval($this->_jour);
+    $this->_dateFormated = date("d/m/Y", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
   }
   
   function updateDBFields() {
     $this->debut = $this->_hour_deb.":00:00";
     $this->fin   = $this->_hour_fin.":00:00";
+    $this->freq   = "00:". $this->_freq. ":00";
     $this->date = date("Y-m-d", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
   }
   
@@ -135,6 +154,7 @@ class CPlageconsult extends CDpObject {
     $this->debut = $debut;
     $this->fin = $fin;
     $this->updateFormFields();
+    $this->updateDBFields();
     return $msg;
   }    
 }

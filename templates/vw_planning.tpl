@@ -156,6 +156,16 @@ function checkPlage() {
                   <label for="editFrm__double">Une semaine sur deux</label>
                 </td>
               </tr>
+              
+              <tr>
+                <th><label>Fréquence:</label></th>
+                <td><select name="_freq">
+                  <option value="05" {if ($plageSel->_freq == "05")} selected="selected" {/if}>5</option>
+                  <option value="10" {if ($plageSel->_freq == "10")} selected="selected" {/if}>10</option>
+                  <option value="15" {if ($plageSel->_freq == "15") || (!$plageSel->plageconsult_id)} selected="selected" {/if}>15</option>
+                  <option value="20" {if ($plageSel->_freq == "20")} selected="selected" {/if}>20</option>
+                  <option value="30" {if ($plageSel->_freq == "30")} selected="selected" {/if}>30</option>
+                </select> minutes</td>
 
               <tr>
                 {if $plageconsult_id == -1}
@@ -212,15 +222,20 @@ function checkPlage() {
               <th>Nom</th>
               <th>Prenom</th>
               <th>Motif</th>
-              <th>RDV</th>
+              <th>rques</th>
             </tr>
             {foreach from=$plageSel->_ref_consultations item=curr_consult}
             <tr>
-              <td>{$curr_consult->_hour}h{if $curr_consult->_min}{$curr_consult->_min}{/if}</td>
-              <td>{$curr_consult->_ref_patient->nom}</td>
-              <td>{$curr_consult->_ref_patient->prenom}</td>
-              <td>{$curr_consult->motif}</td>
-              <td></td>
+              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              {$curr_consult->_hour}h{if $curr_consult->_min}{$curr_consult->_min}{/if}</a></td>
+              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              {$curr_consult->_ref_patient->nom}</a></td>
+              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              {$curr_consult->_ref_patient->prenom}</a></td>
+              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              {$curr_consult->motif|nl2br}</a></td>
+              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              {$curr_consult->rques|nl2br}</a></td>
             </tr>
             {/foreach}
           </table>

@@ -31,8 +31,7 @@ class CConsultation extends CDpObject {
   // Form fields
   var $_hour = null;
   var $_min = null;
-  var $_hour_duree = null;
-  var $_min_duree = null;
+  var $_duree = null;
 
   // Object References
   var $_ref_patient = null;
@@ -48,15 +47,14 @@ class CConsultation extends CDpObject {
     }
     $this->_hour = intval(substr($this->heure, 0, 2));
     $this->_min  = intval(substr($this->heure, 3, 2));
-    $this->_hour_duree = intval(substr($this->duree, 0, 2));
-    $this->_min_duree  = intval(substr($this->duree, 3, 2));
+    $this->_duree  = intval(substr($this->duree, 3, 2));
     return TRUE;
   }
   
   function store() {
     // Data computation
-    $this->heure = $this->_hour.":".$this->_min;
-    $this->duree = $this->_hour_duree.":".$this->_min_duree;
+    $this->heure = $this->_hour.":".$this->_min.":00";
+    $this->duree = "00:".$this->_min_duree.":00";
     return parent::store();
   }
   

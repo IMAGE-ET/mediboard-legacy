@@ -14,15 +14,9 @@ if (!$canEdit) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$id = mbGetValueFromGetOrSession("id", NULL);
-$consult = new CConsultation();
-$consult->load($id);
-
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
-
-$smarty->assign('consult', $consult);
 
 $smarty->display('addedit_planning.tpl');
 
