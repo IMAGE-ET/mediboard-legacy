@@ -40,7 +40,7 @@
           <td>{$curr_adm->rques}</td>
           <td>{$curr_adm->_ref_plageop->_date}</td>
           <td>{if $curr_adm->time_operation != "00:00:00"}{$curr_adm->time_operation|truncate:5:""}{/if}</td>
-          <td>{$curr_adm->_ext_code_ccam->libelleLong|truncate:60:"...":false} <i>({$curr_adm->CCAM_code})</i></td>
+          <td class="text">{$curr_adm->_ext_code_ccam->libelleLong|truncate:80:"...":false} <i>({$curr_adm->CCAM_code})</i></td>
           <td>{$curr_adm->cote|truncate:1:""|capitalize}</td>
           <td>{$curr_adm->_ref_pat->nom} {$curr_adm->_ref_pat->prenom}</td>
           <td>{$curr_adm->_ref_pat->_age}</td>
