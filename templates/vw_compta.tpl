@@ -13,35 +13,19 @@ function initEditor() {
   // Loads CSS style mentions
   cfg.pageStyle = "@import url(./style/mediboard/htmlarea.css);";
 
-  // Register new buttons
-  var imgPrefix = "./style/mediboard/images/";
-  cfg.registerButton("my-toc"   , "Ajouter une table des matières", imgPrefix + "plus.png", false, clickHandler);
-  cfg.registerButton("my-date"  , "Ajouter l'heure courante"      , imgPrefix + "plus.png", false, clickHandler);
-  cfg.registerButton("my-bold"  , "Inverser le gras et l'italique", imgPrefix + "plus.png", false, clickHandler);
-  cfg.registerButton("my-hilite", "Mettre en surbrillance"        , imgPrefix + "plus.png", false, clickHandler);
 
   // Add dropdown
   var options = {};
   options["&mdash; Ajouter un champ &mdash;"] = "";
 
 {/literal}
-{if $valueMode}
-  options["Date"] = "{$consult->_ref_plageconsult->date}";
-  options["Chirurgien"] = "Dr. {$consult->_ref_plageconsult->_ref_chir->user_last_name} {$consult->_ref_plageconsult->_ref_chir->user_first_name}";
-  options["Patient"] = "{$consult->_ref_patient->nom} {$consult->_ref_patient->prenom}";
-  options["Motif"] = "{$consult->motif|nl2br|escape:"javascript"}";
-  options["Remarques"] = "{$consult->rques|nl2br|escape:"javascript"}";
-{else}
-  options["Date"] = "date";
-  options["Chirurgien"] = "chirurgien";
-  options["Patient"] = "patient";
-  options["Motif"] = "motif";
-  options["Remarques"] = "remarques";
-{/if}
+  {foreach from=$templateManager->properties item=property}
+    options["{$property.field}"] = {if $templateManager->valueMode} "{$property.valueHTML|escape:"javascript"}" {else} "{$property.fieldHTML}" {/if};
+  {/foreach}
 {literal}
 
   var obj = {
-    id            : "Consultation",
+    id            : "Properties",
     tooltip       : "Ajouter des champs",
     options       : options,
     action        : function(editor) { actionHandler(editor, this); },
@@ -52,41 +36,16 @@ function initEditor() {
   cfg.registerDropdown(obj);
 
   // add the new button to the toolbar
-  cfg.toolbar.push(["my-toc", "my-date", "my-bold", "my-hilite", "Consultation"]);
+  cfg.toolbar.push(["Properties"]);
 
   editor.generate();
   return false;
 }
 
-function clickHandler(editor, buttonId) {
-  switch (buttonId) {
-    case "my-toc":
-      editor.insertHTML("<h1>Table Of Contents</h1>");
-      break;
-    case "my-date":
-      editor.insertHTML((new Date()).toString());
-      break;
-    case "my-bold":
-      editor.execCommand("bold");
-      editor.execCommand("italic");
-      break;
-    case "my-hilite":
-      editor.surroundHTML("<span class='hilite'>", "</span>");
-      break;
-  }
-}
-
 function actionHandler(editor, dropdown) {
   var tbobj = editor._toolbarObjects[dropdown.id].element;
   if (tbobj.value.length) {
-{/literal}
-{if $valueMode}
-    editor.insertHTML("<span class='value'>" + tbobj.value + "</span>&nbsp;");
-{else}
-    editor.insertHTML("<span class='field'>{ldelim}$" + tbobj.value + "{rdelim}</span>&nbsp;");
-{/if}
-{literal}
-
+    editor.insertHTML(tbobj.value + "&nbsp;");
   }
 }
 
