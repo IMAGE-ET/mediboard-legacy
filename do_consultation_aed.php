@@ -7,6 +7,8 @@
 * @author Romain Ollivier
 */
 
+global $AppUI, $canRead, $canEdit, $m;
+
 require_once($AppUI->getModuleClass("dPcabinet", "consultation"));
 
 // Object binding
@@ -17,6 +19,7 @@ if (!$obj->bind( $_POST )) {
 }
 
 $del = dPgetParam( $_POST, 'del', 0 );
+$special = dPgetParam( $_POST, 'special', 0);
 
 if ($del) {
 	if (!$obj->canDelete( $msg )) {
@@ -39,6 +42,18 @@ if ($del) {
 		$isNotNew = @$_POST['consultation_id'];
 		$AppUI->setMsg( $isNotNew ? 'Consultation modifiée' : 'Consultation créée', UI_MSG_OK);
 	}
-	$AppUI->redirect();
+	// @todo : essayer de trouver un methode plus propre :/
+	if($special) {
+?>
+<script language="javascript">
+
+window.opener.location.reload();
+window.close();
+
+</script>
+<?php
+    }
+	else
+	  $AppUI->redirect();
 }
 ?>

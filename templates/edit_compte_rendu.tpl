@@ -3,6 +3,7 @@
 <input type="hidden" name="m" value="{$m}" />
 <input type="hidden" name="del" value="0" />
 <input type="hidden" name="dosql" value="do_consultation_aed" />
+<input type="hidden" name="special" value="1" />
 <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
 <input type="hidden" name="plageconsult_id" value="{$consult->plageconsult_id}" />
 <input type="hidden" name="patient_id" value="{$consult->patient_id}" />
