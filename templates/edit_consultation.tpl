@@ -12,7 +12,31 @@ function editModele(consult, modele) {
 <table>
   <tr>
     <td valign="top">
+      <table align="center" width="100%">
+      <tr>
+        <th></th>
+        <th><a href="?m={$m}&change=1&yearconsult={$pyear}"><</a></th>
+        <th>{$year}</th>
+        <th><a href="?m={$m}&change=1&yearconsult={$nyear}">></a></th>
+        <th></th>
+      </tr>
+      <tr>
+        <th><a href="?m={$m}&change=1&monthconsult={$ppmonth}"><<</a></th>
+        <th><a href="?m={$m}&change=1&monthconsult={$pmonth}"><</a></th>
+        <th>{$monthName}</th>
+        <th><a href="?m={$m}&change=1&monthconsult={$nmonth}">></a></th>
+        <th><a href="?m={$m}&change=1&monthconsult={$nnmonth}">>></a></th>
+      </tr>
+      <tr>
+        <th><a href="?m={$m}&change=1&dayconsult={$ppday}"><<</a></th>
+        <th><a href="?m={$m}&change=1&dayconsult={$pday}"><</a></th>
+        <th>{$dayName} {$day}</th>
+        <th><a href="?m={$m}&change=1&dayconsult={$nday}">></a></th>
+        <th><a href="?m={$m}&change=1&dayconsult={$nnday}">>></a></th>
+      </tr>
+      </table>
       <table class="tbl">
+      {if $listPlage}
       {foreach from=$listPlage item=curr_plage}
         <tr>
           <th colspan="2"><b>Consultations de {$curr_plage->_hour_deb}h à {$curr_plage->_hour_fin}h</b></th>
@@ -32,8 +56,14 @@ function editModele(consult, modele) {
         </tr>
         {/foreach}
       {/foreach}
+      {else}
+        <tr>
+          <th colspan=2><b>Pas de consultations</b></th>
+        </tr>
+      {/if}
       </table>
     </td>
+    {if $consult->consultation_id}
     <td valign="top">
       <table>
         <tr>
@@ -72,14 +102,16 @@ function editModele(consult, modele) {
               <td>interventions</td></tr>
               <tr><td><ul>
                 {foreach from=$consult->_ref_patient->_ref_consultations item=curr_consult}
-                <li>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name}<br />
-                le {$curr_consult->_ref_plageconsult->date}</li>
+                <li><a href="?m={$m}&selConsult={$curr_consult->consultation_id}">
+                Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name}<br />
+                le {$curr_consult->_ref_plageconsult->date}</a></li>
                 {/foreach}
               </ul></td>
               <td><ul>
                 {foreach from=$consult->_ref_patient->_ref_operations item=curr_op}
-                <li>Dr. {$curr_op->_ref_chir->user_first_name} {$curr_op->_ref_chir->user_last_name}<br />
-                le {$curr_op->_ref_plageop->date}</li>
+                <li><a href="?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op->operation_id}">
+                Dr. {$curr_op->_ref_chir->user_first_name} {$curr_op->_ref_chir->user_last_name}<br />
+                le {$curr_op->_ref_plageop->date}</a></li>
                 {/foreach}
               </ul></td></tr>
             </table>
@@ -108,5 +140,6 @@ function editModele(consult, modele) {
         </tr>
       </table>
     </td>
+    {/if}
   </tr>
 </table>

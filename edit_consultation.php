@@ -21,10 +21,42 @@ if (!$canEdit) {			// lock out users that do not have at least readPermission on
 }
 
 // Récupération des variables
-$day = date("d");
-$month = date("m");
-$year = date("Y");
+$day = mbGetValueFromGetOrSession("dayconsult", date("d"));
+$month = mbGetValueFromGetOrSession("monthconsult", date("m"));
+$year = mbGetValueFromGetOrSession("yearconsult", date("Y"));
+if($tempSelConsult = dPgetParam($_GET, "selConsult", 0)) {
+  $tempConsult = new CConsultation;
+  $tempConsult->load($tempSelConsult);
+  $tempConsult->loadRefs();
+  $day = substr($tempConsult->_ref_plageconsult->date, 8, 2);
+  $month = substr($tempConsult->_ref_plageconsult->date, 5, 2);
+  $year = substr($tempConsult->_ref_plageconsult->date, 0, 4);
+}
+$realtime = mktime(0, 0, 0, $month, $day, $year);
+$day = date("d", $realtime);
+mbSetValueToSession("dayconsult", $day);
+$nday = $day + 1;
+$nnday = $day + 7;
+$pday = $day - 1;
+$ppday = $day - 7;
+$dayName = strftime ("%a", $realtime);
+$month = date("m", $realtime);
+mbSetValueToSession("monthconsult", $month);
+$nmonth = $month + 1;
+$nnmonth = $month + 4;
+$pmonth = $month - 1;
+$ppmonth = $month - 4;
+$monthName = strftime ("%B", $realtime);
+$year = date("Y", $realtime);
+mbSetValueToSession("yearconsult", $year);
+$nyear = $year + 1;
+$pyear = $year - 1;
+
 $selConsult = mbGetValueFromGetOrSession("selConsult", 0);
+if(dPgetParam($_GET, "change", 0)) {
+  $selConsult = 0;
+  mbSetValueToSession("selConsult", 0);
+}
 
 // L'utilisateur est-il chirurgien?
 $mediuser = new CMediusers();
@@ -81,6 +113,21 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 
+$smarty->assign('day', $day);
+$smarty->assign('nday', $nday);
+$smarty->assign('nnday', $nnday);
+$smarty->assign('pday', $pday);
+$smarty->assign('ppday', $ppday);
+$smarty->assign('dayName', $dayName);
+$smarty->assign('month', $month);
+$smarty->assign('nmonth', $nmonth);
+$smarty->assign('nnmonth', $nnmonth);
+$smarty->assign('pmonth', $pmonth);
+$smarty->assign('ppmonth', $ppmonth);
+$smarty->assign('monthName', $monthName);
+$smarty->assign('year', $year);
+$smarty->assign('nyear', $nyear);
+$smarty->assign('pyear', $pyear);
 $smarty->assign('listPlage', $listPlage);
 $smarty->assign('listModele', $listModele);
 $smarty->assign('consult', $consult);
