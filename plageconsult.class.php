@@ -106,14 +106,6 @@ class CPlageconsult extends CDpObject {
     return parent::store();
   }
   
-  function load($oid = null, $strip = TRUE) {
-    if (!parent::load($oid, $strip)) {
-      return false;
-    }
-    $this->updateFormFields();
-    return true;
-  }
-  
   function updateFormFields() {
     $this->_hour_deb = intval(substr($this->debut, 0, 2));
     $this->_min_deb  = intval(substr($this->debut, 3, 2));

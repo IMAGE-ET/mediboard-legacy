@@ -41,21 +41,15 @@ class CConsultation extends CDpObject {
     $this->CDpObject( 'consultation', 'consultation_id' );
   }
   
-  function load($oid = null, $strip = TRUE) {
-    if (!parent::load($oid, $strip)) {
-      return FALSE;
-    }
+  function updateFormFields() {
     $this->_hour = intval(substr($this->heure, 0, 2));
     $this->_min  = intval(substr($this->heure, 3, 2));
     $this->_duree  = intval(substr($this->duree, 3, 2));
-    return TRUE;
   }
   
-  function store() {
-    // Data computation
+  function updateDBFields() {
     $this->heure = $this->_hour.":".$this->_min.":00";
     $this->duree = "00:".$this->_min_duree.":00";
-    return parent::store();
   }
   
   function loadRefs() {
