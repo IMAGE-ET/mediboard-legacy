@@ -22,7 +22,7 @@ $titleBlock->show();
 $tabBox = new CTabBox( "?m=dPplanningOp", "{$AppUI->cfg['root_dir']}/modules/dPplanningOp/", $tab );
 $tabBox->add( 'vw_idx_planning', 'Consulter le planning' );
 $tabBox->add( 'vw_edit_planning', 'Modifier le planning' );
-$tabBox->add( 'vw_add_patient', 'Planifier une opération' );
+$tabBox->add( 'vw_add_planning', 'Planifier une opération' );
 $tabBox->show();
 
 ?>

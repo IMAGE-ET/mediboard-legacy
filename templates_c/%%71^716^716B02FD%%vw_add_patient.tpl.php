@@ -1,17 +1,17 @@
-<?php /* Smarty version 2.6.3, created on 2004-10-01 14:30:54
+<?php /* Smarty version 2.6.3, created on 2004-10-04 10:09:53
          compiled from vw_add_patient.tpl */ ?>
 <?php echo '
 <script language="javascript">
 function popChir() {
-		var name = document.addOp.chir_name.value;
+		var name = document.editFrm.chir_name.value;
         window.open(\'./index.php?m=dPplanningOp&a=chir_selector&dialog=1&name=\'+name, \'Chirurgien\', \'left=50,top=50,height=250,width=400,resizable\');
 }
 function popPat() {
-		var name = document.addOp.pat_name.value;
+		var name = document.editFrm.pat_name.value;
         window.open(\'./index.php?m=dPplanningOp&a=pat_selector&dialog=1&name=\'+name, \'Patient\', \'left=50,top=50,height=250,width=400,resizable\');
 }
 function popCode(type) {
-		var chir = document.addOp.chir_id.value;
+		var chir = document.editFrm.chir_id.value;
         window.open(\'./index.php?m=dPplanningOp&a=code_selector&dialog=1&type=\'+type+\'&chir=\'+chir, \'CIM10\', \'left=50,top=50,height=500,width=600,resizable\');
 }
 function popDate() {
@@ -19,7 +19,7 @@ function popDate() {
 }
 
 function setChir( key, val ){
-	var f = document.addOp;
+	var f = document.editFrm;
  	if (val != \'\') {
 		f.chir_id.value = key;
     	f.chir_name.value = val;
@@ -28,7 +28,7 @@ function setChir( key, val ){
     }
 }
 function setPat( key, val ){
-	var f = document.addOp;
+	var f = document.editFrm;
  	if (val != \'\') {
 		f.pat_id.value = key;
     	f.pat_name.value = val;
@@ -37,7 +37,7 @@ function setPat( key, val ){
     }
 }
 function setCode( key, type ){
-	var f = document.addOp;
+	var f = document.editFrm;
  	if (key != \'\') {
 		if(type == \'ccam\'){
 			f.CCAM_code.value = key;
@@ -61,7 +61,9 @@ function setDate( key, val ){
 
 
 <table>
-<form name="addOp" action="?m=dPplanningOp" method="post">
+<form name="editFrm" action="./index.php?m=dPplanningOp" method="post">
+<input type="hidden" name="dosql" value="do_patients_aed">
+<input type="hidden" name="del" value="0">
 <input type="hidden" name="chir_id" value="">
 <input type="hidden" name="pat_id" value="">
 	<tr>
