@@ -13,62 +13,11 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-require_once("lib/smarty/Smarty.class.php");
-
-//Keywords initialisation
-if(!isset($_SESSION["findacte"]["clefs"]))
-{
-  $_SESSION["findacte"]["clefs"] = "";
-}
-if(dPgetParam($_GET, "clefs", "noclefs") != "noclefs")
-{
-  $_SESSION["findacte"]["clefs"] = dPgetParam($_GET, "clefs", "");
-}
-$clefs = $_SESSION["findacte"]["clefs"];
-
-//access method initialisation
-if(!isset($_SESSION["findacte"]["selacces"]))
-{
-  $_SESSION["findacte"]["selacces"] = "0";
-}
-if(dPgetParam($_GET, "selacces", "noacces") != "noacces")
-{
-  $_SESSION["findacte"]["selacces"] = dPgetParam($_GET, "selacces", "0");
-}
-$selacces = $_SESSION["findacte"]["selacces"];
-
-//first topography initialisation
-if(!isset($_SESSION["findacte"]["seltopo1"]))
-{
-  $_SESSION["findacte"]["seltopo1"] = "0";
-}
-if(dPgetParam($_GET, "seltopo1", "notopo1") != "notopo1")
-{
-  $_SESSION["findacte"]["seltopo1"] = dPgetParam($_GET, "seltopo1", "0");
-}
-$seltopo1 = $_SESSION["findacte"]["seltopo1"];
-
-//second topography initialisation
-if(!isset($_SESSION["findacte"]["seltopo2"]))
-{
-  $_SESSION["findacte"]["seltopo2"] = "0";
-}
-if(dPgetParam($_GET, "seltopo2", "notopo2") != "notopo2")
-{
-  $_SESSION["findacte"]["seltopo2"] = dPgetParam($_GET, "seltopo2", "0");
-}
-$seltopo2 = $_SESSION["findacte"]["seltopo2"];
-
-//code initialisation
-if(!isset($_SESSION["findacte"]["code"]))
-{
-  $_SESSION["findacte"]["code"] = "";
-}
-if(dPgetParam($_GET, "code", "nocode") != "nocode")
-{
-  $_SESSION["findacte"]["code"] = dPgetParam($_GET, "code", "");
-}
-$code = $_SESSION["findacte"]["code"];
+$clefs = mbGetValueFromGetOrSession("clefs");
+$code  = mbGetValueFromGetOrSession("code" );
+$selacces = mbGetValueFromGetOrSession("selacces", "0");
+$seltopo1 = mbGetValueFromGetOrSession("seltopo1", "0");
+$seltopo2 = mbGetValueFromGetOrSession("seltopo2", "0");
 
 //Connection a la base de donnees pour la recherche
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
@@ -174,17 +123,10 @@ while($row = mysql_fetch_array($result))
 
 mysql_close($mysql);
 
-//Creation de l'objet smarty
-$smarty = new Smarty();
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-//initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-//Mapping des variables
-$smarty->assign('canEdit', $canEdit);
 $smarty->assign('clefs', $clefs);
 $smarty->assign('selacces', $selacces);
 $smarty->assign('seltopo1', $seltopo1);
@@ -196,7 +138,6 @@ $smarty->assign('topo2', $topo2);
 $smarty->assign('codes', $codes);
 $smarty->assign('numcodes', $numcodes);
 
-//Affichage de la page
 $smarty->display('vw_find_code.tpl');
 
 ?>
