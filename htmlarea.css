@@ -1,0 +1,19 @@
+body {
+  font-family: Georgia, serifs;
+  font-size: 12px;
+  background: #ddf;
+}
+
+span.field {
+  color: #595;
+  background: #aae;
+  font-family: lucida console;
+}
+
+span.value {
+  background: #ddd;
+}
+
+span.hilite {
+  background: #f5f;
+}

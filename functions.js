@@ -28,10 +28,12 @@ function prepareForms() {
     // For each element
     var elementIt = 0;
     while (element = form.elements[elementIt++]) {
-      // Create id for each element
-      element.id = form.name + "_" + element.name;
-      if (element.type == "radio") {
-        element.id += "_" + element.value;
+      // Create id for each element if id is null
+      if (!element.id) {
+        element.id = form.name + "_" + element.name;
+        if (element.type == "radio") {
+          element.id += "_" + element.value;
+        }
       }
 
       // Focus on first non hidden input
@@ -43,4 +45,13 @@ function prepareForms() {
   }
   
 //  alert (msg);
+  
+  // HTMLArea initialisation
+  if (initEditor) {
+    HTMLArea.init(); 
+    HTMLArea.onload = initEditor;
+  }
+}
+
+function initEditor() {
 }

@@ -15,6 +15,14 @@
 
 <body onload="prepareForms()">
 
+<!-- Begin HTML Area Integration -->
+<script type="text/javascript">
+   _editor_url = "./lib/HTMLArea/";
+   _editor_lang = "fr";
+</script>
+<script src="./lib/HTMLArea/htmlarea.js" type="text/javascript"></script>
+<!-- End HTML Area Integration -->
+
 <?php 
 	$dialog = dPgetParam( $_GET, 'dialog', 0 );
 	if (!$dialog) {
