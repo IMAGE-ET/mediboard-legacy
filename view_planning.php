@@ -90,7 +90,8 @@ foreach($plagesop as $key=>$value) {
   $curr_dayOfWeek = date("w", mktime(0, 0, 0, $curr_month, $curr_day, $curr_year));
   $plagesop[$key]["date"] = $dayOfWeekList[$curr_dayOfWeek]." $curr_day ".$monthList[$curr_intmonth]." $curr_year";
   $sql = "SELECT operations.temp_operation AS duree, operations.cote AS cote, operations.time_operation AS heure,
-          operations.CCAM_code AS CCAM_code, operations.rques AS rques, operations.materiel AS materiel, 
+          operations.CCAM_code AS CCAM_code, operations.CCAM_code2 AS CCAM_code2,
+          operations.rques AS rques, operations.materiel AS materiel, 
           operations.commande_mat AS commande_mat, operations.type_anesth AS type_anesth,
           operations.examen AS examen, operations.type_adm AS adm,
           patients.nom AS lastname, patients.prenom AS firstname, patients.sexe AS sexe,
@@ -157,6 +158,11 @@ foreach($plagesop as $key => $value) {
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
 	$plagesop[$key]["operations"][$key2]["CCAM"] = $ccam["LIBELLELONG"];
+	
+    $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code2"]."'";
+    $ccamr = mysql_query($sql);
+    $ccam = mysql_fetch_array($ccamr);
+	$plagesop[$key]["operations"][$key2]["CCAM2"] = $ccam["LIBELLELONG"];
   }
 }
 mysql_close();

@@ -32,7 +32,8 @@
 		{foreach from=$curr_plageop.operations item=curr_op}
 		<tr>
 		  <td>{$curr_op.heure}</td>
-		  <td>{$curr_op.CCAM|truncate:80:"...":false} <i>({$curr_op.CCAM_code})</i></td>
+		  <td class="text">{$curr_op.CCAM|truncate:80:"...":false} <i>({$curr_op.CCAM_code})</i>
+		  {if $curr_op.CCAM_code2}<br />{$curr_op.CCAM2|truncate:80:"...":false} <i>({$curr_op.CCAM_code2}{/if}</td>
 		  <td>{$curr_op.cote|truncate:1:""|capitalize}</td>
           <td>{$curr_op.lu_type_anesth}</td>
           <td>{$curr_op.adm|truncate:1:""|capitalize}</td>
