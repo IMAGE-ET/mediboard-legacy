@@ -23,12 +23,15 @@ if(dPgetParam($_GET, "new", 0)) {
   $patient->load(NULL);
   mbSetValueToSession("id", null);
 }
-else
+else {
   $patient->load($patient_id);
-$patient->loadRefs();
+  $patient->loadRefs();
+}
 
-foreach ($patient->_ref_operations as $key => $op)
-  $patient->_ref_operations[$key]->loadRefs();
+if($patient->patient_id) {
+  foreach ($patient->_ref_operations as $key => $op)
+    $patient->_ref_operations[$key]->loadRefs();
+}
 
 // Récuperation des patients recherchés
 $patient_nom    = mbGetValueFromGetOrSession("nom"   );
@@ -37,9 +40,12 @@ $patient_prenom = mbGetValueFromGetOrSession("prenom");
 if ($patient_nom || $patient_prenom) {
   $sql = "SELECT * 
     FROM patients 
-    WHERE nom LIKE '$patient_nom%'
-    AND prenom LIKE '$patient_prenom%'
-    ORDER BY nom, prenom";
+    WHERE 1 ";
+  if($patient_nom)
+    $sql .= "AND nom LIKE '$patient_nom%' ";
+  if($patient_prenom)
+    $sql .= "AND prenom LIKE '$patient_prenom%' ";
+  $sql .= "ORDER BY nom, prenom LIMIT 0, 100";
   $patients = db_loadlist($sql);
 }
 
