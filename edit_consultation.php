@@ -35,7 +35,7 @@ if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
   $chir->load($AppUI->user_id);
 }
 else
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=dPcabinet&tab=0" );
 
 // Récupération des plages de consultation du jour et chargement des références
 
