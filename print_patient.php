@@ -15,6 +15,8 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$today = date("d/m/Y");
+
 // Récupération des variables passées en GET
 $patient_id = dPgetParam($_GET, "patient_id", 0);
 
@@ -31,6 +33,7 @@ foreach($patient->_ref_operations as $key => $value) {
 require_once("classes/smartydp.class.php");
 $smarty = new CSmartyDP;
 $smarty->assign('patient', $patient);
+$smarty->assign('today', $today);
 $smarty->display('print_patient.tpl');
 
 ?>
