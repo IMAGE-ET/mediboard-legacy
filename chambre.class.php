@@ -45,12 +45,8 @@ class CChambre extends CDpObject {
     $this->_ref_lits = $this->_ref_lits->loadList($where);
     
     // Forward references
-    $where = array (
-      "service_id" => "= '$this->service_id'"
-    );
-
-    $this->_ref_service = new CLit;
-    $this->_ref_service->load($where);
+    $this->_ref_service = new CService;
+    $this->_ref_service->load($this->service_id);
   }
 
   function canDelete(&$msg, $oid = null) {

@@ -27,7 +27,7 @@ function checkFrm() {
     <table class="tbl">
       
     <tr>
-      <th colspan="2">liste des services</th>
+      <th colspan="2">Liste des services</th>
     </tr>
     
     <tr>
@@ -81,7 +81,7 @@ function checkFrm() {
         {if $serviceSel->service_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le service ', '{$serviceSel->nom}')" />
         {else}
         <input type="submit" name="btnFuseAction" value="Créer" />
         {/if}

@@ -51,7 +51,7 @@ class CSetupdPhospi {
           "\n`chambre_id` INT NOT NULL AUTO_INCREMENT ," .
           "\n`service_id` INT NOT NULL ," .
           "\n`nom` VARCHAR( 50 ) ," .
-          "\n`caracteristiques` SET( 'cote_rue', 'fenetre', 'lit_accompagnant' ) ," .
+          "\n`caracteristiques` TEXT," .
           "\nPRIMARY KEY ( `chambre_id` ) ," .
           "\nINDEX ( `service_id` ))";
       db_exec($sql); db_error($sql);
