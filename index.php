@@ -31,7 +31,7 @@ $tabBox->add( 'vw_planning', 'Programmes de consultation' );
 $tabBox->add( 'add_planning', 'Créer un rendez-vous' );
 $tabBox->add( 'edit_planning', 'Modifier un rendez-vous' );
 $tabBox->add( 'edit_consultation', 'Consultation' );
-$tabBox->add( 'edit_plages', 'Plages de consultation' );
+$tabBox->add( 'form_print_plages', 'Impression des planings' );
 $tabBox->add( 'vw_compta', 'Comptabilité' );
 $tabBox->show();
 
