@@ -87,6 +87,7 @@ function setCalendar( idate, fdate ) {
 <input type="hidden" name="del" value="0" />
 <input type="hidden" name="chir_id" value="" />
 <input type="hidden" name="pat_id" value="" />
+<input type="hidden" name="rank" value="0" />
 
 <table class="main">
   <tr>

@@ -23,7 +23,7 @@ $sql = "select operations.operation_id as id, operations.chir_id as chir_id,
 		operations.date_anesth as rdv_anesth, operations.time_anesth as time_anesth,
 		operations.date_adm as rdv_adm, operations.time_adm as time_adm,
 		operations.type_adm as type_adm, operations.chambre as chambre, operations.ATNC as ATNC,
-		operations.rques as rques
+		operations.rques as rques, operations.rank as rank
 		from operations
 		left join users
 		on users.user_id = operations.chir_id

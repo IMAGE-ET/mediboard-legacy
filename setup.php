@@ -2,7 +2,7 @@
 /*
  * Name:      dPplanningOp
  * Directory: dPplanningOp
- * Version:   1.0.0
+ * Version:   0.1
  * Type:      user
  * UI Name:   dPplanningOp
  * UI Icon:
@@ -11,7 +11,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '1.0.0';
+$config['mod_version'] = '0.1';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -72,6 +72,7 @@ class CSetupdPplanningOp {
 			", chambre enum('o','n') NOT NULL default 'o'" .
 			", ATNC enum('o','n') NOT NULL default 'n'" .
 			", rques text" .
+			", rank tinyint(4) NOT NULL default '0'" .
 			", PRIMARY KEY  (operation_id)" .
 			", UNIQUE KEY operation_id (operation_id)" .
 			") TYPE=MyISAM;";

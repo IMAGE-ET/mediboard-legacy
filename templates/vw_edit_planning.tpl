@@ -88,6 +88,7 @@ function setCalendar( idate, fdate ) {
 <input type="hidden" name="operation_id" value="{$op.id}" />
 <input type="hidden" name="chir_id" value="{$op.chir_id}" />
 <input type="hidden" name="pat_id" value="{$op.pat_id}" />
+<input type="hidden" name="rank" value="{$op.rank}" />
 
 <table class="main">
   <tr>
