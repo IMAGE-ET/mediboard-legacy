@@ -113,9 +113,13 @@ class CDpObject {
  *	@return null|string null if successful otherwise returns and error message
  */
 	function store( $updateNulls = false ) {
+    global $AppUI;
+
 		$msg = $this->check();
 		if( $msg ) {
-			return get_class( $this )."::store-check failed<br />$msg";
+			return $AppUI->_(get_class( $this )) . 
+        $AppUI->_("::store-check failed:") .
+        $AppUI->_($msg);
 		}
 		$k = $this->_tbl_key;
 		if( $this->$k ) {
@@ -149,21 +153,28 @@ class CDpObject {
 			$select = "$k";
 			$join = "";
 			foreach( $joins as $table ) {
-				$select .= ",\nCOUNT(DISTINCT {$table['idfield']}) AS {$table['idfield']}";
-				$join .= "\nLEFT JOIN {$table['name']} ON {$table['joinfield']} = $k";
+				$select .= ",\nCOUNT(DISTINCT {$table['name']}.{$table['idfield']}) AS {$table['idfield']}";
+				$join .= "\nLEFT JOIN {$table['name']} " .
+            "ON {$table['name']}.{$table['joinfield']} = $this->_tbl.$k";
 			}
-			$sql = "SELECT $select\nFROM $this->_tbl\n$join\nWHERE $k = ".$this->$k." GROUP BY $k";
-
+			$sql = "SELECT $this->_tbl.$select " .
+          "FROM $this->_tbl " .
+          "$join " .
+          "\nWHERE $this->_tbl.$k = ".$this->$k." GROUP BY $this->_tbl.$k";
+    
+      $export = var_export($sql, true); echo "<pre>$export</pre>";
+      
 			$obj = null;
 			if (!db_loadObject( $sql, $obj )) {
 				$msg = db_error();
 				return false;
 			}
+
 			$msg = array();
 			foreach( $joins as $table ) {
 				$k = $table['idfield'];
 				if ($obj->$k) {
-					$msg[] = $AppUI->_( $table['label'] );
+					$msg[] = $obj->$k. " " . $AppUI->_( $table['label'] );
 				}
 			}
 
