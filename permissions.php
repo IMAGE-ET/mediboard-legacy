@@ -25,13 +25,7 @@
  * - project p => tasks, files, events of project p
  */
 
-// Permission flags used in the DB
-
-define( 'PERM_DENY', '0' );
-define( 'PERM_EDIT', '-1' );
-define( 'PERM_READ', '1' );
-
-define( 'PERM_ALL', '-1' );
+require_once( $AppUI->getModuleClass('admin'));
 
 // TODO: getDeny* should return true/false instead of 1/0
 
@@ -158,19 +152,89 @@ function winnow( $mod, $key, &$where, $alias = 'perm' ) {
 	}		
 }
 
+function isMbModule($module, $flag) {
+  global $fastMbPerms;
+
+  assert($flag == 'visible' or $flag == 'readall' or $flag == 'editall');
+
+  $allFlag = @$fastMbPerms['all'][$flag];
+  $moduleFlag = @$fastMbPerms[$module][$flag];
+
+  // allways check is_bool() cuz false == null
+  return (is_bool($allFlag) and $allFlag) and !(is_bool($moduleFlag) and $moduleFlag) or (is_bool($moduleFlag) and $moduleFlag);
+}
+
+function isMbModuleVisible($module) {
+  return isMbModule($module, 'visible');
+}
+
+function isMbModuleReadAll($module) {
+  return isMbModule($module, 'readall');
+}
+
+function isMbModuleEditAll($module) {
+  return isMbModule($module, 'editall');
+}
+
+function isMbAllowed($perm_type, $mod, $item_id) {
+  global $fastMbPerms;
+
+  assert($mod != 'all');
+  assert($item_id > 0);
+  assert($perm_type == PERM_EDIT or $perm_type == PERM_READ);
+  
+  $moduleAll =  isMbModule($mod, $perm_type == PERM_READ ? "readall" : "editall");
+  $itemPerm = @$fastMbPerms[$mod][$item_id][$perm_type == PERM_READ ? "read" : "edit"];
+  $itemDeny = @$fastMbPerms[$mod][$item_id]["deny"];
+  
+  $export = var_export($moduleAll, true); echo "<pre>module All: $export</pre>";
+  $export = var_export($itemPerm, true); echo "<pre>itemPerm '$item_id' flag: $export</pre>";
+  $export = var_export($itemDeny, true); echo "<pre>itemDeny '$item_id' flag: $export</pre>";
+
+  return ($moduleAll and !$itemDeny) or ($itemPerm);
+}
+
+function canMbRead($mod, $item_id) {
+  return isMbAllowed(PERM_READ, $mod, $item_id) or isMbAllowed(PERM_EDIT, $mod, $item_id);
+}
+
+function canMbEdit($mod, $item_id) {
+  return isMbAllowed(PERM_EDIT, $mod, $item_id);
+}
+
 // pull permissions into master array
-$sql = "
-SELECT permission_grant_on g, permission_item i, permission_value v
-FROM permissions
-WHERE permission_user = $AppUI->user_id
-";
+$sql = "SELECT permission_grant_on g, permission_item i, permission_value v " .
+    "FROM permissions " .
+    "WHERE permission_user = $AppUI->user_id";
 
 $perms = array();
 $res = db_exec( $sql );
 
 // build the master permissions array
 while ($row = db_fetch_assoc( $res )) {
+  
 	$perms[$row['g']][$row['i']] = $row['v'];
+}
+
+// Fast Mediboard permission array
+$MbPerms = new CPermission;
+$MbPerms = $MbPerms->loadList("permission_user = $AppUI->user_id");
+$fastMbPerms = array();
+
+foreach ($MbPerms as $key => $MbPerm) {
+  $MbPerms[$key]->updateFormFields();
+
+  if ($MbPerm->permission_item == PERM_ALL) {
+    $fastMbPerms[$MbPerm->permission_grant_on]["visible"] = $MbPerm->_module_visible;
+    $fastMbPerms[$MbPerm->permission_grant_on]["readall"] = $MbPerm->_module_readall;
+    $fastMbPerms[$MbPerm->permission_grant_on]["editall"] = $MbPerm->_module_editall;
+  } else {
+    $fastMbPerms[$MbPerm->permission_grant_on][$MbPerm->permission_item] = 
+      array(
+        "deny" => $MbPerm->_item_deny,
+        "read" => $MbPerm->_item_read,
+        "edit" => $MbPerm->_item_edit);
+  }
 }
 
 ?>
