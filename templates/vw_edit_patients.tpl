@@ -68,9 +68,9 @@ function checkPatient() {
       <tr>
         <th>Date de naissance:</th>
         <td>
-          <input tabindex="3" type="text" name="_jour"  size="1" maxlength="2" value="{$patient.naissance|date_format:"%d"}" /> -
-          <input tabindex="4" type="text" name="_mois"  size="1" maxlength="2" value="{$patient.naissance|date_format:"%m"}" /> -
-          <input tabindex="5" type="text" name="_annee" size="2" maxlength="4" value="{$patient.naissance|date_format:"%Y"}" />
+          <input tabindex="3" type="text" name="_jour"  size="1" maxlength="2" value="{$patient.day}" /> -
+          <input tabindex="4" type="text" name="_mois"  size="1" maxlength="2" value="{$patient.month}" /> -
+          <input tabindex="5" type="text" name="_annee" size="2" maxlength="4" value="{$patient.year}" />
         </td>
       </tr>
       

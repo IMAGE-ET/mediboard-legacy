@@ -28,6 +28,12 @@ else
 $sql = "select * from patients where patient_id = '$id'";
 $patient = db_loadlist($sql);
 
+foreach($patient as $key => $value) {
+  $patient[$key]["day"] = substr($value["naissance"], 8, 2);
+  $patient[$key]["month"] = substr($value["naissance"], 5, 2);
+  $patient[$key]["year"] = substr($value["naissance"], 0, 4);
+}
+
 //Creation de l'objet smarty
 require_once("lib/smarty/Smarty.class.php");
 $smarty = new Smarty();
