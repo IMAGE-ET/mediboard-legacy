@@ -30,6 +30,23 @@ function checkForm() {
   return true;
 }
 
+function checkChir() {
+  var form = document.editFrm;
+  var field = null;
+  
+  if (field = form.chir_id) {
+    if (field.value == 0) {
+      alert("Chirurgien manquant");
+      popChir();
+      return false;
+    }
+    else
+      return true;
+  }
+  else
+    return false;
+}
+
 function popChir() {
   var url = './index.php?m=dPplanningOp';
   url += '&a=chir_selector';
@@ -70,12 +87,10 @@ function setPat( key, val ) {
 }
 
 function popPlage() {
-  var url = './index.php?m=dPplanningOp';
+  var url = './index.php?m=dPcabinet';
   url += '&a=plage_selector';
   url += '&dialog=1';
   url += '&chir=' + document.editFrm.chir_id.value;
-  url += '&curr_op_hour=' + document.editFrm._hour_op.value;
-  url += '&curr_op_min=' + document.editFrm._min_op.value;
   if(checkChir())
     neo = window.open(url, 'Plage', 'left=50, top=50, width=400, height=250, resizable=yes');
     if(neo.window.focus){neo.window.focus();}
@@ -193,28 +208,21 @@ function setCalendar( idate, fdate ) {
         <tr><th class="category" colspan="3">Date du rdv</th></tr>
 
         <tr>
-          <th><label for="editFrm__rdv_anesth">Date:</label></th>
-          <td class="readonly">
-            <input type="hidden" name="_date_rdv_anesth" value="{$op->_date_rdv_anesth}" />
-            <input type="text" name="_rdv_anesth" value="{$op->_rdv_anesth}" readonly="readonly" />
-            <a href="#" onClick="popCalendar('_rdv_anesth', '_rdv_anesth');">
-              <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
-            </a>
-          </td>
+          <th><label for="editFrm__date_consult">Date:</label></th>
+          <td class="readonly"><input type="text" name="_date_consult" value="{$consult->_date_consult}" readonly="readonly" /></td>
+          <td rowspan="2" class="button"><input type="button" value="Selectionner" onclick="popPlage()" /></td>
         </tr>
 
         <tr>
-          <th><label for="editFrm__hour_anesth">Heure:</label></th>
-          <td>
-            <select name="_hour_anesth">
-            {foreach from=$hours item=hour}
-              <option {if $op->_hour_anesth == $hour} selected="selected" {/if}>{$hour}</option>
-            {/foreach}
-            </select>
-            :
-            <select name="_min_anesth">
-            {foreach from=$mins item=min}
-              <option {if $op->_min_anesth == $min} selected="selected" {/if}>{$min}</option>
+          <th><label for="editFrm__hour_consult">Heure:</label></th>
+          <td class="readonly"><input type="text" name="_hour_consult" value="{$consult->_hour_consult}" readonly="readonly" /></td>
+        </tr>
+        <tr>
+          <th><label for="editFrm__duree_consult">Durée:</label></th>
+          <td colspan="2">
+            <select name="_duree_consult">
+            {foreach from=$listDurees item=curr_duree}
+              <option {if $consult->duree == $curr_duree} selected="selected" {/if}>{$curr_duree}</option>
             {/foreach}
             </select>
           </td>
