@@ -241,6 +241,10 @@ table.tbl a {
   display: block;
 }
 
+table.tbl a.action {
+  display: inline;
+}
+
 table.tbl th {
   background-color: #888;
   padding: 2px;

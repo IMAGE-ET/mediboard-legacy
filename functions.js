@@ -15,6 +15,8 @@ function main() {
 
 function pageMain() {}
 
+function initHTMLArea () {}
+
 function prepareForms() {
   var msg = "Rapport: ";
   
@@ -55,11 +57,6 @@ function prepareForms() {
 //  alert (msg);
   
 }
-
-function initHTMLArea () {
-}
-
-function initEditor() {}
 
 function setSelectionRange(textarea, selectionStart, selectionEnd) {
   if (textarea.setSelectionRange) {
@@ -144,7 +141,7 @@ function confirmDeletion(form, typeName, objName, msg) {
   if (!msg) msg = "Voulez-vous réellement supprimer ";
   
   if (objName.length) objName = " '" + objName + "'";
-  if (confirm(msg + typeName + objName + " ?" )) {
+  if (confirm(msg + typeName + " " + objName + " ?" )) {
   	form.del.value = 1; 
   	form.submit();
   }
