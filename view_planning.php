@@ -74,15 +74,21 @@ foreach($plagesop as $key => $value) {
     $journais = substr($value2["naissance"], 8, 2);
     $jourjour = date("d");
     $age = $anjour-$annais;
-    if ($moisjour<$moisnais){$age=$age-1;}
-    if ($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
+    if($moisjour<$moisnais){$age=$age-1;}
+    if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
     $plagesop[$key]["operations"][$key2]["age"] = $age;
 	$plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
+    $plagesop[$key]["operations"][$key2]["mat"] = "<i>Pas de materiel particulier</i>";
     if($value2["materiel"] != "") {
-      if($value["commande_mat"] == "o") {
-        $plagesop[$key]["operations"][$key2]["materiel"] = "<i><b>Materiel commandé :</b> ".$value2["materiel"]."</i>";
-      } else {
-        $plagesop[$key]["operations"][$key2]["materiel"] = "<i><b>Materiel manquant :</b> ".$value2["materiel"]."</i>";
+      switch($value2["commande_mat"]) {
+        case "o" : {
+          $plagesop[$key]["operations"][$key2]["mat"] = "<i><b>Materiel commandé :</b> ".$value2["materiel"]."</i>";
+          break;
+        }
+        case "n" : {
+          $plagesop[$key]["operations"][$key2]["mat"] = "<i><b>Materiel manquant :</b> ".$value2["materiel"]."</i>";
+          break;
+        }
       }
     }
     $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";

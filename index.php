@@ -1,9 +1,12 @@
-<?php 
-// this is the index site for our dPbloc module
-// it is automatically appended on the applications main ./index.php
-// by the dPframework
+<?php /* $Id$ */
 
-// we check for permissions on this module
+/**
+* @package Mediboard
+* @subpackage dPbloc
+* @version $Revision$
+* @author Romain Ollivier
+*/ 
+
 $canRead = !getDenyRead( $m );		// retrieve module-based readPermission bool flag
 $canEdit = !getDenyEdit( $m );		// retrieve module-based writePermission bool flag
 
@@ -36,6 +39,7 @@ $tabBox = new CTabBox( "?m=dPbloc", "{$AppUI->cfg['root_dir']}/modules/dPbloc/",
 $tabBox->add( "vw_idx_planning", "Planning de la semaine" );
 $tabBox->add( "vw_edit_plages", "Planning du jour" );
 $tabBox->add( "vw_edit_interventions", "Gestion des interventions" );
+$tabBox->add( "vw_idx_materiel", "Commande de materiel" );
 $tabBox->add( "vw_idx_salles", "Gestion des salles" );
 
 $tabBox->show();
