@@ -67,7 +67,7 @@ function checkForm() {
 }
 
 function popChir() {
-  var url = './index.php?m=dPplanningOp';
+  var url = './index.php?m=mediusers';
   url += '&a=chir_selector';
   url += '&dialog=1';
   popup(400, 250, url, 'Chirurgien');
