@@ -116,7 +116,6 @@ $sql = "SELECT plagesop.id AS id, plagesop.date, COUNT(operations.temp_operation
 		ON plagesop.id = operations.plageop_id
 		WHERE plagesop.id_chir = '$selChirLogin'
 		AND plagesop.date LIKE '$year-$month-__'
-		AND operations.annulee = 0
 		AND operations.operation_id IS NOT NULL
 		GROUP BY operations.plageop_id";
 $result2 = db_loadlist($sql);
