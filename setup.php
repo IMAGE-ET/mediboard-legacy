@@ -33,7 +33,9 @@ class CSetupdPadmissions {
 	}
 
 	function remove() {
+		/*
 		db_exec( "DROP TABLE admissions;" );
+		*/
 
 		return null;
 	}
@@ -52,6 +54,7 @@ class CSetupdPadmissions {
 	}
 
 	function install() {
+		/*
 		$sql = "CREATE TABLE admissions ( " .
 			"  admission_id bigint(20) unsigned NOT NULL auto_increment" .
 			"  patient_id bigint(20) usigned NOT NULL default '0'" .
@@ -60,6 +63,7 @@ class CSetupdPadmissions {
 			", UNIQUE KEY protocoles_id (protocoles_id)" .
 			") TYPE=MyISAM;";
 		db_exec( $sql ); db_error();
+		*/
 		return null;
 	}
 }

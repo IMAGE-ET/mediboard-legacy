@@ -21,6 +21,7 @@ $titleBlock->show();
 
 $tabBox = new CTabBox( "?m=dPadmissions", "{$AppUI->cfg['root_dir']}/modules/dPadmissions/", $tab );
 $tabBox->add( 'vw_idx_admission', 'Consultation de admissions' );
+$tabBox->add( 'vw_dtl_admission', 'Détails' );
 $tabBox->show();
 
 ?>
