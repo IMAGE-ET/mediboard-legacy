@@ -71,7 +71,8 @@ function popChir() {
   url += '&a=chir_selector';
   url += '&dialog=1';
   
-  window.open(url, 'Chirurgien', 'left=50, top=50, height=250, width=400, resizable=yes');
+  neo = window.open(url, 'Chirurgien', 'left=50, top=50, height=250, width=400, resizable=yes');
+  if(neo.window.focus){neo.window.focus();}
 }
 
 function setChir( key, val ){
@@ -89,7 +90,8 @@ function popPat() {
   url += '&a=pat_selector';
   url += '&dialog=1';
 
-  window.open(url, 'Patient', 'left=50, top=50, width=500, height=500, resizable=yes');
+  neo = window.open(url, 'Patient', 'left=50, top=50, width=500, height=500, resizable=yes');
+  if(neo.window.focus){neo.window.focus();}
 }
 
 function setPat( key, val ) {
@@ -110,7 +112,8 @@ function popCode(type) {
   url += '&chir='+ document.editFrm.chir_id.value;
   url += '&type='+ type;
 
-  window.open(url, type, 'left=50, top=50, width=600, height=500, resizable=yes');
+  neo = window.open(url, type, 'left=50, top=50, width=600, height=500, resizable=yes');
+  if(neo.window.focus){neo.window.focus();}
 }
 
 function setCode( key, type ){
@@ -157,7 +160,8 @@ function popPlage() {
   url += '&curr_op_hour=' + document.editFrm._hour_op.value;
   url += '&curr_op_min=' + document.editFrm._min_op.value;
   if(checkChir())
-    window.open(url, 'Plage', 'left=50, top=50, width=400, height=250, resizable=yes');
+    neo = window.open(url, 'Plage', 'left=50, top=50, width=400, height=250, resizable=yes');
+    if(neo.window.focus){neo.window.focus();}
 }
 
 function setPlage( key, val, adm ) {
@@ -203,7 +207,8 @@ function popProtocole() {
   url += '&chir_id='   + document.editFrm.chir_id.value;
   url += '&CCAM_code=' + document.editFrm.CCAM_code.value;
 
-  window.open(url, 'Protocole', 'top=200, left=250, width=600, height=400, scrollbars=yes, resizable=yes' );
+  neo = window.open(url, 'Protocole', 'top=200, left=250, width=600, height=400, scrollbars=yes, resizable=yes' );
+  if(neo.window.focus){neo.window.focus();}
 }
 
 function setProtocole(
@@ -246,7 +251,8 @@ function popCalendar( field ) {
   url += '&callback=setCalendar';
   url += '&date=' + idate;
   
-  window.open(url, 'calwin', 'left=250, top=250, width=280, height=250, scrollbars=yes' );
+  neo = window.open(url, 'calwin', 'left=250, top=250, width=280, height=250, scrollbars=yes' );
+  if(neo.window.focus){neo.window.focus();}
 }
 
 function setCalendar( idate, fdate ) {
@@ -291,7 +297,8 @@ function printForm() {
     url += '&type_adm='    + eval('type_adm'               );
     url += '&chambre='     + eval('chambre'                ); 
  
-    window.open( url, 'printAdm', 'top=50,left=50, width=700, height=500, scrollbars=yes, menubar=yes, resize=yes' );
+    neo = window.open( url, 'printAdm', 'top=50,left=50, width=700, height=500, scrollbars=yes, menubar=yes, resize=yes' );
+    if(neo.window.focus){neo.window.focus();}
   }
 }
 </script>
