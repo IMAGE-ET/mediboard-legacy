@@ -122,9 +122,9 @@ function setMed( key, nom, prenom, type ){
       <tr>
         <th>Date de naissance:</th>
         <td>
-          <input tabindex="3" type="text" name="_jour"  size="1" maxlength="2" value="{$patient->_jour}" /> -
-          <input tabindex="4" type="text" name="_mois"  size="1" maxlength="2" value="{$patient->_mois}" /> -
-          <input tabindex="5" type="text" name="_annee" size="2" maxlength="4" value="{$patient->_annee}" />
+          <input tabindex="3" type="text" name="_jour"  size="2" maxlength="2" value="{$patient->_jour}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._mois.focus();{rdelim}" /> -
+          <input tabindex="4" type="text" name="_mois"  size="2" maxlength="2" value="{$patient->_mois}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._annee.focus();{rdelim}" /> -
+          <input tabindex="5" type="text" name="_annee" size="4" maxlength="4" value="{$patient->_annee}" />
         </td>
         <th>Numéro d'assuré social:</th>
         <td colspan="2"><input tabindex="24" type="text" size="15" maxlength="15" name="matricule" value="{$patient->matricule}" /></td>
@@ -183,11 +183,11 @@ function setMed( key, nom, prenom, type ){
       <tr>
         <th>Téléphone:</th>
         <td>
-          <input tabindex="10" type="text" name="_tel1" size="1" maxlength="2" value="{$patient->_tel1}" /> - 
-          <input tabindex="11" type="text" name="_tel2" size="1" maxlength="2" value="{$patient->_tel2}" /> -
-          <input tabindex="12" type="text" name="_tel3" size="1" maxlength="2" value="{$patient->_tel3}" /> -
-          <input tabindex="13" type="text" name="_tel4" size="1" maxlength="2" value="{$patient->_tel4}" /> -
-          <input tabindex="14" type="text" name="_tel5" size="1" maxlength="2" value="{$patient->_tel5}" />
+          <input tabindex="10" type="text" name="_tel1" size="2" maxlength="2" value="{$patient->_tel1}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._tel2.focus();{rdelim}" /> - 
+          <input tabindex="11" type="text" name="_tel2" size="2" maxlength="2" value="{$patient->_tel2}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._tel3.focus();{rdelim}" /> -
+          <input tabindex="12" type="text" name="_tel3" size="2" maxlength="2" value="{$patient->_tel3}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._tel4.focus();{rdelim}" /> -
+          <input tabindex="13" type="text" name="_tel4" size="2" maxlength="2" value="{$patient->_tel4}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._tel5.focus();{rdelim}" /> -
+          <input tabindex="14" type="text" name="_tel5" size="2" maxlength="2" value="{$patient->_tel5}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._tel21.focus();{rdelim}" />
         </td>
         <th>
           <input type="hidden" name="medecin3" value="{$patient->_ref_medecin3->medecin_id}" />
@@ -200,11 +200,11 @@ function setMed( key, nom, prenom, type ){
       <tr>
         <th>Portable:</th>
         <td>
-          <input tabindex="15" type="text" name="_tel21" size="1" maxlength="2" value="{$patient->_tel21}" /> - 
-          <input tabindex="16" type="text" name="_tel22" size="1" maxlength="2" value="{$patient->_tel22}" /> -
-          <input tabindex="17" type="text" name="_tel23" size="1" maxlength="2" value="{$patient->_tel23}" /> -
-          <input tabindex="18" type="text" name="_tel24" size="1" maxlength="2" value="{$patient->_tel24}" /> -
-          <input tabindex="19" type="text" name="_tel25" size="1" maxlength="2" value="{$patient->_tel25}" />
+          <input tabindex="15" type="text" name="_tel21" size="2" maxlength="2" value="{$patient->_tel21}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._tel22.focus();{rdelim}" /> - 
+          <input tabindex="16" type="text" name="_tel22" size="2" maxlength="2" value="{$patient->_tel22}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._tel23.focus();{rdelim}" /> -
+          <input tabindex="17" type="text" name="_tel23" size="2" maxlength="2" value="{$patient->_tel23}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._tel24.focus();{rdelim}" /> -
+          <input tabindex="18" type="text" name="_tel24" size="2" maxlength="2" value="{$patient->_tel24}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._tel25.focus();{rdelim}" /> -
+          <input tabindex="19" type="text" name="_tel25" size="2" maxlength="2" value="{$patient->_tel25}" />
         </td>
         <th colspan="3"></th>
       </tr>
