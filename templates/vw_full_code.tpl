@@ -103,7 +103,7 @@
 
       <table>
         <tr>
-          <th class="category" colspan="2">Actes associés ({$smarty.foreach.associations.asso.total})</th>
+          <th class="category" colspan="2">Actes associés ({$asso|@count})</th>
         </tr>
         
         {foreach name=associations from=$asso item=curr_asso}
@@ -119,7 +119,7 @@
 
       <table>
         <tr>
-          <th class="category" colspan="2">Actes incompatibles ({$smarty.foreach.incompatibilites.asso.total})</th>
+          <th class="category" colspan="2">Actes incompatibles ({$incomp|@count})</th>
         </tr>
         
         {foreach name=incompatibilites from=$incomp item=curr_incomp}

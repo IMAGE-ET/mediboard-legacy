@@ -1,6 +1,8 @@
 <?php /* $Id$ */
 
 /**
+ * 
+ * une modification
 * @package Mediboard
 * @subpackage dPccam
 * @version $Revision$
@@ -36,7 +38,7 @@ class CFavoriCCAM extends CDpObject {
     if (count($copies))
       return "le favori existe déjà";
     
-     return $msg . parent::check();
+     return parent::check();
  }
 }
 ?>
