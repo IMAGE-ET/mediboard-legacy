@@ -23,16 +23,17 @@ function setClose(key, val){
 <table class="form">
 
 <tr>
-  <th class="category" colspan="2">Critères de tri</th>
+  <th class="category" colspan="3">Critères de tri</th>
 </tr>
 
 <tr>
   <th>Nom:</th>
-  <td><input name="name" value="{$name}" size=30 onBlur="this.form.submit()"></td>
+  <td><input name="name" value="{$name}" size=30 /></td>
+  <td><input type="submit" value="rechercher" /></td>
 </tr>
 
 <tr>
-  <th class="category" colspan="2">Choisissez un patient dans la liste</th>
+  <th class="category" colspan="3">Choisissez un patient dans la liste</th>
 </tr>
 
 </table>
