@@ -258,7 +258,7 @@ td.tabox {
 
 @media print {
   table.tbl {
-    font-size: larger;
+    font-size: 100%;
   }
 }
 
