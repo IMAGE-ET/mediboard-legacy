@@ -38,7 +38,6 @@ if ($del) {
 	} else {
 		$isNotNew = @$_POST['consultation_id'];
 		$AppUI->setMsg( $isNotNew ? 'Consultation modifiée' : 'Consultation créée', UI_MSG_OK);
-		if(!$isNotNew){$AppUI->redirect( "m=$m&created=$obj->patient_id" );}
 	}
 	$AppUI->redirect();
 }

@@ -39,11 +39,12 @@ function editModele(consult, modele) {
       {if $listPlage}
       {foreach from=$listPlage item=curr_plage}
         <tr>
-          <th colspan="2"><b>Consultations de {$curr_plage->_hour_deb}h à {$curr_plage->_hour_fin}h</b></th>
+          <th colspan="3"><b>Consultations de {$curr_plage->_hour_deb}h à {$curr_plage->_hour_fin}h</b></th>
         </tr>
         <tr>
           <th>Heure</th>
           <th>Patient</th>
+          <th>RDV</th>
         </tr>
         {foreach from=$curr_plage->_ref_consultations item=curr_consult}
         <tr>
@@ -53,6 +54,8 @@ function editModele(consult, modele) {
           <td>{if $curr_consult->consultation_id == $consult->consultation_id}<b>{/if}
           <a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">{$curr_consult->_ref_patient->nom} {$curr_consult->_ref_patient->prenom}</a>
           {if $curr_consult->consultation_id == $consult->consultation_id}</b>{/if}</td>
+          <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+          <img src="modules/dPcabinet/images/planning.png"></a></td>
         </tr>
         {/foreach}
       {/foreach}
@@ -74,13 +77,34 @@ function editModele(consult, modele) {
               <tr><th>Prénom :</th><td>{$consult->_ref_patient->prenom}</th></tr>
               <tr><th>Age :</th><td>{$consult->_ref_patient->_age} ans</td><tr>
             </table>
+            <form name="motifRquesFrm" action="?m={$m}" method="POST">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="dosql" value="do_consultation_aed" />
+            <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
+            <input type="hidden" name="plageconsult_id" value="{$consult->plageconsult_id}" />
+            <input type="hidden" name="patient_id" value="{$consult->patient_id}" />
+            <input type="hidden" name="heure" value="{$consult->heure}" />
+            <input type="hidden" name="duree" value="{$consult->duree}" />
+            <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
+            <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
+            <input type="hidden" name="compte_rendu" value="{$consult->compte_rendu|escape:"html"}" />
+            <table class="form">
+              <tr><th colspan="2" class="category">Consultation</th></tr>
+              <tr><th>Motif :</th>
+              <td><textarea name="motif">{$consult->motif}</textarea></td></tr>
+              <tr><th>Remarques :</th>
+              <td><textarea name="rques">{$consult->rques}</textarea></td></tr>
+              <td colspan="2" class="button"><input type="submit" value="modifier"></td>
+            </table>
+            </form>
             <table class="form">
               <tr><th colspan="3" class="category">Fichiers liés</th></tr>
               {foreach from=$consult->_ref_files item=curr_file}
               <tr>
                 <td><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></td>
                 <td>{$curr_file->file_size}</td>
-                <td class="button"><form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+                <td class="button"><form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
                   <input type="hidden" name="dosql" value="do_file_aed" />
 	              <input type="hidden" name="del" value="1" />
 	              <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
@@ -95,11 +119,6 @@ function editModele(consult, modele) {
               <input type="file" name="formfile" /></td>
               <td class="button"><input type="submit" value="ajouter">
               </form></td></tr>
-            </table>
-            <table class="form">
-              <tr><th colspan="2" class="category">Consultation</th></tr>
-              <tr><th>Motif :</th><td>{$consult->motif|nl2br}</td></tr>
-              <tr><th>Remarques :</th><td>{$consult->rques|nl2br}</td></tr>
             </table>
           </td>
           <td valign="top">

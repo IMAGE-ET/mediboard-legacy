@@ -223,19 +223,22 @@ function checkPlage() {
               <th>Prenom</th>
               <th>Motif</th>
               <th>rques</th>
+              <th>RDV</th>
             </tr>
             {foreach from=$plageSel->_ref_consultations item=curr_consult}
             <tr>
-              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
               {$curr_consult->_hour}h{if $curr_consult->_min}{$curr_consult->_min}{/if}</a></td>
-              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
               {$curr_consult->_ref_patient->nom}</a></td>
-              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
               {$curr_consult->_ref_patient->prenom}</a></td>
-              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
               {$curr_consult->motif|nl2br}</a></td>
-              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
               {$curr_consult->rques|nl2br}</a></td>
+              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
+              <img src="modules/dPcabinet/images/planning.png"></a></td>
             </tr>
             {/foreach}
           </table>

@@ -50,7 +50,8 @@ class CConsultation extends CDpObject {
   }
   
   function updateDBFields() {
-    $this->heure = $this->_hour.":".$this->_min.":00";
+  	if(!$this->heure)
+      $this->heure = $this->_hour.":".$this->_min.":00";
   }
   
   function loadRefs() {
