@@ -96,6 +96,21 @@ class CSetupMediusers {
 
 		db_exec( $sql );
 		db_error();
+		
+		$sql = "INSERT INTO groups_mediboard(text) VALUES ('Chirurgie');
+				INSERT INTO groups_mediboard(text) VALUES ('Anesthésie');
+				INSERT INTO groups_mediboard(text) VALUES ('Administration');";
+
+		db_exec( $sql );
+		db_error();
+		
+		$sql = "INSERT INTO functions_mediboard (group_id, text, color) VALUES (2, Chirurgie orthopédique et traumatologique', '99FF66');
+				INSERT INTO functions_mediboard (group_id, text, color) VALUES (2, 'Anesthésie - Réanimation', 'FFFFFF');
+				INSERT INTO functions_mediboard (group_id, text, color) VALUES (3, 'Direction', 'CCFFFF');
+				INSERT INTO functions_mediboard (group_id, text, color) VALUES (3, 'PMSI', 'FF3300');";
+
+		db_exec( $sql );
+		db_error();
 
 		return null;
 	}
