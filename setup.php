@@ -40,7 +40,12 @@ class CSetupdPcompteRendu {
 	function upgrade( $old_version ) {
 		switch ( $old_version )
 		{
-		case "all":
+		case "all": {
+		  $sql = "ALTER TABLE permissions" .
+		  		"CHANGE permission_grant_on" .
+		  		"permission_grant_on VARCHAR( 25 ) NOT NULL";
+		  db_exec( $sql ); db_error();
+		}
 		case "0.1":
 			return true;
 		default:
