@@ -187,6 +187,17 @@ class COperation extends CDpObject {
     $msg = parent::store();
     if($this->annulee)
       $this->reorder();
+    // Cas de la création dans une plage de spécialité
+    $plageTmp = new CPlageOp;
+    $plageTmp->load($this->plageop_id);
+    if($plageTmp->id_spec) {
+      $plageTmp->id_spec = 0;
+      $chirTmp = new CUser;
+      $chirTmp->load($this->chir_id);
+      $plageTmp->id_chir = $chirTmp->user_username;
+      $plageTmp->store();
+    }
+    
     return $msg;
     
   }

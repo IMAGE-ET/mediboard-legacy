@@ -1,10 +1,13 @@
 {literal}
 <script language="javascript">
-function setClose() {
+function setClose(date) {
   var form = document.frmSelector;
   var list = form.list;
+  if(date == '') {
+    date = form.fmtdate.value;
+  }
   var key = list.options[list.selectedIndex].value;
-  var val = list.options[list.selectedIndex].text;
+  var val = date;
   
   if (key == 0) {
   	return;
@@ -17,9 +20,10 @@ function setClose() {
 {/literal}
 
 <form action="index.php" target="_self" name="frmSelector" method="get">
-<input type="hidden" name="m" value="dPplanningOp">
-<input type="hidden" name="a" value="plage_selector">
-<input type="hidden" name="dialog" value="1">
+<input type="hidden" name="m" value="dPplanningOp" />
+<input type="hidden" name="a" value="plage_selector" />
+<input type="hidden" name="dialog" value="1" />
+<input type="hidden" name="fmtdate" value="" />
 
 <table class="form">
 
@@ -36,7 +40,11 @@ function setClose() {
     <select name="list"  size="14">
       <option value="0" selected="selected">&mdash; Choisir une date &mdash;</option>
     {foreach from=$list item=curr_elem}
-      <option value="{$curr_elem.id}" ondblclick="setClose()">{$curr_elem.dateFormed}</option>
+      <option value="{$curr_elem.id}" ondblclick="setClose('{$curr_elem.date|date_format:"%d/%m/%Y"}')"
+      onclick="document.frmSelector.fmtdate.value='{$curr_elem.date|date_format:"%d/%m/%Y"}'"
+      {if $curr_elem.spec}style="background:#aae"{/if}>
+        {$curr_elem.date|date_format:"%A %d %B %Y"}
+      </option>
     {/foreach}
     </select>
   </td>
@@ -54,7 +62,7 @@ function setClose() {
 <tr>
   <td class="button" colspan="2">
     <input type="button" class="button" value="annuler" onclick="window.close()" />
-    <input type="button" class="button" value="selectionner" onclick="setClose()" />
+    <input type="button" class="button" value="selectionner" onclick="setClose('')" />
   </td>
 </tr>
 

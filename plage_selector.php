@@ -13,6 +13,8 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+require_once( $AppUI->getModuleClass('mediusers') );
+
 $chir = dPgetParam( $_GET, 'chir', 0);
 $month = dPgetParam( $_GET, 'month', date("m") );
 $year = dPgetParam( $_GET, 'year', date("Y") );
@@ -42,16 +44,15 @@ $monthList = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
                    "Décembre");
 $nameMonth = $monthList[$month-1];
 
-$sql = "SELECT users.user_username FROM users WHERE users.user_id = '$chir'";
-$result = db_loadlist($sql);
-$id_chir = $result[0]['user_username'];
+$mediChir = new CMediusers();
+$mediChir->load($chir);
 
 // Calcul du temps occupé par chaque opération
 $sql = "SELECT operations.temp_operation AS duree, plagesop.id AS id
 		FROM plagesop
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id AND operations.annulee != 1
-		WHERE plagesop.id_chir = '$id_chir'
+		WHERE plagesop.id_chir = '$mediChir->_user_username'
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NOT NULL
 		ORDER BY plagesop.date, plagesop.id";
@@ -74,21 +75,23 @@ foreach($result as $key => $value) {
 
 // Liste des plages opératoires vides
 $sql = "SELECT plagesop.id AS id, plagesop.date,
-		plagesop.fin AS fin, plagesop.debut AS debut
+		plagesop.fin AS fin, plagesop.debut AS debut,
+		plagesop.id_spec AS spec
 		FROM plagesop
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_chir = '$id_chir'
+		WHERE (plagesop.id_chir = '$mediChir->_user_username' OR plagesop.id_spec = '$mediChir->function_id')
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NULL";
 $result1 = db_loadlist($sql);
 // Liste des plages opératoires non vides
 $sql = "SELECT plagesop.id AS id, plagesop.date,
-		plagesop.fin AS fin, plagesop.debut AS debut
+		plagesop.fin AS fin, plagesop.debut AS debut,
+		plagesop.id_spec AS spec
 		FROM plagesop
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_chir = '$id_chir'
+		WHERE plagesop.id_chir = '$mediChir->_user_username'
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NOT NULL
 		GROUP BY operations.plageop_id";
@@ -141,8 +144,7 @@ foreach($result as $key => $value) {
     
   if ($is_time_left) {
     $list[$i] = $value;
-    $list[$i]["dateFormed"] = substr($value["date"], 8, 2)."/".substr($value["date"], 5, 2)."/".substr($value["date"], 0, 4);
-	  $i++;
+    $i++;
   }
 }
 
