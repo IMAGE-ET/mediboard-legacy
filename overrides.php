@@ -9,70 +9,65 @@ class CTitleBlock extends CTitleBlock_core {
 class CTabBox extends CTabBox_core {
 	function show( $extra='' ) {
 
-		GLOBAL $AppUI;
-		$uistyle = $AppUI->getPref( 'UISTYLE' );
-		if (!$uistyle)
-			$uistyle = $AppUI->cfg['host_style'];
-		if (! $uistyle)
-		  $uistyle = 'default';
-		  
-		reset( $this->tabs );
-		$s = '';
-		// tabbed / flat view options
-		/*
-		if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
-			$s .= "<table border='0' cellpadding='2' cellspacing='0' width='100%'>\n";
-			$s .= "<tr>\n";
-			$s .= "<td nowrap='nowrap'>";
-			$s .= "<a href='".$this->baseHRef."tab=0'>".$AppUI->_('tabbed')."</a> : ";
-			$s .= "<a href='".$this->baseHRef."tab=-1'>".$AppUI->_('flat')."</a>";
-			$s .= "</td>\n".$extra."\n</tr>\n</table>\n";
-			echo $s;
-		} else {
-			if ($extra) {
-				echo "<table border='0' cellpadding='2' cellspacing='0' width='100%'>\n<tr>\n$extra</tr>\n</table>\n";
-			} else {
-				echo "<img src='./images/shim.gif' height='10' width='1' alt='' />";
-			}
-		}
-		*/
+  	GLOBAL $AppUI;
+    
+  	$uistyle = $AppUI->getPref( 'UISTYLE' );
+  	if (!$uistyle)
+    	$uistyle = $AppUI->cfg['host_style'];
+  	if (!$uistyle)
+      $uistyle = 'default';
+      
+    // tabbed / flat view options
+  	reset( $this->tabs );
+  	$s = '';
+    $s .= "<table class='tabbox'>\n<tr>\n";
+    $s .= "<td>";
 
-		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
-		// flat view, active = -1
-			echo "<table border='0' cellpadding='2' cellspacing='0' width='100%'>\n";
-			foreach ($this->tabs as $v) {
-				echo "<tr><td><strong>".$AppUI->_($v[1])."</strong></td></tr>\n";
-				echo "<tr><td>";
-				include $this->baseInc.$v[0].".php";
-				echo "</td></tr>\n";
-			}
-			echo "</table>\n";
-		} else {
-		// tabbed view
-			$s = "<table width='100%' border='0' cellpadding='0' cellspacing='0'>";
-			$s .= "<tr><td><table border='0' cellpadding='0' cellspacing='0'>";
-			
-			if ( count($this->tabs)-1 < $this->active ) {
-				// Last selected tab is not available in this view. eg. Child tasks
-				$this->active = 0;
-			}
-			foreach( $this->tabs as $k => $v ) {
-				$class = ($k == $this->active) ? "tabon" : "taboff";
-				$sel = ($k == $this->active) ? "Selected" : "";
-				$value = $AppUI->_($v[1]);
-				$s .= "<td height='28' valign='middle'><img src='./style/$uistyle/images/tab".$sel."Left.png' height='28' border='0' alt='' /></td>";
-				$s .= "<td valign='middle' nowrap='nowrap' background='./style/$uistyle/images/tab".$sel."Bg.png'>&nbsp;<a href='".$this->baseHRef."tab=$k'>$value</a>&nbsp;</td>";
-				$s .= "<td valign='middle'><img src='./style/$uistyle/images/tab".$sel."Right.png' height='28' border='0' alt='' /></td>";
-			}
-			$s .= "</table></td></tr>";
-			$colspan = (count($this->tabs)*4 + 1);
-			$s .= "<tr><td width='100%' colspan='$colspan' class='tabox'>";
-			echo $s;
-			// Will be null if the previous selection tab is not available in the new window eg. Children tasks
-			if ( $this->baseInc.$this->tabs[$this->active][0] != "" )
-				require $this->baseInc.$this->tabs[$this->active][0].'.php';
-			echo "</td></tr></table>";
-		}
-	}
+  	if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
+    	$s .= "<a href='{$this->baseHRef}tab= 0'>".$AppUI->_('tabbed')."</a> : ";
+    	$s .= "<a href='{$this->baseHRef}tab=-1'>".$AppUI->_('flat'  )."</a>";
+    	$s .= "</td>\n";
+    }
+
+    $s .= "$extra\n</tr>\n</table>\n";
+    echo $s;
+    
+  	if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
+      // flat view, active = -1
+    	echo "<table border='0' cellpadding='2' cellspacing='0' width='100%'>\n";
+    	foreach ($this->tabs as $v) {
+      	echo "<tr><td><strong>".$AppUI->_($v[1])."</strong></td></tr>\n";
+      	echo "<tr><td>";
+      	include $this->baseInc.$v[0].".php";
+      	echo "</td></tr>\n";
+      }
+    	echo "</table>\n";
+    } else {
+    // tabbed view
+    	$s = "<table width='100%' border='0' cellpadding='0' cellspacing='0'>";
+    	$s .= "<tr><td><table border='0' cellpadding='0' cellspacing='0'>";
+      
+    	if ( count($this->tabs)-1 < $this->active ) {
+        // Last selected tab is not available in this view. eg. Child tasks
+      	$this->active = 0;
+      }
+    	foreach( $this->tabs as $k => $v ) {
+      	$class = ($k == $this->active) ? "tabon" : "taboff";
+      	$sel = ($k == $this->active) ? "Selected" : "";
+      	$value = $AppUI->_($v[1]);
+      	$s .= "<td height='28' valign='middle'><img src='./style/$uistyle/images/tab".$sel."Left.png' height='28' border='0' alt='' /></td>";
+      	$s .= "<td valign='middle' nowrap='nowrap' background='./style/$uistyle/images/tab".$sel."Bg.png'>&nbsp;<a href='".$this->baseHRef."tab=$k'>$value</a>&nbsp;</td>";
+      	$s .= "<td valign='middle'><img src='./style/$uistyle/images/tab".$sel."Right.png' height='28' border='0' alt='' /></td>";
+      }
+    	$s .= "</table></td></tr>";
+    	$colspan = (count($this->tabs)*4 + 1);
+    	$s .= "<tr><td width='100%' colspan='$colspan' class='tabox'>";
+    	echo $s;
+      // Will be null if the previous selection tab is not available in the new window eg. Children tasks
+    	if ( $this->baseInc.$this->tabs[$this->active][0] != "" )
+      	require $this->baseInc.$this->tabs[$this->active][0].'.php';
+    	echo "</td></tr></table>";
+    }
+  }
 }
 ?>
