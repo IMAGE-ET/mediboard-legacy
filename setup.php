@@ -48,7 +48,7 @@ class CSetupdPcompteRendu {
           "\n`module` VARCHAR( 20 ) NOT NULL ," .
           "\n`class` VARCHAR( 20 ) NOT NULL ," .
           "\n`field` VARCHAR( 20 ) NOT NULL ," .
-          "\n`key` VARCHAR( 40 ) NOT NULL ," .
+          "\n`name` VARCHAR( 40 ) NOT NULL ," .
           "\n`text` TEXT NOT NULL ," .
           "\nPRIMARY KEY ( `aide_id` ));";
       db_exec( $sql ); db_error();
