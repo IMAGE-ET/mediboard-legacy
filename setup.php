@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.23';
+$config['mod_version'] = '0.24';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -67,6 +67,10 @@ class CSetupdPplanningOp {
                     ADD INDEX ( `pat_id` ),
                     ADD INDEX ( `chir_id` ),
                     ADD INDEX ( `plageop_id` );";
+            db_exec( $sql ); db_error();
+        }
+        case "0.23" : {
+        	$sql = "ALTER TABLE `operations` ADD `annulee` TINYINT DEFAULT '0' NOT NULL ;";
             db_exec( $sql ); db_error();
 			return true;
         }

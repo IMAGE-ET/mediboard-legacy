@@ -296,6 +296,7 @@ function printForm() {
 <input type="hidden" name="operation_id" value="{$op->operation_id}" />
 <input type="hidden" name="commande_mat" value="{$op->commande_mat}" />
 <input type="hidden" name="rank" value="{$op->rank}" />
+<input type="hidden" name="annulee" value="0" />
 
 <table class="main">
   <tr>
@@ -544,7 +545,8 @@ function printForm() {
           {if $op}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}" />
+            <input type="button" value="Annuler" onclick="{literal}if (confirm('Veuillez confirmer l'annulation')) {this.form.annulee.value = 1; this.form.submit();}{/literal}" />
           {else}
             <input type="submit" value="Créer" />
           {/if}
