@@ -159,7 +159,7 @@ class CMediusers extends CDpObject {
       $sql .= "\nAND users_mediboard.function_id = $function_id";
     }
     
-    if ($function_id) {
+    if ($name) {
       $sql .= "\nAND users.user_last_name LIKE '$name%'";
     }
     

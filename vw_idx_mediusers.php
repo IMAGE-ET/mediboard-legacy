@@ -55,8 +55,6 @@ $profiles = $profiles->loadList("users.user_username LIKE '>> %'");
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->debugging = true;
-
 $smarty->assign('mediuserSel', $mediuserSel);
 $smarty->assign('users', $users);
 $smarty->assign('profiles', $profiles);

@@ -27,12 +27,8 @@ $specs = $specs->loadSpecialites(PERM_EDIT);
 require_once("classes/smartydp.class.php");
 $smarty = new CSmartyDP;
 
-$smarty->debugging = true;
-
 $smarty->assign('prats', $prats);
 $smarty->assign('specs', $specs);
-
-
 $smarty->assign('name', $name);
 $smarty->assign('spe', $spe);
 
