@@ -175,8 +175,6 @@ class CDpObject {
           "$join " .
           "\nWHERE $this->_tbl.$k = ".$this->$k." GROUP BY $this->_tbl.$k";
     
-      $export = var_export($sql, true); echo "<pre>$export</pre>";
-      
 			$obj = null;
 			if (!db_loadObject( $sql, $obj )) {
 				$msg = db_error();
