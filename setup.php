@@ -56,10 +56,11 @@ class CSetupdPcabinet {
       $sql = "UPDATE consultation SET duree='1' ";
       db_exec( $sql ); db_error();
     case "0.22":
-      $sql = "ALTER TABLE `consultation` ADD `chrono` ENUM( 'planifie', 'patient_arrive', 'en_cours', 'termine' )," .
-          "\nADD `annule` TINYINT," .
-          "\nADD `paye` TINYINT," .
-          "\nADD `cr_valide` TINYINT," .
+      $sql = "ALTER TABLE `consultation` " .
+          "\nADD `chrono` TINYINT DEFAULT '16' NOT NULL," .
+          "\nADD `annule` TINYINT DEFAULT '0' NOT NULL," .
+          "\nADD `paye` TINYINT DEFAULT '0' NOT NULL," .
+          "\nADD `cr_valide` TINYINT DEFAULT '0' NOT NULL," .
           "\nADD `examen` TEXT," .
           "\nADD `traitement` TEXT";
       db_exec( $sql ); db_error();

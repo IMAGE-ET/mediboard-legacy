@@ -26,6 +26,7 @@ class CFile extends CDpObject {
 	var $file_version = NULL;
 
 	// Form fields
+  var $_file_size;
 
 	function CFile() {
 		$this->CDpObject( 'files_mediboard', 'file_id' );
@@ -39,6 +40,34 @@ class CFile extends CDpObject {
 
 		return NULL; // object is ok
 	}
+
+  function updateFormFields() {
+    $bytes = $this->file_size;
+    $value = $bytes;
+    $unit = "Bytes";
+
+    $kbytes = $bytes / 1024;
+    if ($kbytes >= 1) {
+			$value = $kbytes;
+      $unit = "KB";
+		}
+
+    $mbytes = $kbytes / 1024;
+    if ($mbytes >= 1) {
+      $value = $mbytes;
+      $unit = "MB";
+    }
+
+    $gbytes = $mbytes / 1024;
+    if ($gbytes >= 1) {
+      $value = $gbytes;
+      $unit = "GB";
+    }
+    
+    // Value with 3 significant digits, thent the unit
+    $value = round($value, $value > 99 ? 0 : $value >  9 ? 1 : 2);
+    $this->_file_size = "$value$unit";
+  }
 
 	function delete() {
 		global $AppUI;

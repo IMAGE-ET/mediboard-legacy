@@ -82,13 +82,6 @@ $consult = new CConsultation();
 if($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
-  foreach($consult->_ref_files as $key => $value) {
-    $temp = round($value->file_size / 1024, 2);
-    if($temp > 1)
-      $consult->_ref_files[$key]->file_size = $temp." KB";
-    else
-      $consult->_ref_files[$key]->file_size = $value->file_size." Bytes";
-  }
   $consult->_ref_patient->loadRefs();
   foreach($consult->_ref_patient->_ref_consultations as $key => $value) {
     $consult->_ref_patient->_ref_consultations[$key]->loadRefs();
@@ -100,14 +93,18 @@ if($selConsult) {
 }
 
 // Récupération des modèles de l'utilisateur
+$where[] = "chir_id = '$chir->user_id'";
+$where[] = "type = 'consultation'";
+$order[] = "nom";
 
-$sql = "SELECT *" .
-    		"\nFROM compte_rendu" .
-    		"\nWHERE chir_id = '$chir->user_id'" .
-    		"\nAND type = 'consultation'" .
-    		"\nORDER BY nom";
-$listModele = db_loadObjectList($sql, new CCompteRendu());
+$listModele = new CCompteRendu();
+$listModele = $listModele->loadList($where, $order);
 
+// Récupération des aides à la saisie
+$aides = array();
+for ($i = 1; $i <= 10; $i++) {
+   $aides["Le texte $i à remplacer"] = "Aide $i";
+}
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
@@ -129,6 +126,7 @@ $smarty->assign('nyear', $nyear);
 $smarty->assign('pyear', $pyear);
 $smarty->assign('listPlage', $listPlage);
 $smarty->assign('listModele', $listModele);
+$smarty->assign('aides', $aides);
 $smarty->assign('consult', $consult);
 $smarty->display('edit_consultation.tpl');
 

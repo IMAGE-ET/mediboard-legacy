@@ -15,10 +15,10 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 
 // Enum for Consultation.chrono
-define("CC_PLANIFIE", "planifie");
-define("CC_PATIENT_ARRIVE", "patient_arrive");
-define("CC_EN_COURS", "en_cours");
-define("CC_TERMINE", "termine");
+define("CC_PLANIFIE"      , 16);
+define("CC_PATIENT_ARRIVE", 32);
+define("CC_EN_COURS"      , 48);
+define("CC_TERMINE"       , 64);
 
 class CConsultation extends CDpObject {
   // DB Table key
@@ -44,6 +44,7 @@ class CConsultation extends CDpObject {
   var $compte_rendu = null;
 
   // Form fields
+  var $_etat = null;
   var $_hour = null;
   var $_min = null;
 
@@ -59,11 +60,28 @@ class CConsultation extends CDpObject {
   function updateFormFields() {
     $this->_hour = intval(substr($this->heure, 0, 2));
     $this->_min  = intval(substr($this->heure, 3, 2));
+
+    $etat = array();
+    $etat[CC_PLANIFIE] = "Planifié";
+    $etat[CC_PATIENT_ARRIVE] = "Patient arrivé";
+    $etat[CC_EN_COURS] = "En cours";
+    $etat[CC_TERMINE] = "Termniné";
+    
+    $this->_etat = $etat[$this->chrono];
+    if ($this->cr_valide) {
+      $this->_etat = "CR Validé";
+    }
+
+    if ($this->annule) {
+      $this->_etat = "Annulé";
+    }
   }
   
   function updateDBFields() {
-  	if(!$this->heure)
+    // Why this test?
+  	if (!$this->heure) {
       $this->heure = $this->_hour.":".$this->_min.":00";
+    }
   }
   
   function loadRefs() {
