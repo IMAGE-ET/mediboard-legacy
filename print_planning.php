@@ -63,6 +63,7 @@ if($spe) {
 $addChir = $chir ? " AND chir_id = '$chir'" : null;
 
 //On sort les chirurgiens de chaque jour
+$monChrono = new Chronometer();
 foreach($listDays as $key => $value) {
   $sql = "SELECT chir_id, user_last_name, user_first_name" .
   		" FROM operations" .
@@ -95,7 +96,9 @@ foreach($listDays as $key => $value) {
   	  unset($adm);
       $adm = new COperation();
       $adm->load($value3["operation_id"]);
+      $monChrono->start();
       $adm->loadRefs();
+      $monChrono->stop();
       $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $adm;
     }
   }
@@ -107,6 +110,7 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('date', $date);
 $smarty->assign('listDays', $listDays);
+$smarty->assign('monChrono', $monChrono);
 
 $smarty->display('print_planning.tpl');
 
