@@ -3,7 +3,7 @@
     <td colspan="2">
       <form action="index.php" target="_self" name="selection" method="get" encoding="">
       <input type="hidden" name="m" value="{$m}">
-      <input type="hidden" name="tab" value="$tab">
+      <input type="hidden" name="tab" value="{$tab}">
       Type d'affichage :
         <select name="selAff" onchange="this.form.submit()">
           <option value="0" {if $selAff == "0"} selected = "selected" {/if}>Toutes les admissions</option>
