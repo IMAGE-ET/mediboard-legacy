@@ -23,6 +23,8 @@ class COperation extends CDpObject {
   var $CIM10_code = NULL;
   var $cote = NULL;
   var $temp_operation = NULL;
+  var $entree_bloc = NULL;
+  var $sortie_bloc = NULL;
   var $time_operation = NULL;
   var $examen = NULL;
   var $materiel = NULL;

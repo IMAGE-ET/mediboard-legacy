@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.1';
+$config['mod_version'] = '0.2';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -41,9 +41,12 @@ class CSetupdPplanningOp {
 		switch ( $old_version )
 		{
 		case "all":		// upgrade from scratch (called from install)
-		case "0.9":		//do some alter table commands
-		case "1.0":
+		case "0.1": {
+            $sql = "ALTER TABLE operations ADD entree_bloc TIME AFTER temp_operation ,
+                    ADD sortie_bloc TIME AFTER entree_bloc";
+            db_exec( $sql ); db_error();
 			return true;
+        }
 		default:
 			return false;
 		}
@@ -60,6 +63,8 @@ class CSetupdPplanningOp {
 			", CCAM_code varchar(7) default NULL" .
 			", cote enum('droit','gauche','bilatéral','total') NOT NULL default 'total'" .
 			", temp_operation time NOT NULL default '00:00:00'" .
+            ", entree_bloc` time default NULL" .
+            ", sortie_bloc time default NULL" .
 			", time_operation time NOT NULL default '00:00:00'" .
 			", examen text" .
 			", materiel text" .
