@@ -110,7 +110,7 @@ function popCode(type) {
   url += '&chir='+ document.editFrm.chir_id.value;
   url += '&type='+ type;
 
-  window.open(url, 'CIM10', 'left=50, top=50, width=600, height=500, resizable=yes');
+  window.open(url, type, 'left=50, top=50, width=600, height=500, resizable=yes');
 }
 
 function setCode( key, type ){
@@ -120,6 +120,10 @@ function setCode( key, type ){
     if(type == 'ccam') {
       f.CCAM_code.value = key;
       window.CCAM_code = key;
+    }
+    else if(type == 'ccam2') {
+      f.CCAM_code2.value = key;
+      window.CCAM_code2 = key;
     }
     else {
       f.CIM10_code.value = key;
@@ -346,6 +350,11 @@ function printForm() {
         </tr>
 
         {if !$protocole}
+        <tr>
+          <th class="mandatory"><label for="editFrm_CCAM_code">Acte secondaire (CCAM):</label></th>
+          <td><input type="text" name="CCAM_code2" size="10" value="{$op->CCAM_code2}" /></td>
+          <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam2')"/></td>
+        </tr>
         <tr>
           <th class="mandatory"><label for="editFrm_cote">Coté:</label></th>
           <td colspan="2">

@@ -25,6 +25,7 @@ class COperation extends CDpObject {
 
   // DB fields
   var $CCAM_code = null;
+  var $CCAM_code2 = null;
   var $CIM10_code = null;
   var $cote = null;
   var $temp_operation = null;
@@ -68,6 +69,7 @@ class COperation extends CDpObject {
   
   // External references
   var $_ext_code_ccam = null;
+  var $_ext_code_ccam2 = null;
 
   function COperation() {
     $this->CDpObject( 'operations', 'operation_id' );
@@ -197,6 +199,7 @@ class COperation extends CDpObject {
     $this->_ref_plageop->load($this->plageop_id);
     
     $this->_ext_code_ccam = new Acte($this->CCAM_code);
+    $this->_ext_code_ccam = new Acte($this->CCAM_code2);
   }
 }
 

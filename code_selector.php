@@ -41,6 +41,30 @@ switch($type) {
 		mysql_close();
 		break;
 	}
+	case 'ccam2' : {
+		$sql = "select favoris_code as code
+				from ccamfavoris
+				where favoris_user = '$chir' or favoris_user = $AppUI->user_id
+				group by favoris_code
+				order by favoris_code";
+		$codes = db_loadlist($sql);
+		$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
+			or die("Could not connect");
+		mysql_select_db("ccam")
+			or die("Could not select database");
+		$i = 0;
+		foreach($codes as $key => $value) {
+			$query = "select CODE, LIBELLELONG from ACTES where CODE = '".$value['code']."'";
+			$result = mysql_query($query);
+			$row = mysql_fetch_array($result);
+			$list[$i]["id"] = $value['favoris_id'];
+			$list[$i]["code"] = $row['CODE'];
+			$list[$i]["texte"] = $row['LIBELLELONG'];
+			$i++;
+		}
+		mysql_close();
+		break;
+	}
 	default : {
 		$sql = "select favoris_code as code
 				from cim10favoris

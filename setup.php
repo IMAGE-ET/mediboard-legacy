@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.22';
+$config['mod_version'] = '0.23';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -57,7 +57,16 @@ class CSetupdPplanningOp {
             db_exec( $sql ); db_error();
         }
         case "0.21": {
-        	$sql = "ALTER TABLE `operations` ADD `depassement` INT( 4 ) ;;";
+        	$sql = "ALTER TABLE `operations` ADD `depassement` INT( 4 );";
+            db_exec( $sql ); db_error();
+        }
+        case "0.22": {
+        	$sql = "ALTER TABLE `operations` ADD `CCAM_code2` VARCHAR( 7 ) AFTER `CCAM_code`,
+                    ADD INDEX ( `CCAM_code2` ),
+                    ADD INDEX ( `CCAM_code` ),
+                    ADD INDEX ( `pat_id` ),
+                    ADD INDEX ( `chir_id` ),
+                    ADD INDEX ( `plageop_id` );";
             db_exec( $sql ); db_error();
 			return true;
         }
