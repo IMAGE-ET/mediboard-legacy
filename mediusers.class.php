@@ -109,46 +109,56 @@ class CMediusers extends CDpObject {
     return db_error();
   }
   
-  function loadChirurgiens() {
-    $user = new CUser;
-    
+  function loadListFromGroup($groups = null, $perm_type = null) {
     $sql = "SELECT *" .
-        "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
-        "\nWHERE users.user_id = users_mediboard.user_id" .
-        "\nAND users_mediboard.function_id = functions_mediboard.function_id" .
+      "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
+      "\nWHERE users.user_id = users_mediboard.user_id" .
+      "\nAND users_mediboard.function_id = functions_mediboard.function_id";
+
+    if (is_array($groups)) {
+      foreach ($groups as $key => $value) {
+        $groups[$key] = "'$value'";
+      }
+      
+      $inClause = implode(", ", $groups);
+      $sql .= 
         "\nAND functions_mediboard.group_id = groups_mediboard.group_id" .
-        "\nAND groups_mediboard.text = 'Chirurgie'" .
-        "\nORDER BY users.user_last_name";
-  
-    return db_loadObjectList($sql, $user);
+        "\nAND groups_mediboard.text IN ($inClause)";
+    }
+
+    $sql .= "\nORDER BY users.user_last_name";
+    
+    // Get all users
+    $baseusers = db_loadObjectList($sql, new CUser);
+    $mediusers =  db_loadObjectList($sql, new CMediusers);
+   
+    $users = array();
+     
+    // Filter with permissions
+    if ($perm_type) {
+      foreach ($mediusers as $key => $mediuser) {
+        if (isMbAllowed($perm_type, "mediusers", $mediuser->function_id)) {
+          $users[] = $baseusers[$key];
+        }          
+      }
+    } else {
+      $users = $baseusers;
+    }
+    
+    return $users;
+    
   }
   
-  function loadAnesthesistes() {
-    $user = new CUser;
-    
-    $sql = "SELECT *" .
-        "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
-        "\nWHERE users.user_id = users_mediboard.user_id" .
-        "\nAND users_mediboard.function_id = functions_mediboard.function_id" .
-        "\nAND functions_mediboard.group_id = groups_mediboard.group_id" .
-        "\nAND groups_mediboard.text = 'Anesthésie'" .
-        "\nORDER BY users.user_last_name";
-  
-    return db_loadObjectList($sql, $user);
+  function loadChirurgiens($perm_type = null) {
+    return $this->loadListFromGroup(array("Chirurgie"), $perm_type);
   }
   
-    function loadChirAnest() {
-    $user = new CUser;
-    
-    $sql = "SELECT *" .
-        "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
-        "\nWHERE users.user_id = users_mediboard.user_id" .
-        "\nAND users_mediboard.function_id = functions_mediboard.function_id" .
-        "\nAND functions_mediboard.group_id = groups_mediboard.group_id" .
-        "\nAND (groups_mediboard.text = 'Anesthésie' OR groups_mediboard.text = 'Chirurgie')" .
-        "\nORDER BY users.user_last_name";
+  function loadAnesthesistes($perm_type = null) {
+    return $this->loadListFromGroup(array("Anesthésie"), $perm_type);
+  }
   
-    return db_loadObjectList($sql, $user);
+  function loadChirAnest($perm_type = null) {
+    return $this->loadListFromGroup(array("Chirurgie", "Anesthésie"), $perm_type);
   }
 }
 
