@@ -91,6 +91,8 @@ class CPatient extends CDpObject {
     $journais = substr($this->naissance, 8, 2);
     $jourjour = date("d");
     $this->_age = $anjour-$annais;
+    if($moisjour<$moisnais){$this->_age=$this->_age-1;}
+    if($jourjour<$journais && $moisjour==$moisnais){$this->_age=$this->_age-1;}
   }
   
   function updateDBFields() {
