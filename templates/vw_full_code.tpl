@@ -16,10 +16,10 @@
 								</td>
 								</form>
 							</tr>
-							{if $islog == 1}
+							{if $canEdit}
 							<tr>
 								<td colspan=2 valign="top" align="center">
-									<a href="sql.php?type=addfav&codeacte={$codeacte}">Ajouter à Mes Actes</a>
+									<b><a href="sql.php?type=addfav&codeacte={$codeacte}">Ajouter à Mes Actes</a></b>
 								</td>
 							</tr>
 							{/if}
