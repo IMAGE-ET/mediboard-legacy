@@ -1,4 +1,12 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPplanningOp
+* @version $Revision$
+* @author Romain Ollivier
+*/
+
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
@@ -60,7 +68,25 @@ $result = db_loadlist($sql);
 $user = $result[0]["user_username"];
 
 //Requete SQL pour le planning du mois
-$sql = "select plagesop.id, plagesop.date, 0 as operations,
+// * temp total de chaque plage
+$sql = "select operations.temp_operation as duree, plagesop.id as id
+		from plagesop
+		left join operations
+		on plagesop.id = operations.plageop_id
+		where plagesop.id_chir = '$user'
+		and plagesop.date like '$year-$month-__'
+		and operations.operation_id IS NOT NULL
+		order by plagesop.date, plagesop.id";
+$result = db_loadlist($sql);
+foreach($result as $key => $value) {
+  $plageop = $value["id"];
+  $duree[$plageop]["newtime"] = mktime($duree[$plageop]["hour"] + substr($value["duree"], 0, 2), $duree[$plageop]["min"] + substr($value["duree"], 3, 2), 0, $month, $day, $year);
+  $duree[$plageop]["hour"] = date("H", $duree[$plageop]["newtime"]);
+  $duree[$plageop]["min"] = date("i", $duree[$plageop]["newtime"]);  
+}
+// * liste des operations triées par plage
+//@todo -c Ajouter la liste des plages de spécialité .
+$sql = "select plagesop.id as id, plagesop.date, 0 as operations,
 		plagesop.fin, plagesop.debut, 0 as busy_time
 		from plagesop
 		left join operations
@@ -69,7 +95,7 @@ $sql = "select plagesop.id, plagesop.date, 0 as operations,
 		and plagesop.date like '$year-$month-__'
 		and operations.operation_id IS NULL
 		union
-		select plagesop.id, plagesop.date, count(operations.temp_operation) as operations,
+		select plagesop.id as id, plagesop.date, count(operations.temp_operation) as operations,
 		plagesop.fin, plagesop.debut, SUM(operations.temp_operation) as busy_time
 		from plagesop
 		left join operations
@@ -84,12 +110,17 @@ $result = db_loadlist($sql);
 //Tri des résultats
 foreach($result as $key => $value) {
   $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
+  $plageop = $value["id"];
   $list[$key]["date"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
   $list[$key]["day"] = substr($value["date"], 8, 2);
   $list[$key]["horaires"] = substr($value["debut"], 0, 2)."h".substr($value["debut"], 3, 2)." - ".
   							substr($value["fin"], 0, 2)."h".substr($value["fin"], 3, 2);
   $list[$key]["operations"] = $value["operations"];
-  $list[$key]["occupe"] = (substr($value["busy_time"], -6, strlen($value["busy_time"]) - 4))."h".(substr($value["busy_time"], -4, 2));
+  if(isset($duree[$plageop]["hour"]))
+    $list[$key]["occupe"] = $duree[$plageop]["hour"]."h".$duree[$plageop]["min"];
+  else
+    $list[$key]["occupe"] = "-";
+  //$list[$key]["occupe"] = (substr($value["busy_time"], -6, strlen($value["busy_time"]) - 4))."h".(substr($value["busy_time"], -4, 2));
 }
 
 //Requete SQL pour le planning de la journée
