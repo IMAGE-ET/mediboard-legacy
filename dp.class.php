@@ -70,7 +70,7 @@ class CDpObject {
  *     can  also be an array of order fields
  *  @return the objects array
  */
-  function loadList($where = null, $order = null, $limit = null) {
+  function loadList($where = null, $order = null, $limit = null, $group = null) {
     $sql = "SELECT * FROM `$this->_tbl`";
 
     // Where clauses
@@ -87,10 +87,22 @@ class CDpObject {
       $sql .= is_array($where) ? implode("\nAND ", $where) : $where;
     }
       
+    // Group by fields
+    if (is_array($group)) {
+      foreach ($group as $key => $field) {
+        $group[$key] = "`$field`";
+      }
+    }
+    
+    if ($group) {
+      $sql .= "\nGROUP BY ";
+      $sql .= is_array($group) ? implode(", ", $group) : $group;
+    }
+      
     // Order by fields
-    if (is_array($where)) {
-      foreach ($where as $key => $field) {
-        $where[$key] = "`$field`";
+    if (is_array($order)) {
+      foreach ($order as $key => $field) {
+        $order[$key] = "`$field`";
       }
     }
     
@@ -102,8 +114,8 @@ class CDpObject {
     // Limits
     if ($limit) {
 			$sql .= "\nLIMIT $limit";
-		}
-    
+	}
+
     return db_loadObjectList($sql, $this);
   }
 
