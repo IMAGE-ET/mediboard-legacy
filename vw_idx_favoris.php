@@ -30,7 +30,7 @@ mysql_select_db("ccam")
 $i = 0;
 foreach($favoris as $key => $value)
 {
-  $query = "select CODE, LIBELLELONG from ACTES where CODE = '".$value['favoris_code']."'";
+  $query = "select CODE, LIBELLELONG from actes where CODE = '".$value['favoris_code']."'";
   $result = mysql_query($query);
   $row = mysql_fetch_array($result);
   $codes[$i]["id"] = $value['favoris_id'];

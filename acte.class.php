@@ -45,7 +45,7 @@ class Acte
     mysql_select_db("ccam")
       or die("Could not select database");
 
-    $query = "select * from ACTES where CODE = '$this->code'";
+    $query = "select * from actes where CODE = '$this->code'";
     $result = mysql_query($query);
     if(mysql_num_rows($result) == 0)
     {
@@ -71,12 +71,12 @@ class Acte
     mysql_select_db("ccam")
       or die("Could not select database");
 
-    $query = "select * from ACTES where CODE = '$this->code'";
+    $query = "select * from actes where CODE = '$this->code'";
     $result = mysql_query($query);
     if(mysql_num_rows($result) == 0)
     {
       $this->code = "AAFA001";
-      $query = "select * from ACTES where CODE = '$this->code'";
+      $query = "select * from actes where CODE = '$this->code'";
       $result = mysql_query($query);
     }
     $row = mysql_fetch_array($result);
@@ -95,11 +95,11 @@ class Acte
     foreach($this->chapitres as $key => $value)
     {
       $rang = $this->chapitres[$key]["db"];
-      $query = "select * from ARBORESCENCE where CODEPERE = '$pere' and rang = '$rang'";
+      $query = "select * from arborescence where CODEPERE = '$pere' and rang = '$rang'";
       $result = mysql_query($query);
       $row = mysql_fetch_array($result);
       
-      $query = "select * from NOTESARBORESCENCE where CODEMENU = '" . $row['CODEMENU'] . "'";
+      $query = "select * from notesarborescence where CODEMENU = '" . $row['CODEMENU'] . "'";
       $result2 = mysql_query($query);
       
       $track .= substr($row['RANG'], -2) . ".";
@@ -116,7 +116,7 @@ class Acte
     $this->place = $this->chapitres[3]["rang"];
     
     //On rentre les remarques
-    $query = "select * from NOTES where CODEACTE = '" . $this->code . "'";
+    $query = "select * from notes where CODEACTE = '" . $this->code . "'";
     $result = mysql_query($query);
     $i = 0;
     while($row = mysql_fetch_array($result))
@@ -126,7 +126,7 @@ class Acte
     }
     
     //On rentre les activites associees
-    $query = "select * from ACTIVITEACTE where CODEACTE = '$this->code'";
+    $query = "select * from activiteactes where CODEACTE = '$this->code'";
     $result = mysql_query($query);
     $i = 0;
     while($row = mysql_fetch_array($result))
@@ -140,14 +140,14 @@ class Acte
       $result = mysql_query($query);
       $row = mysql_fetch_array($result);
       $this->activites[$key]["nom"] = $row['LIBELLE'];
-      $query = "select COUNT(*) as TOTAL from PHASEACTE where ";
+      $query = "select COUNT(*) as TOTAL from phaseacte where ";
       $query .= "CODEACTE = '" . $this->code . "' ";
       $query .= "and ACTIVITE = '" . $this->activites[$key]["code"] . "' ";
       $query .= "group by ACTIVITE";
       $result = mysql_query($query);
       $row = mysql_fetch_array($result);
       $this->activites[$key]["phases"] = $row['TOTAL'];
-      $query = "select * from MODIFICATEURACTE where ";
+      $query = "select * from modificateuracte where ";
       $query .= "CODEACTE = '" . $this->code . "' ";
       $query .= "and CODEACTIVITE = '" . $this->activites[$key]["code"] . "'";
       $result = mysql_query($query);
@@ -156,7 +156,7 @@ class Acte
       {
         while($row = mysql_fetch_array($result))
         {
-        $query = "select * from MODIFICATEUR where CODE = '" . $row['MODIFICATEUR'] . "'";
+        $query = "select * from modificateur where CODE = '" . $row['MODIFICATEUR'] . "'";
         $result2 = mysql_query($query);
         $row2 = mysql_fetch_array($result2);
           $this->activites[$key]["modificateurs"] .= $row2['LIBELLE'] . " / ";
@@ -169,13 +169,13 @@ class Acte
     }
     
     //On rentre les actes associés
-    $query = "select * from ASSOCIABILITE where CODEACTE = '" . $this->code . "' group by ACTEASSO";
+    $query = "select * from associabilite where CODEACTE = '" . $this->code . "' group by ACTEASSO";
     $result = mysql_query($query);
     $i = 0;
     while($row = mysql_fetch_array($result))
     {
       $this->assos[$i]["code"] = $row['ACTEASSO'];
-      $query = "select * from ACTES where CODE = '" . $row['ACTEASSO'] . "'";
+      $query = "select * from actes where CODE = '" . $row['ACTEASSO'] . "'";
       $result2 = mysql_query($query);
       $row2 = mysql_fetch_array($result2);
       $this->assos[$i]["texte"] = $row2['LIBELLELONG'];
@@ -183,13 +183,13 @@ class Acte
     }
     
     //On rentre les actes incompatibles
-    $query = "select * from INCOMPATIBILITE where CODEACTE = '" . $this->code . "' group by INCOMPATIBLE";
+    $query = "select * from incompatibilite where CODEACTE = '" . $this->code . "' group by INCOMPATIBLE";
     $result = mysql_query($query);
     $i = 0;
     while($row = mysql_fetch_array($result))
     {
       $this->incomps[$i]["code"] = $row['INCOMPATIBLE'];
-      $query = "select * from ACTES where CODE = '" . $row['INCOMPATIBLE'] . "'";
+      $query = "select * from actes where CODE = '" . $row['INCOMPATIBLE'] . "'";
       $result2 = mysql_query($query);
       $row2 = mysql_fetch_array($result2);
       $this->incomps[$i]["texte"] = $row2['LIBELLELONG'];
@@ -197,13 +197,13 @@ class Acte
     }
     
     //On rentre la procédure associée
-    $query = "select * from PROCEDURES where CODEACTE = '" . $this->code . "'";
+    $query = "select * from procedures where CODEACTE = '" . $this->code . "'";
     $result = mysql_query($query);
     if(mysql_num_rows($result) > 0)
     {
       $row = mysql_fetch_array($result);
       $this->procedure["code"] = $row['CODEPROCEDURE'];
-      $query = "select LIBELLELONG from ACTES where CODE = '" . $this->procedure['code'] . "'";
+      $query = "select LIBELLELONG from actes where CODE = '" . $this->procedure['code'] . "'";
       $result = mysql_query($query);
       $row = mysql_fetch_array($result);
       $this->procedure["texte"] = $row['LIBELLELONG'];

@@ -26,8 +26,8 @@ mysql_select_db("ccam")
   or die("Could not select database");
 
 //Création de la requête
-//$query = "select CODE, LIBELLELONG, CODEACTE, TEXTE from ACTES, NOTES where 0";
-$query = "SELECT CODE, LIBELLELONG FROM ACTES WHERE 0";
+//$query = "select CODE, LIBELLELONG, CODEACTE, TEXTE from actes, notes where 0";
+$query = "SELECT CODE, LIBELLELONG FROM actes WHERE 0";
 
 //Si un autre élément est remplis
 if($code != "" || $clefs != "" || $selacces != "0" || $seltopo1 != "0")
@@ -82,7 +82,7 @@ while($row = mysql_fetch_array($result))
 $numcodes = $i;
 
 //On récupère les voies d'accès
-$query = "select * from ACCES1";
+$query = "select * from acces1";
 $result = mysql_query($query);
 $acces[0]["code"] = "0";
 $acces[0]["texte"] = "Selection d'une voie d'accès";
@@ -95,7 +95,7 @@ while($row = mysql_fetch_array($result))
 }
 
 //On récupère les appareils : topographie1
-$query = "select * from TOPOGRAPHIE1";
+$query = "select * from topographie1";
 $result = mysql_query($query);
 
 $topo1[0]["code"] = "0";
@@ -109,7 +109,7 @@ while($row = mysql_fetch_array($result))
 }
 
 //On récupère les systèmes correspondants à l'appareil : topographie2
-$query = "SELECT * FROM TOPOGRAPHIE2 WHERE PERE = '" . $seltopo1 . "'";
+$query = "SELECT * FROM topographie2 WHERE PERE = '" . $seltopo1 . "'";
 $result = mysql_query($query);
 
 $topo2[0]["code"] = "0";
