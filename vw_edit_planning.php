@@ -7,12 +7,9 @@
 * @author Romain Ollivier
 */
 
-
-require_once("modules/admin/admin.class.php");
-require_once("modules/dPpatients/patients.class.php");
-require_once("modules/dPbloc/plagesop.class.php");
 require_once("modules/dPplanningOp/planning.class.php");
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+
+global $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -27,15 +24,7 @@ if(!$operation_id) {
 
 $op = new COperation;
 $op->load($operation_id);
-
-$chir = new CUser;
-$chir->load($op->chir_id);
-
-$pat = new CPatient;
-$pat->load($op->pat_id);
-
-$plage = new CPlageOp;
-$plage->load($op->plageop_id);
+$op->loadRefs();
 
 // Heures & minutes
 $start = 7;
@@ -55,9 +44,9 @@ require_once("classes/smartydp.class.php");
 $smarty = new CSmartyDP;
 
 $smarty->assign('op', $op);
-$smarty->assign('chir', $chir);
-$smarty->assign('pat', $pat);
-$smarty->assign('plage', $plage);
+$smarty->assign('chir', $op->_ref_chir);
+$smarty->assign('pat', $op->_ref_pat);
+$smarty->assign('plage', $op->_ref_plageop);
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);
 

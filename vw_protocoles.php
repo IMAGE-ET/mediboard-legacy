@@ -7,12 +7,12 @@
 * @author Thomas Despoix
 */
 
-require_once("planning.class.php");
+require_once("modules/dPplanningOp/planning.class.php");
 require_once("modules/admin/admin.class.php");
 
 // ALTER TABLE `operations` CHANGE `plageop_id` `plageop_id` BIGINT( 20 ) UNSIGNED
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
 // Chirurgiens disponibles
 $sql ="

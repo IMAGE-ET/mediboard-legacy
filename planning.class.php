@@ -9,6 +9,10 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
+require_once("modules/admin/admin.class.php");
+require_once("modules/dPpatients/patients.class.php");
+require_once("modules/dPbloc/plagesop.class.php");
+
 class COperation extends CDpObject {
   // DB Table key
   var $operation_id = NULL;
@@ -53,6 +57,11 @@ class COperation extends CDpObject {
   var $_date_rdv_adm = NULL;
   var $_hour_adm = NULL;
   var $_min_adm = NULL;
+
+  // DB References
+  var $_ref_pat = NULL;
+  var $_ref_chir = NULL;
+  var $_ref_plageop = NULL;
 
   function COperation() {
     $this->CDpObject( 'operations', 'operation_id' );
@@ -152,6 +161,18 @@ class COperation extends CDpObject {
 
 
     return parent::store();
+  }
+  
+  function loadRefs() {
+    // Forward references
+    $this->_ref_chir = new CUser;
+    $this->_ref_chir->load($this->chir_id);
+    
+    $this->_ref_pat = new CPatient;
+    $this->_ref_pat->load($this->pat_id);
+    
+    $this->_ref_plageop = new CPlageOp;
+    $this->_ref_plageop->load($this->plageop_id);
   }
 }
 
