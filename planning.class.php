@@ -32,7 +32,7 @@ class COperation extends CDpObject {
   var $info = NULL;
   var $date_anesth = NULL;
   var $time_anesth = NULL;
-  var type_anesth = NULL;  
+  var $type_anesth = NULL;  
   var $date_adm = NULL;
   var $time_adm = NULL;
   var $duree_hospi = NULL;
@@ -52,6 +52,7 @@ class COperation extends CDpObject {
   var $_date_rdv_anesth = NULL;
   var $_hour_anesth = NULL;
   var $_min_anesth = NULL;
+  var $_lu_type_anesth = NULL;
   var $_date_rdv_adm = NULL;
   var $_hour_adm = NULL;
   var $_min_adm = NULL;
@@ -109,6 +110,11 @@ class COperation extends CDpObject {
       WHERE id = '$this->plageop_id'";
     $plage = db_loadlist($sql);
     
+    if($this->type_anesth != NULL) {
+      $anesth = dPgetSysVal("AnesthType");
+      $this->_lu_type_anesth = $anesth[$this->type_anesth];
+    }
+    
     $this->_date = substr($plage[0]["date"], 8, 2)."/".substr($plage[0]["date"], 5, 2)."/".substr($plage[0]["date"], 0, 4);
     $this->_date_rdv_anesth = substr($this->date_anesth, 0, 4).substr($this->date_anesth, 5, 2).substr($this->date_anesth, 8, 2);
     $this->_rdv_anesth = substr($this->date_anesth, 8, 2)."/".substr($this->date_anesth, 5, 2)."/".substr($this->date_anesth, 0, 4);
@@ -127,6 +133,13 @@ class COperation extends CDpObject {
     $this->date_adm = substr($this->_date_rdv_adm, 0, 4)."-".substr($this->_date_rdv_adm, 4, 2)."-".substr($this->_date_rdv_adm, 6, 2);
     $this->time_adm = $this->_hour_adm.":".$this->_min_adm.":00";
     $this->temp_operation = $this->_hour_op.":".$this->_min_op.":00";
+    if($this->_lu_type_anesth != NULL) {
+      $anesth = dPgetSysVal("AnesthType");
+      foreach($anesth as $key => $value) {
+        if($value == $this->_lu_type_anesth)
+          $this->type_anesth = $key;
+      }
+    }
 
     return parent::store();
   }
