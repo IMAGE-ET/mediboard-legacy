@@ -71,7 +71,7 @@ class CTitleBlock extends CTitleBlock_core {
 //
 class CTabBox extends CTabBox_core {
   function show( $extra='' ) {
-    
+    $this->checkActive();
     global $AppUI;
     
     $uistyle = $AppUI->getPref( 'UISTYLE' );
