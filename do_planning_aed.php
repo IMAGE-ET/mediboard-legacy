@@ -9,7 +9,7 @@
 
 require_once("planning.class.php");
 
-$obj = new Cplanning();
+$obj = new COperation();
 $msg = '';
 
 if (!$obj->bind( $_POST )) {

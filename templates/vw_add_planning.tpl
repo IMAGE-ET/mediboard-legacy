@@ -30,7 +30,7 @@ function checkForm() {
   }
 
 /* Bug in IE
-  if (form.hour_op.value == 0 && form.min_op.value == 0) {
+  if (form._hour_op.value == 0 && form._min_op.value == 0) {
     alert("Temps opératoire invalide");
     form.hour_op.focus();
     return false;
@@ -42,13 +42,13 @@ function checkForm() {
     return false;
   }
 
-  if (form.date_rdv_adm.value.length == 0) {
+  if (form._date_rdv_adm.value.length == 0) {
     alert("Admission: date manquante");
     popCalendar('rdv_adm', 'rdv_adm');
     return false;
   }
 
-  if (form.hour_adm.value.length == 0) {
+  if (form._hour_adm.value.length == 0) {
     alert("Admission: heure manquante");
     form.hour_anesth.focus();
     return false;
@@ -88,8 +88,8 @@ function popPlage() {
   url += '&a=plage_selector';
   url += '&dialog=1';
   url += '&chir=' + document.editFrm.chir_id.value;
-  url += '&hour=' + document.editFrm.hour_op.value;
-  url += '&min=' + document.editFrm.min_op.value;
+  url += '&hour=' + document.editFrm._hour_op.value;
+  url += '&min=' + document.editFrm._min_op.value;
 
   window.open(url, 'Plage', 'left=50,top=50,height=250,width=400,resizable');
 }
@@ -146,7 +146,7 @@ var calWin = null;
  
 function popCalendar( field ){
   calendarField = field;
-  idate = eval( 'document.editFrm.date_' + field + '.value' );
+  idate = eval( 'document.editFrm._date' + field + '.value' );
   
   var url =  'index.php?m=public';
   url += '&a=calendar';
@@ -158,7 +158,7 @@ function popCalendar( field ){
 }
 
 function setCalendar( idate, fdate ) {
-  fld_date = eval( 'document.editFrm.date_' + calendarField );
+  fld_date = eval( 'document.editFrm._date' + calendarField );
   fld_fdate = eval( 'document.editFrm.' + calendarField );
   fld_date.value = idate;
   fld_fdate.value = fdate;
@@ -173,16 +173,16 @@ function printForm() {
     url += '&pat_id='      + eval('document.editFrm.pat_id.value'     );
     url += '&CCAM_code='   + eval('document.editFrm.CCAM_code.value'  );
     url += '&cote='        + eval('document.editFrm.cote.value'       );
-    url += '&hour_op='     + eval('document.editFrm.hour_op.value'    );
-    url += '&min_op='      + eval('document.editFrm.min_op.value'     );
+    url += '&hour_op='     + eval('document.editFrm._hour_op.value'    );
+    url += '&min_op='      + eval('document.editFrm._min_op.value'     );
     url += '&date='        + eval('document.editFrm.date.value'       );
     url += '&info='        + eval('document.editFrm.info.value'       );
-    url += '&rdv_anesth='  + eval('document.editFrm.rdv_anesth.value' );
-    url += '&hour_anesth=' + eval('document.editFrm.hour_anesth.value');
-    url += '&min_anesth='  + eval('document.editFrm.min_anesth.value' );
-    url += '&rdv_adm='     + eval('document.editFrm.rdv_adm.value'    );
-    url += '&hour_adm='    + eval('document.editFrm.hour_adm.value'   );
-    url += '&min_adm='     + eval('document.editFrm.min_adm.value'    );
+    url += '&rdv_anesth='  + eval('document.editFrm._rdv_anesth.value' );
+    url += '&hour_anesth=' + eval('document.editFrm._hour_anesth.value');
+    url += '&min_anesth='  + eval('document.editFrm._min_anesth.value' );
+    url += '&rdv_adm='     + eval('document.editFrm._rdv_adm.value'    );
+    url += '&hour_adm='    + eval('document.editFrm._hour_adm.value'   );
+    url += '&min_adm='     + eval('document.editFrm._min_adm.value'    );
     url += '&duree_hospi=' + eval('document.editFrm.duree_hospi.value');
     url += '&type_adm='    + eval('document.editFrm.type_adm.value'   );
     url += '&chambre='     + eval('document.editFrm.chambre.value'    ); 
@@ -211,14 +211,14 @@ function printForm() {
 
         <tr>
 		      <th class="mandatory">Chirurgien:</th>
-          <td class="readonly"><input type="text" name="chir_name" size="30" value="{$chir.name}" readonly="readonly" /></td>
+          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$chir.name}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
 
         {if (!$protocole)}
         <tr>
           <th class="mandatory">Patient:</th>
-          <td class="readonly"><input type="text" name="pat_name" size="30" value="" readonly="readonly" /></td>
+          <td class="readonly"><input type="text" name="_pat_name" size="30" value="" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
         {/if}
@@ -250,13 +250,13 @@ function printForm() {
         <tr>
           <th class="mandatory">Temps opératoire:</th>
           <td colspan="2">
-            <select name="hour_op">
+            <select name="_hour_op">
             {foreach from=$hours key=key item=hour}
             	<option {if ($key == 1)} selected="selected" {/if}>{$key}</option>
             {/foreach}
             </select>
             :
-            <select name="min_op">
+            <select name="_min_op">
             {foreach from=$mins item=min}
             	<option>{$min}</option>
             {/foreach}
@@ -307,9 +307,9 @@ function printForm() {
         <tr>
           <th>Date:</th>
           <td class="readonly">
-            <input type="hidden" name="date_rdv_anesth" value="{$todayi}" />
-            <input type="text" name="rdv_anesth" value="{$todayf}" readonly="readonly" />
-            <a href="#" onClick="popCalendar( 'rdv_anesth', 'rdv_anesth');">
+            <input type="hidden" name="_date_rdv_anesth" value="{$todayi}" />
+            <input type="text" name="_rdv_anesth" value="{$todayf}" readonly="readonly" />
+            <a href="#" onClick="popCalendar( '_rdv_anesth', '_rdv_anesth');">
               <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
             </a>
           </td>
@@ -318,13 +318,13 @@ function printForm() {
         <tr>
           <th>Heure:</th>
           <td>
-            <select name="hour_anesth">
+            <select name="_hour_anesth">
             {foreach from=$hours item=hour}
             	<option>{$hour}</option>
             {/foreach}
             </select>
             :
-            <select name="min_anesth">
+            <select name="_min_anesth">
             {foreach from=$mins item=min}
             	<option>{$min}</option>
             {/foreach}
@@ -339,9 +339,9 @@ function printForm() {
         <tr>
           <th class="mandatory">Date:</th>
           <td class="readonly">
-            <input type="hidden" name="date_rdv_adm" value="{$todayi}" />
-            <input type="text" name="rdv_adm" value="{$todayf}" readonly="readonly" />
-            <a href="#" onClick="popCalendar( 'rdv_adm', 'rdv_adm');">
+            <input type="hidden" name="_date_rdv_adm" value="{$todayi}" />
+            <input type="text" name="_rdv_adm" value="{$todayf}" readonly="readonly" />
+            <a href="#" onClick="popCalendar( '_rdv_adm', '_rdv_adm');">
               <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
             </a>
           </td>
@@ -350,13 +350,13 @@ function printForm() {
         <tr>
           <th class="mandatory">Heure:</th>
           <td>
-            <select name="hour_adm">
+            <select name="_hour_adm">
             {foreach from=$hours item=hour}
             	<option>{$hour}</option>
             {/foreach}
             </select>
             :
-            <select name="min_adm">
+            <select name="_min_adm">
             {foreach from=$mins item=min}
             	<option>{$min}</option>
             {/foreach}

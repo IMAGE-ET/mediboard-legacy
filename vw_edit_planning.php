@@ -7,6 +7,8 @@
 * @author Romain Ollivier
 */
 
+require_once("planning.class.php");
+
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
@@ -24,6 +26,10 @@ if(dPgetParam($_GET, "id", "noid") == "noid") {
 else
   $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
 
+$op = new COperation();
+$op->load($id);
+
+/*
 $sql = "SELECT operations.operation_id AS id, operations.chir_id AS chir_id,
 		users.user_first_name AS chir_firstname, users.user_last_name AS chir_lastname,
 		operations.pat_id AS pat_id, patients.nom AS pat_lastname, patients.prenom AS pat_firstname,
@@ -50,7 +56,6 @@ if(sizeof($result) == 0) {
   $AppUI->redirect( "m=dPplanningOp&tab=0");
 }
 $op = $result[0];
-
 $op["chir_name"] = "Dr. ".$op["chir_lastname"]." ".$op["chir_firstname"];
 $op["pat_name"] = $op["pat_lastname"]." ".$op["pat_firstname"];
 $op["hour_op"] = substr($op["temp_op"], 0, 2);
@@ -64,7 +69,7 @@ $op["date_rdv_adm"] = substr($op["rdv_adm"], 0, 4).substr($op["rdv_adm"], 5, 2).
 $op["rdv_adm"] = substr($op["rdv_adm"], 8, 2)."/".substr($op["rdv_adm"], 5, 2)."/".substr($op["rdv_adm"], 0, 4);
 $op["hour_adm"] = substr($op["time_adm"], 0, 2);
 $op["min_adm"] = substr($op["time_adm"], 3, 2);
-
+*/
 //Creation de l'objet smarty
 require_once("lib/smarty/Smarty.class.php");
 $smarty = new Smarty();

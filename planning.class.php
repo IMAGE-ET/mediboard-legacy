@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-class Cplanning extends CDpObject {
+class COperation extends CDpObject {
   // DB Table key
   var $operation_id = NULL;
 
@@ -23,8 +23,10 @@ class Cplanning extends CDpObject {
   var $CIM10_code = NULL;
   var $cote = NULL;
   var $temp_operation = NULL;
+  var $time_operation = NULL;
   var $examen = NULL;
   var $materiel = NULL;
+  var $commande_mat = "n";
   var $info = NULL;
   var $date_anesth = NULL;
   var $time_anesth = NULL;
@@ -35,19 +37,23 @@ class Cplanning extends CDpObject {
   var $chambre = NULL;
   var $ATNC = NULL;
   var $rques = NULL;
-  var $rank = NULL;
+  var $rank = 0;
+  var $admis = "n";
     
   // Form fields
-  var $hour_op = NULL;
-  var $min_op = NULL;
-  var $date_rdv_anesth = NULL;
-  var $hour_anesth = NULL;
-  var $min_anesth = NULL;
-  var $date_rdv_adm = NULL;
-  var $hour_adm = NULL;
-  var $min_adm = NULL;
+  var $_chir_name = NULL;
+  var $_pat_name = NULL;
+  var $_hour_op = NULL;
+  var $_min_op = NULL;
+  var $_date = NULL;
+  var $_date_rdv_anesth = NULL;
+  var $_hour_anesth = NULL;
+  var $_min_anesth = NULL;
+  var $_date_rdv_adm = NULL;
+  var $_hour_adm = NULL;
+  var $_min_adm = NULL;
 
-  function Cplanning() {
+  function COperation() {
     $this->CDpObject( 'operations', 'operation_id' );
   }
 
@@ -75,14 +81,55 @@ class Cplanning extends CDpObject {
     return NULL;
     }
   }
-    
+  
+  function load($id) {
+    parent::load($id);
+    $sql = "SELECT user_last_name, user_first_name
+            FROM users
+            WHERE user_id = '".$this->chir_id."'";
+    $chir = db_loadlist($sql);
+    $this->_chir_name = "Dr. ".$chir[0]["user_last_name"]." ".$chir[0]["user_first_name"];
+    $sql = "SELECT nom, prenom
+            FROM patients
+            WHERE patient_id = '".$this->pat_id."'";
+    $pat = db_loadlist($sql);
+    $this->_pat_name = $pat[0]["nom"]." ".$pat[0]["prenom"];
+    $this->_hour_op = substr($this->temp_operation, 0, 2);
+    $this->_min_op = substr($this->temp_operation, 3, 2);
+    $sql = "SELECT date
+            FROM plagesop
+            WHERE id = '".$this->plageop_id."'";
+    $plage = db_loadlist($sql);
+    $this->_date = substr($plage[0]["date"], 8, 2)."/".substr($plage[0]["date"], 5, 2)."/".substr($plage[0]["date"], 0, 4);
+    $this->_date_rdv_anesth = substr($this->date_anesth, 0, 4).substr($this->date_anesth, 5, 2).substr($this->date_anesth, 8, 2);
+    $this->_rdv_anesth = substr($this->date_anesth, 8, 2)."/".substr($this->date_anesth, 5, 2)."/".substr($this->date_anesth, 0, 4);
+    $this->_hour_anesth = substr($this->time_anesth, 0, 2);
+    $this->_min_anesth = substr($this->time_anesth, 3, 2);
+    $this->_date_rdv_adm = substr($this->date_adm, 0, 4).substr($this->date_adm, 5, 2).substr($this->date_adm, 8, 2);
+    $this->_rdv_adm = substr($this->date_adm, 8, 2)."/".substr($this->date_adm, 5, 2)."/".substr($this->date_adm, 0, 4);
+    $this->_hour_adm = substr($this->time_adm, 0, 2);
+    $this->_min_adm = substr($this->time_adm, 3, 2);
+  }
+  
   function store() {
+    //Data computation
+    $this->date_anesth = substr($this->_date_rdv_anesth, 0, 4)."-".substr($this->_date_rdv_anesth, 4, 2)."-".substr($this->_date_rdv_anesth, 6, 2);
+    $this->time_anesth = $this->_hour_anesth.":".$this->_min_anesth.":00";
+    $this->date_adm = substr($this->_date_rdv_adm, 0, 4)."-".substr($this->_date_rdv_adm, 4, 2)."-".substr($this->_date_rdv_adm, 6, 2);
+    $this->time_adm = $this->_hour_adm.":".$this->_min_adm.":00";
+    $this->temp_operation = $this->_hour_op.":".$this->_min_op.":00";
+    //Parent store
+    parent::store();
+  }
+    
+/*  function store() {
     //@todo -c apeller la fonction superstore pour faire l'insert/update
     $this->date_anesth = substr($this->date_rdv_anesth, 0, 4)."-".substr($this->date_rdv_anesth, 4, 2)."-".substr($this->date_rdv_anesth, 6, 2);
     $this->time_anesth = $this->hour_anesth.":".$this->min_anesth.":00";
     $this->date_adm = substr($this->date_rdv_adm, 0, 4)."-".substr($this->date_rdv_adm, 4, 2)."-".substr($this->date_rdv_adm, 6, 2);
     $this->time_adm = $this->hour_adm.":".$this->min_adm.":00";
     $this->temp_operation = $this->hour_op.":".$this->min_op.":00";
+    parent::store();
     if($this->operation_id != NULL) {
       $sql = "update operations set pat_id = '$this->pat_id', chir_id = '$this->chir_id',
               plageop_id = '$this->plageop_id', CCAM_code = '$this->CCAM_code', CIM10_code = '$this->CIM10_code',
@@ -107,7 +154,7 @@ class Cplanning extends CDpObject {
       db_exec( $sql );
       return db_error();
     }
-  }
+  }*/
 }
 
 ?>
