@@ -25,9 +25,10 @@ if(dPgetParam($_GET, "new", 0)) {
   $medecin->load(NULL);
   mbSetValueToSession("medecin_id", null);
 }
-else
+else {
   $medecin->load($medecin_id);
-$medecin->loadRefs();
+  //$medecin->loadRefs();
+}
 
 // Récuperation des medecins recherchés
 $medecin_nom    = mbGetValueFromGetOrSession("medecin_nom"   );
@@ -36,9 +37,12 @@ $medecin_prenom = mbGetValueFromGetOrSession("medecin_prenom");
 if ($medecin_nom || $medecin_prenom) {
   $sql = "SELECT * 
     FROM medecin
-    WHERE nom LIKE '$medecin_nom%'
-    AND prenom LIKE '$medecin_prenom%'
-    ORDER BY nom, prenom";
+    WHERE 1 ";
+  if ($medecin_nom)
+    $sql .= "AND nom LIKE '$medecin_nom%'";
+  if ($medecin_prenom)
+    $sql .= "AND prenom LIKE '$medecin_prenom%'";
+  $sql .= "ORDER BY nom, prenom LIMIt 0, 100";
   $medecins = db_loadlist($sql);
 }
 
