@@ -6,8 +6,7 @@
 body {
   font-family: arial, sans-serif;
   font-size: 11px;  
-  background-color: #efe;
-  background: url(./images/bodyGradient.jpg) no-repeat fixed top center;
+  background: #ddf url(./images/bodyGradient.jpg) no-repeat fixed top center;
   margin: 0px;
 }
 
@@ -596,7 +595,6 @@ td.tabox {
 body {
   font-family: Georgia, serifs;
   font-size: 12px;
-  background: #ddf;
 }
 
 span.hilite {
