@@ -170,6 +170,8 @@ function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
 	$list = array();
 	$cnt = 0;
 	while ($row = db_fetch_array( $cur )) {
+		$class = get_class($object);
+		$object = new $class();
 		$object->load( $row[0] );
 		$list[] = $object;
 		if( $maxrows && $maxrows == $cnt++ ) {
