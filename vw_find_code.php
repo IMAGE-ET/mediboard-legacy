@@ -87,7 +87,7 @@ if($code != "" || $clefs != "" || $selacces != "0" || $seltopo1 != "0")
   //On fait la recherche sur le code
   if($code != "")
   {
-	$query .= " and CODE like '%" . addslashes($code) . "%'";
+	$query .= " and CODE like '" . addslashes($code) . "%'";
   }
   //On explode les mots clefs
   if($clefs != "")
