@@ -8,11 +8,13 @@
 */
 
 global $AppUI, $canRead, $canEdit, $m;
+
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie') );
 
 if (!$canEdit) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -82,29 +84,40 @@ $consult = new CConsultation();
 if($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
-  $consult->_ref_patient->loadRefs();
-  foreach($consult->_ref_patient->_ref_consultations as $key => $value) {
-    $consult->_ref_patient->_ref_consultations[$key]->loadRefs();
-    $consult->_ref_patient->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
+  $patient =& $consult->_ref_patient;
+  $patient->loadRefs();
+  foreach ($patient->_ref_consultations as $key => $value) {
+    $patient->_ref_consultations[$key]->loadRefs();
+    $patient->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
   }
-  foreach($consult->_ref_patient->_ref_operations as $key => $value) {
-    $consult->_ref_patient->_ref_operations[$key]->loadRefs();
+  foreach ($patient->_ref_operations as $key => $value) {
+    $patient->_ref_operations[$key]->loadRefs();
   }
 }
 
 // Récupération des modèles de l'utilisateur
+$where = array();
 $where[] = "chir_id = '$chir->user_id'";
 $where[] = "type = 'consultation'";
+$order = array();
 $order[] = "nom";
 
 $listModele = new CCompteRendu();
 $listModele = $listModele->loadList($where, $order);
 
 // Récupération des aides à la saisie
-$aides = array();
-for ($i = 1; $i <= 10; $i++) {
-   $aides["Le texte $i à remplacer"] = "Aide $i";
+$where = array();
+$where[] = "user_id = '$chir->user_id'";
+$where[] = "module = '$m'";
+$where[] = "class = 'Consultation'";
+
+$aidesConsultation = new CAideSaisie();
+$aidesConsultation = $aidesConsultation->loadList($where);
+
+foreach ($aidesConsultation as $aideConsultation) {
+  $aides[$aideConsultation->field][$aideConsultation->text] = $aideConsultation->name;  
 }
+
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;

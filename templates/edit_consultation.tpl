@@ -27,9 +27,9 @@ function pasteText(formName) {
   var aide = eval("form._aide_" + formName);
   var area = eval("form." + formName);
   
-  area.value += aide.value + '\n';
+  insertAt(area, aide.value + '\n')
   aide.value = 0;
-  area.focus();
+//  area.focus();
 }
 
 </script>
@@ -137,7 +137,7 @@ function pasteText(formName) {
                 <th>
                   <select name="_aide_motif" size="1" onchange="pasteText('motif')">
                     <option value="0">&mdash; Choisir une aide</option>
-                    {html_options options=$aides}
+                    {html_options options=$aides.motif}
                   </select>
                 </th>
               </tr>
@@ -153,7 +153,7 @@ function pasteText(formName) {
                 <th>
                   <select name="_aide_rques" size="1" onchange="pasteText('rques')">
                     <option value="0">&mdash; Choisir une aide</option>
-                    {html_options options=$aides}
+                    {html_options options=$aides.rques}
                   </select>
                 </th>
               </tr>
@@ -169,7 +169,7 @@ function pasteText(formName) {
                 <th>
                   <select name="_aide_examen" size="1" onchange="pasteText('examen')">
                     <option value="0">&mdash; Choisir une aide</option>
-                    {html_options options=$aides selected=0}
+                    {html_options options=$aides.examen}
                   </select>
                 </th>
               </tr>
@@ -185,7 +185,7 @@ function pasteText(formName) {
                 <th>
                   <select name="_aide_traitement" size="1" onchange="pasteText('traitement')">
                     <option value="0">&mdash; Choisir une aide</option>
-                    {html_options options=$aides selected=0}
+                    {html_options options=$aides.traitements}
                   </select>
                 </th>
               </tr>
