@@ -7,7 +7,7 @@
   border-spacing: 6px;
   font-family: georgia, serif;
   color: #006;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 #admission th {
@@ -24,7 +24,7 @@
   background: #68f;
   border: #aaa 3px outset;
   padding: 10px;
-  font-size: 30px;
+  font-size: 26px;
   color: #006;
 }
 
@@ -34,7 +34,7 @@
   background: #abf;
   padding: 10px;
   border: #aaa 3px outset;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 #admission td {
