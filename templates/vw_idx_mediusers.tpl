@@ -4,107 +4,76 @@
 			<a href="index.php?m=mediusers&tab=0&mediuser=0"><b>Créer un utilisateur</b></a>
 		</td>
 		<td valign="top" rowspan=2>
-			<table class="form" align="center">
+
+			<table class="form">
+      
 			<form name="mediuser" action="./index.php?m=mediusers" method="post">
 			<input type="hidden" name="dosql" value="do_mediusers_aed">
 			<input type="hidden" name="del" value="0">
+
 			{if $usersel.exist == 0}
-				<tr>
-					<th colspan=2>
-						Création d'un nouvel utilisateur
-					</th>
+				<tr class="category"><th colspan="2">Création d'un nouvel utilisateur</th></tr>
+
+				<tr class="field">
+          <th>Login:</th>
+          <td><input type="text" name="user_username"></td>
+        </tr>
+				<tr class="mandatory">
+          <th>Mot de passe:</th>
+          <td><input type="password" name="user_password"></td>
+        </tr>
+				<tr class="mandatory">
+          <th>Mot de passe (vérif.):</th>
+          <td><input type="password" name="user_password2"></td>
+        </tr>
+				<tr class="mandatory">
+          <th>Nom:</th>
+          <td><input type="text" name="user_last_name"></td>
 				</tr>
-				<tr>
-					<td class="propname">
-						Login :
-					</td>
-					<td class="propvalue">
-						<input type="text" name="user_username"> *
-					</td>
+				<tr class="mandatory">
+					<th>Prénom:</th>
+          <td><input type="text" name="user_first_name"></td>
 				</tr>
-				<tr>
-					<td class="propname">
-						Mot de passe :
-					</td>
-					<td class="propvalue">
-						<input type="password" name="user_password"> *
-					</td>
-				</tr>
-				<tr>
-					<td class="propname">
-						Mot de passe (vérif.) :
-					</td>
-					<td class="propvalue">
-						<input type="password" name="user_password2"> *
-					</td>
-				</tr>
-				<tr>
-					<td class="propname">
-						Nom :
-					</td>
-					<td class="propvalue">
-						<input type="text" name="user_last_name"> *
-					</td>
-				</tr>
-				<tr>
-					<td class="propname">
-						Prénom :
-					</td>
-					<td class="propvalue">
-						<input type="text" name="user_first_name"> *
-					</td>
-				</tr>
-				<tr>
-					<td class="propname">
-						Fonction :
-					</td>
-					<td class="propvalue">
-						<select name="function_id">
+       
+				<tr class="mandatory">
+					<th>Fonction:</th>
+					<td>
+            <select name="function_id">
 						{foreach from=$functions item=curr_function}
 							<option value="{$curr_function.function_id}">{$curr_function.text}</option>
 						{/foreach}
-						</select> *
+						</select>
 					</td>
 				</tr>
-				<tr>
-					<td class="propname">
-						Email :
-					</td>
-					<td class="propvalue">
-						<input type="text" name="user_email">
-					</td>
+				<tr class="field">
+					<th>Email:</th>
+					<td><input type="text" name="user_email"></td>
+				</tr>
+				<tr class="field">
+					<th>Tel:</th>
+					<td><input type="text" name="user_phone"></td>
 				</tr>
 				<tr>
-					<td class="propname">
-						Tel :
-					</td>
-					<td class="propvalue">
-						<input type="text" name="user_phone">
-					</td>
-				</tr>
-				<tr>
-					<td colspan=2 align="center">
-						<input class="button" type="submit" name="btnFuseAction" value="Créer">
-					</td>
+					<td class"submit" colspan="2"><input class="button" type="submit" name="btnFuseAction" value="Créer"></td>
 				</tr>
 				</form>
 			{else}
 				<tr>
-					<th colspan=3>
+					<th colspan="3">
 						Modification de l'utilisateur <i>{$usersel.username}</i>
 						<input type="hidden" name="user_id" value="{$usersel.id}">
 					</th>
 				</tr>
-				<tr>
-					<td class="propname">
+				<tr class="field">
+					<th>
 						Login :
 					</td>
 					<td colspan=2 class="propvalue">
 						<input type="text" name="user_username" value="{$usersel.username}"> *
 					</td>
 				</tr>
-				<tr>
-					<td class="propname">
+				<tr class="field">
+					<th>
 						Nouveau mot de passe :
 					</td>
 					<td>
@@ -115,32 +84,32 @@
 						laissez les champs vides</i>
 					</td>
 				</tr>
-				<tr>
-					<td class="propname">
+				<tr class="field">
+					<th>
 						Nouveau mot de passe (vérif.) :
 					</td>
-					<td class="propvalue">
+					<td>
 						<input type="password" name="user_password2">
 					</td>
 				</tr>
-				<tr>
-					<td class="propname">
+				<tr class="field">
+					<th>
 						Nom :
 					</td>
 					<td colspan=2 class="propvalue">
 						<input type="text" name="user_last_name" value="{$usersel.lastname}"> *
 					</td>
 				</tr>
-				<tr>
-					<td class="propname">
+				<tr class="field">
+					<th>
 						Prénom :
 					</td>
 					<td colspan=2 class="propvalue">
 						<input type="text" name="user_first_name" value="{$usersel.firstname}"> *
 					</td>
 				</tr>
-				<tr>
-					<td class="propname">
+				<tr class="field">
+					<th>
 						Fonction :
 					</td>
 					<td colspan=2 class="propvalue">
@@ -155,24 +124,23 @@
 						</select> *
 					</td>
 				</tr>
-				<tr>
-					<td class="propname">
+				<tr class="field">
+					<th>
 						Email :
 					</td>
 					<td colspan=2 class="propvalue">
 						<input type="text" name="user_email" value="{$usersel.email}">
 					</td>
 				</tr>
-				<tr>
-					<td class="propname">
+				<tr class="field">
+					<th>
 						Tel :
 					</td>
 					<td colspan=2 class="propvalue">
 						<input type="text" name="user_phone" value="{$usersel.phone}">
 					</td>
 				</tr>
-				<tr>
-				<tr>
+				<tr class="field">
 					<td>
 						<input class="button" type="submit" name="btnFuseAction" value="Modifier">
 						</form>
