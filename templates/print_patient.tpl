@@ -35,7 +35,7 @@
   <tr><th></th><td>{$patient->_ref_medecin3->adresse} - {$patient->_ref_medecin3->cp} {$patient->_ref_medecin3->ville}</td></tr>
   {/if}
   
-  <tr><th class="category" colspan="2">Antécédants chirurgicaux</th></tr>
+  <tr><th class="category" colspan="2">Antécédents chirurgicaux</th></tr>
   
   {foreach from=$patient->_ref_operations item=curr_op}
   <tr>
