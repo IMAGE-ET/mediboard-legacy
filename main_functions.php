@@ -3,6 +3,8 @@
 ## Global General Purpose Functions
 ##
 
+require_once("mb_functions.php");
+
 $CR = "\n";
 define('SECONDS_PER_DAY', 60 * 60 * 24);
 

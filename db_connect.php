@@ -249,7 +249,8 @@ function db_updateArray( $table, &$hash, $keyName, $verbose=false ) {
 function db_delete( $table, $keyName, $keyValue ) {
 	$keyName = db_escape( $keyName );
 	$keyValue = db_escape( $keyValue );
-	$ret = db_exec( "DELETE FROM $table WHERE $keyName='$keyValue'" );
+  $sql = "DELETE FROM $table WHERE $keyName='$keyValue'";
+	$ret = db_exec( $sql );
 	return $ret;
 }
 
