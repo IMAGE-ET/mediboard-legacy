@@ -86,8 +86,12 @@ for($i = 0; $i < 7; $i++) {
 //mbTrace("liste des plages", $plages);
 
 //Liste des heures
-for($i = 8; $i <= 20; $i++)
-  $listHours[$i] = $i;
+for($i = 8; $i <= 20; $i++) {
+  if(strlen($i) == 1)
+    $listHours[$i] = "0".$i;
+  else
+    $listHours[$i] = $i;
+}
 //Liste des jours
 $daysOfWeek[0]["index"] = 0;
 $daysOfWeek[0]["name"] = "Lundi";

@@ -58,7 +58,6 @@ class CPlageconsult extends CDpObject {
       'idfield' => 'consultation_id', 
       'joinfield' => 'plageconsult_id'
     );
-    
     return parent::canDelete( $msg, $oid, $tables );
   }
 
@@ -72,32 +71,22 @@ class CPlageconsult extends CDpObject {
         "AND date = '$this->date' " .
         "AND plageconsult_id != '$this->plageconsult_id'";
     $row = db_loadlist($sql);
-
     $msg = null;
     foreach ($row as $key => $value) {
       if (($value['debut'] < $this->fin and $value['fin'] > $this->fin)
         or($value['debut'] < $this->debut and $value['fin'] > $this->debut)
         or($value['debut'] >= $this->debut and $value['fin'] <= $this->fin)) {
-        $msg .= "Collision avec la plage du $this->date, de {$value['debut']} à {$value['fin']}. ";
+        $msg .= "Collision avec la plage du $this->date, de {$value['debut']} à {$value['fin']}.";
       }
     }
-
-    return $msg;   
+    return $msg;
   }
   
   function store() {
-    // Data computation
-    //$this->debut = $this->_hour_deb.":".$this->_min_deb.":00";
-    //$this->fin   = $this->_hour_fin.":".$this->_min_fin.":00";
-    //$this->date = $this->_year."-".$this->_month."-".$this->_day;
-    $this->debut = $this->_hour_deb.":00:00";
-    $this->fin   = $this->_hour_fin.":00:00";
-    $this->date = date("Y-m-d", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
-
+    $this->updateDBFields();
     if ($msg = $this->hasCollisions()) {
       return $msg;
     }
-
     return parent::store();
   }
   
@@ -105,6 +94,11 @@ class CPlageconsult extends CDpObject {
     if (!parent::load($oid, $strip)) {
       return false;
     }
+    $this->updateFormFields();
+    return true;
+  }
+  
+  function updateFormFields() {
     $this->_hour_deb = intval(substr($this->debut, 0, 2));
     $this->_min_deb  = intval(substr($this->debut, 3, 2));
     $this->_hour_fin = intval(substr($this->fin, 0, 2));
@@ -114,8 +108,12 @@ class CPlageconsult extends CDpObject {
     $this->_year     = substr($this->date, 0, 4);
     $this->_jour     = date("w", mktime(0, 0, 0, $this->_month, $this->_day-1, $this->_year));
     $this->_jour     = intval($this->_jour);
-    
-    return true;
+  }
+  
+  function updateDBFields() {
+    $this->debut = $this->_hour_deb.":00:00";
+    $this->fin   = $this->_hour_fin.":00:00";
+    $this->date = date("Y-m-d", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
   }
   
   function becomeNext() {
@@ -123,18 +121,21 @@ class CPlageconsult extends CDpObject {
     $this->_year  = date("Y", $nextTime);
     $this->_month = date("m", $nextTime);
     $this->_day   = date("d", $nextTime);
-    $this->date = $this->_year."-".$this->_month."-".$this->_day;   
-
+    $this->date = $this->_year."-".$this->_month."-".$this->_day;
     $sql = "SELECT plageconsult_id" .
       "\nFROM plageconsult" .
       "\nWHERE date = '$this->date'" .
       "\nAND chir_id = '$this->chir_id'" .
       "\nAND (debut = '$this->debut' OR fin = '$this->fin')";
-    
-    $row = db_loadlist($sql);
+    $row = db_loadlist($sql);    
     $this->plageconsult_id = @$row[0]['plageconsult_id'];
-    
-    return $this->load();
+    $debut = $this->debut;
+    $fin = $this->fin;
+    $msg = $this->load();
+    $this->debut = $debut;
+    $this->fin = $fin;
+    $this->updateFormFields();
+    return $msg;
   }    
 }
 
