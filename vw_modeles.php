@@ -50,7 +50,7 @@ $sql = "SELECT * FROM compte_rendu" .
 $listModele = db_loadObjectList($sql, new CCompteRendu());
 
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('prat_id', $prat_id);
