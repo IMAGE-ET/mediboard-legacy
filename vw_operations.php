@@ -15,8 +15,7 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 
 $salle = mbGetValueFromGetOrSession("salle", 0);
 $op = mbGetValueFromGetOrSession("op", 0);
-//$today = date("Y-m-d");
-$today = "2004-12-17";
+$today = date("Y-m-d");
 
 //Selection des salles
 $sql = "SELECT id, nom
