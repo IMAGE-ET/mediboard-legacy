@@ -35,9 +35,9 @@ function checkPlage() {
       <input type="hidden" name="m" value="{$m}">
       <input type="hidden" name="tab" value="{$tab}">
 
-      <label for="selection_chirSel">Choisir un chirurgien:</label>
+      <label for="selection_chirSel">Praticien:</label>
       <select name="chirSel" onchange="this.form.submit()">
-        <option value="-1" {if $chirSel == -1} selected="selected" {/if}>Aucun chirurgien</option>
+        <option value="-1" {if $chirSel == -1} selected="selected" {/if}>-- Choisir un praticien</option>
         {foreach from=$listChirs item=curr_chir}
         <option value="{$curr_chir->user_id}" {if $chirSel == $curr_chir->user_id} selected="selected" {/if}>
           {$curr_chir->user_last_name} {$curr_chir->user_first_name}
@@ -94,6 +94,7 @@ function checkPlage() {
             <input type='hidden' name='_year' value='{$year}' />
             <input type='hidden' name='_month' value='{$month}' />
             <input type='hidden' name='_day' value='{$day}' />
+            
             <table class="form">
               <tr>
                 {if $plageconsult_id == -1}
@@ -102,10 +103,11 @@ function checkPlage() {
                 <th class="category" colspan="4">Modifier cette plage</th>
                 {/if}
               </tr>
+
               <tr>
-                <th><label for="selection_chir_id">Choisir un chirurgien:</label></th>
+                <th><label for="editFrm_chir_id">Praticien:</label></th>
                 <td><select name="chir_id">
-                    <option value="-1" {if $chirSel == -1} selected="selected" {/if}>Aucun chirurgien</option>
+                    <option value="-1" {if $chirSel == -1} selected="selected" {/if}>-- Choisir un praticien</option>
                     {foreach from=$listChirs item=curr_chir}
                       <option value="{$curr_chir->user_id}" {if $chirSel == $curr_chir->user_id} selected="selected" {/if}>
                       {$curr_chir->user_last_name} {$curr_chir->user_first_name}
@@ -113,7 +115,7 @@ function checkPlage() {
                     {/foreach}
                     </select>
                 </td>
-                <th><label for="selection_jour">Choisir le jour de la semaine:</label></th>
+                <th><label for="editFrm__jour">Jour de la semaine:</label></th>
                 <td><select name="_jour">
                     {foreach from=$daysOfWeek item=curr_day}
                     <option value="{$curr_day.index}" {if $curr_day.index == $plageSel->_jour} selected="selected" {/if}>
@@ -123,8 +125,9 @@ function checkPlage() {
                     </select>
                 </td>
               </tr>
+
               <tr>
-                <th><label for="selection_debut">Heure de début:</label></th>
+                <th><label for="editFrm__hour_deb">Heure de début:</label></th>
                 <td><select name="_hour_deb">
                     {foreach from=$listHours item=curr_hour}
                       <option value="{$curr_hour}" {if $curr_hour == $plageSel->_hour_deb} selected="selected" {/if}>
@@ -133,11 +136,12 @@ function checkPlage() {
                     {/foreach}
                     </select>
                 </td>
-                <th>Répétition:</th>
+                <th><label for="editFrm__repeat">Nombre de répétitions:</label></th>
                 <td><input type="text" size="2" name="_repeat" value="1" /></td>
               </tr>
+
               <tr>
-                <th><label for="selection_fin">Heure de fin:</label></th>
+                <th><label for="editFrm__hour_fin">Heure de fin:</label></th>
                 <td><select name="_hour_fin">
                     {foreach from=$listHours item=curr_hour}
                       <option value="{$curr_hour}" {if $curr_hour == $plageSel->_hour_fin} selected="selected" {/if}>
@@ -146,9 +150,13 @@ function checkPlage() {
                     {/foreach}
                     </select>
                 </td>
-                <th>Une semaine sur deux</th>
-                <td><input type="checkbox" name="_double"></td>
+                <th><label>Type de répétition:</label></th>
+                <td>
+                  <input type="checkbox" name="_double">
+                  <label for="editFrm__double">Une semaine sur deux</label>
+                </td>
               </tr>
+
               <tr>
                 {if $plageconsult_id == -1}
                 <td class="button" colspan="4"><input type="submit" value="Creer" /></td>

@@ -56,7 +56,7 @@ if($plageSel->chir_id != $chirSel) {
 
 //Liste des chirurgiens
 $mediusers = new CMediusers();
-$listChirs = $mediusers->loadChirAnest();
+$listChirs = $mediusers->loadChirAnest(PERM_EDIT);
 
 //Periode
 $debut = mbGetValueFromGetOrSession("debut", date("d/m/Y"));
@@ -111,6 +111,8 @@ $daysOfWeek[6]["name"] = "Dimanche";
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
+
+$smarty->debugging = true;
 
 $smarty->assign('chirSel', $chirSel);
 $smarty->assign('plageSel', $plageSel);
