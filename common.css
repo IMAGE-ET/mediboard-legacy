@@ -159,6 +159,13 @@ table.form th {
   padding: 1px 4px;
 }
 
+table.form th.title {
+  font-weight: bold;  
+  text-align: center;
+  background: #bbb;
+  border: #aaa 1px outset;
+}
+
 table.form th.category {
   font-weight: bold;  
   text-align: center;
@@ -185,6 +192,10 @@ table.form td {
 }
 
 table.form td.text {
+  white-space: normal;
+}
+
+table.form td.info {
   white-space: normal;
 }
 

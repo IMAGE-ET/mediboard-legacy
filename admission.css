@@ -1,0 +1,54 @@
+/* $Id$ */
+
+/* The admission table based on the form one */
+
+#admission {
+  width: 100%;
+  border-spacing: 6px;
+  font-family: georgia, serif;
+  color: #006;
+  font-size: 16px;
+}
+
+#admission th {
+  white-space: nowrap;
+  background: transparent;
+  vertical-align: middle;
+  text-align: right;
+  font-weight: bold;
+}
+
+#admission th.title {
+  font-weight: bold;  
+  text-align: center;
+  background: #68f;
+  border: #aaa 3px outset;
+  padding: 10px;
+  font-size: 30px;
+  color: #006;
+}
+
+#admission th.category {
+  font-weight: bold;  
+  text-align: center;
+  background: #abf;
+  padding: 10px;
+  border: #aaa 3px outset;
+  font-size: 25px;
+}
+
+#admission td {
+  white-space: normal;
+  vertical-align: top;
+  width: 100%;
+  background: transparent;
+  text-align: left;
+  padding: 1px 4px;
+}
+
+#admission td.info {
+  white-space: normal;
+  padding: 10px;
+  margin: 5px;
+  border: #aaa 2px dotted;
+}
