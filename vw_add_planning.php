@@ -10,8 +10,6 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('mediusers', 'functions') );
-require_once( $AppUI->getModuleClass('mediusers', 'groups') );
 require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
@@ -34,19 +32,11 @@ if ($pat_id) {
   $pat->load($pat_id);
 }
 
-// L'utilisateur est-il chirurgien?
+// L'utilisateur est-il praticien?
 $mediuser = new CMediusers;
 $mediuser->load($AppUI->user_id);
-
-$function = new CFunctions;
-$function->load($mediuser->function_id);
-
-$group = new CGroups;
-$group->load($function->group_id);
-
-if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
-  $chir = new CUser;
-  $chir->load($AppUI->user_id);
+if ($mediuser->isPraticien()) {
+  $chir = $mediuser->createUser();
 }
 
 // Heures & minutes

@@ -18,19 +18,11 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// L'utilisateur est-il chirurgien?
+// L'utilisateur est-il praticien?
 $mediuser = new CMediusers;
 $mediuser->load($AppUI->user_id);
-
-$function = new CFunctions;
-$function->load($mediuser->function_id);
-
-$group = new CGroups;
-$group->load($function->group_id);
-
-if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
-  $chir = new CUser;
-  $chir->load($AppUI->user_id);
+if ($mediuser->isPraticien()) {
+  $chir = $mediuser->createUser();
 }
 
 // Heures & minutes

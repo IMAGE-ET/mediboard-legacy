@@ -8,8 +8,6 @@
 */
 
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('mediusers', 'functions') );
-require_once( $AppUI->getModuleClass('mediusers', 'groups') );
 require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
@@ -57,19 +55,10 @@ $sql = "
 $mediuser = new CMediusers;
 $mediuser->load($AppUI->user_id);
 
-$function = new CFunctions;
-$function->load($mediuser->function_id);
+$chir_id = $mediuser->isPraticien() ? $mediuser->user_id : null;
+$chir_id = mbGetValueFromGetOrSession("chir_id", $chir_id);
 
-$group = new CGroups;
-$group->load($function->group_id);
-
-if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
-  $chir = new CUser;
-  $chir->load($AppUI->user_id);
-}
-else $chir->user_id = mbGetValueFromGetOrSession("chir_id");
-
-if ($chir_id = $chir->user_id) {
+if ($chir_id) {
   $sql .= " AND operations.chir_id = '$chir_id'";
 }
 
