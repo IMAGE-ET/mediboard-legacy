@@ -11,7 +11,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPbloc';
-$config['mod_version'] = '1.0.0';
+$config['mod_version'] = '0.1';
 $config['mod_directory'] = 'dPbloc';
 $config['mod_setup_class'] = 'CSetupdPbloc';
 $config['mod_type'] = 'user';
