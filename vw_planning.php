@@ -32,13 +32,13 @@ if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
 else
   $chir = null;
 
-//Chirurgien selectionné
+// Chirurgien selectionné
 $chirSel = mbGetValueFromGetOrSession("chirSel", -1);
 if($chir) {
   $chirSel = $chir->user_id;
 }
 
-//Plage de consultation selectionnée
+// Plage de consultation selectionnée
 $plageconsult_id = mbGetValueFromGetOrSession("plageconsult_id", -1);
 $plageSel = new CPlageconsult();
 $plageSel->load($plageconsult_id);
@@ -52,13 +52,11 @@ if($plageSel->chir_id != $chirSel) {
   $plageSel = null;
 }
 
-//mbTrace ("Plage selectionnée", $plageSel);
-
-//Liste des chirurgiens
+// Liste des chirurgiens
 $mediusers = new CMediusers();
 $listChirs = $mediusers->loadChirAnest(PERM_EDIT);
 
-//Periode
+// Periode
 $debut = mbGetValueFromGetOrSession("debut", date("d/m/Y"));
 $dayDebut = substr($debut, 0, 2);
 $monthDebut = substr($debut, 3, 2);
@@ -83,16 +81,14 @@ for($i = 0; $i < 7; $i++) {
     $plages[$i]["plages"][$key]->loadRefs();
 }
 
-//mbTrace("liste des plages", $plages);
-
-//Liste des heures
+// Liste des heures
 for($i = 8; $i <= 20; $i++) {
   if(strlen($i) == 1)
     $listHours[$i] = "0".$i;
   else
     $listHours[$i] = $i;
 }
-//Liste des jours
+// Liste des jours
 $daysOfWeek[0]["index"] = 0;
 $daysOfWeek[0]["name"] = "Lundi";
 $daysOfWeek[1]["index"] = 1;
