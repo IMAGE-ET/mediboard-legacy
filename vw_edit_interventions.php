@@ -100,28 +100,16 @@ if(isset($list2)) {
 else
   $list2 = "";
 
-//Creation de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
-$smarty = new Smarty();
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-//initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-//On récupère les informations
-
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('module', $m);
-$smarty->assign('user', $AppUI->user_id);
 $smarty->assign('title', $title);
 $smarty->assign('anesth', $anesth);
 $smarty->assign('list1', $list1);
 $smarty->assign('list2', $list2);
 $smarty->assign('max', sizeof($list2));
 
-//Affichage de la page
 $smarty->display('vw_edit_interventions.tpl');
 
 ?>

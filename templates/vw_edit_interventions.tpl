@@ -39,8 +39,8 @@ function popOp(id) {
 			<i>{$curr_op.CCAM}</i>
 		  </td>
 		  <td>
-		    <a href="index.php?m={$module}&a=do_order_op&cmd=insert&id={$curr_op.id}">
-		    <img src="./modules/{$module}/images/tick.png" width="12" height="12" alt="ajouter" border="0" />
+		    <a href="index.php?m={$m}&a=do_order_op&cmd=insert&id={$curr_op.id}">
+		    <img src="./modules/{$m}/images/tick.png" width="12" height="12" alt="ajouter" border="0" />
 			</a>
 		  </td>
 		</tr>
@@ -58,7 +58,7 @@ function popOp(id) {
 		<tr>
 		  <td width="50%">
 			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
-            <input type="hidden" name="m" value="{$module}" />
+            <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_order_op" />
             <input type="hidden" name="cmd" value="sethour" />
             <input type="hidden" name="id" value="{$curr_op.id}" />
@@ -88,7 +88,7 @@ function popOp(id) {
 			</form>
       <br />
       <form name="editFrm{$curr_op.id}" action="index.php" method="get">
-            <input type="hidden" name="m" value="{$module}" />
+            <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_order_op" />
             <input type="hidden" name="cmd" value="setanesth" />
             <input type="hidden" name="id" value="{$curr_op.id}" />
@@ -106,16 +106,16 @@ function popOp(id) {
 		  </td>
 		  <td>
 		    {if $curr_op.rank != 1}
-		    <a href="index.php?m={$module}&a=do_order_op&cmd=up&id={$curr_op.id}">
-		    <img src="./modules/{$module}/images/uparrow.png" width="12" height="12" alt="monter" border="0" />
+		    <a href="index.php?m={$m}&a=do_order_op&cmd=up&id={$curr_op.id}">
+		    <img src="./modules/{$m}/images/uparrow.png" width="12" height="12" alt="monter" border="0" />
 			</a>
 			{/if}
 			{if $curr_op.rank != 1 and $curr_op.rank != $max}
 			<br />
 			{/if}
 			{if $curr_op.rank != $max}
-		    <a href="index.php?m={$module}&a=do_order_op&cmd=down&id={$curr_op.id}">
-		    <img src="./modules/{$module}/images/downarrow.png" width="12" height="12" alt="descendre" border="0" />
+		    <a href="index.php?m={$m}&a=do_order_op&cmd=down&id={$curr_op.id}">
+		    <img src="./modules/{$m}/images/downarrow.png" width="12" height="12" alt="descendre" border="0" />
 			</a>
 			{/if}
 		  </td>

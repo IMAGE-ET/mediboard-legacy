@@ -68,21 +68,13 @@ switch($type) {
 	}
 }
 
-//Creation de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
-$smarty = new Smarty();
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-//initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-//On récupère les informations
 $smarty->assign('type', $type);
 $smarty->assign('list', $list);
 
-//Affichage de la page
 $smarty->display('code_selector.tpl');
 
 ?>
