@@ -25,8 +25,10 @@ class CTemplateManager {
     $this->properties[$field] = array (
       'field' => $field,
       'value' => $value,
-      'fieldHTML' => "<span class='field'>[{$field}]</span>",
-      'valueHTML' => "<span class='value'>{$value}</span>");
+      // Very important: Keep backslashed double quotes instead of quotes
+      //   cuz HTML Area turns quotes to double quotes
+      'fieldHTML' => "<span class=\"field\">[{$field}]</span>",
+      'valueHTML' => "<span class=\"value\">{$value}</span>");
 	} 
   
   function applyTemplate($template) {
@@ -99,7 +101,6 @@ class CTemplateManager {
       $fields[] = $property['fieldHTML'];
       $values[] = $property['valueHTML'];
     }
-    
     $this->document = str_replace($fields, $values, $source);
   }
 }
