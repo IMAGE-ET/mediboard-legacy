@@ -51,11 +51,20 @@ class Cmediusers extends CDpObject {
 		if($this->user_id != NULL) {
 			$msg = $this->checkEditUser();
 			if($msg == "") {
-				$sql = "UPDATE users SET user_username = '$this->user_username', user_password = MD5('$this->user_password'),
-						user_first_name = '$this->user_first_name', user_last_name = '$this->user_last_name',
-						user_email = '$this->user_email', user_phone = '$this->user_phone'
-						WHERE user_id = '$this->user_id'";
-				db_exec( $sql );
+				if($this->user_password != "") {
+					$sql = "UPDATE users SET user_username = '$this->user_username', user_password = MD5('$this->user_password'),
+							user_first_name = '$this->user_first_name', user_last_name = '$this->user_last_name',
+							user_email = '$this->user_email', user_phone = '$this->user_phone'
+							WHERE user_id = '$this->user_id'";
+					db_exec( $sql );
+				}
+				else {
+					$sql = "UPDATE users SET user_username = '$this->user_username',
+							user_first_name = '$this->user_first_name', user_last_name = '$this->user_last_name',
+							user_email = '$this->user_email', user_phone = '$this->user_phone'
+							WHERE user_id = '$this->user_id'";
+					db_exec( $sql );
+				}
 				$sql = "UPDATE users_mediboard SET function_id = '$this->function_id'
 						WHERE user_id = '$this->user_id'";
 				db_exec( $sql );
