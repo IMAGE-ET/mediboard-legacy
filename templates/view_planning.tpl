@@ -15,7 +15,7 @@
   <tr><th>Incapable majeur: </th><td>{$adm.inc}</td></tr>
   <tr><th>Telephone: </th><td>{$adm.tel}</td></tr>
   <tr><th>Medecin traitant: </th><td>{$adm.medTrait}</td></tr>
-  <tr><th>Adresse: </th><td>{$adm.adresse} - {$adm.cp} {$adm.ville}</td></tr>
+  <tr><th>Adresse: </th><td>{$adm.adresse} - {$adm.CP} {$adm.ville}</td></tr>
   
   <tr><th class="category" colspan="2">Renseignements relatifs à l'hospitalisation</th></tr>
   

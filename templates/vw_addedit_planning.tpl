@@ -257,7 +257,7 @@ function printForm() {
       chambre = 'n';
     if(form.type_adm[0].checked)
       type_adm = 'comp';
-    else if(form.type_adm[0].checked)
+    else if(form.type_adm[1].checked)
       type_adm = 'ambu';
     else
       type_adm = 'exte';
