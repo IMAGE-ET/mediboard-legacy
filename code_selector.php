@@ -1,4 +1,11 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPplanningOp
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 

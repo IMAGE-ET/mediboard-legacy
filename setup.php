@@ -1,12 +1,11 @@
-<?php
-/*
- * Name:      dPplanningOp
- * Directory: dPplanningOp
- * Version:   0.1
- * Type:      user
- * UI Name:   dPplanningOp
- * UI Icon:
- */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPplanningOp
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 // MODULE CONFIGURATION DEFINITION
 $config = array();
