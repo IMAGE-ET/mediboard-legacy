@@ -7,9 +7,9 @@
 * @author Romain Ollivier
 */
 
-//require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once("modules/dPplanningOp/planning.class.php");
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 /**
  * The CPatient Class

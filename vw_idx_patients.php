@@ -7,7 +7,9 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
+
+require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
@@ -16,8 +18,6 @@ if (!$canRead) {
 $patient_id = mbGetValueFromGetOrSession("id");
 
 // Récuperation du patient sélectionné
-require_once("modules/$m/patients.class.php");
-
 $patient = new CPatient;
 $patient->load($patient_id);
 $patient->loadRefs();

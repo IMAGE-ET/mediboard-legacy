@@ -7,8 +7,10 @@
 * @author Romain Ollivier
 */
 
-require_once("patients.class.php");
-// create a new instance of the dPccam class
+global $AppUI;
+
+require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
+
 $obj = new CPatient();
 $msg = '';	// reset the message string
 

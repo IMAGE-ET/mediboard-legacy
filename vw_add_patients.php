@@ -7,8 +7,8 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
-require_once("modules/$m/patients.class.php");
+global $AppUI, $canRead, $canEdit, $m;
+require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 if (!$canEdit) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -41,7 +41,7 @@ if($created = dPgetParam($_GET, 'created', 0)){
 }
 
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('patient', $patient);
