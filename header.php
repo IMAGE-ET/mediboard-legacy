@@ -1,3 +1,5 @@
+<?php ob_start(); ?>
+
 <?php /* STYLE/DEFAULT $Id$ */
 $dialog = dPgetParam( $_GET, 'dialog', 0 );
 ?>
