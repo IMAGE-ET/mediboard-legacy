@@ -23,6 +23,10 @@ if (isset($_GET['tab'])) {
 }
 
 $tab = $AppUI->getState("{$m}IdxTab");
+if (!$tab) {
+  $tab = 0;
+}
+
 $active = intval(!$tab);
 
 // [End] non-module specific code
