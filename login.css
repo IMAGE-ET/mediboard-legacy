@@ -3,6 +3,8 @@
 }
 
 #login form table {
+  border: solid #8c8 3px;
+  background: #eef;
   margin: auto;
   text-align: center;
   padding: 5px;

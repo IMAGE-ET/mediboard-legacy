@@ -94,6 +94,7 @@ form {
 textarea {
 	font-family: Osaka, Arial, verdana, Sans-Serif;
 	font-size: 10pt;
+	border: 1px black solid;
 	width: 100%;
 }
 

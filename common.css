@@ -70,32 +70,36 @@ table.std td.hilite {
 table.form {
 }
 
-tr.field th,
-tr.mandatory th, {
-  background-color: transparent;
-  color: #000;
-  border: none;
+table.form th.category {
+  font-style: italic;
+  font-weight: bold;  
+  text-align: center;
+  background: #aaa;
+}
+
+table.form th {
   white-space: nowrap;
+  vertical-align: middle;
   text-align: right;
   font-weight: normal;
-} 
-
-tr.field td.readonly input {
-  background-color: #aaa;
 }
 
-tr.category th {
-  font-weight: bold;
-  font-style: italic;
-}
-
-tr.field td
-tr.mandatory td {
-  white-space: nowrap;
+table.form td {
+  vertical-align: middle;
   text-align: left;
-} 
+}
 
-td.submit {
+table.form th.mandatory {
+  color: #000;
+  font-weight: bold;
+}
+
+table.form td.readonly input {
+  background: #eee;
+  border: 1px dotted;
+}
+
+table.form td.button {
   text-align: center;
   vertical-align: middle;
 }

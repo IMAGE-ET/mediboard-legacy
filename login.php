@@ -17,27 +17,28 @@
 <form name="login" action="./index.php" method="post">
 	<input type="hidden" name="login" value="<?php echo time();?>" />
 	<input type="hidden" name="redirect" value="<?php echo $redirect;?>" />
-	<table class="std">
-		<tr><th colspan="2"><?php echo $AppUI->cfg['company_name'];?></th></tr>
+	<table class="form">
+		<tr><th class="category" colspan="2"><?php echo $AppUI->cfg['company_name'];?></th></tr>
 		<tr><td colspan="2"><a href="http://www.mediboard.org/" target="_blank"><img src="./style/mediboard/images/mbNormal.gif" alt="MediBoard logo" /></a></td></tr>
-		<tr><th colspan="2"><?php echo $AppUI->_('PoweredBy');?></th></tr>
+		<tr><th  class="category"colspan="2"><?php echo $AppUI->_('PoweredBy');?></th></tr>
 		<tr>
 			<td id="poweredBy" colspan="2">
 				<a href="http://www.dotproject.net/"><img src="./style/mediboard/images/dp_icon.gif" alt="dotProject logo" /></a>
 				<p>Version <?php echo @$AppUI->getVersion();?></p>
 			</td>
 		</tr>
-		<tr><th colspan="2"><?php echo $AppUI->_('PleaseLogin');?></th></tr>
-		<tr class="field">
-			<th><?php echo $AppUI->_('Username');?>:</th>
+		<tr><th class="category" colspan="2"><?php echo $AppUI->_('PleaseLogin');?></th></tr>
+		<tr>
+			<th class="mandatory"><?php echo $AppUI->_('Username');?>:</th>
 			<td><input type="text" size="25" maxlength="20" name="username" class="text" /></td>
 		</tr>
-		<tr class="field">
-			<th><?php echo $AppUI->_('Password');?>:</th>
+		<tr>
+			<th class="mandatory"><?php echo $AppUI->_('Password');?>:</th>
 			<td><input type="password" size="25" maxlength="32" name="password" class="text" /></td>
 		</tr>
+		
 		<tr>
-			<td class="submit" colspan="2"><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
+			<td class="button" colspan="2"><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
 		</tr>
 	</table>
 </form>
