@@ -124,7 +124,9 @@ function checkForm() {
 <tr>
   <td class="greedyPane">
 
-    <form name="filterFrm" action="?m={$m}&amp;tab={$tab}" method="get">
+    <form name="filterFrm" action="?" method="get">
+    
+    <input type="hidden" name="m" value="{$m}">
         
     <table class="form">
       <tr>
@@ -132,10 +134,10 @@ function checkForm() {
       </tr>
 
       <tr>
-        <th><label for="filterFrm_user_id" title="Filtrer les aides pour cet utilisateur">Utilisateur:</label></th>
+        <th><label for="filterFrm_filter_user_id" title="Filtrer les aides pour cet utilisateur">Utilisateur:</label></th>
         <td>
-          <select name="user_id" onchange="this.form.submit()">
-            <option value="">&mdash; Tous les utilisateurs</option>
+          <select name="filter_user_id" onchange="this.form.submit()">
+            <option value="0">&mdash; Tous les utilisateurs</option>
             {foreach from=$users item=curr_user}
             <option value="{$curr_user->user_id}" {if $curr_user->user_id == $filter_user_id} selected="selected" {/if}>
               {$curr_user->user_last_name} {$curr_user->user_first_name}
@@ -143,19 +145,19 @@ function checkForm() {
             {/foreach}
           </select>
         </td>
-        <th><label for="filterFrm" title="Filtrer les aides pour ce module">Module:</label></th>
+        <th><label for="filterFrm_filter_module" title="Filtrer les aides pour ce module">Module:</label></th>
         <td>
-          <select name="module" onchange="this.form.submit()">
-            <option value="0">&mdash; Choisir un module</option>
+          <select name="filter_module" onchange="this.form.submit()">
+            <option value="0">&mdash; Tous les modules</option>
               {html_options options=$moduleNames selected=$filter_module}
           </select>
         </td>
-          </tr>
-        </table>
-        
-        </form>
+      </tr>
+    </table>
+
+    </form>
     
-        <table class="tbl">
+    <table class="tbl">
     
     <tr>
       <th colspan="10"><strong>Liste des aides à la saisie</strong></th>

@@ -35,9 +35,21 @@ foreach ($modules as $moduleName => $classes) {
   $moduleNames[$moduleName] = $allModules[$moduleName];
 }
 
-// Liste des aides existantes
+// Filtres sur la liste d'aides
+$where = null;
+
+$filter_user_id = mbGetValueFromGetOrSession("filter_user_id", $AppUI->user_id);
+if ($filter_user_id) {
+	$where["user_id"] = "= '$filter_user_id'";
+}
+
+$filter_module = mbGetValueFromGetOrSession("filter_module");
+if ($filter_module) {
+  $where["module"] = "= '$filter_module'";
+}
+
 $aides = new CAideSaisie();
-$aides = $aides->loadList();
+$aides = $aides->loadList($where);
 foreach($aides as $key => $aide) {
   $aides[$key]->loadRefs();
 }
@@ -51,11 +63,6 @@ $aide->loadRefs();
 if (!$aide_id) {
   $aide->user_id = $AppUI->user_id;
 }
-
-// Filtres sur la liste d'aides
-$filter_user_id = mbGetValueFromGetOrSession("filter_user_id");
-$filter_module = mbGetValueFromGetOrSession("filter_module");
-
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
