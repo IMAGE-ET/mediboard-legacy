@@ -75,7 +75,8 @@ class CFunctions extends CDpObject {
       "\nORDER BY $this->_tbl.text";
   
     $basespecs = db_loadObjectList($sql, $this);
-
+    $specs = null;
+  
     // Filter with permissions
     if ($perm_type) {
       foreach ($basespecs as $spec) {
