@@ -50,7 +50,7 @@ $sql = "select plagesop.id, plagesop.date, 0 as operations,
 		from plagesop
 		left join operations
 		on plagesop.id = operations.plageop_id
-		where plagesop.id_chir = 'herve'
+		where plagesop.id_chir = '$user'
 		and plagesop.date like '$year-$month-__'
 		and operations.operation_id IS NULL
 		union
@@ -59,7 +59,7 @@ $sql = "select plagesop.id, plagesop.date, 0 as operations,
 		from plagesop
 		left join operations
 		on plagesop.id = operations.plageop_id
-		where plagesop.id_chir = 'herve'
+		where plagesop.id_chir = '$user'
 		and plagesop.date like '$year-$month-__'
 		and operations.operation_id IS NOT NULL
 		group by operations.plageop_id
@@ -83,7 +83,7 @@ $sql = "select operations.operation_id, operations.pat_id, CCAM_code, temp_opera
 		left join operations
 		on plagesop.id = operations.plageop_id
 		where plagesop.date = '$year-$month-$day'
-		and plagesop.id_chir = 'herve'";
+		and plagesop.id_chir = '$user'";
 $result = db_loadlist($sql);
 
 //Tri des résultats
