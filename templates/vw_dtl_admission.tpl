@@ -85,8 +85,10 @@
           <td>{$op.CIM10_code}</td>
         </tr>
         <tr>
-          <th>Code CCAM:</th>
-          <td>{$op.CCAM_code}</td>
+          <th class="text" colspan="2">Acte CCAM:</th>
+        </tr>
+        <tr>
+          <td class="text" colspan="2">{$op.CCAM} ({$op.CCAM_code})</td>
         </tr>
         <tr>
           <th>Temps opératoire:</th>

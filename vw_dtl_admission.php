@@ -57,7 +57,15 @@ $op["rdv_adm"] = substr($op["rdv_adm"], 8, 2)."/".substr($op["rdv_adm"], 5, 2)."
 $op["hour_adm"] = substr($op["time_adm"], 0, 2);
 $op["min_adm"] = substr($op["time_adm"], 3, 2);
 $op["dateFormed"] = substr($op["naissance"], 8, 2)." / ".substr($op["naissance"], 5, 2)." / ".substr($op["naissance"], 0, 4);
-
+$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
+  or die("Could not connect");
+mysql_select_db("ccam")
+  or die("Could not select database");
+$sql = "select LIBELLELONG from ACTES where CODE = '".$op["CCAM_code"]."'";
+$ccamr = mysql_query($sql);
+$ccam = mysql_fetch_array($ccamr);
+$op["CCAM"] = $ccam["LIBELLELONG"];
+mysql_close();
 // Création du template
 require_once("classes/smartydp.class.php");
 $smarty = new CSmartyDP;
