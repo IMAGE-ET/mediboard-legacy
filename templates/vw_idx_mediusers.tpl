@@ -81,22 +81,22 @@ function checkMediuser() {
     </tr>
 
     <tr>
-      <th class="mandatory">Login:</th>
+      <th class="mandatory"><label for="mediuser__user_username" title="Nom du compte pour se connecter à Mediboard. Obligatoire">Login:</label></th>
       <td><input type="text" name="_user_username" value="{$usersel.username}" /></td>
     </tr>
     
     <tr>
-      <th class="mandatory">Mot de passe:</th>
-      <td><input type="password" name="_user_password" /></td>
+      <th class="mandatory"><label for="mediuser__user_password" title="Mot de passe pour se connecter à Mediboard. Obligatoire">Mot de passe:</label></th>
+      <td><input type="password" name="_user_password" value="{$usersel.password}" /></td>
     </tr>
     
     <tr>
-      <th class="mandatory">Mot de passe (vérif.):</th>
-      <td><input type="password" name="_user_password2" /></td>
+      <th class="mandatory"><label for="mediuser__user_password2" title="Re-saisir le mot de passe pour confimer. Obligatoire">Mot de passe (vérif.):</label></th>
+      <td><input type="password" name="_user_password2" value="{$usersel.password}" /></td>
     </tr>
     
     <tr>
-      <th class="mandatory">Fonction:</th>
+      <th class="mandatory"><label for="mediuser_fonction_id" title="Fonction de l'utilisateur au sein de l'établissement. Obligatoire">Fonction:</th>
       <td>
         <select name="function_id">
         {foreach from=$functions item=curr_function}
@@ -109,22 +109,22 @@ function checkMediuser() {
     </tr>
 
     <tr>
-      <th class="mandatory">Nom:</th>
+      <th class="mandatory"><label for="mediuser__user_last_name" title="Nom de famille de l'utilisateur. Obligatoire">Nom:</label></th>
       <td><input type="text" name="_user_last_name" value="{$usersel.lastname}" /></td>
     </tr>
     
     <tr>
-      <th>Prénom:</th>
+      <th><label for="mediuser__user_first_name" title="Prénom de l'utilisateur">Prénom:</label></th>
       <td><input type="text" name="_user_first_name" value="{$usersel.firstname}" /></td>
     </tr>
     
     <tr>
-      <th>Email:</th>
+      <th><label for="mediuser__user_email" title="Email de l'utilisateur">Email:</label></th>
       <td><input type="text" name="_user_email" value="{$usersel.email}" /></td>
     </tr>
 
     <tr>
-      <th>Tel:</th>
+      <th><label for="mediuser__user_phone" title="Numéro de téléphone de l'utilisateur">Tél:</label></th>
       <td><input type="text" name="_user_phone" value="{$usersel.phone}" /></td>
     </tr>
     

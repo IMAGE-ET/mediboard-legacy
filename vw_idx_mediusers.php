@@ -14,6 +14,7 @@ $mediuser = dPgetParam($_SESSION[$m][$tab], "mediuser", 0);
 
 $sql = "SELECT users.user_id AS id, 
   users.user_username AS username, 
+  users.user_password AS password, 
   users.user_phone AS phone,
   users.user_first_name AS firstname, 
   users.user_last_name AS lastname, 
