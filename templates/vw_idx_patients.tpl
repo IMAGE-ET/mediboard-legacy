@@ -1,3 +1,21 @@
+<!-- $Id$ -->
+
+{literal}
+<script language="javascript">
+function checkPatient() {
+  var form = document.editFrm;
+    
+  if (form.nom.value.length == 0) {
+    alert("Nom manquant");
+    form.nom.focus();
+    return false;
+  }
+    
+  return true;
+}
+</script>
+{/literal}
+
 <table class="main">
   <tr>
     <td class="greedyPane">
@@ -12,12 +30,12 @@
   
         <tr>
           <th>Nom:</th>
-          <td><input type="text" name="nom" value="{$nom}" /></td>
+          <td><input tabindex="1" type="text" name="nom" value="{$nom}" /></td>
         </tr>
         
         <tr>
           <th>Prénom:</th>
-          <td><input type="text" name="prenom" value="{$prenom}" /></td>
+          <td><input tabindex="2" type="text" name="prenom" value="{$prenom}" /></td>
         </tr>
         
         <tr>

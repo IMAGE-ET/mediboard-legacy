@@ -1,8 +1,38 @@
+<!-- $Id$ -->
+
+{literal}
+<script language="javascript">
+function checkPatient() {
+  var form = document.editFrm;
+    
+  if (form.nom.value.length == 0) {
+    alert("Nom manquant");
+    form.nom.focus();
+    return false;
+  }
+    
+  if (form.prenom.value.length == 0) {
+    alert("Prénom manquant");
+    form.prenom.focus();
+    return false;
+  }
+   
+  if (form.matricule.value.length != 15 && form.matricule.value.length != 0) {
+    alert("Matricule incorrect");
+    form.matricule.focus();
+    return false;
+  }
+   
+  return true;
+}
+</script>
+{/literal}
+
 <table class="main">
   <tr>
     <td>
 
-      <form name="editFrm" action="./index.php?m=dPpatients" method="post">
+      <form name="editFrm" action="./index.php?m=dPpatients" method="post" onsubmit="return checkPatient()">
 
       <input type="hidden" name="dosql" value="do_patients_aed">
       <input type="hidden" name="del" value="0">
@@ -17,37 +47,37 @@
       
       <tr>
         <th class="mandatory">Nom:</th>
-        <td><input type="text" name="nom" value="{$patient.nom}" /></td>
+        <td><input tabindex="1" type="text" name="nom" value="{$patient.nom}" /></td>
         <th>Incapable majeur:</th>
         <td>
-          <input type="radio" name="incapable_majeur" value="o" {if $patient.incapable_majeur == "o"} checked="checked" {/if} />oui
-          <input type="radio" name="incapable_majeur" value="n" {if $patient.incapable_majeur == "n"} checked="checked" {/if} />non
+          <input tabindex="15" type="radio" name="incapable_majeur" value="o" {if $patient.incapable_majeur == "o"} checked="checked" {/if} />oui
+          <input tabindex="16" type="radio" name="incapable_majeur" value="n" {if $patient.incapable_majeur == "n"} checked="checked" {/if} />non
         </td>
       </tr>
       
       <tr>
         <th class="mandatory">Prénom:</th>
-        <td><input type="text" name="prenom" value="{$patient.prenom}" /></td>
+        <td><input tabindex="2" type="text" name="prenom" value="{$patient.prenom}" /></td>
         <th>ATNC:</th>
         <td>
-          <input type="radio" name="ATNC" value="o" {if $patient.ATNC == "o"} checked="checked" {/if} />oui
-          <input type="radio" name="ATNC" value="n" {if $patient.ATNC == "n"} checked="checked" {/if} />non
+          <input tabindex="17" type="radio" name="ATNC" value="o" {if $patient.ATNC == "o"} checked="checked" {/if} />oui
+          <input tabindex="18" type="radio" name="ATNC" value="n" {if $patient.ATNC == "n"} checked="checked" {/if} />non
         </td>
       </tr>
       
       <tr>
         <th>Date de naissance:</th>
         <td>
-          <input type="text" name="_jour"  size="1" value="{$patient.naissance|date_format:"%d"}" /> -
-          <input type="text" name="_mois"  size="1" value="{$patient.naissance|date_format:"%m"}" /> -
-          <input type="text" name="_annee" size="2" value="{$patient.naissance|date_format:"%Y"}" />
+          <input tabindex="3" type="text" name="_jour"  size="1" maxlength="2" value="{$patient.naissance|date_format:"%d"}" /> -
+          <input tabindex="4" type="text" name="_mois"  size="1" maxlength="2" value="{$patient.naissance|date_format:"%m"}" /> -
+          <input tabindex="5" type="text" name="_annee" size="2" maxlength="4" value="{$patient.naissance|date_format:"%Y"}" />
         </td>
       </tr>
       
       <tr>
         <th>Sexe:</th>
         <td>
-          <select name="sexe">
+          <select tabindex="6" name="sexe">
             <option value="m" {if $patient.sexe == "m"} selected="selected" {/if}>masculin</option>
             <option value="f" {if $patient.sexe == "f"} selected="selected" {/if}>féminin</option>
           </select>
@@ -61,32 +91,32 @@
       
       <tr>
         <th>Adresse:</th>
-        <td><input type="text" name="adresse" value="{$patient.adresse}" /></td>
+        <td><input tabindex="7" type="text" name="adresse" value="{$patient.adresse}" /></td>
         
-        <th  class="mandatory">Numéro d'assuré social:</th>
-        <td><input type="text" name="matricule" value="{$patient.matricule}" /></td>
+        <th>Numéro d'assuré social:</th>
+        <td><input tabindex="19" type="text" size="15" maxlength="15" name="matricule" value="{$patient.matricule}" /></td>
       </tr>
       
       <tr>
         <th>Ville:</th>
-        <td><input type="text" name="ville" value="{$patient.ville}" /></td>
+        <td><input tabindex="8" type="text" name="ville" value="{$patient.ville}" /></td>
         <th>Code administratif:</th>
-        <td><input type="text" name="SHS" value="{$patient.SHS}" /></td>
+        <td><input tabindex="20" type="text" name="SHS" value="{$patient.SHS}" /></td>
       </tr>
       
       <tr>
         <th>Code Postal:</td>
-        <td><input type="text" name="cp" value="{$patient.cp}" /></td>
+        <td><input tabindex="9" type="text" name="cp" value="{$patient.cp}" /></td>
       </tr>
       
       <tr>
         <th>Téléphone:</td>
         <td>
-          <input type="text" name="_tel1" size="1" value="{$patient.tel.0}{$patient.tel.1}"> - 
-          <input type="text" name="_tel2" size="1" value="{$patient.tel.2}{$patient.tel.3}"> -
-          <input type="text" name="_tel3" size="1" value="{$patient.tel.4}{$patient.tel.5}"> -
-          <input type="text" name="_tel4" size="1" value="{$patient.tel.6}{$patient.tel.7}"> -
-          <input type="text" name="_tel5" size="1" value="{$patient.tel.8}{$patient.tel.9}">
+          <input tabindex="10" type="text" name="_tel1" size="1" maxlength="2" value="{$patient.tel.0}{$patient.tel.1}"> - 
+          <input tabindex="11" type="text" name="_tel2" size="1" maxlength="2" value="{$patient.tel.2}{$patient.tel.3}"> -
+          <input tabindex="12" type="text" name="_tel3" size="1" maxlength="2" value="{$patient.tel.4}{$patient.tel.5}"> -
+          <input tabindex="13" type="text" name="_tel4" size="1" maxlength="2" value="{$patient.tel.6}{$patient.tel.7}"> -
+          <input tabindex="14" type="text" name="_tel5" size="1" maxlength="2" value="{$patient.tel.8}{$patient.tel.9}">
         </td>
       </tr>
       

@@ -69,7 +69,7 @@ class CPatient extends CDpObject {
       $msg .= "Nom invalide: '$this->prenom'<br />";
     }
     
-    if (!ereg ("([1-2])([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{3})([0-9]{3})([0-9]{2})", $this->matricule)) {
+    if ($this->matricule && !ereg ("([1-2])([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{3})([0-9]{3})([0-9]{2})", $this->matricule)) {
       $msg .= "Matricule invalide: '$this->matricule'<br />";
     }
         
