@@ -180,8 +180,8 @@ class CPatient extends CDpObject {
       		"FROM patients WHERE " .
       		"patient_id != '$this->patient_id' " .
       		"AND ((nom    = '$this->nom'    AND prenom    = '$this->prenom'   ) " .
-      		  "OR (nom    = '$this->nom'    AND naissance = '$this->naissance') " .
-      		  "OR (prenom = '$this->prenom' AND naissance = '$this->naissance'))";
+      		  "OR (nom    = '$this->nom'    AND naissance = '$this->naissance' AND naissance != '0000-00-00') " .
+      		  "OR (prenom = '$this->prenom' AND naissance = '$this->naissance' AND naissance != '0000-00-00'))";
     $siblings = db_loadlist($sql);
     return $siblings;
   }
