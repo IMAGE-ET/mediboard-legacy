@@ -26,6 +26,7 @@ function checkPatient() {
       <input type="hidden" name="m" value="{$m}" />
       
       <table class="form">
+      <input type="hidden" name="new" value="1" />
         <tr>
           <th class="category" colspan="2">Recherche d'un dossier patient</th>
         </tr>
