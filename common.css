@@ -68,6 +68,8 @@ table.std td.hilite {
 
 table.form {
   width: 100%;
+  background-color: #eee;
+  border-spacing: 0px;
 }
 
 table.form th {
@@ -75,6 +77,8 @@ table.form th {
   vertical-align: middle;
   text-align: right;
   font-weight: normal;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 table.form th.category {
@@ -88,6 +92,8 @@ table.form th.category {
 table.form td {
   vertical-align: top;
   text-align: left;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 table.form th.mandatory {
