@@ -57,7 +57,11 @@ function checkMediuser() {
     
     {foreach from=$functions item=curr_function}
     <tr>
-      <td colspan="4" style="background: #{$curr_function->color}"><strong>{$curr_function->text}</strong></td>
+      <td colspan="4" style="background: #{$curr_function->color}">
+        <strong>{$curr_function->text}</strong> -
+        {$curr_function->_ref_users|@count} utilisateur(s) -
+        groupe {$curr_function->_ref_group->text}
+      </td>
     </tr>
     {foreach from=$curr_function->_ref_users item=curr_user}
     <tr>

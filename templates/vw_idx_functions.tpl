@@ -26,7 +26,7 @@ function setColor(color) {
       <a href="index.php?m={$m}&tab={$tab}&userfunction=0"><strong>Créer une fonction</strong></a>
       <table class="color">
       {foreach from=$listGroups item=curr_group}
-        <tr><th>Groupe {$curr_group->text}</th><th>Utilisateurs</th></tr>
+        <tr><th>Groupe {$curr_group->text} &mdash; {$curr_group->_ref_functions|@count} fonction(s)</th><th>Utilisateurs</th></tr>
         {foreach from=$curr_group->_ref_functions item=curr_function}
         <tr>
           <td style="background: #fff"><a href="index.php?m={$m}&tab={$tab}&userfunction={$curr_function->function_id}">{$curr_function->text}</a></td>
