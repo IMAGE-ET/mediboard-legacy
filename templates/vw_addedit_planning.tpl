@@ -147,16 +147,22 @@ function setPlage( key, val, adm ) {
     f.date.value = val;
     window.plageop_id = key;
     window.date = val;
-    /*
-    if(adm == -1) {
-      f._rdv_adm.value = 0;
-      f._date_rdv_adm.value = 0; 
+    var sdate = val;
+    var date = new Date(sdate.slice(6, 10), sdate.slice(3,5), sdate.slice(0,2));
+    if(adm) {
+      date.setDate(parseInt(date.getDate()) - 1);
     }
-    else {
-      f._rdv_adm.value = 0;
-      f._date_rdv_adm.value = 0;
+    var day = "" + date.getDate();
+    if(day.length == 1) {
+      day = "0" + day;
     }
-    */
+    var month = "" + date.getMonth();
+    if(month.length == 1) {
+      month = "0" + month;
+    }
+    var year = "" + date.getFullYear();
+    f._rdv_adm.value = day + "/" + month + "/" + year;
+    f._date_rdv_adm.value = year + month + day;
   }
 }
 

@@ -1,10 +1,12 @@
 {literal}
 <script language="javascript">
 function setClose(){
-  var list = document.frmSelector.list;
+  var form = document.frmSelector;
+  var list = form.list;
   var key = list.options[list.selectedIndex].value;
   var val = list.options[list.selectedIndex].text;
-  window.opener.setPlage(key,val);
+  var adm = form.admission[0].checked;
+  window.opener.setPlage(key,val,adm);
   window.close();
 }
 </script>
@@ -26,12 +28,19 @@ function setClose(){
 </tr>
 
 <tr>
-  <td colspan="2">
+  <td>
     <select name="list"  size="14">
     {foreach from=$list item=curr_elem}
       <option value="{$curr_elem.id}">{$curr_elem.dateFormed}</option>
     {/foreach}
     </select>
+  </td>
+  <td>
+    <strong>Admission du patient</strong>
+    <br />
+    <input type="radio" name="admission" checked="checked" /> La veille
+    <br />
+    <input type="radio" name="admission" /> Le jour même
   </td>
 </tr>
 
