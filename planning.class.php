@@ -203,7 +203,7 @@ class Cplanning
 	$tomonth = $this->monthList[$this->month];
 	echo "<a href=\"#\" onclick=\"popPlanning( '$this->day', '$this->month', '$this->year');\">";
 	echo "<b>$today $this->day $tomonth $this->year</b>";
-	echo "<br /><img src=\"modules/dPbloc/images/print.png\" height=\"\" width=\"\" alt=\"imprimer\" border=\"0\">";
+	echo "<br /><img src=\"modules/dPbloc/images/print.png\" height=\"15\" width=\"15\" alt=\"imprimer\" border=\"0\">";
 	echo "</a>";
 	echo "</td>";
 	echo "<td bgcolor=\"#ffffff\" align=\"center\" colspan=2>\n";
