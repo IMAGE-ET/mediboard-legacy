@@ -37,8 +37,8 @@
 		  <td>{$curr_op.cote|truncate:1:""|capitalize}</td>
           <td>{$curr_op.lu_type_anesth}</td>
           <td>{$curr_op.adm|truncate:1:""|capitalize}</td>
-		  <td>{$curr_op.rques|nl2br}</td>
-		  <td>{$curr_op.mat|nl2br}</td>
+		  <td class="text">{$curr_op.rques|nl2br}</td>
+		  <td class="text">{$curr_op.mat|nl2br}</td>
 		  <td>{$curr_op.lastname}</td>
 		  <td>{$curr_op.firstname}</td>
 		  <td>{$curr_op.age} ans</td>
