@@ -77,18 +77,34 @@ class COperation extends CDpObject {
 
     // Re-numérotation des autres plages de la même plage
     if ($this->rank) {
-      $sql = "SELECT operation_id 
+      $sql = "SELECT operations.operation_id, operations.temp_operation,
+      	plagesop.debut
         FROM operations
-        WHERE plageop_id = '$this->plageop_id'
-        AND rank != 0
-        AND operation_id != '$this->operation_id'
-        ORDER BY rank";
+        LEFT JOIN plagesop
+        ON plagesop.id = operations.plageop_id
+        WHERE operations.plageop_id = '$this->plageop_id'
+        AND operations.rank != 0
+        AND operations.operation_id != '$this->operation_id'
+        ORDER BY operations.rank";
       $result = db_loadlist($sql);
-
+      if(count($result)) {
+        $old_time = $result[0]["debut"];
+        $old_time_hour = substr($old_time, 0, 2);
+        $old_time_min = substr($old_time, 3, 2);
+        $new_time = mktime($old_time_hour, $old_time_min, 0, 1, 1, 2000);
+      }
       $i = 1;
       foreach ($result as $key => $value) {
-        $sql = "UPDATE operations SET rank = '$i' where operation_id = '".$value["operation_id"]."'";
+      	$new_time_sql = date("H:i:00", $new_time);
+        $sql = "UPDATE operations SET rank = '$i', time_operation = '$new_time_sql' " .
+        		"WHERE operation_id = '".$value["operation_id"]."'";
         db_exec( $sql );
+        $add_time = $value["temp_operation"];
+        $add_time_hour = substr($add_time, 0, 2);
+        $add_time_min = substr($add_time, 3, 2);
+        $new_time_hour = date("H", $new_time);
+        $new_time_min = date("i", $new_time);
+        $new_time  = mktime($new_time_hour + $add_time_hour ,$new_time_min + $add_time_min ,0 ,1 ,1 ,2000);
         $i++;
       }
     }
