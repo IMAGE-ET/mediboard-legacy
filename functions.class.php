@@ -8,6 +8,7 @@
 */
 
 require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getModuleClass('mediusers', 'groups'));
 
 /**
  * The CFunctions Class
@@ -22,6 +23,9 @@ class CFunctions extends CDpObject {
 
   // DB References
 	var $group_id = NULL;
+  
+  // Object References
+  var $_ref_group = null;
 
 	function CFunctions() {
 		$this->CDpObject('functions_mediboard', 'function_id');
@@ -45,6 +49,13 @@ class CFunctions extends CDpObject {
     return CDpObject::canDelete( $msg, $oid, $tables );
   }
 
+  function loadRefs() {
+    // Forward references
+    $this->_ref_group = new Cgroups();
+    $this->_ref_group->load($this->group_id);
+    
+  }
+  
   function loadSpecialites ($perm_type = null) {
     $sql = "SELECT *" .
       "\nFROM $this->_tbl, groups_mediboard" .

@@ -29,6 +29,7 @@ class CMediusers extends CDpObject {
 	var $_user_email      = null;
 	var $_user_phone      = null;
   
+  // Objetc references
   var $_ref_function = null;
 
 	function CMediusers() {
@@ -208,6 +209,23 @@ class CMediusers extends CDpObject {
   function loadPraticiens($perm_type = null, $function_id = null, $name = null) {
     return $this->loadListFromGroup(array("Chirurgie", "Anesthésie"), $perm_type, $function_id, $name);
   }
+  
+  function isFromGroup($groups) {
+    if (!$function =& $this->_ref_function) {
+      $this->loadRefs();
+    }
+    
+    if (!$group =& $function->_ref_group) {
+      $function->loadRefs();
+    }
+    
+    // Warning: !== operator
+    return array_search($group->text, $groups) !== false; 
+  }
+  
+  function isPraticien () {
+		return $this->isFromGroup(array("Chirurgie", "Anesthésie"));
+	}
 }
 
 ?>
