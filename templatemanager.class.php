@@ -74,6 +74,8 @@ class CTemplateManager {
         $this->addProperty("Consultation - heure");
         $this->addProperty("Consultation - motif");
         $this->addProperty("Consultation - remarques");
+        $this->addProperty("Consultation - examen");
+        $this->addProperty("Consultation - traitement");
 				break;
       case "operation":
         $this->addProperty("Opération - Anesthésiste - nom");
