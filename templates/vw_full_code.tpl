@@ -13,8 +13,8 @@
               <tr>
         				<th class="mandatory">Code de l'acte:</th>
                 <td>
-        					<input type="text" name="codeacte" value="{$codeacte}">
-        					<input type="submit" value="afficher">
+        					<input tabindex="1" type="text" name="codeacte" value="{$codeacte}">
+        					<input tabindex="2" type="submit" value="afficher">
                 </td>
               </tr>
             </table>
