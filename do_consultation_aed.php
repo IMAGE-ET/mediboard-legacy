@@ -11,6 +11,9 @@ global $AppUI, $canRead, $canEdit, $m;
 
 require_once($AppUI->getModuleClass("dPcabinet", "consultation"));
 
+if($chir_id = dPgetParam( $_POST, 'chir_id', null))
+  mbSetValueToSession('chir_id', $chir_id);
+
 // Object binding
 $obj = new CConsultation();
 if (!$obj->bind( $_POST )) {
