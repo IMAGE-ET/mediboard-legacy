@@ -111,6 +111,29 @@ function setCalendar( idate, fdate ) {
   fld_date.value = idate;
   fld_fdate.value = fdate;
 }
+
+function validForm() {
+  url = 'index.php?m=dPplanningOp&a=view_planning&dialog=1';
+  url = url + '&chir_id=' + eval( 'document.editFrm.chir_id.value' );
+  url = url + '&pat_id=' + eval( 'document.editFrm.pat_id.value' );
+  url = url + '&CCAM_code=' + eval( 'document.editFrm.CCAM_code.value' );
+  url = url + '&cote=' + eval( 'document.editFrm.cote.value' );
+  url = url + '&hour_op=' + eval( 'document.editFrm.hour_op.value' );
+  url = url + '&min_op=' + eval( 'document.editFrm.min_op.value' );
+  url = url + '&date=' + eval( 'document.editFrm.date.value' );
+  url = url + '&info=' + eval( 'document.editFrm.info.value' );
+  url = url + '&rdv_anesth=' + eval( 'document.editFrm.rdv_anesth.value' );
+  url = url + '&hour_anesth=' + eval( 'document.editFrm.hour_anesth.value' );
+  url = url + '&min_anesth=' + eval( 'document.editFrm.min_anesth.value' );
+  url = url + '&rdv_adm=' + eval( 'document.editFrm.rdv_adm.value' );
+  url = url + '&hour_adm=' + eval( 'document.editFrm.hour_adm.value' );
+  url = url + '&min_adm=' + eval( 'document.editFrm.min_adm.value' );
+  url = url + '&duree_hospi=' + eval( 'document.editFrm.duree_hospi.value' );
+  url = url + '&type_adm=' + eval( 'document.editFrm.type_adm.value' );
+  url = url + '&chambre=' + eval( 'document.editFrm.chambre.value' ); 
+  window.open( url, 'printAdm', 'top=10,left=10,width=800, height=600, scollbars=true' );
+  //document.editFrm->submit();
+}
 </script>
 {/literal}
 
@@ -330,7 +353,7 @@ function setCalendar( idate, fdate ) {
       <table class="form">
         <tr>
           <td class="button">
-            <input class="button" type="submit" value="Créer" />
+            <input class="button" type="button" value="Créer" onclick="validForm()" />
           </td>
         </tr>
       </table>
