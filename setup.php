@@ -1,12 +1,11 @@
-<?php
-/*
- * Name:      dPccam
- * Directory: dPccam
- * Version:   0.1
- * Type:      user
- * UI Name:   dPccam
- * UI Icon:
- */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPccam
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 // MODULE CONFIGURATION DEFINITION
 $config = array();

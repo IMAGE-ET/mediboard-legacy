@@ -1,10 +1,11 @@
-<?php
+<?php /* $Id$ */
 
 /**
- * 
- * @version $Id$
- * @copyright 2003
- */
+* @package Mediboard
+* @subpackage dPccam
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 class Acte
 {
