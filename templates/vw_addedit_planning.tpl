@@ -59,6 +59,14 @@ function checkForm() {
   return true;
 }
 
+function modifOp() {
+  f = document.editFrm;
+  if(f.saisie.value == 'o') {
+    f.modifiee.value = 1;
+    f.saisie.value = 'n';
+  }
+}
+
 function popChir() {
   var url = './index.php?m=mediusers';
   url += '&a=chir_selector';
@@ -108,6 +116,9 @@ function setCode( key, type ){
 
   if (key != '') {
     if(type == 'ccam') {
+      if(f.CCAM_code.value != key) {
+        modifOp();
+      }
       f.CCAM_code.value = key;
       window.CCAM_code = key;
     }
@@ -181,6 +192,8 @@ function setPlage( key, val, adm ) {
       month = "0" + month;
     }
     var year = "" + date.getFullYear();
+    if(f._rdv_adm.value != day + "/" + month + "/" + year)
+      modifOp();
     f._rdv_adm.value = day + "/" + month + "/" + year;
     f._date_rdv_adm.value = year + month + day;
   }
@@ -219,7 +232,7 @@ function setProtocole(
   f.examen.value        = prot_examen;
   f.materiel.value      = prot_materiel;
   f.convalescence.value = prot_convalescence;
-  f.depassement.value   = prot_depassement
+  f.depassement.value   = prot_depassement;
   f.type_adm.value      = prot_type_adm;
   f.duree_hospi.value   = prot_duree_hospi;
   f.rques.value         = prot_rques;
@@ -243,6 +256,8 @@ function popCalendar( field ) {
 function setCalendar( idate, fdate ) {
   fld_date = eval( 'document.editFrm._date' + calendarField );
   fld_fdate = eval( 'document.editFrm.' + calendarField );
+  if((calendarField == '_rdv_adm') && (fld_date.value != idate))
+    mofifOp();
   fld_date.value = idate;
   fld_fdate.value = fdate;
 }
@@ -294,13 +309,9 @@ function printForm() {
 <input type="hidden" name="operation_id" value="{$op->operation_id}" />
 <input type="hidden" name="commande_mat" value="{$op->commande_mat}" />
 <input type="hidden" name="rank" value="{$op->rank}" />
-<input type="hidden" name="saisie" value="n" />
+<input type="hidden" name="saisie" value="{$op->saisie}" />
 <input type="hidden" name="annulee" value="0" />
-{if $op->saisie == 'o'}
-<input type="hidden" name="modifiee" value="1" />
-{else}
-<input type="hidden" name="modifiee" value="0" />
-{/if}
+<input type="hidden" name="modifiee" value="{$op->modifiee}" />
 
 <table class="main">
   <tr>
@@ -343,7 +354,7 @@ function printForm() {
 
         <tr>
           <th class="mandatory"><label for="editFrm_CCAM_code">Acte médical (CCAM):</label></th>
-          <td><input type="text" name="CCAM_code" size="10" value="{$op->CCAM_code}" /></td>
+          <td><input type="text" name="CCAM_code" size="10" value="{$op->CCAM_code}"/></td>
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
 
@@ -356,7 +367,7 @@ function printForm() {
         <tr>
           <th class="mandatory"><label for="editFrm_cote">Coté:</label></th>
           <td colspan="2">
-            <select name="cote">
+            <select name="cote" onchange="modifOp()";>
               <option value="total"     {if !$op || $op->cote == "total"} selected="selected" {/if} >total</option>
               <option value="droit"     {if $op->cote == "droit"        } selected="selected" {/if} >droit    </option>
               <option value="gauche"    {if $op->cote == "gauche"       } selected="selected" {/if} >gauche   </option>
@@ -500,11 +511,11 @@ function printForm() {
         <tr>
           <th><label for="editFrm_type_adm_comp">{tr}type_adm{/tr}:</label></th>
           <td>
-            <input name="type_adm" value="comp" type="radio" {if !$op || $op->type_adm == "comp"} checked="checked" {/if} />
+            <input name="type_adm" value="comp" type="radio" {if !$op || $op->type_adm == "comp"} checked="checked" {/if} onchange="modifOp()" />
             <label for="editFrm_type_adm_comp">{tr}comp{/tr}</label><br />
-            <input name="type_adm" value="ambu" type="radio" {if $op->type_adm == "ambu"} checked="checked" {/if} />
+            <input name="type_adm" value="ambu" type="radio" {if $op->type_adm == "ambu"} checked="checked" {/if} onchange="modifOp()" />
             <label for="editFrm_type_adm_ambu">{tr}ambu{/tr}</label><br />
-            <input name="type_adm" value="exte" type="radio" {if $op->type_adm == "exte"} checked="checked" {/if} />
+            <input name="type_adm" value="exte" type="radio" {if $op->type_adm == "exte"} checked="checked" {/if} onchange="modifOp()" />
             <label for="editFrm_type_adm_exte">{tr}exte{/tr}</label><br />
           </td>
         </tr>
@@ -513,9 +524,9 @@ function printForm() {
         <tr>
           <th><label for="editFrm_chambre_o">Chambre particulière:</label></th>
           <td>
-            <input name="chambre" value="o" type="radio" {if $op->chambre == "o"} checked="checked" {/if}/>
+            <input name="chambre" value="o" type="radio" {if $op->chambre == "o"} checked="checked" {/if} onchange="modifOp()" />
             <label for="editFrm_chambre_o">Oui</label>
-            <input name="chambre" value="n" type="radio" {if !$op || $op->chambre == "n"} checked="checked" {/if}/>
+            <input name="chambre" value="n" type="radio" {if !$op || $op->chambre == "n"} checked="checked" {/if} onchange="modifOp()" />
             <label for="editFrm_chambre_n">Non</label>
           </td>
         </tr>
