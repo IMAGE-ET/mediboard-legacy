@@ -182,7 +182,8 @@ function printPatient(id) {
         <tr><th colspan="2" class="category">Interventions</th></tr>
         {foreach from=$patient->_ref_operations item=curr_op}
         <tr>
-          <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+          <td>{if $curr_op->annulee}[ANNULE]{/if}
+          <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
             {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"} (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})</a></td>
           <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
             Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name}</a></td>
