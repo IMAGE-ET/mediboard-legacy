@@ -92,7 +92,8 @@ class CTabBox extends CTabBox_core {
     }
 
     $s .= "\n$extra\n</tr></table>";
-    echo $s;
+    //Don't show the tabbed / flat option
+    //echo $s;
     
     if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
       // flat view, active = -1
