@@ -154,7 +154,8 @@ class CMediusers extends CDpObject {
     $sql = "SELECT *" .
       "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
       "\nWHERE users.user_id = users_mediboard.user_id" .
-      "\nAND users_mediboard.function_id = functions_mediboard.function_id";
+      "\nAND users_mediboard.function_id = functions_mediboard.function_id" .
+      "\nAND functions_mediboard.group_id = groups_mediboard.group_id";
 
     if ($function_id) {
       $sql .= "\nAND users_mediboard.function_id = $function_id";
@@ -170,13 +171,11 @@ class CMediusers extends CDpObject {
       }
       
       $inClause = implode(", ", $groups);
-      $sql .= 
-        "\nAND functions_mediboard.group_id = groups_mediboard.group_id" .
-        "\nAND groups_mediboard.text IN ($inClause)";
+      $sql .= "\nAND groups_mediboard.text IN ($inClause)";
     }
 
     $sql .= "\nORDER BY users.user_last_name";
-    
+
     // Get all users
     $baseusers = db_loadObjectList($sql, new CUser);
     $mediusers =  db_loadObjectList($sql, new CMediusers);
