@@ -198,7 +198,7 @@ class Cformulaire
   </tr>
   
   <tr>
-    <th>Durée de répétition de la plage:</th>
+    <th>Durée de répétition:</th>
     <td><input type="text" name="repet" size="1" value="1" /> semaine(s)</td>
     <td colspan="4"><input type="checkbox" name="double" />Une semaine sur deux</td>
   </tr>

@@ -13,7 +13,7 @@ class Cplanning
   function Cplanning($day, $month, $year)
   {
     $this->dayWeekList = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
-	$this->monthList = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout",
+	$this->monthList = array("", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout",
 							"Septembre", "Octobre", "Novembre", "Décembre");
     $this->day = $day;
 	$this->month = $month;
@@ -186,10 +186,13 @@ class Cplanning
 	$nmonth = date("n");
 	$nyear = date("Y");
 	echo "<tr>\n";
-	echo "<td rowspan=3>\n";
+	echo "<td rowspan=3 align=\"center\">\n";
 	$today = $this->dayWeekList[date("w", mktime(0, 0, 0, $this->month, $this->day, $this->year))];
 	$tomonth = $this->monthList[$this->month];
+	echo "<a href=\"#\" onclick=\"popPlanning( '$this->day', '$this->month', '$this->year');\">";
 	echo "<b>$today $this->day $tomonth $this->year</b>";
+	echo "<br /><img src=\"modules/dPbloc/images/print.png\" height=\"\" width=\"\" alt=\"imprimer\" border=\"0\">";
+	echo "</a>";
 	echo "</td>";
 	echo "<td bgcolor=\"#ffffff\" align=\"center\" colspan=2>\n";
 	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";

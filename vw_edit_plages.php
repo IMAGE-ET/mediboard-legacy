@@ -9,6 +9,12 @@ $calendar = new Ccalendar("index.php?m=dPbloc", $_SESSION['day'], $_SESSION['mon
 $formulaire = new Cformulaire(dPgetParam($_GET, "tool", ""), dPgetParam($_GET, "id", 0));
 ?>
 
+<script language="javascript">
+function popPlanning(day, month, year) {
+  window.open('./index.php?m=dPbloc&a=view_planning&dialog=1&day='+day+'&month='+month+'&year='+year, 'Planning du jour', 'left=10,top=10,height=550,width=700,resizable');
+}
+</script>
+
 <table width="100%">
 	<tr>
 		<td valign="top" rowspan=2>
