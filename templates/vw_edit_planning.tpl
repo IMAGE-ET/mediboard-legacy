@@ -1,5 +1,37 @@
+<!-- $Id$ -->
+
 {literal}
 <script language="javascript">
+function checkForm() {
+  var form = document.editFrm;
+    
+  if (form.chir_name.value.length == 0) {
+    alert("Chirurgien manquant");
+    popChir();
+    return false;
+  }
+    
+  if (form.pat_name.value.length == 0) {
+    alert("Patient manquant");
+    popPat();
+    return false;
+  }
+
+  if (form.hour_op.value == 0 && form.min_op.value == 0) {
+    alert("Temps opératoire invalide");
+    form.hour_op.focus();
+    return false;
+  }
+
+  if (form.plageop_id.value == 0) {
+    alert("Intervention non planifiée");
+    popPlage();
+    return false;
+  }
+
+  return true;
+}
+
 function popChir() {
   window.open('./index.php?m=dPplanningOp&a=chir_selector&dialog=1', 'Chirurgien', 'left=50,top=50,height=250,width=400,resizable');
 }

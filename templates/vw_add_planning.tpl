@@ -1,5 +1,37 @@
+<!-- $Id$ -->
+
 {literal}
 <script language="javascript">
+function checkForm() {
+  var form = document.editFrm;
+    
+  if (form.chir_name.value.length == 0) {
+    alert("Chirurgien manquant");
+    popChir();
+    return false;
+  }
+    
+  if (form.pat_name.value.length == 0) {
+    alert("Patient manquant");
+    popPat();
+    return false;
+  }
+
+  if (form.hour_op.value == 0 && form.min_op.value == 0) {
+    alert("Temps opératoire invalide");
+    form.hour_op.focus();
+    return false;
+  }
+
+  if (form.plageop_id.value == 0) {
+    alert("Intervention non planifiée");
+    popPlage();
+    return false;
+  }
+
+  return true;
+}
+
 function popChir() {
   window.open('./index.php?m=dPplanningOp&a=chir_selector&dialog=1', 'Chirurgien', 'left=50,top=50,height=250,width=400,resizable');
 }
@@ -82,7 +114,8 @@ function setCalendar( idate, fdate ) {
 </script>
 {/literal}
 
-<form name="editFrm" action="?m=dPplanningOp" method="post">
+<form name="editFrm" action="?m=dPplanningOp" method="post" onsubmit="return checkForm()">
+
 <input type="hidden" name="dosql" value="do_planning_aed" />
 <input type="hidden" name="del" value="0" />
 <input type="hidden" name="chir_id" value="{$chir.id}" />
@@ -154,7 +187,7 @@ function setCalendar( idate, fdate ) {
           <th class="mandatory">Date de l'intervention:</th>
           <td class="readonly">
             <input type="hidden" name="plageop_id" value="" />
-            <input type="text" name="date" readonly="readonly" size="10" value="JJ/MM/AAAA" />
+            <input type="text" name="date" readonly="readonly" size="10" value="" />
           </td>
           <td class="button"><input type="button" value="choisir une date" onclick="popPlage()" /></td>
         </tr>
