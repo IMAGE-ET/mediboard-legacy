@@ -33,7 +33,7 @@ if($keys != "")
 }
 $query .= " ORDER BY SID LIMIT 0 , 100";
 $result = mysql_query($query);
-$master = "";
+$master = array();
 $i = 0;
 while($row = mysql_fetch_array($result))
 {

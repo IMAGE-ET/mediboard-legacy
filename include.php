@@ -151,6 +151,7 @@ function getInfo($sid)
   $result = mysql_query($query);
 
   $i = 0;
+  $info['levelinf'] = null;
   while($row = mysql_fetch_array($result))
   {
     $info['levelinf'][$i]['sid'] = $row['SID'];
