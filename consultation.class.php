@@ -43,6 +43,8 @@ class CConsultation extends CDpObject {
   var $traitement = null;
   var $compte_rendu = null;
   var $premiere = null;
+  var $tarif = null;
+  var $type_tarif = null;
 
   // Form fields
   var $_etat = null;

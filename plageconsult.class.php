@@ -45,16 +45,23 @@ class CPlageconsult extends CDpObject {
     $this->CDpObject( 'plageconsult', 'plageconsult_id' );
   }
   
-  function loadRefs() {
+  function loadRefs($withCanceled = true) {
     // Forward references
     $this->_ref_chir = new CUser();
     $this->_ref_chir->load($this->chir_id);
     // Backward references
-    $sql = "SELECT *" .
-    		"\nFROM consultation" .
-    		"\nWHERE plageconsult_id = '$this->plageconsult_id'" .
-    		"\nORDER BY heure";
-    $this->_ref_consultations = db_loadObjectList($sql, new CConsultation());
+    if(!$withCanceled)
+      $where["annule"] = "= 0";
+    $where["plageconsult_id"] = "= '$this->plageconsult_id'";
+    $order = "heure";
+    $this->_ref_consultations = new CConsultation();
+    $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order);
+    
+    //$sql = "SELECT *" .
+    //		"\nFROM consultation" .
+    //		"\nWHERE plageconsult_id = '$this->plageconsult_id'" .
+    //		"\nORDER BY heure";
+    //$this->_ref_consultations = db_loadObjectList($sql, new CConsultation());
   }
   
   function check() {

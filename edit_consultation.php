@@ -11,6 +11,7 @@ global $AppUI, $canRead, $canEdit, $m;
 
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'tarif') );
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
@@ -119,6 +120,16 @@ foreach ($aidesConsultation as $aideConsultation) {
   $aides[$aideConsultation->field][$aideConsultation->text] = $aideConsultation->name;  
 }
 
+// Récupération des tarifs
+$where = array();
+$where["chir_id"] = "= '$chir->user_id'";
+$tarifsChir = new CTarif;
+$tarifsChir = $tarifsChir->loadList($where);
+$where = array();
+$where["function_id"] = "= '$mediuser->function_id'";
+$tarifsCab = new CTarif;
+$tarifsCab = $tarifsCab->loadList($where);
+
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
@@ -141,7 +152,10 @@ $smarty->assign('pyear', $pyear);
 $smarty->assign('listPlage', $listPlage);
 $smarty->assign('listModele', $listModele);
 $smarty->assign('aides', $aides);
+$smarty->assign('tarifsChir', $tarifsChir);
+$smarty->assign('tarifsCab', $tarifsCab);
 $smarty->assign('consult', $consult);
+
 $smarty->display('edit_consultation.tpl');
 
 ?>

@@ -70,7 +70,7 @@ for($i = 0; $i < 7; $i++) {
   		"\nAND chir_id = '$chirSel'";
   $plages[$i]["plages"] = db_loadObjectList($sql, new CPlageconsult);
   foreach($plages[$i]["plages"] as $key => $value)
-    $plages[$i]["plages"][$key]->loadRefs();
+    $plages[$i]["plages"][$key]->loadRefs(false);
 }
 
 // Liste des heures

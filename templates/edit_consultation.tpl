@@ -1,6 +1,21 @@
 {literal}
 <script language="JavaScript" type="text/javascript">
 
+function modifTarif() {
+  var form = document.tarifFrm;
+  form.tarif.value = form.choix.value;  
+}
+
+function checkTarif() {
+  var form = document.tarifFrm;
+  if(form.tarif.value == '') {
+    alert('Vous devez saisir un somme ou choisir un tarif');
+    form.tarif.focus();
+    return false;
+  }
+  return true
+}
+
 function editModele(consult, modele) {
   var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
   url +='&consult=' + consult;
@@ -365,11 +380,58 @@ function supprimerCompteRendu() {
             {/foreach}
             {/if}
             </table>
+            
+            
+            <form name="tarifFrm" action="?m={$m}" method="POST" onsubmit="return checkTarif()">
+
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="dosql" value="do_consultation_aed" />
+            <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
+            <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
 
             <table class="form">
               <tr><th colspan="2" class="category">Règlement</th></tr>
-              <tr><th>Reste à payer: </th><td>le règlement</td></tr>
+              {if !$consult->tarif}
+              <tr><th>Type de reglement :<input type="hidden" name="paye" value="0" /></th>
+                <td><select name="choix" onchange="modifTarif()">
+                  <option value="-1" selected="selected">&mdash; Choix du tarif &mdash;</option>
+                  <optgroup label="Tarifs praticien">
+                  {foreach from=$tarifsChir item=curr_tarif}
+                  <option value="{$curr_tarif->valeur}">{$curr_tarif->description}</option>
+                  {/foreach}
+                  <optgroup label="Tarifs cabinet">
+                  {foreach from=$tarifsCab item=curr_tarif}
+                  <option value="{$curr_tarif->valeur}">{$curr_tarif->description}</option>
+                  {/foreach}
+                </select></td>
+              </tr>
+              {/if}
+              {if !$consult->paye}
+              <tr><th>Somme à régler :</th><td><input type="text" size="4" name="tarif" value="{$consult->tarif}" /> €</td></tr>
+              {else}
+              <tr><td colspan="2">{$consult->tarif} € ont été réglés</td></tr>
+              {/if}
+              {if $consult->tarif && !$consult->paye}
+              <tr><th>Moyen de paiement :<input type="hidden" name="paye" value="1" /></th>
+                <td><select name="type_tarif">
+                  <option value="cheque">Chèques</option>
+                  <option value="CB">CB</option>
+                  <option value="especes">Espèces</option>
+                  <option value="tiers">Tiers-payant</option>
+                  <option value="autre">Autre</option>
+                </select></td>
+              </tr>
+              <tr><td colspan="2" class="button">
+                <input type="reset" value="Annuler" />
+                <input type="submit" value="Reglement effectué" />
+              </td></tr>
+              {elseif !$consult->paye}
+              <tr><td colspan="2" class="button"><input type="submit" value="Valider ce tarif" /></td></tr>
+              {/if}
             </table>
+            
+            </form>
 
           </td>
           
