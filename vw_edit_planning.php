@@ -5,6 +5,6 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-echo "Affichage du planning opératoire";
+echo "Edition du planning";
 
 ?>

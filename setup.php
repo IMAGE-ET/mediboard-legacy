@@ -17,7 +17,7 @@ $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
 $config['mod_ui_name'] = 'Planning Chir.';
 $config['mod_ui_icon'] = 'dPplanningOp.png';
-$config['mod_description'] = 'Gestion des plannings op des chirurgiens';
+$config['mod_description'] = 'Gestion des plannings opératoires des chirurgiens';
 $config['mod_config'] = true;
 
 if (@$a == 'setup') {
@@ -56,7 +56,8 @@ class CSetupdPplanningOp {
 			"  operation_id bigint(20) unsigned NOT NULL auto_increment" .
 			"  patient_id bigint(20) unsigned NOT NULL default '0'" .
 			"  plageop_id bigint(20) unsigned NOT NULL default '0'" .
-			", code_CCAM varchar(7) NOT NULL default ''" .
+			", code_CCAM varchar(7) default NULL" .
+			", code_CIM10 varchar(5) default NULL" .
 			", PRIMARY KEY  (operation_id)" .
 			", UNIQUE KEY operation_id (operation_id)" .
 			") TYPE=MyISAM;";
