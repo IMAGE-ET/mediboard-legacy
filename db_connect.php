@@ -272,11 +272,12 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 		if ($k[0] == '_') { // internal field
 			continue;
 		}
-		$fields[] = $k;
+		$fields[] = "`$k`";
 		$values[] = "'" . db_escape( $v ) . "'";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
 	($verbose) && print "$sql<br />\n";
+
 	if (!db_exec( $sql )) {
 		return false;
 	}
@@ -301,7 +302,7 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 			continue;
 		}
 		if( $k == $keyName ) { // PK not to be updated
-			$where = "$keyName='" . db_escape( $v ) . "'";
+			$where = "`$keyName`='" . db_escape( $v ) . "'";
 			continue;
 		}
 		if ($v === NULL && !$updateNulls) {
@@ -312,10 +313,10 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 		} else {
 			$val = "'" . db_escape( $v ) . "'";
 		}
-		$tmp[] = "$k=$val";
+		$tmp[] = "`$k`=$val";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $tmp ) , $where );
-	return db_exec( $sql );
+  return db_exec( $sql );
 }
 
 /**
