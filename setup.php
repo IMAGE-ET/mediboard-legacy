@@ -42,13 +42,14 @@ class CSetupdPplanningOp {
 		{
 		case "all": {
             $sql = "INSERT INTO sysvals
-                    VALUES (5, 1, 'AnesthType', '1|Rachi\n2|Rachi + bloc\n3|Anesthésie loco-régionnale\n4|Anesthésie locale\n5|Neurolept\n6|Anesthésie générale\n0|Non définie')";
+                    VALUES (5, 1, 'AnesthType', '1|Rachi\n2|Rachi + bloc\n3|Anesthésie loco-régionnale\n4|Anesthésie locale\n5|Neurolept\n6|Anesthésie générale\n7|Anesthesie generale + bloc\n8|Anesthesie peribulbaire\n0|Non définie')";
             db_exec( $sql ); db_error();
         }
 		case "0.1": {
             $sql = "ALTER TABLE operations ADD entree_bloc TIME AFTER temp_operation ,
                     ADD sortie_bloc TIME AFTER entree_bloc ,
                     ADD type_anesth TINYINT AFTER time_anesth ,
+                    ADD saisie ENUM( 'n', 'o' ) DEFAULT 'n' NOT NULL ,
                     CHANGE plageop_id plageop_id BIGINT( 20 ) UNSIGNED";
             db_exec( $sql ); db_error();
 			return true;
