@@ -13,24 +13,12 @@ if (!$canEdit) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-//Creation de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
-$smarty = new Smarty();
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-//initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-//On récupère les informations
-
-$smarty->assign('m', $m);
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('user', $AppUI->user_id);
 $smarty->assign('patient', NULL);
 
-//Affichage de la page
 $smarty->display('vw_edit_patients.tpl');
 
 ?>

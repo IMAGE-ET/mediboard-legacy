@@ -23,7 +23,7 @@ $patient->load($patient_id);
 
 if (!$patient->patient_id) {
   $AppUI->setmsg("Vous devez choisir un patient", UI_MSG_ALERT);
-  $AppUI->redirect( "m=$m&tab=0" );
+  $AppUI->redirect("m=$m&tab=0");
 }
 
 // Date formatting
@@ -31,23 +31,11 @@ $patient->_jour  = substr($patient->naissance, 8, 2);
 $patient->_mois  = substr($patient->naissance, 5, 2);
 $patient->_annee = substr($patient->naissance, 0, 4);
 
-// Création de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-$smarty = new Smarty();
-
-// Initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-// Mapping des données
-$smarty->assign('m', $m);
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('user', $AppUI->user_id);
 $smarty->assign('patient', $patient);
 
-// Affichage de la page
 $smarty->display('vw_edit_patients.tpl');
 ?>

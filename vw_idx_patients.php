@@ -38,26 +38,14 @@ if ($patient_nom || $patient_prenom) {
   $patients = db_loadlist($sql);
 }
 
-// Création de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
-$smarty = new Smarty();
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
-// Initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-// Mapping des variables
-$smarty->assign('m', $m);
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('user', $AppUI->user_id);
 $smarty->assign('nom', $patient_nom);
 $smarty->assign('prenom', $patient_prenom);
 $smarty->assign('patients', $patients);
 $smarty->assign('patient', $patient);
 
-// Affichage de la page
 $smarty->display('vw_idx_patients.tpl');
-
 ?>
