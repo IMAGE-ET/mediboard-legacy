@@ -538,11 +538,11 @@ function printForm() {
             <label for="editFrm_ATNC_n">Non</label>
           </td>
         </tr>
+        {/if}
         <tr>
           <th><label for="editFrm_rques">Remarques:</label></th>
           <td><textarea name="rques" rows="3">{$op->rques}</textarea></td>
         </tr>
-        {/if}
 
       </table>
     
