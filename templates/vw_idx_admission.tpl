@@ -1,5 +1,22 @@
 <table class="main">
   <tr>
+    <td>
+	<form action="index.php" target="_self" name="selection" method="get" encoding="">
+    <input type="hidden" name="m" value="dPadmissions">
+    <input type="hidden" name="tab" value="0">
+	  <select name="selAff" onchange="this.form.submit()">
+	    <option value="-1">Type d'affichage :</option>
+	    <option value="0">--> Toutes les admissions</option>
+		<option value="o">--> Admissions effectuées</option>
+        <option value="n">--> Admissions non effectuées</option>
+	  </select>
+    </form>
+	</td>
+	<th>
+	  {$typeAff}
+	</th>
+  </tr>
+  <tr>
     <th>
 	  <a href="index.php?m=dPadmissions&tab=0&day={$pmonthd}&month={$pmonth}&year={$pmonthy}"><<</a>
 	  {$title1}
@@ -73,6 +90,16 @@
 		    {$curr_adm.hour}
 			</a>
 		  </td>
+		  {if $curr_adm.admis == "n"}
+		  <td>
+			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
+            <input type="hidden" name="m" value="dPadmissions" />
+            <input type="hidden" name="a" value="do_edit_admis" />
+            <input type="hidden" name="id" value="{$curr_adm.operation_id}" />
+			<input type="submit" value="Admis" />
+			</form> 
+		  </td>
+		  {/if}
 		</tr>
 		{/foreach}
 	  </table>
