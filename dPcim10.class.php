@@ -1,13 +1,10 @@
-<?php
-// use the dPFramework to have easy database operations (store, delete etc.) by using its ObjectOrientedDesign
-// therefore we have to create a child class for the module dPcim10
-
-// a class named (like this) in the form: module/module.class.php is automatically loaded by the dPFramework
+<?php /* $Id$ */
 
 /**
- *	@package dotProject
- *	@subpackage modules
- *	@version $Revision$
+* @package Mediboard
+* @subpackage dPcim10
+* @version $Revision$
+* @author Romain Ollivier
 */
 
 // include the powerful parent class that we want to extend for dPcim10

@@ -1,4 +1,11 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPcim10
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 // create a new instance of the dPcim10 class
 $obj = new CdPcim10();

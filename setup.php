@@ -1,12 +1,11 @@
-<?php
-/*
- * Name:      dPcim10
- * Directory: dPcim10
- * Version:   0.1
- * Type:      user
- * UI Name:   dPcim10
- * UI Icon:
- */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPcim10
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 // MODULE CONFIGURATION DEFINITION
 $config = array();
