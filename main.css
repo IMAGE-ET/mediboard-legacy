@@ -1,13 +1,951 @@
 /* Global CSS */
-@import "./xhtml.css";
-@import "./common.css";
-@import "./login.css";
-@import "./header.css";
-@import "./htmlarea.css"
+  /* @import "./xhtml.css";   */
+
+/* XHTML elements */
+
+body {
+  font-family: arial, sans-serif;
+  font-size: 11px;  
+  background-color: #efe;
+  background: url(./images/bodyGradient.jpg) no-repeat fixed top center;
+  margin: 0px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  font-size: 11px;
+}
+
+tr {
+}
+
+th {
+  text-align: center;
+  vertical-align: top;
+}
+
+td {
+}
+
+img {
+  border: none;
+}
+
+ul {
+  margin: 0;
+}
+
+dl {
+  margin-top: 0px; 
+  padding-left: 1px;
+}
+
+dt {
+  margin-top: 5px;
+  color: #009;
+  font-weight: bold;
+}
+
+dd {
+  margin-bottom: 0px; 
+  margin-left: 12px;
+}
+
+a:link {
+  color: #555;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #555;
+  text-decoration: none;
+}
+
+a:active {
+  color: #555;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #555;
+  text-decoration: underline;
+}
+
+h1, .title { /* @todo Remove 'title' class, use h2 instead */
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  margin: 12px 0px;
+}
+
+h2, .subtitle { /* @todo Remove 'subtitile' class, use h2 instead */
+  font-size: 18px;
+  font-weight: bold;
+  color: #494;
+  margin: 8px 10px;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #449;
+  margin: 4px 20px;
+}
+
+form {
+  margin: 0px;
+}
+
+textarea {
+  font-family: arial, sans-serif;
+  font-size: 11px;
+  border: 1px black solid;
+  padding-left: 2px;
+  width: 99%;
+}
+
+input {
+  border: 1px black solid;
+  font-size: 12px;
+  margin: 1px;
+  padding: 0px 2px;
+}
+
+input[type=submit],
+input[type=reset],
+input[type=button] {
+  background: #ddd;
+  margin: 0 10px;
+}
+
+input[type=submit]:hover,
+input[type=reset]:hover,
+input[type=button]:hover {
+  background: #bbb;
+}
+
+select {
+  border: 1px black solid;
+  font-size: 12px;
+  padding: 0;
+}
+
+input,
+select,
+textarea {
+  background: #efe;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background: #fff;
+}
+
+label:hover {
+  border-bottom: 1px dotted #888;
+  cursor: help;
+}
+
+  /* @import "./common.css";  */
+
+/* Title block */
+
+table.titleblock td {
+  white-space: nowrap;
+}
+
+table.titleblock td.titlecell {
+  font-family: Georgia, serif;
+  font-size: 20px; 
+  color: #620;
+  width: 100%;
+}
+
+/* Bread crumbs block */
+
+table.crumbsblock {
+  width: 100%;
+}
+
+table.crumbsblock td {
+  white-space: nowrap;
+}
+
+table.crumbsblock td.crumbscell {
+  width: 100%;
+}
+
+/* Tab view table */
+
+table.taborflat {
+  display: none;
+}
+
+table.tabview {
+  border-spacing: 0px;
+  border-collapse: collapse; /* Hack for IE */
+  empty-cells: show;
+  width: 100%;
+}
+
+table.tabview td {
+  padding: 0px;
+}
+
+table.tabmenu {
+  margin-left: 20px;
+  border-spacing: 0px;
+}
+
+table.tabmenu td {
+  height: 28px;	
+}
+
+table.tabmenu td.normal {
+  background: url(./images/tabBg.png) repeat-x bottom;
+}
+
+table.tabmenu td.normalLeft {
+  width: 17px;
+  background: url(./images/tabLeft.png) no-repeat bottom right;
+}
+
+table.tabmenu td.normalRight {
+  width: 17px;
+  background: url(./images/tabRight.png) no-repeat bottom left;
+}
+
+table.tabmenu td.selected {
+  background: url(./images/tabSelectedBg.png) repeat-x;
+}
+
+table.tabmenu td.selectedLeft {
+  width: 17px;
+  background: url(./images/tabSelectedLeft.png) no-repeat bottom right;
+}
+
+table.tabmenu td.selectedRight {
+  width: 17px;
+  background: url(./images/tabSelectedRight.png) no-repeat bottom left;
+}
+/* Standard table */
+
+table.tbl {
+  width: 100%;
+  border: 0px;
+  border-spacing: 1px;
+  background-color: #777;
+}
+
+table.tbl th {
+  background-color: #888;
+  padding: 2px;
+  color: #fff;
+  border: outset #ccc 1px;
+  font-weight: normal;
+  text-align: center;
+}
+
+table.tbl td {
+  background-color: #fff;
+  padding: 2px;
+  white-space: nowrap;
+}
+
+table.tbl td.text {
+  white-space: normal;
+}
+
+/* a 'colorized' table */
+
+table.color {
+  width: 100%;
+  border: 0px;
+  border-spacing: 1px;
+}
+
+table.color th {
+  background: #888;
+  padding: 2px;
+  color: #fff;
+  border: outset #888 1px;
+  font-weight: normal;
+  text-align: center;
+}
+
+table.color td {
+  padding: 2px;
+}
+
+table.color td.white {
+  background-color: #fff;
+}
+
+/* a 'standard' table */
+
+table.std {
+  border: solid #8c8 3px;
+  background: #eef;
+}
+table.std th {
+  background-color: #888;
+  color: #fff;
+  border: outset #ccc 1px;
+}
+
+table.std td.hilite {
+  background-color: #fff;
+}
+
+/* Form tables */
+
+table.form {
+  width: 100%;
+  border-spacing: 1px;
+}
+
+table.form th {
+  white-space: nowrap;
+  background: #eee;
+  vertical-align: middle;
+  text-align: right;
+  font-weight: normal;
+  padding: 1px 4px;
+}
+
+table.form th.title {
+  font-weight: bold;  
+  text-align: center;
+  background: #bbb;
+  border: #aaa 1px outset;
+}
+
+table.form th.category {
+  font-weight: bold;  
+  text-align: center;
+  background: #aaa;
+  border: #aaa 1px outset;
+}
+
+table.form th.mandatory {
+  color: #000;
+  font-weight: bold;
+}
+
+table.form th.text {
+  white-space: normal;
+  text-align: center;
+}
+
+table.form td {
+  white-space: nowrap;
+  vertical-align: top;
+  background: #eee;
+  text-align: left;
+  padding: 1px 4px;
+}
+
+table.form td.compte_rendu {
+  background: #ddd;
+}
+
+table.form td.text {
+  white-space: normal;
+}
+
+table.form td.info {
+  white-space: normal;
+}
+
+table.form td.readonly input {
+  background: #eee;
+  border: 1px dotted;
+}
+
+table.form td.button {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Pane table */
+
+table.main {
+  width: 100%;
+  margin: 4px;
+  border-spacing: 10px;
+}
+
+table.main td {
+  vertical-align: top;
+}
+
+table.main td.halfPane {
+  width: 50%;
+}
+
+td.greedyPane {
+  width: 100%;
+}
+
+/* links in header blocks */
+
+a.hdr:link, 
+a.hdr:active, 
+a.hdr:visited {
+  color: #fff;
+}
+
+/* tabbed boxes */
+
+td.tabox {
+  background-color: #ccc;
+  border: solid #ccc 2px;
+}
+
+/* Spécialisation par média */
+
+@media print {
+  table.tbl {
+    font-size: 100%;
+  }
+}
+
+/* Message styles */
+
+.warning {
+  color: #f00;
+}
+
+.error {
+  color: #f00;
+}
+
+.message {
+  color: #888;
+}
+
+  /* @import "./login.css";   */
+
+#login {
+  margin: 100px 0px 0px; 
+}
+
+#login table {
+  border: solid #8c8 3px;
+  width: 400px;
+  background: #eef;
+  margin: auto;
+  text-align: center;
+  padding: 5px;
+}
+
+#login td {
+  text-align: center;
+}
+
+#poweredBy {
+  font-size: 8pt;
+}
+
+  /* @import "./header.css";  */
+
+/* Global header */
+
+#header {
+  width: 100%;
+  border-spacing: 0px;
+  border: none;
+}
+
+#header td {
+  padding: 0px;
+}
+
+/* Banner */
+
+#banner {
+  background: url(./images/titleGradient.jpg) no-repeat center;
+  vertical-align: middle;
+}
+
+#banner p {
+  font-family: Georgia, serif;
+  font-size: 20px; 
+  float: left;
+  color: #620;
+  margin: 5px 10px 0;
+}
+
+#banner a {
+  float: right;
+}
+
+/* Navigation */
+
+#menubar table {
+  border: 1px solid #999;
+  background-color: #ccc;
+  color: #fff;
+  text-align: left;
+  width: 100%;
+}
+
+#nav {
+  vertical-align: middle;
+}
+
+#nav ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+#nav li {
+  display: inline;
+  float: left;
+}
+
+#nav a {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  font-variant: small-caps;
+  font-size: 10pt;
+  padding: 3px 4px;
+}
+
+#nav a:hover {
+  text-decoration: none;
+  background: #ddd;
+  padding: 2px 3px;
+  border: 1px outset #ddd;
+}
+
+#nav a:active {
+  background: #ddd;
+  padding: 2px 3px;
+  border: 1px inset #ddd;
+}
+
+#nav li.selected a {
+  text-decoration: none;
+  background: #aaa;
+  padding: 2px 3px;
+  border: 1px inset #888;
+}
+
+#nav img {
+  display: block;
+  margin: auto;
+  width: 48px;
+}
+
+  /* ---- Begin Patch for damned IE that never works ---- */
+  
+  #nav li a {
+    width: 1em;
+    white-space: nowrap;
+  }
+  
+  #nav li>a {
+    width: auto;
+  }
+  
+  /* ---- End patch ---- */
+
+/* Creation */
+
+#new {
+  white-space: nowrap;
+  text-align: right;
+  vertical-align: center;  
+}
+
+/* User */
+
+#user table {
+  border-spacing: 0px;
+  border: 2px;
+  width: 100%;
+  border-bottom: 1px dashed black;
+}
+
+#user td {
+  padding: 0 3px;
+  
+}
+
+#userWelcome {
+  width: 100%;
+}
+
+#userMenu {
+  white-space: nowrap;
+}
+
+/* Main -- table -- pane */
+
+#main {
+  width: 100%;
+  border-spacing: 0px
+}
+
+  /* @import "./htmlarea.css" */
+
+body {
+  font-family: Georgia, serifs;
+  font-size: 12px;
+  background: #ddf;
+}
+
+span.hilite {
+  background: #f5f;
+}
+
+@media screen {
+  span.field {
+    background: #cce;
+  }
+
+  span.value {
+    background: #ddd;
+  }
+}
 
 /* Module specific CSS*/
-@import "./contacts.css";
-@import "./calendar.css";
-@import "./ccam.css";
-@import "./admission.css";
+  /* @import "./contacts.css";  */
 
+/* contacts table */
+
+table.contacts {
+	background-color: #888;
+}
+
+table.contacts td {
+	background-color: #def;
+}
+
+table.contacts td.hilite {
+	background-color: #fff;
+}
+
+  /* @import "./calendar.css";  */
+
+/* popup calendar */
+
+body.popcal {
+	background-color: #eee;
+}
+
+table.poptitle {
+	background-color: #fff;
+}
+
+table.poptitle td {
+	background-color: #fff;
+}
+
+table.poptitle th {
+	background-color: #fff;
+	color: #000;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+table.popcal {
+	background-color: #ccc;
+}
+
+table.popcal th {
+	background-color: #fff;
+	color: #000;
+	font-size: 9pt;
+	font-weight: normal;
+}
+
+table.popcal td {
+	background-color: #fff;
+	font-size: 8pt;
+	text-align: center;
+}
+
+table.popcal td.empty {
+	background-color: #ddd;
+}
+
+table.mocal td.day  {
+	background-color: #fff;
+	text-align: center;
+}
+
+table.popcal td.today {
+}
+
+table.popcal td.weekend {
+	background-color: #eee;
+}
+
+table.popcal a {
+	display: block;
+}
+
+table.popcal a:hover {
+	background-color: #eef;
+}
+
+table.popcal a:link,
+table.popcal a:visited {
+	color: #00f;
+	text-decoration: none;
+}
+
+table.popcal a.today:link,
+table.popcal a.today:visited {
+	color: #f00;
+	font-weight: bold;
+}
+
+table.popcal a.weekend:link,
+table.popcal a.weekend:visited {
+	color: #00a;
+}
+
+table.popcal a.empty:link,
+table.popcal a.empty:visited {
+	color: #777;
+}
+
+/* month calendar - title area */
+table.motitle {
+	background-color: #777;
+}
+table.motitle td {
+	background-color: #eee;
+}
+table.motitle th {
+	background-color: #eee;
+	font-size: 10pt;
+}
+
+table.mocal {
+	background-color: #777;
+}
+table.mocal th {
+	background-color: #555;
+	color: #fff;
+}
+table.mocal td {
+}
+table.mocal td.week {
+	vertical-align: top;
+	background-color: #888;
+	height: 80px;
+}
+table.mocal td.empty {
+	background-color: #ddd;
+	color: #aaa;
+	text-align: left;
+	vertical-align: top;
+	height: 80px;
+}
+table.mocal td.day  {
+	background-color: #fff;
+	color: #336;
+	text-align: left;
+	vertical-align: top;
+	height: 80px;
+}
+table.mocal td.today {
+	background-color: #ace;
+	color: #fff;
+	text-align: left;
+	vertical-align: top;
+}
+
+table.mocal td.weekend {
+	background-color: #eee;
+	text-align: left;
+	vertical-align: top;
+}
+
+table.mocal .event {
+}
+
+
+/* mini calendar - title area */
+table.minititle {
+}
+
+table.minititle td {
+}
+
+table.minititle th {
+	font-weight: normal;
+}
+
+table.minical {
+}
+
+table.minical th {
+	font-weight: normal;
+}
+
+table.minical td {
+}
+
+table.minical td.week {
+}
+
+table.minical td.empty {
+	color: #aaa;
+}
+
+table.minical td.day  {
+	text-align: center;
+}
+
+table.minical td.today {
+	background-color: #ddd;
+	text-align: center;
+}
+
+table.minical td.weekend {
+	text-align: center;
+}
+
+table.minical .event {
+}
+
+table.minical a {
+	display: block;
+	text-decoration: none;
+}
+
+table.minical a:hover {
+	background-color: #fff;
+}
+
+  /* @import "./ccam.css";      */
+
+table.fullCode {
+  width: 100%;
+  background: #f99;
+}
+
+table.fullCode tr td.pane {
+  vertical-align: top;
+  width: 50%;
+  background: #fdd;
+  padding: 5px;
+}
+
+table.fullCode tr td.pane table {
+  width: 100%;
+}
+
+table.findCode {
+  width: 100%;
+  background: #99f;
+}
+
+table.findCode th {
+  text-align: left;
+}
+
+table.findCode td {
+  vertical-align: top;
+  width: 25%;
+  background: #ddf;
+  padding: 5px;
+}
+
+table.bookCode {
+  width: 100%;
+  background: #f9f;
+}
+
+table.bookCode th {
+  text-align: left;
+}
+
+table.bookCode td {
+  vertical-align: top;
+  width: 25%;
+  background: #fdf;
+  padding: 5px;
+}
+
+table.selectCode {
+  width: 100%;
+  background: #f9f;
+}
+
+table.selectCode th {
+  text-align: left;
+}
+
+table.selectCode td {
+  vertical-align: top;
+  width: 33%;
+  background: #fdf;
+  padding: 5px;
+}
+
+  /* @import "./admission.css"; */
+
+/* $Id$ */
+
+/* The admission table based on the form one */
+
+#admission {
+  width: 100%;
+  border-spacing: 6px;
+  font-family: georgia, serif;
+  color: #006;
+  font-size: 14px;
+}
+
+#admission th {
+  white-space: nowrap;
+  background: transparent;
+  vertical-align: top;
+  text-align: right;
+  font-weight: bold;
+}
+
+#admission th.title {
+  font-weight: bold;  
+  text-align: center;
+  background: #68f;
+  border: #aaa 3px outset;
+  padding: 10px;
+  font-size: 26px;
+  color: #006;
+}
+
+#admission th.category {
+  font-weight: bold;  
+  text-align: center;
+  background: #abf;
+  padding: 10px;
+  border: #aaa 3px outset;
+  font-size: 20px;
+}
+
+#admission td {
+  white-space: normal;
+  vertical-align: top;
+  width: 100%;
+  background: transparent;
+  text-align: left;
+  padding: 1px 4px;
+}
+
+#admission td.info {
+  white-space: normal;
+  font-style: italic;
+  padding: 10px;
+  margin: 5px;
+  border: #aaa 2px dotted;
+}

@@ -1,0 +1,12 @@
+/* Global CSS */
+@import "./xhtml.css";
+@import "./common.css";
+@import "./login.css";
+@import "./header.css";
+@import "./htmlarea.css"
+
+/* Module specific CSS*/
+@import "./contacts.css";
+@import "./calendar.css";
+@import "./ccam.css";
+@import "./admission.css";
