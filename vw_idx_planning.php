@@ -19,30 +19,13 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// L'utilisateur est-il chirurgien?
-$mediuser = new CMediusers;
-$mediuser->load($AppUI->user_id);
-
-$function = new CFunctions;
-$function->load($mediuser->function_id);
-
-$group = new CGroups;
-$group->load($function->group_id);
-
-if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
-  $chir = new CUser;
-  $chir->load($AppUI->user_id);
-}
-else $chir->user_id = -1;
-
-//Initialisation de variables
+// Initialisation de variables temporelles
 $listDay = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
 $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
 
 $day   = mbGetValueFromGetOrSession("day"  , date("d"));
 $month = mbGetValueFromGetOrSession("month", date("m"));
 $year  = mbGetValueFromGetOrSession("year" , date("Y"));
-$selChir = mbGetValueFromGetOrSession("selChir", $chir->user_id);
 
 $nday  = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
 $ndaym = date("m", mktime(0, 0, 0, $month, $day + 1, $year));
@@ -66,37 +49,27 @@ $monthName = $listMonth[$month - 1];
 $title1 = "$monthName $year";
 $title2 = "$dayName $day $monthName $year";
 
-$sql = "SELECT users.user_id, users.user_last_name AS lastname,
-        users.user_first_name as firstname, functions_mediboard.function_id,
-        groups_mediboard.text
-        FROM users, users_mediboard, functions_mediboard, groups_mediboard
-        WHERE users.user_id = '$AppUI->user_id'
-        AND users.user_id = users_mediboard.user_id
-        AND functions_mediboard.function_id = users_mediboard.function_id
-        AND functions_mediboard.group_id = groups_mediboard.group_id";
-$user = db_loadlist($sql);
-if(!$selChir && (($user[0]["text"] == "Chirurgie") || ($user[0]["text"] == "Anesthésie"))) {
-  $selChir = $user[0]["user_id"];
-}
-if($selChir) {
-  $sql = "SELECT users.user_username, functions_mediboard.function_id AS spe
-          FROM users, users_mediboard, functions_mediboard
-          WHERE users.user_id = users_mediboard.user_id
-          AND users_mediboard.function_id = functions_mediboard.function_id
-          AND users.user_id = '$selChir'";
-  $result = db_loadlist($sql);
-  $selChirLogin = $result[0]["user_username"];
-  $specialite = $result[0]["spe"];
-}
-else {
-  $selChirLogin = "0";
-  $specialite = "0";
+// Sélection du praticien
+$mediuser = new CMediusers;
+$mediuser->load($AppUI->user_id);
+
+$selChir = mbGetValueFromGetOrSession("selChir", $mediuser->isPraticien() ? $mediuser->user_id : null);
+
+$selPrat = new CMediusers();
+$selPrat->load($selChir);
+
+$selChirLogin = null;
+$specialite = null;
+if ($selPrat->isPraticien()) {
+  $selChirLogin = $selPrat->_user_username;
+  $specialite = $selPrat->_ref_function->function_id;
 }
 
+// Tous les praticiens
 $mediuser = new CMediusers;
 $listChir = $mediuser->loadPraticiens(PERM_EDIT);
 
-//Requete SQL pour le planning du mois
+// Requete SQL pour le planning du mois
 // * temp total de chaque plage
 $sql = "SELECT operations.temp_operation as duree, plagesop.id as id
 		FROM plagesop
@@ -109,9 +82,18 @@ $sql = "SELECT operations.temp_operation as duree, plagesop.id as id
 $result = db_loadlist($sql);
 foreach($result as $key => $value) {
   $plageop = $value["id"];
-  $duree[$plageop]["newtime"] = mktime($duree[$plageop]["hour"] + substr($value["duree"], 0, 2), $duree[$plageop]["min"] + substr($value["duree"], 3, 2), 0, $month, $day, $year);
-  $duree[$plageop]["hour"] = date("H", $duree[$plageop]["newtime"]);
-  $duree[$plageop]["min"] = date("i", $duree[$plageop]["newtime"]);  
+  
+  if (!isset($duree[$plageop])) {
+    $duree[$plageop] = array(
+      "hour" => 0, 
+      "min" => 0);
+  }
+
+  $hour = $duree[$plageop]["hour"] + intval(substr($value["duree"], 0, 2));
+  $min  = $duree[$plageop]["min" ] + intval(substr($value["duree"], 3, 2));
+  $newtime = mktime($hour, $min);
+  $duree[$plageop]["hour"] = date("H", $newtime);
+  $duree[$plageop]["min" ] = date("i", $newtime);
 }
 
 // Liste des operations triées par plage
@@ -150,7 +132,7 @@ if($selChirLogin) {
 }
 
 $i = 0;
-unset($result);
+$result = array();
 foreach($result1 as $key => $value){
   $result[$i] = $value;
   $i++;
@@ -180,8 +162,9 @@ do {
 }
 while($inverse);
 
-//Tri des résultats
-if(isset($result)) {
+// Tri des résultats
+$list = array();
+if (isset($result)) {
   foreach($result as $key => $value) {
     $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
     $plageop = $value["id"];
@@ -198,9 +181,8 @@ if(isset($result)) {
     //$list[$key]["occupe"] = (substr($value["busy_time"], -6, strlen($value["busy_time"]) - 4))."h".(substr($value["busy_time"], -4, 2));
   }
 }
-else
-  $list[0] = "";
-//Requete SQL pour le planning de la journée
+
+// Requete SQL pour le planning de la journée
 $sql = "SELECT operations.operation_id AS id, operations.pat_id,
 		operations.CCAM_code, operations.temp_operation,
         operations.rank, operations.time_operation
@@ -212,7 +194,8 @@ $sql = "SELECT operations.operation_id AS id, operations.pat_id,
         ORDER BY operations.rank, operations.temp_operation";
 $result = db_loadlist($sql);
 
-//Tri des résultats
+// Tri des résultats
+$today = array();
 foreach($result as $key => $value) {
   $sql = "SELECT nom, prenom FROM patients
   		WHERE patient_id = '".$value["pat_id"]."'";
@@ -241,8 +224,7 @@ if(isset($today)) {
     $today[$key]["CCAM"] = $ccam["LIBELLELONG"];
   }
 }
-else
-  $today = "";
+
 mysql_close();
 
 // Création du template

@@ -9,6 +9,16 @@ function setClose(code, type) {
 
 <table class="selectCode">
   <tr>
+  	<th>Favoris disponibles</th>
+  </tr>
+  
+  {if !$list}
+  <tr>
+  	<td>Aucun favori disponible</td>
+  </tr>
+  {/if}
+
+  <tr>
   {foreach from=$list item=curr_code key=curr_key}
     <td>
       <strong>{$curr_code.code}</strong><br />

@@ -19,6 +19,21 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// A t'on fourni l'id du patient et du chirurgien?
+$chir = null;
+$chir_id = dPgetParam($_GET, "chir_id");
+if ($chir_id) {
+  $chir = new CUser;
+  $chir->load($chir_id);
+}
+
+$pat = null;
+$pat_id = dPgetParam($_GET, "pat_id");
+if ($pat_id) {
+  $pat = new CPatient;
+  $pat->load($pat_id);
+}
+
 // L'utilisateur est-il chirurgien?
 $mediuser = new CMediusers;
 $mediuser->load($AppUI->user_id);
@@ -33,20 +48,6 @@ if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
   $chir = new CUser;
   $chir->load($AppUI->user_id);
 }
-
-// A t'on fourni l'id du patient et du chirurgien?
-$chir_id = dPgetParam($_GET, "chir_id", 0);
-$pat_id = dPgetParam($_GET, "pat_id", 0);
-if($chir_id) {
-  $chir = new CUser;
-  $chir->load($chir_id);
-}
-if($pat_id) {
-  $pat = new CPatient;
-  $pat->load($pat_id);
-}
-  
-$pat_id = dPgetParam($_GET, "pat_id", 0);
 
 // Heures & minutes
 $start = 7;
@@ -65,6 +66,9 @@ for ($i = 0; $i < 60; $i += $step) {
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->assign('protocole', false);
+$smarty->assign('op', null);
+$smarty->assign('plage', null);
 $smarty->assign('chir', $chir);
 $smarty->assign('pat', $pat);
 $smarty->assign('hours', $hours);

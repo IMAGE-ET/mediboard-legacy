@@ -44,7 +44,7 @@ $nameMonth = $monthList[$month-1];
 
 $sql = "SELECT users.user_username FROM users WHERE users.user_id = '$chir'";
 $result = db_loadlist($sql);
-$id_chir = $result[0][user_username];
+$id_chir = $result[0]['user_username'];
 
 //Calcul du temps occupé par chaque opération
 $sql = "SELECT operations.temp_operation AS duree, plagesop.id AS id
@@ -58,34 +58,20 @@ $sql = "SELECT operations.temp_operation AS duree, plagesop.id AS id
 $result = db_loadlist($sql);
 foreach($result as $key => $value) {
   $plageop = $value["id"];
-  $duree[$plageop]["newtime"] = mktime($duree[$plageop]["hour"] + intval(substr($value["duree"], 0, 2)), $duree[$plageop]["min"] + intval(substr($value["duree"], 3, 2)), 0, $month, $day, $year);
-  $duree[$plageop]["hour"] = date("H", $duree[$plageop]["newtime"]);
-  $duree[$plageop]["min"] = date("i", $duree[$plageop]["newtime"]);
+  
+  if (!isset($duree[$plageop])) {
+    $duree[$plageop] = array(
+      "hour" => 0, 
+      "min" => 0);
+	}
+
+  $hour = $duree[$plageop]["hour"] + intval(substr($value["duree"], 0, 2));
+  $min  = $duree[$plageop]["min" ] + intval(substr($value["duree"], 3, 2));
+  $newtime = mktime($hour, $min);
+  $duree[$plageop]["hour"] = date("H", $newtime);
+  $duree[$plageop]["min" ] = date("i", $newtime);
 }
-/*
-$sql = "SELECT plagesop.id AS id, plagesop.date, operations.temp_operation,
-		plagesop.fin - plagesop.debut as free_time, 0 AS busy_time
-		FROM plagesop
-		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_chir = '$id_chir'
-		AND plagesop.date LIKE '$year-$month-__'
-		AND operations.operation_id IS NULL
-		AND plagesop.date > '$today'
-		UNION
-		SELECT plagesop.id AS id, plagesop.date, operations.temp_operation,
-		plagesop.fin - plagesop.debut AS free_time, SUM(operations.temp_operation) AS busy_time
-		FROM plagesop
-		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_chir = '$id_chir'
-		AND plagesop.date LIKE '$year-$month-__'
-		AND operations.operation_id IS NOT NULL
-		AND plagesop.date > '$today'
-		GROUP BY operations.plageop_id
-		ORDER BY plagesop.date, plagesop.id";
-*/
-// Nouvelle requete pour assurer la compatibilité avec mySQL 3.X
+
 $sql = "SELECT plagesop.id AS id, plagesop.date,
 		plagesop.fin AS fin, plagesop.debut AS debut
 		FROM plagesop
@@ -133,26 +119,27 @@ while($inverse);
 $i = 0;
 foreach($result as $key => $value) {
   $plageop = $value["id"];
-  $duree[$plageop]["newtime"] = mktime($duree[$plageop]["hour"] + intval($curr_op_hour), $duree[$plageop]["min"] + intval($curr_op_min), 0, $month, $day, $year);
-  $duree[$plageop]["hour"] = date("H", $duree[$plageop]["newtime"]);
-  $duree[$plageop]["min"] = date("i", $duree[$plageop]["newtime"]);
-  $temp_plage = mktime(intval(substr($value["fin"], 0, 2)) - intval(substr($value["debut"], 0, 2)), intval(substr($value["fin"], 3, 2)) - intval(substr($value["debut"], 3, 2)), 0, $month, $day, $year);
+  $cumul =& $duree[$plageop];
+  
+  $hour = $cumul["hour"] + intval($curr_op_hour);
+  $min  = $cumul["min" ] + intval($curr_op_min );
+  $newtime = mktime($hour, $min);
+  $cumul["hour"] = date("H", $newtime);
+  $cumul["min" ] = date("i", $newtime);
+  
+  $hour_plage = intval(substr($value["fin"], 0, 2)) - intval(substr($value["debut"], 0, 2));
+  $min_plage  = intval(substr($value["fin"], 3, 2)) - intval(substr($value["debut"], 3, 2));
+  $temp_plage = mktime($hour_plage, $min_plage);
   $hour_plage = date("H", $temp_plage);
-  $min_plage = date("i", $temp_plage);
-  if($hour_plage > $duree[$plageop]["hour"])
-    $is_time_left = 1;
-  elseif($hour_plage == $duree[$plageop]["hour"]) {
-    if($min_plage >= $duree[$plageop]["min"])
-      $is_time_left = 1;
-    else
-      $is_time_left = 0;
-  }
-  else
-    $is_time_left = 0;
-  if($is_time_left) {
+  $min_plage  = date("i", $temp_plage);
+  
+  $is_time_left = $hour_plage > $cumul["hour"] or 
+    ($hour_plage == $cumul["hour"] and $min_plage >= $cumul["min"]);
+    
+  if ($is_time_left) {
     $list[$i] = $value;
-	$list[$i]["dateFormed"] = substr($value["date"], 8, 2)."/".substr($value["date"], 5, 2)."/".substr($value["date"], 0, 4);
-	$i++;
+    $list[$i]["dateFormed"] = substr($value["date"], 8, 2)."/".substr($value["date"], 5, 2)."/".substr($value["date"], 0, 4);
+	  $i++;
   }
 }
 
@@ -171,6 +158,7 @@ $smarty->assign('curr_op_hour', $curr_op_hour);
 $smarty->assign('curr_op_min', $curr_op_min);
 $smarty->assign('chir', $chir);
 $smarty->assign('list', $list);
+$smarty->assign('duree', $duree);
 
 $smarty->display('plage_selector.tpl');
 

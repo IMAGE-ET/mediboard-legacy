@@ -19,14 +19,7 @@ function checkForm() {
       popPat();
       return false;
     }
-/* Not a mandatory anymore
-  if (field = form.CIM10_code)
-    if (field.value.length == 0) {
-      alert("Code CIM10 Manquant");
-      popCode('cim10');
-      return false;
-    }
-*/
+
   if (field = form.CCAM_code)
     if (field.value.length == 0) {
       alert("Code CCAM Manquant");

@@ -50,7 +50,8 @@ for ($i = 0; $i < 60; $i += $step) {
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('protocole', TRUE);
+$smarty->assign('protocole', true);
+$smarty->assign('op', null);
 $smarty->assign('chir', $chir);
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);

@@ -7,12 +7,13 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$list = null;
 $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
 
@@ -33,7 +34,6 @@ switch($type) {
 			$query = "select CODE, LIBELLELONG from ACTES where CODE = '".$value['code']."'";
 			$result = mysql_query($query);
 			$row = mysql_fetch_array($result);
-			$list[$i]["id"] = $value['favoris_id'];
 			$list[$i]["code"] = $row['CODE'];
 			$list[$i]["texte"] = $row['LIBELLELONG'];
 			$i++;
@@ -57,7 +57,6 @@ switch($type) {
 			$query = "select CODE, LIBELLELONG from ACTES where CODE = '".$value['code']."'";
 			$result = mysql_query($query);
 			$row = mysql_fetch_array($result);
-			$list[$i]["id"] = $value['favoris_id'];
 			$list[$i]["code"] = $row['CODE'];
 			$list[$i]["texte"] = $row['LIBELLELONG'];
 			$i++;

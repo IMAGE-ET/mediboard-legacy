@@ -44,7 +44,6 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('protocole', true);
-
 $smarty->assign('op', $op);
 $smarty->assign('chir', $op->_ref_chir);
 $smarty->assign('pat', $op->_ref_pat);
