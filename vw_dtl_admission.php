@@ -67,7 +67,7 @@ $ccam = mysql_fetch_array($ccamr);
 $op["CCAM"] = $ccam["LIBELLELONG"];
 mysql_close();
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('op', $op);
