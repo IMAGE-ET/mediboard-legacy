@@ -7,6 +7,11 @@
 * @author Thomas Despoix
 */
 
+require_once("modules/mediusers/mediusers.class.php");
+require_once("modules/mediusers/functions.class.php");
+require_once("modules/mediusers/groups.class.php");
+require_once("modules/admin/admin.class.php");
+
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {
@@ -14,25 +19,22 @@ if (!$canRead) {
 }
 
 // L'utilisateur est-il chirurgien?
-$sql = "SELECT users.user_id AS id, 
-  users.user_first_name AS firstname, 
-  users.user_last_name AS lastname,
-  groups_mediboard.text as text
-  FROM users, users_mediboard, functions_mediboard, groups_mediboard
-  WHERE users.user_id = users_mediboard.user_id
-  AND functions_mediboard.function_id = users_mediboard.function_id
-  AND functions_mediboard.group_id = groups_mediboard.group_id
-  AND users.user_id = '$AppUI->user_id'";
-$result = db_loadlist($sql);
-$curuser = $result[0];
+$mediuser = new CMediusers;
+$mediuser->load($AppUI->user_id);
 
-if ($curuser["text"] == "Chirurgie" || $curuser["text"] == "Anesthésie") {
-  $chir = $curuser;
-  $chir["name"] = "Dr. {$chir['lastname']} {$chir['firstname']}";
+$function = new CFunctions;
+$function->load($mediuser->function_id);
+
+$group = new CGroups;
+$group->load($function->group_id);
+
+if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
+  $chir = new CUser;
+  $chir->load($AppUI->user_id);
 }
 
-// Heures et minutes
-$star = 7;
+// Heures & minutes
+$start = 7;
 $stop = 20;
 $step = 15;
 
@@ -55,17 +57,16 @@ $smarty->config_dir = "modules/$m/configs/";
 $smarty->cache_dir = "modules/$m/cache/";
 
 // On récupère les informations
-
 $smarty->assign('m', $m);
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
+
+$smarty->assign('protocole', TRUE);
 $smarty->assign('chir', $chir);
-$smarty->assign('protocole', true);
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);
 
-
 //Affichage de la page
-$smarty->display('vw_add_planning.tpl');
+$smarty->display('vw_addedit_planning.tpl');
 
 ?>

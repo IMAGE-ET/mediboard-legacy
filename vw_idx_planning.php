@@ -268,6 +268,7 @@ $smarty->compile_dir = "modules/$m/templates_c/";
 $smarty->config_dir = "modules/$m/configs/";
 $smarty->cache_dir = "modules/$m/cache/";
 
+$smarty->assign('m', $m);
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('year', $year);
 $smarty->assign('day', $day);

@@ -44,11 +44,8 @@ class COperation extends CDpObject {
   var $admis = "n";
     
   // Form fields
-  var $_chir_name = NULL;
-  var $_pat_name = NULL;
   var $_hour_op = NULL;
   var $_min_op = NULL;
-  var $_date = NULL;
   var $_date_rdv_anesth = NULL;
   var $_hour_anesth = NULL;
   var $_min_anesth = NULL;
@@ -73,7 +70,7 @@ class COperation extends CDpObject {
         ORDER BY rank";
       $result = db_loadlist($sql);
 
-      $i = 1;echo
+      $i = 1;
       foreach ($result as $key => $value) {
         $sql = "UPDATE operations SET rank = '$i' where operation_id = '".$value["operation_id"]."'";
         db_exec( $sql );
@@ -84,56 +81,56 @@ class COperation extends CDpObject {
     return parent::delete();
   }
   
-  function load() {
-    if ($msg = parent::load()) {
-      return $msg;
+	function load($oid = NULL, $strip = TRUE) {
+    if (!parent::load($oid, $strip)) {
+      return FALSE;
     }
 
-    $sql = "SELECT user_last_name, user_first_name
-      FROM users
-      WHERE user_id = '$this->chir_id'";
-    $chir = db_loadlist($sql);
-
-    $this->_chir_name = "Dr. ".$chir[0]["user_last_name"]." ".$chir[0]["user_first_name"];
-    
-    $sql = "SELECT nom, prenom
-      FROM patients
-      WHERE patient_id = '$this->pat_id'";
-    $pat = db_loadlist($sql);
-
-    $this->_pat_name = $pat[0]["nom"]." ".$pat[0]["prenom"];
     $this->_hour_op = substr($this->temp_operation, 0, 2);
-    $this->_min_op = substr($this->temp_operation, 3, 2);
+    $this->_min_op  = substr($this->temp_operation, 3, 2);
 
-    $sql = "SELECT date
-      FROM plagesop
-      WHERE id = '$this->plageop_id'";
-    $plage = db_loadlist($sql);
-    
+    $this->_date_rdv_anesth = 
+      substr($this->date_anesth, 0, 4).
+      substr($this->date_anesth, 5, 2).
+      substr($this->date_anesth, 8, 2);
+    $this->_rdv_anesth = 
+      substr($this->date_anesth, 8, 2)."/".
+      substr($this->date_anesth, 5, 2)."/".
+      substr($this->date_anesth, 0, 4);
+      
     if($this->type_anesth != NULL) {
       $anesth = dPgetSysVal("AnesthType");
       $this->_lu_type_anesth = $anesth[$this->type_anesth];
     }
-    
-    $this->_date = substr($plage[0]["date"], 8, 2)."/".substr($plage[0]["date"], 5, 2)."/".substr($plage[0]["date"], 0, 4);
-    $this->_date_rdv_anesth = substr($this->date_anesth, 0, 4).substr($this->date_anesth, 5, 2).substr($this->date_anesth, 8, 2);
-    $this->_rdv_anesth = substr($this->date_anesth, 8, 2)."/".substr($this->date_anesth, 5, 2)."/".substr($this->date_anesth, 0, 4);
+
     $this->_hour_anesth = substr($this->time_anesth, 0, 2);
-    $this->_min_anesth = substr($this->time_anesth, 3, 2);
-    $this->_date_rdv_adm = substr($this->date_adm, 0, 4).substr($this->date_adm, 5, 2).substr($this->date_adm, 8, 2);
-    $this->_rdv_adm = substr($this->date_adm, 8, 2)."/".substr($this->date_adm, 5, 2)."/".substr($this->date_adm, 0, 4);
+    $this->_min_anesth  = substr($this->time_anesth, 3, 2);
+
+    $this->_date_rdv_adm = 
+      substr($this->date_adm, 0, 4).
+      substr($this->date_adm, 5, 2).
+      substr($this->date_adm, 8, 2);
+    $this->_rdv_adm = 
+      substr($this->date_adm, 8, 2)."/".
+      substr($this->date_adm, 5, 2)."/".
+      substr($this->date_adm, 0, 4);
     $this->_hour_adm = substr($this->time_adm, 0, 2);
-    $this->_min_adm = substr($this->time_adm, 3, 2);
+    $this->_min_adm  = substr($this->time_adm, 3, 2);
+    
+    return TRUE;
   }
   
   function store() {
     // Data computation
-    $this->date_anesth = substr($this->_date_rdv_anesth, 0, 4)."-".substr($this->_date_rdv_anesth, 4, 2)."-".substr($this->_date_rdv_anesth, 6, 2);
-    $this->time_anesth = $this->_hour_anesth.":".$this->_min_anesth.":00";
-    $this->date_adm = substr($this->_date_rdv_adm, 0, 4)."-".substr($this->_date_rdv_adm, 4, 2)."-".substr($this->_date_rdv_adm, 6, 2);
-    $this->time_adm = $this->_hour_adm.":".$this->_min_adm.":00";
-    $this->temp_operation = $this->_hour_op.":".$this->_min_op.":00";
-    if($this->_lu_type_anesth != NULL) {
+    $this->date_anesth = 
+      substr($this->_date_rdv_anesth, 0, 4)."-".
+      substr($this->_date_rdv_anesth, 4, 2)."-".
+      substr($this->_date_rdv_anesth, 6, 2);
+    $this->time_anesth = 
+      $this->_hour_anesth.":".
+      $this->_min_anesth.":00";
+
+    if ($this->_lu_type_anesth) {
       $anesth = dPgetSysVal("AnesthType");
       foreach($anesth as $key => $value) {
         if($value == $this->_lu_type_anesth)
@@ -141,9 +138,21 @@ class COperation extends CDpObject {
       }
     }
 
+    $this->date_adm = 
+      substr($this->_date_rdv_adm, 0, 4)."-".
+      substr($this->_date_rdv_adm, 4, 2)."-".
+      substr($this->_date_rdv_adm, 6, 2);
+    $this->time_adm = 
+      $this->_hour_adm.":".
+      $this->_min_adm.":00";
+
+    $this->temp_operation = 
+      $this->_hour_op.":".
+      $this->_min_op.":00";
+
+
     return parent::store();
   }
-    
 }
 
 ?>
