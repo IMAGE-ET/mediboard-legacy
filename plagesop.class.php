@@ -71,7 +71,7 @@ class Cplagesop extends CDpObject {
       $this->day = "0".$this->day;
     }
 
-    // 2 chars for the day
+    // 2 chars for the month
     if (strlen($this->month) == 1) {
       $this->month = "0".$this->month;
     }
@@ -80,6 +80,9 @@ class Cplagesop extends CDpObject {
     if ($this->heurefin == "19") {
       $this->minutefin = "00";
     }
+    
+    $horaireDeb = $this->heuredeb.":".$this->minutedeb.":00";
+    $horaireFin = $this->heurefin.":".$this->minutefin.":00";
 
     if ($this->id) {
       $sql = "SELECT * FROM plagesop WHERE id = '$this->id'";
@@ -89,25 +92,33 @@ class Cplagesop extends CDpObject {
       $sallebase = $row[0]['id_salle'];
       
       for ($i = 0; $i < $this->repet; $i++) {
+        
+        $date = $this->year."-".$this->month."-".$this->day;
+        
         // Get ID
-        $sql = "SELECT FROM plagesop WHERE date = '{$this->year}-{$this->month}-{$this->day}' AND id_salle = '$sallebase'";
-        $sql .= $chirbase != '0' ? " AND id_chir = '$chirbase'" : " AND id_spec = '$specbase'";
+        $sql = "SELECT * FROM plagesop " .
+            "WHERE date = '$date' " .
+            "AND id_salle = '$sallebase'" .
+            ($chirbase != '0' ? " AND id_chir = '$chirbase'" : " AND id_spec = '$specbase'");
 
         $row = db_loadlist($sql);
         $id = $row[0]['id'];
 
         // Get all others the same day
-        $sql = "SELECT * FROM plagesop WHERE id_salle = '$this->id_salle' AND date = '{$this->year}-{$this->month}-{$this->day}' and id != '$id'";
+        $sql = "SELECT * FROM plagesop " .
+            "WHERE id_salle = '$this->id_salle' " .
+            "AND date = '$date' " .
+            "AND id != '$id'";
         $row = db_loadlist($sql);
 
         $noCollision = TRUE;
 
         foreach ($row as $key => $value) {
-          if ($value['debut'] <= $this->heurefin.":".$this->minutefin.":00" and $value['fin'] >  $this->heurefin.":".$this->minutefin.":00")
+          if ($value['debut'] < $horaireFin and $value['fin'] > $horaireFin)
             $noCollision = FALSE;
-          if ($value['debut'] <  $this->heuredeb.":".$this->minutedeb.":00" and $value['fin'] >= $this->heuredeb.":".$this->minutedeb.":00")
+          if ($value['debut'] < $horaireDeb and $value['fin'] > $horaireDeb)
             $noCollision = FALSE;
-          if ($value['debut'] >= $this->heuredeb.":".$this->minutedeb.":00" and $value['fin'] <= $this->heurefin.":".$this->minutefin.":00")
+          if ($value['debut'] >= $horaireDeb and $value['fin'] <= $horaireFin)
             $noCollision = FALSE;
         }
 
@@ -117,9 +128,9 @@ class Cplagesop extends CDpObject {
               id_anesth = '".$this->id_anesth."',
               id_spec = '".$this->id_spec."',
               id_salle = '".$this->id_salle."',
-              date = '".$this->year."-".$this->month."-".$this->day."',
-              debut = '".$this->heuredeb.":".$this->minutedeb.":00',
-              fin = '".$this->heurefin.":".$this->minutefin.":00'
+              date = '$date',
+              debut = '$horaireDeb',
+              fin = '$horaireFin'
               WHERE id = '$id'";
 
           if (!db_exec($sql))
@@ -133,7 +144,7 @@ class Cplagesop extends CDpObject {
         $this->year  = $nyear ;
         $this->month = $nmonth;
         $this->day   = $nday  ;
-        
+
         if ($this->double) {
           $nyear  = date("Y", mktime (0,0,0,$this->month,$this->day+7,$this->year));
           $nmonth = date("n", mktime (0,0,0,$this->month,$this->day+7,$this->year));
@@ -151,24 +162,31 @@ class Cplagesop extends CDpObject {
     else {
       for ($i = 0; $i < $this->repet; $i++)
       {
-        $sql = "SELECT * FROM plagesop WHERE id_salle = '$this->id_salle' AND date = '{$this->year}-{$this->month}-{$this->day}";
+        
+        $date = $this->year."-".$this->month."-".$this->day;
+        
+        $sql = "SELECT * " .
+            "FROM plagesop " .
+            "WHERE id_salle = '$this->id_salle' " .
+            "AND date = '$date";
         $row = db_loadlist($sql);
 
         $noCollision = TRUE;
+        
         foreach ($row as $key => $value) {
-          if ($value['debut'] <= $this->heurefin.":".$this->minutefin.":00" and $value['fin'] > $this->heurefin.":".$this->minutefin.":00")
+          if ($value['debut'] < $horaireFin and $value['fin'] > $horaireFin)
             $noCollision = FALSE;
-          if ($value['debut'] < $this->heuredeb.":".$this->minutedeb.":00" and $value['fin'] >= $this->heuredeb.":".$this->minutedeb.":00")
+          if ($value['debut'] < $horaireDeb and $value['fin'] > $horaireDeb)
             $noCollision = FALSE;
-          if ($value['debut'] >= $this->heuredeb.":".$this->minutedeb.":00" and $value['fin'] <= $this->heurefin.":".$this->minutefin.":00")
+          if ($value['debut'] >= $horaireDeb and $value['fin'] <= $horaireFin)
             $noCollision = FALSE;
         }
         
         if ($noCollision)
         {
-            $sql = "INSERT INTO plagesop(id_chir, id_anesth, id_spec, id_salle, date, debut, fin)
-              VALUES('$this->id_chir', '$this->id_anesth', '$this->id_spec', '$this->id_salle', '{$this->year}-{$this->month}-{$this->day}',
-              '{$this->heuredeb}:{$this->minutedeb}:00', '{$this->heurefin}:{$this->minutefin}:00')";
+            $sql = "INSERT INTO plagesop(id_chir, id_anesth, id_spec, id_salle, date, debut, fin) " .
+                "VALUES('$this->id_chir', '$this->id_anesth', '$this->id_spec', '$this->id_salle', '$date', '$horaireDeb', '$horaireFin')";
+      
             if (!db_exec($sql))
               return db_error();
         }
