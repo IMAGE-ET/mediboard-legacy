@@ -126,8 +126,6 @@ if (!$ok) {
 require_once("classes/smartydp.class.php");
 $smarty = new CSmartyDP;
 
-$smarty->debugging = true;
-
 $smarty->assign('callback', $callback);
 $smarty->assign('title', $title);
 $smarty->assign('list', $list);

@@ -120,8 +120,6 @@ $modules["all"] = "all";
 require_once("classes/smartydp.class.php");
 $smarty = new CSmartyDP;
 
-$smarty->debugging = true;
-
 $smarty->assign('user_id', $user_id);
 $smarty->assign('pvs', $pvs);
 $smarty->assign('pgos', $pgos);
