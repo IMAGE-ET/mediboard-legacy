@@ -2,29 +2,37 @@
   <tr>
     <td>
 
+      <form name="selectFrm" action="" method="get">
+      <input type="hidden" name="m" value="{$m}" />
+      <input type="hidden" name="tab" value="3" />
       <table class="form">
         <tr>
           <th>Choisir un chirurgien</th>
           <td>
-            <select name="choixChir">
+            <select name="chir_id" onchange="this.form.submit()">
               <option value="0" >-- Tous les chirurgiens</option>
-              {foreach item=chir from=$chirs}
-              <option value="{$chir.chir_id}">Dr. {$chir.lastname} {$chir.firstname} ({$chir.nb_protocoles})</option>
+              {foreach item=curr_chir from=$chirs}
+              <option value="{$curr_chir.chir_id}" {if $chirSel == $curr_chir.chir_id} selected="selected" {/if}>
+                Dr. {$curr_chir.lastname} {$curr_chir.firstname} ({$curr_chir.nb_protocoles})
+              </option>
               {/foreach}
             </select>
           </td>
                 
           <th>Choisir un code CCAM</th>
           <td>
-            <select name="choixCode">
-              <option value="0" >-- Tous les codes</option>
-              {foreach item=code from=$codes}
-              <option value="{$code.CCAM_code}">{$code.CCAM_code} ({$code.nb_protocoles})</option>
+            <select name="CCAM_code" onchange="this.form.submit()">
+              <option value="" >-- Tous les codes</option>
+              {foreach item=curr_code from=$codes}
+              <option value="{$curr_code.CCAM_code}" {if $codeSel == $curr_code.CCAM_code} selected="selected" {/if}>
+                {$curr_code.CCAM_code} ({$curr_code.nb_protocoles})
+              </option>
               {/foreach}
             </select>
           </td>
         </tr>
-      </table>    
+      </table>
+      </form>    
       
     </td>
   </tr>
@@ -34,14 +42,14 @@
 
       <table class="tbl">
         <tr>
-          <th>Chirurgien</th>
-          <th>Code CCAM</th>
+          <th width="50%">Chirurgien</th>
+          <th width="50%">Acte CCAM</th>
         </tr>
         
-        {foreach item=protocole from=$protocoles}
+        {foreach item=curr_protocole from=$protocoles}
         <tr>    
-          <td><a href="?m={$m}&amp;tab=5&amp;protocole_id={$protocole.operation_id}">Dr. {$protocole.lastname} {$chir.firstname}</a></td>
-          <td>{$protocole.CCAM_code}</td>
+          <td><a href="?m={$m}&amp;tab=5&amp;protocole_id={$curr_protocole.operation_id}">Dr. {$curr_protocole.lastname} {$curr_protocole.firstname}</a></td>
+          <td><strong>{$curr_protocole.CCAM_code}</strong><br />{$curr_protocole.CCAM_libelle}</td>
         </tr>
         {/foreach}
       </table>
