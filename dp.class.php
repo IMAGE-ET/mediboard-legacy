@@ -110,8 +110,16 @@ class CDpObject {
       return false;
     }
     $sql = "SELECT * FROM $this->_tbl WHERE $this->_tbl_key=$oid";
-    return db_loadObject( $sql, $this, false, $strip );
+    $object = db_loadObject( $sql, $this, false, $strip );
+    $this->updateFormFields();
+    return $object;
   }
+  
+/**
+ * This function update the form fields from the db fields
+ */
+	function updateFormFields() {
+	}
 
 /**
  *	Generic check method
@@ -148,6 +156,8 @@ class CDpObject {
  */
 	function store( $updateNulls = false ) {
     global $AppUI;
+    
+        $this->updateDBFields();
 
 		$msg = $this->check();
 		if( $msg ) {
@@ -166,6 +176,12 @@ class CDpObject {
 		} else {
 			return NULL;
 		}
+	}
+  
+/**
+ * This function update the db fields from the form fields
+ */
+	function updateDBFields() {
 	}
 
 /**
