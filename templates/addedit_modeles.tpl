@@ -13,7 +13,7 @@ function supprimer() {
 
 {/literal}
 </script>
-  
+
 <form name="editFrm" action="?m={$m}" method="POST">
 
 <input type="hidden" name="m" value="{$m}" />
@@ -21,11 +21,22 @@ function supprimer() {
 <input type="hidden" name="dosql" value="do_modele_aed" />
 <input type="hidden" name="compte_rendu_id" value="{$compte_rendu->compte_rendu_id}" />
 
+<table class="main">
+
+<tr>
+  <td>
+  
 <table class="form">
   <tr>
-    <th class="category">Informations sur le modèle</th>
+    <th class="category" colspan="2">Informations sur le modèle</th>
+  </tr>
+  
+  <tr>
     <th>Nom: </th>
     <td><input type="text" name="nom" value="{$compte_rendu->nom}"></td>
+  </tr>
+  
+  <tr>
     <th>Praticien:</th>
     <td>
       <select name="chir_id">
@@ -37,6 +48,9 @@ function supprimer() {
         {/foreach}
       </select>
     </td>
+  </tr>
+  
+  <tr>
     <th>Type de compte-rendu: </th>
     <td>
       <select name="type">
@@ -47,22 +61,31 @@ function supprimer() {
         {/foreach}
       </select>
     </td>
+  </tr>
+  
+  <tr>
+    <td class="button" colspan="2">
     {if $compte_rendu->compte_rendu_id}
-    <td class="button">
-    <input type="submit" value="modifier" />
-    <input type="button" value="supprimer" onclick="supprimer()" />
-    <input type="button" value="nouveau" onclick="nouveau()" />
-    </td>
+      <input type="submit" value="modifier" />
+      <input type="button" value="supprimer" onclick="supprimer()" />
+      <input type="button" value="nouveau" onclick="nouveau()" />
     {else}
-    <td class="button"><input type="submit" value="créer" /></td>
+      <input type="submit" value="créer" />
     {/if}
+    </td>
   </tr>
 </table>
 
-{if $compte_rendu->compte_rendu_id}
-<textarea style="width: 99%" id="htmlarea" name="source" rows="40">
-      {$compte_rendu->source}
-</textarea>
-{/if}
+  </td>
+  <td class="greedyPane">
+  {if $compte_rendu->compte_rendu_id}
+    <textarea style="width: 99%" id="htmlarea" name="source" rows="40">
+    {$compte_rendu->source}
+    </textarea>
+  {/if}
+  </td>
+</tr>
+
+</table>
 
 </form>

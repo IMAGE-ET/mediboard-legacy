@@ -8,10 +8,23 @@
 */
 
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie') );
 require_once( $AppUI->getSystemClass('smartydp'));
+
+define("TMT_CONSULTATION"   , "consultation"   );
+define("TMT_HOSPITALISATION", "hospitalisation");
+define("TMT_OPERATION"      , "operation"      );
+define("TMT_AUTRE"          , "autre"          );
+
+$listTypes = array();
+$listType[] = TMT_CONSULTATION;
+$listType[] = TMT_HOSPITALISATION;
+$listType[] = TMT_OPERATION;
+$listType[] = TMT_AUTRE;
 
 class CTemplateManager {
   var $properties = array();
+  var $helpers = array();
   
   var $template = null;
   var $document = null;
@@ -21,7 +34,8 @@ class CTemplateManager {
   function CTemplateManager() {
   }
   
-  function addProperty ($field, $value = null) {
+  
+  function addProperty($field, $value = null) {
     $this->properties[$field] = array (
       'field' => $field,
       'value' => $value,
@@ -31,11 +45,15 @@ class CTemplateManager {
       'valueHTML' => "<span class=\"value\">{$value}</span>");
 	} 
   
+  function addHelper($name, $text) {
+		$this->helpers[$name] = $text;
+	}
+  
   function applyTemplate($template) {
     assert(is_a($template, "CCompteRendu"));
     
     if (!$this->valueMode) {
-      $this->SetFields($template->type);
+      $this->SetFields($template->type, $template->chir_id);
 		}
 
     $this->renderDocument($template->source);
@@ -69,15 +87,15 @@ class CTemplateManager {
     $this->addProperty("Praticien - spécialité");
         
     switch ($modeleType) {
-			case "consultation":
+      case TMT_CONSULTATION:
         $this->addProperty("Consultation - date");
         $this->addProperty("Consultation - heure");
         $this->addProperty("Consultation - motif");
         $this->addProperty("Consultation - remarques");
         $this->addProperty("Consultation - examen");
         $this->addProperty("Consultation - traitement");
-				break;
-      case "operation":
+        break;
+      case TMT_OPERATION:
         $this->addProperty("Opération - Anesthésiste - nom");
         $this->addProperty("Opération - Anesthésiste - prénom");
         $this->addProperty("Opération - CCAM - code");
@@ -90,12 +108,41 @@ class CTemplateManager {
         $this->addProperty("Opération - sortie bloc");
         $this->addProperty("Opération - matériel");
         break;
-      case "hospitalisation":
+      case TMT_HOSPITALISATION:
         $this->addProperty("Hospitalisation - durée");
         $this->addProperty("Hospitalisation - examens");
         break;
-		}
+    }
 	}
+  
+  function loadHelpers($user_id, $modeleType) {
+    // Aides à la saisie
+    $where = array();
+    $where["user_id"] = "= '$user_id'";
+    $where["field"  ] = "= 'compte_rendu'";
+    
+    switch ($modeleType) {
+      case TMT_CONSULTATION:
+        $where["module" ] = "= 'dPcabinet'";
+        $where["class"  ] = "= 'Consultation'";
+        break;
+      case TMT_OPERATION:
+        $where["module" ] = "= 'dPplanninOp'";
+        $where["class"  ] = "= 'Operation'";
+        break;
+      case TMT_HOSPITALISATION:
+        $where["module" ] = "= 'dPhospi'";
+        $where["class"  ] = "= 'Hospitalisation'";
+        break;
+    }
+    
+    $aides = new CAideSaisie();
+    $aides = $aides->loadList($where);
+    
+    foreach ($aides as $aide) {
+      $this->addHelper($aide->name, $aide->text);
+    }
+  }
   
   function renderDocument($source) {
     

@@ -23,7 +23,7 @@ function initEditor() {
   cfg.pageStyle = "@import url(./style/mediboard/htmlarea.css);";
 
 
-  // Add dropdown
+  // Add properties dropdown
   var options = {};
   options["&mdash; Ajouter un champ &mdash;"] = "";
 
@@ -44,8 +44,29 @@ function initEditor() {
 
   cfg.registerDropdown(obj);
 
-  // add the new button to the toolbar
-  cfg.toolbar.push(["Properties"]);
+  // Add Helpers dropdown
+  var options = {};
+  options["&mdash; Chosir une aide &mdash;"] = "";
+
+{/literal}
+  {foreach from=$templateManager->helpers key=helperName item=helperText}
+    options["{$helperName}"] = "{$helperText|escape:"javascript"}";
+  {/foreach}
+{literal}
+
+  var obj = {
+    id            : "Helpers",
+    tooltip       : "Utililiser une aide à la saisie",
+    options       : options,
+    action        : function(editor) { actionHandler(editor, this); },
+    refresh       : function(editor) { refreshHandler(editor, this); },
+    context       : ""
+  };
+
+  cfg.registerDropdown(obj);
+
+  // add the new dropdowns to the toolbar
+  cfg.toolbar.push(["Properties", "space", "Helpers"]);
 
   editor.generate();
   return false;

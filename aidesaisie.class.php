@@ -25,11 +25,21 @@ class CAideSaisie extends CDpObject {
   var $name = null;
   var $text = null;
   
+  // Form fields
+  var $_module_name = null;
+  
   // Referenced objects
   var $_ref_user = null;
 
   function CAideSaisie() {
     $this->CDpObject( 'aide_saisie', 'aide_id' );
+  }
+  
+  function updateFormFields() {
+    global $AppUI;
+    
+    $installed_modules =& $AppUI->getInstalledModules();
+    $this->_module_name = $installed_modules[$this->module];
   }
   
   function loadRefs() {
