@@ -39,6 +39,7 @@ function setPat( key, val ) {
         </td>
       </tr>
     </table>
+    {if $patSel->patient_id}
     </form>
     <table class="form" bgcolor="#eee">
       <tr><th class="category" colspan="4">Informations sur le patient</th></tr>
@@ -128,6 +129,7 @@ function setPat( key, val ) {
       </tr>
       {/foreach}
     </table>
+    {/if}
   </td>
   <td class="halfPane">
   <form name="chirFrm" action="index.php" method="get">

@@ -24,41 +24,42 @@ $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_READ);
 
 // Chargement des références du patient
-$patSel->loadRefs();
-foreach($patSel->_ref_consultations as $key => $value) {
-  $patSel->_ref_consultations[$key]->loadRefs();
-  $patSel->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
-  if($chirSel) {
-    if($patSel->_ref_consultations[$key]->_ref_plageconsult->chir_id != $chirSel)
-      unset($patSel->_ref_consultations[$key]);
-  }
-  else {
-    $toDel = true;
-    foreach($listPrat as $key2 => $value2) {
-      if($patSel->_ref_consultations[$key]->_ref_plageconsult->chir_id == $listPrat[$key2]->user_id)
-        $toDel = false;
+if($pat_id) {
+  $patSel->loadRefs();
+  foreach($patSel->_ref_consultations as $key => $value) {
+    $patSel->_ref_consultations[$key]->loadRefs();
+    $patSel->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
+    if($chirSel) {
+      if($patSel->_ref_consultations[$key]->_ref_plageconsult->chir_id != $chirSel)
+        unset($patSel->_ref_consultations[$key]);
     }
-    if($toDel)
-      unset($patSel->_ref_consultations[$key]);
+    else {
+      $toDel = true;
+      foreach($listPrat as $key2 => $value2) {
+        if($patSel->_ref_consultations[$key]->_ref_plageconsult->chir_id == $listPrat[$key2]->user_id)
+          $toDel = false;
+      }
+      if($toDel)
+        unset($patSel->_ref_consultations[$key]);
+    }
+  }
+  foreach($patSel->_ref_operations as $key => $value) {
+    $patSel->_ref_operations[$key]->loadRefs();
+    if($chirSel) {
+      if($patSel->_ref_operations[$key]->chir_id != $chirSel)
+        unset($patSel->_ref_operations[$key]);
+    }
+    else {
+      $toDel = true;
+      foreach($listPrat as $key2 => $value2) {
+        if($patSel->_ref_operations[$key]->chir_id == $listPrat[$key2]->user_id)
+          $toDel = false;
+      }
+      if($toDel)
+        unset($patSel->_ref_operations[$key]);
+    }
   }
 }
-foreach($patSel->_ref_operations as $key => $value) {
-  $patSel->_ref_operations[$key]->loadRefs();
-  if($chirSel) {
-    if($patSel->_ref_operations[$key]->chir_id != $chirSel)
-      unset($patSel->_ref_operations[$key]);
-  }
-  else {
-    $toDel = true;
-    foreach($listPrat as $key2 => $value2) {
-      if($patSel->_ref_operations[$key]->chir_id == $listPrat[$key2]->user_id)
-        $toDel = false;
-    }
-    if($toDel)
-      unset($patSel->_ref_operations[$key]);
-  }
-}
-//mbTrace("patient", $patSel);
 
 // Recherche des plages de consultation contenant des rapports non validés
 $where = array();
