@@ -132,8 +132,9 @@ function printDepassement(id) {
           </td>
           {/if}
           <td>{if $curr_adm.depassement}
-          <a href="#" onclick="printDepassement({$curr_adm.operation_id})">
-          {$curr_adm.depassement} €</a>
+          <!-- Pas de possibilité d'imprimer les dépassements pour l'instant -->
+          <!-- <a href="#" onclick="printDepassement({$curr_adm.operation_id})"></a> -->
+          {$curr_adm.depassement} €
           {else}-{/if}</td>
         </tr>
         {/foreach}
