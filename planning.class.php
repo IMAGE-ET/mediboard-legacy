@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+//require_once( $AppUI->getSystemClass ('dp' ) );
 
 require_once("modules/admin/admin.class.php");
 require_once("modules/dPpatients/patients.class.php");

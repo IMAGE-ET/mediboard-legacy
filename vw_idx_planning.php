@@ -7,11 +7,31 @@
 * @author Romain Ollivier
 */
 
+require_once("modules/mediusers/mediusers.class.php");
+require_once("modules/mediusers/functions.class.php");
+require_once("modules/mediusers/groups.class.php");
+
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
+
+// L'utilisateur est-il chirurgien?
+$mediuser = new CMediusers;
+$mediuser->load($AppUI->user_id);
+
+$function = new CFunctions;
+$function->load($mediuser->function_id);
+
+$group = new CGroups;
+$group->load($function->group_id);
+
+if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
+  $chir = new CUser;
+  $chir->load($AppUI->user_id);
+}
+else $chir->user_id = -1;
 
 //Initialisation de variables
 $listDay = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
@@ -20,7 +40,7 @@ $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juille
 $day   = mbGetValueFromGetOrSession("day"  , date("d"));
 $month = mbGetValueFromGetOrSession("month", date("m"));
 $year  = mbGetValueFromGetOrSession("year" , date("Y"));
-$selChir = mbGetValueFromGetOrSession("selChir", -1);
+$selChir = mbGetValueFromGetOrSession("selChir", $chir->user_id);
 
 $nday  = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
 $ndaym = date("m", mktime(0, 0, 0, $month, $day + 1, $year));

@@ -7,10 +7,9 @@
 * @author Thomas Despoix
 */
 
-require_once("modules/dPplanningOp/planning.class.php");
-require_once("modules/admin/admin.class.php");
-
-// ALTER TABLE `operations` CHANGE `plageop_id` `plageop_id` BIGINT( 20 ) UNSIGNED
+require_once("modules/mediusers/mediusers.class.php");
+require_once("modules/mediusers/functions.class.php");
+require_once("modules/mediusers/groups.class.php");
 
 global $AppUI, $canRead, $canEdit, $m;
 
@@ -52,7 +51,23 @@ $sql = "
   WHERE operations.chir_id = users.user_id
   AND operations.plageop_id IS NULL";
 
-if ($chir_id = mbGetValueFromGetOrSession("chir_id")) {
+// L'utilisateur est-il chirurgien?
+$mediuser = new CMediusers;
+$mediuser->load($AppUI->user_id);
+
+$function = new CFunctions;
+$function->load($mediuser->function_id);
+
+$group = new CGroups;
+$group->load($function->group_id);
+
+if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
+  $chir = new CUser;
+  $chir->load($AppUI->user_id);
+}
+else $chir->user_id = mbGetValueFromGetOrSession("chir_id");
+
+if ($chir_id = $chir->user_id) {
   $sql .= " AND operations.chir_id = '$chir_id'";
 }
 
