@@ -29,6 +29,7 @@ class CPlageconsult extends CDpObject {
   var $_min_deb = null;
   var $_hour_fin = null;
   var $_min_fin = null;
+  var $_jour = null;
   var $_year = null;
   var $_month = null;
   var $_day = null;
@@ -86,9 +87,12 @@ class CPlageconsult extends CDpObject {
   
   function store() {
     // Data computation
-    $this->debut = $this->_hour_deb.":".$this->_min_deb.":00";
-    $this->fin   = $this->_hour_fin.":".$this->_min_fin.":00";
-    $this->date = $this->_year."-".$this->_month."-".$this->_day;
+    //$this->debut = $this->_hour_deb.":".$this->_min_deb.":00";
+    //$this->fin   = $this->_hour_fin.":".$this->_min_fin.":00";
+    //$this->date = $this->_year."-".$this->_month."-".$this->_day;
+    $this->debut = $this->_hour_deb.":00:00";
+    $this->fin   = $this->_hour_fin.":00:00";
+    $this->date = date("Y-m-d", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
 
     if ($msg = $this->hasCollisions()) {
       return $msg;
@@ -108,6 +112,8 @@ class CPlageconsult extends CDpObject {
     $this->_day      = substr($this->date, 8, 2);
     $this->_month    = substr($this->date, 5, 2);
     $this->_year     = substr($this->date, 0, 4);
+    $this->_jour     = date("w", mktime(0, 0, 0, $this->_month, $this->_day-1, $this->_year));
+    $this->_jour     = (intval($this->_jour));
     
     return true;
   }

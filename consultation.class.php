@@ -38,7 +38,7 @@ class CConsultation extends CDpObject {
   var $_ref_patient = null;
   var $_ref_plageconsult = null;
 
-  function COperation() {
+  function CConsultation() {
     $this->CDpObject( 'consultation', 'consultation_id' );
   }
   
