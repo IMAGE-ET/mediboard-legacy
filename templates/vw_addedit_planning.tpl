@@ -297,6 +297,10 @@ function printForm() {
     url += '&type_adm='    + eval('type_adm'               );
     url += '&chambre='     + eval('chambre'                ); 
     popup(700, 500, url, 'printAdm');
+    return true
+  }
+  else {
+    return false;
   }
 }
 </script>
@@ -569,7 +573,7 @@ function printForm() {
             {if $op}
             <input type="button" value="Imprimer" onClick="printForm();" />
             {else}
-            <input type="button" value="Imprimer et créer" onClick="printForm(); this.form.submit()" />
+            <input type="button" value="Imprimer et créer" onClick="if(printForm()) this.form.submit()" />
             {/if}
           {/if}
           </td>
