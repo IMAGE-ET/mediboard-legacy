@@ -187,10 +187,6 @@ function isMbAllowed($perm_type, $mod, $item_id) {
   $itemPerm = @$fastMbPerms[$mod][$item_id][$perm_type == PERM_READ ? "read" : "edit"];
   $itemDeny = @$fastMbPerms[$mod][$item_id]["deny"];
   
-  $export = var_export($moduleAll, true); echo "<pre>module All: $export</pre>";
-  $export = var_export($itemPerm, true); echo "<pre>itemPerm '$item_id' flag: $export</pre>";
-  $export = var_export($itemDeny, true); echo "<pre>itemDeny '$item_id' flag: $export</pre>";
-
   return ($moduleAll and !$itemDeny) or ($itemPerm);
 }
 
