@@ -102,7 +102,7 @@ function checkFrm() {
         {if $chambreSel->chambre_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la chambre', '{$chambreSel->nom}')" />
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la chambre', '{$chambreSel->nom|escape:javascript}')" />
         {else}
         <input type="submit" name="btnFuseAction" value="Créer" />
         {/if}
