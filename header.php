@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
 	<meta name="Description" content="dotProject openXtrem Style" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
-	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css?<?php echo time() ?>" media="all" />
 	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
     <script src="./style/<?php echo $uistyle;?>/functions.js" type="text/javascript" ></script>
 </head>
