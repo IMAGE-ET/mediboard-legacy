@@ -3,14 +3,14 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/html" xml:lang="en" lang="en">
 <head>
 	<meta name="Description" content="dotProject Mediboard Style" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
-	<title>Mediboard :: Système de gestion des structures de santé</title>
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/mb_icon.ico" type="image/ico" />
+	<title>Mediboard :: Système de gestion des structures de santé</title>
 </head>
 
 <body onload="this.focus();">
@@ -24,7 +24,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <tr>
 	<td id="banner">
 		<h1>MediBoard :: Système de gestion des structures de santé</h1>
-		<a href='http://www.openxtrem.com/'><img src="style/<?php echo $uistyle;?>/images/mbSmall.png"></a>
+		<a href='http://www.openxtrem.com/'><img src="style/<?php echo $uistyle;?>/images/mbSmall.png" /></a>
 	</td>
 </tr>
 <tr>

@@ -16,6 +16,7 @@
 
 #banner {
   background: url(./images/titleGradient.jpg) no-repeat center;
+  vertical-align: middle;
 }
 
 #banner h1 {
@@ -25,10 +26,6 @@
 
 #banner a {
   float: right;
-}
-
-#banner img {
-  verical-align: middle;
 }
 
 /* Navigation */
