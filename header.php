@@ -65,18 +65,20 @@ foreach ($nav as $module) {
 	$newItem["files"] = "File";
 	$newItem["projects"] = "Project";
 
-	echo arraySelect( $newItem, "m", "onchange='if (this.options[this.selectedIndex].value) this.form.submit()'", "", true);
+	$s = arraySelect( $newItem, "m", "onchange='if (this.options[this.selectedIndex].value) this.form.submit()'", "", true);
 
 	// build URI string
 	if (isset( $company_id )) {		
-		echo "<input type='hidden' name='company_id' value='$company_id' />";
+		$s .= "<input type='hidden' name='company_id' value='$company_id' />";
 	}
 	if (isset( $task_id )) {
-		echo "<input type='hidden' name='task_parent' value='$task_id' />";
+		$s .= "<input type='hidden' name='task_parent' value='$task_id' />";
 	}
 	if (isset( $file_id )) {
-		echo "<input type='hidden' name='file_id' value='$file_id' />";
+		$s.= "<input type='hidden' name='file_id' value='$file_id' />";
 	}
+  
+//  echo $s;
 ?>
 					</form>
 				</td>
