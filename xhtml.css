@@ -103,6 +103,7 @@ textarea {
   width: 99%;
 }
 
+button,
 input {
   border: 1px black solid;
   font-size: 12px;
@@ -110,6 +111,8 @@ input {
   padding: 0px 2px;
 }
 
+
+button,
 input[type=submit],
 input[type=reset],
 input[type=button] {
@@ -117,6 +120,7 @@ input[type=button] {
   margin: 0 10px;
 }
 
+button:hover,
 input[type=submit]:hover,
 input[type=reset]:hover,
 input[type=button]:hover {
