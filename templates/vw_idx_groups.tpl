@@ -1,9 +1,25 @@
+{literal}
+<script language="javascript">
+function checkGroup() {
+  var form = document.group;
+    
+  if (form.text.value.length == 0) {
+    alert("Intitulé manquant");
+    form.text.focus();
+    return false;
+  }
+    
+  return true;
+}
+</script>
+{/literal}
+
 <table class="main">
 
 <tr>
   <td class="greedyPane">
 
-		<a href="index.php?m=mediusers&tab=2&usergroup=0"><strong>Créer un groupe</strong></a>
+		<a href="index.php?m={$m}&tab=2&usergroup=0"><strong>Créer un groupe</strong></a>
 
     <table class="color">
       
@@ -13,7 +29,7 @@
     
 		{foreach from=$groups item=curr_group}
     <tr>
-      <td><a href="index.php?m=mediusers&tab=2&usergroup={$curr_group.group_id}">{$curr_group.text}</a></td>
+      <td><a href="index.php?m={$m}&tab=2&usergroup={$curr_group.group_id}">{$curr_group.text}</a></td>
     </tr>
     {/foreach}
       
@@ -23,7 +39,7 @@
   
   <td class="pane">
 
-    <form name="group" action="./index.php?m=mediusers" method="post">
+    <form name="group" action="./index.php?m={$m}" method="post" onsubmit="return checkGroup()">
     <input type="hidden" name="dosql" value="do_groups_aed" />
 		<input type="hidden" name="group_id" value="{$groupsel.group_id}" />
     <input type="hidden" name="del" value="0" />
@@ -32,11 +48,11 @@
 
     <tr>
       <th class="category" colspan="2">
-     {if $groupsel.exist}
+      {if $groupsel.exist}
         Modification du groupe &lsquo;{$groupsel.text}&rsquo;
-        {else}
+      {else}
         Création d'un groupe
-        {/if}
+      {/if}
       </th>
     </tr>
 

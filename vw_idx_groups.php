@@ -1,48 +1,49 @@
 <?php
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-require_once("lib/smarty/Smarty.class.php");
-
-//Groupe à éditer/ajouter
-if(!isset($_SESSION["usergroup"]))
-{
-  $_SESSION["usergroup"] = 0;
-}
-if(dPgetParam($_GET, "usergroup", "") != "")
-{
-  $_SESSION["usergroup"] = dPgetParam($_GET, "usergroup", 0);
-}
-
 // Récupération des groupes
-$query = "select * from groups_mediboard order by text";
-$groups = db_loadList($query);
+$sql = "SELECT * 
+  FROM groups_mediboard 
+  ORDER BY text";
+$groups = db_loadList($sql);
 
 // Récupération du groupe à ajouter/editer
-$query = "select * from groups_mediboard where group_id = '".$_SESSION["usergroup"]."'";
-$result = db_exec($query);
-$groupsel = db_fetch_array($result);
-$groupsel["exist"] = $_SESSION["usergroup"];
+if (isset($_GET["usergroup"])) {
+  $_SESSION[$m][$tab]["usergroup"] = $_GET["usergroup"];
+}
 
-//Creation de l'objet smarty
+$usergroup = dPgetParam($_SESSION[$m][$tab], "usergroup", 0);
+
+$sql = "SELECT * 
+  FROM groups_mediboard 
+  WHERE group_id = '$usergroup'";
+$result = db_exec($sql);
+$groupsel = db_fetch_array($result);
+$groupsel["exist"] = $usergroup;
+
+// Création de l'objet smarty
+require_once("lib/smarty/Smarty.class.php");
+
 $smarty = new Smarty();
 
-//initialisation des repertoires
+// Initialisation des repertoires
 $smarty->template_dir = "modules/$m/templates/";
 $smarty->compile_dir = "modules/$m/templates_c/";
 $smarty->config_dir = "modules/$m/configs/";
 $smarty->cache_dir = "modules/$m/cache/";
 
-//Mapping des variables
+// Mapping des variables
+$smarty->assign('m', $m);
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
 $smarty->assign('groups', $groups);
 $smarty->assign('groupsel', $groupsel);
 
-//Affichage de la page
+// Affichage de la page
 $smarty->display('vw_idx_groups.tpl');
 
 ?>

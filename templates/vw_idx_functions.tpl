@@ -1,5 +1,17 @@
 {literal}
 <script language="javascript">
+function checkForm() {
+  var form = document.editFrm;
+    
+  if (form.text.value.length == 0) {
+    alert("Intitulé manquant");
+    form.text.focus();
+    return false;
+  }
+    
+  return true;
+}
+
 function setColor(color) {
 	var f = document.editFrm;
 
@@ -41,7 +53,7 @@ function setColor(color) {
   
   <td class="pane">
 
-  	<form name="editFrm" action="./index.php?m=mediusers" method="post">
+  	<form name="editFrm" action="./index.php?m=mediusers" method="post" onSubmit="return checkForm()">
   	<input type="hidden" name="dosql" value="do_functions_aed">
 		<input type="hidden" name="function_id" value="{$functionsel.function_id}">
   	<input type="hidden" name="del" value="0">
@@ -50,11 +62,11 @@ function setColor(color) {
 
     <tr>
       <th class="category" colspan="2">
-     {if $functionsel.exist}
+      {if $functionsel.exist}
         Modification de la fonction &lsquo;{$functionsel.text}&rsquo;
-        {else}
+      {else}
         Création d'une fonction
-        {/if}
+      {/if}
       </th>
     </tr>
 
@@ -68,11 +80,9 @@ function setColor(color) {
       <td>
       	<select name="group_id">
       	{foreach from=$groups item=curr_group}
-      		{if $curr_group.group_id == $functionsel.group_id}
-      			<option value="{$curr_group.group_id}" selected="selected">{$curr_group.text}</option>
-      		{else}
-      			<option value="{$curr_group.group_id}">{$curr_group.text}</option>
-      		{/if}
+     			<option value="{$curr_group.group_id}" {if $curr_group.group_id == $functionsel.group_id} selected="selected" {/if}>
+            {$curr_group.text}
+          </option>
       	{/foreach}
       	</select>
       </td>
@@ -81,8 +91,8 @@ function setColor(color) {
     <tr>
       <th>Couleur:</th>
       <td>
-        <span id="test" title="test" style="background: #{$defColor};"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">cliquez ici</a></span>
-        <input type="hidden" name="color" value="$functionsel.color" />
+        <span id="test" title="test" style="background: #{$functionsel.color};"><a href="#" onClick="window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">cliquez ici</a></span>
+        <input type="hidden" name="color" value="{$functionsel.color}" />
       </td>
     </tr>
     
@@ -101,28 +111,6 @@ function setColor(color) {
     </table>
 
     </form>
-
-    {if $functionsel.exist}
-    <form name="group" action="./index.php?m=mediusers" method="post">
-    <input type="hidden" name="dosql" value="do_functions_aed">
-    <input type="hidden" name="function_id" value="{$functionsel.function_id}">
-    <input type="hidden" name="del" value="1">
-
-    <table class="form">
-
-    <tr>
-      <th class="category">Supression de la fonction &lsquo;{$functionsel.text}&rsquo;</th>
-    </tr>
-    
-    <tr>
-      <td class="button"><input class="button" type="submit" name="btnFuseAction" value="Supprimer" /></td>
-    </tr>
-
-    </table>
-
-    </form>
-    {/if}
-
   </td>
 </tr>
 

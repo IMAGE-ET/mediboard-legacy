@@ -1,59 +1,57 @@
 <?php
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
-
-require_once("lib/smarty/Smarty.class.php");
-
-//Fonction à éditer/ajouter
-if(!isset($_SESSION["userfunction"]))
-{
-  $_SESSION["userfunction"] = 0;
-}
-if(dPgetParam($_GET, "userfunction", "") != "")
-{
-  $_SESSION["userfunction"] = dPgetParam($_GET, "userfunction", 0);
+if (!$canRead) {
+  $AppUI->redirect( "m=public&a=access_denied" );
 }
 
 // Récupération des fonctions
-$query = "select functions_mediboard.*, groups_mediboard.text as mygroup
-			from functions_mediboard, groups_mediboard
-			where functions_mediboard.group_id = groups_mediboard.group_id
-			order by groups_mediboard.text, functions_mediboard.text";
-$functions = db_loadList($query);
+$sql = "SELECT functions_mediboard.*, groups_mediboard.text AS mygroup
+  FROM functions_mediboard, groups_mediboard
+  WHERE functions_mediboard.group_id = groups_mediboard.group_id
+  ORDER BY groups_mediboard.text, functions_mediboard.text";
+$functions = db_loadList($sql);
 
 // Récupération de la fonction à ajouter/editer
-$query = "select functions_mediboard.*, groups_mediboard.text as mygroup
-			from functions_mediboard, groups_mediboard
-			where function_id = '".$_SESSION["userfunction"]."'
-			and functions_mediboard.group_id = groups_mediboard.group_id";
-$result = db_exec($query);
+if (isset($_GET["userfunction"])) {
+  $_SESSION[$m][$tab]["userfunction"] = $_GET["userfunction"];
+}
+
+$userfunction = dPgetParam($_SESSION[$m][$tab], "userfunction", 0);
+
+$sql = "SELECT functions_mediboard.*, groups_mediboard.text AS mygroup
+  FROM functions_mediboard, groups_mediboard
+  WHERE function_id = '$userfunction'
+  AND functions_mediboard.group_id = groups_mediboard.group_id";
+$result = db_exec($sql);
 $functionsel = db_fetch_array($result);
-$functionsel["exist"] = $_SESSION["userfunction"];
+$functionsel["exist"] = $userfunction;
 
 // Récupération des groupes
-$query = "select * from groups_mediboard order by text";
-$groups = db_loadList($query);
+$sql= "SELECT * 
+  FROM groups_mediboard 
+  ORDER BY text";
+$groups = db_loadList($sql);
 
-//Creation de l'objet smarty
+// Création de l'objet smarty
+require_once("lib/smarty/Smarty.class.php");
+
 $smarty = new Smarty();
 
-//initialisation des repertoires
+// Initialisation des repertoires
 $smarty->template_dir = "modules/$m/templates/";
 $smarty->compile_dir = "modules/$m/templates_c/";
 $smarty->config_dir = "modules/$m/configs/";
 $smarty->cache_dir = "modules/$m/cache/";
 
-//Mapping des variables
+// Mapping des variables
 $smarty->assign('canEdit', $canEdit);
 $smarty->assign('user', $AppUI->user_id);
 $smarty->assign('functions', $functions);
 $smarty->assign('functionsel', $functionsel);
 $smarty->assign('groups', $groups);
 
-//Affichage de la page
+// Affichage de la page
 $smarty->display('vw_idx_functions.tpl');
 
 ?>

@@ -1,11 +1,11 @@
 <?php
 
 require_once("groups.class.php");
-// create a new instance of the dPccam class
-$obj = new Cgroups();
-$msg = '';	// reset the message string
 
-// bind the informations (variables) retrieved via post to the dPccam object
+$obj = new Cgroups();
+$msg = '';
+
+// bind the informations (variables) retrieved via post to the object
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
@@ -14,26 +14,25 @@ if (!$obj->bind( $_POST )) {
 // detect if a delete operation has to be processed
 $del = dPgetParam( $_POST, 'del', 0 );
 
-
 if ($del) {
-	// check if there are dependencies on this object (not relevant for dPccam, left here for show-purposes)
+	// check canDelete
 	if (!$obj->canDelete( $msg )) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	}
 
-	// see how easy it is to run database commands with the object oriented architecture !
-	// simply delete a quote from db and have detailed error or success report
+	// delete object
 	if (($msg = $obj->delete())) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );			// message with error flag
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( "Groupe supprimé", UI_MSG_ALERT);		// message with success flag
-		$AppUI->redirect( "m=mediusers" );
+    $_SESSION[$m][$tab]["usergroup"];
+		$AppUI->setMsg( "Groupe supprimé", UI_MSG_ALERT);
+		$AppUI->redirect( "m=$m" );
 	}
+  
 } else {
-	// simply store the added/edited quote in database via the store method of the dPccam child class of the CDpObject provided ba the dPFramework
-	// no sql command is necessary here! :-)
+  // Store object
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
