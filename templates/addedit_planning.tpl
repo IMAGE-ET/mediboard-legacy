@@ -145,27 +145,19 @@ function setCalendar( idate, fdate ) {
         
         <tr>
           <th class="mandatory">
-            {if $chir}
             <input type="hidden" name="chir_id" value="{$chir->user_id}" />
-            {else}
-            <input type="hidden" name="chir_id" value="{$consult->_ref_plageconsult->_ref_chir->user_id}" />
-            {/if}
             <label for="editFrm_chir_id">Chirurgien:</label>
           </th>
-          {if $chir}
-          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$chir->user_last_name} {$chir->user_first_name}" readonly="readonly" /></td>
-          {else}
-          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$consult->_ref_plageconsult->_ref_chir->user_last_name} {$consult->_ref_plageconsult->_ref_chir->user_first_name}" readonly="readonly" /></td>
-          {/if}
-          <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
+            <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$chir->user_last_name} {$chir->user_first_name}" readonly="readonly" /></td>
+            <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
 
         <tr>
           <th class="mandatory">
-            <input type="hidden" name="patient_id" value="{if $pat->patient_id}{$pat->patient_id}{else}{$consult->_ref_patient->patient_id}{/if}" />
+            <input type="hidden" name="patient_id" value="{$pat->patient_id}" />
             <label for="editFrm_chir_id">Patient:</label>
           </th>
-          <td class="readonly"><input type="text" name="_pat_name" size="30" value="{if $pat->patient_id}{$pat->nom} {$pat->prenom}{else}{$consult->_ref_patient->nom} {$consult->_ref_patient->prenom}{/if}" readonly="readonly" /></td>
+          <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->nom} {$pat->prenom}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
         

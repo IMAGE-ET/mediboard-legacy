@@ -20,6 +20,7 @@ if (!$canEdit) {			// lock out users that do not have at least readPermission on
 }
 
 // L'utilisateur est-il chirurgien?
+$chir = null;
 $mediuser = new CMediusers();
 $mediuser->load($AppUI->user_id);
 $function = new CFunctions();
@@ -30,17 +31,17 @@ if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
   $chir = new CUser();
   $chir->load($AppUI->user_id);
 }
-else
-  $chir = null;
 
 // A t'on fourni l'id du patient et du chirurgien?
 $chir_id = dPgetParam($_GET, "chir_id", 0);
-$pat_id = dPgetParam($_GET, "pat_id", 0);
-if($chir_id) {
+if ($chir_id) {
   $chir = new CUser;
   $chir->load($chir_id);
 }
-if($pat_id) {
+
+$pat_id = dPgetParam($_GET, "pat_id", 0);
+$pat = null;
+if ($pat_id) {
   $pat = new CPatient;
   $pat->load($pat_id);
 }
@@ -49,6 +50,7 @@ if($pat_id) {
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->assign('consult', null);
 $smarty->assign('chir', $chir);
 $smarty->assign('pat', $pat);
 
