@@ -55,14 +55,14 @@ function checkForm() {
       popCalendar('_rdv_adm', '_rdv_adm');
       return false;
     }
-
+/* Bug in IE
   if (field = form._hour_adm)
     if (field.value.length == 0) {
       alert("Admission: heure manquante");
       field.focus();
       return false;
     }
-
+*/
   return true;
 }
 
