@@ -1,5 +1,5 @@
 <form action="index.php" target="_self" name="selection" method="get" encoding="">
-<input type="hidden" name="m" value="dPcim10">
+<input type="hidden" name="m" value="{$m}">
 <input type="hidden" name="tab" value="1">
 
 <table class="form">
@@ -36,7 +36,7 @@
   <tr>
   {foreach from=$master item=curr_master key=curr_key}
     <td>
-      <strong><a href="index.php?m=dPcim10&tab=2&code={$curr_master.code}">{$curr_master.code}</a></strong><br />
+      <strong><a href="index.php?m={$m}&amp;tab=vw_full_code&amp;code={$curr_master.code}">{$curr_master.code}</a></strong><br />
 			{$curr_master.text}
     </td>
   {if ($curr_key+1) is div by 4}

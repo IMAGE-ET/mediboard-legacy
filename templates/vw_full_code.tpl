@@ -6,8 +6,8 @@
   <tr>
     <td class="leftPane">
       <form action="index.php" target="_self" name="selection" method="get" encoding="">
-      <input type="hidden" name="m" value="dPcim10">
-      <input type="hidden" name="tab" value="2">
+      <input type="hidden" name="m" value="{$m}">
+      <input type="hidden" name="tab" value="{$tab}">
 
       <table class="form">
         <tr>
@@ -24,7 +24,7 @@
 
     {if $canEdit && $master.levelinf.0.sid == 0}
     <td class="rightPane">
-      <form name="addFavoris" action="./index.php?m=dPcim10" method="post">
+      <form name="addFavoris" action="./index.php?m={$m}" method="post">
       <input type="hidden" name="dosql" value="do_favoris_aed">
       <input type="hidden" name="del" value="0">
       <input type="hidden" name="favoris_code" value="{$master.code}">
@@ -54,7 +54,7 @@
           Exclusions:
           <ul>
             {foreach from=$master.exclude item=curr_exclude}
-            <li>{$curr_exclude.text} (code: <a href="index.php?m=dPcim10&tab=2&code={$curr_exclude.code}"><strong>{$curr_exclude.code}</strong></a>)</li>
+            <li>{$curr_exclude.text} (code: <a href="index.php?m={$m}&amp;t{$tab}&amp;code={$curr_exclude.code}"><strong>{$curr_exclude.code}</strong></a>)</li>
             {/foreach}
           </ul>
         </li>
@@ -110,7 +110,7 @@
       <ul>
         {foreach from=$master.levelsup item=curr_level}
         {if $curr_level.sid != 0}
-        <li><a href="index.php?m=dPcim10&tab=2&code={$curr_level.code}"><strong>{$curr_level.code}</strong></a>: {$curr_level.text}</li>
+        <li><a href="index.php?m={$m}&amp;tab={$tab}&amp;code={$curr_level.code}"><strong>{$curr_level.code}</strong></a>: {$curr_level.text}</li>
         {/if}
         {/foreach}
       </ul>
@@ -122,7 +122,7 @@
       <ul>
         {foreach from=$master.levelinf item=curr_level}
         {if $curr_level.sid != 0}
-        <li><a href="index.php?m=dPcim10&tab=2&code={$curr_level.code}"><strong>{$curr_level.code}</strong></a> : {$curr_level.text}</li>
+        <li><a href="index.php?m={$m}&amp;tab={$tab}&amp;code={$curr_level.code}"><strong>{$curr_level.code}</strong></a> : {$curr_level.text}</li>
         {/if}
         {/foreach}
       </ul>

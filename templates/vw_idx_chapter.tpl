@@ -11,7 +11,7 @@
 						<b>{$curr_chapter.rom}</b>
 					</td>
 					<td valign="top" align="left">
-						<a href="index.php?m=dPcim10&tab=2&code={$curr_chapter.code}"><b>{$curr_chapter.text}</b></a>
+						<a href="index.php?m={$m}&amp;tab=vw_full_code&amp;code={$curr_chapter.code}"><b>{$curr_chapter.text}</b></a>
 					</td>
 				</tr>
 				{/foreach}
