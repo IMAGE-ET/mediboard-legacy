@@ -95,86 +95,12 @@ foreach($listDays as $key => $value) {
   	  unset($adm);
       $adm = new COperation();
       $adm->load($value3["operation_id"]);
+      $adm->loadRefs();
       $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $adm;
-      $listDays[$key]["listChirs"][$key2]["admissions"][$key3]->loadRefs();
+      //$listDays[$key]["listChirs"][$key2]["admissions"][$key3]->loadRefs();
     }
-  }
-}  
-/*
-//Operations de chaque jour
-foreach($listDays as $key => $value) {
-  $sql = "SELECT operation_id " .
-  		"FROM operations " .
-  		"WHERE date_adm = '". $value["date_adm"] ."'";
-  if($spe) {
-    $sql2 = "SELECT * " .
-    		"FROM users_mediboard " .
-    		"WHERE function_id = '$spe'";
-    $listChir = db_loadlist($sql2);
-    $sql .= " AND (0";
-    foreach($listChir as $key2 => $value2) {
-      $sql .= " OR chir_id = '". $value2["user_id"] ."'";
-    }
-    $sql .= ")";
-  }
-  if($chir)
-    $sql .= " AND chir_id = '$chir'";
-  if($type)
-    $sql .= " AND type_adm = '$type'";
-  $sql .= " ORDER BY time_adm, chir_id, time_operation";
-  $result = db_loadlist($sql);
-  foreach($result as $key2 => $value2) {
-  	unset($adm);
-    $adm = new COperation();
-    $adm->load($value2["operation_id"]);
-    $listDays[$key]["admissions"][$key2] = $adm;
-    $listDays[$key]["admissions"][$key2]->loadRefs();
   }
 }
-*/
-/*
-//On rectifie quelques champs des opérations
-$anesth = dPgetSysVal("AnesthType");
-$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
-  or die("Could not connect");
-mysql_select_db("ccam")
-  or die("Could not select database");
-foreach($plagesop as $key => $value) {
-  foreach($value["operations"] as $key2 => $value2) {
-    $annais = substr($value2["naissance"], 0, 4);
-    $anjour = date("Y");
-    $moisnais = substr($value2["naissance"], 5, 2);
-    $moisjour = date("m");
-    $journais = substr($value2["naissance"], 8, 2);
-    $jourjour = date("d");
-    $age = $anjour-$annais;
-    if($moisjour<$moisnais){$age=$age-1;}
-    if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
-    $plagesop[$key]["operations"][$key2]["age"] = $age;
-	$plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
-    $plagesop[$key]["operations"][$key2]["lu_type_anesth"] = $anesth[$value2["type_anesth"]];
-    if($value2["materiel"] != "") {
-      switch($value2["commande_mat"]) {
-        case "o" : {
-          $plagesop[$key]["operations"][$key2]["mat"] = "<i><b>Materiel commandé :</b> ".$value2["materiel"]."</i>";
-          break;
-        }
-        case "n" : {
-          $plagesop[$key]["operations"][$key2]["mat"] = "<i><b>Materiel manquant :</b> ".$value2["materiel"]."</i>";
-          break;
-        }
-      }
-    } else {
-      $plagesop[$key]["operations"][$key2]["mat"] = "";
-    }
-    $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";
-    $ccamr = mysql_query($sql);
-    $ccam = mysql_fetch_array($ccamr);
-	$plagesop[$key]["operations"][$key2]["CCAM"] = $ccam["LIBELLELONG"];
-  }
-}
-mysql_close();
-*/
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
