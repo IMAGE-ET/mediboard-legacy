@@ -10,6 +10,7 @@
 require_once( $AppUI->getSystemClass ('dp' ) );
 
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 class CConsultation extends CDpObject {
@@ -36,6 +37,7 @@ class CConsultation extends CDpObject {
   // Object References
   var $_ref_patient = null;
   var $_ref_plageconsult = null;
+  var $_ref_files = null;
 
   function CConsultation() {
     $this->CDpObject( 'consultation', 'consultation_id' );
@@ -58,6 +60,12 @@ class CConsultation extends CDpObject {
     $this->_ref_patient->load($this->patient_id);
     $this->_ref_plageconsult = new CPlageconsult;
     $this->_ref_plageconsult->load($this->plageconsult_id);
+    
+    // Backward references
+    $sql = "SELECT *" .
+    		"\nFROM files_mediboard" .
+    		"\nWHERE file_consultation = '$this->consultation_id'";
+    $this->_ref_files = db_loadObjectList($sql, new CFile());
   }
 }
 

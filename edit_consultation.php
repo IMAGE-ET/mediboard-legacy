@@ -9,6 +9,7 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once( $AppUI->getModuleClass('mediusers', 'mediusers') );
 require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 require_once( $AppUI->getModuleClass('mediusers', 'groups') );
@@ -22,6 +23,7 @@ if (!$canEdit) {			// lock out users that do not have at least readPermission on
 $day = date("d");
 $month = date("m");
 $year = date("Y");
+$selConsult = mbGetValueFromGetOrSession("selConsult", 0);
 
 // L'utilisateur est-il chirurgien?
 $mediuser = new CMediusers();
@@ -48,12 +50,29 @@ foreach($listPlage as $key => $value) {
   }
 }
 
+// Récupération de la consultation selectionnée
+
+$consult = new CConsultation();
+if($selConsult) {
+  $consult->load($selConsult);
+  $consult->loadRefs();
+  $consult->_ref_patient->loadRefs();
+  foreach($consult->_ref_patient->_ref_consultations as $key => $value) {
+    $consult->_ref_patient->_ref_consultations[$key]->loadRefs();
+    $consult->_ref_patient->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
+  }
+  foreach($consult->_ref_patient->_ref_operations as $key => $value) {
+    $consult->_ref_patient->_ref_operations[$key]->loadRefs();
+  }
+}
+
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 
 $smarty->assign('listPlage', $listPlage);
+$smarty->assign('consult', $consult);
 $smarty->display('edit_consultation.tpl');
 
 ?>

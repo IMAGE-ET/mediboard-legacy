@@ -34,9 +34,8 @@ class CFile extends CDpObject {
 	function check() {
 	// ensure the integrity of some variables
 		$this->file_id = intval( $this->file_id );
-		$this->file_parent = intval( $this->file_parent );
-		$this->file_task = intval( $this->file_task );
-		$this->file_project = intval( $this->file_project );
+		$this->file_consultation = intval( $this->file_consultation );
+		$this->file_operation = intval( $this->file_operation );
 
 		return NULL; // object is ok
 	}
@@ -44,7 +43,12 @@ class CFile extends CDpObject {
 	function delete() {
 		global $AppUI;
 	// remove the file from the file system
-		@unlink( "{$AppUI->cfg['root_dir']}/files/$this->file_project/$this->file_real_filename" );
+	    if($this->file_consultation) {
+		  @unlink( "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation/$this->file_real_filename" );
+	    }
+	    else {
+		  @unlink( "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation/$this->file_real_filename" );
+	    }
 	// delete any index entries
 		$sql = "DELETE FROM files_index WHERE file_id = $this->file_id";
 		if (!db_exec( $sql )) {
@@ -68,15 +72,24 @@ class CFile extends CDpObject {
 			     return false;
 			 }
 		}
-		if (!is_dir("{$AppUI->cfg['root_dir']}/files/$this->file_project")) {
-		    $res = mkdir( "{$AppUI->cfg['root_dir']}/files/$this->file_project", 0777 );
-			 if (!$res) {
-			     return false;
-			 }
+		if($this->file_consultation) {
+		  if (!is_dir("{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation")) {
+		      $res = mkdir( "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation", 0777 );
+			   if (!$res) {
+			       return false;
+			   }
+		  }
+		  $this->_filepath = "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation/$this->file_real_filename";
 		}
-
-
-		$this->_filepath = "{$AppUI->cfg['root_dir']}/files/$this->file_project/$this->file_real_filename";
+		else {
+		  if (!is_dir("{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation")) {
+		      $res = mkdir( "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation", 0777 );
+			   if (!$res) {
+			       return false;
+			   }
+		  }
+		  $this->_filepath = "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operations/$this->file_real_filename";
+		}
 	// move it
 		$res = move_uploaded_file( $upload['tmp_name'], $this->_filepath );
 		if (!$res) {

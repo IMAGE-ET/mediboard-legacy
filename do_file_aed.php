@@ -7,6 +7,8 @@
 * @author Romain Ollivier
 */
 
+require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
+
 //addfile sql
 $file_id = intval( dPgetParam( $_POST, 'file_id', 0 ) );
 $del = intval( dPgetParam( $_POST, 'del', 0 ) );
@@ -18,7 +20,7 @@ if (!$obj->bind( $_POST )) {
 }
 
 // prepare (and translate) the module name ready for the suffix
-$AppUI->setMsg( 'File' );
+$AppUI->setMsg( 'Fichier' );
 // delete the file
 if ($del) {
 	$obj->load( $file_id );
@@ -26,8 +28,8 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
-		$AppUI->redirect( "m=files" );
+		$AppUI->setMsg( "supprimé", UI_MSG_ALERT, true );
+		$AppUI->redirect();
 	}
 }
 
@@ -42,7 +44,7 @@ if (isset( $_FILES['formfile'] )) {
 
 	if ($upload['size'] < 1) {
 		if (!$file_id) {
-			$AppUI->setMsg( 'Upload file size is zero. Process aborted.', UI_MSG_ERROR );
+			$AppUI->setMsg( 'Taille de fichier nulle. Echec de l\'opération.', UI_MSG_ERROR );
 			$AppUI->redirect();
 		}
 	} else {
@@ -56,7 +58,7 @@ if (isset( $_FILES['formfile'] )) {
 
 		$res = $obj->moveTemp( $upload );
 		if (!$res) {
-		    $AppUI->setMsg( 'File could not be written', UI_MSG_ERROR );
+		    $AppUI->setMsg( 'Impossible de créer le fichier', UI_MSG_ERROR );
 		    $AppUI->redirect();
 		}
 		$obj->indexStrings();
@@ -70,7 +72,7 @@ if (!$file_id) {
 if (($msg = $obj->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR );
 } else {
-	$AppUI->setMsg( $file_id ? 'updated' : 'added', UI_MSG_OK, true );
+	$AppUI->setMsg( $file_id ? 'modifié' : 'ajouté', UI_MSG_OK, true );
 }
 $AppUI->redirect();
 ?>
