@@ -1,3 +1,19 @@
+<!-- $Id$ -->
+
+{literal}
+<script type="text/javascript">
+//<![CDATA[
+
+function printAdmission(id) {
+  var url = './index.php?m=dPadmissions&a=print_admission&dialog=1';
+  url = url + '&id=' + id;
+  popup(700, 550, url, 'Patient');
+}
+
+//]]>
+</script>
+{/literal}
+
 <table class="main">
   <tr><th><a href="javascript:window.print()">Planning du {$date}</a></th></tr>
   {foreach from=$listDays item=curr_day}
@@ -42,8 +58,10 @@
           <td>{if $curr_adm->time_operation != "00:00:00"}{$curr_adm->time_operation|truncate:5:""}{/if}</td>
           <td class="text">{$curr_adm->_ext_code_ccam->libelleLong|truncate:80:"...":false} <i>({$curr_adm->CCAM_code})</i></td>
           <td>{$curr_adm->cote|truncate:1:""|capitalize}</td>
-          <td>{$curr_adm->_ref_pat->nom} {$curr_adm->_ref_pat->prenom}</td>
-          <td>{$curr_adm->_ref_pat->_age}</td>
+          <td><a href="#" onclick="printAdmission({$curr_adm->operation_id})">
+            {$curr_adm->_ref_pat->nom} {$curr_adm->_ref_pat->prenom}</a></td>
+          <td><a href="#" onclick="printAdmission({$curr_adm->operation_id})">
+            {$curr_adm->_ref_pat->_age}</a></td>
 		</tr>
 		{/foreach}
 	  </table>
