@@ -1,4 +1,12 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPpatients
+* @version $Revision$
+* @author Romain Ollivier
+*/
+
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
 if (!$canEdit) {			// lock out users that do not have at least readPermission on this module

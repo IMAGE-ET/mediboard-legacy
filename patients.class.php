@@ -1,10 +1,11 @@
-<?php
+<?php /* $Id$ */
 
 /**
- *	@package dotProject
- *	@subpackage modules
- *	@version $Revision$
- */
+* @package Mediboard
+* @subpackage dPpatients
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 

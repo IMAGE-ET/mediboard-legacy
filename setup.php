@@ -1,12 +1,11 @@
-<?php
-/*
- * Name:      dPpatients
- * Directory: dPpatients
- * Version:   1.0.0
- * Type:      user
- * UI Name:   dPpatients
- * UI Icon:
- */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage dPpatients
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 // MODULE CONFIGURATION DEFINITION
 $config = array();
