@@ -37,7 +37,7 @@ if ($del) {
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$isNotNew = @$_POST['id'];
+		$isNotNew = @$_POST['patient_id'];
 		$AppUI->setMsg( $isNotNew ? 'Patient modifié' : 'Patient créé', UI_MSG_OK);
 	}
 	$AppUI->redirect();

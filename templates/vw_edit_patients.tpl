@@ -15,7 +15,7 @@
       </tr>
       
       <tr>
-        <th>Nom:</th>
+        <th class="mandatory">Nom:</th>
         <td><input type="text" name="nom" value="{$patient.nom}" /></td>
         <th>Incapable majeur:</th>
         <td>
@@ -25,7 +25,7 @@
       </tr>
       
       <tr>
-        <th>Prénom:</th>
+        <th class="mandatory">Prénom:</th>
         <td><input type="text" name="prenom" value="{$patient.prenom}" /></td>
         <th>ATNC:</th>
         <td>
@@ -61,7 +61,8 @@
       <tr>
         <th>Adresse:</th>
         <td><input type="text" name="adresse" value="{$patient.adresse}" /></td>
-        <th>Numéro d'assuré social:</th>
+        
+        <th  class="mandatory">Numéro d'assuré social:</th>
         <td><input type="text" name="matricule" value="{$patient.matricule}" /></td>
       </tr>
       
@@ -79,7 +80,7 @@
       
       <tr>
         <th>Téléphone:</td>
-        <td>
+        <td>s
           <input type="text" name="tel1" size=1 value="{$patient.tel.0}{$patient.tel.1}"> - 
           <input type="text" name="tel2" size=1 value="{$patient.tel.2}{$patient.tel.3}"> -
           <input type="text" name="tel3" size=1 value="{$patient.tel.4}{$patient.tel.5}"> -
@@ -89,29 +90,18 @@
       </tr>
       
       <tr>
-        <td class="button" colspan="2">
+        <td class="button" colspan="4">
           {if $patient}
             <input type="reset" value="réinitialiser" />
             <input type="submit" value="modifier" />
+            <input type="button" value="supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
           {else}
             <input type="submit" value="créer" />
           {/if}
           </form>
         </td>
       
-      {if $patient}
-        <td class="button" colspan="2" />
-          <form name="editFrm" action="./index.php?m=dPpatients" method="post">
-      
-          <input type="hidden" name="dosql" value="do_patients_aed" />
-          <input type="hidden" name="del" value="1" />
-          <input type="hidden" name="patient_id" value="{$patient.patient_id}" />
-          <input type="submit" value="supprimer" />
-        
-          </form>
-        </td>
-      {/if}
-      
+    
       </tr>
       
       </table>
