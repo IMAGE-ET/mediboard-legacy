@@ -13,7 +13,7 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$id = mbGetValueFromGetOrSession('id');
+$id = mbGetValueFromGetOrSession('idop');
 
 $sql = "SELECT operations.operation_id AS id, operations.chir_id AS chir_id,
 		users.user_first_name AS chir_firstname, users.user_last_name AS chir_lastname,
