@@ -15,6 +15,8 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$dialog = dPgetParam($_GET, "dialog", 0);
+$type = mbGetValueFromGetOrSession("type", '_traitant');
 $medecin_id = mbGetValueFromGetOrSession("medecin_id");
 
 // Récuperation du medecin sélectionné
@@ -44,6 +46,8 @@ if ($medecin_nom || $medecin_prenom) {
 require_once("classes/smartydp.class.php");
 $smarty = new CSmartyDP;
 
+$smarty->assign('dialog', $dialog);
+$smarty->assign('type', $type);
 $smarty->assign('nom', $medecin_nom);
 $smarty->assign('prenom', $medecin_prenom);
 $smarty->assign('medecins', $medecins);

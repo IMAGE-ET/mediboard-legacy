@@ -33,6 +33,7 @@ class CSetupdPpatients {
 
 	function remove() {
 		db_exec( "DROP TABLE patients;" );
+		db_exec( "DROP TABLE medecin;" );
 
 		return null;
 	}
@@ -43,9 +44,11 @@ class CSetupdPpatients {
 		case "all":
 		case "0.1": {
 		  $sql = "ALTER TABLE patients
+		  		  ADD tel2 VARCHAR( 10 ) AFTER tel ,
 		  		  ADD medecin1 INT( 11 ) AFTER medecin_traitant ,
                   ADD medecin2 INT( 11 ) AFTER medecin1 ,
-                  ADD medecin3 INT( 11 ) AFTER medecin2 ;";
+                  ADD medecin3 INT( 11 ) AFTER medecin2 ,
+                  ADD rques TEXT;";
 		  db_exec( $sql ); db_error();
 		  $sql = "CREATE TABLE medecin (
                   medecin_id int(11) NOT NULL auto_increment,
@@ -91,7 +94,7 @@ class CSetupdPpatients {
   				KEY `nom` (`nom`,`prenom`)
 				) TYPE=MyISAM AUTO_INCREMENT=1 ;";
 		db_exec( $sql ); db_error();
-		upgrade("all");
+		$this->upgrade("all");
 		return null;
 	}
 }

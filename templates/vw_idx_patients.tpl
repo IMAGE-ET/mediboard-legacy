@@ -14,6 +14,12 @@ function checkPatient() {
     
   return true;
 }
+
+function printPatient(id) {
+  var url = './index.php?m=dPpatients&a=print_patient&dialog=1';
+  url = url + '&patient_id=' + id;
+  window.open(url, 'Patient', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
+}
 //]]>
 </script>
 {/literal}
@@ -101,6 +107,8 @@ function checkPatient() {
         <tr>
           <th>Date de naissance:</th>
           <td>{$patient->_jour} / {$patient->_mois} / {$patient->_annee}</td>
+          <th>Numéro d'assuré social:</th>
+          <td>{$patient->matricule}</td>
         </tr>
         
         <tr>
@@ -109,25 +117,19 @@ function checkPatient() {
             {if $patient->sexe == "m"} masculin {/if}
             {if $patient->sexe == "f"} féminin  {/if} 
           </td>
+          <th>Code administratif:</th>
+          <td>{$patient->SHS}</td>
         </tr>
         
         <tr>
           <th class="category" colspan="2">Coordonnées</th>
-          <th class="category" colspan="2">Information administratives</th>
+          <th class="category" colspan="2">Remarques</th>
         </tr>
         
         <tr>
           <th>Adresse:</th>
           <td>{$patient->adresse}</td>
-          <th>Numéro d'assuré social:</th>
-          <td>{$patient->matricule}</td>
-        </tr>
-        
-        <tr>
-          <th>Ville:</th>
-          <td>{$patient->ville}</td>
-          <th>Code administratif:</th>
-          <td>{$patient->SHS}</td>
+          <td rowspan="5" colspan="2" class="text">{$patient->rques|nl2br:php}</td>
         </tr>
         
         <tr>
@@ -136,19 +138,32 @@ function checkPatient() {
         </tr>
         
         <tr>
+          <th>Ville:</th>
+          <td>{$patient->ville}</td>
+        </tr>
+        
+        <tr>
           <th>Téléphone:</th>
           <td>{$patient->tel}</td>
         </tr>
         
+        <tr>
+          <th>Portable:</th>
+          <td>{$patient->tel2}</td>
+        </tr>
+        
         {if $canEdit}
         <tr>
-          <td class="button" colspan="4">
+          <td class="button" colspan="2">
             <form name="modif" action="./index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="tab" value="vw_edit_patients" />
             <input type="hidden" name="id" value="{$patient->patient_id}" />
             <input type="submit" value="Modifier" />
             </form>
+          </td>
+          <td class="button" colspan="2">
+            <input type="button" value="Imprimer" onclick="printPatient({$patient->patient_id})" />
           </td>
         </tr>
         {/if}

@@ -123,7 +123,7 @@ class CMedecin extends CDpObject {
   function getSiblings() {
     $sql = "SELECT medecin_id, nom, prenom, adresse, ville, CP " .
       		"FROM medecin WHERE " .
-      		"medecii_id != '$this->medecin_id' " .
+      		"medecin_id != '$this->medecin_id' " .
       		"AND nom = '$this->nom' AND prenom = '$this->prenom'";
     $siblings = db_loadlist($sql);
     return $siblings;

@@ -10,6 +10,7 @@
 require_once( $AppUI->getSystemClass ('dp' ) );
 
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
+require_once( $AppUI->getModuleClass('dPpatients', 'medecin') );
 
 /**
  * The CPatient Class
@@ -27,6 +28,7 @@ class CPatient extends CDpObject {
 	var $ville = null;
 	var $cp = null;
 	var $tel = null;
+	var $tel2 = null;
 	var $medecin_traitant = null;
 	var $medecin1 = null;
 	var $medecin2 = null;
@@ -35,6 +37,7 @@ class CPatient extends CDpObject {
 	var $ATNC = null;
 	var $matricule = null;
 	var $SHS = null;
+	var $rques = null;
 
   // Form fields
 	var $_jour = null;
@@ -45,9 +48,18 @@ class CPatient extends CDpObject {
 	var $_tel3 = null;
 	var $_tel4 = null;
 	var $_tel5 = null;
+	var $_tel21 = null;
+	var $_tel22 = null;
+	var $_tel23 = null;
+	var $_tel24 = null;
+	var $_tel25 = null;
 
-  // Object Refernces
+  // Object References
   var $_ref_operations = null;
+  var $_ref_medecin_traitant = null;
+  var $_ref_medecin1 = null;
+  var $_ref_medecin2 = null;
+  var $_ref_medecin3 = null;
 
 	function CPatient() {
 		$this->CDpObject( 'patients', 'patient_id' );
@@ -68,6 +80,11 @@ class CPatient extends CDpObject {
     $this->_tel3 = substr($this->tel, 4, 2);
     $this->_tel4 = substr($this->tel, 6, 2);
     $this->_tel5 = substr($this->tel, 8, 2);
+    $this->_tel21 = substr($this->tel2, 0, 2);
+    $this->_tel22 = substr($this->tel2, 2, 2);
+    $this->_tel23 = substr($this->tel2, 4, 2);
+    $this->_tel24 = substr($this->tel2, 6, 2);
+    $this->_tel25 = substr($this->tel2, 8, 2);
 
     return true;
   }
@@ -80,6 +97,12 @@ class CPatient extends CDpObject {
       $this->_tel3 .
       $this->_tel4 .
       $this->_tel5;
+    $this->tel2 = 
+      $this->_tel21 .
+      $this->_tel22 .
+      $this->_tel23 .
+      $this->_tel24 .
+      $this->_tel25;
 
     $this->naissance = 
       $this->_annee . "-" .
@@ -123,6 +146,23 @@ class CPatient extends CDpObject {
     // Backward references
     $obj = new COperation();
     $this->_ref_operations = $obj->loadList("pat_id = '$this->patient_id'");
+    // Forward references
+    // medecin_traitant
+    $obj = new CMedecin();
+    if($obj->load($this->medecin_traitant))
+      $this->_ref_medecin_traitant = $obj;
+    // medecin1
+    $obj = new CMedecin();
+    if($obj->load($this->medecin1))
+      $this->_ref_medecin1 = $obj;
+    // medecin2
+    $obj = new CMedecin();
+    if($obj->load($this->medecin2))
+      $this->_ref_medecin2 = $obj;
+    // medecin3
+    $obj = new CMedecin();
+    if($obj->load($this->medecin3))
+      $this->_ref_medecin3 = $obj;
   }
 
   function getSiblings() {
