@@ -15,7 +15,7 @@ if (isset( $_GET['tab'] )) {
 $tab = $AppUI->getState( 'dPprotocolesIdxTab' ) !== NULL ? $AppUI->getState( 'dPprotocolesIdxTab' ) : 0;
 $active = intval( !$AppUI->getState( 'dPprotocolesIdxTab' ) );
 
-$titleBlock = new CTitleBlock( 'dPprotocoles', 'dPprotocoles.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Gestion des protocoles', 'dPprotocoles.png', $m, "$m.$a" );
 $titleBlock->addCell();
 $titleBlock->show();
 
