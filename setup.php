@@ -15,7 +15,7 @@ $config['mod_version'] = '1.0.0';
 $config['mod_directory'] = 'dPbloc';
 $config['mod_setup_class'] = 'CSetupdPbloc';
 $config['mod_type'] = 'user';
-$config['mod_ui_name'] = 'dPbloc';
+$config['mod_ui_name'] = 'Planning Bloc';
 $config['mod_ui_icon'] = 'dPbloc.png';
 $config['mod_description'] = 'Gestion du bloc opératoire';
 $config['mod_config'] = true;
@@ -35,7 +35,6 @@ class CSetupdPbloc {
 	function remove() {
 		db_exec( "DROP TABLE plagesop;" );
 		db_exec( "DROP TABLE sallesbloc;" );
-
 		return null;
 	}
 

@@ -9,7 +9,7 @@ $calendar = new Ccalendar("index.php?m=dPbloc", $_SESSION['day'], $_SESSION['mon
 
 <table width="100%">
 	<tr>
-		<td rowspan=2 width="100%">
+		<td rowspan=2 width="100%" align="center">
 <?php
 $planning->displaySem();
 ?>

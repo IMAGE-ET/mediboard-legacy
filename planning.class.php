@@ -22,8 +22,8 @@ class Cplanning
 				functions_mediboard.color as couleur
 	  			from plagesop, users, users_mediboard, functions_mediboard
 				where id_salle = '".$value['id']."' and date = '".$year."-".$month."-".$day."'
-				and plagesop.id_chir = users.user_username and users_mediboard.user_id = users.user_id
-				and users_mediboard.function_id = functions_mediboard.function_id";
+				and (plagesop.id_chir = users.user_username or plagesop.id_spec = functions_mediboard.function_id) and users_mediboard.user_id = users.user_id
+				and users_mediboard.function_id = functions_mediboard.function_id group by plagesop.id";
 	  $this->salles[$key]['plages'] = db_loadlist($sql);
 	  foreach($this->salles[$key]['plages'] as $key2 => $value2)
 	  {
@@ -93,7 +93,7 @@ class Cplanning
 	echo "<td bgcolor=\"#000000\" height=\"2\">";
 	echo "</td>\n";
 	echo "<td align=\"center\" width=\"75\">";
-	echo "<a href=\"index.php?m=dPbloc&tab=0&day=".$this->day."&month=".$this->month."&year=".$this->year."\">$today</a>";
+	echo "<a href=\"index.php?m=dPbloc&tab=1&day=".$this->day."&month=".$this->month."&year=".$this->year."\">$today</a>";
 	echo "</td>\n";
 	for($hours = 8; $hours <= 18; $hours++)
 	{
@@ -126,7 +126,7 @@ class Cplanning
 			  $fsize = (substr($value2['fin'], 0, 2) - substr($value2['debut'], 0, 2)) * 4;
 			  $fsize += (substr($value2['fin'], 3, 2) - substr($value2['debut'], 3, 2)) / 15;
 			  echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\"><b>";
-			  echo "<a href=\"index.php?m=dPbloc&tab=1&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			  echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
 			  echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
 			  echo "</a>";
 			  echo "</b></td>\n";
@@ -152,7 +152,7 @@ class Cplanning
 			    $fsize = (substr($value2['fin'], 0, 2) - substr($value2['debut'], 0, 2)) * 4;
 			    $fsize += (substr($value2['fin'], 3, 2) - substr($value2['debut'], 3, 2)) / 15;
 			    echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\"><b>";
-			    echo "<a href=\"index.php?m=dPbloc&tab=1&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			    echo "<a href=\"index.php?m=dPbloc&tab=1&tool=edit&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
 			    echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
 			    echo "</a>";
 			    echo "</b></td>\n";
@@ -223,7 +223,7 @@ class Cplanning
 	echo "<table align=\"center\">";
 	echo "<tr>";
     echo "<td bgcolor=\"#ffffff\">";
-	echo "<a href=\"index.php?m=dPbloc&tab=1\" target=\"_self\">Ajouter une plage opératoire</a>";
+	echo "<a href=\"index.php?m=dPbloc&tab=1&tool=add\" target=\"_self\">Ajouter une plage opératoire</a>";
 	echo "</td>";
 	echo "</tr>";
 	echo "</table>";
