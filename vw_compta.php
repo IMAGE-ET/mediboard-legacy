@@ -31,7 +31,7 @@ $consult->_ref_plageconsult->loadRefs();
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
-$smarty->assign('valueMode', true); // value (direct) mode or field (template) mode?
+$smarty->assign('valueMode', false); // value (direct) mode or field (template) mode?
 
 $smarty->assign('consult', $consult);
 
