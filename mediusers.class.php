@@ -46,8 +46,37 @@ class CMediusers extends CDpObject {
 
     return $user;
   }
+  
+  function canDelete(&$msg, $oid = null) {
+    $tables[] = array (
+      'label' => 'opération(s) ', 
+      'name' => 'operations', 
+      'idfield' => 'operation_id', 
+      'joinfield' => 'chir_id'
+    );
 
+// @todo changer la clé étrangère CPlageOp::id_chir qui cible le username    
+//    $tables[] = array (
+//      'label' => 'plage(s) opératoire(s) (chirurgien)', 
+//      'name' => 'plagesop', 
+//      'idfield' => 'id', 
+//      'joinfield' => 'id_chir'
+//    );
+
+// @todo changer la clé étrangère CPlageOp::id_anesth qui cible le username    
+//    $tables[] = array (
+//      'label' => 'plage(s) opératoire(s) (anesthésites)', 
+//      'name' => 'plagesop', 
+//      'idfield' => 'id', 
+//      'joinfield' => 'id_anesthchir'
+//    );
+
+    return parent::canDelete($msg, $oid, $tables);
+  }
+  
 	function delete() {
+    // @todo delete Favoris CCAM et CIM en cascade
+    
     // Delete corresponding dP user first
     $dPuser = $this->createUser();
     if ($msg = $dPuser->delete()) {

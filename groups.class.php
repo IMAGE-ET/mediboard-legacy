@@ -23,13 +23,15 @@ class Cgroups extends CDpObject {
 		$this->CDpObject( 'groups_mediboard', 'group_id' );
 	}
 
-	function delete() {
-    // Delete owned functione first
-		$sql = "DELETE FROM functions_mediboard 
-      WHERE group_id = '$this->group_id'";
-		db_exec( $sql );
+  function canDelete(&$msg, $oid = null) {
+    $tables[] = array (
+      'label' => 'Fonctions', 
+      'name' => 'functions_mediboard', 
+      'idfield' => 'function_id', 
+      'joinfield' => 'group_id'
+    );
     
-    parent::delete();
-	}
+    return CDpObject::canDelete( $msg, $oid, $tables );
+  }
 }
 ?>
