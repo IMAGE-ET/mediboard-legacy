@@ -70,9 +70,7 @@ function popChir() {
   var url = './index.php?m=dPplanningOp';
   url += '&a=chir_selector';
   url += '&dialog=1';
-  
-  neo = window.open(url, 'Chirurgien', 'left=50, top=50, height=250, width=400, resizable=yes');
-  if(neo.window.focus){neo.window.focus();}
+  popup(400, 250, url, 'Chirurgien');
 }
 
 function setChir( key, val ){
@@ -86,12 +84,10 @@ function setChir( key, val ){
 }
 
 function popPat() {
-  var url = './index.php?m=dPplanningOp';
+  var url = './index.php?m=dPpatient';
   url += '&a=pat_selector';
   url += '&dialog=1';
-
-  neo = window.open(url, 'Patient', 'left=50, top=50, width=500, height=500, resizable=yes');
-  if(neo.window.focus){neo.window.focus();}
+  popup(500, 500, url, 'Patient');
 }
 
 function setPat( key, val ) {
@@ -111,9 +107,7 @@ function popCode(type) {
   url += '&dialog=1';
   url += '&chir='+ document.editFrm.chir_id.value;
   url += '&type='+ type;
-
-  neo = window.open(url, type, 'left=50, top=50, width=600, height=500, resizable=yes');
-  if(neo.window.focus){neo.window.focus();}
+  popup(600, 500, url, type);
 }
 
 function setCode( key, type ){
@@ -160,8 +154,7 @@ function popPlage() {
   url += '&curr_op_hour=' + document.editFrm._hour_op.value;
   url += '&curr_op_min=' + document.editFrm._min_op.value;
   if(checkChir())
-    neo = window.open(url, 'Plage', 'left=50, top=50, width=400, height=250, resizable=yes');
-    if(neo.window.focus){neo.window.focus();}
+    popup(400, 250, url, 'Plage');
 }
 
 function setPlage( key, val, adm ) {
@@ -206,9 +199,7 @@ function popProtocole() {
   url += '&dialog=1';
   url += '&chir_id='   + document.editFrm.chir_id.value;
   url += '&CCAM_code=' + document.editFrm.CCAM_code.value;
-
-  neo = window.open(url, 'Protocole', 'top=200, left=250, width=600, height=400, scrollbars=yes, resizable=yes' );
-  if(neo.window.focus){neo.window.focus();}
+  popup(600, 400, url, 'Protocole');
 }
 
 function setProtocole(
@@ -250,9 +241,7 @@ function popCalendar( field ) {
   url += '&dialog=1';
   url += '&callback=setCalendar';
   url += '&date=' + idate;
-  
-  neo = window.open(url, 'calwin', 'left=250, top=250, width=280, height=250, scrollbars=yes' );
-  if(neo.window.focus){neo.window.focus();}
+  popup(280, 250, url, 'calwin');
 }
 
 function setCalendar( idate, fdate ) {
@@ -296,9 +285,7 @@ function printForm() {
     url += '&duree_hospi=' + eval('form.duree_hospi.value' );
     url += '&type_adm='    + eval('type_adm'               );
     url += '&chambre='     + eval('chambre'                ); 
- 
-    neo = window.open( url, 'printAdm', 'top=50,left=50, width=700, height=500, scrollbars=yes, menubar=yes, resize=yes' );
-    if(neo.window.focus){neo.window.focus();}
+    popup(700, 500, url, 'printAdm');
   }
 }
 </script>
