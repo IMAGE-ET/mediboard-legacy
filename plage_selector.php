@@ -76,6 +76,7 @@ if($plageSel) {
   $currHour = intval($plage->_hour_deb);
   for($i = 0; $i < (intval($plage->_hour_fin)-intval($plage->_hour_deb))*(60/intval($plage->_freq)); $i++) {
     $listPlace[$i]["hour"] = $currHour;
+    $listPlace[$i]["patient"] = null;
     if($currMin != 0)
       $listPlace[$i]["min"] = $currMin;
     else

@@ -45,10 +45,10 @@ function setClose(hour, min) {ldelim}
       <tr>
         <td><input type="button" value="+" onclick="setClose({$curr_place.hour}, {$curr_place.min})" />{$curr_place.hour}h{$curr_place.min}</td>
         <td>{foreach from=$curr_place.patient item=curr_patient}
-          {if $curr_patient.patient}{$curr_patient.patient}<br />{else}-{/if}
+          {if $curr_patient.patient}{$curr_patient.patient}<br />{/if}
         {/foreach}</td>
         <td>{foreach from=$curr_place.patient item=curr_patient}
-          {$curr_patient.duree}{if $curr_patient.duree}<br />{else}-{/if}
+          {$curr_patient.duree}{if $curr_patient.duree}<br />{/if}
         {/foreach}</td>
       </tr>
       {/foreach}
