@@ -20,7 +20,6 @@ function popCalendar( field ){
   idate = eval( 'document.paramFrm.date_' + field + '.value' );
   var url = "index.php?m=public&a=calendar&dialog=1&callback=setCalendar";
   url += "&date=" + idate;
-  alert(url);
   popup(280, 250, url, 'calwin');
 }
 
