@@ -65,11 +65,13 @@ class CFunctions extends CDpObject {
     $this->_ref_users = $this->_ref_users->loadList($where);
   }
   
+  // @todo: ameliorer le choix des spécialités
+  // (loadfunction($groupe, $permtype) par exemple)
   function loadSpecialites ($perm_type = null) {
     $sql = "SELECT *" .
       "\nFROM $this->_tbl, groups_mediboard" .
       "\nWHERE $this->_tbl.group_id = groups_mediboard.group_id" .
-      "\nAND groups_mediboard.text IN ('Chirurgie', 'Anesthésie')" .
+      "\nAND groups_mediboard.text IN ('Cabinets')" .
       "\nORDER BY $this->_tbl.text";
   
     $basespecs = db_loadObjectList($sql, $this);
