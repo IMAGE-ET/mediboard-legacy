@@ -50,6 +50,8 @@ class CSetupdPsalleOp {
 	}
 
 	function install() {
+		
+		$this->upgrade("all");
 
 		return null;
 	}
