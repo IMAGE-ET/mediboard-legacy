@@ -8,20 +8,24 @@
 */
 
 require_once($AppUI->getSystemClass('dp'));
+require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 
 /**
- * The CGroups class
+ * The CGroup class
  */
-class Cgroups extends CDpObject {
+class CGroups extends CDpObject {
   // DB Table key
 	var $group_id = NULL;	
 
   // DB Fields
 	var $text = NULL;
 
-	function Cgroups() {
-		$this->CDpObject( 'groups_mediboard', 'group_id' );
-	}
+  // Object References
+    var $_ref_functions = null;
+
+  function CGroups() {
+    $this->CDpObject( 'groups_mediboard', 'group_id' );
+  }
 
   function canDelete(&$msg, $oid = null) {
     $tables[] = array (
@@ -32,6 +36,14 @@ class Cgroups extends CDpObject {
     );
     
     return CDpObject::canDelete( $msg, $oid, $tables );
+  }
+
+  // Backward References
+  function loadRefsBack() {
+  	$where = array(
+      "group_id" => "= '$this->group_id'");
+    $this->_ref_functions = new CFunctions;
+    $this->_ref_functions = $this->_ref_functions->loadList($where);
   }
 }
 ?>

@@ -13,28 +13,26 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// Récupération des groupes
-$sql = "SELECT * 
-  FROM groups_mediboard 
-  ORDER BY text";
-$groups = db_loadList($sql);
+require_once( $AppUI->getModuleClass('mediusers', 'groups') );
 
-// Récupération du groupe à ajouter/editer
-$usergroup = mbGetValueFromGetOrSession("usergroup", 0);
+// Récupération des fonctions
+$listGroups = new CGroups;
+$listGroups = $listGroups->loadList();
 
-$sql = "SELECT * 
-  FROM groups_mediboard 
-  WHERE group_id = '$usergroup'";
-$result = db_exec($sql);
-$groupsel = db_fetch_array($result);
-$groupsel["exist"] = $usergroup;
+foreach($listGroups as $key => $value) {
+  $listGroups[$key]->loadRefs();
+}
+
+// Récupération du groupe selectionné
+$usergroup = new CGroups;
+$usergroup->load(mbGetValueFromGetOrSession("usergroup", 0));
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('groups', $groups);
-$smarty->assign('groupsel', $groupsel);
+$smarty->assign('usergroup', $usergroup);
+$smarty->assign('listGroups', $listGroups);
 
 $smarty->display('vw_idx_groups.tpl');
 

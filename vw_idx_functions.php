@@ -13,41 +13,28 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// Récupération des fonctions
-$sql = "SELECT functions_mediboard.*, groups_mediboard.text AS mygroup
-  FROM functions_mediboard, groups_mediboard
-  WHERE functions_mediboard.group_id = groups_mediboard.group_id
-  ORDER BY groups_mediboard.text, functions_mediboard.text";
-$functions = db_loadList($sql);
+require_once( $AppUI->getModuleClass('mediusers', 'functions') );
+require_once( $AppUI->getModuleClass('mediusers', 'groups') );
 
-// Récupération de la fonction à ajouter/editer
-if (isset($_GET["userfunction"])) {
-  $_SESSION[$m][$tab]["userfunction"] = $_GET["userfunction"];
+// Récupération des fonctions
+$listGroups = new CGroups;
+$listGroups = $listGroups->loadList();
+
+foreach($listGroups as $key => $value) {
+  $listGroups[$key]->loadRefs();
 }
 
-$userfunction = dPgetParam($_SESSION[$m][$tab], "userfunction", 0);
-
-$sql = "SELECT functions_mediboard.*, groups_mediboard.text AS mygroup
-  FROM functions_mediboard, groups_mediboard
-  WHERE function_id = '$userfunction'
-  AND functions_mediboard.group_id = groups_mediboard.group_id";
-$result = db_exec($sql);
-$functionsel = db_fetch_array($result);
-$functionsel["exist"] = $userfunction;
-
-// Récupération des groupes
-$sql= "SELECT * 
-  FROM groups_mediboard 
-  ORDER BY text";
-$groups = db_loadList($sql);
+// Récupération de la fonction selectionnée
+$userfunction = new CFunctions;
+$userfunction->load(mbGetValueFromGetOrSession("userfunction", 0));
+$userfunction->loadRefsFwd();
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('functions', $functions);
-$smarty->assign('functionsel', $functionsel);
-$smarty->assign('groups', $groups);
+$smarty->assign('userfunction', $userfunction);
+$smarty->assign('listGroups', $listGroups);
 
 $smarty->display('vw_idx_functions.tpl');
 
