@@ -124,7 +124,7 @@ while($row = mysql_fetch_array($result))
 mysql_close($mysql);
 
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 $smarty = new CSmartyDP;
 
 $smarty->assign('clefs', $clefs);

@@ -13,12 +13,12 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-require_once("acte.class.php");
+require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 $codeacte = mbGetValueFromGetOrSession("codeacte");
 $acte = new Acte($codeacte);
 
 // Création du template
-require_once("classes/smartydp.class.php");
+require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 // @todo: ne passer que $acte. Adapter le template en conséquence
