@@ -13,6 +13,9 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$todayi = date("Ymd");
+$todayf = date("d/m/Y");
+
 // Récupération des opérations
 $sql = "SELECT plagesop.date as date, users.user_last_name as chir_lastname, users.user_first_name as chir_firstname,
         patients.nom as pat_lastname, patients.prenom as pat_firstname, operations.CCAM_code as CCAM_code,
@@ -23,6 +26,7 @@ $sql = "SELECT plagesop.date as date, users.user_last_name as chir_lastname, use
         LEFT JOIN plagesop ON operations.plageop_id = plagesop.id
         WHERE operations.materiel != ''
         AND operations.commande_mat != 'o'
+        AND operations.plageop_id IS NOT NULL
         ORDER BY plagesop.date, operations.rank";
 $op = db_loadlist($sql);
 
@@ -46,6 +50,8 @@ mysql_close();
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->assign('todayi', $todayi);
+$smarty->assign('todayf', $todayf);
 $smarty->assign('op', $op);
 
 $smarty->display('vw_idx_materiel.tpl');
