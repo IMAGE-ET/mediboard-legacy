@@ -69,8 +69,6 @@ if($compte_rendu->compte_rendu_id) {
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
-$smarty->debugging = true;
-
 $smarty->assign('prat_id', $prat_id);
 $smarty->assign('compte_rendu_id', $compte_rendu_id);
 $smarty->assign('listPrat', $listPrat);

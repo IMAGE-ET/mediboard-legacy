@@ -18,7 +18,7 @@ function initEditor() {
 
 {/literal}
   {foreach from=$templateManager->properties item=property}
-    options["{$property.field}"] = {if $templateManager->valueMode} "{$property.valueHTML|escape:"javascript"}" {else} "{$property.fieldHTML}" {/if};
+    options["{$property.field}"] = {if $templateManager->valueMode} "{$property.valueHTML|escape:"javascript"}" {else} "{$property.fieldHTML|escape:"javascript"}" {/if};
   {/foreach}
 {literal}
 
