@@ -192,7 +192,7 @@ function popProtocole() {
   url += '&dialog=1';
   url += '&chir_id='   + document.editFrm.chir_id.value;
   url += '&CCAM_code=' + document.editFrm.CCAM_code.value;
-  popup(600, 400, url, 'Protocole');
+  popup(700, 500, url, 'Protocole');
 }
 
 function setProtocole(
@@ -205,21 +205,25 @@ function setProtocole(
     prot_examen,
     prot_materiel,
     prot_convalescence,
+    prot_depassement,
     prot_type_adm,
-    prot_duree_hospi) {
+    prot_duree_hospi,
+    prot_rques) {
 
   var f = document.editFrm;
   
-  f.chir_id.value = chir_id;
-  f._chir_name.value = "Dr " + chir_last_name + " " + chir_first_name;
-  f.CCAM_code.value = prot_CCAM_code;
-  f._hour_op.value = prot_hour_op;
-  f._min_op.value = prot_min_op;
-  f.examen.value = prot_examen;
-  f.materiel.value= prot_materiel;
-  f.convalescence.value= prot_convalescence;
-  f.type_adm.value = prot_type_adm;
-  f.duree_hospi.value = prot_duree_hospi;
+  f.chir_id.value       = chir_id;
+  f._chir_name.value    = "Dr " + chir_last_name + " " + chir_first_name;
+  f.CCAM_code.value     = prot_CCAM_code;
+  f._hour_op.value      = prot_hour_op;
+  f._min_op.value       = prot_min_op;
+  f.examen.value        = prot_examen;
+  f.materiel.value      = prot_materiel;
+  f.convalescence.value = prot_convalescence;
+  f.depassement.value   = prot_depassement
+  f.type_adm.value      = prot_type_adm;
+  f.duree_hospi.value   = prot_duree_hospi;
+  f.rques.value         = prot_rques;
 }
 
 var calendarField = '';
@@ -397,7 +401,7 @@ function printForm() {
         </tr>
         
         <tr>
-          <th>Dépassement d'honoraire:</th>
+          <th><label for="editFrm_depassement">Dépassement d'honoraire:</label></th>
           <td colspan="2"><input name="depassement" type="text" size="4" value="{$op->depassement}" /> €</td>
         </tr>
 
