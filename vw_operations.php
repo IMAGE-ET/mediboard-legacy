@@ -79,7 +79,7 @@ foreach($plages as $key => $value) {
       $plages[$key]["operations"][$key2]["sortie"] = substr($value2["sortie"], 0, 2)."h".substr($value2["sortie"], 3, 2);
     }
     $plages[$key]["operations"][$key2]["type_anesth"] = $anesth[$value2["code_anesth"]];
-    $sql = "select LIBELLELONG from ACTES where CODE = '".$value2["CCAM_code"]."'";
+    $sql = "select LIBELLELONG from actes where CODE = '".$value2["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
 	$plages[$key]["operations"][$key2]["CCAM_libelle"] = $ccam["LIBELLELONG"];
