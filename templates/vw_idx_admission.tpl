@@ -62,7 +62,7 @@ function printAdmission(id) {
       </table>
     </td>
     <td>
-      <table class="tbl">
+      <table class="color">
         <tr>
           <th>
             Nom
@@ -84,7 +84,7 @@ function printAdmission(id) {
           </th>
         </tr>
         {foreach from=$today item=curr_adm}
-        <tr>
+        <tr style="background: {if $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
           <td>
             <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             {$curr_adm.nom}

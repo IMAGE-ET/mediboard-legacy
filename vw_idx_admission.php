@@ -114,7 +114,7 @@ foreach($list1 as $key => $value) {
 
 //operations de la journée
 $sql = "SELECT operations.operation_id, patients.nom AS nom, patients.prenom AS prenom,
-        operations.admis AS admis, operations.saisie AS saisie,
+        operations.admis AS admis, operations.saisie AS saisie, operations.type_adm AS type_adm,
         users.user_first_name AS chir_firstname,
         users.user_last_name AS chir_lastname, operations.time_adm
 		FROM operations
