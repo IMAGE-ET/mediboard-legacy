@@ -70,7 +70,7 @@ class Cplanning extends CDpObject {
 					examen = '$this->examen', materiel = '$this->materiel', info = '$this->info',
 					date_anesth = '$this->date_anesth', time_anesth = '$this->time_anesth',
 					duree_hospi = '$this->duree_hospi', type_adm = '$this->type_adm', chambre = '$this->chambre',
-					ATNC = '$this->ATNC', rques = '$this->rques, rank = '$this->rank'
+					ATNC = '$this->ATNC', rques = '$this->rques', rank = '$this->rank'
 					where operation_id = '$this->operation_id'";
 			db_exec( $sql );
 			return db_error();
