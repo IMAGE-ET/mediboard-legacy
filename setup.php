@@ -1,12 +1,11 @@
-<?php
-/*
- * Name:      Mediusers
- * Directory: mediusers
- * Version:   1.0.0
- * Type:      user
- * UI Name:   Mediusers
- * UI Icon:
- */
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage mediusers
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 // MODULE CONFIGURATION DEFINITION
 $config = array();

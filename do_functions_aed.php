@@ -1,4 +1,11 @@
-<?php
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage mediusers
+* @version $Revision$
+* @author Romain Ollivier
+*/
 
 require_once("functions.class.php");
 
