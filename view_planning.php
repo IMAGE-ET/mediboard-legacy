@@ -92,7 +92,7 @@ foreach($plagesop as $key=>$value) {
   $sql = "SELECT operations.temp_operation AS duree, operations.cote AS cote, operations.time_operation AS heure,
           operations.CCAM_code AS CCAM_code, operations.rques AS rques, operations.materiel AS materiel, 
           operations.commande_mat AS commande_mat, operations.type_anesth AS type_anesth,
-          operations.examen AS examen,
+          operations.examen AS examen, operations.type_adm AS adm,
           patients.nom AS lastname, patients.prenom AS firstname, patients.sexe AS sexe,
           patients.naissance AS naissance
           FROM operations
