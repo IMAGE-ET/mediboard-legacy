@@ -13,7 +13,7 @@
 #admission th {
   white-space: nowrap;
   background: transparent;
-  vertical-align: middle;
+  vertical-align: top;
   text-align: right;
   font-weight: bold;
 }
@@ -48,6 +48,7 @@
 
 #admission td.info {
   white-space: normal;
+  font-style: italic;
   padding: 10px;
   margin: 5px;
   border: #aaa 2px dotted;
