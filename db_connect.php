@@ -176,12 +176,14 @@ function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
 	while ($row = db_fetch_array( $cur )) {
 		$class = get_class($object);
 		$object = new $class();
-		$object->load( $row[0] );
-		$list[] = $object;
+    $keyname = $object->_tbl_key;
+		$object->load($row[$keyname]);
+		$list[$object->$keyname] = $object;
 		if( $maxrows && $maxrows == $cnt++ ) {
 			break;
 		}
 	}
+  
 	db_free_result( $cur );
 	return $list;
 }
