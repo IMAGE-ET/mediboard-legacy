@@ -78,7 +78,8 @@ foreach($result as $key => $value) {
 }
 
 //Requete SQL pour le planning de la journée
-$sql = "select operations.operation_id, operations.pat_id, CCAM_code, temp_operation
+$sql = "select operations.operation_id as id, operations.pat_id,
+		operations.CCAM_code, operations.temp_operation
 		from plagesop
 		left join operations
 		on plagesop.id = operations.plageop_id
@@ -91,6 +92,7 @@ foreach($result as $key => $value) {
   $sql = "select nom, prenom from patients
   		where patient_id = '".$value["pat_id"]."'";
   $patient = db_loadlist($sql);
+  $today[$key]["id"] = $value["id"];
   $today[$key]["nom"] = $patient[0]["nom"];
   $today[$key]["prenom"] = $patient[0]["prenom"];
   $today[$key]["CCAM_code"] = $value["CCAM_code"];

@@ -64,7 +64,7 @@ class Cplanning extends CDpObject {
 		if($this->operation_id != NULL) {
 			$sql = "update operations set pat_id = '$this->pat_id', chir_id = '$this->chir_id',
 					plageop_id = '$this->plageop_id', CCAM_code = '$this->CCAM_code', CIM10_code = '$this->CIM10_code',
-					temp_operation = '$this->temp_operation
+					temp_operation = '$this->temp_operation',
 					examen = '$this->examen', materiel = '$this->materiel', info = '$this->info',
 					date_anesth = '$this->date_anesth', time_anesth = '$this->time_anesth',
 					duree_hospi = '$this->duree_hospi', type_adm = '$this->type_adm', chambre = '$this->chambre',

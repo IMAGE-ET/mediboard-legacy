@@ -29,7 +29,7 @@ if ($del) {
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$isNotNew = @$_POST['id'];
+		$isNotNew = @$_POST['operation_id'];
 		$AppUI->setMsg( $isNotNew ? 'Admission modifiée' : 'Admission créée', UI_MSG_OK);
 	}
 	$AppUI->redirect();

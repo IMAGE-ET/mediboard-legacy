@@ -73,19 +73,29 @@
 	    {foreach from=$today item=curr_op}
 		<tr>
 		  <td>
+	        <a href="index.php?m=dPplanningOp&tab=1&id={$curr_op.id}">
 		    {$curr_op.nom}
+			</a>
 		  </td>
 		  <td>
+	        <a href="index.php?m=dPplanningOp&tab=1&id={$curr_op.id}">
 		    {$curr_op.prenom}
+		  </a>
 		  </td>
 		  <td>
+	        <a href="index.php?m=dPplanningOp&tab=1&id={$curr_op.id}">
 		    {$curr_op.CCAM_code}
+		  </a>
 		  </td>
 		  <td>
+	        <a href="index.php?m=dPplanningOp&tab=1&id={$curr_op.id}">
 		    {$curr_op.CCAM}
+		  </a>
 		  </td>
 		  <td>
+	        <a href="index.php?m=dPplanningOp&tab=1&id={$curr_op.id}">
 		    {$curr_op.temps}
+		  </a>
 		  </td>
 		</tr>
 		{/foreach}
