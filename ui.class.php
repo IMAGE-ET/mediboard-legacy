@@ -126,10 +126,11 @@ class CAppUI {
 * @param string $name The class root file name (excluding .class.php)
 * @return string The path to the include file
  */
-	function getModuleClass( $name=null ) {
+	function getModuleClass($name = null, $file = null) {
 		if ($name) {
 			if ($root = $this->getConfig( 'root_dir' )) {
-				return "$root/modules/$name/$name.class.php";
+        $filename = $file ? $file : $name;
+				return "$root/modules/$name/$filename.class.php";
 			}
 		}
 	}
