@@ -5,9 +5,9 @@
  *	@subpackage mediusers
  *	@version $Revision$
  *  @author Romain Ollivier
-*/
+ */
 
-//require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('dp'));
 require_once($AppUI->getModuleClass('admin'));
 
 /**
@@ -107,6 +107,34 @@ class CMediusers extends CDpObject {
 
     db_exec($sql);
     return db_error();
+  }
+  
+  function loadChirurgiens() {
+    $user = new CUser;
+    
+    $sql = "SELECT *" .
+        "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
+        "\nWHERE users.user_id = users_mediboard.user_id" .
+        "\nAND users_mediboard.function_id = functions_mediboard.function_id" .
+        "\nAND functions_mediboard.group_id = groups_mediboard.group_id" .
+        "\nAND groups_mediboard.text = 'Chirurgie'" .
+        "\nORDER BY users.user_last_name";
+  
+    return db_loadObjectList($sql, $user);
+  }
+  
+  function loadAnesthesistes() {
+    $user = new CUser;
+    
+    $sql = "SELECT *" .
+        "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
+        "\nWHERE users.user_id = users_mediboard.user_id" .
+        "\nAND users_mediboard.function_id = functions_mediboard.function_id" .
+        "\nAND functions_mediboard.group_id = groups_mediboard.group_id" .
+        "\nAND groups_mediboard.text = 'Anesthésie'" .
+        "\nORDER BY users.user_last_name";
+  
+    return db_loadObjectList($sql, $user);
   }
 }
 

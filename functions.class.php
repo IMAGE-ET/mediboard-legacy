@@ -7,7 +7,7 @@
  *  @author Romain Ollivier
 */
 
-//require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('dp'));
 
 /**
  * The CFunctions Class
@@ -43,6 +43,16 @@ class CFunctions extends CDpObject {
     );
     
     return CDpObject::canDelete( $msg, $oid, $tables );
+  }
+
+  function loadSpecialites () {
+    $sql = "SELECT *" .
+      "\nFROM $this->_tbl, groups_mediboard" .
+      "\nWHERE $this->_tbl.group_id = groups_mediboard.group_id" .
+      "\nAND groups_mediboard.text IN ('Chirurgie', 'Anesthésie')" .
+      "\nORDER BY $this->_tbl.text";
+  
+    return db_loadObjectList($sql, $this);
   }
 }
 ?>
