@@ -92,7 +92,7 @@
 		  </td>
 		  {if $curr_adm.admis == "n"}
 		  <td>
-			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
+			<form name="editFrm{$curr_adm.id}" action="index.php" method="get">
             <input type="hidden" name="m" value="dPadmissions" />
             <input type="hidden" name="a" value="do_edit_admis" />
             <input type="hidden" name="id" value="{$curr_adm.operation_id}" />
