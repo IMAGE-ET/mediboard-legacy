@@ -1,5 +1,65 @@
 /* $Id$ */
 
+/* Title block */
+
+table.titleblock td {
+  white-space: nowrap;
+}
+
+table.titleblock td.titlecell {
+  width: 100%;
+}
+
+/* Tab view table */
+table.tabview {
+  border-spacing: 0px;
+  border-collapse: collapse; /* Hack for IE */
+  empty-cells: show;
+  width: 100%;
+}
+
+table.tabview td {
+  padding: 0px;
+}
+
+table.tabmenu {
+  margin-left: 20px;
+  border-spacing: 0px;
+}
+
+table.tabmenu td {
+  height: 28px;	
+}
+
+table.tabmenu td.normal {
+  background: url(./images/tabBg.png) repeat-x bottom;
+}
+
+table.tabmenu td.normalLeft {
+  width: 17px;
+  background: url(./images/tabLeft.png) no-repeat bottom right;
+}
+
+table.tabmenu td.normalRight {
+  width: 17px;
+  background: url(./images/tabRight.png) no-repeat bottom left;
+}
+
+table.tabmenu td.selected {
+  background: url(./images/tabSelectedBg.png) repeat-x;
+}
+
+table.tabmenu td.selectedLeft {
+  width: 17px;
+  background: url(./images/tabSelectedLeft.png) no-repeat bottom right;
+}
+
+table.tabmenu td.selectedRight {
+  width: 17px;
+  background: url(./images/tabSelectedRight.png) no-repeat bottom left;
+}
+/* Standard table */
+
 table.tbl {
   width: 100%;
   border: 0px;
@@ -161,8 +221,7 @@ td.tabsp {
 
 td.tabox {
   background-color: #ccc;
-  border: solid #ccc 2px;
-  border-top: none;
+  border: solid #ccc 4px;
 }
 
 /* Message styles */

@@ -1,72 +1,150 @@
-<?php /* STYLE/DEFAULT $Id$ */
+<?php /* $Id$ */
 
+//
+// This overrides the show() function of the CTitleBlock_core class
+//
 class CTitleBlock extends CTitleBlock_core {
+	function show() {
+		global $AppUI;
+    
+		$s = "\n<table class='titleblock'>";
+		$s .= "\n<tr>";
+    
+		if ($this->icon) {
+			$s .= "\n<td>";
+			$s .= dPshowImage( dPFindImage( $this->icon, $this->module ), '42', '42' );
+			$s .= "</td>";
+		}
+
+		$s .= "\n<td class='titlecell'><h1>" . $AppUI->_($this->title) . "</h1></td>";
+
+		foreach ($this->cells1 as $c) {
+			$s .= "\n$c[2]<td $c[0]>$c[1]</td>$c[3]";
+		}
+
+		if ($this->showhelp) {
+			$s .= "\n<td>";
+			$s .= "\n\t<a href='#$this->helpref' onclick=\"javascript:window.open('?m=help&amp;dialog=1&amp;hid=$this->helpref', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\" title='".$AppUI->_( 'Help' )."'>";
+			$s .= "\n\t\t" . dPshowImage( './images/icons/stock_help-16.png', '16', '16', $AppUI->_( 'Help' ) );
+			$s .= "\n\t</a>";
+			$s .= "\n</td>";
+		}
+    
+		$s .= "\n</tr>";
+		$s .= "\n</table>";
+
+		if (count( $this->crumbs ) || count( $this->cells2 )) {
+			$crumbs = array();
+
+			foreach ($this->crumbs as $k => $v) {
+        $t = "";
+        
+        if ($v[1]) {
+          $crumbIcon = dPfindImage( $v[1], $this->module );
+  				$t = "<img src='$crumbIcon' />";            
+        }
+        
+				$t .= $AppUI->_( $v[0] );
+				$crumbs[] = "<a href='$k'>$t</a>";
+			}
+
+			$s .= "\n<table class='crumbsblock'>";
+			$s .= "\n<tr>";
+			$s .= "\n\t<td>";
+			$s .= "\n\t\t" . implode( ' <strong>:</strong> ', $crumbs );
+			$s .= "\n\t</td>";
+
+			foreach ($this->cells2 as $c) {
+  			$s .= "\n$c[2]<td $c[0]>$c[1]</td>$c[3]";
+			}
+
+			$s .= "\n</tr>";
+      $s .= "\n</table>";
+		}
+
+		echo "$s";
+	}
 }
 
-##
-##  This overrides the show function of the CTabBox_core function
-##
+//
+// This overrides the show() function of the CTabBox_core class
+//
 class CTabBox extends CTabBox_core {
-	function show( $extra='' ) {
+  function show( $extra='' ) {
 
-  	GLOBAL $AppUI;
+    GLOBAL $AppUI;
     
-  	$uistyle = $AppUI->getPref( 'UISTYLE' );
-  	if (!$uistyle)
-    	$uistyle = $AppUI->cfg['host_style'];
-  	if (!$uistyle)
+    $uistyle = $AppUI->getPref( 'UISTYLE' );
+    if (!$uistyle)
+      $uistyle = $AppUI->cfg['host_style'];
+    if (!$uistyle)
       $uistyle = 'default';
       
     // tabbed / flat view options
-  	reset( $this->tabs );
-  	$s = '';
-    $s .= "<table class='tabbox'>\n<tr>\n";
-    $s .= "<td>";
+    reset( $this->tabs );
+    $s = "\n<table class='taborflat'>";
+    $s .= "\n<tr>";
 
   	if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
-    	$s .= "<a href='{$this->baseHRef}tab= 0'>".$AppUI->_('tabbed')."</a> : ";
-    	$s .= "<a href='{$this->baseHRef}tab=-1'>".$AppUI->_('flat'  )."</a>";
-    	$s .= "</td>\n";
+    	$s .= "\n<td><a href='{$this->baseHRef}tab=0'>".$AppUI->_('tabbed')."</a></td>";
+      $s .= "\n<td><strong>:</strong></td>";
+    	$s .= "\n<td><a href='{$this->baseHRef}tab=-1'>".$AppUI->_('flat')."</a></td>";
     }
 
-    $s .= "$extra\n</tr>\n</table>\n";
+    $s .= "\n$extra\n</tr></table>";
     echo $s;
     
-  	if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
+    if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
       // flat view, active = -1
-    	echo "<table border='0' cellpadding='2' cellspacing='0' width='100%'>\n";
-    	foreach ($this->tabs as $v) {
-      	echo "<tr><td><strong>".$AppUI->_($v[1])."</strong></td></tr>\n";
-      	echo "<tr><td>";
-      	include $this->baseInc.$v[0].".php";
-      	echo "</td></tr>\n";
+      echo "\n<table class='flatview'>\n";
+
+      foreach ($this->tabs as $v) {
+        echo "\n<tr><td><strong>".$AppUI->_($v[1])."</strong></td></tr>";
+        echo "\n<tr><td>";
+        include $this->baseInc.$v[0].".php";
+        echo "\n</td></tr>";
       }
-    	echo "</table>\n";
+
+      echo "\n</table>";
     } else {
-    // tabbed view
-    	$s = "<table width='100%' border='0' cellpadding='0' cellspacing='0'>";
-    	$s .= "<tr><td><table border='0' cellpadding='0' cellspacing='0'>";
+      // tabbed view
+      $s = "\n<table class='tabview'>";
+      $s .= "\n<tr>\n<td>";
       
-    	if ( count($this->tabs)-1 < $this->active ) {
-        // Last selected tab is not available in this view. eg. Child tasks
-      	$this->active = 0;
+      $s .= "\n<table class='tabmenu' cellspacing='0'>"; // IE Hack: cellspacing should be useless
+      $s .= "\n\t<tr>";
+      
+      // Last selected tab is not available in this view. eg. Child tasks
+      if ( count($this->tabs)-1 < $this->active ) {
+        $this->active = 0;
       }
-    	foreach( $this->tabs as $k => $v ) {
-      	$class = ($k == $this->active) ? "tabon" : "taboff";
-      	$sel = ($k == $this->active) ? "Selected" : "";
-      	$value = $AppUI->_($v[1]);
-      	$s .= "<td height='28' valign='middle'><img src='./style/$uistyle/images/tab".$sel."Left.png' height='28' border='0' alt='' /></td>";
-      	$s .= "<td valign='middle' nowrap='nowrap' background='./style/$uistyle/images/tab".$sel."Bg.png'>&nbsp;<a href='".$this->baseHRef."tab=$k'>$value</a>&nbsp;</td>";
-      	$s .= "<td valign='middle'><img src='./style/$uistyle/images/tab".$sel."Right.png' height='28' border='0' alt='' /></td>";
+
+      foreach( $this->tabs as $k => $v ) {
+        $class = ($k == $this->active) ? "tabon" : "taboff";
+        $sel = ($k == $this->active) ? "selected" : "normal";
+        $value = $AppUI->_($v[1]);
+        
+        $s .= "\n\t\t";
+        $s .= "<td class='{$sel}Left' />";
+        $s .= "<td class='$sel'><a href='{$this->baseHRef}tab=$k'>$value</a></td>";
+        $s .= "<td class='{$sel}Right' />";
       }
-    	$s .= "</table></td></tr>";
-    	$colspan = (count($this->tabs)*4 + 1);
-    	$s .= "<tr><td width='100%' colspan='$colspan' class='tabox'>";
-    	echo $s;
+
+      $s .= "\n\t</tr>";
+      $s .= "\n</table>";
+      
+      $s .= "\n</td>\n</tr>";
+      $s .= "\n<tr>\n<td class='tabox'>";
+      echo $s;
+
+      $activeURL = $this->baseInc.$this->tabs[$this->active][0];
+
       // Will be null if the previous selection tab is not available in the new window eg. Children tasks
-    	if ( $this->baseInc.$this->tabs[$this->active][0] != "" )
-      	require $this->baseInc.$this->tabs[$this->active][0].'.php';
-    	echo "</td></tr></table>";
+      if ($activeURL)
+        require "$activeURL.php";
+        
+      echo "\n</td>\n</tr>";
+      echo "\n</table>";
     }
   }
 }

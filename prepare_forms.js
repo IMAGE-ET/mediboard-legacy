@@ -13,7 +13,7 @@ function prepareForms() {
       element.id = form.name + "_" + element.name;
 
       // Focus on first non hidden input
-      if (bGiveFocus && element.type != "hidden") {
+      if (bGiveFocus && element.type == "text") {
         element.focus();
         bGiveFocus = false;
       }
