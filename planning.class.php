@@ -56,7 +56,7 @@ class Cplanning
 	  }
 	}
   }
-  function dispMed($idchir, $idanesth = NULL, $idspec = NULL)
+  function dispMed($idchir, $idanesth = 0, $idspec = 0)
   {
     $vide = 1;
     $sql = "select user_first_name, user_last_name from users, users_mediboard
@@ -67,8 +67,6 @@ class Cplanning
 	  $vide = 0;
 	  echo "Dr. ".$row[0]['user_first_name']." ".$row[0]['user_last_name'];
 	}
-	if ($idanesth == NULL)
-	  $idanesth = 0;
 	$sql = "select user_first_name, user_last_name from users, users_mediboard
 				where users.user_username = '$idanesth' and users.user_id = users_mediboard.user_id";
     $row = db_loadlist($sql);
@@ -77,8 +75,6 @@ class Cplanning
 	  $vide = 0;
 	  echo "Dr. ".$row[0]['user_first_name']." ".$row[0]['user_last_name'];
 	}
-	if ($idspec == NULL)
-	  $idspec = 0;
 	$sql = "select text from functions_mediboard where function_id = '$idspec'";
     $row = db_loadlist($sql);
 	if(sizeof($row)>0)
