@@ -118,10 +118,9 @@ class CPatient extends CDpObject {
   
   function loadRefs() {
     // Backward references
-    $sql = "SELECT * FROM operations WHERE pat_id = '$this->patient_id'";
-    $this->_ref_operations = db_loadObjectList($sql, new COperation);
+    $obj = new COperation;
+    $this->_ref_operations = $obj->loadList("pat_id = '$this->patient_id'");
   }
-  
   
 	function getSiblings() {
       $sql = "SELECT patient_id, nom, prenom, naissance, adresse, ville, CP " .
