@@ -17,11 +17,11 @@ require_once($AppUI->getModuleClass('dPhospi', 'chambre'));
  */
 class CService extends CDpObject {
   // DB Table key
-	var $service_id = NULL;	
+	var $service_id = null;	
 
   // DB Fields
-  var $nom = NULL;
-  var $description = NULL;
+  var $nom = null;
+  var $description = null;
   
   // Object references
   var $_ref_chambres = null;

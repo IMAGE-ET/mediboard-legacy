@@ -1,0 +1,35 @@
+<?php /* $Id$ */
+
+/**
+* @package Mediboard
+* @subpackage mediusers
+* @version $Revision$
+* @author Romain Ollivier
+*/
+
+global $AppUI, $canRead, $canEdit, $m;
+
+require_once($AppUI->getModuleClass("dPhospi", "service"));
+
+if (!$canRead) {
+  $AppUI->redirect( "m=public&a=access_denied" );
+}
+
+// Récupération du service à ajouter/editer
+$serviceSel = new CService;
+$serviceSel->load(mbGetValueFromGetOrSession("service_id"));
+
+// Récupération des services
+$services = new CService;
+$services = $services->loadList();
+
+// Création du template
+require_once($AppUI->getSystemClass('smartydp'));
+$smarty = new CSmartyDP;
+
+$smarty->assign('serviceSel', $serviceSel);
+$smarty->assign('services', $services);
+
+$smarty->display('vw_idx_services.tpl');
+
+?>
