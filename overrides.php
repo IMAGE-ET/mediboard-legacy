@@ -71,8 +71,11 @@ class CTitleBlock extends CTitleBlock_core {
 //
 class CTabBox extends CTabBox_core {
   function show( $extra='' ) {
-
-    GLOBAL $AppUI;
+    echo "<br />actve before: "; var_export($this->active);
+    $this->checkActive();
+    echo "<br />actve after: "; var_export($this->active);
+    
+    global $AppUI;
     
     $uistyle = $AppUI->getPref( 'UISTYLE' );
     if (!$uistyle)
@@ -115,11 +118,6 @@ class CTabBox extends CTabBox_core {
       $s .= "\n<table class='tabmenu' cellspacing='0'>"; // IE Hack: cellspacing should be useless
       $s .= "\n\t<tr>";
       
-      // Last selected tab is not available in this view. eg. Child tasks
-      if ( count($this->tabs)-1 < $this->active ) {
-        $this->active = 0;
-      }
-
       foreach( $this->tabs as $k => $v ) {
         $sel = ($k == $this->active) ? "selected" : "normal";
         $value = $AppUI->_($v[1]);
