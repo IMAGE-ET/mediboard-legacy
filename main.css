@@ -3,6 +3,7 @@
 @import "./common.css";
 @import "./login.css";
 @import "./header.css";
+@import "./htmlarea.css"
 
 /* Module specific CSS*/
 @import "./contacts.css";

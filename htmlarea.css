@@ -4,16 +4,17 @@ body {
   background: #ddf;
 }
 
-span.field {
-  color: #595;
-  background: #aae;
-  font-family: lucida console;
-}
-
-span.value {
-  background: #ddd;
-}
-
 span.hilite {
   background: #f5f;
 }
+
+@media screen {
+  span.field {
+    background: #cce;
+  }
+
+  span.value {
+    background: #ddd;
+  }
+}
+
