@@ -30,7 +30,7 @@ function prepareForms() {
   // For each form
   var formIt = 0;
   while (form = document.forms[formIt++]) {
-    var formName = "Formulaire: " + form.getAttribute("name");
+    var formName = form.getAttribute("name");
     
     // For each element
     var elementIt = 0;
@@ -41,8 +41,6 @@ function prepareForms() {
         if (element.type == "radio") {
           element.id += "_" + element.value;
         }
-        
-        
       }
 
 
