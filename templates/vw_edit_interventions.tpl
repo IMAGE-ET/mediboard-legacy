@@ -1,11 +1,3 @@
-{literal}
-<script language="javascript">
-function popOp(id) {
-  window.open('./index.php?m=dPbloc&a=view_operation&dialog=1&idop='+id, 'Intervention', 'left=50,top=50,height=320,width=700,resizable');
-}
-</script>
-{/literal}
-
 <table class="main">
   <tr>
     <th colspan=2>
@@ -27,7 +19,7 @@ function popOp(id) {
 		{foreach from=$list1 item=curr_op}
 		<tr>
 		  <td width="50%">
-		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
+		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op.id}">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
             Côté : {$curr_op.cote}
             <br />
@@ -74,7 +66,7 @@ function popOp(id) {
             <input type="hidden" name="a" value="do_order_op" />
             <input type="hidden" name="cmd" value="sethour" />
             <input type="hidden" name="id" value="{$curr_op.id}" />
-		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
+		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op.id}">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
             Côté : {$curr_op.cote}
             <br />

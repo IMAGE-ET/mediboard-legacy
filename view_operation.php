@@ -1,5 +1,5 @@
 <?php /* $Id$ */
-
+//@todo : supprimer ce fichier devenu inutile ainsi que le templates associé
 /**
 * @package Mediboard
 * @subpackage dPbloc

@@ -152,15 +152,6 @@ switch($cmd)
     $result = db_exec($sql);
     break;
   }
-  case "modrques" : {
-    $rques = dPgetParam( $_GET, 'rques', '00' );
-    $sql = "UPDATE operations
-            SET rques = '$rques'
-            WHERE operations.operation_id = '$id'";
-    $result = db_exec($sql);
-    $AppUI->redirect("m=dPbloc&a=view_operation&dialog=1&id=$id");
-    break;
-  }
 }
 $AppUI->redirect();
 ?>
