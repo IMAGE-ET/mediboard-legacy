@@ -10,8 +10,7 @@
 require_once("modules/admin/admin.class.php");
 require_once("modules/dPpatients/patients.class.php");
 require_once("modules/dPbloc/plagesop.class.php");
-
-require_once("planning.class.php");
+require_once("modules/dPplanningOp/planning.class.php");
 
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
