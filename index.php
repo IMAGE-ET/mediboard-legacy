@@ -24,7 +24,7 @@ $active = intval( !$AppUI->getState( 'dPblocIdxTab' ) );			// retrieve active ta
 // we prepare the User Interface Design with the dPFramework
 
 // setup the title block with Name, Icon and Help
-$titleBlock = new CTitleBlock( 'dPbloc', 'dPbloc.png', $m, "$m.$a" );	// load the icon automatically from ./modules/dPbloc/images/
+$titleBlock = new CTitleBlock( 'Planning du bloc opératoire', 'dPbloc.png', $m, "$m.$a" );	// load the icon automatically from ./modules/dPbloc/images/
 $titleBlock->addCell();
 
 $titleBlock->show();	//finally show the titleBlock
