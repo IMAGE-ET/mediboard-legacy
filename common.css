@@ -67,8 +67,11 @@ table.std td.hilite {
 }
 
 /* Form tables */
+table.form {
+}
 
-tr.field th {
+tr.field th,
+tr.mandatory th, {
   background-color: transparent;
   color: #000;
   border: none;
@@ -77,7 +80,17 @@ tr.field th {
   font-weight: normal;
 } 
 
-tr.field td {
+tr.field td.readonly input {
+  background-color: #aaa;
+}
+
+tr.category th {
+  font-weight: bold;
+  font-style: italic;
+}
+
+tr.field td
+tr.mandatory td {
   white-space: nowrap;
   text-align: left;
 } 
