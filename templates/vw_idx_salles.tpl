@@ -21,7 +21,7 @@ function checkSalle() {
 <tr>
   <td class="greedyPane">
 
-		<a href="index.php?m={$m}&tab=4&usersalle=0"><strong>Créer une salle</strong></a>
+		<a href="index.php?m={$m}&tab={$tab}&usersalle=0"><strong>Créer une salle</strong></a>
 
     <table class="color">
       
@@ -31,7 +31,7 @@ function checkSalle() {
     
     {foreach from=$salles item=curr_salle}
     <tr>
-      <td><a href="index.php?m={$m}&tab=4&usersalle={$curr_salle.id}">{$curr_salle.nom}</a></td>
+      <td><a href="index.php?m={$m}&tab={$tab}&usersalle={$curr_salle.id}">{$curr_salle.nom}</a></td>
     </tr>
     {/foreach}
       
