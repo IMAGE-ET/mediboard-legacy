@@ -145,7 +145,7 @@ function printPatient(id) {
         
         <tr>
           <th>Téléphone:</th>
-          <td>{$patient->tel}</td>
+          <td>{$patient->_tel1} {$patient->_tel2} {$patient->_tel3} {$patient->_tel4} {$patient->_tel5}</td>
         </tr>
         
         <tr>
