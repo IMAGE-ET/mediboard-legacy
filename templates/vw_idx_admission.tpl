@@ -1,14 +1,20 @@
+<!-- $Id$ -->
+
+{literal}
+<script type="text/javascript">
+//<![CDATA[
+
+function printAdmission(id) {
+  var url = './index.php?m=dPadmissions&a=print_admission&dialog=1';
+  url = url + '&id=' + id;
+  window.open(url, 'Patient', 'left=10,top=10,height=550,width=700,resizable=1,scrollbars=1');
+}
+
+//]]>
+</script>
+{/literal}
+
 <table class="main">
-  <tr>
-    <td colspan="2">
-      Admissions affichées : <b>
-      {if $selAdmis == "n"}admissions non effectuées
-      {elseif $selSaisis == "n"}préadmission AS/400 non faite
-      {else}toutes les admissions
-      {/if}
-      </b>
-      </td>
-  </tr>
   <tr>
     <th width="50%">
         <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$pmonthd}&amp;month={$pmonth}&amp;year={$pmonthy}"><<</a>
@@ -19,6 +25,11 @@
         <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$pday}&amp;month={$pdaym}&amp;year={$pdayy}"><<</a>
         {$title2}
         <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$nday}&amp;month={$ndaym}&amp;year={$ndayy}">>></a>
+        <i>Admissions affichées :
+        {if $selAdmis == "n"}admissions non effectuées
+        {elseif $selSaisis == "n"}préadmission AS/400 non faite
+        {else}toutes les admissions
+        {/if}</i>
     </th>
   </tr>
   <tr>
@@ -69,22 +80,22 @@
         {foreach from=$today item=curr_adm}
         <tr>
           <td>
-            <a href="index.php?m={$m}&amp;tab=vw_dtl_admission&amp;id={$curr_adm.operation_id}">
+            <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             {$curr_adm.nom}
             </a>
           </td>
           <td>
-            <a href="index.php?m={$m}&amp;tab=vw_dtl_admission&amp;id={$curr_adm.operation_id}">
+            <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             {$curr_adm.prenom}
             </a>
           </td>
           <td>
-            <a href="index.php?m={$m}&amp;tab=vw_dtl_admission&amp;id={$curr_adm.operation_id}">
+            <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             Dr. {$curr_adm.chir_lastname} {$curr_adm.chir_firstname}
             </a>
           </td>
           <td>
-            <a href="index.php?m={$m}&amp;tab=vw_idx_admission&amp;id={$curr_adm.operation_id}">
+            <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             {$curr_adm.hour}
             </a>
           </td>
