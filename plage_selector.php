@@ -88,9 +88,6 @@ $i = 0;
 foreach($result as $key => $value) {
   $plageop = $value["id"];
   $time_left = (substr($value["free_time"], 0, -4) - $duree[$plageop]["hour"]);
-  echo "La durée des operations est : ".$duree[$plageop]["hour"].$duree[$plageop]["min"]."
-        <br>free_time : ".$value["free_time"]."
-        <br>time_left (apres heure) : $time_left";
   switch(substr($value["free_time"], -4, 2) - $duree[$plageop]["min"]) {
     case "85" : {
       $time_left .= "4500";
@@ -109,9 +106,6 @@ foreach($result as $key => $value) {
       break;
     }
   }
-  echo "<br>time_left (apres minutes): $time_left
-        <br>temp_op : $temp_op
-        <br>";
   if($time_left >= $temp_op) {
     $list[$i] = $value;
 	$list[$i]["dateFormed"] = substr($value["date"], 8, 2)."/".substr($value["date"], 5, 2)."/".substr($value["date"], 0, 4);
