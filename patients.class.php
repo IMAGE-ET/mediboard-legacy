@@ -53,6 +53,7 @@ class CPatient extends CDpObject {
 	var $_tel23 = null;
 	var $_tel24 = null;
 	var $_tel25 = null;
+	var $_age = null;
 
   // Object References
   var $_ref_operations = null;
@@ -86,6 +87,13 @@ class CPatient extends CDpObject {
     $this->_tel24 = substr($this->tel2, 6, 2);
     $this->_tel25 = substr($this->tel2, 8, 2);
 
+    $annais = substr($this->naissance, 0, 4);
+    $anjour = date("Y");
+    $moisnais = substr($this->naissance, 5, 2);
+    $moisjour = date("m");
+    $journais = substr($this->naissance, 8, 2);
+    $jourjour = date("d");
+    $this->_age = $anjour-$annais;
     return true;
   }
   
