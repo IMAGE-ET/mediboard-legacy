@@ -32,6 +32,7 @@ class COperation extends CDpObject {
   var $info = NULL;
   var $date_anesth = NULL;
   var $time_anesth = NULL;
+  var type_anesth = NULL;  
   var $date_adm = NULL;
   var $time_adm = NULL;
   var $duree_hospi = NULL;
@@ -60,48 +61,54 @@ class COperation extends CDpObject {
   }
 
   function delete() {
-    $sql = "SELECT rank, plageop_id FROM operations WHERE operation_id = '$this->operation_id'";
-    $result = db_loadlist($sql);
-    if($result[0]["rank"] != 0) {
-      $sql = "SELECT operation_id FROM operations
-              WHERE plageop_id = '".$result[0]["plageop_id"]."'
-              AND rank != 0
-              AND operation_id != '$this->operation_id'
-              ORDER BY rank";
+
+    // Re-numérotation des autres plages de la même plage
+    if ($this->rank) {
+      $sql = "SELECT operation_id 
+        FROM operations
+        WHERE plageop_id = '$this->plageop_id'
+        AND rank != 0
+        AND operation_id != '$this->operation_id'
+        ORDER BY rank";
       $result = db_loadlist($sql);
-      $i = 1;
-      foreach($result as $key => $value) {
+
+      $i = 1;echo
+      foreach ($result as $key => $value) {
         $sql = "UPDATE operations SET rank = '$i' where operation_id = '".$value["operation_id"]."'";
         db_exec( $sql );
         $i++;
       }
     }
-    $sql = "DELETE FROM operations WHERE operation_id = '$this->operation_id'";
-    if (!db_exec( $sql )) {
-      return db_error();
-    } else {
-    return NULL;
-    }
+    
+    return parent::delete();
   }
   
-  function load($id) {
-    parent::load($id);
+  function load() {
+    if ($msg = parent::load()) {
+      return $msg;
+    }
+
     $sql = "SELECT user_last_name, user_first_name
-            FROM users
-            WHERE user_id = '".$this->chir_id."'";
+      FROM users
+      WHERE user_id = '$this->chir_id'";
     $chir = db_loadlist($sql);
+
     $this->_chir_name = "Dr. ".$chir[0]["user_last_name"]." ".$chir[0]["user_first_name"];
+    
     $sql = "SELECT nom, prenom
-            FROM patients
-            WHERE patient_id = '".$this->pat_id."'";
+      FROM patients
+      WHERE patient_id = '$this->pat_id'";
     $pat = db_loadlist($sql);
+
     $this->_pat_name = $pat[0]["nom"]." ".$pat[0]["prenom"];
     $this->_hour_op = substr($this->temp_operation, 0, 2);
     $this->_min_op = substr($this->temp_operation, 3, 2);
+
     $sql = "SELECT date
-            FROM plagesop
-            WHERE id = '".$this->plageop_id."'";
+      FROM plagesop
+      WHERE id = '$this->plageop_id'";
     $plage = db_loadlist($sql);
+    
     $this->_date = substr($plage[0]["date"], 8, 2)."/".substr($plage[0]["date"], 5, 2)."/".substr($plage[0]["date"], 0, 4);
     $this->_date_rdv_anesth = substr($this->date_anesth, 0, 4).substr($this->date_anesth, 5, 2).substr($this->date_anesth, 8, 2);
     $this->_rdv_anesth = substr($this->date_anesth, 8, 2)."/".substr($this->date_anesth, 5, 2)."/".substr($this->date_anesth, 0, 4);
@@ -114,49 +121,16 @@ class COperation extends CDpObject {
   }
   
   function store() {
-    //Data computation
+    // Data computation
     $this->date_anesth = substr($this->_date_rdv_anesth, 0, 4)."-".substr($this->_date_rdv_anesth, 4, 2)."-".substr($this->_date_rdv_anesth, 6, 2);
     $this->time_anesth = $this->_hour_anesth.":".$this->_min_anesth.":00";
     $this->date_adm = substr($this->_date_rdv_adm, 0, 4)."-".substr($this->_date_rdv_adm, 4, 2)."-".substr($this->_date_rdv_adm, 6, 2);
     $this->time_adm = $this->_hour_adm.":".$this->_min_adm.":00";
     $this->temp_operation = $this->_hour_op.":".$this->_min_op.":00";
-    //Parent store
-    parent::store();
+
+    return parent::store();
   }
     
-/*  function store() {
-    //@todo -c apeller la fonction superstore pour faire l'insert/update
-    $this->date_anesth = substr($this->date_rdv_anesth, 0, 4)."-".substr($this->date_rdv_anesth, 4, 2)."-".substr($this->date_rdv_anesth, 6, 2);
-    $this->time_anesth = $this->hour_anesth.":".$this->min_anesth.":00";
-    $this->date_adm = substr($this->date_rdv_adm, 0, 4)."-".substr($this->date_rdv_adm, 4, 2)."-".substr($this->date_rdv_adm, 6, 2);
-    $this->time_adm = $this->hour_adm.":".$this->min_adm.":00";
-    $this->temp_operation = $this->hour_op.":".$this->min_op.":00";
-    parent::store();
-    if($this->operation_id != NULL) {
-      $sql = "update operations set pat_id = '$this->pat_id', chir_id = '$this->chir_id',
-              plageop_id = '$this->plageop_id', CCAM_code = '$this->CCAM_code', CIM10_code = '$this->CIM10_code',
-              cote = '$this->cote', temp_operation = '$this->temp_operation',
-              examen = '$this->examen', materiel = '$this->materiel', info = '$this->info',
-              date_anesth = '$this->date_anesth', time_anesth = '$this->time_anesth',
-              date_adm = '$this->date_adm', time_adm = '$this->time_adm',
-              duree_hospi = '$this->duree_hospi', type_adm = '$this->type_adm', chambre = '$this->chambre',
-              ATNC = '$this->ATNC', rques = '$this->rques', rank = '$this->rank'
-              where operation_id = '$this->operation_id'";
-      db_exec( $sql );
-      return db_error();
-    }
-    else {
-      $sql = "insert into operations(pat_id, chir_id, plageop_id, CCAM_code, CIM10_code, cote, temp_operation,
-              examen, materiel, info, date_anesth, time_anesth, date_adm, time_adm, duree_hospi, type_adm,
-              chambre, ATNC, rques, rank)
-              values('$this->pat_id', '$this->chir_id', '$this->plageop_id', '$this->CCAM_code', '$this->CIM10_code',
-              '$this->cote', '$this->temp_operation', '$this->examen', '$this->materiel', '$this->info',
-              '$this->date_anesth', '$this->time_anesth', '$this->date_adm', '$this->time_adm', '$this->duree_hospi',
-              '$this->type_adm', '$this->chambre', '$this->ATNC', '$this->rques', '$this->rank')";
-      db_exec( $sql );
-      return db_error();
-    }
-  }*/
 }
 
 ?>
