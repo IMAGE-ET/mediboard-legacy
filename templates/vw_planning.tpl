@@ -42,7 +42,7 @@ function checkPlage() {
 
       <label for="selection_chirSel">Praticien:</label>
       <select name="chirSel" onchange="this.form.submit()">
-        <option value="-1" {if $chirSel == -1} selected="selected" {/if}>-- Choisir un praticien</option>
+        <option value="-1" {if $chirSel == -1} selected="selected" {/if}>&mdash; Choisir un praticien &mdash;</option>
         {foreach from=$listChirs item=curr_chir}
         <option value="{$curr_chir->user_id}" {if $chirSel == $curr_chir->user_id} selected="selected" {/if}>
           {$curr_chir->user_last_name} {$curr_chir->user_first_name}
@@ -205,45 +205,73 @@ function checkPlage() {
       </table>
     </td>
     <td>
-      <table>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;plageconsult_id=-1">cliquez ici pour créer une nouvelle plage</a>
+      
+      <table class="tbl">
         <tr>
-          {if $plageconsult_id != -1}
-          <td colspan="4"><a href="index.php?m={$m}&amp;tab={$tab}&amp;plageconsult_id=-1">
-          cliquez ici pour créer une nouvelle plage</a></td>
-        </tr><tr>
-            <th>Consultations du {$plageSel->date}</th>
-          {else}
-            <th>Pas de plage selectionnée</th>
+          <th colspan="10">
+            <strong>
+            {if $plageconsult_id != -1}
+            Consultations du {$plageSel->date}
+            {else}
+            Pas de plage selectionnée
+            {/if}
+            </strong>
+          </th>
+        </tr>
+
+        <tr>
+          <th>Heure</th>
+          <th>Nom</th>
+          <th>Motif</th>
+          <th>Remarques</th>
+          <th>RDV</th>
+          <th>Etat</th>
+        </tr>
+        {foreach from=$plageSel->_ref_consultations item=curr_consult}
+        <tr>
+          {eval var=$curr_consult->consultation_id assign="consult_id"}
+          {assign var="href_consult" value="index.php?m=$m&amp;tab=edit_consultation&amp;selConsult=$consult_id"}
+          {assign var="href_planning" value="index.php?m=$m&amp;tab=edit_planning&amp;consultation_id=$consult_id"}
+          {if $curr_consult->premiere} 
+            {assign var="style" value="style='background: #faa;'"}
+          {else} 
+            {assign var="style" value=""}
           {/if}
+          
+          <td {$style}><a href="{$href_consult}">{$curr_consult->_hour}h{if $curr_consult->_min}{$curr_consult->_min}{/if}</a></td>
+          <td {$style}><a href="{$href_consult}">{$curr_consult->_ref_patient->nom} {$curr_consult->_ref_patient->prenom}</a></td>
+          <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->motif|nl2br}</a></td>
+          <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->rques|nl2br}</a></td>
+          <td {$style}>
+            <form name="etatFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="dosql" value="do_consultation_aed" />
+            <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
+            <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
+            <input type="hidden" name="chrono" value="{$smarty.const.CC_PATIENT_ARRIVE}" />
+            </form>
+            
+            <form name="cancelFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="dosql" value="do_consultation_aed" />
+            <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
+            <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
+            <input type="hidden" name="chrono" value="{$smarty.const.CC_TERMINE}" />
+            <input type="hidden" name="annule" value="1" />
+            </form>
+            
+            <a href="{$href_planning}"><img src="modules/{$m}/images/planning.png" title="Modifier le rendez-vous"></a>
+
+			{if $curr_consult->chrono == $smarty.const.CC_PLANIFIE}
+            <img src="modules/{$m}/images/check.png" title="Notifier l'arrivée du patient" onclick="document.etatFrm{$curr_consult->consultation_id}.submit();">
+            <img src="modules/{$m}/images/cancel.png" title="Annuler ce rendez-vous" onclick="document.cancelFrm{$curr_consult->consultation_id}.submit();">
+            {/if}
+          </td>
+          <td {$style}>{$curr_consult->_etat}</td>
         </tr>
-        <tr>
-          <table class="tbl">
-            <tr>
-              <th>Heure</th>
-              <th>Nom</th>
-              <th>Prenom</th>
-              <th>Motif</th>
-              <th>rques</th>
-              <th>RDV</th>
-            </tr>
-            {foreach from=$plageSel->_ref_consultations item=curr_consult}
-            <tr>
-              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
-              {$curr_consult->_hour}h{if $curr_consult->_min}{$curr_consult->_min}{/if}</a></td>
-              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
-              {$curr_consult->_ref_patient->nom}</a></td>
-              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
-              {$curr_consult->_ref_patient->prenom}</a></td>
-              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
-              {$curr_consult->motif|nl2br}</a></td>
-              <td><a href="index.php?m={$m}&tab=edit_consultation&selConsult={$curr_consult->consultation_id}">
-              {$curr_consult->rques|nl2br}</a></td>
-              <td><a href="index.php?m={$m}&tab=edit_planning&consultation_id={$curr_consult->consultation_id}">
-              <img src="modules/dPcabinet/images/planning.png"></a></td>
-            </tr>
-            {/foreach}
-          </table>
-        </tr>
+        {/foreach}
       </table>
+    </td>
   </tr>
 </table>

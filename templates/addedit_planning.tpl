@@ -180,12 +180,22 @@ function setCalendar( idate, fdate ) {
         <tr><th class="category" colspan="3">Rendez-vous</th></tr>
 
         <tr>
+          <th><label for="editFrm_premiere">Consultation:</label></th>
+          <td>
+            <input type="checkbox" name="_check_premiere" value="1" {if $consult->_check_premiere} checked="checked" {/if} />
+            <label for="editFrm__check_premiere">Première consultation</label>
+          </td>
+          <td rowspan="4" class="button">
+            <input type="button" value="Selectionner" onclick="popRDV()" />
+          </td>
+        </tr>
+
+        <tr>
           <th><label for="editFrm__date">Date:</label></th>
           <td class="readonly">
             <input type="text" name="_date" value="{$consult->_ref_plageconsult->date|date_format:"%d/%m/%Y"}" readonly="readonly" />
             <input type="hidden" name="plageconsult_id" value="{$consult->_ref_plageconsult->plageconsult_id}" />
           </td>
-          <td rowspan="3" class="button"><input type="button" value="Selectionner" onclick="popRDV()" /></td>
         </tr>
 
         <tr>

@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.23';
+$config['mod_version'] = '0.24';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -65,6 +65,9 @@ class CSetupdPcabinet {
           "\nADD `traitement` TEXT";
       db_exec( $sql ); db_error();
     case "0.23":
+      $sql = "ALTER TABLE `consultation` ADD `premiere` TINYINT NOT NULL";
+      db_exec( $sql ); db_error();
+    case "0.24":
 			return true;
 		default:
 			return false;

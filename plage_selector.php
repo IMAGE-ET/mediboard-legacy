@@ -84,7 +84,8 @@ if($plageSel) {
     $qte = 0;
     foreach($plage->_ref_consultations as $key => $value) {
       if((intval($value->_hour) == $currHour) && (intval($value->_min) == $currMin)) {
-      	$listPlace[$i]["patient"][$qte]["duree"] = $plage->_ref_consultations[$key]->duree;
+        $listPlace[$i]["patient"][$qte]["premiere"] = $plage->_ref_consultations[$key]->premiere;
+        $listPlace[$i]["patient"][$qte]["duree"] = $plage->_ref_consultations[$key]->duree;
         $plage->_ref_consultations[$key]->loadRefs();
         $listPlace[$i]["patient"][$qte]["patient"] = $plage->_ref_consultations[$key]->_ref_patient->nom;
         $listPlace[$i]["patient"][$qte]["patient"] .= " ".$plage->_ref_consultations[$key]->_ref_patient->prenom;

@@ -4,15 +4,9 @@
 <input type="hidden" name="del" value="0" />
 <input type="hidden" name="dosql" value="do_consultation_aed" />
 <input type="hidden" name="special" value="1" />
+<input type="hidden" name="cr_valide" value="0" />
 <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-<input type="hidden" name="plageconsult_id" value="{$consult->plageconsult_id}" />
-<input type="hidden" name="patient_id" value="{$consult->patient_id}" />
-<input type="hidden" name="heure" value="{$consult->heure}" />
-<input type="hidden" name="duree" value="{$consult->duree}" />
-<input type="hidden" name="motif" value="{$consult->motif}" />
-<input type="hidden" name="secteur1" value="{$consult->secteur1}" />
-<input type="hidden" name="secteur2" value="{$consult->secteur2}" />
-<input type="hidden" name="rques" value="{$consult->rques}" />
+<input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
 
 <table class="form">
   <tr>

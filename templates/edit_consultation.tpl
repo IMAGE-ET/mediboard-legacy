@@ -26,15 +26,35 @@ function pasteText(formName) {
   var form = document.editFrm;
   var aide = eval("form._aide_" + formName);
   var area = eval("form." + formName);
-  
   insertAt(area, aide.value + '\n')
   aide.value = 0;
-//  area.focus();
+}
+
+function submitConsultWithChrono(chrono) {
+  var form = document.editFrm;
+  form.chrono.value = chrono;
+  form.submit();
+}
+
+function validerCompteRendu() {
+  if (confirm('Veuillez confirmer la validation du compte-rendu')) {
+    var form = document.editCompteRenduFrm;
+    form.cr_valide.value = "1";
+    form.submit();
+  }
+}
+
+function supprimerCompteRendu() {
+  if (confirm('Veuillez confirmer la suppression')) {
+    var form = document.editCompteRenduFrm;
+    form.compte_rendu.value = "";
+    form.cr_valide.value = "0";
+    form.submit();
+  }
 }
 
 </script>
 {/literal}
-
 
 <table>
   <tr>
@@ -77,19 +97,25 @@ function pasteText(formName) {
           <th>Etat</th>
         </tr>
         {foreach from=$curr_plage->_ref_consultations item=curr_consult}
+          {if $curr_consult->premiere} 
+            {assign var="style" value="style='background: #faa;'"}
+          {else} 
+            {assign var="style" value=""}
+          {/if}
+        
         <tr {if $curr_consult->consultation_id == $consult->consultation_id} style="font-weight: bold;" {/if}>
-          <td>
+          <td {$style}>
             <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">{$curr_consult->heure|truncate:5:"":true}</a>
           </td>
-          <td>
+          <td {$style}>
             <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">{$curr_consult->_ref_patient->nom} {$curr_consult->_ref_patient->prenom}</a>
           </td>
-          <td>
+          <td {$style}>
             <a href="index.php?m={$m}&amp;tab=edit_planning&amp;consultation_id={$curr_consult->consultation_id}" title="Modifier le RDV">
               <img src="modules/dPcabinet/images/planning.png" />
             </a>
           </td>
-          <td>{$curr_consult->_etat}</td>
+          <td {$style}>{$curr_consult->_etat}</td>
         </tr>
         {/foreach}
       {/foreach}
@@ -113,13 +139,7 @@ function pasteText(formName) {
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="dosql" value="do_consultation_aed" />
             <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-            <input type="hidden" name="plageconsult_id" value="{$consult->plageconsult_id}" />
-            <input type="hidden" name="patient_id" value="{$consult->patient_id}" />
-            <input type="hidden" name="heure" value="{$consult->heure}" />
-            <input type="hidden" name="duree" value="{$consult->duree}" />
-            <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
-            <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
-            <input type="hidden" name="compte_rendu" value="{$consult->compte_rendu|escape:"html"}" />
+            <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
 
             <table class="form">
               <tr>
@@ -127,8 +147,16 @@ function pasteText(formName) {
               </tr>
               
               <tr>
+                <input type="hidden" name="chrono" value="{$consult->chrono}" />
                 <td style="text-align: center; vertical-align: middle">Etat : {$consult->_etat}</td>
-                <td class="button"><button>Commencer</buton></td>
+                <td class="button">
+                  {if $consult->chrono < $smarty.const.CC_EN_COURS}
+                  <input type="button" value="Commencer" onclick="submitConsultWithChrono({$smarty.const.CC_EN_COURS})" />
+                  {/if}
+                  {if $consult->chrono == $smarty.const.CC_EN_COURS}
+                  <input type="button" value="Terminer" onclick="submitConsultWithChrono({$smarty.const.CC_TERMINE})" />
+                  {/if}
+                </td>
               </tr>
               <tr>
               	<th class="text">
@@ -201,42 +229,6 @@ function pasteText(formName) {
 
             </form>
             
-            <table class="form">
-              <tr><th colspan="3" class="category">Fichiers liés</th></tr>
-              {foreach from=$consult->_ref_files item=curr_file}
-              <tr>
-                <td><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></td>
-                <td>{$curr_file->_file_size}</td>
-                <td class="button">
-                  <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-
-                  <input type="hidden" name="dosql" value="do_file_aed" />
-	              <input type="hidden" name="del" value="1" />
-	              <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
-	              <input type="button" value="supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.submit();}{/literal}"/>
-
-	              </form>
-	            </td>
-	          </tr>
-              {/foreach}
-              <tr>
-                <td colspan="2">
-                  <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
- 
-                  <input type="hidden" name="dosql" value="do_file_aed" />
-	              <input type="hidden" name="del" value="0" />
-	              <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />
-                  <input type="file" name="formfile" />
-                </td>
-
-                <td class="button">
-                  <input type="submit" value="ajouter">
-                  
-                  </form>
-                </td>
-              </tr>
-            </table>
-            
           </td>
           
           <td>
@@ -289,33 +281,69 @@ function pasteText(formName) {
             </table>
             
           </td>
-          
+        
+          {if !$consult->annule}
           <td>
+
+            <table class="form">
+              <tr><th colspan="3" class="category">Fichiers liés</th></tr>
+              {foreach from=$consult->_ref_files item=curr_file}
+              <tr>
+                <td><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></td>
+                <td>{$curr_file->_file_size}</td>
+                <td class="button">
+                  <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+
+                  <input type="hidden" name="dosql" value="do_file_aed" />
+	              <input type="hidden" name="del" value="1" />
+	              <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
+	              <input type="button" value="supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.submit();}{/literal}"/>
+
+	              </form>
+	            </td>
+	          </tr>
+              {/foreach}
+              <tr>
+                <td colspan="2">
+                  <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+ 
+                  <input type="hidden" name="dosql" value="do_file_aed" />
+	              <input type="hidden" name="del" value="0" />
+	              <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />
+                  <input type="file" name="formfile" />
+                </td>
+
+                <td class="button">
+                  <input type="submit" value="ajouter">
+                  
+                  </form>
+                </td>
+              </tr>
+            </table>
+     
             <table class="form">
             {if $consult->compte_rendu}
-              <tr><th colspan="2" class="category">Compte-Rendu</th></tr>
+              <tr><th class="category">Compte-Rendu</th></tr>
               <tr>
-                <td><a href="#" onclick="editModele({$consult->consultation_id}, 0)">
-                  Modifier le compte-rendu</a></td>
-                <td>
-                  <form name="delCompteRenduFrm" action="?m={$m}" method="POST">
+                <td class="button">
+                  <form name="editCompteRenduFrm" action="?m={$m}" method="POST">
 
                   <input type="hidden" name="m" value="{$m}" />
                   <input type="hidden" name="del" value="0" />
                   <input type="hidden" name="dosql" value="do_consultation_aed" />
                   <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-                  <input type="hidden" name="plageconsult_id" value="{$consult->plageconsult_id}" />
-                  <input type="hidden" name="patient_id" value="{$consult->patient_id}" />
-                  <input type="hidden" name="heure" value="{$consult->heure}" />
-                  <input type="hidden" name="duree" value="{$consult->duree}" />
-                  <input type="hidden" name="motif" value="{$consult->motif}" />
-                  <input type="hidden" name="rques" value="{$consult->rques}" />
-                  <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
-                  <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
-                  <input type="hidden" name="compte_rendu" value="" />
-                  <img src="modules/dPcabinet/images/trash.png" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {document.delCompteRenduFrm.submit();}{/literal}">
+                  <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
+                  <input type="hidden" name="compte_rendu" value="{$consult->compte_rendu|escape:html}" />
+                  <input type="hidden" name="cr_valide" value="{$consult->cr_valide}" />
 
-                  </form></td>
+                  </form>
+                  
+                  <button onclick="editModele({$consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Modifier</button>
+                  {if !$consult->cr_valide}
+                  <button onclick="validerCompteRendu()"><img src="modules/dPcabinet/images/check.png" /> Valider</button>
+                  {/if}
+                  <button onclick="supprimerCompteRendu()"><img src="modules/dPcabinet/images/trash.png" /> Supprimer</button>
+                </td>
               </tr>
             {else}
               <tr>
@@ -344,6 +372,8 @@ function pasteText(formName) {
             </table>
 
           </td>
+          
+          {/if}
           
         </tr>
       </table>

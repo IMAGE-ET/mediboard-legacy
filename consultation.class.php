@@ -42,11 +42,13 @@ class CConsultation extends CDpObject {
   var $examen = null;
   var $traitement = null;
   var $compte_rendu = null;
+  var $premiere = null;
 
   // Form fields
   var $_etat = null;
   var $_hour = null;
   var $_min = null;
+  var $_check_premiere = null; // CheckBox: must be present in all forms!
 
   // Object References
   var $_ref_patient = null;
@@ -62,10 +64,10 @@ class CConsultation extends CDpObject {
     $this->_min  = intval(substr($this->heure, 3, 2));
 
     $etat = array();
-    $etat[CC_PLANIFIE] = "Planifié";
+    $etat[CC_PLANIFIE] = "Planifiée";
     $etat[CC_PATIENT_ARRIVE] = "Patient arrivé";
     $etat[CC_EN_COURS] = "En cours";
-    $etat[CC_TERMINE] = "Termniné";
+    $etat[CC_TERMINE] = "Terminée";
     
     $this->_etat = $etat[$this->chrono];
     if ($this->cr_valide) {
@@ -73,15 +75,19 @@ class CConsultation extends CDpObject {
     }
 
     if ($this->annule) {
-      $this->_etat = "Annulé";
+      $this->_etat = "Annulée";
     }
+    
+    $this->_check_premiere = $this->premiere;
   }
-  
+   
   function updateDBFields() {
-    // Why this test?
-  	if (!$this->heure) {
+    // To keep it null if no _hour nor _min
+  	if ($this->_hour or $this->_min) {
       $this->heure = $this->_hour.":".$this->_min.":00";
     }
+    
+    $this->premiere = $this->_check_premiere ? 1 : 0;
   }
   
   function loadRefs() {
@@ -92,10 +98,9 @@ class CConsultation extends CDpObject {
     $this->_ref_plageconsult->load($this->plageconsult_id);
     
     // Backward references
-    $sql = "SELECT *" .
-    		"\nFROM files_mediboard" .
-    		"\nWHERE file_consultation = '$this->consultation_id'";
-    $this->_ref_files = db_loadObjectList($sql, new CFile());
+    $where["file_consultation"] = "= '$this->consultation_id'";
+    $this->_ref_files = new CFile();
+    $this->_ref_files = $this->_ref_files->loadList($where);
   }
 }
 

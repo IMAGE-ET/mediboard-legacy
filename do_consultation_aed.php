@@ -21,16 +21,14 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
-$del = dPgetParam( $_POST, 'del', 0 );
-$special = dPgetParam( $_POST, 'special', 0);
-
+$del = intval( dPgetParam( $_POST, 'del', 0 ) );
 if ($del) {
 	if (!$obj->canDelete( $msg )) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	}
 	
-	if (($msg = $obj->delete())) {
+	if ($msg = $obj->delete()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
@@ -39,13 +37,16 @@ if ($del) {
 		$AppUI->redirect( "m=$m" );
 	}
 } else {
-	if (($msg = $obj->store())) {
+  
+	if ($msg = $obj->store()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['consultation_id'];
 		$AppUI->setMsg( $isNotNew ? 'Consultation modifiée' : 'Consultation créée', UI_MSG_OK);
 	}
-	// @todo : essayer de trouver un methode plus propre :/
+
+  // Trouver une méthode un peu plus propre :/
+  $special = dPgetParam( $_POST, 'special', 0);
 	if($special) {
 ?>
 <script language="javascript">
