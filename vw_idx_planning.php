@@ -94,7 +94,7 @@ else {
 }
 
 $mediuser = new CMediusers;
-$listChir = $mediuser->loadChirAnest(PERM_EDIT);
+$listChir = $mediuser->loadPraticiens(PERM_EDIT);
 
 //Requete SQL pour le planning du mois
 // * temp total de chaque plage

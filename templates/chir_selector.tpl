@@ -14,22 +14,24 @@ function setClose(){
 
 <form action="index.php" target="_self" name="frmSelector" method="get" encoding="">
 
-<input type="hidden" name="m" value="dPplanningOp">
-<input type="hidden" name="a" value="chir_selector">
-<input type="hidden" name="dialog" value="1">
+<input type="hidden" name="m" value="dPplanningOp" />
+<input type="hidden" name="a" value="chir_selector" />
+<input type="hidden" name="dialog" value="1" />
 
 <table class="form">
 
-<tr><th class="category" colspan="2">Critères de tri</th></tr>
+<tr>
+  <th class="category" colspan="2">Critères de tri</th>
+</tr>
 
 <tr>
   <th>Spécialité:</th>
   <td>
     <select name="spe" onChange="this.form.submit()">
-      <option value="0">-- Trier par spécialité --</option>
-      {foreach from=$listspe item=curr_spe}
-      <option value="{$curr_spe.id}" {if $curr_spe.id == $spe} selected {/if}>
-        {$curr_spe.text}
+      <option value="0">&mdash; Trier par spécialité</option>
+      {foreach from=$specs item=curr_spec}
+      <option value="{$curr_spec->function_id}" {if $curr_spec->function_id == $spe} selected="selected"{/if} />
+        {$curr_spec->text}
       </option>
       {/foreach}
     </select>
@@ -48,9 +50,9 @@ function setClose(){
 <tr>
   <td colspan="2">
     <select name="list"  size="8">
-      <option value="0" selected="selected">-- Choisir un chirurgien --</option>
-      {foreach from=$list item=curr_elem}
-      <option value="{$curr_elem.id}">Dr. {$curr_elem.lastname} {$curr_elem.firstname}</option>
+      <option value="0" selected="selected">&mdash; Choisir un chirurgien </option>
+      {foreach from=$prats item=curr_prat}
+      <option value="{$curr_prat->user_id}">{$curr_prat->user_last_name} {$curr_prat->user_first_name}</option>
       {/foreach}
     </select>
   </td>
