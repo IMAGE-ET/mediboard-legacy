@@ -34,10 +34,10 @@
 		  <td>{$curr_adm->_hour_adm}h{$curr_adm->_min_adm}</td>
 		  <td>{$curr_adm->type_adm|truncate:1:""|capitalize}</td>
           <td>{$curr_adm->duree_hospi} j</td>
-          <td>{$curr_adm->examen|nl2br}</td>
-          <td>{$curr_adm->convalescence|nl2br}</td>
+          <td class="text">{$curr_adm->examen|nl2br}</td>
+          <td class="text">{$curr_adm->convalescence|nl2br}</td>
           <td>{$curr_adm->chambre}</td>
-          <td>{$curr_adm->rques}</td>
+          <td class="text">{$curr_adm->rques}</td>
           <td>{$curr_adm->_ref_plageop->_date}</td>
           <td>{if $curr_adm->time_operation != "00:00:00"}{$curr_adm->time_operation|truncate:5:""}{/if}</td>
           <td class="text">{$curr_adm->_ext_code_ccam->libelleLong|truncate:80:"...":false} <i>({$curr_adm->CCAM_code})</i></td>
