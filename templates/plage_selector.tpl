@@ -21,9 +21,9 @@ function setClose(){
 
 <tr>
   <th class="category" colspan="2">
-    <a href="index.php?m=dPplanningOp&a=plage_selector&dialog=1&hour={$hour}&min={$min}&chir={$chir}&month={$pmonth}&year={$pyear}"><<</a>
+    <a href="index.php?m=dPplanningOp&a=plage_selector&dialog=1&curr_op_hour={$curr_op_hour}&curr_op_min={$curr_op_min}&chir={$chir}&month={$pmonth}&year={$pyear}"><<</a>
     {$nameMonth} {$year}
-    <a href="index.php?m=dPplanningOp&a=plage_selector&dialog=1&hour={$hour}&min={$min}&chir={$chir}&month={$nmonth}&year={$nyear}">>></a>
+    <a href="index.php?m=dPplanningOp&a=plage_selector&dialog=1&curr_op_hour={$curr_op_hour}&curr_op_min={$curr_op_min}&chir={$chir}&month={$nmonth}&year={$nyear}">>></a>
   </th>
 </tr>
 

@@ -133,8 +133,8 @@ function popPlage() {
   url += '&a=plage_selector';
   url += '&dialog=1';
   url += '&chir=' + document.editFrm.chir_id.value;
-  url += '&hour=' + document.editFrm._hour_op.value;
-  url += '&min=' + document.editFrm._min_op.value;
+  url += '&curr_op_hour=' + document.editFrm._hour_op.value;
+  url += '&curr_op_min=' + document.editFrm._min_op.value;
 
   window.open(url, 'Plage', 'left=50, top=50, width=400, height=250, resizable=yes');
 }
