@@ -10,17 +10,32 @@ $listDay = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", 
 $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
 				"Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
 
-$day = dPgetParam($_GET, 'day', -1);
-if($day == -1)
-  $day = date("d");
+if(dPgetParam($_GET, 'day', -1) == -1) {
+  if(!isset($_SESSION[$m][$tab]["day"]))
+    $day = $_SESSION[$m][$tab]["day"] = date("d");
+  else
+    $day = $_SESSION[$m][$tab]["day"];
+}
+else
+$day = $_SESSION[$m][$tab]["day"] = dPgetParam($_GET, 'day', -1);
 
-$month = dPgetParam($_GET, 'month', -1);
-if($month == -1)
-  $month = date("m");
+if(dPgetParam($_GET, 'month', -1) == -1) {
+  if(!isset($_SESSION[$m][$tab]["month"]))
+    $month = $_SESSION[$m][$tab]["month"] = date("m");
+  else
+    $month = $_SESSION[$m][$tab]["month"];
+}
+else
+$month = $_SESSION[$m][$tab]["month"] = dPgetParam($_GET, 'month', -1);
 
-$year = dPgetParam($_GET, 'year', -1);
-if($year == -1)
-  $year = date("Y");
+if(dPgetParam($_GET, 'year', -1) == -1) {
+  if(!isset($_SESSION[$m][$tab]["year"]))
+    $year = $_SESSION[$m][$tab]["year"] = date("Y");
+  else
+    $year = $_SESSION[$m][$tab]["year"];
+}
+else
+$year = $_SESSION[$m][$tab]["year"] = dPgetParam($_GET, 'year', -1);
 
 $nday = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
 $ndaym = date("m", mktime(0, 0, 0, $month, $day + 1, $year));

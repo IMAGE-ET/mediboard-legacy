@@ -6,11 +6,15 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 }
 
 if(dPgetParam($_GET, "id", "noid") == "noid") {
-  $AppUI->msg = "Vous devez choisir un acte";
-  $AppUI->redirect( "m=dPplanningOp&tab=0");
+  if(!isset($_SESSION[$m][$tab]["id"])) {
+    $AppUI->msg = "Vous devez choisir un acte";
+    $AppUI->redirect( "m=dPplanningOp&tab=0");
+  }
+  else
+    $id = $_SESSION[$m][$tab]["id"];
 }
 else
-  $id = dPgetParam($_GET, "id", 0);
+  $id = $_SESSION[$m][$tab]["id"] = dPgetParam($_GET, "id", 0);
 
 $sql = "select operations.operation_id as id, operations.chir_id as chir_id,
 		users.user_first_name as chir_firstname, users.user_last_name as chir_lastname,
@@ -33,7 +37,12 @@ $sql = "select operations.operation_id as id, operations.chir_id as chir_id,
 		on plagesop.id = operations.plageop_id
 		where operation_id = '$id'";
 $result = db_loadlist($sql);
+if(sizeof($result) == 0) {
+  $AppUI->msg = "Acte inexistant";
+  $AppUI->redirect( "m=dPplanningOp&tab=0");
+}
 $op = $result[0];
+
 $op["chir_name"] = "Dr. ".$op["chir_lastname"]." ".$op["chir_firstname"];
 $op["pat_name"] = $op["pat_lastname"]." ".$op["pat_firstname"];
 $op["hour_op"] = substr($op["temp_op"], 0, 2);
@@ -47,6 +56,7 @@ $op["date_rdv_adm"] = substr($op["rdv_adm"], 0, 4).substr($op["rdv_adm"], 5, 2).
 $op["rdv_adm"] = substr($op["rdv_adm"], 8, 2)."/".substr($op["rdv_adm"], 5, 2)."/".substr($op["rdv_adm"], 0, 4);
 $op["hour_adm"] = substr($op["time_adm"], 0, 2);
 $op["min_adm"] = substr($op["time_adm"], 3, 2);
+
 
 //Creation de l'objet smarty
 require_once("lib/smarty/Smarty.class.php");
