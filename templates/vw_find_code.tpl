@@ -1,6 +1,6 @@
 <form action="index.php" target="_self" name="selection" method="get" encoding="">
-<input type="hidden" name="m" value="dPccam">
-<input type="hidden" name="tab" value="1">
+<input type="hidden" name="m" value="{$m}">
+<input type="hidden" name="tab" value="{$tab}">
 
 <table class="form">
   <tr>
@@ -66,7 +66,7 @@
   <tr>
   {foreach from=$codes item=curr_code key=curr_key}
     <td>
-      <strong><a href="index.php?m=dPccam&tab=2&codeacte={$curr_code.code}">{$curr_code.code}</a></strong><br />
+      <strong><a href="index.php?m={$m}&tab=vw_full_code&codeacte={$curr_code.code}">{$curr_code.code}</a></strong><br />
       {$curr_code.texte}
     </td>
   {if ($curr_key+1) is div by 4}
