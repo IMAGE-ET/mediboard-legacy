@@ -136,6 +136,20 @@ class CMediusers extends CDpObject {
   
     return db_loadObjectList($sql, $user);
   }
+  
+    function loadChirAnest() {
+    $user = new CUser;
+    
+    $sql = "SELECT *" .
+        "\nFROM users, users_mediboard, functions_mediboard, groups_mediboard" .
+        "\nWHERE users.user_id = users_mediboard.user_id" .
+        "\nAND users_mediboard.function_id = functions_mediboard.function_id" .
+        "\nAND functions_mediboard.group_id = groups_mediboard.group_id" .
+        "\nAND (groups_mediboard.text = 'Anesthésie' OR groups_mediboard.text = 'Chirurgie')" .
+        "\nORDER BY users.user_last_name";
+  
+    return db_loadObjectList($sql, $user);
+  }
 }
 
 ?>
