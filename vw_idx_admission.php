@@ -17,40 +17,11 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 $listDay = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
 $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
 				"Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
-if(dPgetParam($_GET, 'selAff', -1) == -1) {
-  if(isset($_SESSION[$m][$tab]["selAff"]))
-    $selAff = $_SESSION[$m][$tab]["selAff"];
-  else
-    $selAff = $_SESSION[$m][$tab]["selAff"] = dPgetParam($_GET, 'selAff', 0);
-}
-else
-    $selAff = $_SESSION[$m][$tab]["selAff"] = dPgetParam($_GET, 'selAff', 0);
-if(dPgetParam($_GET, 'day', -1) == -1) {
-  if(!isset($_SESSION[$m][$tab]["day"]))
-    $day = $_SESSION[$m][$tab]["day"] = date("d");
-  else
-    $day = $_SESSION[$m][$tab]["day"];
-}
-else
-$day = $_SESSION[$m][$tab]["day"] = dPgetParam($_GET, 'day', -1);
 
-if(dPgetParam($_GET, 'month', -1) == -1) {
-  if(!isset($_SESSION[$m][$tab]["month"]))
-    $month = $_SESSION[$m][$tab]["month"] = date("m");
-  else
-    $month = $_SESSION[$m][$tab]["month"];
-}
-else
-$month = $_SESSION[$m][$tab]["month"] = dPgetParam($_GET, 'month', -1);
-
-if(dPgetParam($_GET, 'year', -1) == -1) {
-  if(!isset($_SESSION[$m][$tab]["year"]))
-    $year = $_SESSION[$m][$tab]["year"] = date("Y");
-  else
-    $year = $_SESSION[$m][$tab]["year"];
-}
-else
-$year = $_SESSION[$m][$tab]["year"] = dPgetParam($_GET, 'year', -1);
+$selAff = mbGetValueFromGetOrSession("selAff", 0);
+$day = mbGetValueFromGetOrSession("day", date("d"));
+$month = mbGetValueFromGetOrSession("month", date("m"));
+$year = mbGetValueFromGetOrSession("year", date("Y"));
 
 $nday = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
 $ndaym = date("m", mktime(0, 0, 0, $month, $day + 1, $year));
@@ -75,11 +46,11 @@ $sql = "SELECT operation_id, operations.date_adm AS date, count(operation_id) AS
 		FROM operations
 		LEFT JOIN plagesop
 		ON operations.plageop_id = plagesop.id
-		WHERE operations.date_adm LIKE '$year-$month-__' ";
+		WHERE operations.date_adm LIKE '$year-$month-__'";
 if($selAff != "0")
-  $sql .= "AND operations.admis = '$selAff' ";
-$sql .= "GROUP BY operations.date_adm
-		 ORDER BY operations.date_adm";
+  $sql .= " AND operations.admis = '$selAff'";
+$sql .= " GROUP BY operations.date_adm
+		  ORDER BY operations.date_adm";
 $list = db_loadlist($sql);
 foreach($list as $key => $value) {
   $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
@@ -96,27 +67,13 @@ $sql = "select operations.operation_id, patients.nom as nom, patients.prenom as 
 		on operations.plageop_id = plagesop.id
 		left join users
 		on users.user_username = plagesop.id_chir
-		where operations.date_adm = '$year-$month-$day' ";
+		where operations.date_adm = '$year-$month-$day'";
 if($selAff != "0")
-  $sql .= "AND operations.admis = '$selAff' ";
-$sql .= "order by operations.time_adm";
+  $sql .= " AND operations.admis = '$selAff'";
+$sql .= " order by operations.time_adm";
 $today = db_loadlist($sql);
 foreach($today as $key => $value) {
   $today[$key]["hour"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
-}
-switch($selAff) {
-  case '0' : {
-    $typeAff = "Toutes les admissions";
-    break;
-  }
-  case 'o' : {
-    $typeAff = "Admissions effectuées";
-    break;
-  }
-  case 'n' : {
-    $typeAff = "Admissions non effectuées";
-    break;
-  }
 }
 
 require_once("lib/smarty/Smarty.class.php");
@@ -145,7 +102,6 @@ $smarty->assign('pmonthd', $pmonthd);
 $smarty->assign('pmonth', $pmonth);
 $smarty->assign('pmonthy', $pmonthy);
 $smarty->assign('selAff', $selAff);
-$smarty->assign('typeAff', $typeAff);
 $smarty->assign('title1', $title1);
 $smarty->assign('title2', $title2);
 $smarty->assign('list', $list);

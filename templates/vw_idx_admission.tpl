@@ -1,31 +1,29 @@
 <table class="main">
   <tr>
-    <td>
-	<form action="index.php" target="_self" name="selection" method="get" encoding="">
-    <input type="hidden" name="m" value="dPadmissions">
-    <input type="hidden" name="tab" value="0">
-	  <select name="selAff" onchange="this.form.submit()">
-	    <option value="-1">Type d'affichage :</option>
-	    <option value="0">--> Toutes les admissions</option>
-		<option value="o">--> Admissions effectuées</option>
-        <option value="n">--> Admissions non effectuées</option>
-	  </select>
+    <td colspan="2">
+	  <form action="index.php" target="_self" name="selection" method="get" encoding="">
+      <input type="hidden" name="m" value="dPadmissions">
+      <input type="hidden" name="tab" value="0">
+      Type d'affichage :
+	    <select name="selAff" onchange="this.form.submit()">
+	      <option value="0" {if $selAff == "0"} selected = "selected" {/if}>Toutes les admissions</option>
+		    <option value="o" {if $selAff == "o"} selected = "selected" {/if}>Admissions effectuées</option>
+        <option value="n" {if $selAff == "n"} selected = "selected" {/if}>Admissions non effectuées</option>
+	    </select>
     </form>
-	</td>
-	<th>
-	  {$typeAff}
-	</th>
+	  </td>
   </tr>
   <tr>
-    <th>
-	  <a href="index.php?m=dPadmissions&tab=0&day={$pmonthd}&month={$pmonth}&year={$pmonthy}"><<</a>
-	  {$title1}
-	  <a href="index.php?m=dPadmissions&tab=0&day={$nmonthd}&month={$nmonth}&year={$nmonthy}">>></a>
-	</th>
-	<th>
-	  <a href="index.php?m=dPadmissions&tab=0&day={$pday}&month={$pdaym}&year={$pdayy}"><<</a>
-	  {$title2}
-	  <a href="index.php?m=dPadmissions&tab=0&day={$nday}&month={$ndaym}&year={$ndayy}">>></a>
+    <th width="50%">
+	    <a href="index.php?m=dPadmissions&tab=0&day={$pmonthd}&month={$pmonth}&year={$pmonthy}"><<</a>
+	    {$title1}
+	    <a href="index.php?m=dPadmissions&tab=0&day={$nmonthd}&month={$nmonth}&year={$nmonthy}">>></a>
+	  </th>
+	  <th width="50%">
+	    <a href="index.php?m=dPadmissions&tab=0&day={$pday}&month={$pdaym}&year={$pdayy}"><<</a>
+	    {$title2}
+	    <a href="index.php?m=dPadmissions&tab=0&day={$nday}&month={$ndaym}&year={$ndayy}">>></a>
+    </th>
   </tr>
   <tr>
     <td>
