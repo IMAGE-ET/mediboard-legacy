@@ -32,6 +32,7 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('patient', $patient);
+$smarty->assign('textSiblings', null);
 
 $smarty->display('vw_edit_patients.tpl');
 ?>
