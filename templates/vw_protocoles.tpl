@@ -121,6 +121,16 @@ function setClose() {ldelim}
           <td class="text" colspan="2">{$protSel->materiel|nl2br}</td>
         </tr>
         {/if}
+        
+        {if $protSel->convalescence}
+        <tr>
+          <th class="text" colspan="2">Convalescence</th>
+        </tr>
+                 
+        <tr>
+          <td class="text" colspan="2">{$protSel->convalescence|nl2br}</td>
+        </tr>
+        {/if}
 
         <tr>
           <th class="category" colspan="2">Détails de l'hospitalisation</th>
