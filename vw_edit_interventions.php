@@ -35,6 +35,7 @@ $title["dateFormed"] = substr($title["date"], 8, 2)." / ".substr($title["date"],
 $title["plage"] = substr($title["debut"], 0, 2)."h".substr($title["debut"], 3, 2)." - ".substr($title["fin"], 0, 2)."h".substr($title["fin"], 3, 2);
 
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
+		patients.naissance AS naissance,
 		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote
 		FROM operations
 		LEFT JOIN patients
@@ -45,6 +46,7 @@ $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, pati
 		ORDER BY operations.temp_operation";
 $list1 = db_loadlist($sql);
 $sql = "SELECT operations.operation_id AS id, patients.prenom AS firstname, patients.nom AS lastname,
+		patients.naissance AS naissance,
 		operations.CCAM_code AS CCAM_code, operations.temp_operation AS temps, operations.cote AS cote,
         operations.time_operation AS heure, plagesop.debut AS debut, plagesop.fin AS fin, operations.rank AS rank,
         operations.type_anesth AS type_anesth
@@ -63,6 +65,16 @@ mysql_select_db("ccam")
   or die("Could not select database");
 if(isset($list1)) {
   foreach($list1 as $key => $value) {
+    $annais = substr($value["naissance"], 0, 4);
+    $anjour = date("Y");
+    $moisnais = substr($value["naissance"], 5, 2);
+    $moisjour = date("m");
+    $journais = substr($value["naissance"], 8, 2);
+    $jourjour = date("d");
+    $age = $anjour-$annais;
+    if($moisjour<$moisnais){$age=$age-1;}
+    if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
+    $list1[$key]["age"] = $age;
     $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);
@@ -74,6 +86,16 @@ else
   $list1 = "";
 if(isset($list2)) {
   foreach($list2 as $key => $value) {
+    $annais = substr($value["naissance"], 0, 4);
+    $anjour = date("Y");
+    $moisnais = substr($value["naissance"], 5, 2);
+    $moisjour = date("m");
+    $journais = substr($value["naissance"], 8, 2);
+    $jourjour = date("d");
+    $age = $anjour-$annais;
+    if($moisjour<$moisnais){$age=$age-1;}
+    if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
+    $list2[$key]["age"] = $age;
     $sql = "select LIBELLELONG from ACTES where CODE = '".$value["CCAM_code"]."'";
     $ccamr = mysql_query($sql);
     $ccam = mysql_fetch_array($ccamr);

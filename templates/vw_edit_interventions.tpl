@@ -27,16 +27,14 @@ function popOp(id) {
 		{foreach from=$list1 item=curr_op}
 		<tr>
 		  <td width="50%">
-		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.lastname} {$curr_op.firstname}</a></b>
+		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
-			Code CCAM : {$curr_op.CCAM_code}
-			<br />
-      Côté : {$curr_op.cote}
-      <br />
+            Côté : {$curr_op.cote}
+            <br />
 			Durée : {$curr_op.duree}
 		  </td>
 		  <td>
-			<i>{$curr_op.CCAM}</i>
+			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
 		  </td>
 		  <td>
 		    <a href="index.php?m={$m}&a=do_order_op&cmd=insert&id={$curr_op.id}">
@@ -62,12 +60,10 @@ function popOp(id) {
             <input type="hidden" name="a" value="do_order_op" />
             <input type="hidden" name="cmd" value="sethour" />
             <input type="hidden" name="id" value="{$curr_op.id}" />
-		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.lastname} {$curr_op.firstname}</a></b>
+		    <b><a href="#" onclick="popOp( '{$curr_op.id}');">{$curr_op.lastname} {$curr_op.firstname} ({$curr_op.age} ans)</a></b>
 			<br />
-			Code CCAM : {$curr_op.CCAM_code}
-			<br />
-      Côté : {$curr_op.cote}
-      <br />
+            Côté : {$curr_op.cote}
+            <br />
 			Durée : {$curr_op.duree}
 			<br />
 			<select name="hour">
@@ -102,7 +98,7 @@ function popOp(id) {
       </form>
 		  </td>
 		  <td>
-			<i>{$curr_op.CCAM}</i>
+			{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i>
 		  </td>
 		  <td>
 		    {if $curr_op.rank != 1}
