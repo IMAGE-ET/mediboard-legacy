@@ -114,11 +114,7 @@ class COperation extends CDpObject {
     return parent::delete();
   }
   
-	function load($oid = null, $strip = TRUE) {
-    if (!parent::load($oid, $strip)) {
-      return FALSE;
-    }
-
+	function updateFormFields() {
     $this->_hour_op = intval(substr($this->temp_operation, 0, 2));
     $this->_min_op  = intval(substr($this->temp_operation, 3, 2));
 
@@ -149,12 +145,9 @@ class COperation extends CDpObject {
       substr($this->date_adm, 0, 4);
     $this->_hour_adm = substr($this->time_adm, 0, 2);
     $this->_min_adm  = substr($this->time_adm, 3, 2);
-    
-    return TRUE;
   }
   
-  function store() {
-    // Data computation
+  function updateDBFields() {
     $this->date_anesth = 
       substr($this->_date_rdv_anesth, 0, 4)."-".
       substr($this->_date_rdv_anesth, 4, 2)."-".
@@ -182,9 +175,6 @@ class COperation extends CDpObject {
     $this->temp_operation = 
       $this->_hour_op.":".
       $this->_min_op.":00";
-
-
-    return parent::store();
   }
   
   function loadRefs() {
