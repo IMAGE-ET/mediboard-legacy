@@ -56,8 +56,10 @@ else {
 }
 $patients = db_loadlist($sql);
 
-foreach($patient as $key => $value) {
-  $patient[$key]["dateFormed"] = substr($value["naissance"], 8, 2)."/".substr($value["naissance"], 5, 2)."/".substr($value["naissance"], 0, 4);
+if(is_array($patient)){
+  foreach($patient as $key => $value) {
+    $patient[$key]["dateFormed"] = substr($value["naissance"], 8, 2)."/".substr($value["naissance"], 5, 2)."/".substr($value["naissance"], 0, 4);
+  }
 }
 
 //Creation de l'objet smarty
