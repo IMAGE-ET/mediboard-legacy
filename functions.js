@@ -47,6 +47,16 @@ function prepareForms() {
 //  alert (msg);
   
   // HTMLArea initialisation
+//  HTMLArea.loadPlugin("TableOperations");
+//  HTMLArea.loadPlugin("SpellChecker");
+//  HTMLArea.loadPlugin("FullPage");
+//  HTMLArea.loadPlugin("CSS");
+//  HTMLArea.loadPlugin("ContextMenu");
+//  HTMLArea.loadPlugin("HtmlTidy");
+//  HTMLArea.loadPlugin("ListType");
+//  HTMLArea.loadPlugin("CharacterMap");
+//  HTMLArea.loadPlugin("DynamicCSS");
+  
   HTMLArea.init(); 
   HTMLArea.onload = initEditor;
 }

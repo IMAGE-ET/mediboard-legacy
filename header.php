@@ -24,7 +24,7 @@
 <!-- End HTML Area Integration -->
 
 <?php 
-	$dialog = dPgetParam( $_GET, 'dialog', 0 );
+	$dialog = dPgetParam( $_GET, 'dialog');
 	if (!$dialog) {
 		// top navigation menu
 		$nav = $AppUI->getMenuModules();
