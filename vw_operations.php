@@ -83,28 +83,15 @@ foreach($plages as $key => $value) {
   }
 }
 
-//Creation de l'objet smarty
-require_once("lib/smarty/Smarty.class.php");
-$smarty = new Smarty();
-
-//initialisation des repertoires
-$smarty->template_dir = "modules/$m/templates/";
-$smarty->compile_dir = "modules/$m/templates_c/";
-$smarty->config_dir = "modules/$m/configs/";
-$smarty->cache_dir = "modules/$m/cache/";
-
-//On récupère les informations
-
-$smarty->assign('canEdit', $canEdit);
-$smarty->assign('user', $AppUI->user_id);
-$smarty->assign('m', $m);
+// Création du template
+require_once("classes/smartydp.class.php");
+$smarty = new CSmartyDP;
 
 $smarty->assign('salle', $salle);
 $smarty->assign('listSalles', $listSalles);
 $smarty->assign('plages', $plages);
 $smarty->assign('selOp', $selOp);
 
-//Affichage de la page
 $smarty->display('vw_operations.tpl');
 
 ?>
