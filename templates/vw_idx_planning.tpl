@@ -1,25 +1,24 @@
 <table class="main">
 
-  {if !$isMyPlanning}
   <tr>
-    <td>
+    <td colspan="2">
       <form action="index.php" target="_self" name="selection" method="get" encoding="">
 
       <input type="hidden" name="m" value="{$m}">
       <input type="hidden" name="tab" value="0">
-  
+      Choisir un chirurgien :
       <select name="selChir" onchange="this.form.submit()">
-        <option value="0" selected="selected">Choix du chirurgien :</option>
+        <option value="0">Aucun chirurgien</option>
         {foreach from=$listChir item=curr_chir}
-        <option value="{$curr_chir.id}">{$curr_chir.lastname} {$curr_chir.firstname}</option>
+        <option value="{$curr_chir.id}" {if $curr_chir.id == $selChir} selected="selected" {/if}>
+          Dr. {$curr_chir.lastname} {$curr_chir.firstname}
+        </option>
         {/foreach}
       </select>
   
       </form>
     </td>
-    <th>{$userName}</th>
   </tr>
-  {/if}
 
   <tr>
     <th>

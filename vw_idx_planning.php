@@ -20,7 +20,7 @@ $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juille
 $day   = mbGetValueFromGetOrSession("day"  , date("d"));
 $month = mbGetValueFromGetOrSession("month", date("m"));
 $year  = mbGetValueFromGetOrSession("year" , date("Y"));
-$selChir = mbGetValueFromGetOrSession("selChir");
+$selChir = mbGetValueFromGetOrSession("selChir", 0);
 
 $nday  = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
 $ndaym = date("m", mktime(0, 0, 0, $month, $day + 1, $year));
@@ -43,6 +43,34 @@ $dayName = $listDay[$dayOfWeek];
 $monthName = $listMonth[$month - 1];
 $title1 = "$monthName $year";
 $title2 = "$dayName $day $monthName $year";
+
+$sql = "SELECT users.user_id, users.user_last_name AS lastname,
+        users.user_first_name as firstname, functions_mediboard.function_id,
+        groups_mediboard.text
+        FROM users, users_mediboard, functions_mediboard, groups_mediboard
+        WHERE users.user_id = '$AppUI->user_id'
+        AND users.user_id = users_mediboard.user_id
+        AND functions_mediboard.function_id = users_mediboard.function_id
+        AND functions_mediboard.group_id = groups_mediboard.group_id";
+$user = db_loadlist($sql);
+if(!$selChir && (($user[0]["text"] == "Chirurgie") || ($user[0]["text"] == "Anesthésie"))) {
+  $selChir = $user[0]["user_id"];
+}
+if($selChir) {
+  $sql = "SELECT users.user_username, functions_mediboard.function_id AS spe
+          FROM users, users_mediboard, functions_mediboard
+          WHERE users.user_id = users_mediboard.user_id
+          AND users_mediboard.function_id = functions_mediboard.function_id
+          AND users.user_id = '$selChir'";
+  $result = db_loadlist($sql);
+  $selChirLogin = $result[0]["user_username"];
+  $specialite = $result[0]["spe"];
+}
+else {
+  $selChirLogin = "0";
+  $specialite = "0";
+}
+
 $sql = "SELECT users.user_last_name as lastname, users.user_first_name as firstname, users.user_id as id
         FROM users, users_mediboard, functions_mediboard, groups_mediboard
         WHERE (groups_mediboard.text = 'Chirurgie' OR groups_mediboard.text = 'Anesthésie')
@@ -51,33 +79,6 @@ $sql = "SELECT users.user_last_name as lastname, users.user_first_name as firstn
         AND functions_mediboard.group_id = groups_mediboard.group_id
         ORDER BY lastname, firstname";
 $listChir = db_loadlist($sql);
-$isMyPlanning = 1;
-$sql = "SELECT users.user_username, users.user_last_name AS lastname,
-        users.user_first_name as firstname, functions_mediboard.function_id,
-        groups_mediboard.text
-        FROM users, users_mediboard, functions_mediboard, groups_mediboard
-        WHERE users.user_id = '$AppUI->user_id'
-        AND users.user_id = users_mediboard.user_id
-        AND functions_mediboard.function_id = users_mediboard.function_id
-        AND functions_mediboard.group_id = groups_mediboard.group_id";
-$result = db_loadlist($sql);
-if($result[0]["text"] != "Chirurgie" && $result[0]["text"] != "Anesthésie") {
-  if($selChir) {
-    $sql = "SELECT users.user_username, users.user_last_name AS lastname,
-          users.user_first_name as firstname, functions_mediboard.function_id,
-          groups_mediboard.text
-          FROM users, users_mediboard, functions_mediboard, groups_mediboard
-          WHERE users.user_id = '$selChir'
-          AND users.user_id = users_mediboard.user_id
-          AND functions_mediboard.function_id = users_mediboard.function_id
-          AND functions_mediboard.group_id = groups_mediboard.group_id";
-          $result = db_loadlist($sql);
-    }
-  $isMyPlanning = 0;
-}
-$user = $result[0]["user_username"];
-$userName = $result[0]["lastname"]." ".$result[0]["firstname"];
-$specialite = $result[0]["function_id"];
 
 //Requete SQL pour le planning du mois
 // * temp total de chaque plage
@@ -85,7 +86,7 @@ $sql = "SELECT operations.temp_operation as duree, plagesop.id as id
 		FROM plagesop
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_chir = '$user'
+		WHERE plagesop.id_chir = '$selChirLogin'
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NOT NULL
 		ORDER BY plagesop.date, plagesop.id";
@@ -96,33 +97,50 @@ foreach($result as $key => $value) {
   $duree[$plageop]["hour"] = date("H", $duree[$plageop]["newtime"]);
   $duree[$plageop]["min"] = date("i", $duree[$plageop]["newtime"]);  
 }
-// Liiste des operations triées par plage
+
+// Liste des operations triées par plage
 // Requete sans UNION pour assurer la compatibilité avec mySQL 3.X
+//  Plages vides du chirurgien
 $sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
 		plagesop.fin, plagesop.debut, 0 AS busy_time, 0 AS spe
 		FROM plagesop
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id
-		WHERE (plagesop.id_chir = '$user' OR plagesop.id_spec = '$specialite')
+		WHERE plagesop.id_chir = '$selChirLogin'
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NULL";
 $result1 = db_loadlist($sql);
+//  Plages avec opérations du chirurgien
 $sql = "SELECT plagesop.id AS id, plagesop.date, COUNT(operations.temp_operation) AS operations,
 		plagesop.fin, plagesop.debut, SUM(operations.temp_operation) AS busy_time, 0 AS spe
 		FROM plagesop
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_chir = '$user'
+		WHERE plagesop.id_chir = '$selChirLogin'
 		AND plagesop.date LIKE '$year-$month-__'
 		AND operations.operation_id IS NOT NULL
 		GROUP BY operations.plageop_id";
 $result2 = db_loadlist($sql);
+//  Plages de spécialité
+$sql = "SELECT plagesop.id AS id, plagesop.date, 0 AS operations,
+		plagesop.fin, plagesop.debut, 0 AS busy_time, 1 AS spe
+		FROM plagesop
+		LEFT JOIN operations
+		ON plagesop.id = operations.plageop_id
+		WHERE plagesop.id_spec = '$specialite'
+		AND plagesop.date LIKE '$year-$month-__'";
+$result3 = db_loadlist($sql);
+
 $i = 0;
 foreach($result1 as $key => $value){
   $result[$i] = $value;
   $i++;
 }
 foreach($result2 as $key => $value){
+  $result[$i] = $value;
+  $i++;
+}
+foreach($result3 as $key => $value){
   $result[$i] = $value;
   $i++;
 }
@@ -166,7 +184,7 @@ $sql = "SELECT operations.operation_id AS id, operations.pat_id,
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id
 		WHERE plagesop.date = '$year-$month-$day'
-		AND plagesop.id_chir = '$user'
+		AND plagesop.id_chir = '$selChirLogin'
         ORDER BY operations.rank, operations.temp_operation";
 $result = db_loadlist($sql);
 
@@ -229,11 +247,10 @@ $smarty->assign('nmonthy', $nmonthy);
 $smarty->assign('pmonthd', $pmonthd);
 $smarty->assign('pmonth', $pmonth);
 $smarty->assign('pmonthy', $pmonthy);
-$smarty->assign('userName', $userName);
 $smarty->assign('title1', $title1);
 $smarty->assign('title2', $title2);
-$smarty->assign('isMyPlanning', $isMyPlanning);
 $smarty->assign('listChir', $listChir);
+$smarty->assign('selChir', $selChir);
 $smarty->assign('list', $list);
 $smarty->assign('today', $today);
 

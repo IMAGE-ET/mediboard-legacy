@@ -7,12 +7,12 @@
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="tab" value="3" />
 
-      <table class="form">
+      <table width="50%">
         <tr>
-          <th>Choisir un chirurgien</th>
-          <td>
+          <td width="50%">
+            Choisir un chirurgien :
             <select name="chir_id" onchange="this.form.submit()">
-              <option value="" >-- Tous les chirurgiens</option>
+              <option value="" >Tous les chirurgiens</option>
               {foreach item=curr_chir from=$chirs}
               <option value="{$curr_chir.chir_id}" {if $chir_id == $curr_chir.chir_id} selected="selected" {/if}>
                 Dr. {$curr_chir.lastname} {$curr_chir.firstname} ({$curr_chir.nb_protocoles})
@@ -20,11 +20,10 @@
               {/foreach}
             </select>
           </td>
-                
-          <th>Choisir un code CCAM</th>
-          <td>
+          <td width="50%">
+            Choisir un code CCAM :
             <select name="CCAM_code" onchange="this.form.submit()">
-              <option value="" >-- Tous les codes</option>
+              <option value="" >Tous les codes</option>
               {foreach item=curr_code from=$codes}
               <option value="{$curr_code.CCAM_code}" {if $CCAM_code == $curr_code.CCAM_code} selected="selected" {/if}>
                 {$curr_code.CCAM_code} ({$curr_code.nb_protocoles})
