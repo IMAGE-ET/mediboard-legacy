@@ -107,7 +107,7 @@ function printDepassement(id) {
           {else}
           <td>
             {if $curr_adm.admis == "n"}
-            <form name="editAdmFrm{$curr_adm.id}" action="index.php" method="get">
+            <form name="editAdmFrm{$curr_adm.operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_edit_admis" />
             <input type="hidden" name="id" value="{$curr_adm.operation_id}" />
@@ -118,7 +118,7 @@ function printDepassement(id) {
           </td>
           <td>
             {if $curr_adm.saisie == "n"}
-            <form name="editSaisFrm{$curr_adm.id}" action="index.php" method="get">
+            <form name="editSaisFrm{$curr_adm.operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_edit_admis" />
             <input type="hidden" name="id" value="{$curr_adm.operation_id}" />

@@ -100,10 +100,10 @@ foreach($list3 as $key => $value) {
 foreach($list1 as $key => $value) {
   $i2 = 0;
   $i2fin = sizeof($list2);
-  while(($list2[$i2]["date"] != $value["date"]) && ($i2 < $i2fin)) {
+  while((@$list2[$i2]["date"] != $value["date"]) && ($i2 < $i2fin)) {
     $i2++;
   }
-  if($list2[$i2]["date"] == $value["date"])
+  if(@$list2[$i2]["date"] == $value["date"])
     $list1[$key]["num2"] = $list2[$i2]["num"];
   else
     $list1[$key]["num2"] = 0;
