@@ -25,7 +25,10 @@ if($created = dPgetParam($_GET, 'created', 0)){
   $patient = new CPatient();
   $patient->load($result[0]["patient_id"]);
   $siblings = $patient->getSiblings();
-  if(count($siblings) == 0) {$textSiblings = NULL;}
+  if(count($siblings) == 0) {
+  	$textSiblings = NULL;
+  	$patient = NULL;
+  }
   else {
   	$textSiblings = "Risque de doublons :\\n";
     foreach($siblings as $key => $value) {

@@ -35,7 +35,7 @@ if ($del) {
 	} else {
     $_SESSION[$m]["id"] = NULL;
 		$AppUI->setMsg( "Patient supprimé", UI_MSG_ALERT);		// message with success flag
-		$AppUI->redirect( "m=$m&tab=0" );
+		$AppUI->redirect( "m=$m&tab=vw_idx_patients" );
 	}
 } else {
 	if (($msg = $obj->store())) {
