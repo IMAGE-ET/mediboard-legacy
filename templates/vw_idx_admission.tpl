@@ -10,6 +10,12 @@ function printAdmission(id) {
   popup(700, 550, url, 'Patient');
 }
 
+function printDepassement(id) {
+  var url = './index.php?m=dPadmissions&a=print_depassement&dialog=1';
+  url = url + '&id=' + id;
+  popup(700, 550, url, 'Depassement');
+}
+
 //]]>
 </script>
 {/literal}
@@ -72,6 +78,7 @@ function printAdmission(id) {
           <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selTri=heure">Heure</a></th>
           <th>Admis</th>
           <th>Saisis</th>
+          <th>DH</th>
         </tr>
         {foreach from=$today item=curr_adm}
         <tr style="background: {if $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
@@ -117,6 +124,10 @@ function printAdmission(id) {
             </form> 
             {/if}
           </td>
+          <td>{if $curr_adm.depassement}
+          <a href="#" onclick="printDepassement({$curr_adm.operation_id})">
+          {$curr_adm.depassement} €</a>
+          {else}-{/if}</td>
         </tr>
         {/foreach}
       </table>

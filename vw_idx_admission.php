@@ -13,7 +13,7 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-//Initialisation de variables
+// Initialisation de variables
 $listDay = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
 $listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
 				"Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
@@ -44,8 +44,9 @@ $monthName = $listMonth[$month - 1];
 $title1 = "$monthName $year";
 $title2 = "$dayName $day $monthName $year";
 
-//Liste des admissions par jour
-$sql = "SELECT plagesop.id AS pid, operations.operation_id, operations.date_adm AS date, count(operation_id) AS num
+// Liste des admissions par jour
+$sql = "SELECT plagesop.id AS pid, operations.operation_id, operations.date_adm AS date,
+		operations.depassement AS depassement, count(operation_id) AS num
 		FROM plagesop
 		LEFT JOIN operations
 		ON operations.plageop_id = plagesop.id
@@ -59,8 +60,9 @@ foreach($list1 as $key => $value) {
   $list1[$key]["day"] = substr($value["date"], 8, 2);
 }
 
-//Liste des admissions non effectuées par jour
-$sql = "SELECT operations.date_adm AS date, count(operation_id) AS num
+// Liste des admissions non effectuées par jour
+$sql = "SELECT operations.date_adm AS date,
+		operations.depassement AS depassement, count(operation_id) AS num
 		FROM plagesop
 		LEFT JOIN operations
 		ON operations.plageop_id = plagesop.id
@@ -75,8 +77,9 @@ foreach($list2 as $key => $value) {
   $list2[$key]["day"] = substr($value["date"], 8, 2);
 }
 
-//Liste des admissions non remplies dansl'AS/400 par jour
-$sql = "SELECT operations.date_adm AS date, count(operation_id) AS num
+// Liste des admissions non remplies dans l'AS/400 par jour
+$sql = "SELECT operations.date_adm AS date,
+		operations.depassement AS depassement, count(operation_id) AS num
 		FROM plagesop
 		LEFT JOIN operations
 		ON operations.plageop_id = plagesop.id
@@ -91,7 +94,7 @@ foreach($list3 as $key => $value) {
   $list3[$key]["day"] = substr($value["date"], 8, 2);
 }
 
-//On met toutes les sommes d'intervention dans le même tableau
+// On met toutes les sommes d'intervention dans le même tableau
 foreach($list1 as $key => $value) {
   $i2 = 0;
   $i2fin = sizeof($list2);
@@ -113,10 +116,10 @@ foreach($list1 as $key => $value) {
     $list1[$key]["num3"] = 0;
 }
 
-//operations de la journée
+// operations de la journée
 $sql = "SELECT operations.operation_id, patients.nom AS nom, patients.prenom AS prenom,
         operations.admis AS admis, operations.saisie AS saisie, operations.type_adm AS type_adm,
-        users.user_first_name AS chir_firstname,
+		operations.depassement AS depassement, users.user_first_name AS chir_firstname,
         users.user_last_name AS chir_lastname, operations.time_adm
 		FROM operations
 		LEFT JOIN patients
@@ -164,8 +167,6 @@ $smarty->assign('selTri', $selTri);
 $smarty->assign('title1', $title1);
 $smarty->assign('title2', $title2);
 $smarty->assign('list1', $list1);
-//$smarty->assign('list2', $list2);
-//$smarty->assign('list3', $list3);
 $smarty->assign('today', $today);
 
 $smarty->display('vw_idx_admission.tpl');
