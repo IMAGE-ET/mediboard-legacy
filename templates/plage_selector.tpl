@@ -36,7 +36,7 @@ function setClose(date) {
 </tr>
 
 <tr>
-  <td>
+  <td rowspan="2">
     <select name="list"  size="14">
       <option value="0" selected="selected">&mdash; Choisir une date &mdash;</option>
     {foreach from=$list item=curr_elem}
@@ -56,7 +56,15 @@ function setClose(date) {
     <br />
     <input type="radio" name="admission" value="jour" />
     <label for="frmSelector_admission_jour">Le jour même</label>
+    <br />
+    
   </td>
+</tr>
+<tr>
+  <td class="text"><i>Remarques :<ul>
+    <li>Les jours notés en bleu représentent des plages de spécialité</li>
+    <li>Par défaut, une admission la veille se fait à 17h et à 8h pour le jour même</li>
+  </ul></i></td>
 </tr>
 
 <tr>

@@ -182,6 +182,10 @@ function setPlage( key, val, adm ) {
     var date = new Date(tmpyear, tmpmonth, tmpday);
     if(adm) {
       date.setDate(parseInt(date.getDate()) - 1);
+      f._hour_adm.value = 17;
+    }
+    else {
+      f._hour_adm.value = 8;
     }
     var day = "" + date.getDate();
     if(day.length == 1) {
