@@ -52,6 +52,7 @@ $sql = "SELECT plageconsult.date AS date, plageconsult.debut AS debut," .
 		"\nLEFT JOIN consultation" .
 		"\nON plageconsult.plageconsult_id = consultation.plageconsult_id" .
 		"\nWHERE plageconsult.chir_id = '$chir'" .
+		"\nAND date LIKE '$year-$month-__'" .
 		"\nGROUP BY plageconsult.plageconsult_id" .
 		"\nORDER BY plageconsult.date, plageconsult.debut";
 $listPlage = db_loadlist($sql);

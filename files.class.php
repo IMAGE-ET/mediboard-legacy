@@ -28,7 +28,7 @@ class CFile extends CDpObject {
 	// Form fields
 
 	function CFile() {
-		$this->CDpObject( 'files', 'file_id' );
+		$this->CDpObject( 'files_mediboard', 'file_id' );
 	}
 
 	function check() {
