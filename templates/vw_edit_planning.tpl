@@ -16,13 +16,13 @@ function checkForm() {
     popPat();
     return false;
   }
-
+/* Bug in IE
   if (form.hour_op.value == 0 && form.min_op.value == 0) {
     alert("Temps opératoire invalide");
     form.hour_op.focus();
     return false;
   }
-
+*/
   if (form.plageop_id.value == 0) {
     alert("Intervention non planifiée");
     popPlage();
@@ -310,7 +310,7 @@ function setCalendar( idate, fdate ) {
             <input name="type_adm" value="comp" type="radio" checked="checked" />hospitalisation complète<br />
             <input name="type_adm" value="ambu" type="radio" />Ambulatoire<br />
 			<input name="type_adm" value="exte" type="radio" />Externe
-			{else if $op.type_adm == "ambu"}
+			{elseif $op.type_adm == "ambu"}
             <input name="type_adm" value="comp" type="radio" />hospitalisation complète<br />
             <input name="type_adm" value="ambu" type="radio" checked="checked" />Ambulatoire<br />
 			<input name="type_adm" value="exte" type="radio" />Externe

@@ -65,7 +65,6 @@ $op["rdv_adm"] = substr($op["rdv_adm"], 8, 2)."/".substr($op["rdv_adm"], 5, 2)."
 $op["hour_adm"] = substr($op["time_adm"], 0, 2);
 $op["min_adm"] = substr($op["time_adm"], 3, 2);
 
-
 //Creation de l'objet smarty
 require_once("lib/smarty/Smarty.class.php");
 $smarty = new Smarty();

@@ -16,13 +16,13 @@ function checkForm() {
     popPat();
     return false;
   }
-
+/* Bug in IE
   if (form.hour_op.value == 0 && form.min_op.value == 0) {
     alert("Temps opératoire invalide");
     form.hour_op.focus();
     return false;
   }
-
+*/
   if (form.plageop_id.value == 0) {
     alert("Intervention non planifiée");
     popPlage();

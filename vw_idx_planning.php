@@ -77,7 +77,7 @@ $sql = "SELECT users.user_last_name as lastname, users.user_first_name as firstn
         AND users.user_id = users_mediboard.user_id
         AND users_mediboard.function_id = functions_mediboard.function_id
         AND functions_mediboard.group_id = groups_mediboard.group_id
-        ORDER BY functions_mediboard.function_id, lastname, firstname";
+        ORDER BY lastname, firstname";
 $listChir = db_loadlist($sql);
 $isMyPlanning = 1;
 $sql = "SELECT users.user_username, users.user_last_name AS lastname,
