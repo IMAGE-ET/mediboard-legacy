@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPhospi';
-$config['mod_version'] = '0.1';
+$config['mod_version'] = '0.1.1';
 $config['mod_directory'] = 'dPhospi';
 $config['mod_setup_class'] = 'CSetupdPhospi';
 $config['mod_type'] = 'user';
@@ -37,18 +37,19 @@ class CSetupdPhospi {
 	}
 
 	function upgrade( $old_version ) {
-		switch ( $old_version )
-		{
-		case "all": {
-        }
-		case "0.1": {
-        }
-        case "0.2": {
+		switch ( $old_version ) {
+		case "all":
+		case "0.1":
+      $sql = "CREATE TABLE `service` (" .
+          "\n`service_id` INT NOT NULL AUTO_INCREMENT ," .
+          "\n`nom` VARCHAR( 50 ) NOT NULL ," .
+          "\n`description` TEXT," .
+          "\nPRIMARY KEY ( `service_id` ))";
+      db_exec($sql); db_error($sql);
+    case "0.11": 
 			return true;
-        }
-		default:
-			return false;
-		}
+    }
+
 		return false;
 	}
 
