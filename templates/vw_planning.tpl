@@ -31,7 +31,7 @@ function checkPlage() {
   <tr>
     <th>
       <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$prec}"><<</a>
-      Semaine du Lundi {$debut} au dimanche {$fin}
+      Semaine du Lundi {$debut|date_format:"%d %b %Y"} au dimanche {$fin|date_format:"%d %b %Y"}
       <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$suiv}">>></a>
     </th>
     <td>
@@ -58,13 +58,9 @@ function checkPlage() {
       <table width="100%">
         <tr>
           <th></th>
-          <th>Lundi</th>
-          <th>Mardi</th>
-          <th>Mercredi</th>
-          <th>Jeudi</th>
-          <th>Vendredi</th>
-          <th>Samedi</th>
-          <th>Dimanche</th>
+          {foreach from=$daysOfWeek item=curr_day}
+          <th>{$curr_day.name} {$curr_day.day}</th>
+          {/foreach}
         </tr>
         {foreach from=$listHours item=curr_hour}
         <tr>

@@ -20,15 +20,21 @@ function setClose(hour, min) {ldelim}
     <table class="tbl">
       <tr>
         <th>Date</th>
+        <th>Etat</th>
       </tr>
       {foreach from=$listPlage item=curr_plage}
       <tr>
         <td>
           <a href="index.php?m=dPcabinet&a=plage_selector&dialog=1&plagesel={$curr_plage.plageconsult_id}&chir={$chir}&month={$month}&year={$year}">
           {if $curr_plage.plageconsult_id == $plageSel}<b>{/if}
-          {$curr_plage.affichage} ({$curr_plage.nb} / {$curr_plage.total})
+          {$curr_plage.affichage}
           {if $curr_plage.plageconsult_id == $plageSel}</b>{/if}
           </a>
+        </td>
+        <td>
+          {if $curr_plage.plageconsult_id == $plageSel}<b>{/if}
+          {$curr_plage.nb} / {$curr_plage.total}
+          {if $curr_plage.plageconsult_id == $plageSel}</b>{/if}
         </td>
       </tr>
       {/foreach}

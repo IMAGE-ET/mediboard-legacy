@@ -49,19 +49,19 @@ $mediusers = new CMediusers();
 $listChirs = $mediusers->loadPraticiens(PERM_EDIT);
 
 // Periode
-$debut = mbGetValueFromGetOrSession("debut", date("d/m/Y"));
-$dayDebut = substr($debut, 0, 2);
-$monthDebut = substr($debut, 3, 2);
-$yearDebut = substr($debut, 6, 4);
+$debut = mbGetValueFromGetOrSession("debut", date("Y-m-d"));
+$dayDebut = substr($debut, 8, 2);
+$monthDebut = substr($debut, 5, 2);
+$yearDebut = substr($debut, 0, 4);
 $dayOfWeek = date("w", mktime(0, 0, 0, $monthDebut, $dayDebut, $yearDebut));
 $rectif = array(-6, 0, -1, -2, -3, -4, -5);
-$debut = date("d/m/Y", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]  , $yearDebut));
-$fin   = date("d/m/Y", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+6, $yearDebut));
-$prec  = date("d/m/Y", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]-1, $yearDebut));
-$suiv  = date("d/m/Y", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+7, $yearDebut));
-$day = substr($debut, 0, 2);
-$month = substr($debut, 3, 2);
-$year = substr($debut, 6, 4);
+$debut = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]  , $yearDebut));
+$fin   = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+6, $yearDebut));
+$prec  = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]-7, $yearDebut));
+$suiv  = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+7, $yearDebut));
+$day = substr($debut, 8, 2);
+$month = substr($debut, 5, 2);
+$year = substr($debut, 0, 4);
 for($i = 0; $i < 7; $i++) {
   $plages[$i]["dateFormed"] = date("d/m/Y", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+$i, $yearDebut));
   $plages[$i]["dateMysql"]  = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+$i, $yearDebut));
@@ -83,18 +83,32 @@ for($i = 8; $i <= 20; $i++) {
 // Liste des jours
 $daysOfWeek[0]["index"] = 0;
 $daysOfWeek[0]["name"] = "Lundi";
+$currDay = intval(date("d", mktime(0, 0, 0, $month, $day, $year)));
+$daysOfWeek[0]["day"] = intval($currDay);
 $daysOfWeek[1]["index"] = 1;
 $daysOfWeek[1]["name"] = "Mardi";
+$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+1, $year)));
+$daysOfWeek[1]["day"] = intval($currDay);
 $daysOfWeek[2]["index"] = 2;
 $daysOfWeek[2]["name"] = "Mercredi";
+$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+2, $year)));
+$daysOfWeek[2]["day"] = intval($currDay);
 $daysOfWeek[3]["index"] = 3;
 $daysOfWeek[3]["name"] = "Jeudi";
+$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+3, $year)));
+$daysOfWeek[3]["day"] = intval($currDay);
 $daysOfWeek[4]["index"] = 4;
 $daysOfWeek[4]["name"] = "Vendredi";
+$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+4, $year)));
+$daysOfWeek[4]["day"] = intval($currDay);
 $daysOfWeek[5]["index"] = 5;
 $daysOfWeek[5]["name"] = "Samedi";
+$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+5, $year)));
+$daysOfWeek[5]["day"] = intval($currDay);
 $daysOfWeek[6]["index"] = 6;
 $daysOfWeek[6]["name"] = "Dimanche";
+$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+6, $year)));
+$daysOfWeek[6]["day"] = intval($currDay);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
