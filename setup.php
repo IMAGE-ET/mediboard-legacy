@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPpatients';
-$config['mod_version'] = '0.2';
+$config['mod_version'] = '0.21';
 $config['mod_directory'] = 'dPpatients';
 $config['mod_setup_class'] = 'CSetupdPpatients';
 $config['mod_type'] = 'user';
@@ -64,7 +64,11 @@ class CSetupdPpatients {
                   ) TYPE=MyISAM COMMENT='Table des medecins correspondants';";
 		db_exec( $sql ); db_error();
 		}
-		case "0.2":
+		case "0.2": {
+			$sql = "ALTER TABLE medecin ADD specialite TEXT AFTER prenom ;";
+		db_exec( $sql ); db_error();
+		}
+		case "0.21":
 			return true;
 		default:
 			return false;
