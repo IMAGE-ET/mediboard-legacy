@@ -7,45 +7,36 @@
 * @author Romain Ollivier
 */ 
 
-$canRead = !getDenyRead( $m );		// retrieve module-based readPermission bool flag
-$canEdit = !getDenyEdit( $m );		// retrieve module-based writePermission bool flag
+$canRead = !getDenyRead( $m );
+$canEdit = !getDenyEdit( $m );
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$AppUI->savePlace();	//save the workplace state (have a footprint on this site)
+$AppUI->savePlace();
 
-// retrieve any state parameters (temporary session variables that are not stored in db)
 
 if (isset( $_GET['tab'] )) {
-	$AppUI->setState( 'dPblocIdxTab', $_GET['tab'] );		// saves the current tab box state
+	$AppUI->setState( 'dPblocIdxTab', $_GET['tab'] );
 }
-$tab = $AppUI->getState( 'dPblocIdxTab' ) !== NULL ? $AppUI->getState( 'dPblocIdxTab' ) : 0;	// use first tab if no info is available
-$active = intval( !$AppUI->getState( 'dPblocIdxTab' ) );			// retrieve active tab info for the tab box that
-																	// will be created down below
-// we prepare the User Interface Design with the dPFramework
+$tab = $AppUI->getState( 'dPblocIdxTab' ) !== NULL ? $AppUI->getState( 'dPblocIdxTab' ) : 0;
+$active = intval( !$AppUI->getState( 'dPblocIdxTab' ) );
 
-// setup the title block with Name, Icon and Help
-$titleBlock = new CTitleBlock( 'Planning du bloc opératoire', 'dPbloc.png', $m, "$m.$a" );	// load the icon automatically from ./modules/dPbloc/images/
+$titleBlock = new CTitleBlock( 'Planning du bloc opératoire', 'dPbloc.png', $m, "$m.$a" );
 $titleBlock->addCell();
 
-$titleBlock->show();	//finally show the titleBlock
+$titleBlock->show();
 
-// now prepare and show the tabbed information boxes with the dPFramework
-
-// build new tab box object
 $tabBox = new CTabBox( "?m=dPbloc", "{$AppUI->cfg['root_dir']}/modules/dPbloc/", $tab );
-$tabBox->add( "vw_idx_planning", "Planning de la semaine" );
-$tabBox->add( "vw_edit_plages", "Planning du jour" );
-$tabBox->add( "vw_edit_interventions", "Gestion des interventions" );
-$tabBox->add( "vw_idx_materiel", "Commande de materiel" );
-$tabBox->add( "vw_idx_salles", "Gestion des salles" );
+if($canEdit) {
+  $tabBox->add( "vw_idx_planning", "Planning de la semaine" );
+  $tabBox->add( "vw_edit_plages", "Planning du jour" );
+  $tabBox->add( "vw_edit_interventions", "Gestion des interventions" );
+  $tabBox->add( "vw_idx_materiel", "Commande de materiel" );
+  $tabBox->add( "vw_idx_salles", "Gestion des salles" );
+}
 $tabBox->add( "print_planning", "Impression des plannings" );
 
 $tabBox->show();
-
-// this is the whole main site!
-// all further development now has to be done in the files addedit.php, vw_idx_about.php, vw_idx_quotes.php
-// and in the subroutine do_quote_aed.php
 ?>
