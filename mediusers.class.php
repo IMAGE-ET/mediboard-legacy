@@ -163,7 +163,6 @@ class CMediusers extends CDpObject {
 
   function loadListFromType($user_types = null, $perm_type = null, $function_id = null, $name = null) {
     global $utypes_flip;
-    mbTrace("User types flipped ", $utypes_flip);
     $sql = "SELECT *" .
       "\nFROM users, users_mediboard" .
       "\nWHERE users.user_id = users_mediboard.user_id";
