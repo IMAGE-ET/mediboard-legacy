@@ -162,10 +162,10 @@ function setCalendar( idate, fdate ) {
 
         <tr>
           <th class="mandatory">
-            <input type="hidden" name="patient_id" value="{$consult->_ref_patient->patient_id}" />
+            <input type="hidden" name="patient_id" value="{if $pat->patient_id}{$pat->patient_id}{else}{$consult->_ref_patient->patient_id}{/if}" />
             <label for="editFrm_chir_id">Patient:</label>
           </th>
-          <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$consult->_ref_patient->nom} {$consult->_ref_patient->prenom}" readonly="readonly" /></td>
+          <td class="readonly"><input type="text" name="_pat_name" size="30" value="{if $pat->patient_id}{$pat->nom} {$pat->prenom}{else}{$consult->_ref_patient->nom} {$consult->_ref_patient->prenom}{/if}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
         

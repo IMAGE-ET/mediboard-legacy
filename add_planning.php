@@ -33,11 +33,24 @@ if ($group->text == "Chirurgie" or $group->text == "Anesthésie") {
 else
   $chir = null;
 
+// A t'on fourni l'id du patient et du chirurgien?
+$chir_id = dPgetParam($_GET, "chir_id", 0);
+$pat_id = dPgetParam($_GET, "pat_id", 0);
+if($chir_id) {
+  $chir = new CUser;
+  $chir->load($chir_id);
+}
+if($pat_id) {
+  $pat = new CPatient;
+  $pat->load($pat_id);
+}
+
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('chir', $chir);
+$smarty->assign('pat', $pat);
 
 $smarty->display('addedit_planning.tpl');
 
