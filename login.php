@@ -14,7 +14,10 @@
 	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
 </head>
 
-<body bgcolor="#f0f0f0" onload="document.loginform.username.focus();">
+<body bgcolor="#ffffff" onload="document.loginform.username.focus();">
+<div align="center"><img src="./style/mediboard_style/images/LogoMediboard.jpg" border="0" alt="MediBoard" /></div>
+<br /><br />
+<div align="center"><h1>Logiciel de gestion des structures de santé</h1></div>
 <br /><br /><br /><br />
 <form action="./index.php" method="post" name="loginform">
 <table align="center" border="0" width="250" cellpadding="6" cellspacing="0" class="std">
@@ -36,6 +39,9 @@
 	<td align="right" valign="bottom" nowrap><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
 </tr>
 </table>
+<div align="center">
+	<span style="font-size:7pt"><a href="http://www.openxtrem.com" target="_blank">Provided by openXtrem</a></span>
+</div>
 <?php if (@$AppUI->getVersion()) { ?>
 <div align="center">
 	<span style="font-size:7pt">Version <?php echo @$AppUI->getVersion();?></span>
