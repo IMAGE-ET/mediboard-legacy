@@ -100,15 +100,15 @@ function checkPatient() {
       </tr>
       
       <tr>
-        <th>Ville:</th>
-        <td><input tabindex="8" type="text" name="ville" value="{$patient->ville}" /></td>
+        <th>Code Postal:</th>
+        <td><input tabindex="8" type="text" name="cp" value="{$patient->cp}" /></td>
         <th>Code administratif:</th>
         <td><input tabindex="20" type="text" name="SHS" value="{$patient->SHS}" /></td>
       </tr>
       
       <tr>
-        <th>Code Postal:</th>
-        <td><input tabindex="9" type="text" name="cp" value="{$patient->cp}" /></td>
+        <th>Ville:</th>
+        <td><input tabindex="9" type="text" name="ville" value="{$patient->ville}" /></td>
       </tr>
       
       <tr>
