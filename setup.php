@@ -61,6 +61,7 @@ class CSetupdPplanningOp {
 			", CCAM_code varchar(7) default NULL" .
 			", cote enum('droit','gauche','bilatéral','total') NOT NULL default 'total'" .
 			", temp_operation time NOT NULL default '00:00:00'" .
+			", time_operation time NOT NULL default '00:00:00'" .
 			", examen text" .
 			", materiel text" .
 			", info enum('o','n') NOT NULL default 'n'" .
