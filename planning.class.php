@@ -13,6 +13,7 @@ require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 
 class COperation extends CDpObject {
   // DB Table key
@@ -69,6 +70,7 @@ class COperation extends CDpObject {
   var $_ref_pat = null;
   var $_ref_chir = null;
   var $_ref_plageop = null;
+  var $_ref_files = null;
   
   // External references
   var $_ext_code_ccam = null;
@@ -204,6 +206,11 @@ class COperation extends CDpObject {
     $this->_ext_code_ccam->LoadLite();
     $this->_ext_code_ccam2 = new Acte($this->CCAM_code2);
     $this->_ext_code_ccam2->LoadLite();
+    
+    // Backward references
+    $where["file_operation"] = "= '$this->operation_id'";
+    $this->_ref_files = new CFile();
+    $this->_ref_files = $this->_ref_files->loadList($where);
   }
 }
 
