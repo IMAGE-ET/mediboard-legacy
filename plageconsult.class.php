@@ -139,20 +139,37 @@ class CPlageconsult extends CDpObject {
   }
   
   function becomeNext() {
-    $nextTime = mktime (0, 0, 0, $this->_month, $this->_day+7, $this->_year);
-    $this->_year  = date("Y", $nextTime);
-    $this->_month = date("m", $nextTime);
-    $this->_day   = date("d", $nextTime);
-    $this->updateDBFields();
-    $this->updateFormFields();
-    $sql = "SELECT plageconsult_id" .
+  	$nextFirstDay = mktime (0, 0, 0, $this->_month, $this->_day+7, $this->_year);
+  	$nextRealDay = mktime (0, 0, 0, $this->_month, $this->_day+7+$this->_jour, $this->_year);
+    $_hour_deb = $this->_hour_deb;
+    $_min_deb = $this->_min_deb;
+    $_hour_fin = $this->_hour_fin;
+    $_min_fin = $this->_min_fin;
+    $_freq = $this->_freq;
+    $_jour = $this->_jour;
+    $_dateFormated = $this->_dateFormated;
+  	$sql = "SELECT plageconsult_id" .
       "\nFROM plageconsult" .
-      "\nWHERE date = '$this->date'" .
+      "\nWHERE date = '".date("Y-m-d", $nextRealDay)."'" .
       "\nAND chir_id = '$this->chir_id'" .
       "\nAND (debut = '$this->debut' OR fin = '$this->fin')";
-    $row = db_loadlist($sql); 
-    $this->plageconsult_id = @$row[0]['plageconsult_id'];
-    return $msg;
+    $row = db_loadlist($sql);
+    if(@$row[0]['plageconsult_id']) {
+      $this->load(@$row[0]['plageconsult_id']);
+    } else {
+      $this->plageconsult_id = null;
+      $this->_year  = date("Y", $nextFirstDay);
+      $this->_month = date("m", $nextFirstDay);
+      $this->_day = date("d", $nextFirstDay);
+    }
+    $this->_hour_deb = $_hour_deb;
+    $this->_min_deb = $_min_deb;
+    $this->_hour_fin = $_hour_fin;
+    $this->_min_fin = $_min_fin;
+    $this->_freq = $_freq;
+    $this->_jour = $_jour;
+    $this->_dateFormated = $_dateFormated;
+    $this->updateDBFields();
   }    
 }
 
