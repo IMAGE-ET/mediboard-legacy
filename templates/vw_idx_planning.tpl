@@ -12,7 +12,7 @@
         <option value="-1">Aucun chirurgien</option>
         {foreach from=$listChir item=curr_chir}
         <option value="{$curr_chir.id}" {if $curr_chir.id == $selChir} selected="selected" {/if}>
-          Dr. {$curr_chir.lastname} {$curr_chir.firstname}
+          {$curr_chir.lastname} {$curr_chir.firstname}
         </option>
         {/foreach}
       </select>
