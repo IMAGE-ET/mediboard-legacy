@@ -5,13 +5,13 @@
 function checkForm() {
   var form = document.editFrm;
     
-  if (form.chir_name.value.length == 0) {
+  if (form._chir_name.value.length == 0) {
     alert("Chirurgien manquant");
     popChir();
     return false;
   }
     
-  if (form.pat_name.value.length == 0) {
+  if (form._pat_name.value.length == 0) {
     alert("Patient manquant");
     popPat();
     return false;
@@ -121,7 +121,7 @@ function printForm() {
     url = url + '&cote=' + eval( 'document.editFrm.cote.value' );
     url = url + '&hour_op=' + eval( 'document.editFrm._hour_op.value' );
     url = url + '&min_op=' + eval( 'document.editFrm._min_op.value' );
-    url = url + '&date=' + eval( 'document.editFrm.date.value' );
+    url = url + '&date=' + eval( 'document.editFrm._date.value' );
     url = url + '&info=' + eval( 'document.editFrm.info.value' );
     url = url + '&rdv_anesth=' + eval( 'document.editFrm._rdv_anesth.value' );
     url = url + '&hour_anesth=' + eval( 'document.editFrm._hour_anesth.value' );

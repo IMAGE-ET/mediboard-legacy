@@ -5,13 +5,13 @@
 function checkForm() {
   var form = document.editFrm;
     
-  if (form.chir_name.value.length == 0) {
+  if (form._chir_name.value.length == 0) {
     alert("Chirurgien manquant");
     popChir();
     return false;
   }
     
-  if (form.pat_name.value.length == 0) {
+  if (form._pat_name.value.length == 0) {
     alert("Patient manquant");
     popPat();
     return false;
