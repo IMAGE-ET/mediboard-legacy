@@ -206,7 +206,7 @@ class Cplanning
 	echo "<tr>\n";
 	echo "<td rowspan=3 align=\"center\">\n";
 	$today = $this->dayWeekList[date("w", mktime(0, 0, 0, $this->month, $this->day, $this->year))];
-	$tomonth = $this->monthList[$this->month];
+	$tomonth = $this->monthList[intval($this->month)];
 	echo "<a href=\"#\" onclick=\"popPlanning('$this->year$this->month$this->day');\">";
 	echo "<b>$today $this->day $tomonth $this->year</b>";
 	echo "<br /><img src=\"modules/dPbloc/images/print.png\" height=\"15\" width=\"15\" alt=\"imprimer\" border=\"0\">";
