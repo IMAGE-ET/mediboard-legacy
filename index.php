@@ -37,6 +37,7 @@ $titleBlock->show();
 
 $tabBox = new CTabBox("?m=$m", "{$AppUI->cfg['root_dir']}/modules/$m/", $tab );
 $tabBox->add("form_print_planning", "Impression des plannings");
+$tabBox->add("vw_affectations", "Affectations");
 $tabBox->add("vw_idx_services", "Services");
 $tabBox->add("vw_idx_chambres", "Chambres");
 $tabBox->show();

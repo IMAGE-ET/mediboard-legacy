@@ -2,7 +2,7 @@
 
 /**
 * @package Mediboard
-* @subpackage dPbloc
+* @subpackage dPhospi
 * @version $Revision$
 * @author Romain Ollivier
 */

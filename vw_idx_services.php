@@ -2,9 +2,9 @@
 
 /**
 * @package Mediboard
-* @subpackage mediusers
+* @subpackage dPhospi
 * @version $Revision$
-* @author Romain Ollivier
+* @author Thomas Despoix
 */
 
 global $AppUI, $canRead, $canEdit, $m;

@@ -5,9 +5,16 @@ function checkFrm() {
   var field = null;
     
   if (field = form.nom) {
-  	alert(field.value);
     if (field.value.length == 0) {
       alert("Intitulé manquant");
+      field.focus();
+      return false;
+    }
+  }
+    
+  if (field = form.service_id) {
+    if (field.value == 0) {
+      alert("Service manquant");
       field.focus();
       return false;
     }
@@ -39,8 +46,6 @@ function checkLit() {
 <tr>
   <td class="halfPane">
 
-    <a href="index.php?m={$m}&amp;tab={$tab}&amp;chambre_id=0"><strong>Créer un chambre</strong></a>
-
     <table class="tbl">
       
     <tr>
@@ -59,7 +64,7 @@ function checkLit() {
 	</tr>
 	{foreach from=$curr_service->_ref_chambres item=curr_chambre}
     <tr>
-      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_chambre->chambre_id}">{$curr_chambre->nom}</a></td>
+      <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_chambre->chambre_id}&amp;lit_id=0">{$curr_chambre->nom}</a></td>
       <td class="text">{$curr_chambre->caracteristiques|nl2br}</td>
       <td>
       {foreach from=$curr_chambre->_ref_lits item=curr_lit}
@@ -75,6 +80,8 @@ function checkLit() {
   </td>
   
   <td class="halfPane">
+
+    <a href="index.php?m={$m}&amp;tab={$tab}&amp;chambre_id=0"><strong>Créer un chambre</strong></a>
 
     <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkFrm()">
 

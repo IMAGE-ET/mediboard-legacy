@@ -89,6 +89,8 @@ function checkFrm() {
     </tr>
 
     </table>
+    
+    </form>
 
   </td>
 </tr>
