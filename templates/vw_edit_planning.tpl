@@ -102,7 +102,7 @@ var calWin = null;
 function popCalendar( field ){
   calendarField = field;
   idate = eval( 'document.editFrm.date_' + field + '.value' );
-  window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=280, height=250, scollbars=false' );
+  window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250, left=250, width=280, height=250, scollbars=no' );
 }
 
 function setCalendar( idate, fdate ) {
@@ -132,13 +132,13 @@ function printForm() {
     url = url + '&duree_hospi=' + eval( 'document.editFrm.duree_hospi.value' );
     url = url + '&type_adm=' + eval( 'document.editFrm.type_adm.value' );
     url = url + '&chambre=' + eval( 'document.editFrm.chambre.value' ); 
-    window.open( url, 'printAdm', 'top=10,left=10,width=800, height=600, scollbars=true' );
+    window.open( url, 'printAdm', 'top=10, left=10, width=800, height=600, scollbars=yes, menubar=yes' );
   }
 }
 </script>
 {/literal}
 
-<form name="editFrm" action="?m=dPplanningOp" method="post">
+<form name="editFrm" action="?m={$m}" method="post">
 <input type="hidden" name="dosql" value="do_planning_aed" />
 <input type="hidden" name="del" value="0" />
 <input type="hidden" name="operation_id" value="{$op.id}" />
@@ -298,9 +298,9 @@ function printForm() {
           <th>Heure:</th>
           <td>
             <select name="hour_adm">
-			  <option selected>{$op.hour_adm}</option>
+              <option selected>{$op.hour_adm}</option>
               <option>07</option>
-			  <option>08</option>
+              <option>08</option>
               <option>09</option>
               <option>10</option>
               <option>11</option>
@@ -315,7 +315,7 @@ function printForm() {
             </select>
             :
             <select name="min_adm">
-			  <option selected>{$op.min_adm}</option>
+              <option selected>{$op.min_adm}</option>
               <option>00</option>
               <option>15</option>
               <option>30</option>
@@ -330,44 +330,24 @@ function printForm() {
         <tr>
           <th>Admission en:</th>
           <td>
-		    {if $op.type_adm == "comp"}
-            <input name="type_adm" value="comp" type="radio" checked="checked" />hospitalisation complète<br />
-            <input name="type_adm" value="ambu" type="radio" />Ambulatoire<br />
-			<input name="type_adm" value="exte" type="radio" />Externe
-			{elseif $op.type_adm == "ambu"}
-            <input name="type_adm" value="comp" type="radio" />hospitalisation complète<br />
-            <input name="type_adm" value="ambu" type="radio" checked="checked" />Ambulatoire<br />
-			<input name="type_adm" value="exte" type="radio" />Externe
-			{else}
-            <input name="type_adm" value="comp" type="radio" />hospitalisation complète<br />
-            <input name="type_adm" value="ambu" type="radio" />Ambulatoire<br />
-			<input name="type_adm" value="exte" type="radio" checked="checked" />Externe
-			{/if}
+            <input name="type_adm" value="comp" type="radio" {if $op.type_adm == "comp"} checked="checked" {/if} />hospitalisation complète<br />
+            <input name="type_adm" value="ambu" type="radio" {if $op.type_adm == "ambu"} checked="checked" {/if} />Ambulatoire<br />
+            <input name="type_adm" value="exte" type="radio" {if $op.type_adm == "exte"} checked="checked" {/if} />Externe
           </td>
         </tr>
         <tr>
           <th>Chambre particulière:</th>
           <td>
-		    {if $op.chambre == "o"}
-            <input name="chambre" value="o" type="radio" checked="checked" />Oui
-            <input name="chambre" value="n" type="radio" />Non
-			{else}
-            <input name="chambre" value="o" type="radio" />Oui
-            <input name="chambre" value="n" type="radio" checked="checked" />Non
-			{/if}
+            <input name="chambre" value="o" type="radio" {if $op.chambre == "o"} checked="checked" {/if} />Oui
+            <input name="chambre" value="n" type="radio" {if $op.chambre == "n"} checked="checked" {/if} />Non
           </td>
         </tr>
         <tr><th class="category" colspan="3">Autre</th></tr>
         <tr>
           <th>Risque ATNC:</th>
           <td>
-		    {if $op.ATNC == "o"}
-            <input name="ATNC" value="o" type="radio" checked="checked" />Oui
-            <input name="ATNC" value="n" type="radio" />Non
-			{else}
-            <input name="ATNC" value="o" type="radio" />Oui
-            <input name="ATNC" value="n" type="radio" checked="checked" />Non
-			{/if}
+            <input name="ATNC" value="o" type="radio" {if $op.ATNC == "o"} checked="checked" {/if} />Oui
+            <input name="ATNC" value="n" type="radio" {if $op.ATNC == "n"} checked="checked" {/if} />Non
           </td>
         </tr>
         <tr>
@@ -388,7 +368,7 @@ function printForm() {
           <td class="button">
             <input class="button" type="reset" value="Réinitialiser" />
             <input class="button" type="submit" value="Modifier" />
-			<input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
+            <input type="button" value="Supprimer" onclick="{literal}if (confirm('Veuillez confirmer la suppression')) {this.form.del.value = 1; this.form.submit();}{/literal}"/>
             <input class="button" type="button" value="Imprimer" onClick="printForm()" />
           </td>
         </tr>
