@@ -75,6 +75,8 @@ foreach($listPlage as $key => $value) {
   unset($listPlage[$key]->_ref_consultations);
   $where = array();
   $where["plageconsult_id"] = "= '".$value->plageconsult_id."'";
+  $where["chrono"] = ">= '".CC_TERMINE."'";
+  $where["annule"] = "= 0";
   if($etat != -1)
     $where["paye"] = "= '$etat'";
   $where["secteur1"] = "IS NOT NULL";
