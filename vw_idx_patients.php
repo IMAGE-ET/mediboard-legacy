@@ -33,8 +33,8 @@ $patient_prenom = mbGetValueFromGetOrSession("prenom");
 if ($patient_nom || $patient_prenom) {
   $sql = "SELECT * 
     FROM patients 
-    WHERE nom LIKE '%$patient_nom%'
-    AND prenom LIKE '%$patient_prenom%'";
+    WHERE nom LIKE '$patient_nom%'
+    AND prenom LIKE '$patient_prenom%'";
   $patients = db_loadlist($sql);
 }
 
