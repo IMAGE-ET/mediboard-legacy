@@ -33,7 +33,4 @@ $tabBox->add( "vw_find_code"  , "Rechercher un code" );
 $tabBox->add( "vw_full_code"  , "Affichage d'un code" );
 $tabBox->show();
 
-// this is the whole main site!
-// all further development now has to be done in the files addedit.php, vw_idx_about.php, vw_idx_quotes.php
-// and in the subroutine do_quote_aed.php
 ?>
