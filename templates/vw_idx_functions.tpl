@@ -54,7 +54,7 @@ function setColor(color) {
           {if $userfunction->function_id}
             Modification de la fonction &lsquo;{$userfunction->text}&rsquo;
           {else}
-            Création d'une fonction
+            {tr}Création d'une fonction{/tr}
           {/if}
           </th>
         </tr>
