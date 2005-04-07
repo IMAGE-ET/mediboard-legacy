@@ -4,22 +4,37 @@
 function modifTarif() {
   var form = document.tarifFrm;
   var secteurs = form.choix.value;
-  var pos = secteurs.indexOf("/");
-  var size = secteurs.length;
-  var secteur1 = eval(secteurs.substring(0, pos));
-  var secteur2 = eval(secteurs.substring(pos+1, size));
-  form.secteur1.value = secteur1;
-  form.secteur2.value = secteur2;
-  form._somme.value = secteur1 + secteur2;
-  for(i=0;i<form.choix.length;++i)
-  if(form.choix.options[i].selected == true)
-   form.tarif.value = form.choix.options[i].text;  
+  if(secteurs != '') {
+    var pos = secteurs.indexOf("/");
+    var size = secteurs.length;
+    var secteur1 = eval(secteurs.substring(0, pos));
+    var secteur2 = eval(secteurs.substring(pos+1, size));
+    form.secteur1.value = secteur1;
+    form.secteur2.value = secteur2;
+    form._somme.value = secteur1 + secteur2;
+    for(i=0;i<form.choix.length;++i)
+    if(form.choix.options[i].selected == true)
+     form.tarif.value = form.choix.options[i].text;
+   } else {
+     form.secteur1.value = 0;
+     form.secteur2.value = 0;
+     form._somme.value = '';
+     form.tarif.value = '';
+   }  
+}
+
+function putTiers() {
+  var form = document.tarifFrm;
+  if(form._tiers.checked)
+    form.tarif.value = "tiers";
+  else
+    form.tarif.value = "null";
 }
 
 function checkTarif() {
   var form = document.tarifFrm;
   if(form.tarif.value == '') {
-    alert('Vous devez saisir un somme ou choisir un tarif');
+    alert('Vous devez choisir un tarif');
     form.tarif.focus();
     return false;
   }
@@ -402,10 +417,10 @@ function supprimerCompteRendu() {
 
             <table class="form">
               <tr><th colspan="2" class="category">Règlement</th></tr>
-              {if !$consult->secteur1}
-              <tr><th>Type de reglement :<input type="hidden" name="paye" value="0" /></th>
+              {if !$consult->tarif}
+              <tr><th>Choix du tarif :<input type="hidden" name="paye" value="0" /></th>
                 <td><select name="choix" onchange="modifTarif()">
-                  <option value="-1" selected="selected">&mdash; Choix du tarif &mdash;</option>
+                  <option value="" selected="selected">&mdash; Choix du tarif &mdash;</option>
                   <optgroup label="Tarifs praticien">
                   {foreach from=$tarifsChir item=curr_tarif}
                   <option value="{$curr_tarif->secteur1}/{$curr_tarif->secteur2}">{$curr_tarif->description}</option>
@@ -421,7 +436,7 @@ function supprimerCompteRendu() {
               {/if}
               {if !$consult->paye}
               <tr><th>Somme à régler :</th>
-                <td><input type="text" size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
+                <td class="readonly"><input type="text" readonly size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
                   <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
                   <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
                   <input type="hidden" name="tarif" value="{$consult->tarif}" /></td>
@@ -429,21 +444,22 @@ function supprimerCompteRendu() {
               {else}
               <tr><td colspan="2">{$consult->secteur1+$consult->secteur2} € ont été réglés</td></tr>
               {/if}
-              {if $consult->secteur1 && !$consult->paye}
+              {if $consult->tarif && !$consult->paye}
               <tr><th>Moyen de paiement :<input type="hidden" name="paye" value="1" /></th>
                 <td><select name="type_tarif">
-                  <option value="cheque">Chèques</option>
-                  <option value="CB">CB</option>
-                  <option value="especes">Espèces</option>
-                  <option value="tiers">Tiers-payant</option>
-                  <option value="autre">Autre</option>
+                  <option value="cheque" {if $consult->type_tarif == "cheque"}selected="selected"{/if}>Chèques</option>
+                  <option value="CB" {if $consult->type_tarif == "CB"}selected="selected"{/if}>CB</option>
+                  <option value="especes" {if $consult->type_tarif == "especes"}selected="selected"{/if}>Espèces</option>
+                  <option value="tiers" {if $consult->type_tarif == "tiers"}selected="selected"{/if}>Tiers-payant</option>
+                  <option value="autre" {if $consult->type_tarif == "autre"}selected="selected"{/if}>Autre</option>
                 </select></td>
               </tr>
               <tr><td colspan="2" class="button">
-                <input type="reset" value="Annuler" />
                 <input type="submit" value="Reglement effectué" />
               </td></tr>
               {elseif !$consult->paye}
+              <tr><th>Tiers-payant ?</th><td><input type="checkbox" name="_tiers" onchange="putTiers()" />
+                <input type="hidden" name="type_tarif" value="null" /></td></tr>
               <tr><td colspan="2" class="button"><input type="submit" value="Valider ce tarif" /></td></tr>
               {/if}
             </table>

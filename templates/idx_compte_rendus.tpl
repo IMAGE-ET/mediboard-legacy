@@ -21,6 +21,34 @@ function setPat( key, val ) {
   
   f.submit();
 }
+
+function editModele(consult, modele) {
+  var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
+  url +='&consult=' + consult;
+  url +='&modele=' + modele;
+  popup(700, 700, url, 'Compte-rendu');
+}
+
+function validerCompteRendu(form) {
+  if (confirm('Veuillez confirmer la validation du compte-rendu')) {
+    form.cr_valide.value = "1";
+    form.submit();
+  }
+}
+
+function supprimerCompteRendu(form) {
+  if (confirm('Veuillez confirmer la suppression')) {
+    form.compte_rendu.value = "";
+    form.cr_valide.value = "0";
+    form.submit();
+  }
+}
+
+function imprimerCRConsult(consult) {
+  var url = '?m=dPcabinet&a=print_cr&dialog=1';
+  url +='&consult_id=' + consult;
+  popup(700, 700, url, 'Compte-rendu');
+}
 </script>
 {/literal}
 
@@ -39,8 +67,8 @@ function setPat( key, val ) {
         </td>
       </tr>
     </table>
-    {if $patSel->patient_id}
     </form>
+    {if $patSel->patient_id}
     <table class="form" bgcolor="#eee">
       <tr><th class="category" colspan="4">Informations sur le patient</th></tr>
       <tr><th>Nom :</th><td>{$patSel->nom}</td>
@@ -57,7 +85,29 @@ function setPat( key, val ) {
       </strong></td></tr>
       <tr><th>Motif :</th><td class="text" colspan="3">{$curr_consult->motif}</td></tr>
       <tr><th>Compte-rendu de consultation :</th>
-        <td class="button" colspan="2">modifier imprimer supprimer</td></tr>
+        {if $curr_consult->compte_rendu}
+        <td class="button" colspan="3">
+          <form name="editCRConsultFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
+          <input type="hidden" name="m" value="{$m}" />
+          <input type="hidden" name="del" value="0" />
+          <input type="hidden" name="dosql" value="do_consultation_aed" />
+          <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
+          <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
+          <input type="hidden" name="compte_rendu" value="{$curr_consult->compte_rendu|escape:html}" />
+          <input type="hidden" name="cr_valide" value="{$curr_consult->cr_valide}" />
+          
+          <button type="button" onclick="editModele({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Modifier</button>
+          {if !$curr_consult->cr_valide}
+          <button type="button" onclick="validerCompteRendu(this.form)"><img src="modules/dPcabinet/images/check.png" /> Valider</button>
+          {/if}
+          <button type="button" onclick="supprimerCompteRendu(this.form)"><img src="modules/dPcabinet/images/trash.png" /> Supprimer</button>
+          <button type="button" onclick="imprimerCRConsult({$curr_consult->consultation_id})"><img src="modules/dPcabinet/images/print.png" /> Imprimer</button>
+        {else}
+        <td colspan="3"><button type="button" onclick="editModele({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Créer</button>
+        {/if}
+          </form>
+        </td>
+      </tr>
       <tr><th><i>Fichiers associés :</i></th></tr>
       {foreach from=$curr_consult->_ref_files item=curr_file}
       <tr>
@@ -78,7 +128,7 @@ function setPat( key, val ) {
           <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
           <input type="hidden" name="dosql" value="do_file_aed" />
           <input type="hidden" name="del" value="0" />
-	      <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />
+	      <input type="hidden" name="file_consultation" value="{$curr_consult->consultation_id}" />
           <input type="file" name="formfile" />
         </th>
         <td class="button">
@@ -155,16 +205,30 @@ function setPat( key, val ) {
     <table class="tbl">
       {foreach from=$listPlage item=curr_plage}
       <tr>
-        <th colspan="6">Dr. {$curr_plage->_ref_chir->user_first_name} {$curr_plage->_ref_chir->user_last_name} le {$curr_plage->date|date_format:"%a %d %b %Y"} : {$curr_plage->total} compte-rendu(s)</th>
+        <th colspan="3">Dr. {$curr_plage->_ref_chir->user_first_name} {$curr_plage->_ref_chir->user_last_name} le {$curr_plage->date|date_format:"%a %d %b %Y"} : {$curr_plage->total} compte-rendu(s)</th>
       </tr>
       {foreach from=$curr_plage->_ref_consultations item=curr_consult}
       <tr>
         <td>{$curr_consult->_ref_patient->nom}</td>
         <td>{$curr_consult->_ref_patient->prenom}</td>
-        <td>Modifier</td>
-        <td>Valider</td>
-        <td>Imprimer</td>
-        <td>Supprimer</td>
+        <td class="button">
+          <form name="editCRListFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
+          <input type="hidden" name="m" value="{$m}" />
+          <input type="hidden" name="del" value="0" />
+          <input type="hidden" name="dosql" value="do_consultation_aed" />
+          <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
+          <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
+          <input type="hidden" name="compte_rendu" value="{$curr_consult->compte_rendu|escape:html}" />
+          <input type="hidden" name="cr_valide" value="{$curr_consult->cr_valide}" />
+          
+          <button onclick="editModele({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Modifier</button>
+          {if !$curr_consult->cr_valide}
+          <button type="button" onclick="validerCompteRendu(this.form)"><img src="modules/dPcabinet/images/check.png" /> Valider</button>
+          {/if}
+          <button type="button" onclick="supprimerCompteRendu(this.form)"><img src="modules/dPcabinet/images/trash.png" /> Supprimer</button>
+          <button type="button" onclick="imprimerCRConsult({$curr_consult->consultation_id})"><img src="modules/dPcabinet/images/print.png" /> Imprimer</button>
+          </form>
+        </td>
       </tr>
       {/foreach}
       {/foreach}
