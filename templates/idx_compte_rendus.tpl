@@ -182,15 +182,15 @@ function imprimerCRConsult(consult) {
     {/if}
   </td>
   <td class="halfPane">
-  <form name="chirFrm" action="index.php" method="get">
     <table class="form">
       <tr>
         <td><strong>Compte-rendu(s) à taper : {$total}</strong></td>
         <th>
           Choix du chirurgien :
-          <input type="hidden" name="m" value="{$m}" />
         </th>
         <td>
+          <form name="chirFrm" action="index.php" method="get">
+          <input type="hidden" name="m" value="{$m}" />
           <select name="chirSel" onchange="submit()">
             <option value="0">&mdash; Tous &mdash;</option>
             {foreach from=$listPrat item=curr_prat}
@@ -199,6 +199,7 @@ function imprimerCRConsult(consult) {
             </option>
             {/foreach}
           </select>
+          </form>
         </td>
       </tr>
     </table>
@@ -233,7 +234,6 @@ function imprimerCRConsult(consult) {
       {/foreach}
       {/foreach}
     </table>
-  </form>
   </td></tr>
 </table>
 
