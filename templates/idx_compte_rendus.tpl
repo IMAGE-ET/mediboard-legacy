@@ -69,7 +69,7 @@ function imprimerCRConsult(consult) {
     </table>
     </form>
     {if $patSel->patient_id}
-    <table class="form" bgcolor="#eee">
+    <table class="form" style="background: #eee">
       <tr><th class="category" colspan="4">Informations sur le patient</th></tr>
       <tr><th>Nom :</th><td>{$patSel->nom}</td>
         <th>Tel :</th><td>{$patSel->tel}</td></tr>
