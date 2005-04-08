@@ -414,7 +414,15 @@ table.main td.halfPane {
   width: 50%;
 }
 
+table.main th.halfPane {
+  width: 50%;
+}
+
 td.greedyPane {
+  width: 100%;
+}
+
+th.greedyPane {
   width: 100%;
 }
 
