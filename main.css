@@ -70,14 +70,14 @@ a:hover {
   text-decoration: underline;
 }
 
-h1, .title { /* @todo Remove 'title' class, use h2 instead */
+h1 {
   font-size: 20px;
   font-weight: bold;
   color: #555;
   margin: 12px 0px;
 }
 
-h2, .subtitle { /* @todo Remove 'subtitile' class, use h2 instead */
+h2 {
   font-size: 18px;
   font-weight: bold;
   color: #494;
@@ -987,34 +987,97 @@ table.selectCode td {
   border: #aaa 2px dotted;
 }
 
-  /* @import "./admission.css"; */
+  /* @import "./hospitalisation"; */
+
+/* Chambres */
 
 table.chambrecollapse,
 table.chambreexpand {
   width: 100%;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+
+table.chambrecollapse td,
+table.chambrecollapse th,
+table.chambreexpand td,
+table.chambreexpand th {
+  border: 1px outset #050;
+}
+
+table.chambreexpand td.selectlit {
+  width: 20px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 table.chambrecollapse th.chambre {
-  background: #383 url(./images/collapse.gif) no-repeat center left;
+  background: #aaa url(./images/collapse.gif) no-repeat center left;
 }
 
 table.chambreexpand th.chambre {
-  background: #383 url(./images/expand.gif) no-repeat center left;
+  background: #aaa url(./images/expand.gif) no-repeat center left;
 }
 
 table.chambrecollapse td,
 table.chambreexpand td {
-  border: 1px dotted #050;
 }
-
 
 table.chambrecollapse tr.lit td,
 table.chambreexpand tr.lit td {
-  background: #9e9;
+  background: #ccc;
+  color: #000;
+}
+
+table.chambrecollapse tr.patient td,
+table.chambreexpand tr.patient td {
+  background: #eee;
   color: #000;
 }
 
 table.chambrecollapse tr.lit,
 table.chambrecollapse tr.dates {
+  display: none;
+}
+
+/* Operations */
+
+table.operationcollapse,
+table.operationexpand {
+  width: 100%;
+  background: #fff;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+
+table.operationcollapse td,
+table.operationexpand td {
+  border: 1px solid #555;
+  padding: 0 2px;
+  color: #000;
+}
+
+table.operationcollapse td.selectoperation,
+table.operationexpand td.selectoperation {
+  background: #ddf;
+  text-align: center;
+  vertical-align: middle;
+  width: 20px;
+}
+
+table.operationcollapse td.patient {
+  padding-left: 25px;
+  background: #ddf url(./images/collapse.gif) no-repeat center left;
+}
+
+table.operationexpand td.patient {
+  padding-left: 25px;
+  background: #ddf url(./images/expand.gif) no-repeat center left;
+}
+
+table.operationexpand td.date {
+}
+
+table.operationcollapse td.date {
   display: none;
 }

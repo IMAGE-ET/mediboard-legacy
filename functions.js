@@ -137,6 +137,8 @@ function getElementsByClassName(tagName, className, exactMatch) {
 function flipElementClass(elementId, firstClass, secondClass) {
   var element = document.getElementById(elementId);
   
+  if (!element) throwError("The element '" + elementId + "' doesn't exist");
+  
   if (element.className == firstClass) {
     element.className = secondClass;
     return;
@@ -146,6 +148,8 @@ function flipElementClass(elementId, firstClass, secondClass) {
     element.className = firstClass;
     return;
   }
+  
+  throwError("The element class of '" + elementId + "' is neither '" + firstClass + "' nor '" + secondClass + "'.");
 }
 
 
@@ -159,4 +163,11 @@ function confirmDeletion(form, typeName, objName, msg) {
   	form.del.value = 1; 
   	form.submit();
   }
+}
+
+function throwError(msg) {
+ var func = throwError.caller.toString();
+ var funcName = func.substring(9, func.indexOf("("));
+ funcName.replace(/^\s+/,'').replace(/\s+$/,''); //trim
+ throw "Error in " + funcName + "(): " + msg;
 }
