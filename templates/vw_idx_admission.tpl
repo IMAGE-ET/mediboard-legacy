@@ -70,7 +70,7 @@ function printDepassement(id) {
       </table>
     </td>
     <td>
-      <table class="color">
+      <table class="tbl">
         <tr>
           <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selTri=nom">Nom</a></th>
           <th>Prénom</th>
@@ -81,31 +81,32 @@ function printDepassement(id) {
           <th>DH</th>
         </tr>
         {foreach from=$today item=curr_adm}
-        <tr style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
-          <td>
+        <tr>
+          <td style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
             <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             {$curr_adm.nom}
             </a>
           </td>
-          <td>
+          <td style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
             <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             {$curr_adm.prenom}
             </a>
           </td>
-          <td>
+          <td style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
             <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             Dr. {$curr_adm.chir_lastname} {$curr_adm.chir_firstname}
             </a>
           </td>
-          <td>
+          <td style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
             <a href="#" onclick="printAdmission({$curr_adm.operation_id})">
             {$curr_adm.hour}
             </a>
           </td>
           {if $curr_adm.annulee == 1}
-          <td align="center" colspan=2><b>ANNULE</b></td>
+          <td style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}" align="center" colspan=2>
+            <b>ANNULE</b></td>
           {else}
-          <td>
+          <td style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
             {if $curr_adm.admis == "n"}
             <form name="editAdmFrm{$curr_adm.operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
@@ -116,7 +117,7 @@ function printDepassement(id) {
             </form> 
             {/if}
           </td>
-          <td>
+          <td style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
             {if $curr_adm.saisie == "n"}
             <form name="editSaisFrm{$curr_adm.operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
@@ -131,7 +132,8 @@ function printDepassement(id) {
             {/if}
           </td>
           {/if}
-          <td>{if $curr_adm.depassement}
+          <td style="background: {if $curr_adm.annulee == 1}#f33{elseif $curr_adm.type_adm == 'ambu'}#faa{elseif $curr_adm.type_adm == 'comp'}#fff{else}#afa{/if}">
+          {if $curr_adm.depassement}
           <!-- Pas de possibilité d'imprimer les dépassements pour l'instant -->
           <!-- <a href="#" onclick="printDepassement({$curr_adm.operation_id})"></a> -->
           {$curr_adm.depassement} €
