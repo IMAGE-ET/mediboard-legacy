@@ -287,31 +287,6 @@ table.tbl td.text {
   white-space: normal;
 }
 
-/* a 'colorized' table */
-
-table.color {
-  width: 100%;
-  border: 0px;
-  border-spacing: 1px;
-}
-
-table.color th {
-  background: #888;
-  padding: 2px;
-  color: #fff;
-  border: outset #888 1px;
-  font-weight: normal;
-  text-align: center;
-}
-
-table.color td {
-  padding: 2px;
-}
-
-table.color td.white {
-  background-color: #fff;
-}
-
 /* a 'standard' table */
 
 table.std {
