@@ -271,6 +271,14 @@ table.tbl th {
   white-space: nowrap;
 }
 
+table.tbl th.title {
+  font-size: 14px;
+  font-weight: bold;  
+  text-align: center;
+  background: #bbb;
+  border: #aaa 1px outset;
+}
+
 table.tbl td {
   background-color: #fff;
   padding: 2px;
@@ -320,6 +328,7 @@ table.form th {
 }
 
 table.form th.title {
+  font-size: 14px;
   font-weight: bold;  
   text-align: center;
   background: #bbb;
