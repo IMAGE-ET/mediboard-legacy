@@ -33,7 +33,18 @@ class CLit extends CDpObject {
 		$this->CDpObject('lit', 'lit_id');
 	}
 
-  function loadRefs() {
+  function loadAffectation($date) {
+    $where = array (
+      "lit_id" => "= '$this->lit_id'",
+      "entree" => "<= '$date'",
+      "sortie" => ">= '$date'"
+    );
+    
+    $this->_ref_affectations = new CAffectation;
+    $this->_ref_affectations = $this->_ref_affectations->loadList($where);
+  }
+
+  function loadRefFwd() {
     // Forward references
     $where = array (
       "chambre_id" => "= '$this->chambre_id'"
@@ -41,14 +52,6 @@ class CLit extends CDpObject {
 
     $this->_ref_chambre = new CChambre;
     $this->_ref_chambre->load($where);
-
-    // Backward references
-    $where = array (
-      "lit_id" => "= '$this->lit_id'"
-    );
-    
-    $this->_ref_affectations = new CAffectation;
-    $this->_ref_affectations = $this->_ref_affectations->loadList($where);
   }
 
   function canDelete(&$msg, $oid = null) {

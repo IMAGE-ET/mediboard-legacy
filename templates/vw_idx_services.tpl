@@ -48,7 +48,7 @@ function checkFrm() {
   
   <td class="halfPane">
 
-    <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkGroup()">
+    <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkFrm()">
 
     <input type="hidden" name="dosql" value="do_service_aed" />
     <input type="hidden" name="service_id" value="{$serviceSel->service_id}" />

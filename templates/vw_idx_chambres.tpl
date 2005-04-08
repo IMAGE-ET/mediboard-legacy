@@ -1,7 +1,7 @@
 {literal}
 <script language="javascript">
-function checkFrm() {
-  var form = document.editFrm;
+function checkChambre() {
+  var form = document.editChambre;
   var field = null;
     
   if (field = form.nom) {
@@ -83,7 +83,7 @@ function checkLit() {
 
     <a href="index.php?m={$m}&amp;tab={$tab}&amp;chambre_id=0"><strong>Créer un chambre</strong></a>
 
-    <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkFrm()">
+    <form name="editChambre" action="?m={$m}" method="post" onsubmit="return checkChambre()">
 
     <input type="hidden" name="dosql" value="do_chambre_aed" />
     <input type="hidden" name="chambre_id" value="{$chambreSel->chambre_id}" />
@@ -102,12 +102,12 @@ function checkLit() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="editFrm_nom" title="intitulé du chambre, obligatoire.">Intitulé:</label></th>
+      <th class="mandatory"><label for="editChambre_nom" title="intitulé du chambre, obligatoire.">Intitulé:</label></th>
       <td><input type="text" name="nom" value="{$chambreSel->nom}" /></td>
     </tr>
 
 	<tr>
-      <th class="mandatory"><label for="editFrm_service_id" title="Service auquel la chambre est rattaché, obligatoire.">Service:</label></th>
+      <th class="mandatory"><label for="editChambre_service_id" title="Service auquel la chambre est rattaché, obligatoire.">Service:</label></th>
 	  <td>
         <select name="service_id">
           <option value="">&mdash; Choisir un service &mdash;</option>
@@ -119,7 +119,7 @@ function checkLit() {
 	</tr>
 	    
     <tr>
-      <th><label for="editFrm_caracteristiques" title="Caracteristiques du chambre.">Caractéristiques:</label></th>
+      <th><label for="editChambre_caracteristiques" title="Caracteristiques du chambre.">Caractéristiques:</label></th>
       <td>
         <textarea name="caracteristiques" rows="4">{$chambreSel->caracteristiques}</textarea></td>
     </tr>

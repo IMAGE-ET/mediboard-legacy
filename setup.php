@@ -58,14 +58,14 @@ class CSetupdPhospi {
 
       $sql = "CREATE TABLE `lit` (" .
           "\n`lit_id` INT NOT NULL AUTO_INCREMENT ," .
-          "\n`chambre_id` INT NOT NULL AUTO_INCREMENT," .
+          "\n`chambre_id` INT NOT NULL," .
           "\n`nom` VARCHAR( 50 ) NOT NULL ," .
           "\nPRIMARY KEY ( `lit_id` ) ," .
           "\nINDEX ( `chambre_id` ))";
       db_exec($sql); db_error($sql);
                     
       $sql = "CREATE TABLE `affectation` (" .
-          "\n`affectation_id` INT NOT NULL NOT AUTO_INCREMENT," .
+          "\n`affectation_id` INT NOT NULL AUTO_INCREMENT," .
           "\n`lit_id` INT NOT NULL ," .
           "\n`operation_id` INT NOT NULL ," .
           "\n`entree` DATETIME NOT NULL ," .

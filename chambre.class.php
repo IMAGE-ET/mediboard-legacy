@@ -27,6 +27,9 @@ class CChambre extends CDpObject {
   var $nom = null;
   var $caracteristiques = null; // côté rue, fenêtre, lit accompagnant, ...
 
+  // Form Fields
+  var $_nb_lits_dispo = 0;
+
   // Object references
   var $_ref_service = null;
   var $_ref_lits = null;
