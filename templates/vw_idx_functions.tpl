@@ -32,7 +32,7 @@ function setColor(color) {
   <tr>
     <td class="halfPane">
       <a href="index.php?m={$m}&amp;tab={$tab}&amp;userfunction=0"><strong>Créer une fonction</strong></a>
-      <table class="color">
+      <table class="tbl">
       {foreach from=$listGroups item=curr_group}
         <tr><th>Groupe {$curr_group->text} &mdash; {$curr_group->_ref_functions|@count} fonction(s)</th><th>Utilisateurs</th></tr>
         {foreach from=$curr_group->_ref_functions item=curr_function}
