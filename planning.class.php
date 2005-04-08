@@ -14,6 +14,7 @@ require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
+require_once( $AppUI->getModuleClass('dPhospi', 'affectation') );
 
 class COperation extends CDpObject {
   // DB Table key
@@ -65,12 +66,15 @@ class COperation extends CDpObject {
   var $_date_rdv_adm = null;
   var $_hour_adm = null;
   var $_min_adm = null;
+  var $_entree_adm = null;
+  var $_sortie_adm = null;
 
   // DB References
   var $_ref_pat = null;
   var $_ref_chir = null;
   var $_ref_plageop = null;
   var $_ref_files = null;
+  var $_ref_affectations = null;
   
   // External references
   var $_ext_code_ccam = null;
@@ -151,6 +155,9 @@ class COperation extends CDpObject {
       substr($this->date_adm, 0, 4);
     $this->_hour_adm = substr($this->time_adm, 0, 2);
     $this->_min_adm  = substr($this->time_adm, 3, 2);
+
+    $this->_entree_adm = $this->date_adm;
+    $this->_sortie_adm = mbDate("+ $this->duree_hospi days", $this->date_adm);
   }
   
   function updateDBFields() {
@@ -202,8 +209,7 @@ class COperation extends CDpObject {
     
   }
   
-  function loadRefs() {
-    // Forward references
+  function loadRefsFwd() {
     $this->_ref_chir = new CUser;
     $this->_ref_chir->load($this->chir_id);
         
@@ -217,11 +223,16 @@ class COperation extends CDpObject {
     $this->_ext_code_ccam->LoadLite();
     $this->_ext_code_ccam2 = new Acte($this->CCAM_code2);
     $this->_ext_code_ccam2->LoadLite();
-    
-    // Backward references
-    $where["file_operation"] = "= '$this->operation_id'";
+  }
+
+  function loadRefsBack() {
+    $where = array("file_operation" => "= '$this->operation_id'");
     $this->_ref_files = new CFile();
     $this->_ref_files = $this->_ref_files->loadList($where);
+
+    $where = array("operation_id" => "= '$this->operation_id'");
+    $this->_ref_affectations = new CAffectation();
+    $this->_ref_affectations = $this->_ref_affectations->loadList($where);
   }
 }
 
