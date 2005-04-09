@@ -10,6 +10,10 @@
 global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
+require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 if (!$canEdit) {
@@ -22,6 +26,30 @@ $patSel->load($pat_id);
 $chirSel = mbGetValueFromGetOrSession("chirSel", 0);
 $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_READ);
+
+// récupération des modèles de compte-rendu disponibles
+if($chirSel) {
+  // Compte-rendus opératoires
+  $crOp = new CCompteRendu;
+  $where = array();
+  $order = array();
+  $where["chir_id"] = "= '$chirSel'";
+  $where["type"] = "= 'operation'";
+  $order[] = "nom";
+  $crOp = $crOp->loadList($where, $order);
+  // Compte-rendus de consultation
+  $where = array();
+  $order = array();
+  $crConsult = new CCompteRendu;
+  $where["chir_id"] = "= '$chirSel'";
+  $where["type"] = "= 'consultation'";
+  $order[] = "nom";
+  $crConsult = $crConsult->loadList($where, $order);
+}
+else {
+  $crOp = null;
+  $crConsult = null;
+}
 
 // Chargement des références du patient
 if($pat_id) {
@@ -66,6 +94,7 @@ $where = array();
 $where["chrono"] = "= ".CC_TERMINE;
 $where["cr_valide"] = "= 0";
 $where["annule"] = "!= 1";
+$where["compte_rendu"] = "!= ''";
 $listConsult = new CConsultation;
 $listConsult = $listConsult->loadList($where, "plageconsult_id", null, "plageconsult_id");
 $inId = array();
@@ -93,29 +122,84 @@ if(@$inPrat[0]) {
   $inPrat = implode(", ", $inPrat);
   $where["chir_id"] = "IN ($inPrat)";
 }
-$listPlage = new CPlageconsult;
-$listPlage = $listPlage->loadList($where, "`date`, `chir_id`");
+$listPlageConsult = new CPlageconsult;
+$listPlageConsult = $listPlageConsult->loadList($where, "`date`, `chir_id`");
 
-// On charge les rapports non validés de nos plages
-$total = 0;
-foreach($listPlage as $key => $value) {
-  $listPlage[$key]->loadRefs();
-  unset($listPlage[$key]->_ref_consultations);
+// On charge les rapports non validés de nos plages de consultation
+$total1 = 0;
+foreach($listPlageConsult as $key => $value) {
+  $listPlageConsult[$key]->loadRefsFwd();
   $where = array();
   $where["plageconsult_id"] = "= '".$value->plageconsult_id."'";
   $where["chrono"] = "= ".CC_TERMINE;
   $where["cr_valide"] = "= 0";
+  $where["compte_rendu"] = "!= ''";
   $listConsult = new CConsultation;
   $listConsult = $listConsult->loadList($where, "heure");
-  $listPlage[$key]->_ref_consultations = $listConsult;
-  $listPlage[$key]->total = 0;
-  foreach($listPlage[$key]->_ref_consultations as $key2 => $value2) {
-    $listPlage[$key]->_ref_consultations[$key2]->loadRefs();
-    $listPlage[$key]->total++;
+  $listPlageConsult[$key]->_ref_consultations = $listConsult;
+  $listPlageConsult[$key]->total = 0;
+  foreach($listPlageConsult[$key]->_ref_consultations as $key2 => $value2) {
+    $listPlageConsult[$key]->_ref_consultations[$key2]->loadRefs();
+    $listPlageConsult[$key]->total++;
   }
-  $total += $listPlage[$key]->total;
-  if(!$listPlage[$key]->total)
-    unset($listPlage[$key]);
+  $total1 += $listPlageConsult[$key]->total;
+  if(!$listPlageConsult[$key]->total)
+    unset($listPlageConsult[$key]);
+}
+
+// Recherche des plage opératoires contenant des comptes-rendu non validés
+$where = array();
+$where["cr_valide"] = "= 0";
+$where["annulee"] = "!= 1";
+$where["compte_rendu"] = "!= ''";
+$inPrat = array();
+if($chirSel)
+  $inPrat[] = "'$chirSel'";
+else {
+  foreach($listPrat as $key => $value) {
+    $inPrat[] = "'$key'";
+  }
+}
+if(@$inPrat[0]) {
+  $inPrat = implode(", ", $inPrat);
+  $where["chir_id"] = "IN ($inPrat)";
+}
+$listOp = new COperation;
+$listOp = $listOp->loadList($where, "plageop_id", null, "plageop_id");
+$inId = array();
+foreach($listOp as $key => $value) {
+  $inId[] = $value->plageop_id;
+}
+
+$where = array();
+if(@$inId[0]) {
+  $inId = implode(", ", $inId);
+  $where["id"] = "IN ($inId)";
+}
+else
+  $where["id"] = "= -1";
+$listPlageOp = new CPlageOp;
+$listPlageOp = $listPlageOp->loadList($where, "`date`, `id_chir`");
+
+// On charge les rapports non validés de nos plages opératoires
+$total2 = 0;
+foreach($listPlageOp as $key => $value) {
+  $listPlageOp[$key]->loadRefsFwd();
+  $where = array();
+  $where["plageop_id"] = "= '".$value->id."'";
+  $where["cr_valide"] = "= 0";
+  $where["compte_rendu"] = "!= ''";
+  $listOp = new COperation;
+  $listOp = $listOp->loadList($where, "time_operation");
+  $listPlageOp[$key]->_ref_operations = $listOp;
+  $listPlageOp[$key]->total = 0;
+  foreach($listPlageOp[$key]->_ref_operations as $key2 => $value2) {
+    $listPlageOp[$key]->_ref_operations[$key2]->loadRefs();
+    $listPlageOp[$key]->total++;
+  }
+  $total2 += $listPlageOp[$key]->total;
+  if(!$listPlageOp[$key]->total)
+    unset($listPlageOp[$key]);
 }
 
 // Création du template
@@ -124,9 +208,13 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('patSel', $patSel);
 $smarty->assign('chirSel', $chirSel);
+$smarty->assign('crOp', $crOp);
+$smarty->assign('crConsult', $crConsult);
 $smarty->assign('listPrat', $listPrat);
-$smarty->assign('listPlage', $listPlage);
-$smarty->assign('total', $total);
+$smarty->assign('listPlageConsult', $listPlageConsult);
+$smarty->assign('listPlageOp', $listPlageOp);
+$smarty->assign('total1', $total1);
+$smarty->assign('total2', $total2);
 
 $smarty->display('idx_compte_rendus.tpl');
 

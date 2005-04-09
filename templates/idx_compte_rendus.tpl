@@ -22,21 +22,27 @@ function setPat( key, val ) {
   f.submit();
 }
 
-function editModele(consult, modele) {
+function selectCRC(id, form) {
+  var modele = form.modele.value;
+  if(modele != 0)
+    editModeleC(id, modele);
+}
+
+function editModeleC(consult, modele) {
   var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
   url +='&consult=' + consult;
   url +='&modele=' + modele;
   popup(700, 700, url, 'Compte-rendu');
 }
 
-function validerCompteRendu(form) {
+function validerCompteRenduC(form) {
   if (confirm('Veuillez confirmer la validation du compte-rendu')) {
     form.cr_valide.value = "1";
     form.submit();
   }
 }
 
-function supprimerCompteRendu(form) {
+function supprimerCompteRenduC(form) {
   if (confirm('Veuillez confirmer la suppression')) {
     form.compte_rendu.value = "";
     form.cr_valide.value = "0";
@@ -44,11 +50,46 @@ function supprimerCompteRendu(form) {
   }
 }
 
-function imprimerCRConsult(consult) {
+function imprimerCRC(consult) {
   var url = '?m=dPcabinet&a=print_cr&dialog=1';
   url +='&consult_id=' + consult;
   popup(700, 700, url, 'Compte-rendu');
 }
+
+function selectCRO(id, form) {
+  var modele = form.modele.value;
+  if(modele != 0)
+    editModeleO(id, modele);
+}
+
+function editModeleO(operation, modele) {
+  var url = '?m=dPplanningOp&a=edit_compte_rendu&dialog=1';
+  url +='&operation=' + operation;
+  url +='&modele=' + modele;
+  popup(700, 700, url, 'Compte-rendu');
+}
+
+function validerCompteRenduO(form) {
+  if (confirm('Veuillez confirmer la validation du compte-rendu')) {
+    form.cr_valide.value = "1";
+    form.submit();
+  }
+}
+
+function supprimerCompteRenduO(form) {
+  if (confirm('Veuillez confirmer la suppression')) {
+    form.compte_rendu.value = "";
+    form.cr_valide.value = "0";
+    form.submit();
+  }
+}
+
+function imprimerCRO(consult) {
+  var url = '?m=dPplanningOp&a=print_cr&dialog=1';
+  url +='&operation_id=' + consult;
+  popup(700, 700, url, 'Compte-rendu');
+}
+
 </script>
 {/literal}
 
@@ -69,7 +110,7 @@ function imprimerCRConsult(consult) {
     </table>
     </form>
     {if $patSel->patient_id}
-    <table class="form">
+    <table class="form" style="background:#eee">
       <tr><th class="category" colspan="4">Informations sur le patient</th></tr>
       <tr><th>Nom :</th><td>{$patSel->nom}</td>
         <th>Tel :</th><td>{$patSel->tel}</td></tr>
@@ -77,17 +118,18 @@ function imprimerCRConsult(consult) {
         <th>Mobile :</th><td>{$patSel->tel2}</td></tr>
       <tr><th>Age :</th><td>{$patSel->_age} ans</td>
         <th>Adresse :</th><td class="text">{$patSel->adresse}, {$patSel->cp} - {$patSel->ville}</td></tr>
+      
       <tr><th class="category" colspan="4">Consultations</th></tr>
       {foreach from=$patSel->_ref_consultations item=curr_consult}
       <tr><td colspan="4"><strong>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name}
         {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}
         &mdash; {$curr_consult->_ref_plageconsult->date|date_format:"%A %d %B %Y"}
       </strong></td></tr>
-      <tr><th>Motif :</th><td class="text" colspan="3">{$curr_consult->motif}</td></tr>
-      <tr><th>Compte-rendu de consultation :</th>
-        {if $curr_consult->compte_rendu}
-        <td class="button" colspan="3">
+      <tr><th colspan="2">Motif :</th><td class="text" colspan="2">{$curr_consult->motif}</td></tr>
+      <tr><th colspan="2">Compte-rendu de consultation :</th>
+        <td colspan="2">
           <form name="editCRConsultFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
+          {if $curr_consult->compte_rendu}
           <input type="hidden" name="m" value="{$m}" />
           <input type="hidden" name="del" value="0" />
           <input type="hidden" name="dosql" value="do_consultation_aed" />
@@ -95,25 +137,33 @@ function imprimerCRConsult(consult) {
           <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
           <input type="hidden" name="compte_rendu" value="{$curr_consult->compte_rendu|escape:html}" />
           <input type="hidden" name="cr_valide" value="{$curr_consult->cr_valide}" />
-          
-          <button type="button" onclick="editModele({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Modifier</button>
+          <button type="button" onclick="editModeleC({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
           {if !$curr_consult->cr_valide}
-          <button type="button" onclick="validerCompteRendu(this.form)"><img src="modules/dPcabinet/images/check.png" /> Valider</button>
+          <button type="button" onclick="validerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/check.png" /></button>
           {/if}
-          <button type="button" onclick="supprimerCompteRendu(this.form)"><img src="modules/dPcabinet/images/trash.png" /> Supprimer</button>
-          <button type="button" onclick="imprimerCRConsult({$curr_consult->consultation_id})"><img src="modules/dPcabinet/images/print.png" /> Imprimer</button>
-        {else}
-        <td colspan="3"><button type="button" onclick="editModele({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Créer</button>
-        {/if}
+          <button type="button" onclick="supprimerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/trash.png" /></button>
+          <button type="button" onclick="imprimerCRC({$curr_consult->consultation_id})"><img src="modules/dPcabinet/images/print.png" /></button>
+          {else}
+            {if $chirSel}
+            <select name="modele" onchange="selectCRC({$curr_consult->consultation_id}, this.form)">
+              <option value="0">&mdash; modeles &mdash;</option>
+              {foreach from=$crConsult item=curr_cr}
+              <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>
+              {/foreach}
+            </select>
+            {else}
+            <button type="button" onclick="editModeleC({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
+            {/if}
+          {/if}
           </form>
         </td>
       </tr>
-      <tr><th><i>Fichiers associés :</i></th></tr>
+      <tr><th colspan="2"><i>Fichiers associés :</i></th><td colspan="2" /></tr>
       {foreach from=$curr_consult->_ref_files item=curr_file}
       <tr>
-        <th><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
+        <th colspan="2"><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
         <td>{$curr_file->_file_size}</td>
-        <td class="button">
+        <td>
           <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
           <input type="hidden" name="dosql" value="do_file_aed" />
 	      <input type="hidden" name="del" value="1" />
@@ -124,37 +174,70 @@ function imprimerCRConsult(consult) {
 	  </tr>
       {/foreach}
       <tr>
-        <th colspan="2">
+        <th colspan="3">
           <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
           <input type="hidden" name="dosql" value="do_file_aed" />
           <input type="hidden" name="del" value="0" />
 	      <input type="hidden" name="file_consultation" value="{$curr_consult->consultation_id}" />
           <input type="file" name="formfile" />
         </th>
-        <td class="button">
+        <td>
           <input type="submit" value="ajouter">
           </form>
         </td>
       </tr>
       {/foreach}
+
       <tr><th class="category" colspan="4">Interventions</th></tr>
       {foreach from=$patSel->_ref_operations item=curr_op}
       <tr><td colspan="4"><strong>Dr. {$curr_op->_ref_chir->user_last_name}
         {$curr_op->_ref_chir->user_first_name}
         &mdash; {$curr_op->_ref_plageop->date|date_format:"%A %d %B %Y"}
       </strong></td></tr>
-      <tr><th>{$curr_op->_ext_code_ccam->code} :</th>
-        <td colspan="3" class="text">{$curr_op->_ext_code_ccam->libelleLong}</td></tr>
-      <tr><th>Compte-rendu opératoire :</th>
+      <tr><th colspan="2">{$curr_op->_ext_code_ccam->code} :</th>
+        <td colspan="2" class="text">{$curr_op->_ext_code_ccam->libelleLong}</td></tr>
+      {if $curr_op->CCAM_code2}
+      <tr><th colspan="2">{$curr_op->_ext_code_ccam2->code} :</th>
+        <td colspan="2" class="text">{$curr_op->_ext_code_ccam2->libelleLong}</td></tr>
+      {/if}
+      <tr><th colspan="2">Compte-rendu opératoire :</th>
+        <td colspan="2">
+          <form name="editCROListFrm{$curr_op->operation_id}" action="?m=dPplanningOp" method="POST">
+          {if $curr_consult->compte_rendu}
+          <input type="hidden" name="m" value="dPplanningOp" />
+          <input type="hidden" name="del" value="0" />
+          <input type="hidden" name="dosql" value="do_planning_aed" />
+          <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
+          <input type="hidden" name="compte_rendu" value="{$curr_op->compte_rendu|escape:html}" />
+          <input type="hidden" name="cr_valide" value="{$curr_op->cr_valide}" />
+          <button type="button" onclick="editModeleO({$curr_op->operation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
+          {if !$curr_op->cr_valide}
+          <button type="button" onclick="validerCompteRenduO(this.form)"><img src="modules/dPcabinet/images/check.png" /></button>
+          {/if}
+          <button type="button" onclick="supprimerCompteRenduO(this.form)"><img src="modules/dPcabinet/images/trash.png" /></button>
+          <button type="button" onclick="imprimerCRO({$curr_op->operation_id})"><img src="modules/dPcabinet/images/print.png" /></button>
+          {else}
+            {if $chirSel}
+            <select name="modele" onchange="selectCR0({$curr_op->operation_id}, this.form)">
+              <option value="0">&mdash; modeles &mdash;</option>
+              {foreach from=$crOp item=curr_cr}
+              <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>
+              {/foreach}
+            </select>
+            {else}
+            <button type="button" onclick="editModeleO({$curr_op->operation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
+            {/if}
+          {/if}
+          </form>
+      </td></tr>
+      <tr><th colspan="2">Compte-rendu d'anesthésie :</th>
         <td class="button" colspan="2">modifier imprimer supprimer</td></tr>
-      <tr><th>Compte-rendu d'anesthésie :</th>
-        <td class="button" colspan="2">modifier imprimer supprimer</td></tr>
-      <tr><th><i>Fichiers associés :</i></th></tr>
+      <tr><th colspan="2"><i>Fichiers associés :</i></th><td colspan="2" /></tr>
       {foreach from=$curr_op->_ref_files item=curr_file}
       <tr>
-        <th><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
+        <th colspan="2"><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
         <td>{$curr_file->_file_size}</td>
-        <td class="button">
+        <td>
           <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
           <input type="hidden" name="dosql" value="do_file_aed" />
 	      <input type="hidden" name="del" value="1" />
@@ -165,14 +248,14 @@ function imprimerCRConsult(consult) {
 	  </tr>
       {/foreach}
       <tr>
-        <th colspan="2">
+        <th colspan="3">
           <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
           <input type="hidden" name="dosql" value="do_file_aed" />
           <input type="hidden" name="del" value="0" />
 	      <input type="hidden" name="file_operation" value="{$curr_op->operation_id}" />
           <input type="file" name="formfile" />
         </th>
-        <td class="button">
+        <td>
           <input type="submit" value="ajouter">
           </form>
         </td>
@@ -184,10 +267,7 @@ function imprimerCRConsult(consult) {
   <td class="halfPane">
     <table class="form">
       <tr>
-        <td><strong>Compte-rendu(s) à taper : {$total}</strong></td>
-        <th>
-          Choix du chirurgien :
-        </th>
+        <th>Choix du chirurgien :</th>
         <td>
           <form name="chirFrm" action="index.php" method="get">
           <input type="hidden" name="m" value="{$m}" />
@@ -202,37 +282,75 @@ function imprimerCRConsult(consult) {
           </form>
         </td>
       </tr>
-    </table>
-    <table class="tbl">
-      {foreach from=$listPlage item=curr_plage}
-      <tr>
-        <th colspan="3">Dr. {$curr_plage->_ref_chir->user_first_name} {$curr_plage->_ref_chir->user_last_name} le {$curr_plage->date|date_format:"%a %d %b %Y"} : {$curr_plage->total} compte-rendu(s)</th>
-      </tr>
-      {foreach from=$curr_plage->_ref_consultations item=curr_consult}
-      <tr>
-        <td>{$curr_consult->_ref_patient->nom}</td>
-        <td>{$curr_consult->_ref_patient->prenom}</td>
-        <td class="button">
-          <form name="editCRListFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
-          <input type="hidden" name="m" value="{$m}" />
-          <input type="hidden" name="del" value="0" />
-          <input type="hidden" name="dosql" value="do_consultation_aed" />
-          <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
-          <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
-          <input type="hidden" name="compte_rendu" value="{$curr_consult->compte_rendu|escape:html}" />
-          <input type="hidden" name="cr_valide" value="{$curr_consult->cr_valide}" />
-          
-          <button type="button" onclick="editModele({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Modifier</button>
-          {if !$curr_consult->cr_valide}
-          <button type="button" onclick="validerCompteRendu(this.form)"><img src="modules/dPcabinet/images/check.png" /> Valider</button>
-          {/if}
-          <button type="button" onclick="supprimerCompteRendu(this.form)"><img src="modules/dPcabinet/images/trash.png" /> Supprimer</button>
-          <button type="button" onclick="imprimerCRConsult({$curr_consult->consultation_id})"><img src="modules/dPcabinet/images/print.png" /> Imprimer</button>
-          </form>
-        </td>
-      </tr>
-      {/foreach}
-      {/foreach}
+      <tr><td style="background:transparent">
+        <table class="form">
+          <tr><th colspan="3" class="title">{$total1} compte-rendu(s) de consultation</th></tr>
+          {foreach from=$listPlageConsult item=curr_plage}
+          <tr>
+            <th class="category" colspan="3">
+              Dr. {$curr_plage->_ref_chir->user_first_name} {$curr_plage->_ref_chir->user_last_name} le {$curr_plage->date|date_format:"%a %d/%m/%y"} ({$curr_plage->total})
+            </th>
+          </tr>
+          {foreach from=$curr_plage->_ref_consultations item=curr_consult}
+          <tr>
+            <td>{$curr_consult->_ref_patient->nom}</td>
+            <td>{$curr_consult->_ref_patient->prenom}</td>
+            <td class="button">
+              <form name="editCRCListFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
+              <input type="hidden" name="m" value="{$m}" />
+              <input type="hidden" name="del" value="0" />
+              <input type="hidden" name="dosql" value="do_consultation_aed" />
+              <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
+              <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
+              <input type="hidden" name="compte_rendu" value="{$curr_consult->compte_rendu|escape:html}" />
+              <input type="hidden" name="cr_valide" value="{$curr_consult->cr_valide}" />
+              <button type="button" onclick="editModeleC({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
+              {if !$curr_consult->cr_valide}
+              <button type="button" onclick="validerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/check.png" /></button>
+              {/if}
+              <button type="button" onclick="supprimerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/trash.png" /></button>
+              <button type="button" onclick="imprimerCRC({$curr_consult->consultation_id})"><img src="modules/dPcabinet/images/print.png" /></button>
+              </form>
+            </td>
+          </tr>
+          {/foreach}
+          {/foreach}
+        </table>
+      </td>
+      <td style="background:transparent">
+        <table class="form">
+          <tr><th colspan="3" class="title">{$total2} compte-rendu(s) opératoire(s)</th></tr>
+          {foreach from=$listPlageOp item=curr_plage}
+          <tr>
+            <th class="category" colspan="3">
+              Dr. {$curr_plage->_ref_chir->user_first_name} {$curr_plage->_ref_chir->user_last_name} le {$curr_plage->date|date_format:"%a %d/%m/%y"} ({$curr_plage->total})
+            </th>
+          </tr>
+          {foreach from=$curr_plage->_ref_operations item=curr_op}
+          <tr>
+            <td>{$curr_op->_ref_pat->nom}</td>
+            <td>{$curr_op->_ref_pat->prenom}</td>
+            <td class="button">
+              <form name="editCROListFrm{$curr_op->operation_id}" action="?m=dPplanningOp" method="POST">
+              <input type="hidden" name="m" value="dPplanningOp" />
+              <input type="hidden" name="del" value="0" />
+              <input type="hidden" name="dosql" value="do_planning_aed" />
+              <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
+              <input type="hidden" name="compte_rendu" value="{$curr_op->compte_rendu|escape:html}" />
+              <input type="hidden" name="cr_valide" value="{$curr_op->cr_valide}" />
+              <button type="button" onclick="editModeleO({$curr_op->operation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
+              {if !$curr_op->cr_valide}
+              <button type="button" onclick="validerCompteRenduO(this.form)"><img src="modules/dPcabinet/images/check.png" /></button>
+              {/if}
+              <button type="button" onclick="supprimerCompteRenduO(this.form)"><img src="modules/dPcabinet/images/trash.png" /></button>
+              <button type="button" onclick="imprimerCRO({$curr_op->operation_id})"><img src="modules/dPcabinet/images/print.png" /></button>
+              </form>
+            </td>
+          </tr>
+          {/foreach}
+          {/foreach}
+        </table>
+      </td></tr>
     </table>
   </td></tr>
 </table>
