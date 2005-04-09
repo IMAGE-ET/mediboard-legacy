@@ -59,13 +59,13 @@ class CPlageOp extends CDpObject {
       $sql = "SELECT user_id FROM users WHERE user_username = '$this->id_chir'";
       $result = db_loadlist($sql);
       $this->_ref_chir = new CUser;
-      $this->_ref_chir->load($result[0]);
+      $this->_ref_chir->load($result[0]["user_id"]);
     }
     if ($this->id_anesth) {
       $sql = "SELECT user_id FROM users WHERE user_username = '$this->id_anesth'";
       $result = db_loadlist($sql);
       $this->_ref_anesth = new CUser;
-      $this->_ref_anesth->load($result[0]);
+      $this->_ref_anesth->load($result[0]["user_id"]);
     }
     if ($this->id_spec) {
       $this->_ref_spec = new CFunctions;
