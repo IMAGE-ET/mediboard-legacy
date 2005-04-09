@@ -43,13 +43,15 @@ class CTarif extends CDpObject {
   }
   
   function updateDBFields() {
-    if($this->_type == "chir")
-      $this->function_id = 0;
-    else
-      $this->chir_id = 0;
+  	if($this->_type !== null) {
+      if($this->_type == "chir")
+        $this->function_id = 0;
+      else
+        $this->chir_id = 0;
+  	}
   }
   
-  function loadRefs() {
+  function loadRefsFwd() {
     // Forward references
     $this->_ref_chir = new CUser();
     $this->_ref_chir->load($this->chir_id);

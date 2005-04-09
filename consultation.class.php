@@ -84,25 +84,37 @@ class CConsultation extends CDpObject {
   }
    
   function updateDBFields() {
-    // To keep it null if no _hour nor _min
-  	if ($this->_hour or $this->_min) {
+  	if (($this->_hour !== null) && ($this->_min !== null)) {
       $this->heure = $this->_hour.":".$this->_min.":00";
     }
     
+    // @todo : verifier si on ne fait ça que si _check_premiere est non null
     $this->premiere = $this->_check_premiere ? 1 : 0;
   }
   
-  function loadRefs() {
+  function loadRefsFwd() {
     // Forward references
     $this->_ref_patient = new CPatient;
     $this->_ref_patient->load($this->patient_id);
     $this->_ref_plageconsult = new CPlageconsult;
     $this->_ref_plageconsult->load($this->plageconsult_id);
-    
+  }
+  
+  function loadRefsBack() {
     // Backward references
     $where["file_consultation"] = "= '$this->consultation_id'";
     $this->_ref_files = new CFile();
     $this->_ref_files = $this->_ref_files->loadList($where);
+  }
+  
+  function fillTemplate(&$template) {
+  	$this->loadRefsFwd();
+    $template->addProperty("Consultation - date"      , $this->_ref_plageconsult->date );
+    $template->addProperty("Consultation - heure"     , $this->heure);
+    $template->addProperty("Consultation - motif"     , nl2br($this->motif));
+    $template->addProperty("Consultation - remarques" , nl2br($this->rques));
+    $template->addProperty("Consultation - examen"    , nl2br($this->examen));
+    $template->addProperty("Consultation - traitement", nl2br($this->traitement));
   }
 }
 

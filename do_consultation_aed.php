@@ -45,7 +45,7 @@ if ($del) {
 		$AppUI->setMsg( $isNotNew ? 'Consultation modifiée' : 'Consultation créée', UI_MSG_OK);
 	}
 
-  // Trouver une méthode un peu plus propre :/
+  // @todo : Trouver une méthode un peu plus propre :/
   $special = dPgetParam( $_POST, 'special', 0);
 	if($special) {
 ?>

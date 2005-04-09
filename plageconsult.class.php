@@ -57,12 +57,12 @@ class CPlageconsult extends CDpObject {
     $order = "heure";
     $this->_ref_consultations = new CConsultation();
     $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order);
-    
-    //$sql = "SELECT *" .
-    //		"\nFROM consultation" .
-    //		"\nWHERE plageconsult_id = '$this->plageconsult_id'" .
-    //		"\nORDER BY heure";
-    //$this->_ref_consultations = db_loadObjectList($sql, new CConsultation());
+  }
+  
+  function loadRefsFwd() {
+    // Forward references
+    $this->_ref_chir = new CUser();
+    $this->_ref_chir->load($this->chir_id);
   }
   
   function checkFrequence() {
@@ -137,9 +137,13 @@ class CPlageconsult extends CDpObject {
   }
   
   function updateDBFields() {
-    $this->debut = $this->_hour_deb.":00:00";
-    $this->fin   = $this->_hour_fin.":00:00";
-    $this->freq   = "00:". $this->_freq. ":00";
+  	if($this->_hour_deb !== null)
+      $this->debut = $this->_hour_deb.":00:00";
+    if($this->_hour_fin !== null)
+      $this->fin   = $this->_hour_fin.":00:00";
+    if($this->_freq !== null)
+      $this->freq   = "00:". $this->_freq. ":00";
+    if(($this->_month !== null) && ($this->_day !== null) && ($this->_jour !== null) && ($this->_year !== null))
     $this->date = date("Y-m-d", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
   }
   

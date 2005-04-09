@@ -222,7 +222,7 @@ function imprimerCRConsult(consult) {
           <input type="hidden" name="compte_rendu" value="{$curr_consult->compte_rendu|escape:html}" />
           <input type="hidden" name="cr_valide" value="{$curr_consult->cr_valide}" />
           
-          <button onclick="editModele({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Modifier</button>
+          <button type="button" onclick="editModele({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Modifier</button>
           {if !$curr_consult->cr_valide}
           <button type="button" onclick="validerCompteRendu(this.form)"><img src="modules/dPcabinet/images/check.png" /> Valider</button>
           {/if}
