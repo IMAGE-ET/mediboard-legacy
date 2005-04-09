@@ -112,10 +112,17 @@ class CMediusers extends CDpObject {
     }
   }
 
-  function loadRefs() {
+  function loadRefsFwd() {
     // Forward references
     $this->_ref_function = new CFunctions;
     $this->_ref_function->load($this->function_id);
+  }
+  
+  function fillTemplate(&$template) {
+  	$this->loadRefsFwd();
+    $template->addProperty("Praticien - nom"       , $this->_user_last_name );
+    $template->addProperty("Praticien - prénom"    , $this->_user_first_name);
+    $template->addProperty("Praticien - spécialité", $this->_ref_function->text);
   }
   
 	function store() {

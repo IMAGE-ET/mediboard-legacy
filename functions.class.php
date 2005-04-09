@@ -65,7 +65,7 @@ class CFunctions extends CDpObject {
     $this->_ref_users = $this->_ref_users->loadList($where);
   }
   
-  // @todo: ameliorer le choix des spécialités
+  // @todo : ameliorer le choix des spécialités
   // (loadfunction($groupe, $permtype) par exemple)
   function loadSpecialites ($perm_type = null) {
     $sql = "SELECT *" .
