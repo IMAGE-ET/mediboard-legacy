@@ -321,7 +321,7 @@ table.form {
 table.form th {
   white-space: nowrap;
   background: #eee;
-  vertical-align: middle;
+  vertical-align: top;
   text-align: right;
   font-weight: normal;
   padding: 1px 4px;
