@@ -372,5 +372,12 @@ class CDpObject {
 
 		return db_loadHashList( $sql, $index );
 	}
+
+/**
+ * This function register this object to a templateManager object
+ */
+    function fillTemplate(&$template){
+    }
+
 }
 ?>
