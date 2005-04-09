@@ -55,6 +55,8 @@ class COperation extends CDpObject {
   var $modifiee = null;
   var $depassement = null;
   var $annulee = null;
+  var $compte_rendu = null;
+  var $cr_valide = null;
     
   // Form fields
   var $_hour_op = null;
@@ -161,14 +163,17 @@ class COperation extends CDpObject {
   }
   
   function updateDBFields() {
-    $this->date_anesth = 
-      substr($this->_date_rdv_anesth, 0, 4)."-".
-      substr($this->_date_rdv_anesth, 4, 2)."-".
-      substr($this->_date_rdv_anesth, 6, 2);
-    $this->time_anesth = 
-      $this->_hour_anesth.":".
-      $this->_min_anesth.":00";
-
+  	if($this->_date_rdv_anesth !== null) {
+      $this->date_anesth = 
+        substr($this->_date_rdv_anesth, 0, 4)."-".
+        substr($this->_date_rdv_anesth, 4, 2)."-".
+        substr($this->_date_rdv_anesth, 6, 2);
+  	}
+  	if(($this->_hour_anesth !== null) && ($this->_min_anesth !== null)) {
+      $this->time_anesth = 
+        $this->_hour_anesth.":".
+        $this->_min_anesth.":00";
+  	}
     if ($this->_lu_type_anesth) {
       $anesth = dPgetSysVal("AnesthType");
       foreach($anesth as $key => $value) {
@@ -176,18 +181,22 @@ class COperation extends CDpObject {
           $this->type_anesth = $key;
       }
     }
-
+    if($this->_date_rdv_adm !== null) {
     $this->date_adm = 
       substr($this->_date_rdv_adm, 0, 4)."-".
       substr($this->_date_rdv_adm, 4, 2)."-".
       substr($this->_date_rdv_adm, 6, 2);
+    }
+    if(($this->_hour_adm !== null) && ($this->_min_adm !== null)) {
     $this->time_adm = 
       $this->_hour_adm.":".
       $this->_min_adm.":00";
-
+    }
+    if(($this->_hour_op !== null) && ($this->_min_op !== null)) {
     $this->temp_operation = 
       $this->_hour_op.":".
       $this->_min_op.":00";
+    }
   }
   
   function store() {
@@ -233,6 +242,36 @@ class COperation extends CDpObject {
     $where = array("operation_id" => "= '$this->operation_id'");
     $this->_ref_affectations = new CAffectation();
     $this->_ref_affectations = $this->_ref_affectations->loadList($where);
+  }
+  
+  function fillTemplate(&$template) {
+  	$this->loadRefsFwd();
+  	$this->_ref_plageop->loadRefsFwd();
+    $template->addProperty("Opération - Anesthésiste - nom", $this->_ref_plageop->_ref_anesth->user_last_name);
+    $template->addProperty("Opération - Anesthésiste - prénom", $this->_ref_plageop->_ref_anesth->user_first_name);
+    $template->addProperty("Opération - CCAM - code", $this->_ext_code_ccam->code);
+    $template->addProperty("Opération - CCAM - description", $this->_ext_code_ccam->libelleLong);
+    $template->addProperty("Opération - côté", $this->cote);
+    $template->addProperty("Opération - date", $this->_ref_plageop->date);
+    if($this->time_operation)
+      $template->addProperty("Opération - heure", substr($this->time_operation, 0, 5));
+    else
+      $template->addProperty("Opération - heure");
+    if($this->temp_operation)
+      $template->addProperty("Opération - durée", substr($this->temp_operation, 0, 5));
+    else
+      $template->addProperty("Opération - durée");
+    if($this->entree_bloc)
+      $template->addProperty("Opération - entrée bloc", substr($this->entree_bloc, 0, 5));
+    else
+      $template->addProperty("Opération - entrée bloc");
+    if($this->sortie_bloc)
+      $template->addProperty("Opération - sortie bloc", substr($this->sortie_bloc, 0, 5));
+    else
+      $template->addProperty("Opération - sortie bloc");
+    $template->addProperty("Opération - exams pre-op", nl2br($this->examen));
+    $template->addProperty("Opération - matériel", nl2br($this->materiel));
+    $template->addProperty("Opération - convalescence", nl2br($this->convalescence));
   }
 }
 

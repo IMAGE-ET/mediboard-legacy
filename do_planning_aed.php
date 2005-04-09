@@ -11,11 +11,12 @@ global $AppUI;
 
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
-$obj = new COperation();
 $msg = '';
 if($chir_id = dPgetParam( $_POST, 'chir_id', null))
   mbSetValueToSession('chir_id', $chir_id);
 
+// Object binding
+$obj = new COperation();
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
@@ -47,18 +48,28 @@ if ($del) {
 else {
 	if ($msg = $obj->store()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-    $AppUI->redirect();
 	}
-  
-	$isNotNew = @$_POST['operation_id'];
-  
-	$AppUI->setMsg(
-    $obj->plageop_id ? 
-      ($isNotNew ? 'Opération modifiée' : 'Opération créée') : 
-      ($isNotNew ? 'Protocole modifié'  : 'Protocole créé' ), 
-    UI_MSG_OK);
+	else {
+      $isNotNew = @$_POST['operation_id'];
+      $AppUI->setMsg(
+      $obj->plageop_id ? 
+        ($isNotNew ? 'Opération modifiée' : 'Opération créée') : 
+        ($isNotNew ? 'Protocole modifié'  : 'Protocole créé' ), UI_MSG_OK);
+	}
 
-  $AppUI->redirect();
+  // @todo : Trouver une méthode un peu plus propre :/
+  $special = dPgetParam( $_POST, 'special', 0);
+	if($special) {
+?>
+<script language="javascript">
+
+window.opener.location.reload();
+window.close();
+
+</script>
+<?php
+    }
+	else
+	  $AppUI->redirect();
 }
-
 ?>

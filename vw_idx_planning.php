@@ -13,6 +13,7 @@ require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 require_once( $AppUI->getModuleClass('mediusers', 'groups') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 require_once( $AppUI->getModuleClass('admin') );
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
@@ -178,14 +179,22 @@ if (isset($result)) {
     else
       $list[$key]["occupe"] = "-";
     $list[$key]["spe"] = $value["spe"];
-    //$list[$key]["occupe"] = (substr($value["busy_time"], -6, strlen($value["busy_time"]) - 4))."h".(substr($value["busy_time"], -4, 2));
   }
 }
 
+// récupération des modèles de compte-rendu disponibles
+$crList = new CCompteRendu;
+$where["chir_id"] = "= '$selChir'";
+$where["type"] = "= 'operation'";
+$order[] = "nom";
+$crList = $crList->loadList($where, $order);
+
 // Requete SQL pour le planning de la journée
+// @todo : passer cette requete sql à la selection par objet
 $sql = "SELECT operations.operation_id AS id, operations.pat_id,
 		operations.CCAM_code, operations.temp_operation,
-        operations.rank, operations.time_operation, operations.annulee AS annulee
+        operations.rank, operations.time_operation, operations.annulee AS annulee,
+		operations.compte_rendu, operations.cr_valide
 		FROM plagesop
 		LEFT JOIN operations
 		ON plagesop.id = operations.plageop_id
@@ -193,36 +202,39 @@ $sql = "SELECT operations.operation_id AS id, operations.pat_id,
 		AND plagesop.id_chir = '$selChirLogin'
         ORDER BY operations.rank, operations.temp_operation";
 $result = db_loadlist($sql);
-
 // Tri des résultats
 $today = array();
-foreach($result as $key => $value) {
-  $sql = "SELECT nom, prenom FROM patients
-  		WHERE patient_id = '".$value["pat_id"]."'";
-  $patient = db_loadlist($sql);
-  $today[$key]["id"] = $value["id"];
-  $today[$key]["nom"] = $patient[0]["nom"];
-  $today[$key]["prenom"] = $patient[0]["prenom"];
-  $today[$key]["CCAM_code"] = $value["CCAM_code"];
-  if($value["rank"])
-    $today[$key]["heure"] = substr($value["time_operation"], 0, 2)."h".substr($value["time_operation"], 3, 2);
-  else if($value["annulee"])
-    $today[$key]["heure"] = "ANNULE";
-  else
-    $today[$key]["heure"] = "-";
-  $today[$key]["temps"] = substr($value["temp_operation"], 0, 2)."h".substr($value["temp_operation"], 3, 2);
-}
+if(@$result[0]["id"]) {
+  foreach($result as $key => $value) {
+    $sql = "SELECT nom, prenom FROM patients
+    		WHERE patient_id = '".$value["pat_id"]."'";
+    $patient = db_loadlist($sql);
+    $today[$key]["id"] = $value["id"];
+    $today[$key]["nom"] = $patient[0]["nom"];
+    $today[$key]["prenom"] = $patient[0]["prenom"];
+    $today[$key]["CCAM_code"] = $value["CCAM_code"];
+    $today[$key]["compte_rendu"] = $value["compte_rendu"];
+    $today[$key]["cr_valide"] = $value["cr_valide"];
+    if($value["rank"])
+      $today[$key]["heure"] = substr($value["time_operation"], 0, 2)."h".substr($value["time_operation"], 3, 2);
+    else if($value["annulee"])
+      $today[$key]["heure"] = "ANNULE";
+    else
+      $today[$key]["heure"] = "-";
+    $today[$key]["temps"] = substr($value["temp_operation"], 0, 2)."h".substr($value["temp_operation"], 3, 2);
+  }
 
-$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
-  or die("Could not connect");
-mysql_select_db("ccam")
-  or die("Could not select database");
-if(isset($today)) {
-  foreach($today as $key => $value) {
-    $sql = "SELECT LIBELLELONG FROM actes WHERE CODE = '".$value["CCAM_code"]."'";
-    $ccamr = mysql_query($sql);
-    $ccam = mysql_fetch_array($ccamr);
-    $today[$key]["CCAM"] = $ccam["LIBELLELONG"];
+  $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
+    or die("Could not connect");
+  mysql_select_db("ccam")
+    or die("Could not select database");
+  if(isset($today)) {
+    foreach($today as $key => $value) {
+      $sql = "SELECT LIBELLELONG FROM actes WHERE CODE = '".$value["CCAM_code"]."'";
+      $ccamr = mysql_query($sql);
+      $ccam = mysql_fetch_array($ccamr);
+      $today[$key]["CCAM"] = $ccam["LIBELLELONG"];
+    }
   }
 }
 
@@ -251,6 +263,7 @@ $smarty->assign('title1', $title1);
 $smarty->assign('title2', $title2);
 $smarty->assign('listChir', $listChir);
 $smarty->assign('selChir', $selChir);
+$smarty->assign('crList', $crList);
 $smarty->assign('list', $list);
 $smarty->assign('today', $today);
 

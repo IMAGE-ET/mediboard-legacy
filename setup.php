@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.24';
+$config['mod_version'] = '0.25';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -74,6 +74,13 @@ class CSetupdPplanningOp {
         	db_exec( $sql ); db_error();
         	$sql = "ALTER TABLE `operations` ADD `annulee` TINYINT DEFAULT '0' NOT NULL ;";
             db_exec( $sql ); db_error();
+        }
+        case "0.24" : {
+        	$sql = "ALTER TABLE `operations` ADD `compte_rendu` TEXT," .
+        			"ADD `cr_valide` TINYINT( 4 ) DEFAULT '0' NOT NULL ;";
+        	db_exec( $sql ); db_error();
+        }
+        case "0.25" : {
 			return true;
         }
 		default:
