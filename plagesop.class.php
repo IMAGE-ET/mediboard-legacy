@@ -52,29 +52,32 @@ class CPlageOp extends CDpObject {
     $this->CDpObject( 'plagesop', 'id' );
   }
 
-  function loadRefs() {
-
+  function loadRefsFwd() {
     // Forward references
+    // Pour le chir et l'anesth, on est obligé de passer par sql a cause des id pourris
     if ($this->id_chir) {
+      $sql = "SELECT user_id FROM users WHERE user_username = '$this->id_chir'";
+      $result = db_loadlist($sql);
       $this->_ref_chir = new CUser;
-      $this->_ref_chir->load($this->id_chir);
+      $this->_ref_chir->load($result[0]);
     }
-
     if ($this->id_anesth) {
+      $sql = "SELECT user_id FROM users WHERE user_username = '$this->id_anesth'";
+      $result = db_loadlist($sql);
       $this->_ref_anesth = new CUser;
-      $this->_ref_anesth->load($this->id_anesth);
+      $this->_ref_anesth->load($result[0]);
     }
-    
     if ($this->id_spec) {
       $this->_ref_spec = new CFunctions;
       $this->_ref_spec->load($this->id_spec);
     }
-    
     if ($this->id_salle) {
       $this->_ref_salle = new CSalle;
       $this->_ref_salle->load($this->id_salle);
     }
-
+  }
+  
+  function loadRefsBack() {
     // Backward references
     $sql = "SELECT * FROM operations WHERE plageop_id = '$this->id'";
     $this->_ref_operations = db_loadObjectList($sql, new COperation);
@@ -133,9 +136,12 @@ class CPlageOp extends CDpObject {
   }
   
   function updateDBFields() {
-    $this->debut = $this->_heuredeb.":".$this->_minutedeb.":00";
-    $this->fin   = $this->_heurefin.":".$this->_minutefin.":00";
-    $this->date = $this->_year."-".$this->_month."-".$this->_day;
+  	if(($this->_heuredeb !== null) && ($this->_minutedeb !== null))
+      $this->debut = $this->_heuredeb.":".$this->_minutedeb.":00";
+    if(($this->_heurefin !== null) && ($this->_minutefin !== null))
+      $this->fin   = $this->_heurefin.":".$this->_minutefin.":00";
+    if(($this->_year !== null) && ($this->_month !== null) && ($this->_day !== null))
+      $this->date = $this->_year."-".$this->_month."-".$this->_day;
   }
   
   function becomeNext() {
