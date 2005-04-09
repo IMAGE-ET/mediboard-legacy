@@ -22,7 +22,7 @@ $acte->Load();
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-// @todo: ne passer que $acte. Adapter le template en conséquence
+// @todo : ne passer que $acte. Adapter le template en conséquence
 $smarty->assign('codeacte', strtoupper($acte->code));
 $smarty->assign('libelle', $acte->libelleLong);
 $smarty->assign('rq', $acte->remarques);
