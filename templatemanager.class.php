@@ -9,6 +9,10 @@
 
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie') );
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
+require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
+require_once( $AppUI->getModuleClass('mediusers'));
 require_once( $AppUI->getSystemClass('smartydp'));
 
 define("TMT_CONSULTATION"   , "consultation"   );
@@ -29,7 +33,7 @@ class CTemplateManager {
   var $template = null;
   var $document = null;
   
-  var $valueMode = true; // @todo: changer en applyMode
+  var $valueMode = true; // @todo : changer en applyMode
   
   function CTemplateManager() {
   }
@@ -71,42 +75,20 @@ class CTemplateManager {
   
   function setFields($modeleType) {
     // Général Patient
-    $this->addProperty("Patient - nom");
-    $this->addProperty("Patient - prénom");
-    $this->addProperty("Patient - adresse");
-    $this->addProperty("Patient - âge");
-    $this->addProperty("Patient - date de naissance");
-    $this->addProperty("Patient - médecin traitant");
-    $this->addProperty("Patient - médecin correspondant 1");
-    $this->addProperty("Patient - médecin correspondant 2");
-    $this->addProperty("Patient - médecin correspondant 3");
-    
+    $patient = new CPatient;
+    $patient->fillTemplate($this);
     // Général Praticien
-    $this->addProperty("Praticien - nom");
-    $this->addProperty("Praticien - prénom");
-    $this->addProperty("Praticien - spécialité");
+    $prat = new CMediusers();
+    $prat->fillTemplate($this);
         
     switch ($modeleType) {
       case TMT_CONSULTATION:
-        $this->addProperty("Consultation - date");
-        $this->addProperty("Consultation - heure");
-        $this->addProperty("Consultation - motif");
-        $this->addProperty("Consultation - remarques");
-        $this->addProperty("Consultation - examen");
-        $this->addProperty("Consultation - traitement");
+        $consult = new CConsultation;
+        $consult->fillTemplate($this);
         break;
       case TMT_OPERATION:
-        $this->addProperty("Opération - Anesthésiste - nom");
-        $this->addProperty("Opération - Anesthésiste - prénom");
-        $this->addProperty("Opération - CCAM - code");
-        $this->addProperty("Opération - CCAM - description");
-        $this->addProperty("Opération - côté");
-        $this->addProperty("Opération - date");
-        $this->addProperty("Opération - heure");
-        $this->addProperty("Opération - durée");
-        $this->addProperty("Opération - entrée bloc");
-        $this->addProperty("Opération - sortie bloc");
-        $this->addProperty("Opération - matériel");
+        $op = new COperation;
+        $op->fillTemplate($this);
         break;
       case TMT_HOSPITALISATION:
         $this->addProperty("Hospitalisation - durée");
