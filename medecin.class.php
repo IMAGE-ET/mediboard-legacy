@@ -62,19 +62,22 @@ class CMedecin extends CDpObject {
   }
   
   function updateDBFields() {
-    $this->tel = 
-      $this->_tel1 .
-      $this->_tel2 .
-      $this->_tel3 .
-      $this->_tel4 .
-      $this->_tel5;
-
-    $this->fax = 
-      $this->_fax1 .
-      $this->_fax2 .
-      $this->_fax3 .
-      $this->_fax4 .
-      $this->_fax5;
+    if(($this->_tel1 !== null) && ($this->_tel2 !== null) && ($this->_tel3 !== null) && ($this->_tel4 !== null) && ($this->_tel5 !== null)) {
+      $this->tel = 
+        $this->_tel1 .
+        $this->_tel2 .
+        $this->_tel3 .
+        $this->_tel4 .
+        $this->_tel5;
+    }
+    if(($this->_fax1 !== null) && ($this->_fax2 !== null) && ($this->_fax3 !== null) && ($this->_fax4 !== null) && ($this->_fax5 !== null)) {
+      $this->fax = 
+        $this->_fax1 .
+        $this->_fax2 .
+        $this->_fax3 .
+        $this->_fax4 .
+        $this->_fax5;
+    }
   }
 
 	function check() {

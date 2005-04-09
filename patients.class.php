@@ -96,23 +96,28 @@ class CPatient extends CDpObject {
   }
   
   function updateDBFields() {
-    $this->tel = 
-      $this->_tel1 .
-      $this->_tel2 .
-      $this->_tel3 .
-      $this->_tel4 .
-      $this->_tel5;
-    $this->tel2 = 
-      $this->_tel21 .
-      $this->_tel22 .
-      $this->_tel23 .
-      $this->_tel24 .
-      $this->_tel25;
-
-    $this->naissance = 
-      $this->_annee . "-" .
-      $this->_mois  . "-" .
-      $this->_jour;
+  	if(($this->_tel1 !== null) && ($this->_tel2 !== null) && ($this->_tel3 !== null) && ($this->_tel4 !== null) && ($this->_tel5 !== null)) {
+      $this->tel = 
+        $this->_tel1 .
+        $this->_tel2 .
+        $this->_tel3 .
+        $this->_tel4 .
+        $this->_tel5;
+    }
+  	if(($this->_tel21 !== null) && ($this->_tel22 !== null) && ($this->_tel23 !== null) && ($this->_tel24 !== null) && ($this->_tel25 !== null)) {
+      $this->tel2 = 
+        $this->_tel21 .
+        $this->_tel22 .
+        $this->_tel23 .
+        $this->_tel24 .
+        $this->_tel25;
+  	}
+  	if(($this->_annee !== null) && ($this->_mois !== null) && ($this->_jour !== null)) {
+      $this->naissance = 
+        $this->_annee . "-" .
+        $this->_mois  . "-" .
+        $this->_jour;
+  	}
   }
 
 	function check() {
@@ -185,5 +190,31 @@ class CPatient extends CDpObject {
     $siblings = db_loadlist($sql);
     return $siblings;
   }
+  
+  function fillTemplate(&$template) {
+  	$this->loadRefsFwd();
+    $template->addProperty("Patient - nom"                    , $this->nom             );
+    $template->addProperty("Patient - prénom"                 , $this->prenom          );
+    $template->addProperty("Patient - adresse"                , $this->adresse         );
+    $template->addProperty("Patient - âge"                    , $this->_age            );
+    $template->addProperty("Patient - date de naissance"      , $this->naissance       );
+    if($this->medecin_traitant)
+      $template->addProperty("Patient - médecin traitant"       , "{$this->_ref_medecin_traitant->nom} {$this->_ref_medecin_traitant->prenom}");
+    else
+      $template->addProperty("Patient - médecin traitant");
+    if($this->medecin1)
+      $template->addProperty("Patient - médecin correspondant 1", "{$this->_ref_medecin1->nom} {$this->_ref_medecin1->prenom}");
+    else
+      $template->addProperty("Patient - médecin correspondant 1");
+    if($this->medecin2)
+      $template->addProperty("Patient - médecin correspondant 2", "{$this->_ref_medecin2->nom} {$this->_ref_medecin2->prenom}");
+    else
+      $template->addProperty("Patient - médecin correspondant 2");
+    if($this->medecin3)
+      $template->addProperty("Patient - médecin correspondant 3", "{$this->_ref_medecin3->nom} {$this->_ref_medecin3->prenom}");
+    else
+      $template->addProperty("Patient - médecin correspondant 3");
+  }
 }
+
 ?>
