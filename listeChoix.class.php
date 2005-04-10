@@ -54,7 +54,6 @@ class CListeChoix extends CDpObject {
       $this->valeurs = implode("|", $this->_valeurs);
     }
     if($this->_del !== null) {
-      echo "on est bon";
       $this->updateFormFields();
       foreach($this->_valeurs as $key => $value) {
         if($this->_del == $value)
