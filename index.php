@@ -30,6 +30,7 @@ $tabBox = new CTabBox( "?m=$m", "{$AppUI->cfg['root_dir']}/modules/$m/", $tab );
 $tabBox->add('vw_modeles', 'liste des modèles');
 $tabBox->add('addedit_modeles', 'Edition des modèles');
 $tabBox->add('vw_idx_aides', 'Aides à la saisie');
+$tabBox->add('vw_idx_listes', 'Listes de choix');
 $tabBox->show();
 
 ?>

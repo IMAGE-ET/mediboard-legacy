@@ -2,7 +2,7 @@
 
 /**
 * @package Mediboard
-* @subpackage dPcabinet
+* @subpackage dPcompteRendu
 * @version $Revision$
 * @author Romain Ollivier
 */
@@ -22,9 +22,18 @@ class CCompteRendu extends CDpObject {
   var $nom = null;
   var $type = null;
   var $source = null;
+  
+  // Referenced objects
+  var $_ref_chir = null;
 
   function CCompteRendu() {
     $this->CDpObject( 'compte_rendu', 'compte_rendu_id' );
+  }
+  
+  function loadRefsFwd() {
+    // Forward references
+    $this->_ref_chir = new CUser;
+    $this->_ref_chir->load($this->user_id);
   }
 }
 

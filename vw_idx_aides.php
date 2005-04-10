@@ -23,8 +23,9 @@ $users = $users->loadListFromType(null, PERM_EDIT);
 // Modules, classes & fields
 $modules = array (
   "dPcabinet" => array (
-    "Consultation" => array ("motif", "rques", "examen", "traitement", "compte_rendu"),
-    "AnotherObject" => array ("field1", "field2")),
+    "Consultation" => array ("motif", "rques", "examen", "traitement", "compte_rendu")),
+  "dPplanningOp" => array (
+    "Operations" => array ("examen", "materiel", "convalescence")),
   "dPpatients" => array (
     "Patient" => array ("remarques"))
   );
@@ -40,7 +41,13 @@ $where = null;
 
 $filter_user_id = mbGetValueFromGetOrSession("filter_user_id", $AppUI->user_id);
 if ($filter_user_id) {
-	$where["user_id"] = "= '$filter_user_id'";
+  $where["user_id"] = "= '$filter_user_id'";
+} else {
+  $inUsers = array();
+  foreach($users as $key => $value) {
+    $inUsers[] = $key;
+  }
+  $where ["user_id"] = "IN (".implode(",", $inUsers).")";
 }
 
 $filter_module = mbGetValueFromGetOrSession("filter_module");
@@ -51,7 +58,7 @@ if ($filter_module) {
 $aides = new CAideSaisie();
 $aides = $aides->loadList($where);
 foreach($aides as $key => $aide) {
-  $aides[$key]->loadRefs();
+  $aides[$key]->loadRefsFwd();
 }
 
 // Aide sélectionnée

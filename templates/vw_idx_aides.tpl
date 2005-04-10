@@ -82,7 +82,7 @@ function checkForm() {
     }
   }
     
-  if (field = form.elements['class']) {
+  if (field = form.elements['module']) {
     if (field.value == 0) {
       alert("Module indéterminé");
       field.focus();
@@ -106,7 +106,7 @@ function checkForm() {
     }
   }
 
-  if (field = form.elements['key']) {    
+  if (field = form.elements['name']) {    
     if (field.value == 0) {
       alert("Intitulé indéterminé");
       field.focus();

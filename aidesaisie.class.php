@@ -42,7 +42,7 @@ class CAideSaisie extends CDpObject {
     $this->_module_name = $installed_modules[$this->module];
   }
   
-  function loadRefs() {
+  function loadRefsFwd() {
     // Forward references
     $this->_ref_user = new CUser;
     $this->_ref_user->load($this->user_id);
