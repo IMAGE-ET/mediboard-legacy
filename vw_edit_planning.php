@@ -22,8 +22,21 @@ if(!$operation_id) {
   $AppUI->redirect( "m=$m&tab=vw_idx_planning");
 }
 
+$mediuser = new CMediusers;
+$listChir = $mediuser->loadPraticiens(PERM_EDIT);
+
 $op = new COperation;
 $op->load($operation_id);
+// On vérifie que l'utilisateur a les droits sur l'operation
+$rigth = false;
+foreach($listChir as $key => $value) {
+  if($value->user_id == $op->chir_id)
+    $right = true;
+}
+if(!$right) {
+  $AppUI->setMsg("Vous n'avez pas accès à cette intervention", UI_MSG_ALERT);
+  $AppUI->redirect( "m=dPpatients&tab=0&id=$op->pat_id");
+}
 $op->loadRefs();
 
 // Heures & minutes
