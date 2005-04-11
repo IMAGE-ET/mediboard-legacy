@@ -48,9 +48,36 @@ function initEditor() {
 
   cfg.registerDropdown(obj);
 
+{/literal}
+  {if !$templateManager->valueMode}
+{literal}
+  // Add user lists dropdown
+  var options = {};
+  options["&mdash; Ajouter une liste de choix &mdash;"] = "";
+
+{/literal}
+  {foreach from=$templateManager->lists item=list}
+    options["{$list.name}"] = "{$list.nameHTML|escape:"javascript"}";
+  {/foreach}
+{literal}
+
+  var obj = {
+    id            : "Lists",
+    tooltip       : "Ajouter une liste de choix",
+    options       : options,
+    action        : function(editor) { actionHandler(editor, this); },
+    refresh       : function(editor) { refreshHandler(editor, this); },
+    context       : ""
+  };
+
+  cfg.registerDropdown(obj);
+{/literal}
+  {/if}
+{literal}
+
   // Add Helpers dropdown
   var options = {};
-  options["&mdash; Chosir une aide &mdash;"] = "";
+  options["&mdash; Choisir une aide &mdash;"] = "";
 
 {/literal}
   {foreach from=$templateManager->helpers key=helperName item=helperText}
@@ -70,8 +97,13 @@ function initEditor() {
   cfg.registerDropdown(obj);
 
   // add the new dropdowns to the toolbar
+{/literal}
+  {if !$templateManager->valueMode}
+  cfg.toolbar.push(["Properties", "space", "Lists", "space", "Helpers"]);
+  {else}
   cfg.toolbar.push(["Properties", "space", "Helpers"]);
-
+  {/if}
+{literal}
   editor.generate();
   return false;
 }

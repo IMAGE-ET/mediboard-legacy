@@ -52,6 +52,7 @@ $compte_rendu->load($compte_rendu_id);
 if($compte_rendu->compte_rendu_id) {
   $templateManager = new CTemplateManager;
   $templateManager->valueMode = false;
+  $templateManager->loadLists($compte_rendu->chir_id);
   $templateManager->loadHelpers($compte_rendu->chir_id, $compte_rendu->type);
   $templateManager->applyTemplate($compte_rendu);
   $templateManager->initHTMLArea();

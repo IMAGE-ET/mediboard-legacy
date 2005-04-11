@@ -8,6 +8,7 @@
 */
 
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'listeChoix') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
@@ -29,16 +30,17 @@ $listType[] = TMT_AUTRE;
 class CTemplateManager {
   var $properties = array();
   var $helpers = array();
+  var $lists = array();
   
   var $template = null;
   var $document = null;
+  var $usedLists = array();
   
   var $valueMode = true; // @todo : changer en applyMode
   
   function CTemplateManager() {
   }
-  
-  
+
   function addProperty($field, $value = null) {
     $this->properties[$field] = array (
       'field' => $field,
@@ -47,18 +49,26 @@ class CTemplateManager {
       //   cuz HTML Area turns quotes to double quotes
       'fieldHTML' => "<span class=\"field\">[{$field}]</span>",
       'valueHTML' => "<span class=\"value\">{$value}</span>");
-	} 
+  }
+
+  function addList($name, $choice = null) {
+    $this->lists[$name] = array (
+      'name' => $name,
+      // Very important: Keep backslashed double quotes instead of quotes
+      //   cuz HTML Area turns quotes to double quotes
+      'nameHTML' => "<span class=\"name\">[Liste - {$name}]</span>");
+  } 
   
   function addHelper($name, $text) {
-		$this->helpers[$name] = $text;
-	}
+    $this->helpers[$name] = $text;
+  }
   
   function applyTemplate($template) {
     assert(is_a($template, "CCompteRendu"));
     
     if (!$this->valueMode) {
       $this->SetFields($template->type, $template->chir_id);
-		}
+    }
 
     $this->renderDocument($template->source);
   }
@@ -91,11 +101,25 @@ class CTemplateManager {
         $op->fillTemplate($this);
         break;
       case TMT_HOSPITALISATION:
+        // @todo : créer et aplliquer la methode fillTemplate pour l'hospi
         $this->addProperty("Hospitalisation - durée");
         $this->addProperty("Hospitalisation - examens");
         break;
     }
-	}
+  }
+  
+  function loadLists($user_id) {
+    // Liste de choix
+    $where = array();
+    $where["chir_id"] = "= '$user_id'";
+    
+    $lists = new CListeChoix();
+    $lists = $lists->loadList($where);
+    
+    foreach ($lists as $list) {
+      $this->addList($list->nom);
+    }
+  }
   
   function loadHelpers($user_id, $modeleType) {
     // Aides à la saisie
@@ -133,6 +157,17 @@ class CTemplateManager {
       $values[] = $property['valueHTML'];
     }
     $this->document = str_replace($fields, $values, $source);
+  }
+  
+  // Obtention des listes utilisées dans le document
+  function getUsedLists($lists) {
+  	$this->usedLists = array();
+    foreach($lists as $key => $value) {
+      if(strpos($this->document, stripslashes("[Liste - $value->nom]"))) {
+        $this->usedLists[] = $value;
+      }
+    }
+    return $this->usedLists;
   }
 }
 ?>
