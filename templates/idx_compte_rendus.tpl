@@ -203,7 +203,7 @@ function imprimerCRO(consult) {
       <tr><th colspan="2">Compte-rendu opératoire :</th>
         <td colspan="2">
           <form name="editCROListFrm{$curr_op->operation_id}" action="?m=dPplanningOp" method="POST">
-          {if $curr_consult->compte_rendu}
+          {if $curr_op->compte_rendu}
           <input type="hidden" name="m" value="dPplanningOp" />
           <input type="hidden" name="del" value="0" />
           <input type="hidden" name="dosql" value="do_planning_aed" />

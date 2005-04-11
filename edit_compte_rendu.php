@@ -12,6 +12,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('mediusers'));
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'listeChoix'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'templatemanager'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie'));
 
@@ -48,6 +49,7 @@ $consult->fillTemplate($templateManager);
 
 $templateManager->document = $consult->compte_rendu;
 $templateManager->loadHelpers($medichir->user_id, TMT_CONSULTATION);
+$templateManager->loadLists($medichir->user_id);
 
 // Chargement du modèle
 if (!$consult->compte_rendu) {
@@ -56,6 +58,12 @@ if (!$consult->compte_rendu) {
   $modele->load($compte_rendu_id);
   $templateManager->applyTemplate($modele);
 }
+
+$where = array();
+$where["chir_id"] = "= $medichir->user_id";
+$chirLists = new CListeChoix;
+$chirLists = $chirLists->loadList($where);
+$lists = $templateManager->getUsedLists($chirLists);
 
 $templateManager->initHTMLArea();
 
@@ -66,6 +74,7 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('templateManager', $templateManager);
 $smarty->assign('consult', $consult);
+$smarty->assign('lists', $lists);
 
 $smarty->display('edit_compte_rendu.tpl');
 
