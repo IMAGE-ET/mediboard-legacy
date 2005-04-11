@@ -19,11 +19,18 @@ require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
+// L'utilisateur est-il praticien?
+$chir = null;
+$mediuser = new CMediusers();
+$mediuser->load($AppUI->user_id);
+if ($mediuser->isPraticien()) {
+  $chir = $mediuser->createUser();
+}
 
+$chirSel = mbGetValueFromGetOrSession("chirSel", $chir->user_id);
 $pat_id = mbGetValueFromGetOrSession("patSel", 0);
 $patSel = new CPatient;
 $patSel->load($pat_id);
-$chirSel = mbGetValueFromGetOrSession("chirSel", 0);
 $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_READ);
 

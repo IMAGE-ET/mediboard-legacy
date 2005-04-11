@@ -218,7 +218,7 @@ function imprimerCRO(consult) {
           <button type="button" onclick="imprimerCRO({$curr_op->operation_id})"><img src="modules/dPcabinet/images/print.png" /></button>
           {else}
             {if $chirSel}
-            <select name="modele" onchange="selectCR0({$curr_op->operation_id}, this.form)">
+            <select name="modele" onchange="selectCRO({$curr_op->operation_id}, this.form)">
               <option value="0">&mdash; modeles &mdash;</option>
               {foreach from=$crOp item=curr_cr}
               <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>

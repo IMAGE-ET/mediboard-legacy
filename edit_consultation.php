@@ -53,12 +53,6 @@ mbSetValueToSession("yearconsult", $year);
 $nyear = $year + 1;
 $pyear = $year - 1;
 
-$selConsult = mbGetValueFromGetOrSession("selConsult", 0);
-if(dPgetParam($_GET, "change", 0)) {
-  $selConsult = 0;
-  mbSetValueToSession("selConsult", 0);
-}
-
 // L'utilisateur est-il praticien?
 $mediuser = new CMediusers();
 $mediuser->load($AppUI->user_id);
@@ -68,23 +62,21 @@ if ($mediuser->isPraticien()) {
 else
   $AppUI->redirect( "m=dPcabinet&tab=0" );
 
-// Récupération des plages de consultation du jour et chargement des références
-
-$listPlage = new CPlageconsult();
-$listPlage = $listPlage->loadList("chir_id = '$chir->user_id' AND date = '$year-$month-$day' ORDER BY debut");
-foreach($listPlage as $key => $value) {
-  $listPlage[$key]->loadRefs();
-  foreach($listPlage[$key]->_ref_consultations as $key2 => $value2) {
-    $listPlage[$key]->_ref_consultations[$key2]->loadRefs();
-  }
+// L'utilisateur est-il le propriétaire de la consultation actuelle
+$selConsult = mbGetValueFromGetOrSession("selConsult", 0);
+if(dPgetParam($_GET, "change", 0)) {
+  $selConsult = 0;
+  mbSetValueToSession("selConsult", 0);
 }
-
-// Récupération de la consultation selectionnée
 
 $consult = new CConsultation();
 if($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
+  if($consult->_ref_plageconsult->chir_id != $chir->user_id) {
+    $AppUI->setMsg("Vous n'avez pas les droits sur cette consultation", UI_MSG_ALERT);
+    $AppUI->redirect("m=dPpatients&tab=0&id=".$consult->_ref_patient->patient_id);
+  }
   $patient =& $consult->_ref_patient;
   $patient->loadRefs();
   foreach ($patient->_ref_consultations as $key => $value) {
@@ -93,6 +85,17 @@ if($selConsult) {
   }
   foreach ($patient->_ref_operations as $key => $value) {
     $patient->_ref_operations[$key]->loadRefs();
+  }
+}
+
+// Récupération des plages de consultation du jour et chargement des références
+
+$listPlage = new CPlageconsult();
+$listPlage = $listPlage->loadList("chir_id = '$chir->user_id' AND date = '$year-$month-$day' ORDER BY debut");
+foreach($listPlage as $key => $value) {
+  $listPlage[$key]->loadRefs();
+  foreach($listPlage[$key]->_ref_consultations as $key2 => $value2) {
+    $listPlage[$key]->_ref_consultations[$key2]->loadRefs();
   }
 }
 

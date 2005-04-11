@@ -25,10 +25,7 @@ if ($mediuser->isPraticien()) {
 }
 
 // Chirurgien selectionné
-$chirSel = mbGetValueFromGetOrSession("chirSel", -1);
-if($chir) {
-  $chirSel = $chir->user_id;
-}
+$chirSel = mbGetValueFromGetOrSession("chirSel", $chir->user_id);
 
 // Plage de consultation selectionnée
 $plageconsult_id = mbGetValueFromGetOrSession("plageconsult_id", -1);
