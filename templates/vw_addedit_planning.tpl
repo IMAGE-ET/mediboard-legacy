@@ -56,6 +56,14 @@ function checkForm() {
       return false;
     }
 */
+
+  if((field1 = form.type_adm) && (field2 = form.duree_hospi))
+    if(field1[0].checked && ((field2.value == 0) || (field2.value == ''))) {
+      field2.value = prompt("Veuillez saisir un temps d'hospitalisation prévu superieur à 0", "");
+      field2.focus();
+      return false;
+    }
+
   return true;
 }
 
