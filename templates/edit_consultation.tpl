@@ -26,9 +26,9 @@ function modifTarif() {
 function putTiers() {
   var form = document.tarifFrm;
   if(form._tiers.checked)
-    form.tarif.value = "tiers";
+    form.type_tarif.value = "tiers";
   else
-    form.tarif.value = "null";
+    form.type_tarif.value = "null";
 }
 
 function checkTarif() {
