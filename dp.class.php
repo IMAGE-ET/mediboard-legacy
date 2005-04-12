@@ -26,7 +26,12 @@ class CDpObject {
  *	@var string Error message
  */
 	var $_error = '';
-
+  
+/**
+ *  @var string default string view
+ */
+  var $_view = '';
+  
 /**
  *	Object constructor to set table and key field
  *
@@ -127,8 +132,10 @@ class CDpObject {
  */
   function loadObject($where = null, $order = null) {
     $list =& $this->loadList($where, $order);
-    $this = @$list[0];
-    return $this;
+    foreach ($list as $key => $object) {
+      $this = $object;
+      return;
+		}
   }
 
 /**
@@ -155,6 +162,8 @@ class CDpObject {
  * This function update the form fields from the db fields
  */
 	function updateFormFields() {
+    $k = $this->_tbl_key;
+    $this->_view = $this->_tbl . " #" . $this->$k;
 	}
 
 /**
