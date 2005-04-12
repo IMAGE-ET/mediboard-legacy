@@ -134,22 +134,23 @@ function getElementsByClassName(tagName, className, exactMatch) {
   return elsTag;
 }
 
-function flipElementClass(elementId, firstClass, secondClass) {
+function flipElementClass(elementId, firstClass, secondClass, cookieName) {
   var element = document.getElementById(elementId);
   
-  if (!element) throwError("The element '" + elementId + "' doesn't exist");
-  
-  if (element.className == firstClass) {
-    element.className = secondClass;
-    return;
+  if (!element) {
+    throwError("The element '" + elementId + "' doesn't exist");
   }
 
-  if (element.className == secondClass) {
-    element.className = firstClass;
-    return;
+  if (element.className != firstClass && element.className != secondClass) {
+    throwError("The element class of '" + elementId + "' is neither '" + firstClass + "' nor '" + secondClass + "'.");
   }
   
-  throwError("The element class of '" + elementId + "' is neither '" + firstClass + "' nor '" + secondClass + "'.");
+  element.className = element.className == firstClass ? secondClass : firstClass;
+  
+  if (cookieName) {
+    var cookie = new CJL_CookieUtil(cookieName);
+    cookie.setSubValue(elementId, element.className);
+  }
 }
 
 
@@ -170,56 +171,4 @@ function throwError(msg) {
  var funcName = func.substring(9, func.indexOf("("));
  funcName.replace(/^\s+/,'').replace(/\s+$/,''); //trim
  throw "Error in " + funcName + "(): " + msg;
-}
-
-function getCookieVal(offset) {
-  var endstr = document.cookie.indexOf (";", offset);
-  if (endstr == -1) {
-    endstr = document.cookie.length;
-  }
-
-  return unescape(document.cookie.substring(offset, endstr));
-}
-
-function GetCookie(name) {
-  var arg = name + "=";
-  var alen = arg.length;
-  var clen = document.cookie.length;
-
-  var i = 0;
-  while (i < clen) {
-    var j = i + alen;
-    if (document.cookie.substring(i, j) == arg) {
-      return getCookieVal(j);
-    }
-    
-    i = document.cookie.indexOf(" ",i)+1;
-    if (i == 0) {
-      break;
-    }
-  }
-
-  return null;
-}
-
-function WriteCookie(name, value) {
-  var argv = WriteCookie.arguments;
-  var argc = WriteCookie.arguments.length;
-  var expires = (argc > 2) ? argv[2] : null;
-  var path    = (argc > 3) ? argv[3] : null;
-  var domain  = (argc > 4) ? argv[4] : null;
-  var secure  = (argc > 5) ? argv[5] : false;
- 
-  document.cookie = 
-    name + "=" + escape(value) +
-    ((expires == null) ? "" : ("; expires=" + expires.toGMTString())) +
-    ((path    == null) ? "" : ("; path=" + path))+
-    ((domain  == null) ? "" : ("; domain=" + domain))+
-    ((secure  == true) ? "; secure" : ""); 
-}
-
-function RemoveCookie(name) {
-  date = new Date;
-  date.setFullYear(date.getFullYear() - 1);
-  WriteCookie(name, null, date);
 }
