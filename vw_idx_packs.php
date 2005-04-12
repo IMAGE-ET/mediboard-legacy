@@ -9,7 +9,8 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
-require_once( $AppUI->getModuleClass('dPcompteRendu', 'listeChoix'));
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'pack'));
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
 require_once( $AppUI->getModuleClass('mediusers', 'mediusers'));
 
 if (!$canRead) {
@@ -20,7 +21,7 @@ if (!$canRead) {
 $users = new CMediusers;
 $users = $users->loadListFromType(null, PERM_EDIT);
 
-// Filtres sur la liste d'aides
+// Filtres sur la liste des packs
 $where = null;
 
 $user_id = mbGetValueFromGetOrSession("filter_user_id", $AppUI->user_id);
@@ -34,20 +35,27 @@ if ($user_id) {
   $where ["chir_id"] = "IN (".implode(",", $inUsers).")";
 }
 
-$listes = new CListeChoix();
-$listes = $listes->loadList($where);
-foreach($listes as $key => $value) {
-  $listes[$key]->loadRefsFwd();
+$packs = new CPack();
+$packs = $packs->loadList($where);
+foreach($packs as $key => $value) {
+  $packs[$key]->loadRefsFwd();
 }
 
-// liste sélectionnée
-$liste_id = mbGetValueFromGetOrSession("liste_id");
-$liste = new CListeChoix();
-$liste->load($liste_id); 
-$liste->loadRefsFwd();
+// Liste des comptes-rendu d'hospitalisation disponibles
+$listModeles = new CCompteRendu;
+$where["chir_id"] = "= '$user_id'";
+$where["type"] = "= 'hospitalisation'";
+$order = "'nom'";
+$listModeles = $listModeles->loadList($where, $order);
 
-if (!$liste_id) {
-  $liste->chir_id = $AppUI->user_id;
+// pack sélectionné
+$pack_id = mbGetValueFromGetOrSession("pack_id");
+$pack = new CPack();
+$pack->load($pack_id); 
+$pack->loadRefsFwd();
+
+if (!$pack_id) {
+  $pack->chir_id = $AppUI->user_id;
 }
 
 // Création du template
@@ -56,9 +64,10 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('users', $users);
 $smarty->assign('user_id', $user_id);
-$smarty->assign('listes', $listes);
-$smarty->assign('liste', $liste);
+$smarty->assign('listModeles', $listModeles);
+$smarty->assign('packs', $packs);
+$smarty->assign('pack', $pack);
 
-$smarty->display('vw_idx_listes.tpl');
+$smarty->display('vw_idx_packs.tpl');
 
 ?>

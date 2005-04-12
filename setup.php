@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcompteRendu';
-$config['mod_version'] = '0.12';
+$config['mod_version'] = '0.13';
 $config['mod_directory'] = 'dPcompteRendu';
 $config['mod_setup_class'] = 'CSetupdPcompteRendu';
 $config['mod_type'] = 'user';
@@ -64,6 +64,16 @@ class CSetupdPcompteRendu {
                   ) COMMENT = 'table des listes de choix personnalisées';";
           db_exec( $sql ); db_error();
         case "0.12":
+          $sql = "CREATE TABLE `pack` (
+                    `pack_id` BIGINT NOT NULL AUTO_INCREMENT ,
+                    `chir_id` BIGINT NOT NULL ,
+                    `nom` VARCHAR( 50 ) NOT NULL ,
+                    `modeles` TEXT,
+                    PRIMARY KEY ( `pack_id` ) ,
+                    INDEX ( `chir_id` )
+                  ) COMMENT = 'table des packs post hospitalisation';";
+          db_exec( $sql ); db_error();
+        case "0.13":
 			return true;
 		default:
 			return false;
