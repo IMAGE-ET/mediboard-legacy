@@ -41,7 +41,8 @@ class CPatient extends CDpObject {
 	var $rques = null;
 
   // Form fields
-	var $_jour = null;
+  var $_naissance = null;
+  var $_jour = null;
 	var $_mois = null;
 	var $_annee = null;
 	var $_tel1 = null;
@@ -69,9 +70,15 @@ class CPatient extends CDpObject {
 	}
   
   function updateFormFields() {
+    parent::updateFormFields();
+    
+    $this->_view = "$this->nom $this->prenom";
+    
     $this->_jour  = substr($this->naissance, 8, 2);
     $this->_mois  = substr($this->naissance, 5, 2);
     $this->_annee = substr($this->naissance, 0, 4);
+    
+    $this->_naissance = "$this->_jour/$this->_mois/$this->_annee";
 
     $this->_tel1 = substr($this->tel, 0, 2);
     $this->_tel2 = substr($this->tel, 2, 2);
