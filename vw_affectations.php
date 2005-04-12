@@ -51,9 +51,13 @@ foreach ($services as $service_id => $service) {
 }
 
 // Récupération des admissions à affecter
-$where = array("'$date' BETWEEN `date_adm` AND ADDDATE(`date_adm`, INTERVAL `duree_hospi` DAY)");
+$leftjoin = array("affectation" => "operations.operation_id = affectation.operation_id");
+$where = array(
+  "'$date' BETWEEN `date_adm` AND ADDDATE(`date_adm`, INTERVAL `duree_hospi` DAY)",
+  "affectation.affectation_id IS NULL"
+);
 $opNonAffectees = new COperation;
-$opNonAffectees = $opNonAffectees->loadList($where);
+$opNonAffectees = $opNonAffectees->loadList($where, "date_adm", null, null, $leftjoin);
 foreach ($opNonAffectees as $op_id => $op) {
   $opNonAffectees[$op_id]->loadRefs();
 }

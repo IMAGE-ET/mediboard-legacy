@@ -1,7 +1,7 @@
 <script language="JavaScript" type="text/javascript">
 {literal}
 function flipChambre(chambre_id) {
-  flipElementClass("chambre" + chambre_id, "chambrecollapse", "chambreexpand");
+  flipElementClass("chambre" + chambre_id, "chambrecollapse", "chambreexpand", "chambres");
 }
 
 function flipOperation(operation_id) {
@@ -66,6 +66,15 @@ function pageMain() {
       date         : {/literal}new Date({$year}, {$month}, {$day}){literal}
     }
   );
+  
+  var cookie = new CJL_CookieUtil("chambres");
+  chambres = cookie.getAllSubValues();
+  for (chambreId in chambres) {
+    if (chambre = document.getElementById(chambreId)) {
+      chambre.className = chambres[chambreId];
+    }
+  }
+  
 }
 
 {/literal}  
