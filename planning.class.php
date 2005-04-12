@@ -158,8 +158,8 @@ class COperation extends CDpObject {
     $this->_hour_adm = substr($this->time_adm, 0, 2);
     $this->_min_adm  = substr($this->time_adm, 3, 2);
 
-    $this->_entree_adm = $this->date_adm;
-    $this->_sortie_adm = mbDate("+ $this->duree_hospi days", $this->date_adm);
+    $this->_entree_adm = "$this->date_adm $this->time_adm";
+    $this->_sortie_adm = mbDateTime("+ $this->duree_hospi days", $this->_entree_adm);
   }
   
   function updateDBFields() {
