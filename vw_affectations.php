@@ -37,16 +37,24 @@ foreach ($services as $service_id => $service) {
     $chambres[$chambre_id]->loadRefs();
     $lits =& $chambres[$chambre_id]->_ref_lits;
     foreach ($lits as $lit_id => $lit) {
-      $lits[$lit_id]->loadAffectation($date);
-    } 
+      $lits[$lit_id]->loadAffectations($date);
+      $affectations =& $lits[$lit_id]->_ref_affectations;
+      foreach ($affectations as $affectation_id => $affectation) {
+        $affectations[$affectation_id]->loadRefs();
+        $operation =& $affectations[$affectation_id]->_ref_operation;
+        $operation->loadRefsFwd();
+      }
+    }
+
+    $chambres[$chambre_id]->checkDispo();
   }
 }
 
 // Récupération des admissions à affecter
-$where[] = "'$date' BETWEEN `date_adm` AND ADDDATE(`date_adm`, INTERVAL `duree_hospi` DAY)";
+$where = array("'$date' BETWEEN `date_adm` AND ADDDATE(`date_adm`, INTERVAL `duree_hospi` DAY)");
 $opNonAffectees = new COperation;
 $opNonAffectees = $opNonAffectees->loadList($where);
-foreach ($opNonAffectees as $op_id => $operation) {
+foreach ($opNonAffectees as $op_id => $op) {
   $opNonAffectees[$op_id]->loadRefs();
 }
 
@@ -54,6 +62,7 @@ foreach ($opNonAffectees as $op_id => $operation) {
 require_once($AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
+$smarty->debugging = false;
 $smarty->assign('year' , $year );
 $smarty->assign('month', $month);
 $smarty->assign('day'  , $day  );

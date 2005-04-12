@@ -43,7 +43,7 @@ function printAdmission(id) {
 		  <th>Dénomination</th>
 		  <th>Coté</th>
 		  <th>Nom / Prenom</th>
-		  <th>Age</th>
+		  <th>Naissance (Age)</th>
 		</tr>
 		{foreach from=$curr_chir.admissions item=curr_adm}
 		<tr>
@@ -61,7 +61,7 @@ function printAdmission(id) {
           <td><a href="#" onclick="printAdmission({$curr_adm->operation_id})">
             {$curr_adm->_ref_pat->nom} {$curr_adm->_ref_pat->prenom}</a></td>
           <td><a href="#" onclick="printAdmission({$curr_adm->operation_id})">
-            {$curr_adm->_ref_pat->_age}</a></td>
+            {$curr_adm->_ref_pat->_naissance} ({$curr_adm->_ref_pat->_age})</a></td>
 		</tr>
 		{/foreach}
 	  </table>

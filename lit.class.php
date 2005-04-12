@@ -24,6 +24,9 @@ class CLit extends CDpObject {
 
   // DB Fields
   var $nom = null;
+  
+  // Form Fields
+  var $_warning = null;
 
   // Object references
   var $_ref_chambre = null;
@@ -33,7 +36,7 @@ class CLit extends CDpObject {
 		$this->CDpObject('lit', 'lit_id');
 	}
 
-  function loadAffectation($date) {
+  function loadAffectations($date) {
     $where = array (
       "lit_id" => "= '$this->lit_id'",
       "entree" => "<= '$date'",
@@ -42,6 +45,10 @@ class CLit extends CDpObject {
     
     $this->_ref_affectations = new CAffectation;
     $this->_ref_affectations = $this->_ref_affectations->loadList($where);
+    
+    if ($over = $this->hasOverBooking()) {
+			$this->_warning = "Over booking: $over collisions";
+		}
   }
 
   function loadRefFwd() {
@@ -63,6 +70,24 @@ class CLit extends CDpObject {
     );
         
     return CDpObject::canDelete($msg, $oid, $tables);
+  }
+  
+  function hasOverBooking() {
+    assert($this->_ref_affectations !== null);
+    $nbCollision = 0;
+    
+    foreach ($this->_ref_affectations as $aff1) {
+      foreach ($this->_ref_affectations as $aff2) {
+        if ($aff1->affectation_id != $aff2->affectation_id)
+        if (($aff2->entree < $aff1->sortie and $aff2->sortie > $aff1->sortie)
+          or ($aff2->entree < $aff1->entree and $aff2->sortie > $aff1->entree)
+          or ($aff2->entree >= $aff1->entree and $aff2->sortie <= $aff1->sortie)) {
+            $nbCollision++;
+        }
+      }
+    }
+    
+    return $nbCollision;
   }
 }
 ?>

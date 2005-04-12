@@ -16,7 +16,6 @@ function selectHospitalisation(operation_id) {
     element.checked = false;
   }
 
-  alert("Sélection de l'opération " + operation_id);
   selected_hospitalisation = operation_id;
  
   submitAffectation();
@@ -30,7 +29,6 @@ function selectLit(lit_id) {
     element.checked = false;
   }
 
-  alert("Sélection du lit " + lit_id);
   selected_lit = lit_id;
   
   submitAffectation();
@@ -38,7 +36,6 @@ function selectLit(lit_id) {
 
 function submitAffectation() {
   if (selected_lit && selected_hospitalisation) {
-    alert("affectation du lit " + selected_lit + " à l'hospitalisation " + selected_hospitalisation);
 	var form = eval("document.addAffectation" + selected_hospitalisation);
 	form.lit_id.value = selected_lit;
 	form.submit();
@@ -104,20 +101,25 @@ function pageMain() {
 		  </tr>
 		  {foreach from=$curr_chambre->_ref_lits item=curr_lit}
 		  <tr class="lit" >
-		    <td>{$curr_lit->nom}</td>
+		    <td>
+		      {if $curr_lit->_warning}
+		      <img src="modules/{$m}/images/warning.png" alt="warning" title="{$curr_lit->_warning}">
+		      {/if}
+		      {$curr_lit->nom}
+		    </td>
 		    <td class="selectlit">
               <input type="radio" id="lit{$curr_lit->lit_id}" onclick="selectLit({$curr_lit->lit_id})" />
             </td>
 		  </tr>
 		  {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
 		  <tr class="patient">
-		    <td colspan="2">Patient correspondant à l'opération {$curr_affectation->operation_id}</td>
+		    <td colspan="2">{$curr_affectation->_ref_operation->_ref_pat->_view}</td>
 		  </tr>
 		  <tr class="dates">
-		    <td colspan="2">Entrée: {$curr_affectation->entree}</td>
+		    <td colspan="2">Entrée: {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}</td>
 		  </tr>
 		  <tr class="dates">
-		    <td colspan="2">Sortie:  {$curr_affectation->sortie}</td>
+		    <td colspan="2">Sortie:  {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}</td>
 		  </tr>
 		  {/foreach}
 		  {/foreach}
@@ -150,16 +152,17 @@ function pageMain() {
 	<table class="operationcollapse" id="operation{$curr_operation->operation_id}">
       <tr>
         <td class="patient" onclick="flipOperation({$curr_operation->operation_id})">
-          {$curr_operation->_ref_pat->nom} {$curr_operation->_ref_pat->prenom}
+          {$curr_operation->_ref_pat->_view}
+        </td>
         <td class="selectoperation">
           <input type="radio" id="hospitalisation{$curr_operation->operation_id}" onclick="selectHospitalisation({$curr_operation->operation_id})" />
         </td>
       </tr>
       <tr>
-        <td class="date" colspan="2">Entrée: {$curr_operation->_entree_adm|date_format:"%A %d %B %Y"}</td>
+        <td class="date" colspan="2">Entrée: {$curr_operation->_entree_adm|date_format:"%A %d %B %H:%M"}</td>
       </tr>
       <tr>
-        <td class="date" colspan="2">Sortie: {$curr_operation->_sortie_adm|date_format:"%A %d %B %Y"}</td>
+        <td class="date" colspan="2">Sortie: {$curr_operation->_sortie_adm|date_format:"%A %d %B %H:%M"}</td>
       </tr>
     </table>
     

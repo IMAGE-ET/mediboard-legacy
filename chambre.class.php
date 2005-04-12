@@ -38,18 +38,18 @@ class CChambre extends CDpObject {
 		$this->CDpObject('chambre', 'chambre_id');
 	}
 
-  function loadRefs() {
-    // Backward references
+  function loadRefsFwd() {
+    $this->_ref_service = new CService;
+    $this->_ref_service->load($this->service_id);
+  }
+
+  function loadRefsBack() {
     $where = array (
       "chambre_id" => "= '$this->chambre_id'"
     );
     
     $this->_ref_lits = new CLit;
     $this->_ref_lits = $this->_ref_lits->loadList($where);
-    
-    // Forward references
-    $this->_ref_service = new CService;
-    $this->_ref_service->load($this->service_id);
   }
 
   function canDelete(&$msg, $oid = null) {
@@ -61,6 +61,17 @@ class CChambre extends CDpObject {
     );
         
     return CDpObject::canDelete($msg, $oid, $tables);
+  }
+  
+  function checkDispo() {
+    assert($this->_ref_lits !== null);
+    $this->_nb_lits_dispo = count($this->_ref_lits);
+    foreach ($this->_ref_lits as $lit) {
+		  assert($lit->_ref_affectations !== null);
+      if (count($lit->_ref_affectations)) {
+				$this->_nb_lits_dispo--;
+			}
+		}
   }
 }
 ?>
