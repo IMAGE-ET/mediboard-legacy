@@ -68,16 +68,19 @@ class CDpObject {
 
 /**
  *  loads a list of objects matching a SQL where clause
- *  @param string $where: the SQL where clause, 
- *     can also be an array of where clauses as string
- *     can also be an array of where clauses as field => equation
- *  @string $order: the SQL order field, 
- *     can  also be an array of order fields
  *  @return the objects array
  */
-  function loadList($where = null, $order = null, $limit = null, $group = null) {
-    $sql = "SELECT * FROM `$this->_tbl`";
+  function loadList($where = null, $order = null, $limit = null, $group = null, $leftjoin = null) {
+    $sql = "SELECT $this->_tbl.* FROM `$this->_tbl`";
 
+    // Left join clauses
+    if ($leftjoin) {
+      assert(is_array($leftjoin));
+      foreach ($leftjoin as $table => $condition) {
+        $sql .= "\nLEFT JOIN $table ON $condition";
+      }
+    }
+    
     // Where clauses
     if (is_array($where)) {
       foreach ($where as $field => $eq) {
@@ -119,7 +122,7 @@ class CDpObject {
     // Limits
     if ($limit) {
 			$sql .= "\nLIMIT $limit";
-	}
+    }
 
     return db_loadObjectList($sql, $this);
   }
