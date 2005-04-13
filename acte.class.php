@@ -157,10 +157,10 @@ class Acte
       {
         while($row = mysql_fetch_array($result))
         {
-        $query = "select * from modificateur where CODE = '" . $row['MODIFICATEUR'] . "'";
+        $query = "select * from modificateur where CODE = '" . $row['MODIFICATEUR'] . "' order by CODE";
         $result2 = mysql_query($query);
         $row2 = mysql_fetch_array($result2);
-          $this->activites[$key]["modificateurs"] .= $row2['LIBELLE'] . " / ";
+          $this->activites[$key]["modificateurs"] .= "<br />".$row2['CODE']." : ".$row2['LIBELLE'];
         }
       }
       else
