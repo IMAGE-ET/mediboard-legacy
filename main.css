@@ -971,7 +971,7 @@ table.selectCode td {
   border: #aaa 2px dotted;
 }
 
-  /* @import "./hospitalisation"; */
+  /* @import "./hospitalisation.css"; */
 
 /* Chambres */
 
@@ -1064,4 +1064,19 @@ table.operationexpand td.date {
 
 table.operationcollapse td.date {
   display: none;
+}
+
+
+  /* @import "./consultation.css"; */
+
+/* Consultation */
+
+tr.groupcollapse td {
+  padding-left: 25px;
+  background: #ddf url(./images/collapse.gif) no-repeat center left;
+}
+
+tr.groupexpand td {
+  padding-left: 25px;
+  background: #ddf url(./images/expand.gif) no-repeat center left;
 }

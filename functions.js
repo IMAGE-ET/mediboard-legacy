@@ -153,7 +153,29 @@ function flipElementClass(elementId, firstClass, secondClass, cookieName) {
   }
 }
 
+function initGroups(groupname) {
+  var trs = getElementsByClassName("tr", groupname, false);
+  var trsit = 0;
+  while(tr = trs[trsit++]) {
+    tr.style.display = "none";
+  }
+  var cookie = new CJL_CookieUtil(groupname);
+  groupvalues = cookie.getAllSubValues();
+  for (groupid in groupvalues) {
+    groupclass = groupvalues[groupid];
+    if(groupclass == "groupexpand")
+      flipGroup(groupid, "");
+  }
+}
 
+function flipGroup(id, groupname) {
+  flipElementClass(groupname + id, "groupcollapse", "groupexpand", groupname);
+  var trs = getElementsByClassName("tr", groupname + id, true);
+  var trsit = 0;
+  while(tr = trs[trsit++]) {
+    tr.style.display = tr.style.display == "none" ? "" : "none";
+  }
+}
 function confirmDeletion(form, typeName, objName, msg) {
   if (!typeName) typeName = "";
   if (!objName) objName = "";
