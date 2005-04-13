@@ -39,7 +39,7 @@ function mbSetValueToSession($valName, $value = NULL) {
  * Traces variable using preformated text et varibale export
  * @return void 
  **/
-function mbTrace($label, &$var, $die = false) {
+function mbTrace(&$var, $label, $die = false) {
   $export = var_export($var, true); 
   $export = htmlspecialchars($export);
   
