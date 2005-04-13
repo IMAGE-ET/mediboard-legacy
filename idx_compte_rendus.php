@@ -14,6 +14,7 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'pack') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 if (!$canEdit) {
@@ -52,10 +53,18 @@ if($chirSel) {
   $where["type"] = "= 'consultation'";
   $order[] = "nom";
   $crConsult = $crConsult->loadList($where, $order);
+  // Packs de sortie
+  $where = array();
+  $order = array();
+  $packs = new CPack;
+  $where["chir_id"] = "= '$chirSel'";
+  $order[] = "nom";
+  $packs = $packs->loadList($where, $order);
 }
 else {
   $crOp = null;
   $crConsult = null;
+  $packs = null;
 }
 
 // Chargement des références du patient
@@ -63,7 +72,7 @@ if($pat_id) {
   $patSel->loadRefs();
   foreach($patSel->_ref_consultations as $key => $value) {
     $patSel->_ref_consultations[$key]->loadRefs();
-    $patSel->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
+    $patSel->_ref_consultations[$key]->_ref_plageconsult->loadRefsFwd();
     if($chirSel) {
       if($patSel->_ref_consultations[$key]->_ref_plageconsult->chir_id != $chirSel)
         unset($patSel->_ref_consultations[$key]);
@@ -217,6 +226,7 @@ $smarty->assign('patSel', $patSel);
 $smarty->assign('chirSel', $chirSel);
 $smarty->assign('crOp', $crOp);
 $smarty->assign('crConsult', $crConsult);
+$smarty->assign('packs', $packs);
 $smarty->assign('listPrat', $listPrat);
 $smarty->assign('listPlageConsult', $listPlageConsult);
 $smarty->assign('listPlageOp', $listPlageOp);

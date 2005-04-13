@@ -112,12 +112,11 @@ function imprimerCRO(consult) {
     {if $patSel->patient_id}
     <table class="form" style="background:#eee">
       <tr><th class="category" colspan="4">Informations sur le patient</th></tr>
-      <tr><th>Nom :</th><td>{$patSel->nom}</td>
+      <tr><th>Nom :</th><td>{$patSel->_view}</td>
         <th>Tel :</th><td>{$patSel->tel}</td></tr>
-      <tr><th>Prenom :</th><td>{$patSel->prenom}</td>
-        <th>Mobile :</th><td>{$patSel->tel2}</td></tr>
       <tr><th>Age :</th><td>{$patSel->_age} ans</td>
-        <th>Adresse :</th><td class="text">{$patSel->adresse}, {$patSel->cp} - {$patSel->ville}</td></tr>
+        <th>Mobile :</th><td>{$patSel->tel2}</td></tr>
+      <tr><th>Adresse :</th><td colspan="3" class="text">{$patSel->adresse}, {$patSel->cp} - {$patSel->ville}</td></tr>
       
       <tr><th class="category" colspan="4">Consultations</th></tr>
       {foreach from=$patSel->_ref_consultations item=curr_consult}
@@ -194,11 +193,24 @@ function imprimerCRO(consult) {
         {$curr_op->_ref_chir->user_first_name}
         &mdash; {$curr_op->_ref_plageop->date|date_format:"%A %d %B %Y"}
       </strong></td></tr>
-      <tr><th colspan="2">{$curr_op->_ext_code_ccam->code} :</th>
-        <td colspan="2" class="text">{$curr_op->_ext_code_ccam->libelleLong}</td></tr>
+      <tr><td class="text" colspan="4">{$curr_op->_ext_code_ccam->code} :
+        {$curr_op->_ext_code_ccam->libelleLong}</td></tr>
       {if $curr_op->CCAM_code2}
-      <tr><th colspan="2">{$curr_op->_ext_code_ccam2->code} :</th>
-        <td colspan="2" class="text">{$curr_op->_ext_code_ccam2->libelleLong}</td></tr>
+      <tr><td class="text" colspan="4">{$curr_op->_ext_code_ccam2->code} :
+        {$curr_op->_ext_code_ccam2->libelleLong}</td></tr>
+      {/if}
+      {if $chirSel}
+      <tr><th colspan="2">Pack de sortie :</th>
+        <td colspan="2">
+          <form name="printPackFrm{$curr_op->operation_id}" action="?m=dPhospi" method="POST">
+          <select name="pack" onchange="printPack({$curr_op->operation_id}, this.form)">
+            <option value="0">&mdash; packs &mdash;</option>
+            {foreach from=$packs item=curr_pack}
+            <option value="{$curr_pack->pack_id}">{$curr_pack->nom}</option>
+            {/foreach}
+          </select>
+        </td>
+      </tr>
       {/if}
       <tr><th colspan="2">Compte-rendu opératoire :</th>
         <td colspan="2">
