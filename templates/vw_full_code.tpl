@@ -1,3 +1,15 @@
+<!-- $Id$ -->
+
+{literal}
+<script language="javascript">
+
+function pageMain() {
+  initGroups("chap");
+}
+
+</script>
+{/literal}
+
 <table class="fullCode">
   <tr>
   	<td class="pane">
@@ -88,9 +100,13 @@
         </tr>
         
         {foreach from=$chap item=curr_chap}
-        <tr>
-          <th>{$curr_chap.rang}</th>
-          <td>{$curr_chap.nom}<br /><em>{$curr_chap.rq|nl2br}</em></td>
+        <tr class="groupcollapse" id="chap{$curr_chap.rang}" onclick="flipGroup('{$curr_chap.rang}', 'chap')">
+          <th style="text-align:left">{$curr_chap.rang}</th>
+          <td>{$curr_chap.nom}<br /></td>
+        </tr>
+        <tr class="chap{$curr_chap.rang}">
+          <td></td>
+          <td><em>{if $curr_chap.rq}{$curr_chap.rq|nl2br}{else}* Pas d'informations{/if}</em></td>
         </tr>
         {/foreach}
         
