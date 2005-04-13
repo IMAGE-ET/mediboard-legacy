@@ -70,8 +70,9 @@ class CPatient extends CDpObject {
 	}
   
   function updateFormFields() {
-    parent::updateFormFields();
     
+    $this->nom = strtoupper($this->nom);
+    $this->prenom = ucwords(strtolower($this->prenom));
     $this->_view = "$this->nom $this->prenom";
     
     $this->_jour  = substr($this->naissance, 8, 2);
@@ -103,6 +104,8 @@ class CPatient extends CDpObject {
   }
   
   function updateDBFields() {
+  	$this->nom = strtoupper($this->nom);
+    $this->prenom = ucwords(strtolower($this->prenom));
   	if(($this->_tel1 !== null) && ($this->_tel2 !== null) && ($this->_tel3 !== null) && ($this->_tel4 !== null) && ($this->_tel5 !== null)) {
       $this->tel = 
         $this->_tel1 .
@@ -136,7 +139,7 @@ class CPatient extends CDpObject {
     }
 
     if (!strlen($this->prenom)) {
-      $msg .= "Nom invalide: '$this->prenom'<br />";
+      $msg .= "Prénom invalide: '$this->prenom'<br />";
     }
     
     if ($this->matricule && !ereg ("([1-2])([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{3})([0-9]{3})([0-9]{2})", $this->matricule)) {
@@ -161,10 +164,20 @@ class CPatient extends CDpObject {
   function loadRefsBack() {
     // opérations
     $obj = new COperation();
-    $this->_ref_operations = $obj->loadList("pat_id = '$this->patient_id'");
+    $where = array();
+    $where["pat_id"] = "= '$this->patient_id'";
+    $order = "plagesop.date DESC";
+    $leftjoin = array();
+    $leftjoin["plagesop"] = "operations.plageop_id = plagesop.id";
+    $this->_ref_operations = $obj->loadList($where, $order, null, null, $leftjoin);
     // consultations
     $obj = new CConsultation();
-    $this->_ref_consultations = $obj->loadList("patient_id = '$this->patient_id'");
+    $where = array();
+    $where["patient_id"] = "= '$this->patient_id'";
+    $order = "plageconsult.date DESC";
+    $leftjoin = array();
+    $leftjoin["plageconsult"] = "consultation.plageconsult_id = plageconsult.plageconsult_id";
+    $this->_ref_consultations = $obj->loadList($where, $order, null, null, $leftjoin);
   }
 
   // Forward references

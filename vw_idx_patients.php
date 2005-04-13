@@ -50,7 +50,7 @@ if ($patient_prenom) $where[] = "prenom LIKE '$patient_prenom%'";
 
 $patients = null;
 if ($where) {
-	$patients = new CPatient();
+  $patients = new CPatient();
   $patients = $patients->loadList($where, "nom, prenom", "0, 100");
 }
 
