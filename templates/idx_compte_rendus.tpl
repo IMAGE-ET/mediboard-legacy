@@ -2,6 +2,12 @@
 
 {literal}
 <script language="javascript">
+
+function pageMain() {
+  initGroups("consult");
+  initGroups("op");
+}
+
 function popPat() {
   var url = './index.php?m=dPpatients';
   url += '&a=pat_selector';
@@ -110,22 +116,24 @@ function imprimerCRO(consult) {
     </table>
     </form>
     {if $patSel->patient_id}
-    <table class="form" style="background:#eee">
+    <table class="form">
       <tr><th class="category" colspan="4">Informations sur le patient</th></tr>
       <tr><th>Nom :</th><td>{$patSel->_view}</td>
         <th>Tel :</th><td>{$patSel->tel}</td></tr>
       <tr><th>Age :</th><td>{$patSel->_age} ans</td>
         <th>Mobile :</th><td>{$patSel->tel2}</td></tr>
       <tr><th>Adresse :</th><td colspan="3" class="text">{$patSel->adresse}, {$patSel->cp} - {$patSel->ville}</td></tr>
-      
+    </table>
+    <table class="form">
       <tr><th class="category" colspan="4">Consultations</th></tr>
       {foreach from=$patSel->_ref_consultations item=curr_consult}
-      <tr><td colspan="4"><strong>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name}
-        {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}
-        &mdash; {$curr_consult->_ref_plageconsult->date|date_format:"%A %d %B %Y"}
+      <tr class="groupcollapse" id="consult{$curr_consult->consultation_id}" onclick="flipGroup({$curr_consult->consultation_id}, 'consult')">
+        <td colspan="4"><strong>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name}
+          {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}
+          &mdash; {$curr_consult->_ref_plageconsult->date|date_format:"%A %d %B %Y"}
       </strong></td></tr>
-      <tr><th colspan="2">Motif :</th><td class="text" colspan="2">{$curr_consult->motif}</td></tr>
-      <tr><th colspan="2">Compte-rendu de consultation :</th>
+      <tr class="consult{$curr_consult->consultation_id}"><th colspan="2">Motif :</th><td class="text" colspan="2">{$curr_consult->motif}</td></tr>
+      <tr class="consult{$curr_consult->consultation_id}"><th colspan="2">Compte-rendu de consultation :</th>
         <td colspan="2">
           <form name="editCRConsultFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
           {if $curr_consult->compte_rendu}
@@ -157,9 +165,9 @@ function imprimerCRO(consult) {
           </form>
         </td>
       </tr>
-      <tr><th colspan="2"><i>Fichiers associés :</i></th><td colspan="2" /></tr>
+      <tr class="consult{$curr_consult->consultation_id}"><th colspan="2"><i>Fichiers associés :</i></th><td colspan="2" /></tr>
       {foreach from=$curr_consult->_ref_files item=curr_file}
-      <tr>
+      <tr class="consult{$curr_consult->consultation_id}">
         <th colspan="2"><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
         <td>{$curr_file->_file_size}</td>
         <td>
@@ -172,7 +180,7 @@ function imprimerCRO(consult) {
         </td>
 	  </tr>
       {/foreach}
-      <tr>
+      <tr class="consult{$curr_consult->consultation_id}">
         <th colspan="3">
           <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
           <input type="hidden" name="dosql" value="do_file_aed" />
@@ -189,18 +197,19 @@ function imprimerCRO(consult) {
 
       <tr><th class="category" colspan="4">Interventions</th></tr>
       {foreach from=$patSel->_ref_operations item=curr_op}
-      <tr><td colspan="4"><strong>Dr. {$curr_op->_ref_chir->user_last_name}
+      <tr class="groupcollapse" id="op{$curr_op->operation_id}" onclick="flipGroup({$curr_op->operation_id}, 'op')">
+        <td colspan="4"><strong>Dr. {$curr_op->_ref_chir->user_last_name}
         {$curr_op->_ref_chir->user_first_name}
         &mdash; {$curr_op->_ref_plageop->date|date_format:"%A %d %B %Y"}
       </strong></td></tr>
-      <tr><td class="text" colspan="4">{$curr_op->_ext_code_ccam->code} :
+      <tr class="op{$curr_op->operation_id}"><td class="text" colspan="4">{$curr_op->_ext_code_ccam->code} :
         {$curr_op->_ext_code_ccam->libelleLong}</td></tr>
       {if $curr_op->CCAM_code2}
-      <tr><td class="text" colspan="4">{$curr_op->_ext_code_ccam2->code} :
+      <tr class="op{$curr_op->operation_id}"><td class="text" colspan="4">{$curr_op->_ext_code_ccam2->code} :
         {$curr_op->_ext_code_ccam2->libelleLong}</td></tr>
       {/if}
       {if $chirSel}
-      <tr><th colspan="2">Pack de sortie :</th>
+      <tr class="op{$curr_op->operation_id}"><th colspan="2">Pack de sortie :</th>
         <td colspan="2">
           <form name="printPackFrm{$curr_op->operation_id}" action="?m=dPhospi" method="POST">
           <select name="pack" onchange="printPack({$curr_op->operation_id}, this.form)">
@@ -212,7 +221,7 @@ function imprimerCRO(consult) {
         </td>
       </tr>
       {/if}
-      <tr><th colspan="2">Compte-rendu opératoire :</th>
+      <tr class="op{$curr_op->operation_id}"><th colspan="2">Compte-rendu opératoire :</th>
         <td colspan="2">
           <form name="editCROListFrm{$curr_op->operation_id}" action="?m=dPplanningOp" method="POST">
           {if $curr_op->compte_rendu}
@@ -242,11 +251,11 @@ function imprimerCRO(consult) {
           {/if}
           </form>
       </td></tr>
-      <tr><th colspan="2">Compte-rendu d'anesthésie :</th>
+      <tr class="op{$curr_op->operation_id}"><th colspan="2">Compte-rendu d'anesthésie :</th>
         <td class="button" colspan="2">modifier imprimer supprimer</td></tr>
-      <tr><th colspan="2"><i>Fichiers associés :</i></th><td colspan="2" /></tr>
+      <tr class="op{$curr_op->operation_id}"><th colspan="2"><i>Fichiers associés :</i></th><td colspan="2" /></tr>
       {foreach from=$curr_op->_ref_files item=curr_file}
-      <tr>
+      <tr class="op{$curr_op->operation_id}">
         <th colspan="2"><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
         <td>{$curr_file->_file_size}</td>
         <td>
@@ -259,7 +268,7 @@ function imprimerCRO(consult) {
         </td>
 	  </tr>
       {/foreach}
-      <tr>
+      <tr class="op{$curr_op->operation_id}">
         <th colspan="3">
           <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
           <input type="hidden" name="dosql" value="do_file_aed" />
