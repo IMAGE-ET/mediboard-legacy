@@ -31,7 +31,7 @@ function checkPlage() {
 
 <table class="form">
   <tr>
-    <th class="category" colspan="6">{if $plagesel}Modifier {else}Ajouter {/if} une plage opératoire</th>
+    <th class="category" colspan="6">{if $plagesel->id}Modifier {else}Ajouter {/if} une plage opératoire</th>
   </tr>
 
   <tr>

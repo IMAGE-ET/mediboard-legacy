@@ -29,31 +29,7 @@ function popPlanning(debut) {
 		<td width="100%" valign="top" align="center">
 <?php
 $planning->displayJour();
-?>
-		</td>
-		<td valign="top" align="right" rowspan=2>
-<?php
-echo $calendar->display();
-?>
-<?php
-$listSpec = new CFunctions();
-$listSpec = $listSpec->loadSpecialites();
-?>
 
-      <table class="tbl">
-        <tr><th>Liste des spécialités</th></tr>
-        <?php foreach($listSpec as $curr_spec) { ?>
-        <tr>
-          <td class="text" style="background: #<?php echo $curr_spec->color; ?>;"><?php echo $curr_spec->text; ?></td>
-        </tr>
-        <?php } ?>
-      </table>
-
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" align="center">
-<?php
 if (!getDenyEdit($m)) {
   ////////////////// NEW WAY /////////////////////
   global $m, $AppUI;
@@ -109,5 +85,26 @@ if (!getDenyEdit($m)) {
 }
 ?>
 		</td>
-	</tr>
+
+		</td>
+		<td valign="top" align="right">
+<?php
+echo $calendar->display();
+?>
+<?php
+$listSpec = new CFunctions();
+$listSpec = $listSpec->loadSpecialites();
+?>
+
+      <table class="tbl">
+        <tr><th>Liste des spécialités</th></tr>
+        <?php foreach($listSpec as $curr_spec) { ?>
+        <tr>
+          <td class="text" style="background: #<?php echo $curr_spec->color; ?>;"><?php echo $curr_spec->text; ?></td>
+        </tr>
+        <?php } ?>
+      </table>
+
+    </td>
+  </tr>
 </table>
