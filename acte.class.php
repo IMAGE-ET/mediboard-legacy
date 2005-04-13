@@ -140,13 +140,14 @@ class Acte
       $result = mysql_query($query);
       $row = mysql_fetch_array($result);
       $this->activites[$key]["nom"] = $row['LIBELLE'];
-      $query = "select COUNT(*) as TOTAL from phaseacte where ";
+      $query = "select COUNT(*) as TOTAL, SUM(PRIXUNITAIRE) as TARIF from phaseacte where ";
       $query .= "CODEACTE = '" . $this->code . "' ";
       $query .= "and ACTIVITE = '" . $this->activites[$key]["code"] . "' ";
       $query .= "group by ACTIVITE";
       $result = mysql_query($query);
       $row = mysql_fetch_array($result);
       $this->activites[$key]["phases"] = $row['TOTAL'];
+      $this->activites[$key]["tarif"] = number_format(floatval($row['TARIF'] / 100), 2, ',', ' ');
       $query = "select * from modificateuracte where ";
       $query .= "CODEACTE = '" . $this->code . "' ";
       $query .= "and CODEACTIVITE = '" . $this->activites[$key]["code"] . "'";

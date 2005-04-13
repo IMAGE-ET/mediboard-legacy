@@ -62,7 +62,7 @@
           <td valign="top"><strong>{$curr_act.code}:</strong></td>
           <td valign="top" width="100%">{$curr_act.nom}
             <ul>
-              <li>{$curr_act.phases} phase(s)</li>
+              <li>{$curr_act.phases} phase(s) : {$curr_act.tarif} €</li>
               <li>modificateurs: {$curr_act.modificateurs}</li>
             </ul>
           </td>
