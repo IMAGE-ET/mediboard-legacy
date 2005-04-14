@@ -28,7 +28,8 @@ class CChambre extends CDpObject {
   var $caracteristiques = null; // côté rue, fenêtre, lit accompagnant, ...
 
   // Form Fields
-  var $_nb_lits_dispo = 0;
+  var $_nb_lits_dispo = null;
+  var $_overbooking = null;
 
   // Object references
   var $_ref_service = null;
@@ -63,10 +64,14 @@ class CChambre extends CDpObject {
     return CDpObject::canDelete($msg, $oid, $tables);
   }
   
-  function checkDispo() {
+  function checkChambre() {
     assert($this->_ref_lits !== null);
     $this->_nb_lits_dispo = count($this->_ref_lits);
+    
     foreach ($this->_ref_lits as $lit) {
+      assert($lit->_overbooking !== null);
+      $this->_overbooking += $lit->_overbooking;
+
 		  assert($lit->_ref_affectations !== null);
       if (count($lit->_ref_affectations)) {
 				$this->_nb_lits_dispo--;

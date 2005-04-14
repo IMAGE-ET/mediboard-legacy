@@ -46,21 +46,45 @@ foreach ($services as $service_id => $service) {
       }
     }
 
-    $chambres[$chambre_id]->checkDispo();
+    $chambres[$chambre_id]->checkChambre();
   }
 }
 
 // Récupération des admissions à affecter
-$leftjoin = array("affectation" => "operations.operation_id = affectation.operation_id");
+$leftjoin = array(
+  "affectation" => "operations.operation_id = affectation.operation_id"
+);
+$ljwhere = "affectation.affectation_id IS NULL";
+$order = "duree_hospi DESC";
+
+// Admissions du jour
 $where = array(
-  "'$date' BETWEEN `date_adm` AND ADDDATE(`date_adm`, INTERVAL `duree_hospi` DAY)",
+  "date_adm" => "= '$date'",
+  $ljwhere  
+);
+$opNonAffecteesJour = new COperation;
+$opNonAffecteesJour = $opNonAffecteesJour->loadList($where, $order, null, null, $leftjoin);
+
+foreach ($opNonAffecteesJour as $op_id => $op) {
+  $opNonAffecteesJour[$op_id]->loadRefs();
+}
+
+// Admissions antérieures
+$where = array(
+  "'$date' BETWEEN ADDDATE(`date_adm`, INTERVAL 1 DAY) AND ADDDATE(`date_adm`, INTERVAL `duree_hospi` DAY)",
   "affectation.affectation_id IS NULL"
 );
-$opNonAffectees = new COperation;
-$opNonAffectees = $opNonAffectees->loadList($where, "date_adm", null, null, $leftjoin);
-foreach ($opNonAffectees as $op_id => $op) {
-  $opNonAffectees[$op_id]->loadRefs();
+$opNonAffecteesAvant = new COperation;
+$opNonAffecteesAvant = $opNonAffecteesAvant->loadList($where, $order, null, null, $leftjoin);
+
+foreach ($opNonAffecteesAvant as $op_id => $op) {
+  $opNonAffecteesAvant[$op_id]->loadRefs();
 }
+
+$groupOpNonAffectees = array(
+  "jour"  => $opNonAffecteesJour ,
+  "avant" => $opNonAffecteesAvant
+);
 
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));
@@ -71,7 +95,7 @@ $smarty->assign('year' , $year );
 $smarty->assign('month', $month);
 $smarty->assign('day'  , $day  );
 $smarty->assign('services', $services);
-$smarty->assign('opNonAffectees', $opNonAffectees);
+$smarty->assign('groupOpNonAffectees' , $groupOpNonAffectees);
 
 $smarty->display('vw_affectations.tpl');
 

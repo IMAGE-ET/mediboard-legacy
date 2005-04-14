@@ -27,6 +27,10 @@ class CAffectation extends CDpObject {
   var $entree = null;
   var $sortie = null;
   
+  // Form Fields
+  var $_entree_relative;
+  var $_sortie_relative;
+  
   // Object references
   var $_ref_lit = null;
   var $_ref_operation = null;
@@ -35,6 +39,14 @@ class CAffectation extends CDpObject {
 		$this->CDpObject('affectation', 'affectation_id');
 	}
 
+  function check() {
+    if ($this->date_sortie < $this->date_entree) {
+			return "La date de sortie doit être supérieure à la date d'entrée'";
+		}
+    
+    return null;
+  }
+  
   function loadRefsFwd() {
     $where = array (
       "lit_id" => "= '$this->lit_id'"
@@ -49,6 +61,13 @@ class CAffectation extends CDpObject {
     
     $this->_ref_operation = new COperation;
     $this->_ref_operation->loadObject($where);
+  }
+  
+  function checkDaysRelative($date) {
+    if ($this->entree and $this->sortie) {
+      $this->_entree_relative = mbDaysRelative($date, $this->entree);
+      $this->_sortie_relative = mbDaysRelative($date, $this->sortie);
+    }
   }
 }
 ?>

@@ -43,27 +43,38 @@ function submitAffectation() {
 }
 
 function dateChanged(calendar) {
-  if (calendar.dateClicked) {
-    var y = calendar.date.getFullYear();
-    var m = calendar.date.getMonth();
-    var d = calendar.date.getDate();
-    
-    var url = "index.php?m={/literal}{$m}{literal}";
-    url += "&tab={/literal}{$tab}{literal}";
-    url += "&year="  + y;
-    url += "&month=" + m;
-    url += "&day="   + d;
+  var y = calendar.date.getFullYear();
+  var m = calendar.date.getMonth();
+  var d = calendar.date.getDate();
+   
+  var url = "index.php?m={/literal}{$m}{literal}";
+  url += "&tab={/literal}{$tab}{literal}";
+  url += "&year="  + y;
+  url += "&month=" + m;
+  url += "&day="   + d;
 
-    window.location = url;
+  window.location = url;
+}
+
+function dateAffectationChanged() {
+  if (calendar.dateClicked) {
+	  alert(calendar.date);
   }
 }
 
-function pageMain() {
-  Calendar.setup(
-    {
-      flat         : "calendar-container",
-      flatCallback : dateChanged         ,
-      date         : {/literal}new Date({$year}, {$month}, {$day}){literal}
+function setupCalendar(affectation_id) {
+  var form = eval("document.editAffectation" + affectation_id);
+
+  Calendar.setup( {
+      inputField  : form.name + "_sortie",
+	  ifFormat    : "%Y-%m-%d %H:%M",
+	  button      : form.name + "__trigger_date",
+	  showsTime   : true,
+	  onUpdate    : function() { 
+        if (calendar.dateClicked) {
+          form.submit();
+        }
+	  }
     }
   );
   
@@ -74,7 +85,27 @@ function pageMain() {
       chambre.className = chambres[chambreId];
     }
   }
+}
+
+function pageMain() {
+  Calendar.setup( {
+      flat         : "calendar-container",
+      flatCallback : dateChanged         ,
+      date         : {/literal}new Date({$year}, {$month}, {$day}){literal}
+    }
+  );
   
+{/literal}
+{foreach from=$services item=curr_service}
+{foreach from=$curr_service->_ref_chambres item=curr_chambre}
+{foreach from=$curr_chambre->_ref_lits item=curr_lit}
+{foreach from=$curr_lit->_ref_affectations item=curr_affectation}
+setupCalendar({$curr_affectation->affectation_id});
+{/foreach}
+{/foreach}
+{/foreach}
+{/foreach}
+{literal}
 }
 
 {/literal}  
@@ -105,30 +136,85 @@ function pageMain() {
         <table class="chambrecollapse" id="chambre{$curr_chambre->chambre_id}">
 		  <tr>
 		    <th class="chambre" colspan="2" onclick="flipChambre({$curr_chambre->chambre_id})">
+		      {if $curr_chambre->_overbooking}
+		      <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
+		      {/if}
 		      {$curr_chambre->nom} (Dispo: {$curr_chambre->_nb_lits_dispo}/{$curr_chambre->_ref_lits|@count})
 		    </th>
 		  </tr>
 		  {foreach from=$curr_chambre->_ref_lits item=curr_lit}
 		  <tr class="lit" >
 		    <td>
-		      {if $curr_lit->_warning}
-		      <img src="modules/{$m}/images/warning.png" alt="warning" title="{$curr_lit->_warning}">
+		      {if $curr_lit->_overbooking}
+		      <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_lit->_overbooking} collisions">
 		      {/if}
 		      {$curr_lit->nom}
 		    </td>
-		    <td class="selectlit">
+		    <td class="action">
               <input type="radio" id="lit{$curr_lit->lit_id}" onclick="selectLit({$curr_lit->lit_id})" />
             </td>
 		  </tr>
 		  {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
 		  <tr class="patient">
-		    <td colspan="2">{$curr_affectation->_ref_operation->_ref_pat->_view}</td>
+		    <td>{$curr_affectation->_ref_operation->_ref_pat->_view}</td>
+		    <td class="action">
+		      {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
+
+              <form name="rmvAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
+
+              <input type="hidden" name="dosql" value="do_affectation_aed" />
+              <input type="hidden" name="del" value="1" />
+              <input type="hidden" name="affectation_id" value="{$curr_affectation->affectation_id}" />
+
+              </form>
+              
+		      <a href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view}')">
+		        <img src="modules/{$m}/images/cancel.png" alt="trash" title="Supprimer l'affectation">
+		      </a>
+		    </td>
 		  </tr>
 		  <tr class="dates">
 		    <td colspan="2">Entrée: {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}</td>
 		  </tr>
 		  <tr class="dates">
-		    <td colspan="2">Sortie:  {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}</td>
+		    <td>Sortie:  {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}</td>
+		    <td class="action">
+		      {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
+
+              <form name="editAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
+
+              <input type="hidden" name="dosql" value="do_affectation_aed" />
+              <input type="hidden" name="affectation_id" value="{$curr_affectation->affectation_id}" />
+              <input type="hidden" name="sortie" value="{$curr_affectation->sortie}" />
+
+              </form>
+              
+		      <a>
+		        <img id="editAffectation{$curr_affectation->affectation_id}__trigger_date" src="modules/{$m}/images/planning.png" alt="Planning" title="Modifier la date de sortie">
+		      </a>
+		    </td>
+		  </tr>
+		  {foreachelse}
+		  <tr class="litdispo"><td colspan="2">Lit disponible</td></tr>
+		  <tr class="litdispo">
+		    <td colspan="2">
+		    depuis:
+		    {if $curr_lit->_ref_last_dispo && $curr_lit->_ref_last_dispo->affectation_id}
+		    {$curr_lit->_ref_last_dispo->sortie|date_format:"%A %d %B %H:%M"} ({$curr_lit->_ref_last_dispo->_sortie_relative} jours)
+		    {else}
+		    Toujours
+		    {/if}
+		    </td>
+		  </tr>
+		  <tr class="litdispo">
+		    <td colspan="2">
+		    jusque: 
+		    {if $curr_lit->_ref_next_dispo && $curr_lit->_ref_next_dispo->affectation_id}
+		    {$curr_lit->_ref_next_dispo->entree|date_format:"%A %d %B %H:%M"} ({$curr_lit->_ref_next_dispo->_entree_relative} jours)
+		    {else}
+		    Toujours
+		    {/if}
+		    </td>
 		  </tr>
 		  {/foreach}
 		  {/foreach}
@@ -145,7 +231,17 @@ function pageMain() {
     
     <div id="calendar-container"></div>
   
-    <table class="tbl"><tr><th class="title">Séléctionner un patient à placer</th></tr></table>
+	{foreach from=$groupOpNonAffectees key=group_name item=opNonAffectees}
+
+    <table class="tbl">
+      <tr>
+        <th class="title">
+          Admissions 
+          {if $group_name == "jour" }du jour{/if}
+          {if $group_name == "avant"}antérieures{/if}
+        </th>
+      </tr>
+    </table>
 
     {foreach from=$opNonAffectees item=curr_operation}
     <form name="addAffectation{$curr_operation->operation_id}" action="?m={$m}" method="post">
@@ -161,7 +257,7 @@ function pageMain() {
 	<table class="operationcollapse" id="operation{$curr_operation->operation_id}">
       <tr>
         <td class="patient" onclick="flipOperation({$curr_operation->operation_id})">
-          {$curr_operation->_ref_pat->_view}
+          {$curr_operation->_ref_pat->_view} ({$curr_operation->duree_hospi} jours)
         </td>
         <td class="selectoperation">
           <input type="radio" id="hospitalisation{$curr_operation->operation_id}" onclick="selectHospitalisation({$curr_operation->operation_id})" />
@@ -175,6 +271,7 @@ function pageMain() {
       </tr>
     </table>
     
+    {/foreach}
     {/foreach}
 
   </td>
