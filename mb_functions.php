@@ -84,5 +84,16 @@ function mbTime($relative, $ref = null) {
   return mbTranformTime($relative, $ref, "%H:%M:%S");
 }
 
+/**
+ * Return the difference between two dates in days
+ * @return int: number of days
+ **/
+function mbDaysRelative($from, $to) {
+  $from = intval(strtotime($from) / 86400);
+  $to = intval(strtotime($to) / 86400);
+  $days = $to - $from;
+  return $days;
+}
+
 
 ?>
