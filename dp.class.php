@@ -134,7 +134,7 @@ class CDpObject {
  *  @return a copy of the object
  */
   function loadObject($where = null, $order = null) {
-    $list =& $this->loadList($where, $order);
+    $list =& $this->loadList($where, $order, "0,1");
     foreach ($list as $key => $object) {
       $this = $object;
       return;
