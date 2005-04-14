@@ -36,9 +36,10 @@ if (!$prat_id) {
 
 // Liste des modèles
 
-$sql = "SELECT * FROM compte_rendu" .
-  		"\nWHERE chir_id = '$prat_id'";
-$listModele = db_loadObjectList($sql, new CCompteRendu());
+$where["chir_id"] = "= '$prat_id'";
+$order = "type";
+$listModele = new CCompteRendu;
+$listModele = $listModele->loadlist($where, $order);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );

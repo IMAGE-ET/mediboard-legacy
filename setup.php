@@ -74,6 +74,11 @@ class CSetupdPcompteRendu {
                   ) COMMENT = 'table des packs post hospitalisation';";
           db_exec( $sql ); db_error();
         case "0.13":
+          $sql = "ALTER TABLE `liste_choix` ADD `compte_rendu_id` BIGINT DEFAULT '0' NOT NULL AFTER `chir_id` ;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `liste_choix` ADD INDEX ( `compte_rendu_id` ) ;";
+          db_exec( $sql ); db_error();
+        case "0.14":
 			return true;
 		default:
 			return false;

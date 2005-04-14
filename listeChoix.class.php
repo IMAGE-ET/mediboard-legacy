@@ -10,6 +10,7 @@
 require_once( $AppUI->getSystemClass ('dp' ) );
 
 require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 
 class CListeChoix extends CDpObject {
   // DB Table key
@@ -21,6 +22,7 @@ class CListeChoix extends CDpObject {
   // DB fields
   var $nom = null;
   var $valeurs = null;
+  var $compte_rendu_id = null;
   
   // Form fields
   var $_valeurs;
@@ -29,6 +31,7 @@ class CListeChoix extends CDpObject {
   
   // Referenced objects
   var $_ref_chir = null;
+  var $_ref_compte_rendu = null;
 
   function CListeChoix() {
     $this->CDpObject( 'liste_choix', 'liste_choix_id' );
@@ -38,6 +41,8 @@ class CListeChoix extends CDpObject {
     // Forward references
     $this->_ref_chir = new CUser;
     $this->_ref_chir->load($this->chir_id);
+    $this->_ref_compte_rendu = new CCompteRendu;
+    $this->_ref_compte_rendu->load($this->compte_rendu_id);
   }
   
   function updateFormFields() {

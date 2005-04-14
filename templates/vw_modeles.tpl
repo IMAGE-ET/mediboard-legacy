@@ -19,7 +19,7 @@
     <td>
       <table class="tbl">
         <tr>
-          <th>Nom</th><th>Type</th><th>Aperçu</th><th>Supprimer</th>
+          <th>Nom</th><th>Type</th><th>Supprimer</th>
         </tr>
         {foreach from=$listModele item=curr_modele}
         <tr>
@@ -27,8 +27,15 @@
           {$curr_modele->nom}</a></td>
           <td><a href="index.php?m={$m}&tab=addedit_modeles&compte_rendu_id={$curr_modele->compte_rendu_id}">
           {$curr_modele->type}</a></td>
-          <td class="text">{$curr_modele->source}</td>
-          <td><input type="button" value="supprimer" /></td>
+          <td>
+            <form name="editFrm" action="?m={$m}" method="POST">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="del" value="1" />
+            <input type="hidden" name="dosql" value="do_modele_aed" />
+            <input type="hidden" name="compte_rendu_id" value="{$curr_modele->compte_rendu_id}" />
+            <input type="submit" value="supprimer" />
+            </form>
+          </td>
         </tr>
         {/foreach}
       </table>

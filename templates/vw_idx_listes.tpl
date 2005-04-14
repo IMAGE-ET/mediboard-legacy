@@ -66,6 +66,7 @@ function checkForm() {
       <th>Utilisateur</th>
       <th>Nom</th>
       <th>Valeurs</th>
+      <th>Compte-rendu associé</th>
     </tr>
 
     {foreach from=$listes item=curr_liste}
@@ -75,6 +76,11 @@ function checkForm() {
       <td><a href="{$href}">{$curr_liste->_ref_chir->user_last_name} {$curr_liste->_ref_chir->user_first_name}</a></td>
       <td><a href="{$href}">{$curr_liste->nom}</a></td>
       <td><a href="{$href}">{$curr_liste->_valeurs|@count}</a></td>
+      {if $curr_liste->_ref_compte_rendu->compte_rendu_id}
+      <td><a href="{$href}">{$curr_liste->_ref_compte_rendu->nom} ({$curr_liste->_ref_compte_rendu->type})</a></td>
+      {else}
+      <td><a href="{$href}">&mdash; Tous &mdash;</a></td>
+      {/if}
     </tr>
     {/foreach}
       
@@ -122,6 +128,16 @@ function checkForm() {
       <th class="mandatory"><label for="editFrm_name" title="intitulé de la liste, obligatoire.">Intitulé:</label></th>
       <td><input type="text" name="nom" value="{$liste->nom}" /></td>
     </tr>
+    
+    <tr>
+      <th><label for="editFrm_compte_rendu_id" title="Compte-rendu associé.">Compte-rendu</label></th>
+      <td>
+        <select name="compte_rendu_id">
+          <option value="0">&mdash; Tous &mdash;</option>
+          {foreach from=$listCr item=curr_cr}
+          <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>
+          {/foreach}
+        </select>
 
     <tr>
       <td class="button" colspan="2">

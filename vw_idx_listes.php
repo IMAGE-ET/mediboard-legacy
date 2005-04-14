@@ -10,6 +10,7 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'listeChoix'));
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
 require_once( $AppUI->getModuleClass('mediusers', 'mediusers'));
 
 if (!$canRead) {
@@ -40,6 +41,20 @@ foreach($listes as $key => $value) {
   $listes[$key]->loadRefsFwd();
 }
 
+// Liste des compte-rendus selectionnables
+$listCr = new CCompteRendu;
+if($user_id)
+  $where["chir_id"] = "= '$user_id'";
+else {
+  $inChir = array();
+  foreach($users as $key => $value) {
+    $inChir[] = $value["user_id"];
+  }
+  $where["chir_id"] = "IN (".explode(",", $inChir).")";
+}
+$order = "type";
+$listCr = $listCr->loadList($where, $order);
+
 // liste sélectionnée
 $liste_id = mbGetValueFromGetOrSession("liste_id");
 $liste = new CListeChoix();
@@ -56,6 +71,7 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('users', $users);
 $smarty->assign('user_id', $user_id);
+$smarty->assign('listCr', $listCr);
 $smarty->assign('listes', $listes);
 $smarty->assign('liste', $liste);
 

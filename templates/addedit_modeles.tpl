@@ -11,10 +11,33 @@ function supprimer() {
   form.submit();
 }
 
+function checkForm() {
+  var form = document.editFrm;
+  var field = null;
+   
+  if (field = form.elements['chir_id']) {
+    if (field.value == 0) {
+      alert("Utilisateur indéterminé");
+      field.focus();
+      return false;
+    }
+  }
+
+  if (field = form.elements['nom']) {    
+    if (field.value == 0) {
+      alert("Intitulé indéterminé");
+      field.focus();
+      return false;
+    }
+  }
+    
+  return true;
+}
+
 {/literal}
 </script>
 
-<form name="editFrm" action="?m={$m}" method="POST">
+<form name="editFrm" action="?m={$m}" method="POST" onsubmit="return checkForm()">
 
 <input type="hidden" name="m" value="{$m}" />
 <input type="hidden" name="del" value="0" />

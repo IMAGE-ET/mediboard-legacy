@@ -108,10 +108,11 @@ class CTemplateManager {
     }
   }
   
-  function loadLists($user_id) {
+  function loadLists($user_id, $compte_rendu_id = 0) {
     // Liste de choix
     $where = array();
     $where["chir_id"] = "= '$user_id'";
+    $where["compte_rendu_id"] = "IN ('0', '$compte_rendu_id')";
     
     $lists = new CListeChoix();
     $lists = $lists->loadList($where);
