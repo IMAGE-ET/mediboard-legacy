@@ -39,7 +39,7 @@ function mbSetValueToSession($valName, $value = NULL) {
  * Traces variable using preformated text et varibale export
  * @return void 
  **/
-function mbTrace(&$var, $label, $die = false) {
+function mbTrace(&$var, $label = null, $die = false) {
   $export = var_export($var, true); 
   $export = htmlspecialchars($export);
   
@@ -90,9 +90,9 @@ function mbTime($relative, $ref = null) {
  **/
 function mbDaysRelative($from, $to) {
   $from = intval(strtotime($from) / 86400);
-  $to = intval(strtotime($to) / 86400);
+  $to   = intval(strtotime($to  ) / 86400);
   $days = $to - $from;
-  return $days;
+  return $days-1;
 }
 
 
