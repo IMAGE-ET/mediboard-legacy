@@ -431,6 +431,10 @@ td.tabox {
   table.tbl {
     font-size: 100%;
   }
+  h1.newpage {
+    page-break-before:always;
+    display:none;
+  }
 }
 
 /* Message styles */
@@ -1066,10 +1070,7 @@ table.operationcollapse td.date {
   display: none;
 }
 
-
-  /* @import "./consultation.css"; */
-
-/* Consultation */
+  /* @import "./collapser.css"; */
 
 tr.groupcollapse td {
   padding-left: 25px;
