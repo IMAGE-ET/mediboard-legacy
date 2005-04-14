@@ -12,6 +12,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('mediusers'));
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'listeChoix'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'templatemanager'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie'));
 
@@ -32,7 +33,9 @@ $op->load($operation_id);
 $op->loadRefsFwd();
 
 $patient =& $op->_ref_pat;
+
 $plageop =& $op->_ref_plageop;
+
 $medichir = new CMediusers();
 $medichir->load($op->_ref_chir->user_id);
 
@@ -45,6 +48,7 @@ $op->fillTemplate($templateManager);
 
 $templateManager->document = $op->compte_rendu;
 $templateManager->loadHelpers($medichir->user_id, TMT_OPERATION);
+$templateManager->loadLists($medichir->user_id);
 
 // Chargement du modèle
 if (!$op->compte_rendu) {
@@ -53,6 +57,12 @@ if (!$op->compte_rendu) {
   $modele->load($compte_rendu_id);
   $templateManager->applyTemplate($modele);
 }
+
+$where = array();
+$where["chir_id"] = "= $medichir->user_id";
+$chirLists = new CListeChoix;
+$chirLists = $chirLists->loadList($where);
+$lists = $templateManager->getUsedLists($chirLists);
 
 $templateManager->initHTMLArea();
 
@@ -63,6 +73,7 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('templateManager', $templateManager);
 $smarty->assign('op', $op);
+$smarty->assign('lists', $lists);
 
 $smarty->display('edit_compte_rendu.tpl');
 

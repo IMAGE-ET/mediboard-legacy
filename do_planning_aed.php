@@ -10,10 +10,25 @@
 global $AppUI;
 
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
+require_once($AppUI->getModuleClass("dPcompteRendu", "listeChoix"));
 
 $msg = '';
 if($chir_id = dPgetParam( $_POST, 'chir_id', null))
   mbSetValueToSession('chir_id', $chir_id);
+
+// Pré-traitement du document passé en post (remplacement des listes par le choix)
+$fields = array();
+$values = array();
+foreach($_POST as $key => $value) {
+  if(preg_match("/_liste([0-9]+)/", $key, $result)) {
+    $temp = new CListeChoix;
+    $temp->load($result[1]);
+    $fields[] = "<span class=\"name\">[Liste - $temp->nom]</span>";
+    $values[] = "<span class=\"choice\">$value</span>";
+  }
+}
+
+$_POST["compte_rendu"] = str_replace($fields, $values, $_POST["compte_rendu"]);
 
 // Object binding
 $obj = new COperation();
