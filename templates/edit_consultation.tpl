@@ -190,10 +190,7 @@ function supprimerCompteRendu() {
                 <input type="hidden" name="chrono" value="{$consult->chrono}" />
                 <td style="text-align: center; vertical-align: middle">Etat : {$consult->_etat}</td>
                 <td class="button">
-                  {if $consult->chrono < $smarty.const.CC_EN_COURS}
-                  <input type="button" value="Commencer" onclick="submitConsultWithChrono({$smarty.const.CC_EN_COURS})" />
-                  {/if}
-                  {if $consult->chrono == $smarty.const.CC_EN_COURS}
+                  {if $consult->chrono <= $smarty.const.CC_EN_COURS}
                   <input type="button" value="Terminer" onclick="submitConsultWithChrono({$smarty.const.CC_TERMINE})" />
                   {/if}
                 </td>

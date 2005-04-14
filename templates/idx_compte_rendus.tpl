@@ -35,10 +35,12 @@ function selectCRC(id, form) {
 }
 
 function editModeleC(consult, modele) {
-  var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
-  url +='&consult=' + consult;
-  url +='&modele=' + modele;
-  popup(700, 700, url, 'Compte-rendu');
+  if(modele != -1) {
+    var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
+    url +='&consult=' + consult;
+    url +='&modele=' + modele;
+    popup(700, 700, url, 'Compte-rendu');
+  }
 }
 
 function validerCompteRenduC(form) {
@@ -90,10 +92,19 @@ function supprimerCompteRenduO(form) {
   }
 }
 
-function imprimerCRO(consult) {
+function imprimerCRO(op) {
   var url = '?m=dPplanningOp&a=print_cr&dialog=1';
-  url +='&operation_id=' + consult;
+  url +='&operation_id=' + op;
   popup(700, 700, url, 'Compte-rendu');
+}
+
+function printPack(op, form) {
+  if(form.pack.value != 0) {
+    var url = '?m=dPcabinet&a=print_pack&dialog=1';
+    url +='&operation_id=' + op;
+    url +='&pack_id=' + form.pack.value;
+    popup(700, 700, url, 'Compte-rendu');
+  }
 }
 
 </script>
@@ -325,12 +336,25 @@ function imprimerCRO(consult) {
               <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
               <input type="hidden" name="compte_rendu" value="{$curr_consult->compte_rendu|escape:html}" />
               <input type="hidden" name="cr_valide" value="{$curr_consult->cr_valide}" />
-              <button type="button" onclick="editModeleC({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
-              {if !$curr_consult->cr_valide}
-              <button type="button" onclick="validerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/check.png" /></button>
+              {if $curr_consult->compte_rendu == ''}
+                {if $chirSel}
+                <select name="listCRC{$curr_consult->consultation_id}" onchange="editModeleC({$curr_consult->consultation_id}, this.value)">
+                  <option value="-1">&mdash; Modeles &mdash;</option>
+                  {foreach from=$crConsult item=curr_cr}
+                  <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>
+                  {/foreach}
+                </select>
+                {else}
+                Choisir un chir
+                {/if}
+              {else}
+                <button type="button" onclick="editModeleC({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
+                {if !$curr_consult->cr_valide}
+                <button type="button" onclick="validerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/check.png" /></button>
+                {/if}
+                <button type="button" onclick="supprimerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/trash.png" /></button>
+                <button type="button" onclick="imprimerCRC({$curr_consult->consultation_id})"><img src="modules/dPcabinet/images/print.png" /></button>
               {/if}
-              <button type="button" onclick="supprimerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/trash.png" /></button>
-              <button type="button" onclick="imprimerCRC({$curr_consult->consultation_id})"><img src="modules/dPcabinet/images/print.png" /></button>
               </form>
             </td>
           </tr>

@@ -110,7 +110,6 @@ $where = array();
 $where["chrono"] = "= ".CC_TERMINE;
 $where["cr_valide"] = "= 0";
 $where["annule"] = "!= 1";
-$where["compte_rendu"] = "!= ''";
 $listConsult = new CConsultation;
 $listConsult = $listConsult->loadList($where, "plageconsult_id", null, "plageconsult_id");
 $inId = array();
@@ -149,7 +148,7 @@ foreach($listPlageConsult as $key => $value) {
   $where["plageconsult_id"] = "= '".$value->plageconsult_id."'";
   $where["chrono"] = "= ".CC_TERMINE;
   $where["cr_valide"] = "= 0";
-  $where["compte_rendu"] = "!= ''";
+  $where["annule"] = "!= 1";
   $listConsult = new CConsultation;
   $listConsult = $listConsult->loadList($where, "heure");
   $listPlageConsult[$key]->_ref_consultations = $listConsult;
