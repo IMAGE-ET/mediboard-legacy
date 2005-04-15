@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
@@ -208,9 +208,9 @@ class COperation extends CDpObject {
     $plageTmp->load($this->plageop_id);
     if($plageTmp->id_spec) {
       $plageTmp->id_spec = 0;
-      $chirTmp = new CUser;
+      $chirTmp = new CMediusers;
       $chirTmp->load($this->chir_id);
-      $plageTmp->id_chir = $chirTmp->user_username;
+      $plageTmp->id_chir = $chirTmp->_user_username;
       $plageTmp->store();
     }
     
@@ -219,7 +219,7 @@ class COperation extends CDpObject {
   }
   
   function loadRefsFwd() {
-    $this->_ref_chir = new CUser;
+    $this->_ref_chir = new CMediusers;
     $this->_ref_chir->load($this->chir_id);
         
     $this->_ref_pat = new CPatient;

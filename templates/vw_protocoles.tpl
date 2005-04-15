@@ -89,8 +89,8 @@ function setClose(user_id,
           <td class="text">
             {if $dialog}
             <a href="#" onclick="setClose('{$curr_protocole->_ref_chir->user_id}',
-                                '{$curr_protocole->_ref_chir->user_last_name|escape:javascript}',
-                                '{$curr_protocole->_ref_chir->user_first_name|escape:javascript}',
+                                '{$curr_protocole->_ref_chir->_user_last_name|escape:javascript}',
+                                '{$curr_protocole->_ref_chir->_user_first_name|escape:javascript}',
                                 '{$curr_protocole->CCAM_code}',
                                 '{$curr_protocole->_hour_op}',
                                 '{$curr_protocole->_min_op}',
@@ -104,7 +104,7 @@ function setClose(user_id,
             {else}
             <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab={$tab}{/if}&amp;protocole_id={$curr_protocole->operation_id}">
             {/if}
-              <strong>{$curr_protocole->_ref_chir->user_last_name} {$curr_protocole->_ref_chir->user_first_name} &mdash; {$curr_protocole->_ext_code_ccam->code}</strong>
+              <strong>{$curr_protocole->_ref_chir->_view} &mdash; {$curr_protocole->_ext_code_ccam->code}</strong>
             </a>
             {$curr_protocole->_ext_code_ccam->libelleLong}
           </td>
@@ -124,7 +124,7 @@ function setClose(user_id,
 
         <tr>
           <th>Chirurgien:</th>
-          <td colspan="3"><strong>{$protSel->_ref_chir->user_last_name} {$protSel->_ref_chir->user_first_name}</strong></td>
+          <td colspan="3"><strong>{$protSel->_ref_chir->_view}</strong></td>
         </tr>
         
         <tr>

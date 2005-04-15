@@ -8,7 +8,6 @@
 */
 
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 global $AppUI, $canRead, $canEdit, $m;

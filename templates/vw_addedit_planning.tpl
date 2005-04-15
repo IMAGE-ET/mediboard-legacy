@@ -347,7 +347,7 @@ function printForm() {
             <input type="hidden" name="chir_id" value="{$chir->user_id}" />
             <label for="editFrm_chir_id">Chirurgien:</label>
           </th>
-          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if ($chir)}{$chir->user_last_name} {$chir->user_first_name}{/if}" readonly="readonly" /></td>
+          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if ($chir)}{$chir->_view}{/if}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
 

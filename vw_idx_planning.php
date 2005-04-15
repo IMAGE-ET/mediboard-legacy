@@ -14,7 +14,6 @@ require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 require_once( $AppUI->getModuleClass('mediusers', 'groups') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
-require_once( $AppUI->getModuleClass('admin') );
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );

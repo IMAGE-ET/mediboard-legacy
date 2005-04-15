@@ -12,7 +12,6 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 require_once( $AppUI->getModuleClass('mediusers', 'groups') );
-require_once( $AppUI->getModuleClass('admin') );
 
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );

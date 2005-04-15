@@ -9,7 +9,7 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
-require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
@@ -36,9 +36,9 @@ $type_adm = dPgetParam($_GET, "type_adm", 0);
 $chambre = dPgetParam($_GET, "chambre", 0);
 
 //Création des champs de la variable $adm
-$chir = new CUser();
+$chir = new CMediusers();
 $chir->load($chir_id);
-$adm["chirName"] = $chir->user_last_name." ".$chir->user_first_name;
+$adm["chirName"] = $chir->_view;
 
 $pat = new CPatient();
 $pat->load($pat_id);
