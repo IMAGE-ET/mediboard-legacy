@@ -10,7 +10,7 @@ function checkForm() {
   return true;
 }
 
-function popColor {
+function popColor() {
   var url = "./index.php?m=public";
   url += "&a=color_selector";
   url += "&dialog=1";
