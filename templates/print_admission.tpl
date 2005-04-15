@@ -1,7 +1,7 @@
 <table class="form" id="admission">
   <tr><th class="title" colspan="2"><a href="javascript:window.print()">Récapitulatif admission</a></th></tr>
 
-  <tr><th>Chirurgien: </th><td>Dr. {$admission->_ref_chir->user_last_name} {$admission->_ref_chir->user_first_name}</td></tr>
+  <tr><th>Chirurgien: </th><td>Dr. {$admission->_ref_chir->_view}</td></tr>
   
   <tr><th class="category" colspan="2">Informations sur le patient</th></tr>
   
