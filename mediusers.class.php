@@ -17,7 +17,7 @@ require_once($AppUI->getModuleFunctions('admin'));
 $utypes_flip = array_flip($utypes);
 
 /**
- * The CMediuser class
+ * The CMediusers class
  */
 class CMediusers extends CDpObject {
   // DB Table key
@@ -27,13 +27,16 @@ class CMediusers extends CDpObject {
 	var $function_id = null;
 
   // dotProject user fields
-  var $_user_type       = null;
+    var $_user_type       = null;
 	var $_user_username   = null;
 	var $_user_password   = null;
 	var $_user_first_name = null;
 	var $_user_last_name  = null;
 	var $_user_email      = null;
 	var $_user_phone      = null;
+
+  // Other fields
+    var $_view = null;
   
   // Object references
   var $_ref_function = null;
@@ -109,6 +112,7 @@ class CMediusers extends CDpObject {
       $this->_user_last_name  = $user->user_last_name ;
       $this->_user_email      = $user->user_email     ;
       $this->_user_phone      = $user->user_phone     ;
+      $this->_view            = $user->user_last_name." ".$user->user_first_name;
     }
   }
 
