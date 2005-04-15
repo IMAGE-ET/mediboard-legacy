@@ -202,14 +202,14 @@ function pageMain() {
 		    </td>
 		  </tr>
 		  <tr class="dates">
-		    <td colspan="2">
+		    <td class="text" colspan="2">
 		      Entrée: 
 		      {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
 		      ({$curr_affectation->_entree_relative} jours)
 		    </td>
 		  </tr>
 		  <tr class="dates">
-		    <td>
+		    <td class="text">
               <form name="splitAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
 
               <input type="hidden" name="dosql" value="do_affectation_split" />
@@ -247,10 +247,10 @@ function pageMain() {
 		    </td>
 		  </tr>
 	      <tr class="dates">
-	        <td colspan="2">Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</td>
+	        <td class="text" colspan="2">Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</td>
 	      </tr>
 	      <tr class="dates">
-	        <td colspan="2">
+	        <td class="text" colspan="2">
 	          <strong>{$curr_affectation->_ref_operation->_ext_code_ccam->code}</strong>:
 	          {$curr_affectation->_ref_operation->_ext_code_ccam->libelleLong}
 	          {if $curr_affectation->_ref_operation->CCAM_code2}
