@@ -9,7 +9,6 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
-require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('mediusers') );
 
 if (!$canEdit) {

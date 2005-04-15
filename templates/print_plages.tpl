@@ -4,7 +4,7 @@
   <tr><th><a href="javascript:window.print()">Planning du {$date}</a></th></tr>
   {foreach from=$listPlage item=curr_plage}
   <tr>
-    <td><b>{$curr_plage->date|date_format:"%d/%m/%Y"} - Dr. {$curr_plage->_ref_chir->user_last_name} {$curr_plage->_ref_chir->user_first_name}</b></td>
+    <td><b>{$curr_plage->date|date_format:"%d/%m/%Y"} - Dr. {$curr_plage->_ref_chir->_view}</b></td>
   </tr>
   <tr>
     <td>

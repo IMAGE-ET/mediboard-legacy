@@ -47,7 +47,7 @@
   {if $aff}
   {foreach from=$listPlage item=curr_plage}
   <tr>
-    <td coslpan="2"><b>{$curr_plage->date|date_format:"%a %d %b %Y"} - Dr. {$curr_plage->_ref_chir->user_first_name} {$curr_plage->_ref_chir->user_last_name}</b></td>
+    <td coslpan="2"><b>{$curr_plage->date|date_format:"%a %d %b %Y"} - Dr. {$curr_plage->_ref_chir->_view}</b></td>
   </tr>
   <tr>
     <td colspan="2">

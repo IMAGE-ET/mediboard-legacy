@@ -13,7 +13,6 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'tarif') );
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('admin') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie') );
 

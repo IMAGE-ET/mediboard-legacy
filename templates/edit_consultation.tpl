@@ -286,7 +286,7 @@ function supprimerCompteRendu() {
                 <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
                   {$curr_op->_ref_plageop->date|date_format:"%a %d %b %Y"}</a></td>
                 <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-                  Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name}</a></td>
+                  Dr. {$curr_op->_ref_chir->_view}</a></td>
               </tr>
               {/foreach}
               
@@ -305,7 +305,7 @@ function supprimerCompteRendu() {
                 <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
                   {$curr_consult->_ref_plageconsult->date|date_format:"%a %d %b %Y"}</a></td>
                 <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
-                  Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}</a></td>
+                  Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}</a></td>
               </tr>
               {/foreach}
               {/if}

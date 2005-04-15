@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 class CPlageconsult extends CDpObject {
@@ -48,7 +48,7 @@ class CPlageconsult extends CDpObject {
   
   function loadRefs($withCanceled = true) {
     // Forward references
-    $this->_ref_chir = new CUser();
+    $this->_ref_chir = new CMediusers();
     $this->_ref_chir->load($this->chir_id);
     // Backward references
     if(!$withCanceled)
@@ -61,7 +61,7 @@ class CPlageconsult extends CDpObject {
   
   function loadRefsFwd() {
     // Forward references
-    $this->_ref_chir = new CUser();
+    $this->_ref_chir = new CMediusers();
     $this->_ref_chir->load($this->chir_id);
   }
   

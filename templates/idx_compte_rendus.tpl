@@ -139,8 +139,7 @@ function printPack(op, form) {
       <tr><th class="category" colspan="4">Consultations</th></tr>
       {foreach from=$patSel->_ref_consultations item=curr_consult}
       <tr class="groupcollapse" id="consult{$curr_consult->consultation_id}" onclick="flipGroup({$curr_consult->consultation_id}, 'consult')">
-        <td colspan="4"><strong>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name}
-          {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}
+        <td colspan="4"><strong>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}
           &mdash; {$curr_consult->_ref_plageconsult->date|date_format:"%A %d %B %Y"}
       </strong></td></tr>
       <tr class="consult{$curr_consult->consultation_id}"><th colspan="2">Motif :</th><td class="text" colspan="2">{$curr_consult->motif}</td></tr>
@@ -209,8 +208,7 @@ function printPack(op, form) {
       <tr><th class="category" colspan="4">Interventions</th></tr>
       {foreach from=$patSel->_ref_operations item=curr_op}
       <tr class="groupcollapse" id="op{$curr_op->operation_id}" onclick="flipGroup({$curr_op->operation_id}, 'op')">
-        <td colspan="4"><strong>Dr. {$curr_op->_ref_chir->user_last_name}
-        {$curr_op->_ref_chir->user_first_name}
+        <td colspan="4"><strong>Dr. {$curr_op->_ref_chir->_view}
         &mdash; {$curr_op->_ref_plageop->date|date_format:"%A %d %B %Y"}
       </strong></td></tr>
       <tr class="op{$curr_op->operation_id}"><td class="text" colspan="4">{$curr_op->_ext_code_ccam->code} :
@@ -320,7 +318,7 @@ function printPack(op, form) {
           {foreach from=$listPlageConsult item=curr_plage}
           <tr>
             <th class="category" colspan="3">
-              Dr. {$curr_plage->_ref_chir->user_first_name} {$curr_plage->_ref_chir->user_last_name} le {$curr_plage->date|date_format:"%a %d/%m/%y"} ({$curr_plage->total})
+              Dr. {$curr_plage->_ref_chir->_view} le {$curr_plage->date|date_format:"%a %d/%m/%y"} ({$curr_plage->total})
             </th>
           </tr>
           {foreach from=$curr_plage->_ref_consultations item=curr_consult}
@@ -368,7 +366,7 @@ function printPack(op, form) {
           {foreach from=$listPlageOp item=curr_plage}
           <tr>
             <th class="category" colspan="3">
-              Dr. {$curr_plage->_ref_chir->user_first_name} {$curr_plage->_ref_chir->user_last_name} le {$curr_plage->date|date_format:"%a %d/%m/%y"} ({$curr_plage->total})
+              Dr. {$curr_plage->_ref_chir->_view} le {$curr_plage->date|date_format:"%a %d/%m/%y"} ({$curr_plage->total})
             </th>
           </tr>
           {foreach from=$curr_plage->_ref_operations item=curr_op}
