@@ -20,8 +20,9 @@ $serviceSel = new CService;
 $serviceSel->load(mbGetValueFromGetOrSession("service_id"));
 
 // Récupération des services
+$order = "nom";
 $services = new CService;
-$services = $services->loadList();
+$services = $services->loadList(null, $order);
 
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));

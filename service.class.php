@@ -30,11 +30,12 @@ class CService extends CDpObject {
 		$this->CDpObject( 'service', 'service_id' );
 	}
 
-  function loadRefs() {
+  function loadRefsBack() {
     // Backward references
     $where["service_id"] = "= '$this->service_id'";
+    $order = "nom";
     $this->_ref_chambres = new CChambre;
-    $this->_ref_chambres = $this->_ref_chambres->loadList($where);
+    $this->_ref_chambres = $this->_ref_chambres->loadList($where, $order);
   }
 
   function canDelete(&$msg, $oid = null) {

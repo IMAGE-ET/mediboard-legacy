@@ -1,5 +1,10 @@
 {literal}
 <script language="javascript">
+
+function pageMain() {
+  initGroups("service");
+}
+
 function checkChambre() {
   var form = document.editChambre;
   var field = null;
@@ -59,11 +64,11 @@ function checkLit() {
     </tr>
     
 	{foreach from=$services item=curr_service}
-	<tr class="groupcollapse" id="group{$service->service_id}">
+	<tr class="groupcollapse" id="service{$curr_service->service_id}" onclick="flipGroup({$curr_service->service_id}, 'service')">
 	  <td colspan="4">{$curr_service->nom}</td>
 	</tr>
 	{foreach from=$curr_service->_ref_chambres item=curr_chambre}
-    <tr>
+    <tr class="service{$curr_service->service_id}">
       <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_chambre->chambre_id}&amp;lit_id=0">{$curr_chambre->nom}</a></td>
       <td class="text">{$curr_chambre->caracteristiques|nl2br}</td>
       <td>
@@ -163,6 +168,7 @@ function checkLit() {
         <input type="text" name="nom" value="{$litSel->nom}" />
         {if $litSel->lit_id}
         <input type="submit" value="Modifier" />
+        <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le lit', '{$litSel->nom|escape:javascript}')" />
         {else}
         <input type="submit" value="Créer" />
         {/if}
