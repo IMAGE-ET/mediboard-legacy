@@ -52,14 +52,9 @@ class CLit extends CDpObject {
     $this->checkDispo($date);
   }
 
-  function loadRefFwd() {
-    // Forward references
-    $where = array (
-      "chambre_id" => "= '$this->chambre_id'"
-    );
-
+  function loadRefsFwd() {
     $this->_ref_chambre = new CChambre;
-    $this->_ref_chambre->load($where);
+    $this->_ref_chambre->load($this->chambre_id);
   }
 
   function canDelete(&$msg, $oid = null) {

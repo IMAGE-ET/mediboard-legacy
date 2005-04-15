@@ -203,7 +203,11 @@ function pageMain() {
 		  </tr>
 		  <tr class="dates">
 		    <td class="text" colspan="2">
-		      Entrée: 
+		      {if $curr_affectation->_ref_prev->affectation_id}
+		      Déplacé (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom})
+		      {else}
+		      Entrée
+		      {/if}:
 		      {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
 		      ({$curr_affectation->_entree_relative} jours)
 		    </td>
@@ -226,7 +230,11 @@ function pageMain() {
 		        <img id="splitAffectation{$curr_affectation->affectation_id}__trigger_split" src="modules/{$m}/images/move.gif" alt="Move" title="Déplacer un patient" />
 		      </a>
 
+		      {if $curr_affectation->_ref_next->affectation_id}
+		      Déplacé (chambre: {$curr_affectation->_ref_next->_ref_lit->_ref_chambre->nom})
+		      {else}
 		      Sortie:
+		      {/if}
 		      {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}
 		      ({$curr_affectation->_sortie_relative} jours)
 		    </td>
@@ -263,7 +271,7 @@ function pageMain() {
 		  {foreachelse}
 		  <tr class="litdispo"><td colspan="2">Lit disponible</td></tr>
 		  <tr class="litdispo">
-		    <td colspan="2">
+		    <td class="text" colspan="2">
 		    depuis:
 		    {if $curr_lit->_ref_last_dispo && $curr_lit->_ref_last_dispo->affectation_id}
 		    {$curr_lit->_ref_last_dispo->sortie|date_format:"%A %d %B %H:%M"} 
@@ -274,7 +282,7 @@ function pageMain() {
 		    </td>
 		  </tr>
 		  <tr class="litdispo">
-		    <td colspan="2">
+		    <td class="text" colspan="2">
 		    jusque: 
 		    {if $curr_lit->_ref_next_dispo && $curr_lit->_ref_next_dispo->affectation_id}
 		    {$curr_lit->_ref_next_dispo->entree|date_format:"%A %d %B %H:%M"}

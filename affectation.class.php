@@ -64,7 +64,21 @@ class CAffectation extends CDpObject {
     $this->_ref_operation = new COperation;
     $this->_ref_operation->loadObject($where);
 
+    $where = array (
+      "operation_id" => "= '$this->operation_id'",
+      "sortie" => "= '$this->entree'"
+    );
     
+    $this->_ref_prev = new CAffectation;
+    $this->_ref_prev->loadObject($where);
+    
+    $where = array (
+      "operation_id" => "= '$this->operation_id'",
+      "entree" => "= '$this->sortie'"
+    );
+    
+    $this->_ref_next = new CAffectation;
+    $this->_ref_next->loadObject($where);
   }
   
   function checkDaysRelative($date) {
