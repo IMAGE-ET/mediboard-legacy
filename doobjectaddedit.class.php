@@ -14,7 +14,8 @@ class CDoObjectAddEdit {
   var $createMsg = null;
   var $modifyMsg = null;
   var $deleteMsg = null;
-  var $redirect = null;
+  var $redirectStore  = null;
+  var $redirectError  = null;
   var $redirectDelete = null;
   var $_obj = null;
     
@@ -23,7 +24,8 @@ class CDoObjectAddEdit {
     
     $this->className = $className;
     $this->objectKeyGetVarName = $objectKeyGetVarName;
-    $this->redirect = "m={$m}";
+    $this->redirectStore  = "m={$m}";
+    $this->redirectError  = "m={$m}";
     $this->redirectDelete = "m={$m}";
     $this->createMsg = "Object of type $className created";
     $this->modifyMsg = "Object of type $className modified";
@@ -36,8 +38,10 @@ class CDoObjectAddEdit {
     // Object binding
     $this->_obj = new $this->className();
     if (!$this->_obj->bind( $_POST )) {
-      $AppUI->setMsg( $this->_obj->getError(), UI_MSG_ERROR );
-      $AppUI->redirect($this->redirect);
+      if ($this->redirectError) {
+        $AppUI->setMsg( $this->_obj->getError(), UI_MSG_ERROR );
+        $AppUI->redirect($this->redirectError);
+      }
     }
   }
   
@@ -45,17 +49,23 @@ class CDoObjectAddEdit {
     global $AppUI;
 
     if (!$this->_obj->canDelete( $msg )) {
-      $AppUI->setMsg( $msg, UI_MSG_ERROR );
-      $AppUI->redirect();
+      if ($this->redirectError) {
+        $AppUI->setMsg( $msg, UI_MSG_ERROR );
+        $AppUI->redirect($this->redirectError);
+      }
     }
     
     if ($msg = $this->_obj->delete()) {
-      $AppUI->setMsg( $msg, UI_MSG_ERROR );
-      $AppUI->redirect($this->redirect);
+      if ($this->$this->redirectError) {
+        $AppUI->setMsg( $msg, UI_MSG_ERROR );
+        $AppUI->redirect($this->redirectError);
+      }
     } else {
       mbSetValueToSession($this->objectKeyGetVarName);
-      $AppUI->setMsg($this->deleteMsg, UI_MSG_ALERT);
-      $AppUI->redirect($this->redirectDelete);
+      if ($this->redirectDelete) {
+        $AppUI->setMsg($this->deleteMsg, UI_MSG_ALERT);
+        $AppUI->redirect($this->redirectDelete);
+      }
     }
   }
   
@@ -63,13 +73,17 @@ class CDoObjectAddEdit {
     global $AppUI;
 
     if ($msg = $this->_obj->store()) {
-      $AppUI->setMsg($msg, UI_MSG_ERROR);
+      if ($this->redirectError) {
+        $AppUI->setMsg($msg, UI_MSG_ERROR);
+        $AppUI->redirect($this->redirectError);
+      }
     } else {
       $isNotNew = @$_POST[$this->objectKeyGetVarName];
-      $AppUI->setMsg( $isNotNew ? $this->createMsg : $this->createMsg, UI_MSG_OK);
+      if ($this->redirectStore) {
+        $AppUI->setMsg( $isNotNew ? $this->createMsg : $this->createMsg, UI_MSG_OK);
+        $AppUI->redirect($this->redirectStore);
+      }
     }
-  
-    $AppUI->redirect($this->redirect);
 	}
   
   function doIt() {
