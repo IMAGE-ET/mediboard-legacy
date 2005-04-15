@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcompteRendu';
-$config['mod_version'] = '0.13';
+$config['mod_version'] = '0.14';
 $config['mod_directory'] = 'dPcompteRendu';
 $config['mod_setup_class'] = 'CSetupdPcompteRendu';
 $config['mod_type'] = 'user';
