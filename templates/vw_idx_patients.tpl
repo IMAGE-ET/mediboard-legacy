@@ -188,7 +188,7 @@ function printPatient(id) {
           <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
             {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"} (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})</a></td>
           <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-            Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name}</a></td>
+            Dr. {$curr_op->_ref_chir->_view}</a></td>
           <td>{if $curr_op->annulee}[ANNULE]{else}
           <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
           <img src="modules/dPpatients/images/planning.png" title="modifier"></a>{/if}</td>
@@ -202,7 +202,7 @@ function printPatient(id) {
           <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
             {$curr_consult->_ref_plageconsult->date|date_format:"%d %b %Y"}</a></td>
           <td><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
-            Dr. {$curr_consult->_ref_plageconsult->_ref_chir->user_last_name} {$curr_consult->_ref_plageconsult->_ref_chir->user_first_name}</a></td>
+            Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}</a></td>
           <td>{if $curr_consult->annule}[ANNULE]{else}
           <a href="index.php?m=dPcabinet&amp;tab=edit_planning&amp;consultation_id={$curr_consult->consultation_id}">
           <img src="modules/dPpatients/images/planning.png" title="modifier"></a>{/if}</td>

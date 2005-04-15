@@ -39,7 +39,7 @@
   
   {foreach from=$patient->_ref_operations item=curr_op}
   <tr>
-    <th>Dr. {$curr_op->_ref_chir->user_last_name} {$curr_op->_ref_chir->user_first_name}</th>
+    <th>Dr. {$curr_op->_ref_chir->_view}</th>
     <td>le {$curr_op->_ref_plageop->_date}</td>
   </tr>
   {/foreach}
