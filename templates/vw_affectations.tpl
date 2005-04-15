@@ -185,7 +185,7 @@ function pageMain() {
 		  {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
 		  <tr class="patient">
 		    <td>{$curr_affectation->_ref_operation->_ref_pat->_view}</td>
-		    <td class="action">
+		    <td class="action" style="background:#{$curr_affectation->_ref_operation->_ref_chir->_ref_function->color}">
 		      {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
 
               <form name="rmvAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
@@ -327,7 +327,7 @@ function pageMain() {
         <td class="patient" onclick="flipOperation({$curr_operation->operation_id})">
           {$curr_operation->_ref_pat->_view} ({$curr_operation->duree_hospi} jours)
         </td>
-        <td class="selectoperation">
+        <td class="selectoperation" style="background:#{$curr_operation->_ref_chir->_ref_function->color}">
           <input type="radio" id="hospitalisation{$curr_operation->operation_id}" onclick="selectHospitalisation({$curr_operation->operation_id})" />
         </td>
       </tr>

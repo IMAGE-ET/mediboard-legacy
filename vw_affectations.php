@@ -44,6 +44,7 @@ foreach ($services as $service_id => $service) {
         $affectations[$affectation_id]->checkDaysRelative($date);
         $operation =& $affectations[$affectation_id]->_ref_operation;
         $operation->loadRefsFwd();
+        $operation->_ref_chir->loadRefsFwd();
       }
     }
 
@@ -68,6 +69,7 @@ $opNonAffecteesJour = $opNonAffecteesJour->loadList($where, $order, null, null, 
 
 foreach ($opNonAffecteesJour as $op_id => $op) {
   $opNonAffecteesJour[$op_id]->loadRefs();
+  $opNonAffecteesJour[$op_id]->_ref_chir->loadRefsFwd();
 }
 
 // Admissions antérieures
@@ -80,6 +82,7 @@ $opNonAffecteesAvant = $opNonAffecteesAvant->loadList($where, $order, null, null
 
 foreach ($opNonAffecteesAvant as $op_id => $op) {
   $opNonAffecteesAvant[$op_id]->loadRefs();
+  $opNonAffecteesAvant[$op_id]->_ref_chir->loadRefsFwd();
 }
 
 $groupOpNonAffectees = array(
