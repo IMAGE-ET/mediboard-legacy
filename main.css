@@ -984,6 +984,7 @@ table.chambreexpand {
   width: 100%;
   border-spacing: 0px;
   border-collapse: collapse;
+  margin: 1px 0;
 }
 
 table.chambrecollapse td,
@@ -1001,10 +1002,12 @@ table.chambreexpand td.action {
 }
 
 table.chambrecollapse th.chambre {
+  padding: 2px 30px;
   background: #aaa url(./images/collapse.gif) no-repeat center left;
 }
 
 table.chambreexpand th.chambre {
+  padding: 2px 30px;
   background: #aaa url(./images/expand.gif) no-repeat center left;
 }
 
@@ -1029,6 +1032,14 @@ table.chambrecollapse tr.lit,
 table.chambrecollapse tr.litdispo,
 table.chambrecollapse tr.dates {
   display: none;
+}
+
+table.chambreexpand td.dates {
+  white-space: normal;
+  color: red;
+}
+
+table.chambreexpand tr.dates {
 }
 
 /* Operations */
