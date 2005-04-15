@@ -54,10 +54,11 @@ foreach ($services as $service_id => $service) {
 
 // Récupération des admissions à affecter
 $leftjoin = array(
-  "affectation" => "operations.operation_id = affectation.operation_id"
+  "affectation"     => "operations.operation_id = affectation.operation_id",
+  "users_mediboard" => "operations.chir_id = users_mediboard.user_id"
 );
 $ljwhere = "affectation.affectation_id IS NULL";
-$order = "duree_hospi DESC";
+$order = "users_mediboard.function_id, duree_hospi DESC";
 
 // Admissions du jour
 $where = array(
