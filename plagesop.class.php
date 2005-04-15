@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once($AppUI->getModuleClass("admin"));
+require_once($AppUI->getModuleClass("mediusers"));
 require_once($AppUI->getModuleClass("mediusers", "functions"));
 require_once($AppUI->getModuleClass("dPbloc", "salle"));
 
@@ -58,13 +58,13 @@ class CPlageOp extends CDpObject {
     if ($this->id_chir) {
       $sql = "SELECT user_id FROM users WHERE user_username = '$this->id_chir'";
       $result = db_loadlist($sql);
-      $this->_ref_chir = new CUser;
+      $this->_ref_chir = new CMediusers;
       $this->_ref_chir->load($result[0]["user_id"]);
     }
     if ($this->id_anesth) {
       $sql = "SELECT user_id FROM users WHERE user_username = '$this->id_anesth'";
       $result = db_loadlist($sql);
-      $this->_ref_anesth = new CUser;
+      $this->_ref_anesth = new CMediusers;
       $this->_ref_anesth->load($result[0]["user_id"]);
     }
     if ($this->id_spec) {
