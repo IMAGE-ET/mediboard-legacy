@@ -56,10 +56,23 @@ function dateChanged(calendar) {
   window.location = url;
 }
 
-function dateAffectationChanged() {
-  if (calendar.dateClicked) {
-	  alert(calendar.date);
+function submitAffectationSplit(form) {
+  form._new_lit_id.value = selected_lit;
+  if (!selected_lit) {
+    alert("Veuillez sélectionner un nouveau lit et revalider la date");
+    return;
   }
+  
+  if (form._date_split.value <= form.entree.value || 
+      form._date_split.value >= form.sortie.value) {
+    var msg = "La date de déplacement (" + form._date_split.value + ") doit être comprise entre";
+    msg += "\n- la date d'entrée: " + form.entree.value; 
+    msg += "\n- la date de sortie: " + form.sortie.value;
+    alert(msg);
+    return;
+  }
+  
+  form.submit();
 }
 
 function setupCalendar(affectation_id) {
@@ -68,7 +81,7 @@ function setupCalendar(affectation_id) {
   Calendar.setup( {
       inputField  : form.name + "_sortie",
 	  ifFormat    : "%Y-%m-%d %H:%M",
-	  button      : form.name + "__trigger_date",
+	  button      : form.name + "__trigger_sortie",
 	  showsTime   : true,
 	  onUpdate    : function() { 
         if (calendar.dateClicked) {
@@ -78,13 +91,20 @@ function setupCalendar(affectation_id) {
     }
   );
   
-  var cookie = new CJL_CookieUtil("chambres");
-  chambres = cookie.getAllSubValues();
-  for (chambreId in chambres) {
-    if (chambre = document.getElementById(chambreId)) {
-      chambre.className = chambres[chambreId];
+  var form = eval("document.splitAffectation" + affectation_id);
+
+  Calendar.setup( {
+      inputField  : form.name + "__date_split",
+	  ifFormat    : "%Y-%m-%d %H:%M",
+	  button      : form.name + "__trigger_split",
+	  showsTime   : true,
+	  onUpdate    : function() { 
+        if (calendar.dateClicked) {
+          submitAffectationSplit(form)
+        }
+	  }
     }
-  }
+  );
 }
 
 function pageMain() {
@@ -100,12 +120,20 @@ function pageMain() {
 {foreach from=$curr_service->_ref_chambres item=curr_chambre}
 {foreach from=$curr_chambre->_ref_lits item=curr_lit}
 {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
-setupCalendar({$curr_affectation->affectation_id});
+  setupCalendar({$curr_affectation->affectation_id});
 {/foreach}
 {/foreach}
 {/foreach}
 {/foreach}
 {literal}
+
+  var cookie = new CJL_CookieUtil("chambres");
+  chambres = cookie.getAllSubValues();
+  for (chambreId in chambres) {
+    if (chambre = document.getElementById(chambreId)) {
+      chambre.className = chambres[chambreId];
+    }
+  }
 }
 
 {/literal}  
@@ -144,7 +172,7 @@ setupCalendar({$curr_affectation->affectation_id});
 		  </tr>
 		  {foreach from=$curr_chambre->_ref_lits item=curr_lit}
 		  <tr class="lit" >
-		    <td>
+		    <td colspan="1">
 		      {if $curr_lit->_overbooking}
 		      <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_lit->_overbooking} collisions">
 		      {/if}
@@ -174,10 +202,34 @@ setupCalendar({$curr_affectation->affectation_id});
 		    </td>
 		  </tr>
 		  <tr class="dates">
-		    <td colspan="2">Entrée: {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}</td>
+		    <td colspan="2">
+		      Entrée: 
+		      {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
+		      ({$curr_affectation->_entree_relative} jours)
+		    </td>
 		  </tr>
 		  <tr class="dates">
-		    <td>Sortie:  {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}</td>
+		    <td>
+              <form name="splitAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
+
+              <input type="hidden" name="dosql" value="do_affectation_split" />
+              <input type="hidden" name="affectation_id" value="{$curr_affectation->affectation_id}" />
+              <input type="hidden" name="operation_id" value="{$curr_affectation->operation_id}" />
+              <input type="hidden" name="entree" value="{$curr_affectation->entree}" />
+              <input type="hidden" name="sortie" value="{$curr_affectation->sortie}" />
+              <input type="hidden" name="_new_lit_id" value="" />
+              <input type="hidden" name="_date_split" value="{$curr_affectation->sortie}" />
+
+              </form>
+              
+		      <a style="float: right;">
+		        <img id="splitAffectation{$curr_affectation->affectation_id}__trigger_split" src="modules/{$m}/images/move.gif" alt="Move" title="Déplacer un patient" />
+		      </a>
+
+		      Sortie:
+		      {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}
+		      ({$curr_affectation->_sortie_relative} jours)
+		    </td>
 		    <td class="action">
 		      {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
 
@@ -190,17 +242,32 @@ setupCalendar({$curr_affectation->affectation_id});
               </form>
               
 		      <a>
-		        <img id="editAffectation{$curr_affectation->affectation_id}__trigger_date" src="modules/{$m}/images/planning.png" alt="Planning" title="Modifier la date de sortie">
+		        <img id="editAffectation{$curr_affectation->affectation_id}__trigger_sortie" src="modules/{$m}/images/planning.png" alt="Planning" title="Modifier la date de sortie" />
 		      </a>
 		    </td>
 		  </tr>
+	      <tr class="dates">
+	        <td colspan="2">Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</td>
+	      </tr>
+	      <tr class="dates">
+	        <td colspan="2">
+	          <strong>{$curr_affectation->_ref_operation->_ext_code_ccam->code}</strong>:
+	          {$curr_affectation->_ref_operation->_ext_code_ccam->libelleLong}
+	          {if $curr_affectation->_ref_operation->CCAM_code2}
+	          <br />
+	          <strong>{$curr_affectation->_ref_operation->_ext_code_ccam2->code}</strong>:
+	          {$curr_affectation->_ref_operation->_ext_code_ccam2->libelleLong}
+	          {/if}         
+	        </td>
+	      </tr>
 		  {foreachelse}
 		  <tr class="litdispo"><td colspan="2">Lit disponible</td></tr>
 		  <tr class="litdispo">
 		    <td colspan="2">
 		    depuis:
 		    {if $curr_lit->_ref_last_dispo && $curr_lit->_ref_last_dispo->affectation_id}
-		    {$curr_lit->_ref_last_dispo->sortie|date_format:"%A %d %B %H:%M"} ({$curr_lit->_ref_last_dispo->_sortie_relative} jours)
+		    {$curr_lit->_ref_last_dispo->sortie|date_format:"%A %d %B %H:%M"} 
+		    ({$curr_lit->_ref_last_dispo->_sortie_relative} jours)
 		    {else}
 		    Toujours
 		    {/if}
@@ -210,7 +277,8 @@ setupCalendar({$curr_affectation->affectation_id});
 		    <td colspan="2">
 		    jusque: 
 		    {if $curr_lit->_ref_next_dispo && $curr_lit->_ref_next_dispo->affectation_id}
-		    {$curr_lit->_ref_next_dispo->entree|date_format:"%A %d %B %H:%M"} ({$curr_lit->_ref_next_dispo->_entree_relative} jours)
+		    {$curr_lit->_ref_next_dispo->entree|date_format:"%A %d %B %H:%M"}
+		    ({$curr_lit->_ref_next_dispo->_entree_relative} jours)
 		    {else}
 		    Toujours
 		    {/if}
@@ -268,6 +336,20 @@ setupCalendar({$curr_affectation->affectation_id});
       </tr>
       <tr>
         <td class="date" colspan="2">Sortie: {$curr_operation->_sortie_adm|date_format:"%A %d %B %H:%M"}</td>
+      </tr>
+      <tr>
+        <td class="date" colspan="2">Dr. {$curr_operation->_ref_chir->_view}</td>
+      </tr>
+      <tr>
+        <td class="date" colspan="2">
+          <strong>{$curr_operation->_ext_code_ccam->code}</strong>:
+          {$curr_operation->_ext_code_ccam->libelleLong}
+          {if $curr_operation->CCAM_code2}
+          <br />
+          <strong>{$curr_operation->_ext_code_ccam2->code}</strong>:
+          {$curr_operation->_ext_code_ccam2->libelleLong}
+          {/if}         
+        </td>
       </tr>
     </table>
     

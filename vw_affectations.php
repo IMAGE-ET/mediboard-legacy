@@ -41,6 +41,7 @@ foreach ($services as $service_id => $service) {
       $affectations =& $lits[$lit_id]->_ref_affectations;
       foreach ($affectations as $affectation_id => $affectation) {
         $affectations[$affectation_id]->loadRefs();
+        $affectations[$affectation_id]->checkDaysRelative($date);
         $operation =& $affectations[$affectation_id]->_ref_operation;
         $operation->loadRefsFwd();
       }
