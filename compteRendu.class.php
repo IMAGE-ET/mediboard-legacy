@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('mediusers') );
 
 class CCompteRendu extends CDpObject {
   // DB Table key
@@ -32,7 +32,7 @@ class CCompteRendu extends CDpObject {
   
   function loadRefsFwd() {
     // Forward references
-    $this->_ref_chir = new CUser;
+    $this->_ref_chir = new CMediusers;
     $this->_ref_chir->load($this->user_id);
   }
 }

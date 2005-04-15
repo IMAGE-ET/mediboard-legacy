@@ -73,7 +73,7 @@ function checkForm() {
     <tr>
       {eval var=$curr_liste->liste_choix_id assign="liste_id"}
       {assign var="href" value="?m=$m&amp;tab=$tab&amp;liste_id=$liste_id"}
-      <td><a href="{$href}">{$curr_liste->_ref_chir->user_last_name} {$curr_liste->_ref_chir->user_first_name}</a></td>
+      <td><a href="{$href}">{$curr_liste->_ref_chir->_view}</a></td>
       <td><a href="{$href}">{$curr_liste->nom}</a></td>
       <td><a href="{$href}">{$curr_liste->_valeurs|@count}</a></td>
       {if $curr_liste->_ref_compte_rendu->compte_rendu_id}

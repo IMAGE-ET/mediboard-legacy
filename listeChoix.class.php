@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 
 class CListeChoix extends CDpObject {
@@ -39,7 +39,7 @@ class CListeChoix extends CDpObject {
   
   function loadRefsFwd() {
     // Forward references
-    $this->_ref_chir = new CUser;
+    $this->_ref_chir = new CMediusers;
     $this->_ref_chir->load($this->chir_id);
     $this->_ref_compte_rendu = new CCompteRendu;
     $this->_ref_compte_rendu->load($this->compte_rendu_id);

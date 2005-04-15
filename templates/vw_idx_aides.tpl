@@ -176,7 +176,7 @@ function checkForm() {
     <tr>
       {eval var=$curr_aide->aide_id assign="aide_id"}
       {assign var="href" value="?m=$m&amp;tab=$tab&amp;aide_id=$aide_id"}
-      <td><a href="{$href}">{$curr_aide->_ref_user->user_last_name} {$curr_aide->_ref_user->user_first_name}</a></td>
+      <td><a href="{$href}">{$curr_aide->_ref_user->_view}</a></td>
       <td><a href="{$href}">{$curr_aide->_module_name}</a></td>
       <td><a href="{$href}">{$curr_aide->class}</a></td>
       <td><a href="{$href}">{$curr_aide->field}</a></td>

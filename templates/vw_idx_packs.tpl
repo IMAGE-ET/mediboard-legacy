@@ -72,7 +72,7 @@ function checkForm() {
     <tr>
       {eval var=$curr_pack->pack_id assign="pack_id"}
       {assign var="href" value="?m=$m&amp;tab=$tab&amp;pack_id=$pack_id"}
-      <td><a href="{$href}">{$curr_pack->_ref_chir->user_last_name} {$curr_pack->_ref_chir->user_first_name}</a></td>
+      <td><a href="{$href}">{$curr_pack->_ref_chir->_view}</a></td>
       <td><a href="{$href}">{$curr_pack->nom}</a></td>
       <td><a href="{$href}">{$curr_pack->_modeles|@count}</a></td>
     </tr>

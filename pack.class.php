@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 
 class CPack extends CDpObject {
@@ -37,7 +37,7 @@ class CPack extends CDpObject {
   
   function loadRefsFwd() {
     // Forward references
-    $this->_ref_chir = new CUser;
+    $this->_ref_chir = new CMediusers;
     $this->_ref_chir->load($this->chir_id);
   }
   

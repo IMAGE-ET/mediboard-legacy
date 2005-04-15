@@ -9,7 +9,7 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
-require_once( $AppUI->getModuleClass('admin') );
+require_once( $AppUI->getModuleClass('mediusers') );
 
 class CAideSaisie extends CDpObject {
   // DB Table key
@@ -44,7 +44,7 @@ class CAideSaisie extends CDpObject {
   
   function loadRefsFwd() {
     // Forward references
-    $this->_ref_user = new CUser;
+    $this->_ref_user = new CMediusers;
     $this->_ref_user->load($this->user_id);
   }
 }
