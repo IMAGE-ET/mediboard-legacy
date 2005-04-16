@@ -20,7 +20,7 @@ $year  = mbGetValueFromGetOrSession("year" , date("Y"));
 $month = mbGetValueFromGetOrSession("month", date("m"));
 $day   = mbGetValueFromGetOrSession("day"  , date("d"));
 $date = ($year and $month and $day) ? 
-  date("Y-m-d", mktime(0, 0, 0, $month, $day, $year)) : 
+  date("Y-m-d", mktime(0, 0, 0, $month+1, $day, $year)) : 
   date("Y-m-d");
 
 // Récupération du service à ajouter/éditer
@@ -76,6 +76,7 @@ $order = "users_mediboard.function_id, duree_hospi DESC";
 // Admissions du jour
 $where = array(
   "date_adm" => "= '$date'",
+  "type_adm" => "!= 'exte'",
   $ljwhere  
 );
 $opNonAffecteesJour = new COperation;

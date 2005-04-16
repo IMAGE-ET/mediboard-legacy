@@ -333,7 +333,7 @@ function pageMain() {
 	<table class="operationcollapse" id="operation{$curr_operation->operation_id}">
       <tr>
         <td class="patient" onclick="flipOperation({$curr_operation->operation_id})">
-          {$curr_operation->_ref_pat->_view} ({$curr_operation->duree_hospi} jours)
+          {$curr_operation->_ref_pat->_view} ({$curr_operation->duree_hospi}j-{$curr_operation->type_adm|truncate:1:""|capitalize})
         </td>
         <td class="selectoperation" style="background:#{$curr_operation->_ref_chir->_ref_function->color}">
           <input type="radio" id="hospitalisation{$curr_operation->operation_id}" onclick="selectHospitalisation({$curr_operation->operation_id})" />
