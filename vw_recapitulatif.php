@@ -1,0 +1,107 @@
+<?php /* $Id: */
+
+/**
+* @package Mediboard
+* @subpackage dPhospi
+* @version $Revision$
+* @author Romain OLLIVIER
+*/
+
+global $AppUI, $canRead, $canEdit, $m;
+
+require_once($AppUI->getModuleClass("mediusers", "functions"));
+require_once($AppUI->getModuleClass("dPhospi", "service"));
+require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
+
+if (!$canRead) {
+  $AppUI->redirect( "m=public&a=access_denied" );
+}
+
+$year  = mbGetValueFromGetOrSession("year" , date("Y"));
+$month = mbGetValueFromGetOrSession("month", date("m")-1);
+$day   = mbGetValueFromGetOrSession("day"  , date("d"));
+$date = ($year and $month and $day) ? 
+  date("Y-m-d", mktime(0, 0, 0, $month+1, $day, $year)) : 
+  date("Y-m-d");
+$firstDayOfWeek = mbDate("last monday", $date);
+
+$mainTab = array();
+$listDays = array();
+$listSpec = new CFunctions;
+$functions = $listSpec->loadSpecialites(PERM_READ);
+
+// Initialisation
+$curr_day = $firstDayOfWeek;
+for($i=0; $i<7; $i++){
+  $listDays[] = $curr_day;
+  $mainTab["allocated"]["functions"][0]["text"] = "Total placés";
+  $mainTab["allocated"]["functions"][0]["class"] = "groupcollapse";
+  $mainTab["allocated"]["functions"][0]["days"]["$curr_day"]["nombre"] = 0;
+  $mainTab["notallocated"]["functions"][0]["text"] = "Total à placer";
+  $mainTab["notallocated"]["functions"][0]["class"] = "groupcollapse";
+  $mainTab["notallocated"]["functions"][0]["days"]["$curr_day"]["nombre"] = 0;
+  $curr_day = mbDate("+ 1 day", $curr_day);
+}
+
+// Parcours des spécialités
+foreach($functions as $value){
+  $curr_day = $firstDayOfWeek;
+  $function = $value->function_id;
+  $mainTab["allocated"]["functions"][$function]["text"] = $value->text;
+  $mainTab["allocated"]["functions"][$function]["class"] = "allocated";
+  $mainTab["notallocated"]["functions"][$function]["text"] = $value->text;
+  $mainTab["notallocated"]["functions"][$function]["class"] = "notallocated";
+
+  // Parcours des jours
+  for($i=0; $i<7; $i++) {
+  	// Interventions affectées
+    $sql = "SELECT COUNT(operations.operation_id) AS total
+            FROM `operations`
+            LEFT JOIN `plagesop`
+            ON plagesop.id = operations.plageop_id
+            LEFT JOIN `affectation`
+            ON affectation.operation_id = operations.operation_id
+            LEFT JOIN `users_mediboard`
+            ON users_mediboard.user_id = operations.chir_id
+            WHERE '$curr_day' BETWEEN ADDDATE(operations.date_adm, INTERVAL 1 DAY) AND ADDDATE(operations.date_adm, INTERVAL operations.duree_hospi DAY)
+            AND '2005-04-16' BETWEEN ADDDATE(affectation.entree, INTERVAL 1 DAY) AND affectation.sortie
+            AND users_mediboard.function_id = '$function'";
+    $result = db_loadList($sql);
+    $mainTab["allocated"]["functions"][$function]["days"]["$curr_day"]["nombre"] = $result[0]["total"];
+    $mainTab["allocated"]["functions"][0]["days"]["$curr_day"]["nombre"] += $result[0]["total"];
+
+    // Interventions non affectées
+    $sql = "SELECT COUNT(operations.operation_id) AS total
+            FROM `operations`
+            LEFT JOIN `plagesop`
+            ON plagesop.id = operations.plageop_id
+            LEFT JOIN `affectation`
+            ON affectation.operation_id = operations.operation_id
+            LEFT JOIN `users_mediboard`
+            ON users_mediboard.user_id = operations.chir_id
+            WHERE '$curr_day' BETWEEN ADDDATE(operations.date_adm, INTERVAL 1 DAY) AND ADDDATE(operations.date_adm, INTERVAL operations.duree_hospi DAY)
+            AND affectation.affectation_id IS NULL
+            AND users_mediboard.function_id = '$function'";
+    $result = db_loadList($sql);
+    $mainTab["notallocated"]["functions"][$function]["days"]["$curr_day"]["nombre"] = $result[0]["total"];
+    $mainTab["notallocated"]["functions"][0]["days"]["$curr_day"]["nombre"] += $result[0]["total"];
+    
+    $curr_day = mbDate("+ 1 day", $curr_day);
+  }
+}
+
+$mainTab["busy"][$curr_day] = array();
+$mainTab["free"][$curr_day] = array();
+
+//mbTrace($mainTab, "tableau");
+
+// Création du template
+require_once($AppUI->getSystemClass('smartydp'));
+$smarty = new CSmartyDP;
+
+$smarty->assign('listDays' , $listDays);
+$smarty->assign('mainTab' , $mainTab);
+
+$smarty->display('vw_recapitulatif.tpl');
+
+?>

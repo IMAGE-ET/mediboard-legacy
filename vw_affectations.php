@@ -17,7 +17,7 @@ if (!$canRead) {
 }
 
 $year  = mbGetValueFromGetOrSession("year" , date("Y"));
-$month = mbGetValueFromGetOrSession("month", date("m"));
+$month = mbGetValueFromGetOrSession("month", date("m")-1);
 $day   = mbGetValueFromGetOrSession("day"  , date("d"));
 $date = ($year and $month and $day) ? 
   date("Y-m-d", mktime(0, 0, 0, $month+1, $day, $year)) : 
