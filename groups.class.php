@@ -42,8 +42,9 @@ class CGroups extends CDpObject {
   function loadRefsBack() {
   	$where = array(
       "group_id" => "= '$this->group_id'");
+    $order = "text";
     $this->_ref_functions = new CFunctions;
-    $this->_ref_functions = $this->_ref_functions->loadList($where);
+    $this->_ref_functions = $this->_ref_functions->loadList($where, $order);
   }
 }
 ?>
