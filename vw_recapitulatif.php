@@ -23,7 +23,10 @@ $day   = mbGetValueFromGetOrSession("day"  , date("d"));
 $date = ($year and $month and $day) ? 
   date("Y-m-d", mktime(0, 0, 0, $month+1, $day, $year)) : 
   date("Y-m-d");
-$firstDayOfWeek = mbDate("last monday", $date);
+$firstDayOfWeek = mbDate("last sunday", $date);
+$firstDayOfWeek = mbDate("+ 1 day", $firstDayOfWeek);
+$nextDay = mbDate("+ 7 days", $firstDayOfWeek);
+$prevDay = mbDate("- 7 days", $firstDayOfWeek);
 
 $mainTab = array();
 $listDays = array();
@@ -99,6 +102,8 @@ $mainTab["free"][$curr_day] = array();
 require_once($AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
+$smarty->assign('nextDay' , $nextDay);
+$smarty->assign('prevDay' , $prevDay);
 $smarty->assign('listDays' , $listDays);
 $smarty->assign('mainTab' , $mainTab);
 

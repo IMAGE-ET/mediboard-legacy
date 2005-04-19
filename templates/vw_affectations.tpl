@@ -76,7 +76,8 @@ function submitAffectationSplit(form) {
 }
 
 function setupCalendar(affectation_id) {
-  var form = eval("document.editAffectation" + affectation_id);
+  var form = null;
+  form = eval("document.editAffectation" + affectation_id);
 
   Calendar.setup( {
       inputField  : form.name + "_sortie",
@@ -85,13 +86,14 @@ function setupCalendar(affectation_id) {
 	  showsTime   : true,
 	  onUpdate    : function() { 
         if (calendar.dateClicked) {
+          form = eval("document.editAffectation" + affectation_id);
           form.submit();
         }
 	  }
     }
   );
   
-  var form = eval("document.splitAffectation" + affectation_id);
+  form = eval("document.splitAffectation" + affectation_id);
 
   Calendar.setup( {
       inputField  : form.name + "__date_split",
@@ -100,6 +102,7 @@ function setupCalendar(affectation_id) {
 	  showsTime   : true,
 	  onUpdate    : function() { 
         if (calendar.dateClicked) {
+          form = eval("document.splitAffectation" + affectation_id);
           submitAffectationSplit(form)
         }
 	  }
