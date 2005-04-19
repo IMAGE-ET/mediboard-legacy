@@ -24,7 +24,7 @@ function pageMain() {
   {else}
   <tr class="{$curr_function.class}" id="allocated" onclick="flipGroup('', 'allocated')">
   {/if}
-    <td>{$curr_function.text}</td>
+    <td style="background:#{$curr_function.color}">{$curr_function.text}</td>
     {foreach from=$curr_function.days item=curr_day}
       <td>{$curr_day.nombre}</td>
     {/foreach}
@@ -36,7 +36,7 @@ function pageMain() {
   {else}
   <tr class="{$curr_function.class}" id="notallocated" onclick="flipGroup('', 'notallocated')">
   {/if}
-    <td>{$curr_function.text}</td>
+    <td style="background:#{$curr_function.color}">{$curr_function.text}</td>
     {foreach from=$curr_function.days item=curr_day}
       <td>{$curr_day.nombre}</td>
     {/foreach}

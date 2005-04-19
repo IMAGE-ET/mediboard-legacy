@@ -187,7 +187,9 @@ function pageMain() {
 		  </tr>
 		  {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
 		  <tr class="patient">
-		    <td>{$curr_affectation->_ref_operation->_ref_pat->_view}</td>
+		    <td>
+		      {$curr_affectation->_ref_operation->_ref_pat->_view}
+		    </td>
 		    <td class="action" style="background:#{$curr_affectation->_ref_operation->_ref_chir->_ref_function->color}">
 		      {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
 
@@ -207,9 +209,9 @@ function pageMain() {
 		  <tr class="dates">
 		    <td class="text" colspan="2">
 		      {if $curr_affectation->_ref_prev->affectation_id}
-		      Déplacé (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom})
+		      <strong>Déplacé</strong> (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom})
 		      {else}
-		      Entrée
+		      <strong>Entrée</strong>
 		      {/if}:
 		      {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
 		      ({$curr_affectation->_entree_relative} jours)
@@ -234,10 +236,10 @@ function pageMain() {
 		      </a>
 
 		      {if $curr_affectation->_ref_next->affectation_id}
-		      Déplacé (chambre: {$curr_affectation->_ref_next->_ref_lit->_ref_chambre->nom})
+		      <strong>Déplacé</strong> (chambre: {$curr_affectation->_ref_next->_ref_lit->_ref_chambre->nom})
 		      {else}
-		      Sortie:
-		      {/if}
+		      <strong>Sortie</strong>
+		      {/if}:
 		      {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}
 		      ({$curr_affectation->_sortie_relative} jours)
 		    </td>
@@ -257,8 +259,11 @@ function pageMain() {
 		      </a>
 		    </td>
 		  </tr>
+		  <tr class="dates">
+		    <td colspan="2"><strong>Age</strong>: {$curr_affectation->_ref_operation->_ref_pat->_age} ans</td>
+		  </tr>
 	      <tr class="dates">
-	        <td class="text" colspan="2">Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</td>
+	        <td class="text" colspan="2"><strong>Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</strong></td>
 	      </tr>
 	      <tr class="dates">
 	        <td class="text" colspan="2">
@@ -271,6 +276,20 @@ function pageMain() {
 	          {/if}         
 	        </td>
 	      </tr>
+	      {if $curr_affectation->_ref_operation->rques != ""}
+          <tr class="dates">
+            <td class="text" colspan="2">
+              <strong>Remarques</strong>: {$curr_affectation->_ref_operation->rques|escape:javascript}
+            </td>
+          </tr>
+          {/if}
+          {if $curr_affectation->_ref_operation->chambre == "o"}
+          <tr class="dates">
+            <td class="text" colspan="2">
+              Chambre seule
+            </td>
+          </tr>
+          {/if}
 		  {foreachelse}
 		  <tr class="litdispo"><td colspan="2">Lit disponible</td></tr>
 		  <tr class="litdispo">
@@ -316,7 +335,8 @@ function pageMain() {
       <tr>
         <th class="title">
           Admissions 
-          {if $group_name == "jour" }du jour{/if}
+          {if $group_name == "matin" }du matin{/if}
+          {if $group_name == "soir" }du soir{/if}
           {if $group_name == "avant"}antérieures{/if}
         </th>
       </tr>
@@ -336,20 +356,28 @@ function pageMain() {
 	<table class="operationcollapse" id="operation{$curr_operation->operation_id}">
       <tr>
         <td class="patient" onclick="flipOperation({$curr_operation->operation_id})">
-          {$curr_operation->_ref_pat->_view} ({$curr_operation->duree_hospi}j-{$curr_operation->type_adm|truncate:1:""|capitalize})
+          {$curr_operation->_ref_pat->_view}
+          {if $curr_operation->type_adm == "comp"}
+          ({$curr_operation->duree_hospi}j)
+          {else}
+          ({$curr_operation->type_adm|truncate:1:""|capitalize})
+          {/if}
         </td>
         <td class="selectoperation" style="background:#{$curr_operation->_ref_chir->_ref_function->color}">
           <input type="radio" id="hospitalisation{$curr_operation->operation_id}" onclick="selectHospitalisation({$curr_operation->operation_id})" />
         </td>
       </tr>
       <tr>
-        <td class="date" colspan="2">Entrée: {$curr_operation->_entree_adm|date_format:"%A %d %B %H:%M"}</td>
+        <td class="date" colspan="2"><strong>Entrée</strong>: {$curr_operation->_entree_adm|date_format:"%A %d %B %H:%M"}</td>
       </tr>
       <tr>
-        <td class="date" colspan="2">Sortie: {$curr_operation->_sortie_adm|date_format:"%A %d %B %H:%M"}</td>
+        <td class="date" colspan="2"><strong>Sortie</strong>: {$curr_operation->_sortie_adm|date_format:"%A %d %B %H:%M"}</td>
       </tr>
       <tr>
-        <td class="date" colspan="2">Dr. {$curr_operation->_ref_chir->_view}</td>
+        <td class="date" colspan="2"><strong>Age:</strong>: {$curr_operation->_ref_pat->_age} ans
+      </tr>
+      <tr>
+        <td class="date" colspan="2"><strong>Dr. {$curr_operation->_ref_chir->_view}</strong></td>
       </tr>
       <tr>
         <td class="date" colspan="2">
@@ -362,6 +390,20 @@ function pageMain() {
           {/if}         
         </td>
       </tr>
+      {if $curr_operation->rques != ""}
+      <tr>
+        <td class="date" colspan="2">
+          <strong>Remarques</strong>: {$curr_operation->rques|escape:javascript}
+        </td>
+      </tr>
+      {/if}
+      {if $curr_operation->chambre == "o"}
+      <tr>
+        <td class="date" colspan="2">
+          Chambre seule
+        </td>
+      </tr>
+      {/if}
     </table>
     
     {/foreach}

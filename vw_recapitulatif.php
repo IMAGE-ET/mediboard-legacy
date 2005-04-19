@@ -52,8 +52,10 @@ foreach($functions as $value){
   $function = $value->function_id;
   $mainTab["allocated"]["functions"][$function]["text"] = $value->text;
   $mainTab["allocated"]["functions"][$function]["class"] = "allocated";
+  $mainTab["allocated"]["functions"][$function]["color"] = $value->color;
   $mainTab["notallocated"]["functions"][$function]["text"] = $value->text;
   $mainTab["notallocated"]["functions"][$function]["class"] = "notallocated";
+  $mainTab["notallocated"]["functions"][$function]["color"] = $value->color;
 
   // Parcours des jours
   for($i=0; $i<7; $i++) {

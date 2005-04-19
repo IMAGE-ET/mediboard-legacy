@@ -73,18 +73,34 @@ $leftjoin = array(
 $ljwhere = "affectation.affectation_id IS NULL";
 $order = "users_mediboard.function_id, duree_hospi DESC";
 
-// Admissions du jour
+// Admissions du matin
 $where = array(
   "date_adm" => "= '$date'",
+  "time_adm" => "< '16:00:00'",
   "type_adm" => "!= 'exte'",
   $ljwhere  
 );
-$opNonAffecteesJour = new COperation;
-$opNonAffecteesJour = $opNonAffecteesJour->loadList($where, $order, null, null, $leftjoin);
+$opNonAffecteesMatin = new COperation;
+$opNonAffecteesMatin = $opNonAffecteesMatin->loadList($where, $order, null, null, $leftjoin);
 
-foreach ($opNonAffecteesJour as $op_id => $op) {
-  $opNonAffecteesJour[$op_id]->loadRefs();
-  $opNonAffecteesJour[$op_id]->_ref_chir->loadRefsFwd();
+foreach ($opNonAffecteesMatin as $op_id => $op) {
+  $opNonAffecteesMatin[$op_id]->loadRefs();
+  $opNonAffecteesMatin[$op_id]->_ref_chir->loadRefsFwd();
+}
+
+// Admissions du soir
+$where = array(
+  "date_adm" => "= '$date'",
+  "time_adm" => ">= '16:00:00'",
+  "type_adm" => "!= 'exte'",
+  $ljwhere  
+);
+$opNonAffecteesSoir = new COperation;
+$opNonAffecteesSoir = $opNonAffecteesSoir->loadList($where, $order, null, null, $leftjoin);
+
+foreach ($opNonAffecteesSoir as $op_id => $op) {
+  $opNonAffecteesSoir[$op_id]->loadRefs();
+  $opNonAffecteesSoir[$op_id]->_ref_chir->loadRefsFwd();
 }
 
 // Admissions antérieures
@@ -101,7 +117,8 @@ foreach ($opNonAffecteesAvant as $op_id => $op) {
 }
 
 $groupOpNonAffectees = array(
-  "jour"  => $opNonAffecteesJour ,
+  "matin"  => $opNonAffecteesMatin ,
+  "soir"  => $opNonAffecteesSoir ,
   "avant" => $opNonAffecteesAvant
 );
 
