@@ -65,6 +65,7 @@ class CAffectation extends CDpObject {
     $this->_ref_operation->loadObject($where);
 
     $where = array (
+      "affectation_id" => "!= '$this->affectation_id'",
       "operation_id" => "= '$this->operation_id'",
       "sortie" => "= '$this->entree'"
     );
@@ -73,6 +74,7 @@ class CAffectation extends CDpObject {
     $this->_ref_prev->loadObject($where);
     
     $where = array (
+      "affectation_id" => "!= '$this->affectation_id'",
       "operation_id" => "= '$this->operation_id'",
       "entree" => "= '$this->sortie'"
     );

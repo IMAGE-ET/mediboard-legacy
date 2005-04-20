@@ -110,6 +110,10 @@ function setupCalendar(affectation_id) {
   );
 }
 
+{/literal}
+{if $dialog != 1}
+{literal}
+
 function pageMain() {
   Calendar.setup( {
       flat         : "calendar-container",
@@ -139,15 +143,35 @@ function pageMain() {
   }
 }
 
+{/literal}
+{/if}
+{literal}
+
+function popPlanning() {
+  var url = '?m=dPhospi&a=vw_affectations&dialog=1';
+  popup(700, 550, url, 'Planning');
+}
+
 {/literal}  
 </script>
 
-<style type="text/css">@import url(lib/jscalendar/calendar-win2k-1.css);</style>
 <script type="text/javascript" src="lib/jscalendar/calendar.js"></script>
 <script type="text/javascript" src="lib/jscalendar/lang/calendar-fr.js"></script>
 <script type="text/javascript" src="lib/jscalendar/calendar-setup.js"></script>
 
 <table class="main">
+
+<tr><th colspan="2">
+  {if $dialog != 1}
+  <a href="#" onclick="popPlanning()">
+  Planning du {$date|date_format:"%A %d %B %Y"} : {$totalLits} place(s) de libre
+  </a>
+  {else}
+  <a href="javascript:window.print()">
+  Planning du {$date|date_format:"%A %d %B %Y"} : {$totalLits} place(s) de libre
+  </a>
+  {/if}
+</th></tr>
 
 <tr>
   <td class="greedyPane">
@@ -156,7 +180,7 @@ function pageMain() {
 
     <tr>
     {foreach from=$services item=curr_service}
-      <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;service_id={$curr_service->service_id}">{$curr_service->nom}</a></td>
+      <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;service_id={$curr_service->service_id}">{$curr_service->nom} / {$curr_service->_nb_lits_dispo} lit(s) dispo</a></td>
     {/foreach}
     </tr>
 
@@ -170,7 +194,7 @@ function pageMain() {
 		      {if $curr_chambre->_overbooking}
 		      <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
 		      {/if}
-		      {$curr_chambre->nom} (Dispo: {$curr_chambre->_nb_lits_dispo}/{$curr_chambre->_ref_lits|@count})
+		      <strong>{$curr_chambre->nom}</strong> (Dispo: {$curr_chambre->_nb_lits_dispo}/{$curr_chambre->_ref_lits|@count})
 		    </th>
 		  </tr>
 		  {foreach from=$curr_chambre->_ref_lits item=curr_lit}
@@ -188,7 +212,8 @@ function pageMain() {
 		  {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
 		  <tr class="patient">
 		    <td>
-		      {$curr_affectation->_ref_operation->_ref_pat->_view}
+		      <strong>{$curr_affectation->_ref_operation->_ref_pat->_view}</strong>
+		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}(A){/if}
 		    </td>
 		    <td class="action" style="background:#{$curr_affectation->_ref_operation->_ref_chir->_ref_function->color}">
 		      {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
@@ -209,9 +234,9 @@ function pageMain() {
 		  <tr class="dates">
 		    <td class="text" colspan="2">
 		      {if $curr_affectation->_ref_prev->affectation_id}
-		      <strong>Déplacé</strong> (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom})
+		      <strong><i>Déplacé</i></strong> (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom})
 		      {else}
-		      <strong>Entrée</strong>
+		      <strong><i>Entrée</i></strong>
 		      {/if}:
 		      {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
 		      ({$curr_affectation->_entree_relative} jours)
@@ -236,9 +261,9 @@ function pageMain() {
 		      </a>
 
 		      {if $curr_affectation->_ref_next->affectation_id}
-		      <strong>Déplacé</strong> (chambre: {$curr_affectation->_ref_next->_ref_lit->_ref_chambre->nom})
+		      <strong><i>Déplacé</i></strong> (chambre: {$curr_affectation->_ref_next->_ref_lit->_ref_chambre->nom})
 		      {else}
-		      <strong>Sortie</strong>
+		      <strong><i>Sortie</i></strong>
 		      {/if}:
 		      {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}
 		      ({$curr_affectation->_sortie_relative} jours)
@@ -260,18 +285,18 @@ function pageMain() {
 		    </td>
 		  </tr>
 		  <tr class="dates">
-		    <td colspan="2"><strong>Age</strong>: {$curr_affectation->_ref_operation->_ref_pat->_age} ans</td>
+		    <td colspan="2"><strong><i>Age</i></strong>: {$curr_affectation->_ref_operation->_ref_pat->_age} ans</td>
 		  </tr>
 	      <tr class="dates">
-	        <td class="text" colspan="2"><strong>Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</strong></td>
+	        <td class="text" colspan="2"><strong><i>Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</i></strong></td>
 	      </tr>
 	      <tr class="dates">
 	        <td class="text" colspan="2">
-	          <strong>{$curr_affectation->_ref_operation->_ext_code_ccam->code}</strong>:
+	          <strong><i>{$curr_affectation->_ref_operation->_ext_code_ccam->code}</i></strong>:
 	          {$curr_affectation->_ref_operation->_ext_code_ccam->libelleLong}
 	          {if $curr_affectation->_ref_operation->CCAM_code2}
 	          <br />
-	          <strong>{$curr_affectation->_ref_operation->_ext_code_ccam2->code}</strong>:
+	          <strong><i>{$curr_affectation->_ref_operation->_ext_code_ccam2->code}</i></strong>:
 	          {$curr_affectation->_ref_operation->_ext_code_ccam2->libelleLong}
 	          {/if}         
 	        </td>
@@ -279,7 +304,7 @@ function pageMain() {
 	      {if $curr_affectation->_ref_operation->rques != ""}
           <tr class="dates">
             <td class="text" colspan="2">
-              <strong>Remarques</strong>: {$curr_affectation->_ref_operation->rques|escape:javascript}
+              <strong><i>Remarques</i></strong>: {$curr_affectation->_ref_operation->rques|escape:javascript}
             </td>
           </tr>
           {/if}
@@ -325,6 +350,7 @@ function pageMain() {
     </table>
     
   </td>
+  {if $dialog != 1}
   <td class="pane">
     
     <div id="calendar-container"></div>
@@ -356,7 +382,7 @@ function pageMain() {
 	<table class="operationcollapse" id="operation{$curr_operation->operation_id}">
       <tr>
         <td class="patient" onclick="flipOperation({$curr_operation->operation_id})">
-          {$curr_operation->_ref_pat->_view}
+          <strong>{$curr_operation->_ref_pat->_view}</strong>
           {if $curr_operation->type_adm == "comp"}
           ({$curr_operation->duree_hospi}j)
           {else}
@@ -368,24 +394,24 @@ function pageMain() {
         </td>
       </tr>
       <tr>
-        <td class="date" colspan="2"><strong>Entrée</strong>: {$curr_operation->_entree_adm|date_format:"%A %d %B %H:%M"}</td>
+        <td class="date" colspan="2"><strong><i>Entrée</i></strong>: {$curr_operation->_entree_adm|date_format:"%A %d %B %H:%M"}</td>
       </tr>
       <tr>
-        <td class="date" colspan="2"><strong>Sortie</strong>: {$curr_operation->_sortie_adm|date_format:"%A %d %B %H:%M"}</td>
+        <td class="date" colspan="2"><strong><i>Sortie</i></strong>: {$curr_operation->_sortie_adm|date_format:"%A %d %B %H:%M"}</td>
       </tr>
       <tr>
-        <td class="date" colspan="2"><strong>Age:</strong>: {$curr_operation->_ref_pat->_age} ans
+        <td class="date" colspan="2"><strong><i>Age:</i></strong>: {$curr_operation->_ref_pat->_age} ans
       </tr>
       <tr>
-        <td class="date" colspan="2"><strong>Dr. {$curr_operation->_ref_chir->_view}</strong></td>
+        <td class="date" colspan="2"><strong><i>Dr. {$curr_operation->_ref_chir->_view}</i></strong></td>
       </tr>
       <tr>
         <td class="date" colspan="2">
-          <strong>{$curr_operation->_ext_code_ccam->code}</strong>:
+          <strong><i>{$curr_operation->_ext_code_ccam->code}</i></strong>:
           {$curr_operation->_ext_code_ccam->libelleLong}
           {if $curr_operation->CCAM_code2}
           <br />
-          <strong>{$curr_operation->_ext_code_ccam2->code}</strong>:
+          <strong><i>{$curr_operation->_ext_code_ccam2->code}</i></strong>:
           {$curr_operation->_ext_code_ccam2->libelleLong}
           {/if}         
         </td>
@@ -393,7 +419,7 @@ function pageMain() {
       {if $curr_operation->rques != ""}
       <tr>
         <td class="date" colspan="2">
-          <strong>Remarques</strong>: {$curr_operation->rques|escape:javascript}
+          <strong><i>Remarques</i></strong>: {$curr_operation->rques|escape:javascript}
         </td>
       </tr>
       {/if}
@@ -410,6 +436,7 @@ function pageMain() {
     {/foreach}
 
   </td>
+  {/if}
 </tr>
 
 </table>

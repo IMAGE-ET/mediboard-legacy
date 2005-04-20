@@ -26,12 +26,14 @@ $date = ($year and $month and $day) ?
 // Récupération du service à ajouter/éditer
 $serviceSel = new CService;
 $serviceSel->load(mbGetValueFromGetOrSession("service_id"));
+$totalLits = 0;
 
 // Récupération des chambres/services
 $services = new CService;
 $services = $services->loadList();
 foreach ($services as $service_id => $service) {
   $services[$service_id]->loadRefs();
+  $services[$service_id]->_nb_lits_dispo = 0;
   $chambres =& $services[$service_id]->_ref_chambres;
   foreach ($chambres as $chambre_id => $chambre) {
     $chambres[$chambre_id]->loadRefs();
@@ -62,22 +64,26 @@ foreach ($services as $service_id => $service) {
     }
 
     $chambres[$chambre_id]->checkChambre();
+    $services[$service_id]->_nb_lits_dispo += $chambres[$chambre_id]->_nb_lits_dispo;
+    $totalLits += $chambres[$chambre_id]->_nb_lits_dispo;
   }
 }
 
 // Récupération des admissions à affecter
 $leftjoin = array(
   "affectation"     => "operations.operation_id = affectation.operation_id",
-  "users_mediboard" => "operations.chir_id = users_mediboard.user_id"
+  "users_mediboard" => "operations.chir_id = users_mediboard.user_id",
+  "patients" => "operations.pat_id = patients.patient_id"
 );
 $ljwhere = "affectation.affectation_id IS NULL";
-$order = "users_mediboard.function_id, duree_hospi DESC";
+$order = "users_mediboard.function_id, patients.nom, patients.prenom";
 
 // Admissions du matin
 $where = array(
   "date_adm" => "= '$date'",
   "time_adm" => "< '16:00:00'",
   "type_adm" => "!= 'exte'",
+  "annulee" => "= 0",
   $ljwhere  
 );
 $opNonAffecteesMatin = new COperation;
@@ -93,6 +99,7 @@ $where = array(
   "date_adm" => "= '$date'",
   "time_adm" => ">= '16:00:00'",
   "type_adm" => "!= 'exte'",
+  "annulee" => "= 0",
   $ljwhere  
 );
 $opNonAffecteesSoir = new COperation;
@@ -105,6 +112,7 @@ foreach ($opNonAffecteesSoir as $op_id => $op) {
 
 // Admissions antérieures
 $where = array(
+  "annulee" => "= 0",
   "'$date' BETWEEN ADDDATE(`date_adm`, INTERVAL 1 DAY) AND ADDDATE(`date_adm`, INTERVAL `duree_hospi` DAY)",
   "affectation.affectation_id IS NULL"
 );
@@ -130,6 +138,8 @@ $smarty->debugging = false;
 $smarty->assign('year' , $year );
 $smarty->assign('month', $month);
 $smarty->assign('day'  , $day  );
+$smarty->assign('date' , $date );
+$smarty->assign('totalLits', $totalLits);
 $smarty->assign('services', $services);
 $smarty->assign('groupOpNonAffectees' , $groupOpNonAffectees);
 
