@@ -68,9 +68,11 @@ foreach($functions as $value){
             ON affectation.operation_id = operations.operation_id
             LEFT JOIN `users_mediboard`
             ON users_mediboard.user_id = operations.chir_id
-            WHERE '$curr_day' BETWEEN ADDDATE(operations.date_adm, INTERVAL 1 DAY) AND ADDDATE(operations.date_adm, INTERVAL operations.duree_hospi DAY)
-            AND '2005-04-16' BETWEEN ADDDATE(affectation.entree, INTERVAL 1 DAY) AND affectation.sortie
-            AND users_mediboard.function_id = '$function'";
+            WHERE '$curr_day' BETWEEN operations.date_adm AND ADDDATE(operations.date_adm, INTERVAL operations.duree_hospi DAY)
+            AND '$curr_day' BETWEEN affectation.entree AND affectation.sortie
+            AND users_mediboard.function_id = '$function'
+            AND operations.annulee = 0";
+    //mbTrace($sql, "Interventions effectuées du $curr_day de la fonction $value->text<br/>");
     $result = db_loadList($sql);
     $mainTab["allocated"]["functions"][$function]["days"]["$curr_day"]["nombre"] = $result[0]["total"];
     $mainTab["allocated"]["functions"][0]["days"]["$curr_day"]["nombre"] += $result[0]["total"];
@@ -84,9 +86,11 @@ foreach($functions as $value){
             ON affectation.operation_id = operations.operation_id
             LEFT JOIN `users_mediboard`
             ON users_mediboard.user_id = operations.chir_id
-            WHERE '$curr_day' BETWEEN ADDDATE(operations.date_adm, INTERVAL 1 DAY) AND ADDDATE(operations.date_adm, INTERVAL operations.duree_hospi DAY)
+            WHERE '$curr_day' BETWEEN operations.date_adm AND ADDDATE(operations.date_adm, INTERVAL operations.duree_hospi DAY)
             AND affectation.affectation_id IS NULL
-            AND users_mediboard.function_id = '$function'";
+            AND users_mediboard.function_id = '$function'
+            AND operations.annulee = 0";
+    //mbTrace($sql, "Interventions non effectuées du $curr_day de la fonction $value->text<br/>");
     $result = db_loadList($sql);
     $mainTab["notallocated"]["functions"][$function]["days"]["$curr_day"]["nombre"] = $result[0]["total"];
     $mainTab["notallocated"]["functions"][0]["days"]["$curr_day"]["nombre"] += $result[0]["total"];

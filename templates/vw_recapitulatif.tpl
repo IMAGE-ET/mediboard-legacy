@@ -13,7 +13,8 @@ function pageMain() {
   <tr>
     <th></th>
     {foreach from=$listDays item=curr_day}
-    <th><a href="index.php?m={$m}&amp;tab=vw_affectations&amp;day={$curr_day|date_format:"%d"}&amp;month={$curr_day|date_format:"%m"}&amp;year={$curr_day|date_format:"%Y"}">
+    {assign var="myMonth" value=$curr_day|date_format:"%m"}
+    <th><a href="index.php?m={$m}&amp;tab=vw_affectations&amp;day={$curr_day|date_format:"%d"}&amp;month={$myMonth-1}&amp;year={$curr_day|date_format:"%Y"}">
     {$curr_day|date_format:"%a %d %b %y"}
     </a></th>
     {/foreach}

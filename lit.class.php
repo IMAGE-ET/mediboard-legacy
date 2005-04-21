@@ -44,9 +44,10 @@ class CLit extends CDpObject {
       "entree" => "<= '$date 23:59:59'",
       "sortie" => ">= '$date 00:00:00'"
     );
+    $order = "sortie DESC";
     
     $this->_ref_affectations = new CAffectation;
-    $this->_ref_affectations = $this->_ref_affectations->loadList($where);
+    $this->_ref_affectations = $this->_ref_affectations->loadList($where, $order);
     
     $this->checkOverBooking();
     $this->checkDispo($date);

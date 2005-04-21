@@ -26,6 +26,8 @@ class CAffectation extends CDpObject {
   // DB Fields
   var $entree = null;
   var $sortie = null;
+  var $confirme = null;
+  var $effectue = null;
   
   // Form Fields
   var $_entree_relative;
@@ -47,6 +49,37 @@ class CAffectation extends CDpObject {
 		}
     
     return null;
+  }
+  
+  function updateDBFields() {
+  	$where = array (
+      "operation_id" => "= '$this->operation_id'"
+    );
+    
+    $this->_ref_operation = new COperation;
+    $this->_ref_operation->loadObject($where);
+    
+    $where = array (
+      "operation_id" => "= '$this->operation_id'",
+      "entree" => "= '$this->sortie'"
+    );
+    
+    $this->_ref_next = new CAffectation;
+    $this->_ref_next->loadObject($where);
+    
+    $flag = !$this->_ref_next->affectation_id;
+    $flagComp = $flag && ($this->_ref_operation->type_adm == "comp");
+    $flagAmbu = $flag && ($this->_ref_operation->type_adm == "ambu");
+    
+    if($flagComp) {
+      $this->sortie = mbDate("", $this->sortie)." "."14:00:00";
+    }
+    if($flagAmbu) {
+      if($this->_ref_operation->time_operation != "00:00:00")
+        $this->sortie = mbDate("", $this->sortie)." ".mbTime("+ 6 hours", $this->_ref_operation->time_operation);
+      else
+        $this->sortie = mbDate("", $this->sortie)." "."18:00:00";
+    }
   }
   
   function loadRefsFwd() {

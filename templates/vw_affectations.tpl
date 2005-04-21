@@ -212,7 +212,17 @@ function popPlanning() {
 		  {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
 		  <tr class="patient">
 		    <td>
+		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}
+		      {if $curr_affectation->sortie|date_format:"%H:%M:%S" >= $heureLimit && $curr_affectation->sortie|date_format:"%Y-%m-%d" == $date}
+		      <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
+		      {/if}
+		      <strong><i>{$curr_affectation->_ref_operation->_ref_pat->_view}</i></strong>
+		      {else}
+		      {if $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
+		      <img src="modules/{$m}/images/O.png" alt="O" title="Sortant demain">
+		      {/if}
 		      <strong>{$curr_affectation->_ref_operation->_ref_pat->_view}</strong>
+		      {/if}
 		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}(A){/if}
 		    </td>
 		    <td class="action" style="background:#{$curr_affectation->_ref_operation->_ref_chir->_ref_function->color}">
@@ -227,7 +237,7 @@ function popPlanning() {
               </form>
               
 		      <a href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view}')">
-		        <img src="modules/{$m}/images/cancel.png" alt="trash" title="Supprimer l'affectation">
+		        <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
 		      </a>
 		    </td>
 		  </tr>

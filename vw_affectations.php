@@ -22,6 +22,8 @@ $day   = mbGetValueFromGetOrSession("day"  , date("d"));
 $date = ($year and $month and $day) ? 
   date("Y-m-d", mktime(0, 0, 0, $month+1, $day, $year)) : 
   date("Y-m-d");
+$dateReal = date("Y-m-d H:i:s");
+$heureLimit = "16:00:00";
 
 // Récupération du service à ajouter/éditer
 $serviceSel = new CService;
@@ -81,7 +83,7 @@ $order = "users_mediboard.function_id, patients.nom, patients.prenom";
 // Admissions du matin
 $where = array(
   "date_adm" => "= '$date'",
-  "time_adm" => "< '16:00:00'",
+  "time_adm" => "< '$heureLimit'",
   "type_adm" => "!= 'exte'",
   "annulee" => "= 0",
   $ljwhere  
@@ -97,7 +99,7 @@ foreach ($opNonAffecteesMatin as $op_id => $op) {
 // Admissions du soir
 $where = array(
   "date_adm" => "= '$date'",
-  "time_adm" => ">= '16:00:00'",
+  "time_adm" => ">= '$heureLimit'",
   "type_adm" => "!= 'exte'",
   "annulee" => "= 0",
   $ljwhere  
@@ -139,6 +141,9 @@ $smarty->assign('year' , $year );
 $smarty->assign('month', $month);
 $smarty->assign('day'  , $day  );
 $smarty->assign('date' , $date );
+$smarty->assign('demain', mbDate("+ 1 day", $date));
+$smarty->assign('dateReal', $dateReal);
+$smarty->assign('heureLimit', $heureLimit);
 $smarty->assign('totalLits', $totalLits);
 $smarty->assign('services', $services);
 $smarty->assign('groupOpNonAffectees' , $groupOpNonAffectees);
