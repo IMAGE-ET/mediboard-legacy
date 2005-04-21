@@ -240,8 +240,18 @@ class COperation extends CDpObject {
     $this->_ref_files = $this->_ref_files->loadList($where);
 
     $where = array("operation_id" => "= '$this->operation_id'");
+    $order = "sortie DESC";
     $this->_ref_affectations = new CAffectation();
-    $this->_ref_affectations = $this->_ref_affectations->loadList($where);
+    $this->_ref_affectations = $this->_ref_affectations->loadList($where, $order);
+  }
+  
+  function getLastAffectation(){
+  	$this->loadRefsBack();
+    if(count($this->_ref_affectations)>0) {
+      foreach($this->_ref_affectations as $key => $value)
+        return $this->_ref_affectations[$key];
+    } else
+      return null;
   }
   
   function fillTemplate(&$template) {
