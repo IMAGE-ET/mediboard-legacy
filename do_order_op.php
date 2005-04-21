@@ -7,6 +7,9 @@
 * @author Romain Ollivier
 */
 
+require_once($AppUI->getModuleClass('dPplanningOp', 'planning'));
+require_once($AppUI->getModuleClass('dPhospi', 'affectation'));
+
 $cmd = dPgetParam( $_GET, 'cmd', '0' );
 $id = dPgetParam( $_GET, 'id', '0' );
 
@@ -43,6 +46,7 @@ switch($cmd)
               WHERE operations.operation_id = '$id'";
     }
 	$exec = db_exec($sql);
+	changeAffect($id);
     break;
   }
   case "down" : {
@@ -56,18 +60,24 @@ switch($cmd)
     $min = substr($result[0]["time"], 3, 2) + substr($result[1]["duree"], 3, 2);
     $time = date("H:i:00", mktime($hour, $min, 0, 1, 1, 2000));
     //On fait monter celui qui est en dessous
+    $sql = "SELECT operation_id" .
+    		"\nFROM operations" .
+    		"\nWHERE operations.plageop_id = '$plageop'" .
+    		"\nAND rank = '".($rank + 1)."'";
+    $id_temp = db_loadlist($sql);
     $sql = "UPDATE operations
 			SET rank = '$rank',
             time_operation = '".$result[0]["time"]."'
-			WHERE operations.plageop_id = '$plageop'
-			AND rank = '".($rank + 1)."'";
+			WHERE operations.operation_id = '".$id_temp[0]["operation_id"]."'";
 	$exec = db_exec($sql);
+	changeAffect($id_temp[0]["operation_id"]);
     //On fait descendre celui qu'on a choisit
     $sql = "UPDATE operations
 			SET rank = '".($rank + 1)."',
             time_operation = '$time'
 			WHERE operations.operation_id = '$id'";
 	$exec = db_exec($sql);
+	changeAffect($id);
     break;
   }
   case "up" : {
@@ -81,18 +91,24 @@ switch($cmd)
     $min = substr($result[0]["time"], 3, 2) + substr($result[1]["duree"], 3, 2);
     $time = date("H:i:00", mktime($hour, $min, 0, 1, 1, 2000));
     //On fait descendre celui qui est au dessus
+    $sql = "SELECT operation_id" .
+    		"\nFROM operations" .
+    		"\nWHERE operations.plageop_id = '$plageop'" .
+    		"\nAND rank = '".($rank - 1)."'";
+    $id_temp = db_loadlist($sql);
     $sql = "UPDATE operations
 			SET rank = '$rank',
             time_operation = '$time'
-			WHERE operations.plageop_id = '$plageop'
-			AND rank = '".($rank - 1)."'";
+			WHERE  operations.operation_id = '".$id_temp[0]["operation_id"]."'";
 	$exec = db_exec($sql);
+	changeAffect($id_temp[0]["operation_id"]);
     //On fait monter celui qu'on a choisit
     $sql = "UPDATE operations
 			SET rank = '".($rank - 1)."',
             time_operation = '".$result[0]["time"]."'
 			WHERE operations.operation_id = '$id'";
 	$exec = db_exec($sql);
+	changeAffect($id);
     break;
   }
   case "rm" : {
@@ -100,6 +116,7 @@ switch($cmd)
 			SET time_operation = '00:00:00', rank = 0
 			WHERE operations.operation_id = '$id'";
 	$result = db_exec($sql);
+	changeAffect($id, "rm");
     $sql = "SELECT operations.operation_id, operations.temp_operation,
       	plagesop.debut
         FROM operations
@@ -119,8 +136,9 @@ switch($cmd)
     foreach ($result as $key => $value) {
       $new_time_sql = date("H:i:00", $new_time);
       $sql = "UPDATE operations SET rank = '$i', time_operation = '$new_time_sql' " .
-             "WHERE operation_id = '".$value["operation_id"]."'";
+             "\nWHERE operation_id = '".$value["operation_id"]."'";
       db_exec( $sql );
+	  changeAffect($value["operation_id"]);
       $add_time = $value["temp_operation"];
       $add_time_hour = substr($add_time, 0, 2);
       $add_time_min = substr($add_time, 3, 2);
@@ -138,6 +156,7 @@ switch($cmd)
 			SET time_operation = '".$hour.":".$min.":00'
 			WHERE operations.operation_id = '$id'";
 	$result = db_exec($sql);
+	changeAffect($id);
     $f = 1;
     while($f) {
       $f = 0;
@@ -160,6 +179,7 @@ switch($cmd)
                     SET operations.time_operation = '$time'
                     WHERE operation_id = '".$value["id"]."'";
             db_exec($sql);
+            changeAffect($value["id"]);
             $f = 1;
           }
         }
@@ -167,6 +187,7 @@ switch($cmd)
                 SET operations.rank = '$i'
                 WHERE operations.operation_id = '".$value["id"]."'";
         db_exec($sql);
+        changeAffect($value["id"]);
         $i++;
       }
     }
@@ -189,5 +210,21 @@ switch($cmd)
     break;
   }
 }
+
+// Modification de l'heure de sortie de la dernière affectation
+function changeAffect($id, $cmd = null) {
+  $operation = new COperation;
+  $operation->load($id);
+  $affectation = new CAffectation;
+  $affectation = $operation->getLastAffectation();
+  if($affectation->affectation_id && ($operation->type_adm == "ambu")) {
+    if($cmd == "rm")
+      $affectation->sortie = mbDate("", $affectation->sortie)." 18:00:00";
+    else
+      $affectation->sortie = mbDate("", $affectation->sortie)." ".mbTime("+ 6 hours", $operation->time_operation);
+    $affectation->store();
+  }
+}
+
 $AppUI->redirect("m=$m#$id");
 ?>
