@@ -211,7 +211,11 @@ function popPlanning() {
 		  </tr>
 		  {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
 		  <tr class="patient">
+		    {if $curr_affectation->confirme}
+		    <td style="background-image:url(modules/{$m}/images/ray.gif); background-repeat:repeat;">
+		    {else}
 		    <td>
+		    {/if}
 		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}
 		      {if $curr_affectation->sortie|date_format:"%H:%M:%S" >= $heureLimit && $curr_affectation->sortie|date_format:"%Y-%m-%d" == $date}
 		      <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
