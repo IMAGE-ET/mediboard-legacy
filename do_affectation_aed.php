@@ -12,6 +12,8 @@ global $AppUI, $m;
 require_once($AppUI->getModuleClass($m, "affectation"));
 require_once($AppUI->getSystemClass("doobjectaddedit"));
 
+//mbTrace($_POST, "post", true);
+
 $do = new CDoObjectAddEdit("CAffectation", "affectation_id");
 $do->createMsg = "Affectation créée";
 $do->modifyMsg = "Affectation modifiée";

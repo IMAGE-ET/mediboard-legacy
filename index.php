@@ -41,6 +41,7 @@ $tabBox->add("form_print_planning", "Impression des plannings");
 $tabBox->add("vw_recapitulatif", "Recapitulatif");
 if ($canEdit) {
   $tabBox->add("vw_affectations", "Affectations");
+  $tabBox->add("edit_sorties", "Confirmation sorties");
   $tabBox->add("vw_idx_services", "Services");
   $tabBox->add("vw_idx_chambres", "Chambres");
 }
