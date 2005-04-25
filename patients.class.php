@@ -12,6 +12,7 @@ require_once( $AppUI->getSystemClass ('dp' ) );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('dPpatients', 'medecin') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
+require_once( $AppUI->getModuleClass('dPhospi', 'affectation') );
 
 /**
  * The CPatient Class
@@ -41,8 +42,8 @@ class CPatient extends CDpObject {
 	var $rques = null;
 
   // Form fields
-  var $_naissance = null;
-  var $_jour = null;
+    var $_naissance = null;
+    var $_jour = null;
 	var $_mois = null;
 	var $_annee = null;
 	var $_tel1 = null;
@@ -58,12 +59,13 @@ class CPatient extends CDpObject {
 	var $_age = null;
 
   // Object References
-  var $_ref_operations = null;
-  var $_ref_consultations = null;
-  var $_ref_medecin_traitant = null;
-  var $_ref_medecin1 = null;
-  var $_ref_medecin2 = null;
-  var $_ref_medecin3 = null;
+    var $_ref_operations = null;
+    var $_ref_consultations = null;
+    var $_ref_curr_affectation = null;
+    var $_ref_medecin_traitant = null;
+    var $_ref_medecin1 = null;
+    var $_ref_medecin2 = null;
+    var $_ref_medecin3 = null;
 
 	function CPatient() {
 		$this->CDpObject( 'patients', 'patient_id' );
@@ -182,6 +184,13 @@ class CPatient extends CDpObject {
 
   // Forward references
   function loadRefsFwd() {
+  	// affectation actuelle
+  	$obj = new CAffectation();
+  	$date = date("Y-m-d");
+  	$where["entree"] ="<= '$date'";
+  	$where["sortie"] =">= '$date'";
+  	$obj->loadObject($where);
+  	$this->_ref_curr_affectation = $obj;
     // medecin_traitant
     $obj = new CMedecin();
     if($obj->load($this->medecin_traitant))

@@ -181,6 +181,16 @@ function printPatient(id) {
       </table>
       
       <table class="form">
+        {if $patient->_ref_curr_affectation}
+        <tr><th colspan="3" class="category">Chambre actuelle</th></tr>
+        <tr>
+          <td colspan="3">
+            {$patient->_ref_curr_affectation->_ref_lit->_ref_chambre->_ref_service->nom}
+            - {$patient->_ref_curr_affectation->_ref_lit->_ref_chambre->nom}
+            - {$patient->_ref_curr_affectation->_ref_lit->nom}
+          </td>
+        </tr>
+        {/if}
         {if $patient->_ref_operations}
         <tr><th colspan="3" class="category">Interventions</th></tr>
         {foreach from=$patient->_ref_operations item=curr_op}

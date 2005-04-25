@@ -28,6 +28,9 @@ if(dPgetParam($_GET, "new", 0)) {
 else {
   $patient->load($patient_id);
   $patient->loadRefs();
+  $patient->_ref_curr_affectation->loadRefsFwd();
+  $patient->_ref_curr_affectation->_ref_lit->loadRefsFwd();
+  $patient->_ref_curr_affectation->_ref_lit->_ref_chambre->loadRefsFwd();
 }
 
 if($patient->patient_id) {
