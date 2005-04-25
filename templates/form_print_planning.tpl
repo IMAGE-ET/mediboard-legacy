@@ -33,15 +33,17 @@ function setCalendar( idate, fdate ) {
 function popPlanning() {
   var debut = document.paramFrm.date_debut.value;
   var fin = document.paramFrm.date_fin.value;
+  var ordre = document.paramFrm.ordre.value;
+  var service = document.paramFrm.service.value;
   var type = document.paramFrm.type.value;
   var chir = document.paramFrm.chir.value;
   var spe = document.paramFrm.spe.value;
   var conv = document.paramFrm.conv.value;
-  var ordre = document.paramFrm.ordre.value;
   var url = '?m=dPhospi&a=print_planning&dialog=1';
   url += '&debut=' + debut;
   url += '&fin=' + fin;
   url += '&ordre=' + ordre;
+  url += '&service=' + service;
   url += '&type=' + type;
   url += '&chir=' + chir;
   url += '&spe=' + spe;
@@ -80,12 +82,21 @@ function popPlanning() {
           </td>
         </tr>
         <tr>
-        </tr>
-          <th><label for="paramFrm_ordre">Classement des admissions</label></th>
+          <th><label for="paramFrm_ordre">Classement des admissions:</label></th>
           <td><select name="ordre">
             <option value="heure">par heure d'admission</option>
             <option value="nom">par nom du patient</option>
           </select></td>
+        </tr>
+        <tr>
+          <th><label for="paramFrm_service">Service:</label></th>
+          <td><select name="service">
+            <option value="0">&mdash; Tous les services &mdash;</option>
+            {foreach from=$listServ item=curr_serv}
+            <option value="{$curr_serv->service_id}">{$curr_serv->nom}</option>
+            {/foreach}
+          </select></td>
+        </tr>
       </table>
 
     </td>

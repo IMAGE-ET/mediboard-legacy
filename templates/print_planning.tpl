@@ -53,7 +53,16 @@ function printAdmission(id) {
           <td>{$curr_adm->duree_hospi} j</td>
           <td class="text">{$curr_adm->examen|nl2br}</td>
           <td class="text">{$curr_adm->convalescence|nl2br}</td>
-          <td>{$curr_adm->chambre}</td>
+          <td class="text">
+            {if $curr_adm->_first_aff->affectation_id}
+            {$curr_adm->_first_aff->_ref_lit->_ref_chambre->_ref_service->nom}
+            - {$curr_adm->_first_aff->_ref_lit->_ref_chambre->nom}
+            - {$curr_adm->_first_aff->_ref_lit->nom}
+            {else}
+            Non placé
+            {/if}
+            ({$curr_adm->chambre})
+          </td>
           <td class="text">{$curr_adm->rques}</td>
           <td>{$curr_adm->_ref_plageop->date|date_format:"%d/%m/%Y"}</td>
           <td>{if $curr_adm->time_operation != "00:00:00"}{$curr_adm->time_operation|truncate:5:""}{/if}</td>

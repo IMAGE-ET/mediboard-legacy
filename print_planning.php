@@ -23,6 +23,7 @@ $fin = dPgetParam( $_GET, 'fin', date("Ymd") );
 $dayf = intval(substr($fin, 6, 2));
 $monthf = intval(substr($fin, 4, 2));
 $yearf = substr($fin, 0, 4);
+$service = dPgetParam( $_GET, 'service', 0);
 $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
 $spe = dPgetParam( $_GET, 'spe', 0);
@@ -95,14 +96,23 @@ foreach($listDays as $key => $value) {
     else
       $sql .= " ORDER BY patients.nom, patients.prenom, operations.chir_id, operations.time_adm";
     $result = db_loadlist($sql);
-    $total += count($result);
+    $listDays[$key]["listChirs"][$key2]["admissions"] = array();
     foreach($result as $key3 => $value3) {
-  	  unset($adm);
+  	  $adm = array();
       $adm = new COperation();
       $adm->load($value3["operation_id"]);
       $adm->loadRefs();
-      $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $adm;
+      $adm->_first_aff = $adm->getFirstAffectation();
+      if($adm->_first_aff->affectation_id) {
+        $adm->_first_aff->loadRefsFwd();
+        $adm->_first_aff->_ref_lit->loadRefsFwd();
+        $adm->_first_aff->_ref_lit->_ref_chambre->loadRefsFwd();
+      }
+      if(!$service || ($adm->_first_aff->_ref_lit->_ref_chambre->_ref_service->service_id == $service)) {
+        $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $adm;
+      }
     }
+    $total += count($listDays[$key]["listChirs"][$key2]["admissions"]);
   }
 }
 
