@@ -88,30 +88,28 @@ class CLit extends CDpObject {
   
   function checkDispo($date) {
     assert($this->_ref_affectations !== null);
-    
-    if (count($this->_ref_affectations) == 0) {
-      // Last Dispo
-      $where = array (
-        "lit_id" => "= '$this->lit_id'",
-        "sortie" => "<= '$date 23:59:59'",
-      );
-      $order = "sortie DESC";
-      
-      $this->_ref_last_dispo = new CAffectation;
-      $this->_ref_last_dispo->loadObject($where, $order);
-      $this->_ref_last_dispo->checkDaysRelative($date);
-      
-      // Next Dispo
-      $where = array (
-        "lit_id" => "= '$this->lit_id'",
-        "entree" => ">= '$date 00:00:00'",
-      );
-      $order = "entree ASC";
 
-      $this->_ref_next_dispo = new CAffectation;
-      $this->_ref_next_dispo->loadObject($where, $order);
-      $this->_ref_next_dispo->checkDaysRelative($date);
-	}
+    // Last Dispo
+    $where = array (
+      "lit_id" => "= '$this->lit_id'",
+      "sortie" => "<= '$date 23:59:59'",
+    );
+    $order = "sortie DESC";
+    
+    $this->_ref_last_dispo = new CAffectation;
+    $this->_ref_last_dispo->loadObject($where, $order);
+    $this->_ref_last_dispo->checkDaysRelative($date);
+    
+    // Next Dispo
+    $where = array (
+      "lit_id" => "= '$this->lit_id'",
+      "entree" => ">= '$date 00:00:00'",
+    );
+    $order = "entree ASC";
+
+    $this->_ref_next_dispo = new CAffectation;
+    $this->_ref_next_dispo->loadObject($where, $order);
+    $this->_ref_next_dispo->checkDaysRelative($date);
   }
   
 }
