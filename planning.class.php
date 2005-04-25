@@ -250,8 +250,18 @@ class COperation extends CDpObject {
     if(count($this->_ref_affectations)>0) {
       foreach($this->_ref_affectations as $key => $value)
         return $this->_ref_affectations[$key];
-    } else
-      return null;
+    }
+    return null;
+  }
+  
+  function getFirstAffectation(){
+  	$this->loadRefsBack();
+    if(count($this->_ref_affectations)>0) {
+      $tempAff = array_reverse($this->_ref_affectations, true);
+      foreach($tempAff as $key => $value)
+        return $tempAff[$key];
+    }
+    return null;
   }
   
   function fillTemplate(&$template) {
