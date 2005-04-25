@@ -36,7 +36,8 @@ $titleBlock->addCell();
 $titleBlock->show();
 
 $tabBox = new CTabBox( "?m=$m", "{$AppUI->cfg['root_dir']}/modules/$m/", $tab );
-$tabBox->add( 'vw_idx_admission', 'Consultation de admissions' );
+$tabBox->add( 'vw_idx_admission', 'Consultation des admissions' );
+$tabBox->add( 'vw_idx_sortie', 'Validation des sorties' );
 $tabBox->show();
 
 ?>
