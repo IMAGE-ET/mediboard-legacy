@@ -227,6 +227,11 @@ function popPlanning() {
 		    {else}
 		    <td>
 		    {/if}
+		    {if $curr_affectation->_ref_operation->admis == "o"}
+		    <font>
+		    {else}
+		    <font style="color:#a33">
+		    {/if}
 		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}
 		      {*if $curr_affectation->sortie|date_format:"%H:%M:%S" >= $heureLimit && $curr_affectation->sortie|date_format:"%Y-%m-%d" == $date*}
 		      <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
@@ -239,6 +244,7 @@ function popPlanning() {
 		      <strong>{$curr_affectation->_ref_operation->_ref_pat->_view}</strong>
 		      {/if}
 		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}(A){/if}
+		    </font>
 		    </td>
 		    <td class="action" style="background:#{$curr_affectation->_ref_operation->_ref_chir->_ref_function->color}">
 		      {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
