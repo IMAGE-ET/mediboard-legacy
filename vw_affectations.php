@@ -24,6 +24,7 @@ $date = ($year and $month and $day) ?
   date("Y-m-d");
 $dateReal = date("Y-m-d H:i:s");
 $heureLimit = "16:00:00";
+$mode = mbGetValueFromGetOrSession("mode", 0);
 
 // Récupération du service à ajouter/éditer
 $serviceSel = new CService;
@@ -44,7 +45,7 @@ foreach ($services as $service_id => $service) {
       $lits[$lit_id]->loadAffectations($date);
       $affectations =& $lits[$lit_id]->_ref_affectations;
       foreach ($affectations as $affectation_id => $affectation) {
-      	if(!$affectations[$affectation_id]->effectue) {
+      	if(!$affectations[$affectation_id]->effectue || $mode) {
           $affectations[$affectation_id]->loadRefs();
           $affectations[$affectation_id]->checkDaysRelative($date);
 
@@ -83,6 +84,21 @@ $leftjoin = array(
 $ljwhere = "affectation.affectation_id IS NULL";
 $order = "users_mediboard.function_id, patients.nom, patients.prenom";
 
+// Admissions de la veille
+$where = array(
+  "date_adm" => "= '".mbDate("-1 days", $date)."'",
+  "type_adm" => "!= 'exte'",
+  "annulee" => "= 0",
+  $ljwhere  
+);
+$opNonAffecteesVeille = new COperation;
+$opNonAffecteesVeille = $opNonAffecteesVeille->loadList($where, $order, null, null, $leftjoin);
+
+foreach ($opNonAffecteesVeille as $op_id => $op) {
+  $opNonAffecteesVeille[$op_id]->loadRefs();
+  $opNonAffecteesVeille[$op_id]->_ref_chir->loadRefsFwd();
+}
+
 // Admissions du matin
 $where = array(
   "date_adm" => "= '$date'",
@@ -118,7 +134,7 @@ foreach ($opNonAffecteesSoir as $op_id => $op) {
 // Admissions antérieures
 $where = array(
   "annulee" => "= 0",
-  "'$date' BETWEEN ADDDATE(`date_adm`, INTERVAL 1 DAY) AND ADDDATE(`date_adm`, INTERVAL `duree_hospi` DAY)",
+  "'$date' BETWEEN ADDDATE(`date_adm`, INTERVAL 2 DAY) AND ADDDATE(`date_adm`, INTERVAL `duree_hospi` DAY)",
   "affectation.affectation_id IS NULL"
 );
 $opNonAffecteesAvant = new COperation;
@@ -130,6 +146,7 @@ foreach ($opNonAffecteesAvant as $op_id => $op) {
 }
 
 $groupOpNonAffectees = array(
+  "veille"  => $opNonAffecteesVeille ,
   "matin"  => $opNonAffecteesMatin ,
   "soir"  => $opNonAffecteesSoir ,
   "avant" => $opNonAffecteesAvant
@@ -147,6 +164,7 @@ $smarty->assign('date' , $date );
 $smarty->assign('demain', mbDate("+ 1 day", $date));
 $smarty->assign('dateReal', $dateReal);
 $smarty->assign('heureLimit', $heureLimit);
+$smarty->assign('mode', $mode);
 $smarty->assign('totalLits', $totalLits);
 $smarty->assign('services', $services);
 $smarty->assign('groupOpNonAffectees' , $groupOpNonAffectees);

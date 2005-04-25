@@ -161,17 +161,28 @@ function popPlanning() {
 
 <table class="main">
 
-<tr><th colspan="2">
-  {if $dialog != 1}
-  <a href="#" onclick="popPlanning()">
-  Planning du {$date|date_format:"%A %d %B %Y"} : {$totalLits} place(s) de libre
-  </a>
-  {else}
-  <a href="javascript:window.print()">
-  Planning du {$date|date_format:"%A %d %B %Y"} : {$totalLits} place(s) de libre
-  </a>
-  {/if}
-</th></tr>
+<tr>
+  <th>
+    {if $dialog != 1}
+    <a href="#" onclick="popPlanning()">
+    Planning du {$date|date_format:"%A %d %B %Y"} : {$totalLits} place(s) de libre
+    </a>
+    {else}
+    <a href="javascript:window.print()">
+    Planning du {$date|date_format:"%A %d %B %Y"} : {$totalLits} place(s) de libre
+    </a>
+    {/if}
+  </th>
+  <td>
+    <form name="chgMode" action="?m={$m}" method="get">
+    <input type="hidden" name="m" value="{$m}" />
+    <select name="mode" onchange="submit()">
+      <option value="0" {if $mode == 0}selected="selected"{/if}>Vue instantanée</option>
+      <option value="1" {if $mode == 1}selected="selected"{/if}>Vue de la journée</option>
+    </select>
+    </form>
+  </td>
+</tr>
 
 <tr>
   <td class="greedyPane">
@@ -217,9 +228,9 @@ function popPlanning() {
 		    <td>
 		    {/if}
 		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}
-		      {if $curr_affectation->sortie|date_format:"%H:%M:%S" >= $heureLimit && $curr_affectation->sortie|date_format:"%Y-%m-%d" == $date}
+		      {*if $curr_affectation->sortie|date_format:"%H:%M:%S" >= $heureLimit && $curr_affectation->sortie|date_format:"%Y-%m-%d" == $date*}
 		      <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
-		      {/if}
+		      {*/if*}
 		      <strong><i>{$curr_affectation->_ref_operation->_ref_pat->_view}</i></strong>
 		      {else}
 		      {if $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
@@ -375,6 +386,7 @@ function popPlanning() {
       <tr>
         <th class="title">
           Admissions 
+          {if $group_name == "veille" }de la veille{/if}
           {if $group_name == "matin" }du matin{/if}
           {if $group_name == "soir" }du soir{/if}
           {if $group_name == "avant"}antérieures{/if}
@@ -395,6 +407,9 @@ function popPlanning() {
 
 	<table class="operationcollapse" id="operation{$curr_operation->operation_id}">
       <tr>
+        <td class="selectoperation" style="background:#{$curr_operation->_ref_chir->_ref_function->color}">
+          <input type="radio" id="hospitalisation{$curr_operation->operation_id}" onclick="selectHospitalisation({$curr_operation->operation_id})" />
+        </td>
         <td class="patient" onclick="flipOperation({$curr_operation->operation_id})">
           <strong>{$curr_operation->_ref_pat->_view}</strong>
           {if $curr_operation->type_adm == "comp"}
@@ -403,15 +418,12 @@ function popPlanning() {
           ({$curr_operation->type_adm|truncate:1:""|capitalize})
           {/if}
         </td>
-        <td class="selectoperation" style="background:#{$curr_operation->_ref_chir->_ref_function->color}">
-          <input type="radio" id="hospitalisation{$curr_operation->operation_id}" onclick="selectHospitalisation({$curr_operation->operation_id})" />
-        </td>
       </tr>
       <tr>
         <td class="date" colspan="2"><strong><i>Entrée</i></strong>: {$curr_operation->_entree_adm|date_format:"%A %d %B %H:%M"}</td>
       </tr>
       <tr>
-        <td class="date" colspan="2"><strong><i>Sortie</i></strong>: {$curr_operation->_sortie_adm|date_format:"%A %d %B %H:%M"}</td>
+        <td class="date" colspan="2"><strong><i>Sortie</i></strong>: {$curr_operation->_sortie_adm|date_format:"%A %d %B"}</td>
       </tr>
       <tr>
         <td class="date" colspan="2"><strong><i>Age:</i></strong>: {$curr_operation->_ref_pat->_age} ans
