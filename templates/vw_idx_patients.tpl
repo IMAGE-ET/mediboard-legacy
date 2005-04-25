@@ -181,7 +181,7 @@ function printPatient(id) {
       </table>
       
       <table class="form">
-        {if $patient->_ref_curr_affectation}
+        {if $patient->_ref_curr_affectation->affectation_id}
         <tr><th colspan="3" class="category">Chambre actuelle</th></tr>
         <tr>
           <td colspan="3">

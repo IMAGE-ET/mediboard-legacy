@@ -180,17 +180,28 @@ class CPatient extends CDpObject {
     $leftjoin = array();
     $leftjoin["plageconsult"] = "consultation.plageconsult_id = plageconsult.plageconsult_id";
     $this->_ref_consultations = $obj->loadList($where, $order, null, null, $leftjoin);
+  	// affectation actuelle
+  	$obj = new CAffectation();
+  	$date = date("Y-m-d");
+  	$where = array();
+  	$where["entree"] ="<= '$date 23:59:59'";
+  	$where["sortie"] =">= '$date 00:00:00'";
+  	$inArray = array();
+  	foreach($this->_ref_operations as $key => $value) {
+  	  $inArray[] = $key;
+  	}
+  	if(count($inArray)) {
+  	  $in = implode(", ", $inArray);
+  	  $where["operation_id"] ="IN ($in)";
+  	}
+  	else
+  	  $where["operation_id"] ="IS NULL";
+  	$obj->loadObject($where);
+  	$this->_ref_curr_affectation = $obj;
   }
 
   // Forward references
   function loadRefsFwd() {
-  	// affectation actuelle
-  	$obj = new CAffectation();
-  	$date = date("Y-m-d");
-  	$where["entree"] ="<= '$date'";
-  	$where["sortie"] =">= '$date'";
-  	$obj->loadObject($where);
-  	$this->_ref_curr_affectation = $obj;
     // medecin_traitant
     $obj = new CMedecin();
     if($obj->load($this->medecin_traitant))
