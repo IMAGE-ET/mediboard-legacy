@@ -39,7 +39,7 @@
     <td>
       <b>{$curr_sortie->_ref_operation->_ref_pat->_view}</b>
     </td>
-    <td>{$curr_sortie->sortie|date_format:"%H h %M"}</td>
+    <td>{$curr_sortie->sortie|date_format:"%H h %M"} ({$curr_sortie->_ref_operation->type_adm|truncate:1:""|capitalize})</td>
     <td>
       Dr. {$curr_sortie->_ref_operation->_ref_chir->_view}
     </td>
