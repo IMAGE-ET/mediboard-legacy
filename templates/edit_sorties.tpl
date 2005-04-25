@@ -24,12 +24,14 @@
     {if $curr_sortie->confirme}
     <input type="hidden" name="confirme" value="0" />
     <button type="submit">
-    <img src="modules/{$m}/images/cancel.png" alt="Annuler" title="Annuler la sortie">
+    <img src="modules/{$m}/images/cross.png" alt="Annuler" title="Annuler la sortie">
+    Annuler la sortie
     </button>
     {else}
     <input type="hidden" name="confirme" value="1" />
     <button type="submit">
     <img src="modules/{$m}/images/tick.png" alt="Confirmer" title="Confirmer la sortie">
+    Confirmer la sortie
     </button>
     {/if}
     </form>

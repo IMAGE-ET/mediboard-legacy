@@ -93,7 +93,7 @@ class CLit extends CDpObject {
       // Last Dispo
       $where = array (
         "lit_id" => "= '$this->lit_id'",
-        "sortie" => "< '$date'",
+        "sortie" => "<= '$date 23:59:59'",
       );
       $order = "sortie DESC";
       
@@ -104,14 +104,14 @@ class CLit extends CDpObject {
       // Next Dispo
       $where = array (
         "lit_id" => "= '$this->lit_id'",
-        "entree" => "> '$date'",
+        "entree" => ">= '$date 00:00:00'",
       );
       $order = "entree ASC";
 
       $this->_ref_next_dispo = new CAffectation;
       $this->_ref_next_dispo->loadObject($where, $order);
       $this->_ref_next_dispo->checkDaysRelative($date);
-		}
+	}
   }
   
 }

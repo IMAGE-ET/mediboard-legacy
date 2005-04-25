@@ -10,7 +10,6 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 require_once($AppUI->getModuleClass("dPhospi", "affectation"));
-require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
@@ -39,8 +38,6 @@ foreach($list as $key => $value) {
     $list[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
   }
 }
-
-//mbTrace($list);
 
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));
