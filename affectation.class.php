@@ -72,7 +72,7 @@ class CAffectation extends CDpObject {
     $flagAmbu = $flag && ($this->_ref_operation->type_adm == "ambu");
     
     if($flagComp) {
-      $this->sortie = mbDate("", $this->sortie)." "."14:00:00";
+      $this->sortie = mbDate("", $this->sortie)." "."10:00:00";
     }
     if($flagAmbu) {
       if($this->_ref_operation->time_operation != "00:00:00")
