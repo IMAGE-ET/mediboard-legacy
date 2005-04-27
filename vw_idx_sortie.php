@@ -36,12 +36,13 @@ $ljoin["operations"] = "operations.operation_id = affectation.operation_id";
 $ljoin["lit"] = "lit.lit_id = affectation.lit_id";
 $ljoin["chambre"] = "chambre.chambre_id = lit.chambre_id";
 $ljoin["service"] = "service.service_id = chambre.service_id";
+$ljoin["patients"] = "operations.pat_id = patients.patient_id";
 $where["sortie"] = "BETWEEN '$limit1' AND '$limit2'";
 $where["type_adm"] = "!= 'exte'";
 if($vue) {
   $where["effectue"] = "= 0";
 }
-$order = "affectation.sortie";
+$order = "patients.nom, patients.prenom";
 $list = $list->loadList($where, $order, null, null, $ljoin);
 foreach($list as $key => $value) {
   $list[$key]->loadRefsFwd();
