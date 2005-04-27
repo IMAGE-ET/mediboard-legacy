@@ -15,6 +15,7 @@ require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 require_once( $AppUI->getModuleClass('dPhospi', 'affectation') );
+require_once( $AppUI->getModuleClass('dPplanningOp', 'pathologie') );
 
 class COperation extends CDpObject {
   // DB Table key
@@ -57,6 +58,7 @@ class COperation extends CDpObject {
   var $annulee = null;
   var $compte_rendu = null;
   var $cr_valide = null;
+  var $pathologie = null;
     
   // Form fields
   var $_hour_op = null;

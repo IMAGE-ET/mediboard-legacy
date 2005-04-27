@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.25';
+$config['mod_version'] = '0.26';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -39,54 +39,61 @@ class CSetupdPplanningOp {
 	}
 
 	function upgrade( $old_version ) {
-		switch ( $old_version )
-		{
-		case "all": {
-            $sql = "INSERT INTO sysvals
-                    VALUES ('', '1', 'AnesthType', '1|Rachi\n2|Rachi + bloc\n3|Anesthésie loco-régionnale\n4|Anesthésie locale\n5|Neurolept\n6|Anesthésie générale\n7|Anesthesie generale + bloc\n8|Anesthesie peribulbaire\n0|Non définie')";
-            db_exec( $sql ); db_error();
-        }
-		case "0.1": {
-            $sql = "ALTER TABLE operations ADD entree_bloc TIME AFTER temp_operation ,
-                    ADD sortie_bloc TIME AFTER entree_bloc ,
-                    ADD saisie ENUM( 'n', 'o' ) DEFAULT 'n' NOT NULL ,
-                    CHANGE plageop_id plageop_id BIGINT( 20 ) UNSIGNED";
-        }
-        case "0.2": {
-        	$sql = "ALTER TABLE `operations` ADD `convalescence` TEXT AFTER `materiel` ;";
-            db_exec( $sql ); db_error();
-        }
-        case "0.21": {
-        	$sql = "ALTER TABLE `operations` ADD `depassement` INT( 4 );";
-            db_exec( $sql ); db_error();
-        }
-        case "0.22": {
-        	$sql = "ALTER TABLE `operations` ADD `CCAM_code2` VARCHAR( 7 ) AFTER `CCAM_code`,
-                    ADD INDEX ( `CCAM_code2` ),
-                    ADD INDEX ( `CCAM_code` ),
-                    ADD INDEX ( `pat_id` ),
-                    ADD INDEX ( `chir_id` ),
-                    ADD INDEX ( `plageop_id` );";
-            db_exec( $sql ); db_error();
-        }
-        case "0.23" : {
-        	$sql = "ALTER TABLE `operations` ADD `modifiee` TINYINT DEFAULT '0' NOT NULL AFTER `saisie` ;";
-        	db_exec( $sql ); db_error();
-        	$sql = "ALTER TABLE `operations` ADD `annulee` TINYINT DEFAULT '0' NOT NULL ;";
-            db_exec( $sql ); db_error();
-        }
-        case "0.24" : {
-        	$sql = "ALTER TABLE `operations` ADD `compte_rendu` TEXT," .
-        			"ADD `cr_valide` TINYINT( 4 ) DEFAULT '0' NOT NULL ;";
-        	db_exec( $sql ); db_error();
-        }
-        case "0.25" : {
-			return true;
-        }
-		default:
-			return false;
+		switch ($old_version) 		{
+		case "all":
+      $sql = "INSERT INTO sysvals" .
+          "\nVALUES ('', '1', 'AnesthType', '1|Rachi\n2|Rachi + bloc\n3|Anesthésie loco-régionnale\n4|Anesthésie locale\n5|Neurolept\n6|Anesthésie générale\n7|Anesthesie generale + bloc\n8|Anesthesie peribulbaire\n0|Non définie')";
+      db_exec( $sql ); db_error();
+		case "0.1":
+      $sql = "ALTER TABLE operations " .
+          "\nADD entree_bloc TIME AFTER temp_operation ," .
+          "\nADD sortie_bloc TIME AFTER entree_bloc ," .
+          "\nADD saisie ENUM( 'n', 'o' ) DEFAULT 'n' NOT NULL ," .
+          "\nCHANGE plageop_id plageop_id BIGINT( 20 ) UNSIGNED";
+      db_exec( $sql ); db_error();
+    
+    case "0.2":
+    	$sql = "ALTER TABLE `operations` " .
+          "\nADD `convalescence` TEXT AFTER `materiel` ;";
+      db_exec( $sql ); db_error();
+    
+    case "0.21":
+    	$sql = "ALTER TABLE `operations` " .
+          "\nADD `depassement` INT( 4 );";
+      db_exec( $sql ); db_error();
+
+    case "0.22":
+    	$sql = "ALTER TABLE `operations` " .
+          "\nADD `CCAM_code2` VARCHAR( 7 ) AFTER `CCAM_code`," .
+          "\nADD INDEX ( `CCAM_code2` )," .
+          "\nADD INDEX ( `CCAM_code` )," .
+          "\nADD INDEX ( `pat_id` )," .
+          "\nADD INDEX ( `chir_id` )," .
+          "\nADD INDEX ( `plageop_id` );";
+      db_exec( $sql ); db_error();
+
+    case "0.23" :
+      $sql = "ALTER TABLE `operations` " .
+          "\nADD `modifiee` TINYINT DEFAULT '0' NOT NULL AFTER `saisie`," .
+          "\nADD `annulee` TINYINT DEFAULT '0' NOT NULL ;";
+    	db_exec( $sql ); db_error();
+
+    case "0.24" :
+     	$sql = "ALTER TABLE `operations` " .
+          "\nADD `compte_rendu` TEXT," .
+    			"\nADD `cr_valide` TINYINT( 4 ) DEFAULT '0' NOT NULL ;";
+    	db_exec( $sql ); db_error();
+      
+    case "0.25" :
+      $sql = "ALTER TABLE `operations` " .
+          "\nADD `pathologie` VARCHAR( 8 ) DEFAULT NULL ;";
+      db_exec( $sql ); db_error();
+ 
+    case "0.26":
+      return true;
 		}
-		return false;
+    
+    return false;
 	}
 
 	function install() {
@@ -120,7 +127,8 @@ class CSetupdPplanningOp {
 			", UNIQUE KEY operation_id (operation_id)" .
 			") TYPE=MyISAM;";
 		db_exec( $sql ); db_error();
-        $this->upgrade("all");
+    
+    $this->upgrade("all");
 		return null;
 	}
 }
