@@ -291,6 +291,10 @@ table.tbl tr.groupcollapse td {
   font-weight: bold;
 }
 
+table.tbl th.text {
+  white-space: normal;
+}
+
 table.tbl td.text {
   white-space: normal;
 }
