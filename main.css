@@ -991,6 +991,12 @@ table.chambreexpand {
   margin: 1px 0;
 }
 
+table.chambrecollapse em,
+table.chambreexpand em {
+  font-weight: bold;
+}
+
+
 table.chambrecollapse td,
 table.chambrecollapse th,
 table.chambreexpand td,
@@ -1061,6 +1067,11 @@ table.operationexpand td {
   border: 1px solid #555;
   padding: 0 2px;
   color: #000;
+}
+
+table.operationcollapse em,
+table.operationexpand em {
+  font-weight: bold;
 }
 
 table.operationcollapse td.selectoperation,
