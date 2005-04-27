@@ -234,7 +234,7 @@ function popPlanning() {
 		      {/if}
 		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}
 		      <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
-		      <strong><i>{$curr_affectation->_ref_operation->_ref_pat->_view}</i></strong>
+		      <em>{$curr_affectation->_ref_operation->_ref_pat->_view}</em>
 		      {else}
 		      {if $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
 		      <img src="modules/{$m}/images/O.png" alt="O" title="Sortant demain">
@@ -265,9 +265,9 @@ function popPlanning() {
 		  <tr class="dates">
 		    <td class="text" colspan="2">
 		      {if $curr_affectation->_ref_prev->affectation_id}
-		      <strong><i>Déplacé</i></strong> (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom})
+		      <em>Déplacé</em> (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom})
 		      {else}
-		      <strong><i>Entrée</i></strong>
+		      <em>Entrée</em>
 		      {/if}:
 		      {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
 		      ({$curr_affectation->_entree_relative} jours)
@@ -292,9 +292,9 @@ function popPlanning() {
 		      </a>
 
 		      {if $curr_affectation->_ref_next->affectation_id}
-		      <strong><i>Déplacé</i></strong> (chambre: {$curr_affectation->_ref_next->_ref_lit->_ref_chambre->nom})
+		      <em>Déplacé</em> (chambre: {$curr_affectation->_ref_next->_ref_lit->_ref_chambre->nom})
 		      {else}
-		      <strong><i>Sortie</i></strong>
+		      <em>Sortie</em>
 		      {/if}:
 		      {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}
 		      ({$curr_affectation->_sortie_relative} jours)
@@ -316,18 +316,18 @@ function popPlanning() {
 		    </td>
 		  </tr>
 		  <tr class="dates">
-		    <td colspan="2"><strong><i>Age</i></strong>: {$curr_affectation->_ref_operation->_ref_pat->_age} ans</td>
+		    <td colspan="2"><em>Age</em>: {$curr_affectation->_ref_operation->_ref_pat->_age} ans</td>
 		  </tr>
 	      <tr class="dates">
-	        <td class="text" colspan="2"><strong><i>Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</i></strong></td>
+	        <td class="text" colspan="2"><em>Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</em></td>
 	      </tr>
 	      <tr class="dates">
 	        <td class="text" colspan="2">
-	          <strong><i>{$curr_affectation->_ref_operation->_ext_code_ccam->code}</i></strong>:
+	          <em>{$curr_affectation->_ref_operation->_ext_code_ccam->code}</em>:
 	          {$curr_affectation->_ref_operation->_ext_code_ccam->libelleLong}
 	          {if $curr_affectation->_ref_operation->CCAM_code2}
 	          <br />
-	          <strong><i>{$curr_affectation->_ref_operation->_ext_code_ccam2->code}</i></strong>:
+	          <em>{$curr_affectation->_ref_operation->_ext_code_ccam2->code}</em>:
 	          {$curr_affectation->_ref_operation->_ext_code_ccam2->libelleLong}
 	          {/if}         
 	        </td>
@@ -335,7 +335,7 @@ function popPlanning() {
 	      {if $curr_affectation->_ref_operation->rques != ""}
           <tr class="dates">
             <td class="text" colspan="2">
-              <strong><i>Remarques</i>:<strong/> <font style="color:#a33">{$curr_affectation->_ref_operation->rques|escape:javascript}</font>
+              <em>Remarques</em>: {$curr_affectation->_ref_operation->rques|escape:javascript}
             </td>
           </tr>
           {/if}
@@ -414,7 +414,9 @@ function popPlanning() {
 	<table class="operationcollapse" id="operation{$curr_operation->operation_id}">
       <tr>
         <td class="selectoperation" style="background:#{$curr_operation->_ref_chir->_ref_function->color}">
+          {if $curr_operation->pathologie}  
           <input type="radio" id="hospitalisation{$curr_operation->operation_id}" onclick="selectHospitalisation({$curr_operation->operation_id})" />
+          {/if}
         </td>
         <td class="patient" onclick="flipOperation({$curr_operation->operation_id})">
           <strong>{$curr_operation->_ref_pat->_view}</strong>
@@ -426,32 +428,54 @@ function popPlanning() {
         </td>
       </tr>
       <tr>
-        <td class="date" colspan="2"><strong><i>Entrée</i></strong>: {$curr_operation->_entree_adm|date_format:"%A %d %B %H:%M"}</td>
+        <td class="date" colspan="2"><em>Entrée</em>: {$curr_operation->_entree_adm|date_format:"%A %d %B %H:%M"}</td>
       </tr>
       <tr>
-        <td class="date" colspan="2"><strong><i>Sortie</i></strong>: {$curr_operation->_sortie_adm|date_format:"%A %d %B"}</td>
+        <td class="date" colspan="2"><em>Sortie</em>: {$curr_operation->_sortie_adm|date_format:"%A %d %B"}</td>
       </tr>
       <tr>
-        <td class="date" colspan="2"><strong><i>Age:</i></strong>: {$curr_operation->_ref_pat->_age} ans
+        <td class="date" colspan="2"><em>Age:</em>: {$curr_operation->_ref_pat->_age} ans
       </tr>
       <tr>
-        <td class="date" colspan="2"><strong><i>Dr. {$curr_operation->_ref_chir->_view}</i></strong></td>
+        <td class="date" colspan="2"><em>Dr. {$curr_operation->_ref_chir->_view}</em></td>
       </tr>
       <tr>
         <td class="date" colspan="2">
-          <strong><i>{$curr_operation->_ext_code_ccam->code}</i></strong>:
+          <em>{$curr_operation->_ext_code_ccam->code}</em>:
           {$curr_operation->_ext_code_ccam->libelleLong}
           {if $curr_operation->CCAM_code2}
           <br />
-          <strong><i>{$curr_operation->_ext_code_ccam2->code}</i></strong>:
+          <em>{$curr_operation->_ext_code_ccam2->code}</em>:
           {$curr_operation->_ext_code_ccam2->libelleLong}
           {/if}         
+        </td>
+      </tr>
+      <tr>
+        <td class="date" colspan="2">
+        <form name="EditOperation{$curr_operation->operation_id}" action="?m=dPplanningOp" method="post">
+
+        <input type="hidden" name="m" value="dPplanningOp" />
+        <input type="hidden" name="dosql" value="do_planning_aed" />
+        <input type="hidden" name="operation_id" value="{$curr_operation->operation_id}" />
+
+       	<em>Pathologie :</em> 
+        <select name="pathologie" onchange="this.form.submit()">
+        <option name="0">&mdash; Choisir &mdash;</option>
+        {foreach from=$pathos->dispo item=curr_patho}
+        <option {if $curr_patho == $curr_operation->pathologie}selected="selected"{/if}>
+		{$curr_patho}
+        </option>
+        {/foreach}
+        </select>
+ 
+        </form>
+        
         </td>
       </tr>
       {if $curr_operation->rques != ""}
       <tr>
         <td class="date" colspan="2">
-          <strong><i>Remarques</i></strong>: {$curr_operation->rques|escape:javascript}
+          <em>Remarques</em>: {$curr_operation->rques|escape:nl2br}
         </td>
       </tr>
       {/if}

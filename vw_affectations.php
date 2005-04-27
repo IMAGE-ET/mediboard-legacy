@@ -11,6 +11,9 @@ global $AppUI, $canRead, $canEdit, $m;
 
 require_once($AppUI->getModuleClass("dPhospi", "service"));
 require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
+require_once($AppUI->getModuleClass("dPplanningOp", "pathologie"));
+
+$pathos = new CPathologies();
 
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
@@ -157,6 +160,7 @@ require_once($AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
 $smarty->debugging = false;
+$smarty->assign('pathos' , $pathos);
 $smarty->assign('year' , $year );
 $smarty->assign('month', $month);
 $smarty->assign('day'  , $day  );
