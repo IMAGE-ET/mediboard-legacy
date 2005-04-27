@@ -18,10 +18,20 @@ if (!$canRead) {
 // Type d'affichage
 $vue = mbGetValueFromGetOrSession("vue", 0);
 
+// Récupération des dates
+$day = mbGetValueFromGetOrSession("day", date("d"));
+$month = mbGetValueFromGetOrSession("month", date("m"));
+$year = mbGetValueFromGetOrSession("year", date("Y"));
+
+$now  = date("Y-m-d");
+$cday = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
+$nday = date("Y-m-d", mktime(0, 0, 0, $month, $day + 1, $year));
+$pday = date("Y-m-d", mktime(0, 0, 0, $month, $day - 1, $year));
+
 // Récupération des sorties du jour
 $list = new CAffectation;
-$limit1 = date("Y-m-d")." 00:00:00";
-$limit2 = date("Y-m-d")." 23:59:59";
+$limit1 = $cday." 00:00:00";
+$limit2 = $cday." 23:59:59";
 $ljoin["operations"] = "operations.operation_id = affectation.operation_id";
 $ljoin["lit"] = "lit.lit_id = affectation.lit_id";
 $ljoin["chambre"] = "chambre.chambre_id = lit.chambre_id";
@@ -48,6 +58,10 @@ foreach($list as $key => $value) {
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
+$smarty->assign('now' , $now );
+$smarty->assign('cday' , $cday );
+$smarty->assign('nday' , $nday );
+$smarty->assign('pday' , $pday );
 $smarty->assign('vue' , $vue );
 $smarty->assign('list' , $list );
 
