@@ -15,17 +15,21 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// Type d'affichage
+$vue = mbGetValueFromGetOrSession("vue", 0);
+
 // Récupération des sorties du jour
 $list = new CAffectation;
 $limit1 = date("Y-m-d")." 00:00:00";
 $limit2 = date("Y-m-d")." 23:59:59";
 $ljoin["operations"] = "operations.operation_id = affectation.operation_id";
-$ljoin["lit"] = "lit.lit_id = affectation.lit_id";
-$ljoin["chambre"] = "chambre.chambre_id = lit.chambre_id";
-$ljoin["service"] = "service.service_id = chambre.service_id";
+$ljoin["patients"] = "operations.pat_id = patients.patient_id";
 $where["sortie"] = "BETWEEN '$limit1' AND '$limit2'";
 $where["type_adm"] = "= 'comp'";
-$order = "service.nom, chambre.nom, lit.nom";
+if($vue) {
+  $where["confirme"] = "= 0";
+}
+$order = "patients.nom, patients.prenom";
 $list = $list->loadList($where, $order, null, null, $ljoin);
 foreach($list as $key => $value) {
   $list[$key]->loadRefsFwd();
@@ -43,6 +47,7 @@ foreach($list as $key => $value) {
 require_once($AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 $smarty->assign('list' , $list );
+$smarty->assign('vue' , $vue );
 
 $smarty->display('edit_sorties.tpl');
 

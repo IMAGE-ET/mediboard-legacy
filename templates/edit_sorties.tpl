@@ -2,6 +2,22 @@
 <script language="javascript">
 </script>
 {/literal}
+<table class="main">
+<tr>
+<th>
+
+<form name="typeVue" action="?m={$m}" method="get">
+<input type="hidden" name="m" value="{$m}" />
+<select name="vue" onchange="submit()">
+  <option value="0" {if $vue == 0}selected="selected"{/if}>Tout afficher</option>
+  <option value="1" {if $vue == 1}selected="selected"{/if}>Ne pas afficher les validés</option>
+</select>
+</form>
+
+</th>
+</tr>
+<tr>
+<td>
 
 <table class="tbl">
   <tr>
@@ -52,4 +68,8 @@
     <td>{$curr_sortie->sortie|date_format:"%H h %M"}</td>
   </tr>
   {/foreach}
+</table>
+
+</td>
+</tr>
 </table>

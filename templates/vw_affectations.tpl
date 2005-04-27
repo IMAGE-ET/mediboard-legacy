@@ -205,7 +205,7 @@ function popPlanning() {
 		      {if $curr_chambre->_overbooking}
 		      <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
 		      {/if}
-		      <strong>{$curr_chambre->nom}</strong> (Dispo: {$curr_chambre->_nb_lits_dispo}/{$curr_chambre->_ref_lits|@count})
+		      <strong><a name="chambre{$curr_chambre->chambre_id}">{$curr_chambre->nom}</a></strong>
 		    </th>
 		  </tr>
 		  {foreach from=$curr_chambre->_ref_lits item=curr_lit}
@@ -223,19 +223,17 @@ function popPlanning() {
 		  {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
 		  <tr class="patient">
 		    {if $curr_affectation->confirme}
-		    <td style="background-image:url(modules/{$m}/images/ray.gif); background-repeat:repeat;">
+		    <td class="text" style="background-image:url(modules/{$m}/images/ray.gif); background-repeat:repeat;">
 		    {else}
-		    <td>
-		    {/if}
-		    {if $curr_affectation->_ref_operation->admis == "o"}
-		    <font>
-		    {else}
-		    <font style="color:#a33">
-		    {/if}
+		    <td class="text">
+		      {/if}
+		      {if $curr_affectation->_ref_operation->admis == "o"}
+		      <font>
+		      {else}
+		      <font style="color:#a33">
+		      {/if}
 		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}
-		      {*if $curr_affectation->sortie|date_format:"%H:%M:%S" >= $heureLimit && $curr_affectation->sortie|date_format:"%Y-%m-%d" == $date*}
 		      <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
-		      {*/if*}
 		      <strong><i>{$curr_affectation->_ref_operation->_ref_pat->_view}</i></strong>
 		      {else}
 		      {if $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
@@ -243,7 +241,9 @@ function popPlanning() {
 		      {/if}
 		      <strong>{$curr_affectation->_ref_operation->_ref_pat->_view}</strong>
 		      {/if}
-		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}(A){/if}
+		      {if $curr_affectation->_ref_operation->admis == "n"}
+		      {$curr_affectation->sortie|date_format:"%Hh%M"}
+		      {/if}
 		    </font>
 		    </td>
 		    <td class="action" style="background:#{$curr_affectation->_ref_operation->_ref_chir->_ref_function->color}">
@@ -335,14 +335,14 @@ function popPlanning() {
 	      {if $curr_affectation->_ref_operation->rques != ""}
           <tr class="dates">
             <td class="text" colspan="2">
-              <strong><i>Remarques</i></strong>: {$curr_affectation->_ref_operation->rques|escape:javascript}
+              <strong><i>Remarques</i>:<strong/> <font style="color:#a33">{$curr_affectation->_ref_operation->rques|escape:javascript}</font>
             </td>
           </tr>
           {/if}
           {if $curr_affectation->_ref_operation->chambre == "o"}
           <tr class="dates">
             <td class="text" colspan="2">
-              Chambre seule
+              <strong>Chambre seule</strong>
             </td>
           </tr>
           {/if}
