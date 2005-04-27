@@ -7,11 +7,13 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
+
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 // Initialisation de variables
 $listDay = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
@@ -119,37 +121,43 @@ foreach($list1 as $key => $value) {
 }
 
 // operations de la journée
-$sql = "SELECT operations.operation_id, patients.nom AS nom, patients.prenom AS prenom,
-        operations.admis AS admis, operations.saisie AS saisie, operations.type_adm AS type_adm,
-		operations.depassement AS depassement, users.user_first_name AS chir_firstname,
-        users.user_last_name AS chir_lastname, operations.time_adm AS time_adm,
-        operations.annulee AS annulee, operations.modifiee AS modifiee
-		FROM operations
-		LEFT JOIN patients
-		ON operations.pat_id = patients.patient_id
-		LEFT JOIN plagesop
-		ON operations.plageop_id = plagesop.id
-		LEFT JOIN users
-		ON users.user_username = plagesop.id_chir
-		WHERE operations.date_adm = '$year-$month-$day'";
-if($selAdmis != "0")
-  $sql .= " AND operations.admis = '$selAdmis'
-		AND operations.annulee = 0";
-if($selSaisis != "0")
-  $sql .= " AND operations.saisie = '$selSaisis'
-		AND operations.annulee = 0";
+
+$today = new COperation;
+
+$ljoin["patients"] = "operations.pat_id = patients.patient_id";
+$ljoin["plagesop"] = "operations.plageop_id = plagesop.id";
+
+$where["date_adm"] = "= '$year-$month-$day'";
+if($selAdmis != "0") {
+  $where["admis"] = "= '$selAdmis'";
+  $where["annulee"] = "= 0";
+}
+if($selSaisis != "0") {
+  $where["saisie"] = "= '$selSaisis'";
+  $where["annulee"] = "= 0";
+}
 if($selTri == "nom")
-  $sql .= " ORDER BY patients.nom, patients.prenom, operations.time_adm";
+  $order = "patients.nom, patients.prenom, operations.time_adm";
 if($selTri == "heure")
-  $sql .= " ORDER BY operations.time_adm, patients.nom, patients.prenom";
-$today = db_loadlist($sql);
+  $order = "operations.time_adm, patients.nom, patients.prenom";
+
+$today = $today->loadList($where, $order, null, null, $ljoin);
+
 foreach($today as $key => $value) {
-  $today[$key]["hour"] = substr($value["time_adm"], 0, 2)."h".substr($value["time_adm"], 3, 2);
+  $today[$key]->loadRefsFwd();
+  $today[$key]->_first_aff = $today[$key]->getFirstAffectation();
+  if($today[$key]->_first_aff->affectation_id) {
+    $today[$key]->_first_aff->loadRefsFwd();
+    $today[$key]->_first_aff->_ref_lit->loadRefsFwd();
+    $today[$key]->_first_aff->_ref_lit->_ref_chambre->loadRefsFwd();
+  }
 }
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
+
+$smarty->debugging = false;
 
 $smarty->assign('year', $year);
 $smarty->assign('day', $day);

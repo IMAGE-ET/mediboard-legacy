@@ -15,6 +15,9 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// Type d'affichage
+$vue = mbGetValueFromGetOrSession("vue", 0);
+
 // Récupération des sorties du jour
 $list = new CAffectation;
 $limit1 = date("Y-m-d")." 00:00:00";
@@ -25,6 +28,9 @@ $ljoin["chambre"] = "chambre.chambre_id = lit.chambre_id";
 $ljoin["service"] = "service.service_id = chambre.service_id";
 $where["sortie"] = "BETWEEN '$limit1' AND '$limit2'";
 $where["type_adm"] = "!= 'exte'";
+if($vue) {
+  $where["effectue"] = "= 0";
+}
 $order = "affectation.sortie";
 $list = $list->loadList($where, $order, null, null, $ljoin);
 foreach($list as $key => $value) {
@@ -42,6 +48,7 @@ foreach($list as $key => $value) {
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
+$smarty->assign('vue' , $vue );
 $smarty->assign('list' , $list );
 
 $smarty->display('vw_idx_sortie.tpl');
