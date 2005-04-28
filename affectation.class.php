@@ -54,9 +54,7 @@ class CAffectation extends CDpObject {
     $msg = parent::store();
     // Cas de la date d'admission de l'intervention qui diffère
     $this->load($this->affectation_id);
-    //mbTrace($this, "affectation apres store", true);
     $this->loadRefsFwd();
-    //mbTrace($this, "affectation apres loadRefs", true);
     if(!$this->_ref_prev->affectation_id) {
       if($this->entree != $this->_ref_operation->date_adm." ".$this->_ref_operation->time_adm) {
         $this->_ref_operation->date_adm = mbDate("+0 days", $this->entree);
@@ -85,7 +83,7 @@ class CAffectation extends CDpObject {
     $this->_ref_next = new CAffectation;
     $this->_ref_next->loadObject($where);
     
-    $flag = !$this->_ref_next->affectation_id && !$this->affectation_id;
+    $flag = (!$this->_ref_next->affectation_id && !$this->affectation_id);
     $flagComp = $flag && ($this->_ref_operation->type_adm == "comp");
     $flagAmbu = $flag && ($this->_ref_operation->type_adm == "ambu");
     
