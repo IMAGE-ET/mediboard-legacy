@@ -89,6 +89,15 @@ class COperation extends CDpObject {
     $this->CDpObject( 'operations', 'operation_id' );
   }
 
+  function check() {
+    global $pathos;
+    if (!in_array($this->pathologie, $pathos->dispo)) {
+      return "Pathologie non disponible";
+    }
+    
+    return parent::check();      
+  }
+  
   function reorder() {
       $sql = "SELECT operations.operation_id, operations.temp_operation,
       	plagesop.debut

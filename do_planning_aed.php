@@ -39,6 +39,7 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
+
 $del = dPgetParam( $_POST, 'del', 0 );
 
 if ($del) {
@@ -63,8 +64,10 @@ if ($del) {
   }
 } 
 else {
+  
 	if ($msg = $obj->store()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+    
 	}
 	else {
       $isNotNew = @$_POST['operation_id'];

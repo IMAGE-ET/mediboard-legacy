@@ -98,4 +98,8 @@ class CPathologies {
       @$this->compat[$patho1][$septique1][$patho2][$septique2];
   }    
 }
+
+
+$pathos = new CPathologies();
+
 ?>
