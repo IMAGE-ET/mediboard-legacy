@@ -1011,14 +1011,22 @@ table.chambreexpand td.action {
   vertical-align: middle;
 }
 
+
 table.chambrecollapse th.chambre {
-  padding: 2px 20px;
+  padding: 2px;
+  padding-left: 10px;
   background: #aaa url(./images/collapse.gif) no-repeat center left;
 }
 
 table.chambreexpand th.chambre {
-  padding: 2px 30px;
+  padding: 2px;
+  padding-left: 10px;
   background: #aaa url(./images/expand.gif) no-repeat center left;
+}
+
+th.chambre img {
+  float: right;
+  margin: 0 1px;
 }
 
 table.chambrecollapse tr.litdispo td,
