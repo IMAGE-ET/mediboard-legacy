@@ -49,7 +49,6 @@ class CLit extends CDpObject {
     $this->_ref_affectations = new CAffectation;
     $this->_ref_affectations = $this->_ref_affectations->loadList($where, $order);
     
-    $this->checkOverBooking();
     $this->checkDispo($date);
   }
 

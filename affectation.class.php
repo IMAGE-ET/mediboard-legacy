@@ -47,7 +47,7 @@ class CAffectation extends CDpObject {
     return null;
     if ($this->sortie <= $this->entree) {
       return "La date de sortie doit être supérieure à la date d'entrée";
-	}
+    }
   }
   
   function store() {
@@ -55,12 +55,12 @@ class CAffectation extends CDpObject {
     // Cas de la date d'admission de l'intervention qui diffère
     $this->load($this->affectation_id);
     $this->loadRefsFwd();
+
     if(!$this->_ref_prev->affectation_id) {
       if($this->entree != $this->_ref_operation->date_adm." ".$this->_ref_operation->time_adm) {
         $this->_ref_operation->date_adm = mbDate("+0 days", $this->entree);
         $this->_ref_operation->time_adm = mbTime("+0 days", $this->entree);
         $this->_ref_operation->updateFormFields();
-        //mbTrace($this->_ref_operation, "operation", true);
         $this->_ref_operation->store();
       }
     }
@@ -83,7 +83,7 @@ class CAffectation extends CDpObject {
     $this->_ref_next = new CAffectation;
     $this->_ref_next->loadObject($where);
     
-    $flag = (!$this->_ref_next->affectation_id && !$this->affectation_id);
+    $flag = !$this->_ref_next->affectation_id && !$this->affectation_id;
     $flagComp = $flag && ($this->_ref_operation->type_adm == "comp");
     $flagAmbu = $flag && ($this->_ref_operation->type_adm == "ambu");
     

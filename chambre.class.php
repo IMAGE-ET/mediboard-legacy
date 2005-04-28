@@ -86,7 +86,7 @@ class CChambre extends CDpObject {
       assert($lit->_ref_affectations !== null);
 
       // overbooking
-      assert($lit->_overbooking !== null);
+      $lit->checkOverBooking();
       $this->_overbooking += $lit->_overbooking;
 
       // Lits dispo
@@ -115,7 +115,7 @@ class CChambre extends CDpObject {
         $ages[] = $patient->_age;
 
         // Genres mélangés
-        $sexes[] = $patient->sexe;
+        $sexes[$patient->sexe] = true;
         
         $chirurgien =& $operation->_ref_chir;
         assert($chirurgien);
