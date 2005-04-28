@@ -176,8 +176,9 @@ function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
 	while ($row = db_fetch_array( $cur )) {
 		$class = get_class($object);
 		$object = new $class();
-    $keyname = $object->_tbl_key;
-		$object->load($row[$keyname]);
+        $keyname = $object->_tbl_key;
+		$object->bind($row);
+		$object->updateFormFields();
 		$list[$object->$keyname] = $object;
 		if( $maxrows && $maxrows == $cnt++ ) {
 			break;
