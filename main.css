@@ -1084,7 +1084,7 @@ table.operationexpand td.selectoperation {
 
 table.operationcollapse td.patient {
   white-space: normal;
-  padding-left: 25px;
+  padding-left: 17px;
   background: #ddf url(./images/collapse.gif) no-repeat center left;
 }
 
