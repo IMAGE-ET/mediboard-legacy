@@ -32,7 +32,9 @@ class CChambre extends CDpObject {
   var $_overbooking = null;
   var $_ecart_age = null;
   var $_genres_melanges = null;
-  var $_lit_specifiques = null;
+  var $_chambre_seule = null;
+  var $_conflit_chirurgiens = null;
+  var $_conflit_pathologies = null;
 
   // Object references
   var $_ref_service = null;
@@ -71,6 +73,10 @@ class CChambre extends CDpObject {
     assert($this->_ref_lits !== null);
     $this->_nb_lits_dispo = count($this->_ref_lits);
     
+    $ages = array();
+    $sexes = array();
+    $chambres_seules = array();
+
     foreach ($this->_ref_lits as $lit) {
       assert($lit->_ref_affectations !== null);
 
@@ -83,24 +89,35 @@ class CChambre extends CDpObject {
 				$this->_nb_lits_dispo--;
 			}
       
-      // Ecart d'âge
-      $ages = array();
       foreach ($lit->_ref_affectations as $affectation) {
         $operation =& $affectation->_ref_operation;
         assert($operation);
+
+        // Chambre seule
+        if ($operation->chambre ="o") {
+          $this->_chambre_seule = true;         
+        }
+
         $patient =& $operation->_ref_pat;
         assert($patient);
+
+        // Ecart d'âge
         $ages[] = $patient->_age;
+
+        // Genres mélangés
+        $sexes[] = $patient->sexe;
+        
+        $chirurgien =& $operation->_ref_chir;
+        assert($chirurgien);
+        
+        // Conflit de chirurgiens
+        
 			}
-      
-      $this->_ecart_age = count($ages) ? max($ages) - min($ages) : 0;
-			
 		}
-    
-    
-    
-    
-    
+
+    $this->_ecart_age = count($ages) ? max($ages) - min($ages) : 0;
+    $this->_genres_melanges = count($sexes) > 1;
+    $this->_chambre_seule = count($chambres_seules) > 0 and count($this->_ref_lits) > 1;
   }
 }
 ?>

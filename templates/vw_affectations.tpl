@@ -227,6 +227,13 @@ function popPlanning() {
               {if $curr_chambre->_overbooking}
               <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
               {/if}
+
+              <img src="modules/{$m}/images/warning.png" alt="warning" title="Ecart d'âge important: {$curr_chambre->_ecart_age} ans">
+              <img src="modules/{$m}/images/warning.png" alt="warning" title="Sexes opposés">
+              <img src="modules/{$m}/images/warning.png" alt="warning" title="Chambre seule obligatoire">
+              <img src="modules/{$m}/images/warning.png" alt="warning" title="Conflit de praticiens">
+              <img src="modules/{$m}/images/warning.png" alt="warning" title="Conflit de pathologies">
+
               <strong><a name="chambre{$curr_chambre->chambre_id}">{$curr_chambre->nom}</a></strong>
             </th>
           </tr>
@@ -465,7 +472,7 @@ function popPlanning() {
     <table class="operationcollapse" id="operation{$curr_operation->operation_id}">
       <tr>
         <td class="selectoperation" style="background:#{$curr_operation->_ref_chir->_ref_function->color}">
-          {if $curr_operation->pathologie}  
+          {if $curr_operation->pathologie != ""}  
           <input type="radio" id="hospitalisation{$curr_operation->operation_id}" onclick="selectHospitalisation({$curr_operation->operation_id})" />
           {/if}
         </td>
@@ -512,7 +519,7 @@ function popPlanning() {
         
         <em>Pathologie:</em>
         <select name="pathologie">
-          <option name="0">&mdash; Choisir &mdash;</option>
+          <option value="0">&mdash; Choisir &mdash;</option>
           {foreach from=$pathos->dispo item=curr_patho}
           <option {if $curr_patho == $curr_operation->pathologie}selected="selected"{/if}>
           {$curr_patho}
@@ -520,9 +527,9 @@ function popPlanning() {
           {/foreach}
         </select>
         <br />
-        <input type="radio" name="septique" value="0" {if $curr_operation->septique == "0"} selected="selected" {/if} />
+        <input type="radio" name="septique" value="0" {if $curr_operation->septique == 0} checked="checked" {/if} />
         <label for="EditOperation{$curr_operation->operation_id}_septique_0" title="Opération propre">Propre</label>
-        <input type="radio" name="septique" value="1" {if $curr_operation->septique == "1"} selected="selected" {/if} />
+        <input type="radio" name="septique" value="1" {if $curr_operation->septique == 1} checked="checked" {/if} />
         <label for="EditOperation{$curr_operation->operation_id}_septique_1" title="Opération septique">Septique</label>
 
         <input type="submit" value="valider" />

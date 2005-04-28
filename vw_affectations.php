@@ -13,8 +13,6 @@ require_once($AppUI->getModuleClass("dPhospi", "service"));
 require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 require_once($AppUI->getModuleClass("dPplanningOp", "pathologie"));
 
-$pathos = new CPathologies();
-
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
