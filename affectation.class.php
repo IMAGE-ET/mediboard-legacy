@@ -28,7 +28,6 @@ class CAffectation extends CDpObject {
   var $sortie = null;
   var $confirme = null;
   var $effectue = null;
-  var $septique = null;
   
   // Form Fields
   var $_entree_relative;

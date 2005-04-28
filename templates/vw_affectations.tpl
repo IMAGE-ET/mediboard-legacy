@@ -36,9 +36,9 @@ function selectLit(lit_id) {
 
 function submitAffectation() {
   if (selected_lit && selected_hospitalisation) {
-	var form = eval("document.addAffectation" + selected_hospitalisation);
-	form.lit_id.value = selected_lit;
-	form.submit();
+    var form = eval("document.addAffectation" + selected_hospitalisation);
+    form.lit_id.value = selected_lit;
+    form.submit();
   }
 }
 
@@ -77,37 +77,56 @@ function submitAffectationSplit(form) {
 
 function setupCalendar(affectation_id) {
   var form = null;
-  form = eval("document.editAffectation" + affectation_id);
-
-  Calendar.setup( {
-      inputField  : form.name + "_sortie",
-	  ifFormat    : "%Y-%m-%d %H:%M",
-	  button      : form.name + "__trigger_sortie",
-	  showsTime   : true,
-	  onUpdate    : function() { 
-        if (calendar.dateClicked) {
-          form = eval("document.editAffectation" + affectation_id);
-          form.submit();
-        }
-	  }
-    }
-  );
   
-  form = eval("document.splitAffectation" + affectation_id);
-
-  Calendar.setup( {
-      inputField  : form.name + "__date_split",
-	  ifFormat    : "%Y-%m-%d %H:%M",
-	  button      : form.name + "__trigger_split",
-	  showsTime   : true,
-	  onUpdate    : function() { 
-        if (calendar.dateClicked) {
-          form = eval("document.splitAffectation" + affectation_id);
-          submitAffectationSplit(form)
+  if (form = eval("document.entreeAffectation" + affectation_id)) {
+    Calendar.setup( {
+        inputField  : form.name + "_entree",
+        ifFormat    : "%Y-%m-%d %H:%M",
+        button      : form.name + "__trigger_entree",
+        showsTime   : true,
+        onUpdate    : function() { 
+          if (calendar.dateClicked) {
+            form = eval("document.entreeAffectation" + affectation_id);
+            form.submit();
+          }
         }
-	  }
-    }
-  );
+      }
+    );
+  }
+
+  
+  if (form = eval("document.sortieAffectation" + affectation_id)) {
+    Calendar.setup( {
+        inputField  : form.name + "_sortie",
+        ifFormat    : "%Y-%m-%d %H:%M",
+        button      : form.name + "__trigger_sortie",
+        showsTime   : true,
+        onUpdate    : function() { 
+          if (calendar.dateClicked) {
+            form = eval("document.sortieAffectation" + affectation_id);
+            form.submit();
+          }
+        }
+      }
+    );
+  }
+  
+  if (form = eval("document.splitAffectation" + affectation_id)) {
+    Calendar.setup( {
+        inputField  : form.name + "__date_split",
+        ifFormat    : "%Y-%m-%d %H:%M",
+        button      : form.name + "__trigger_split",
+        showsTime   : true,
+        onUpdate    : function() { 
+          if (calendar.dateClicked) {
+            form = eval("document.splitAffectation" + affectation_id);
+            submitAffectationSplit(form)
+          }
+        }
+      }
+    );
+  }
+
 }
 
 {/literal}
@@ -134,13 +153,14 @@ function pageMain() {
 {/foreach}
 {literal}
 
-  var cookie = new CJL_CookieUtil("chambres");
-  chambres = cookie.getAllSubValues();
-  for (chambreId in chambres) {
-    if (chambre = document.getElementById(chambreId)) {
-      chambre.className = chambres[chambreId];
-    }
-  }
+  // Opening cookied panes
+//  var cookie = new CJL_CookieUtil("chambres");
+//  chambres = cookie.getAllSubValues();
+//  for (chambreId in chambres) {
+//    if (chambre = document.getElementById(chambreId)) {
+//      chambre.className = chambres[chambreId];
+//    }
+//  }
 }
 
 {/literal}
@@ -195,59 +215,59 @@ function popPlanning() {
     {/foreach}
     </tr>
 
-	<tr>
+    <tr>
     {foreach from=$services item=curr_service}
       <td>
       {foreach from=$curr_service->_ref_chambres item=curr_chambre}
         <table class="chambrecollapse" id="chambre{$curr_chambre->chambre_id}">
-		  <tr>
-		    <th class="chambre" colspan="2" onclick="flipChambre({$curr_chambre->chambre_id})">
-		      {if $curr_chambre->_overbooking}
-		      <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
-		      {/if}
-		      <strong><a name="chambre{$curr_chambre->chambre_id}">{$curr_chambre->nom}</a></strong>
-		    </th>
-		  </tr>
-		  {foreach from=$curr_chambre->_ref_lits item=curr_lit}
-		  <tr class="lit" >
-		    <td colspan="1">
-		      {if $curr_lit->_overbooking}
-		      <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_lit->_overbooking} collisions">
-		      {/if}
-		      {$curr_lit->nom}
-		    </td>
-		    <td class="action">
+          <tr>
+            <th class="chambre" colspan="2" onclick="flipChambre({$curr_chambre->chambre_id})">
+              {if $curr_chambre->_overbooking}
+              <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
+              {/if}
+              <strong><a name="chambre{$curr_chambre->chambre_id}">{$curr_chambre->nom}</a></strong>
+            </th>
+          </tr>
+          {foreach from=$curr_chambre->_ref_lits item=curr_lit}
+          <tr class="lit" >
+            <td colspan="1">
+              {if $curr_lit->_overbooking}
+              <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_lit->_overbooking} collisions">
+              {/if}
+              {$curr_lit->nom}
+            </td>
+            <td class="action">
               <input type="radio" id="lit{$curr_lit->lit_id}" onclick="selectLit({$curr_lit->lit_id})" />
             </td>
-		  </tr>
-		  {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
-		  <tr class="patient">
-		    {if $curr_affectation->confirme}
-		    <td class="text" style="background-image:url(modules/{$m}/images/ray.gif); background-repeat:repeat;">
-		    {else}
-		    <td class="text">
-		      {/if}
-		      {if $curr_affectation->_ref_operation->admis == "o"}
-		      <font>
-		      {else}
-		      <font style="color:#a33">
-		      {/if}
-		      {if $curr_affectation->_ref_operation->type_adm == "ambu"}
-		      <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
-		      <em>{$curr_affectation->_ref_operation->_ref_pat->_view}</em>
-		      {else}
-		      {if $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
-		      <img src="modules/{$m}/images/O.png" alt="O" title="Sortant demain">
-		      {/if}
-		      <strong>{$curr_affectation->_ref_operation->_ref_pat->_view}</strong>
-		      {/if}
-		      {if $curr_affectation->_ref_operation->admis == "n"}
-		      {$curr_affectation->sortie|date_format:"%Hh%M"}
-		      {/if}
-		    </font>
-		    </td>
-		    <td class="action" style="background:#{$curr_affectation->_ref_operation->_ref_chir->_ref_function->color}">
-		      {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
+          </tr>
+          {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
+          <tr class="patient">
+            {if $curr_affectation->confirme}
+            <td class="text" style="background-image:url(modules/{$m}/images/ray.gif); background-repeat:repeat;">
+            {else}
+            <td class="text">
+              {/if}
+              {if $curr_affectation->_ref_operation->admis == "o"}
+              <font>
+              {else}
+              <font style="color:#a33">
+              {/if}
+              {if $curr_affectation->_ref_operation->type_adm == "ambu"}
+              <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
+              <em>{$curr_affectation->_ref_operation->_ref_pat->_view}</em>
+              {else}
+              {if $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
+              <img src="modules/{$m}/images/O.png" alt="O" title="Sortant demain">
+              {/if}
+              <strong>{$curr_affectation->_ref_operation->_ref_pat->_view}</strong>
+              {/if}
+              {if $curr_affectation->_ref_operation->admis == "n"}
+              {$curr_affectation->sortie|date_format:"%Hh%M"}
+              {/if}
+            </font>
+            </td>
+            <td class="action" style="background:#{$curr_affectation->_ref_operation->_ref_chir->_ref_function->color}">
+              {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
 
               <form name="rmvAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
 
@@ -257,24 +277,48 @@ function popPlanning() {
 
               </form>
               
-		      <a href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view}')">
-		        <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
-		      </a>
-		    </td>
-		  </tr>
-		  <tr class="dates">
-		    <td class="text" colspan="2">
-		      {if $curr_affectation->_ref_prev->affectation_id}
-		      <em>Déplacé</em> (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom})
-		      {else}
-		      <em>Entrée</em>
-		      {/if}:
-		      {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
-		      ({$curr_affectation->_entree_relative} jours)
-		    </td>
-		  </tr>
-		  <tr class="dates">
-		    <td class="text">
+              <a href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view}')">
+                <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
+              </a>
+            </td>
+          </tr>
+          <tr class="dates">
+            {if $curr_affectation->_ref_prev->affectation_id}
+            <td class="text" colspan="2">
+              <em>Déplacé</em> (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom}):
+              {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
+              ({$curr_affectation->_entree_relative} jours)
+            {else}
+            <td class="text">
+              <em>Entrée</em>:
+              {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
+              ({$curr_affectation->_entree_relative} jours)
+            </td>
+            <td class="action">
+              {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
+
+              <form name="entreeAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
+
+              <input type="hidden" name="dosql" value="do_affectation_aed" />
+              <input type="hidden" name="affectation_id" value="{$curr_affectation->affectation_id}" />
+              <input type="hidden" name="entree" value="{$curr_affectation->entree}" />
+
+              </form>
+              
+              <a>
+                <img id="entreeAffectation{$curr_affectation->affectation_id}__trigger_entree" src="modules/{$m}/images/planning.png" alt="Planning" title="Modifier la date d'entrée" />
+              </a>
+            {/if}
+            </td>
+          </tr>
+          <tr class="dates">
+            {if $curr_affectation->_ref_next->affectation_id}
+            <td class="text" colspan="2">
+              <em>Déplacé</em> (chambre: {$curr_affectation->_ref_next->_ref_lit->_ref_chambre->nom}):
+              {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}
+              ({$curr_affectation->_sortie_relative} jours)
+            {else}
+            <td class="text">
               <form name="splitAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
 
               <input type="hidden" name="dosql" value="do_affectation_split" />
@@ -287,22 +331,18 @@ function popPlanning() {
 
               </form>
               
-		      <a style="float: right;">
-		        <img id="splitAffectation{$curr_affectation->affectation_id}__trigger_split" src="modules/{$m}/images/move.gif" alt="Move" title="Déplacer un patient" />
-		      </a>
+              <a style="float: right;">
+                <img id="splitAffectation{$curr_affectation->affectation_id}__trigger_split" src="modules/{$m}/images/move.gif" alt="Move" title="Déplacer un patient" />
+              </a>
 
-		      {if $curr_affectation->_ref_next->affectation_id}
-		      <em>Déplacé</em> (chambre: {$curr_affectation->_ref_next->_ref_lit->_ref_chambre->nom})
-		      {else}
-		      <em>Sortie</em>
-		      {/if}:
-		      {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}
-		      ({$curr_affectation->_sortie_relative} jours)
-		    </td>
-		    <td class="action">
-		      {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
+              <em>Sortie</em>:
+              {$curr_affectation->sortie|date_format:"%A %d %B %H:%M"}
+              ({$curr_affectation->_sortie_relative} jours)
+            </td>
+            <td class="action">
+              {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
 
-              <form name="editAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
+              <form name="sortieAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
 
               <input type="hidden" name="dosql" value="do_affectation_aed" />
               <input type="hidden" name="affectation_id" value="{$curr_affectation->affectation_id}" />
@@ -310,32 +350,41 @@ function popPlanning() {
 
               </form>
               
-		      <a>
-		        <img id="editAffectation{$curr_affectation->affectation_id}__trigger_sortie" src="modules/{$m}/images/planning.png" alt="Planning" title="Modifier la date de sortie" />
-		      </a>
-		    </td>
-		  </tr>
-		  <tr class="dates">
-		    <td colspan="2"><em>Age</em>: {$curr_affectation->_ref_operation->_ref_pat->_age} ans</td>
-		  </tr>
-	      <tr class="dates">
-	        <td class="text" colspan="2"><em>Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</em></td>
-	      </tr>
-	      <tr class="dates">
-	        <td class="text" colspan="2">
-	          <em>{$curr_affectation->_ref_operation->_ext_code_ccam->code}</em>:
-	          {$curr_affectation->_ref_operation->_ext_code_ccam->libelleLong}
-	          {if $curr_affectation->_ref_operation->CCAM_code2}
-	          <br />
-	          <em>{$curr_affectation->_ref_operation->_ext_code_ccam2->code}</em>:
-	          {$curr_affectation->_ref_operation->_ext_code_ccam2->libelleLong}
-	          {/if}         
-	        </td>
-	      </tr>
-	      {if $curr_affectation->_ref_operation->rques != ""}
+              <a>
+                <img id="sortieAffectation{$curr_affectation->affectation_id}__trigger_sortie" src="modules/{$m}/images/planning.png" alt="Planning" title="Modifier la date de sortie" />
+              </a>
+            {/if}
+            </td>
+          </tr>
+          <tr class="dates">
+            <td colspan="2"><em>Age</em>: {$curr_affectation->_ref_operation->_ref_pat->_age} ans</td>
+          </tr>
+          <tr class="dates">
+            <td class="text" colspan="2"><em>Dr. {$curr_affectation->_ref_operation->_ref_chir->_view}</em></td>
+          </tr>
           <tr class="dates">
             <td class="text" colspan="2">
-              <em>Remarques</em>: {$curr_affectation->_ref_operation->rques|escape:javascript}
+              <em>{$curr_affectation->_ref_operation->_ext_code_ccam->code}</em>:
+              {$curr_affectation->_ref_operation->_ext_code_ccam->libelleLong}
+              {if $curr_affectation->_ref_operation->CCAM_code2}
+              <br />
+              <em>{$curr_affectation->_ref_operation->_ext_code_ccam2->code}</em>:
+              {$curr_affectation->_ref_operation->_ext_code_ccam2->libelleLong}
+              {/if}         
+            </td>
+          </tr>
+          <tr class="dates">
+            <td class="text" colspan="2">
+              <em>Pathologie</em>:
+              {$curr_affectation->_ref_operation->pathologie}
+              {if $curr_affectation->_ref_operation->septique}septique{else}propre{/if}
+                            
+            </td>
+          </tr>
+          {if $curr_affectation->_ref_operation->rques != ""}
+          <tr class="dates">
+            <td class="text" colspan="2">
+              <em>Remarques</em>: {$curr_affectation->_ref_operation->rques|nl2br}
             </td>
           </tr>
           {/if}
@@ -346,32 +395,32 @@ function popPlanning() {
             </td>
           </tr>
           {/if}
-		  {foreachelse}
-		  <tr class="litdispo"><td colspan="2">Lit disponible</td></tr>
-		  <tr class="litdispo">
-		    <td class="text" colspan="2">
-		    depuis:
-		    {if $curr_lit->_ref_last_dispo && $curr_lit->_ref_last_dispo->affectation_id}
-		    {$curr_lit->_ref_last_dispo->sortie|date_format:"%A %d %B %H:%M"} 
-		    ({$curr_lit->_ref_last_dispo->_sortie_relative} jours)
-		    {else}
-		    Toujours
-		    {/if}
-		    </td>
-		  </tr>
-		  <tr class="litdispo">
-		    <td class="text" colspan="2">
-		    jusque: 
-		    {if $curr_lit->_ref_next_dispo && $curr_lit->_ref_next_dispo->affectation_id}
-		    {$curr_lit->_ref_next_dispo->entree|date_format:"%A %d %B %H:%M"}
-		    ({$curr_lit->_ref_next_dispo->_entree_relative} jours)
-		    {else}
-		    Toujours
-		    {/if}
-		    </td>
-		  </tr>
-		  {/foreach}
-		  {/foreach}
+          {foreachelse}
+          <tr class="litdispo"><td colspan="2">Lit disponible</td></tr>
+          <tr class="litdispo">
+            <td class="text" colspan="2">
+            depuis:
+            {if $curr_lit->_ref_last_dispo && $curr_lit->_ref_last_dispo->affectation_id}
+            {$curr_lit->_ref_last_dispo->sortie|date_format:"%A %d %B %H:%M"} 
+            ({$curr_lit->_ref_last_dispo->_sortie_relative} jours)
+            {else}
+            Toujours
+            {/if}
+            </td>
+          </tr>
+          <tr class="litdispo">
+            <td class="text" colspan="2">
+            jusque: 
+            {if $curr_lit->_ref_next_dispo && $curr_lit->_ref_next_dispo->affectation_id}
+            {$curr_lit->_ref_next_dispo->entree|date_format:"%A %d %B %H:%M"}
+            ({$curr_lit->_ref_next_dispo->_entree_relative} jours)
+            {else}
+            Toujours
+            {/if}
+            </td>
+          </tr>
+          {/foreach}
+          {/foreach}
         </table>
       {/foreach}
       </td>
@@ -386,7 +435,7 @@ function popPlanning() {
     
     <div id="calendar-container"></div>
   
-	{foreach from=$groupOpNonAffectees key=group_name item=opNonAffectees}
+    {foreach from=$groupOpNonAffectees key=group_name item=opNonAffectees}
 
     <table class="tbl">
       <tr>
@@ -411,7 +460,7 @@ function popPlanning() {
 
     </form>
 
-	<table class="operationcollapse" id="operation{$curr_operation->operation_id}">
+    <table class="operationcollapse" id="operation{$curr_operation->operation_id}">
       <tr>
         <td class="selectoperation" style="background:#{$curr_operation->_ref_chir->_ref_function->color}">
           {if $curr_operation->pathologie}  
@@ -452,22 +501,30 @@ function popPlanning() {
       </tr>
       <tr>
         <td class="date" colspan="2">
+        
         <form name="EditOperation{$curr_operation->operation_id}" action="?m=dPplanningOp" method="post">
 
         <input type="hidden" name="m" value="dPplanningOp" />
         <input type="hidden" name="dosql" value="do_planning_aed" />
         <input type="hidden" name="operation_id" value="{$curr_operation->operation_id}" />
-
-       	<em>Pathologie :</em> 
-        <select name="pathologie" onchange="this.form.submit()">
-        <option name="0">&mdash; Choisir &mdash;</option>
-        {foreach from=$pathos->dispo item=curr_patho}
-        <option {if $curr_patho == $curr_operation->pathologie}selected="selected"{/if}>
-		{$curr_patho}
-        </option>
-        {/foreach}
+        
+        <em>Pathologie:</em>
+        <select name="pathologie">
+          <option name="0">&mdash; Choisir &mdash;</option>
+          {foreach from=$pathos->dispo item=curr_patho}
+          <option {if $curr_patho == $curr_operation->pathologie}selected="selected"{/if}>
+          {$curr_patho}
+          </option>
+          {/foreach}
         </select>
- 
+        <br />
+        <input type="radio" name="septique" value="0" {if $curr_operation->septique == "0"} selected="selected" {/if} />
+        <label for="EditOperation{$curr_operation->operation_id}_septique_0" title="Opération propre">Propre</label>
+        <input type="radio" name="septique" value="1" {if $curr_operation->septique == "1"} selected="selected" {/if} />
+        <label for="EditOperation{$curr_operation->operation_id}_septique_1" title="Opération septique">Septique</label>
+
+        <input type="submit" value="valider" />
+        
         </form>
         
         </td>

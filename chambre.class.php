@@ -30,6 +30,9 @@ class CChambre extends CDpObject {
   // Form Fields
   var $_nb_lits_dispo = null;
   var $_overbooking = null;
+  var $_ecart_age = null;
+  var $_genres_melanges = null;
+  var $_lit_specifiques = null;
 
   // Object references
   var $_ref_service = null;
@@ -69,14 +72,35 @@ class CChambre extends CDpObject {
     $this->_nb_lits_dispo = count($this->_ref_lits);
     
     foreach ($this->_ref_lits as $lit) {
+      assert($lit->_ref_affectations !== null);
+
+      // overbooking
       assert($lit->_overbooking !== null);
       $this->_overbooking += $lit->_overbooking;
 
-		  assert($lit->_ref_affectations !== null);
+      // Lits dispo
       if (count($lit->_ref_affectations)) {
 				$this->_nb_lits_dispo--;
 			}
+      
+      // Ecart d'âge
+      $ages = array();
+      foreach ($lit->_ref_affectations as $affectation) {
+        $operation =& $affectation->_ref_operation;
+        assert($operation);
+        $patient =& $operation->_ref_pat;
+        assert($patient);
+        $ages[] = $patient->_age;
+			}
+      
+      $this->_ecart_age = count($ages) ? max($ages) - min($ages) : 0;
+			
 		}
+    
+    
+    
+    
+    
   }
 }
 ?>

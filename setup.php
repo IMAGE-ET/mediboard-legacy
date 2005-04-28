@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPhospi';
-$config['mod_version'] = '0.13';
+$config['mod_version'] = '0.12';
 $config['mod_directory'] = 'dPhospi';
 $config['mod_setup_class'] = 'CSetupdPhospi';
 $config['mod_type'] = 'user';
@@ -32,6 +32,10 @@ class CSetupdPhospi {
 	}
 
 	function remove() {
+    db_exec( "DROP TABLE `service`;" );
+    db_exec( "DROP TABLE `chambre`;" );
+    db_exec( "DROP TABLE `lit`;" );
+    db_exec( "DROP TABLE `affectation`;" );
 
 		return null;
 	}
@@ -80,11 +84,6 @@ class CSetupdPhospi {
           "\nADD `effectue` TINYINT DEFAULT '0' NOT NULL ;";
       db_exec($sql); db_error($sql);
 
-    case "0.12":
-      $sql = "ALTER TABLE `affectation` " .
-          "\nADD `septique` TINYINT DEFAULT '0' NOT NULL ;";
-      db_exec($sql); db_error($sql);
-          
 			return true;
     }
 
