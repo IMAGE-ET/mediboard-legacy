@@ -86,8 +86,9 @@ class CSetupdPplanningOp {
       
     case "0.25" :
       $sql = "ALTER TABLE `operations` " .
-          "\nADD `pathologie` VARCHAR( 8 ) DEFAULT NULL ;";
-      db_exec( $sql ); db_error();
+          "\nADD `pathologie` VARCHAR( 8 ) DEFAULT NULL," .
+          "\nADD `septique` TINYINT DEFAULT '0' NOT NULL ;";
+      db_exec($sql); db_error();
  
     case "0.26":
       return true;

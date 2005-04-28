@@ -22,8 +22,46 @@ class CPathologies {
   var $compat = array();
   
   function CPathologies() {
-    $this->addCompat("ORT", "DER");
-    $this->addCompat("ORT", "GAS", true,  false);
+    $this->addCompat("ORT", "ORT", false, false);
+
+    $this->addCompat("ORL", "ORL", false, false);
+
+    $this->addCompat("OPH", "ORT", null, false);
+    $this->addCompat("OPH", "OPH");
+
+    $this->addCompat("DER", "ORT", false, false);
+    $this->addCompat("DER", "OPH", false);
+    $this->addCompat("DER", "DER", true, true);
+
+    $this->addCompat("STO", "DER", null, false);
+    $this->addCompat("STO", "STO");
+
+    $this->addCompat("GAS", "DER", false, false);
+    $this->addCompat("GAS", "GAS");
+
+    $this->addCompat("ARE", "ORT", null, false);
+    $this->addCompat("ARE", "ORL", null, false);
+    $this->addCompat("ARE", "ORT", null, false);
+    $this->addCompat("ARE", "OPH");
+    $this->addCompat("ARE", "DER", null, false);
+    $this->addCompat("ARE", "ARE");
+
+    $this->addCompat("RAD", "ORT", null, false);
+    $this->addCompat("RAD", "ORL", null, false);
+    $this->addCompat("RAD", "ORT", null, false);
+    $this->addCompat("RAD", "OPH");
+    $this->addCompat("RAD", "DER", null, false);
+    $this->addCompat("RAD", "ARE");
+    $this->addCompat("RAD", "RAD");
+
+    $this->addCompat("GYN", "ORT", null, false);
+    $this->addCompat("GYN", "ORL", null, false);
+    $this->addCompat("GYN", "ORT", null, false);
+    $this->addCompat("GYN", "OPH");
+    $this->addCompat("GYN", "DER", null, false);
+    $this->addCompat("GYN", "RAD");
+    $this->addCompat("GYN", "ARE");
+    $this->addCompat("GYN", "GYN");
   }
 
   function addCompat($patho1, $patho2, $septique1 = null, $septique2 = null) {

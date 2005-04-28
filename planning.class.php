@@ -59,6 +59,7 @@ class COperation extends CDpObject {
   var $compte_rendu = null;
   var $cr_valide = null;
   var $pathologie = null;
+  var $septique = null;
     
   // Form fields
   var $_hour_op = null;
