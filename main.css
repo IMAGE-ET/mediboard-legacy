@@ -1089,7 +1089,7 @@ table.operationcollapse td.patient {
 }
 
 table.operationexpand td.patient {
-  padding-left: 25px;
+  padding-left: 17px;
   background: #ddf url(./images/expand.gif) no-repeat center left;
 }
 
