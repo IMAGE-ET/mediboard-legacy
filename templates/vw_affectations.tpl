@@ -225,14 +225,28 @@ function popPlanning() {
           <tr>
             <th class="chambre" colspan="2" onclick="flipChambre({$curr_chambre->chambre_id})">
               {if $curr_chambre->_overbooking}
-              <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
+              <img src="modules/{$m}/images/surb.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
               {/if}
 
-              <img src="modules/{$m}/images/warning.png" alt="warning" title="Ecart d'âge important: {$curr_chambre->_ecart_age} ans">
-              <img src="modules/{$m}/images/warning.png" alt="warning" title="Sexes opposés">
-              <img src="modules/{$m}/images/warning.png" alt="warning" title="Chambre seule obligatoire">
-              <img src="modules/{$m}/images/warning.png" alt="warning" title="Conflit de praticiens">
-              <img src="modules/{$m}/images/warning.png" alt="warning" title="Conflit de pathologies">
+              {if $curr_chambre->_ecart_age > 15}
+              <img src="modules/{$m}/images/age.png" alt="warning" title="Ecart d'âge important: {$curr_chambre->_ecart_age} ans">
+              {/if}
+
+              {if $curr_chambre->_genres_melanges}
+              <img src="modules/{$m}/images/sexe.png" alt="warning" title="Sexes opposés">
+              {/if}
+
+              {if $curr_chambre->_chambre_seule}
+              <img src="modules/{$m}/images/seul.png" alt="warning" title="Chambre seule obligatoire">
+              {/if}
+
+              {if $curr_chambre->_conflits_chirurgiens}
+              <img src="modules/{$m}/images/prat.png" alt="warning" title="{$curr_chambre->_conflits_chirurgiens} Conflit(s) de praticiens">
+              {/if}
+
+              {if $curr_chambre->_conflits_pathologies}
+              <img src="modules/{$m}/images/path.png" alt="warning" title="{$curr_chambre->_conflits_pathologies} Conflit(s) de pathologies">
+              {/if}
 
               <strong><a name="chambre{$curr_chambre->chambre_id}">{$curr_chambre->nom}</a></strong>
             </th>
@@ -255,12 +269,13 @@ function popPlanning() {
             <td class="text" style="background-image:url(modules/{$m}/images/ray.gif); background-repeat:repeat;">
             {else}
             <td class="text">
-              {/if}
+            {/if}
               {if $curr_affectation->_ref_operation->admis == "o"}
               <font>
               {else}
               <font style="color:#a33">
               {/if}
+              
               {if $curr_affectation->_ref_operation->type_adm == "ambu"}
               <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
               <em>{$curr_affectation->_ref_operation->_ref_pat->_view}</em>
@@ -270,6 +285,7 @@ function popPlanning() {
               {/if}
               <strong>{$curr_affectation->_ref_operation->_ref_pat->_view}</strong>
               {/if}
+              
               {if $curr_affectation->_ref_operation->admis == "n"}
               {$curr_affectation->sortie|date_format:"%Hh%M"}
               {/if}
@@ -384,9 +400,20 @@ function popPlanning() {
           </tr>
           <tr class="dates">
             <td class="text" colspan="2">
+              <form name="SeptieOperation{$curr_affectation->_ref_operation->operation_id}" action="?m=dPplanningOp" method="post">
+
+              <input type="hidden" name="m" value="dPplanningOp" />
+              <input type="hidden" name="dosql" value="do_planning_aed" />
+              <input type="hidden" name="operation_id" value="{$curr_affectation->_ref_operation->operation_id}" />
+        
               <em>Pathologie</em>:
               {$curr_affectation->_ref_operation->pathologie}
-              {if $curr_affectation->_ref_operation->septique}septique{else}propre{/if}
+              <input type="radio" name="septique" value="0" {if $curr_affectation->_ref_operation->septique == 0} checked="checked" {/if} onclick="this.form.submit()" />
+              <label for="SeptieOperation{$curr_affectation->_ref_operation->operation_id}_septique_0" title="Opération propre">Propre</label>
+              <input type="radio" name="septique" value="1" {if $curr_affectation->_ref_operation->septique == 1} checked="checked" {/if} onclick="this.form.submit()" />
+              <label for="SeptieOperation{$curr_affectation->_ref_operation->operation_id}_septique_1" title="Opération septique">Septique</label>
+      
+              </form>
                             
             </td>
           </tr>
