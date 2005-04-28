@@ -4,8 +4,7 @@
 {/literal}
 <table class="main">
 <tr>
-<th>
-
+<td>
 <form name="typeVue" action="?m={$m}" method="get">
 <input type="hidden" name="m" value="{$m}" />
 <select name="vue" onchange="submit()">
@@ -13,11 +12,22 @@
   <option value="1" {if $vue == 1}selected="selected"{/if}>Ne pas afficher les validés</option>
 </select>
 </form>
+</td>
 
+<th>
+  {assign var="mypmonth" value=$pday|date_format:"%m"}
+  {assign var="mynmonth" value=$nday|date_format:"%m"}
+  {assign var="mynowmonth" value=$now|date_format:"%m"}
+  <a href="index.php?m={$m}&amp;day={$pday|date_format:"%d"}&amp;month={$mypmonth-1}&amp;year={$pday|date_format:"%Y"}"><<</a>
+  {$cday|date_format:"%A %d %B %Y"}
+  <a href="index.php?m={$m}&amp;day={$nday|date_format:"%d"}&amp;month={$mynmonth-1}&amp;year={$nday|date_format:"%Y"}">>></a>
 </th>
-</tr>
+
+<th>
+  <a href="index.php?m={$m}&amp;day={$now|date_format:"%d"}&amp;month={$mynowmonth-1}&amp;year={$now|date_format:"%Y"}">Aujourd'hui : {$now|date_format:"%A %d %B %Y"}</a>
+</th>
 <tr>
-<td>
+<td colspan="3">
 
 <table class="tbl">
   <tr>
