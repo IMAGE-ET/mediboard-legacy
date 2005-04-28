@@ -193,6 +193,7 @@ function popPlanning() {
     </a>
     {/if}
   </th>
+  {if $dialog != 1}
   <td>
     <form name="chgMode" action="?m={$m}" method="get">
     <input type="hidden" name="m" value="{$m}" />
@@ -202,6 +203,7 @@ function popPlanning() {
     </select>
     </form>
   </td>
+  {/if}
 </tr>
 
 <tr>
