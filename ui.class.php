@@ -401,6 +401,7 @@ class CAppUI {
 		  else
 		    $params .= "&" . $session_id;
 		}
+   
 		header( "Location: index.php?$params" );
 		exit();	// stop the PHP execution
 	}
