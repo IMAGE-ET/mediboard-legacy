@@ -91,6 +91,7 @@ class COperation extends CDpObject {
 
   function check() {
     global $pathos;
+
     if (!in_array($this->pathologie, $pathos->dispo)) {
       return "Pathologie non disponible";
     }

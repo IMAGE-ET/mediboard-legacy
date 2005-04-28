@@ -95,11 +95,10 @@ class CPathologies {
     // bidierctional
     return 
       @$this->compat[$patho1][$septique1][$patho2][$septique2] or
-      @$this->compat[$patho1][$septique1][$patho2][$septique2];
+      @$this->compat[$patho2][$septique2][$patho1][$septique1];
   }    
 }
 
-
+global $pathos;
 $pathos = new CPathologies();
-
 ?>
