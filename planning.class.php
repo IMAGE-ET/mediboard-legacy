@@ -203,7 +203,8 @@ class COperation extends CDpObject {
   }
   
   function store() {
-    $msg = parent::store();
+    if($msg = parent::store())
+      return $msg;
     if($this->annulee)
       $this->reorder();
     // Cas de la création dans une plage de spécialité
@@ -215,6 +216,14 @@ class COperation extends CDpObject {
       $chirTmp->load($this->chir_id);
       $plageTmp->id_chir = $chirTmp->_user_username;
       $plageTmp->store();
+    }
+    // Cas ou on a une premiere affectation d'entrée différente
+    // à l'heure d'admission
+    $affTmp = new CAffectation;
+    $affTmp = $this->getFirstAffectation();
+    if($affTmp->affectation_id && ($affTmp->entree != $this->date_adm." ".$this->time_adm)) {
+      $affTmp->entree = $this->date_adm." ".$this->time_adm;
+      $affTmp->store();
     }
     
     return $msg;
