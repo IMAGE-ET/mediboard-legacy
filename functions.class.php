@@ -68,7 +68,7 @@ class CFunctions extends CDpObject {
   // @todo : ameliorer le choix des spécialités
   // (loadfunction($groupe, $permtype) par exemple)
   function loadSpecialites ($perm_type = null) {
-    $sql = "SELECT *" .
+    $sql = "SELECT $this->_tbl.*" .
       "\nFROM $this->_tbl, groups_mediboard" .
       "\nWHERE $this->_tbl.group_id = groups_mediboard.group_id" .
       "\nAND groups_mediboard.text IN ('Cabinets')" .
