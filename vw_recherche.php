@@ -13,6 +13,9 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+require_once($AppUI->getModuleClass("mediusers"));
+require_once($AppUI->getModuleClass("dPhospi", "affectation"));
+
 // Récupération des paramètres
 $hour = dPgetParam($_GET, "hour", date("H"));
 $min = dPgetParam($_GET, "min", date("i"));
@@ -20,12 +23,26 @@ $day = dPgetParam($_GET, "day", date("d"));
 $month = dPgetParam($_GET, "month", date("m")-1);
 $year = dPgetParam($_GET, "year", date("Y"));
 
+$typeVue = mbGetValueFromGetOrSession("typeVue", 0);
+$selPrat = mbGetValueFromGetOrSession("selPrat", 0);
+
 $recMonth = $month + 1;
 if(sizeof($recMonth) == 1)
   $recMonth = "0".$recMonth;
 
-$date = $year."-".($recMonth)."-".$day." ".$hour.":".$min.":00";
+if($typeVue)
+  $date = $year."-".($recMonth)."-".$day;
+else
+  $date = $year."-".($recMonth)."-".$day." ".$hour.":".$min.":00";
 
+// Liste des chirurgiens
+$listPrat = new CMediusers();
+$listPrat = $listPrat->loadPraticiens(PERM_READ);
+
+//
+// Cas de l'affichage des lits libres
+//
+if($typeVue == 0) {
 // Recherche de tous les lits disponibles
 $sql = "SELECT lit.lit_id" .
 		"\nFROM affectation" .
@@ -38,7 +55,10 @@ $arrayIn = array();
 foreach($occupes as $key => $value) {
   $arrayIn[] = $occupes[$key]["lit_id"];
 }
-$notIn = implode(", ", $arrayIn);
+if(count($arrayIn)>0)
+  $notIn = implode(", ", $arrayIn);
+else
+  $notIn = 0;
 
 $sql = "SELECT lit.nom AS lit, chambre.nom AS chambre, service.nom AS service, MIN(affectation.entree) AS limite" .
 		"\nFROM lit" .
@@ -53,6 +73,40 @@ $sql = "SELECT lit.nom AS lit, chambre.nom AS chambre, service.nom AS service, M
 		"\nGROUP BY lit.lit_id" .
 		"\nORDER BY service.nom, chambre.nom, lit.nom";
 $libre = db_loadlist($sql);
+$listAff = null;
+}
+
+//
+// Cas de l'affichage des lits d'un praticien
+//
+if($typeVue == 1) {
+// Recherche des patients du praticien
+$sql = "SELECT affectation.*" .
+		"\nFROM affectation" .
+		"\nLEFT JOIN lit" .
+		"\nON affectation.lit_id = lit.lit_id" .
+		"\nLEFT JOIN chambre" .
+		"\nON chambre.chambre_id = lit.chambre_id" .
+		"\nLEFT JOIN service" .
+		"\nON service.service_id = chambre.service_id" .
+		"\nLEFT JOIN operations" .
+		"\nON operations.operation_id = affectation.operation_id" .
+		"\nLEFT JOIN patients" .
+		"\nON patients.patient_id = operations.pat_id" .
+		"\nWHERE affectation.entree < '$date 23:59:59'" .
+		"\nAND affectation.sortie > '$date 00:00:00'" .
+		"\nAND operations.chir_id = '$selPrat'" .
+		"\nORDER BY service.nom, chambre.nom, lit.nom";
+$listAff = new CAffectation;
+$listAff = db_loadObjectList($sql, $listAff);
+foreach($listAff as $key => $currAff) {
+  $listAff[$key]->loadRefs();
+  $listAff[$key]->_ref_operation->loadRefsFwd();
+  $listAff[$key]->_ref_lit->loadRefsFwd();
+  $listAff[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
+}
+$libre = null;
+}
 
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));
@@ -64,7 +118,11 @@ $smarty->assign('day', $day);
 $smarty->assign('month', $month);
 $smarty->assign('year', $year);
 $smarty->assign('date', $date);
+$smarty->assign('typeVue', $typeVue);
+$smarty->assign('selPrat', $selPrat);
+$smarty->assign('listPrat', $listPrat);
 $smarty->assign('libre', $libre);
+$smarty->assign('listAff', $listAff);
 
 $smarty->display('vw_recherche.tpl');
 
