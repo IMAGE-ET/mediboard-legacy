@@ -37,9 +37,10 @@ class CMediusers extends CDpObject {
 
   // Other fields
     var $_view = null;
-  
+    var $_shortview = null;
+
   // Object references
-  var $_ref_function = null;
+    var $_ref_function = null;
 
 	function CMediusers() {
 		$this->CDpObject( 'users_mediboard', 'user_id' );
@@ -113,6 +114,13 @@ class CMediusers extends CDpObject {
       $this->_user_email      = $user->user_email     ;
       $this->_user_phone      = $user->user_phone     ;
       $this->_view            = $user->user_last_name." ".$user->user_first_name;
+      $this->_shortview       = "";
+      $arrayLastName = explode(" ", $user->user_last_name);
+      $arrayFirstName = explode("-", $user->user_first_name);
+      foreach($arrayFirstName as $key => $value)
+      	$this->_shortview .=  strtoupper($value[0]);
+      foreach($arrayLastName as $key => $value)
+      	$this->_shortview .=  strtoupper($value[0]);
     }
   }
 
