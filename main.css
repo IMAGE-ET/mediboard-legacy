@@ -328,7 +328,7 @@ table.form th {
   vertical-align: top;
   text-align: right;
   font-weight: normal;
-  padding: 1px 4px;
+  padding: 2px 4px;
 }
 
 table.form th.title {
@@ -384,6 +384,19 @@ table.form td.readonly input {
 table.form td.button {
   text-align: center;
   vertical-align: middle;
+}
+
+table.form td.date div {
+  font-size: 11px;
+  border: 1px dotted;
+  padding: 0px 1px;
+  margin: 1px;
+  width: 90px;
+  float: left;
+}
+
+table.form td.date img {
+  margin-top: 3px;
 }
 
 /* Pane table */
@@ -1044,6 +1057,13 @@ table.chambrecollapse tr.patient td,
 table.chambreexpand tr.patient td {
   background: #eee;
   color: #000;
+}
+
+
+table.chambrecollapse tr.patient img,
+table.chambreexpand tr.patient img {
+  float: left;
+  margin-right: 2px;
 }
 
 table.chambrecollapse tr.lit,
