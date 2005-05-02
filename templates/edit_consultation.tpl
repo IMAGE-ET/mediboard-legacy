@@ -169,7 +169,7 @@ function supprimerCompteRendu() {
 	</td>
 
 {if $consult->consultation_id}
-    <td style="width: 100%">
+    <td  style="width: 100%; vertical-align: top">
       <table class="main">
         <tr>
           <td class="greedyPane">

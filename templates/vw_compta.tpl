@@ -72,7 +72,7 @@ function setCalendar( idate, fdate ) {
     <tr><th class="category" colspan="2">Options sur le rapport</th></tr>
     <tr><th>Praticien :</th>
       <td><select name="chir">
-        <option value="0">&mdash; Tous &mdash;</option>
+        <!-- <option value="0">&mdash; Tous &mdash;</option> -->
         {foreach from=$listPrat item=curr_prat}
         <option value="{$curr_prat->user_id}">{$curr_prat->user_last_name} {$curr_prat->user_first_name}</option>
         {/foreach}
