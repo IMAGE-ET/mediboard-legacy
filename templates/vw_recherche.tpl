@@ -34,7 +34,9 @@ function dateChanged(calendar) {
 function popPlanning() {
   var url = '?m=dPhospi&a=vw_affectations&dialog=1';
   {/literal}
-  url += '&day=' + {$day} + '&month=' + {$month} + '&year=' + {$year}
+  url += '&day='   + {$day}  ;
+  url += '&month=' + {$month};
+  url += '&year='  + {$year} ;
   {literal}
   popup(700, 550, url, 'Planning');
 }
@@ -42,14 +44,10 @@ function popPlanning() {
 {/literal}
 </script>
 
-<script type="text/javascript" src="lib/jscalendar/calendar.js"></script>
-<script type="text/javascript" src="lib/jscalendar/lang/calendar-fr.js"></script>
-<script type="text/javascript" src="lib/jscalendar/calendar-setup.js"></script>
-
 <table class="main">
   <tr>
     <td class="Pane">
-      <strong><a href="#" onclick="popPlanning()">Afficher le planning</a></strong>
+      <strong><a href="javascript:popPlanning()">Afficher le planning</a></strong>
       <div id="calendar-container"></div>
     </td>
     <td class="greedyPane">

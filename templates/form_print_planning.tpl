@@ -5,51 +5,51 @@
 function checkForm() {
   var form = document.paramFrm;
     
-  if (form.date_debut.value > form.date_fin.value) {
+  if (form.deb.value > form.fin.value) {
     alert("Date de début superieure à la date de fin");
     return false;
   }
+
   popPlanning();
 }
 
-var calendarField = '';
-var calWin = null;
-
-function popCalendar( field ){
-  calendarField = field;
-  idate = eval( 'document.paramFrm.date_' + field + '.value' );
-  var url = "index.php?m=public&a=calendar&dialog=1&callback=setCalendar";
-  url += "&date=" + idate;
-  popup(280, 250, url, 'calwin');
-}
-
-function setCalendar( idate, fdate ) {
-  fld_date = eval( 'document.paramFrm.date_' + calendarField );
-  fld_fdate = eval( 'document.paramFrm.' + calendarField );
-  fld_date.value = idate;
-  fld_fdate.value = fdate;
-}
-
 function popPlanning() {
-  var debut = document.paramFrm.date_debut.value;
-  var fin = document.paramFrm.date_fin.value;
-  var ordre = document.paramFrm.ordre.value;
-  var service = document.paramFrm.service.value;
-  var type = document.paramFrm.type.value;
-  var chir = document.paramFrm.chir.value;
-  var spe = document.paramFrm.spe.value;
-  var conv = document.paramFrm.conv.value;
+  var form = document.paramFrm;
+
   var url = '?m=dPhospi&a=print_planning&dialog=1';
-  url += '&debut=' + debut;
-  url += '&fin=' + fin;
-  url += '&ordre=' + ordre;
-  url += '&service=' + service;
-  url += '&type=' + type;
-  url += '&chir=' + chir;
-  url += '&spe=' + spe;
-  url += '&conv=' + conv;
+  url += '&deb=' + form.deb.value;
+  url += '&fin=' + form.fin.value;
+  url += '&ordre=' + form.ordre.value;
+  url += '&service=' + form.service.value;
+  url += '&type=' + form.type.value;
+  url += '&chir=' + form.chir.value;
+  url += '&spe=' + form.spe.value;
+  url += '&conv=' + form.conv.value;
+  
   popup(700, 550, url, 'Planning');
 }
+
+function pageMain() {
+  Calendar.setup( {
+    displayArea : "paramFrm_deb_fr",
+    inputField  : "paramFrm_deb",
+    ifFormat    : "%Y-%m-%d %H:%M",
+    daFormat    : "%d/%m/%Y %H:%M",
+    button      : "trigger_paramFrm_deb",
+    showsTime   : true
+    } );
+  
+  Calendar.setup( {
+    displayArea : "paramFrm_fin_fr",
+    inputField  : "paramFrm_fin",
+    ifFormat    : "%Y-%m-%d %H:%M",
+    daFormat    : "%d/%m/%Y %H:%M",
+    button      : "trigger_paramFrm_fin",
+    showsTime   : true
+    } );
+  
+}
+
 </script>
 {/literal}
 
@@ -60,34 +60,40 @@ function popPlanning() {
     <td>
 
       <table class="form">
-        <tr><th class="category" colspan="3">Choix de la periode</th></tr>
+        <tr><th class="category" colspan="3">Choix de la période</th></tr>
+        
         <tr>
-          <th><label for="paramFrm_debut">Début:</label></th>
-          <td class="readonly" colspan="2">
-            <input type="hidden" name="date_debut" value="{$todayi}" />
-            <input type="text" name="debut" value="{$todayf}" readonly="readonly" />
-            <a href="#" onClick="popCalendar( 'debut', 'debut');">
-              <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
+          <th><label for="paramFrm_deb">Début:</label></th>
+          <td class="date" colspan="2">
+            <div id="paramFrm_deb_fr">{$today|date_format:"%d/%m/%Y %H:%M"}</div>
+            <input type="hidden" name="deb" value="{$today}" />
+            <a id="trigger_paramFrm_deb" href="#" title="Choisir une date de début">
+              <img src="./images/calendar.gif" width="24" height="12" alt="calendar" />
             </a>
           </td>
         </tr>
+
         <tr>
           <th><label for="paramFrm_fin">Fin:</label></th>
-          <td class="readonly" colspan="2">
-            <input type="hidden" name="date_fin" value="{$todayi}" />
-            <input type="text" name="fin" value="{$todayf}" readonly="readonly" />
-            <a href="#" onClick="popCalendar( 'fin', 'fin');">
-              <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
+          <td class="date" colspan="2">
+            <div id="paramFrm_fin_fr">{$tomorrow|date_format:"%d/%m/%Y %H:%M"}</div>
+            <input type="hidden" name="fin" value="{$tomorrow}" />
+            <a id="trigger_paramFrm_fin" href="#" title="Choisir une date de fin">
+              <img src="./images/calendar.gif" width="24" height="12" alt="calendar" />
             </a>
           </td>
         </tr>
+
         <tr>
           <th><label for="paramFrm_ordre">Classement des admissions:</label></th>
-          <td><select name="ordre">
-            <option value="heure">par heure d'admission</option>
-            <option value="nom">par nom du patient</option>
-          </select></td>
+          <td>
+            <select name="ordre">
+              <option value="heure">Par heure d'admission</option>
+              <option value="nom">Par nom du patient</option>
+            </select>
+          </td>
         </tr>
+
         <tr>
           <th><label for="paramFrm_service">Service:</label></th>
           <td><select name="service">

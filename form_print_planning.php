@@ -17,9 +17,6 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$todayi = date("Ymd");
-$todayf = date("d/m/Y");
-
 $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_READ);
 
@@ -33,8 +30,9 @@ $listServ = $listServ->loadlist();
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('todayi', $todayi);
-$smarty->assign('todayf', $todayf);
+$smarty->assign('today', mbDateTime("+0 day"));
+$smarty->assign('tomorrow', mbDateTime("+1 day"));
+
 $smarty->assign('listPrat', $listPrat);
 $smarty->assign('listSpec', $listSpec);
 $smarty->assign('listServ', $listServ);

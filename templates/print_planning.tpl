@@ -15,12 +15,24 @@ function printAdmission(id) {
 {/literal}
 
 <table class="main">
-  <tr><th><a href="javascript:window.print()">Planning du {$date}</a></th></tr>
+  <tr>
+    <th>
+      <a href="javascript:window.print()">
+        Planning du {$deb|date_format:"%a %d %b %Y"}
+        au {$fin|date_format:"%a %d %b %Y"}
+      </a>
+    </th>
+  </tr>
   {foreach from=$listDays item=curr_day}
   {foreach from=$curr_day.listChirs item=curr_chir}
   {if $curr_chir.admissions}
   <tr>
-    <td><b>{$curr_day.date_adm|date_format:"%a %d %b %Y"} - Dr. {$curr_chir.user_last_name} {$curr_chir.user_first_name} : {$curr_chir.admissions|@count} admission(s)</b></td>
+    <td>
+      <b>
+        {$curr_day.date_adm|date_format:"%a %d %b %Y"} 
+        &mdash; Dr. {$curr_chir.user_last_name} {$curr_chir.user_first_name} : {$curr_chir.admissions|@count} admission(s)
+      </b>
+    </td>
   </tr>
   <tr>
     <td>
@@ -41,7 +53,7 @@ function printAdmission(id) {
 		  <th>Date</th>
 		  <th>Heure</th>
 		  <th>Dénomination</th>
-		  <th>Coté</th>
+		  <th>Côté</th>
 		  <th>Nom / Prenom</th>
 		  <th>Naissance (Age)</th>
 		  <th>Remarques</th>
@@ -82,5 +94,11 @@ function printAdmission(id) {
   {/if}
   {/foreach}
   {/foreach}
-  <tr><th>Total : {$total} admission(s) pour le planning du {$date}</th></tr>
+  <tr>
+    <th>
+      Total : {$total} admission(s) pour le planning 
+      Planning du {$deb|date_format:"%a %d %b %Y"}
+      au {$fin|date_format:"%a %d %b %Y"}
+    </th>
+  </tr>
 </table>

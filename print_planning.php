@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -15,14 +15,8 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
-$debut = dPgetParam( $_GET, 'debut', date("Ymd") );
-$dayd = intval(substr($debut, 6, 2));
-$monthd = intval(substr($debut, 4, 2));
-$yeard = substr($debut, 0, 4);
-$fin = dPgetParam( $_GET, 'fin', date("Ymd") );
-$dayf = intval(substr($fin, 6, 2));
-$monthf = intval(substr($fin, 4, 2));
-$yearf = substr($fin, 0, 4);
+$deb = dPgetParam( $_GET, 'deb', mbDateTime("+0 day"));
+$fin = dPgetParam( $_GET, 'fin', mbDateTime("+1 day"));
 $service = dPgetParam( $_GET, 'service', 0);
 $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
@@ -31,25 +25,25 @@ $conv = dPgetParam( $_GET, 'conv', 0);
 $ordre = dPgetParam( $_GET, 'ordre', 'heure');
 $total = 0;
 
-// Affichage du titre
-$date = strftime("%A %d %B %Y", mktime(0, 0, 0, $monthd, $dayd, $yeard));
-if($debut != $fin)
-  $date .= " au " . strftime("%A %d %B %Y", mktime(0, 0, 0, $monthf, $dayf, $yearf));
+
+$where[] = "DATE_ADD(`date_adm`, INTERVAL `time_adm` HOUR_SECOND) >= '$deb'";
+$where[] = "DATE_ADD(`date_adm`, INTERVAL `time_adm` HOUR_SECOND) <= '$fin'";
+
+$whereImploded = implode(" AND ", $where);
 
 // On sort les journées
-$sql = "SELECT date_adm
-		FROM operations
-		WHERE date_adm >= '$yeard-$monthd-$dayd'
-        AND date_adm <= '$yearf-$monthf-$dayf'
-        GROUP BY date_adm
-        ORDER BY date_adm";
+$sql = "SELECT date_adm" .
+    "\nFROM operations" .
+    "\nWHERE $whereImploded" .
+    "\nGROUP BY date_adm" .
+    "\nORDER BY date_adm";
 $listDays = db_loadlist($sql);
 
 // Clause de filtre par spécialité
-if($spe) {
+if ($spe) {
   $sql = "SELECT * " .
-         "FROM users_mediboard " .
-         "WHERE function_id = '$spe'";
+      "\nFROM users_mediboard " .
+      "\nWHERE function_id = '$spe'";
   $speChir = db_loadlist($sql);
   $addSpe .= " AND (0";
   foreach($speChir as $key => $value) {
@@ -64,10 +58,11 @@ $addChir = $chir ? " AND chir_id = '$chir'" : null;
 // On sort les chirurgiens de chaque jour
 foreach($listDays as $key => $value) {
   $sql = "SELECT chir_id, user_last_name, user_first_name" .
-  		" FROM operations" .
-  		" LEFT JOIN users" .
-  		" ON users.user_id = operations.chir_id" .
-  		" WHERE date_adm = '".$value["date_adm"]."'";
+  		"\nFROM operations" .
+  		"\nLEFT JOIN users" .
+  		"\nON users.user_id = operations.chir_id" .
+  		"\nWHERE date_adm = '".$value["date_adm"]."'" .
+      "\nAND $whereImploded";
   if($spe)
     $sql .= $addSpe;
   if($chir)
@@ -81,7 +76,8 @@ foreach($listDays as $key => $value) {
   		  " LEFT JOIN patients" .
   		  " ON operations.pat_id = patients.patient_id" .
   		  " WHERE operations.date_adm = '". $value["date_adm"] ."'" .
-  		  " AND operations.annulee = 0" .
+        " AND $whereImploded" .
+        " AND operations.annulee = 0" .
   		  " AND operations.chir_id = '". $value2["chir_id"] ."'";
     if($type)
       $sql .= " AND operations.type_adm = '$type'";
@@ -120,7 +116,8 @@ foreach($listDays as $key => $value) {
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('date', $date);
+$smarty->assign('deb', $deb);
+$smarty->assign('fin', $fin);
 $smarty->assign('listDays', $listDays);
 $smarty->assign('total', $total);
 
