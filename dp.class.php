@@ -31,6 +31,7 @@ class CDpObject {
  *  @var string default string view
  */
   var $_view = '';
+  var $_shortview = '';
   
 /**
  *	Object constructor to set table and key field
@@ -167,6 +168,7 @@ class CDpObject {
 	function updateFormFields() {
     $k = $this->_tbl_key;
     $this->_view = $this->_tbl . " #" . $this->$k;
+    $this->_shortview = "#" . $this->$k;
 	}
 
 /**
