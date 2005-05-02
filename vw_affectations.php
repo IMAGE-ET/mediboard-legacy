@@ -9,6 +9,7 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
+require_once($AppUI->getModuleClass("mediusers", "functions"));
 require_once($AppUI->getModuleClass("dPhospi", "service"));
 require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 require_once($AppUI->getModuleClass("dPplanningOp", "pathologie"));
@@ -26,6 +27,10 @@ $date = ($year and $month and $day) ?
 $dateReal = date("Y-m-d H:i:s");
 $heureLimit = "16:00:00";
 $mode = mbGetValueFromGetOrSession("mode", 0);
+
+// Récupération des fonctions
+$listFunctions = new CFunctions;
+$listFunctions = $listFunctions->loadList();
 
 // Récupération du service à ajouter/éditer
 $serviceSel = new CService;
@@ -64,7 +69,7 @@ foreach ($services as $service_id => $service) {
 
           $operation =& $affectations[$affectation_id]->_ref_operation;
           $operation->loadRefsFwd();
-          $operation->_ref_chir->loadRefsFwd();
+          $operation->_ref_chir->_ref_function =& $listFunctions[$operation->_ref_chir->function_id];
         } else
           unset($affectations[$affectation_id]);
       }
@@ -147,10 +152,10 @@ foreach ($opNonAffecteesAvant as $op_id => $op) {
 }
 
 $groupOpNonAffectees = array(
-  "veille"  => $opNonAffecteesVeille ,
+  "veille" => $opNonAffecteesVeille ,
   "matin"  => $opNonAffecteesMatin ,
-  "soir"  => $opNonAffecteesSoir ,
-  "avant" => $opNonAffecteesAvant
+  "soir"   => $opNonAffecteesSoir ,
+  "avant"  => $opNonAffecteesAvant
 );
 
 // Création du template

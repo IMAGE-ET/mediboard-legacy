@@ -292,19 +292,7 @@ function popPlanning() {
             </font>
             </td>
             <td class="action" style="background:#{$curr_affectation->_ref_operation->_ref_chir->_ref_function->color}">
-              {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
-
-              <form name="rmvAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
-
-              <input type="hidden" name="dosql" value="do_affectation_aed" />
-              <input type="hidden" name="del" value="1" />
-              <input type="hidden" name="affectation_id" value="{$curr_affectation->affectation_id}" />
-
-              </form>
-              
-              <a href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view}')">
-                <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
-              </a>
+              {$curr_affectation->_ref_operation->_ref_chir->_shortview}
             </td>
           </tr>
           <tr class="dates">
@@ -315,6 +303,19 @@ function popPlanning() {
               ({$curr_affectation->_entree_relative} jours)
             {else}
             <td class="text">
+              {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
+
+              <form name="rmvAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
+
+              <input type="hidden" name="dosql" value="do_affectation_aed" />
+              <input type="hidden" name="del" value="1" />
+              <input type="hidden" name="affectation_id" value="{$curr_affectation->affectation_id}" />
+
+              </form>
+              
+              <a style="float: right;" href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view}')">
+                <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
+              </a>
               <em>Entrée</em>:
               {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
               ({$curr_affectation->_entree_relative} jours)

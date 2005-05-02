@@ -76,13 +76,15 @@ class CChambre extends CDpObject {
     assert($this->_ref_lits !== null);
     $this->_nb_lits_dispo = count($this->_ref_lits);
     
-    $ages = array();
-    $sexes = array();
-    $chambres_seules = array();
-    $functions = array();
-    $pathologies = array();
+    $listAff = array();
+    
+    $this->_chambre_seule = 0;
+    $this->_conflits_pathologies = 0;
+    $this->_ecart_age = 0;
+    $this->_genres_melanges = false;
+    $this->_conflits_chirurgiens = 0;
 
-    foreach ($this->_ref_lits as $lit) {
+    foreach ($this->_ref_lits as $key => $lit) {
       assert($lit->_ref_affectations !== null);
 
       // overbooking
@@ -92,65 +94,65 @@ class CChambre extends CDpObject {
       // Lits dispo
       if (count($lit->_ref_affectations)) {
 				$this->_nb_lits_dispo--;
-			}
+      }
       
-      foreach ($lit->_ref_affectations as $affectation) {
-        $operation =& $affectation->_ref_operation;
-        assert($operation);
-
-        // Chambre seule
-        if ($operation->chambre ="o") {
-          $this->_chambre_seule = true;         
-        }
-        
-        // Conflits de pathologies
-        $pathologies[] = array(
-          "pathologie" => $operation->pathologie,
-          "septique" => $operation->septique);
-
-        $patient =& $operation->_ref_pat;
-        assert($patient);
-
-        // Ecart d'âge
-        $ages[] = $patient->_age;
-
-        // Genres mélangés
-        $sexes[$patient->sexe] = true;
-        
-        $chirurgien =& $operation->_ref_chir;
-        assert($chirurgien);
-        
-        // Conflit de chirurgiens
-        $functions[$chirurgien->function_id][$chirurgien->user_id] = true;
-			}
-		}
-
-    // Calcul final
-    $this->_ecart_age = count($ages) ? max($ages) - min($ages) : 0;
-    $this->_genres_melanges = count($sexes) > 1;
-    $this->_chambre_seule = count($chambres_seules) > 0 and count($this->_ref_lits) > 1;
-    
-    $this->_conflits_chirurgiens = 0;
-
-    foreach($functions as $function) {
-      if (count($function) > 1) {
-        $this->_conflits_chirurgiens++;
-			}
+      // Liste des affectations
+      foreach($lit->_ref_affectations as $key2 => $aff)
+        $listAff[] =& $this->_ref_lits[$key]->_ref_affectations[$key2];
     }
-    
-    $this->_conflits_pathologies = 0;
-    foreach ($pathologies as $key1 => $patho1) {
-      foreach ($pathologies as $key2 => $patho2) {
-        if ($key1 != $key2) {
-          if (!$pathos->isCompat($patho1["pathologie"], $patho2["pathologie"], $patho1["septique"], $patho2["septique"])) {
-            $this->_conflits_pathologies++;
+
+    foreach ($listAff as $affectation1) {
+      $operation1 =& $affectation1->_ref_operation;
+      assert($operation1);
+      $patient1 =& $operation1->_ref_pat;
+      assert($patient1);
+      $chirurgien1 =& $operation1->_ref_chir;
+      assert($chirurgien1);
+      
+      foreach($listAff as $affectation2) {
+      	$flag = $affectation1->affectation_id != $affectation2->affectation_id;
+      	$flag = $flag && $affectation1->colide($affectation2);
+      	$flag = $flag && ($affectation1->lit_id != $affectation2->lit_id);
+   	    if($flag) {
+          $operation2 =& $affectation2->_ref_operation;
+          assert($operation2);
+          $patient2 =& $operation2->_ref_pat;
+          assert($patient2);
+          $chirurgien2 =& $operation2->_ref_chir;
+          assert($chirurgien2);
+
+          // Chambre seule
+          if ($operation->chambre ="o") {
+            $this->_chambre_seule++;         
           }
+
+          // Conflits de pathologies
+          $pathologie1 = array(
+            "pathologie" => $operation1->pathologie,
+            "septique" => $operation1->septique);
+          $pathologie2 = array(
+            "pathologie" => $operation2->pathologie,
+            "septique" => $operation2->septique);
+          if (!$pathos->isCompat($pathologie1["pathologie"], $pathologie2["pathologie"], $pathologie1["septique"], $pathologie2["septique"]))
+            $this->_conflits_pathologies++;
+
+          // Ecart d'âge
+          $ecart = max($patient1->_age, $patient2->_age)-min($patient1->_age, $patient2->_age);
+          $this->_ecart_age = max($ecart, $this->_ecart_age);
+
+          // Genres mélangés
+          if($patient1->sexe != $patient2->sexe)
+            $this->_genres_melanges = true;
+        
+          // Conflit de chirurgiens
+          if(($chirurgien1->user_id != $chirurgien2->user_id) && ($chirurgien1->function_id == $chirurgien2->function_id))
+            $this->_conflits_chirurgiens++;
         }
-			}
-		}
-    
+      }
+    }
     $this->_conflits_pathologies /= 2;
+    $this->_conflits_chirurgiens /= 2;
   }
-  
 }
+  
 ?>

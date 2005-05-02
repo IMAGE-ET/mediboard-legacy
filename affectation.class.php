@@ -138,5 +138,13 @@ class CAffectation extends CDpObject {
       $this->_sortie_relative = mbDaysRelative($date, $this->sortie);
     }
   }
+  
+  function colide($aff) {
+  	if (($aff->entree < $this->sortie and $aff->sortie > $this->sortie)
+            or ($aff->entree < $this->entree and $aff->sortie > $this->entree)
+            or ($aff->entree >= $this->entree and $aff->sortie <= $this->sortie))
+      return true;
+    return false;
+  }
 }
 ?>
