@@ -13,6 +13,10 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
+require_once( $AppUI->getModuleClass('dPbloc', 'plagesop'));
+require_once( $AppUI->getModuleClass('dPhospi', 'affectation'));
+
 $debut = dPgetParam( $_GET, 'debut', date("Ymd") );
 $dayd = intval(substr($debut, 6, 2));
 $monthd = intval(substr($debut, 4, 2));
@@ -26,7 +30,7 @@ $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
 $spe = dPgetParam( $_GET, 'spe', 0);
 $salle = dPgetParam( $_GET, 'salle', 0 );
-$CCAM = dPgetParam( $_GET, 'CCAM', "" );
+$CCAM = dPgetParam( $_GET, 'CCAM', '' );
 
 $dayOfWeekList = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
 $monthList = array("", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet",
@@ -41,138 +45,75 @@ if($debut != $fin) {
 
 //On sort les plages opératoires
 //  Chir - Salle - Horaires
-$sql = "SELECT plagesop.id AS id, users.user_last_name AS lastname,
-		users.user_first_name AS firstname,	sallesbloc.nom AS salle,
-		plagesop.debut AS debut, plagesop.fin AS fin, plagesop.date AS date
-		FROM plagesop
-		LEFT JOIN users
-		ON plagesop.id_chir = users.user_username
-		LEFT JOIN sallesbloc
-		ON plagesop.id_salle = sallesbloc.id
-		WHERE date >= '$yeard-$monthd-$dayd'
-        AND date <= '$yearf-$monthf-$dayf'";
+
+$plagesop = new CPlageOp;
+
+$ljoin = array();
+$where = array();
+$ljoin["users"] = "plagesop.id_chir = users.user_username";
+$ljoin["sallesbloc"] = "plagesop.id_salle = sallesbloc.id";
+$where[] = "date >= '$yeard-$monthd-$dayd' AND date <= '$yearf-$monthf-$dayf'";
 if($chir) {
-  $sql2 = "SELECT user_username
+  $sql = "SELECT user_username
            FROM users
            WHERE user_id = '$chir'";
-  $chir_id = db_loadlist($sql2);
-  $sql .= " AND plagesop.id_chir = '".$chir_id[0]["user_username"]."'";
+  $chir_id = db_loadlist($sql);
+  $where["id_chir"] = "= '".$chir_id[0]["user_username"]."'";
 }
 if($spe) {
-  $sql2 = "SELECT user_username " .
+  $sql = "SELECT user_username " .
   		"FROM users, users_mediboard " .
   		"WHERE users.user_id = users_mediboard.user_id " .
   		"AND users_mediboard.function_id = '$spe'";
-  $listChirs = db_loadlist($sql2);
-  if(count($listChirs) > 0) {
-    $sql .= " AND (0";
-    foreach($listChirs as $key => $value) {
-      $sql .= " OR plagesop.id_chir = '".$value["user_username"]."'";
-    }
-    $sql .= ")";
-  }
+  $listChirs = db_loadlist($sql);
+  $inSpe = array();
+  foreach($listChirs as $key =>$value)
+    $inSpe[] = "'".$value["user_username"]."'";
+  $where[] = "id_chir IN(".implode(", ", $inSpe).")";
 }
 if($salle) {
-  $sql .= " AND plagesop.id_salle = '$salle'";
+  $where["id_salle"] = "= '$salle'";
 }
-$sql .= " ORDER BY plagesop.date, plagesop.id_salle, plagesop.debut";
-$plagesop = db_loadlist($sql);
+$order = "plagesop.date, plagesop.id_salle, plagesop.debut";
+$plagesop = $plagesop->loadList($where, $order, null, null, $ljoin);
 
 //Operations de chaque plage
 //  Patient - ...
 foreach($plagesop as $key=>$value) {
-  $plagesop[$key]["debut"] = substr($value["debut"], 0, 2)."h".substr($value["debut"], 3, 2);
-  $plagesop[$key]["fin"] = substr($value["fin"], 0, 2)."h".substr($value["fin"], 3, 2);
-  $curr_day = substr($value["date"], 8, 2);
-  $curr_month = substr($value["date"], 5, 2);
-  $curr_intmonth = intval($curr_month);
-  $curr_year = substr($value["date"], 0, 4);
-  $curr_dayOfWeek = date("w", mktime(0, 0, 0, $curr_month, $curr_day, $curr_year));
-  $plagesop[$key]["date"] = $dayOfWeekList[$curr_dayOfWeek]." $curr_day ".$monthList[$curr_intmonth]." $curr_year";
-  $sql = "SELECT operations.temp_operation AS duree, operations.cote AS cote, operations.time_operation AS heure,
-          operations.CCAM_code AS CCAM_code, operations.CCAM_code2 AS CCAM_code2,
-          operations.rques AS rques, operations.materiel AS materiel, operations.rank AS rank,
-          operations.commande_mat AS commande_mat, operations.type_anesth AS type_anesth,
-          operations.examen AS examen, operations.type_adm AS adm, operations.annulee AS annulee,
-          operations.operation_id AS id,
-          patients.nom AS lastname, patients.prenom AS firstname, patients.sexe AS sexe,
-          patients.naissance AS naissance
-          FROM operations
-          LEFT JOIN patients
-          ON operations.pat_id = patients.patient_id
-          WHERE operations.plageop_id = '".$value["id"]."'";
+  $plagesop[$key]->loadRefsFwd();
+  $listOp = new COperation;
+  $where = array();
+  $where["plageop_id"] = "= '".$value->id."'";
   switch($type) {
     case "1" : {
-      $sql .= " AND operations.rank != '0'";
+      $where["rank"] = "!= '0'";
       break;
     }
     case "2" : {
-      $sql .= " AND operations.rank = '0'";
+      $where["rank"] = "= '0'";
       break;
     }
   }
   if($CCAM != "") {
-    $sql .= " AND operations.CCAM_code LIKE '$CCAM%'";
+    $where["CCAM_code"] = "LIKE '$CCAM%'";
   }
-  $sql .= " ORDER BY operations.rank";
-  $plagesop[$key]["operations"] = db_loadlist($sql);
-  if((sizeof($plagesop[$key]["operations"]) == 0) && ($vide == "false")) {
+  $order = "operations.rank";
+  $listOp = $listOp->loadList($where, $order);
+  if((sizeof($listOp) == 0) && ($vide == "false"))
     unset($plagesop[$key]);
-  }
-}
-
-//On rectifie quelques champs des opérations
-$anesth = dPgetSysVal("AnesthType");
-$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
-  or die("Could not connect");
-mysql_select_db("ccam")
-  or die("Could not select database");
-foreach($plagesop as $key => $value) {
-  foreach($value["operations"] as $key2 => $value2) {
-    $annais = substr($value2["naissance"], 0, 4);
-    $anjour = date("Y");
-    $moisnais = substr($value2["naissance"], 5, 2);
-    $moisjour = date("m");
-    $journais = substr($value2["naissance"], 8, 2);
-    $jourjour = date("d");
-    $age = $anjour-$annais;
-    if($moisjour<$moisnais){$age=$age-1;}
-    if($jourjour<$journais && $moisjour==$moisnais){$age=$age-1;}
-    $plagesop[$key]["operations"][$key2]["age"] = $age;
-    if($value2["rank"])
-	  $plagesop[$key]["operations"][$key2]["heure"] = substr($value2["heure"], 0, 2)."h".substr($value2["heure"], 3, 2);
-    else
-      $plagesop[$key]["operations"][$key2]["heure"] = "-";
-    if($value2["type_anesth"])
-      $plagesop[$key]["operations"][$key2]["lu_type_anesth"] = $anesth[$value2["type_anesth"]];
-    else
-      $plagesop[$key]["operations"][$key2]["lu_type_anesth"] = null;
-    if($value2["materiel"] != "") {
-      switch($value2["commande_mat"]) {
-        case "o" : {
-          $plagesop[$key]["operations"][$key2]["mat"] = $value2["materiel"];
-          break;
-        }
-        case "n" : {
-          $plagesop[$key]["operations"][$key2]["mat"] = "<i><b>Materiel manquant :</b> ".$value2["materiel"]."</i>";
-          break;
-        }
+  else {
+    foreach($listOp as $key2 => $currOp) {
+      $listOp[$key2]->loadRefsFwd();
+      $listOp[$key2]->_first_affectation = $listOp[$key2]->getFirstAffectation();
+      if($listOp[$key2]->_first_affectation) {
+        $listOp[$key2]->_first_affectation->loadRefsFwd();
+        $listOp[$key2]->_first_affectation->_ref_lit->loadRefsFwd();
+        $listOp[$key2]->_first_affectation->_ref_lit->_ref_chambre->loadRefsFwd();
       }
-    } else {
-      $plagesop[$key]["operations"][$key2]["mat"] = "";
     }
-    $sql = "select LIBELLELONG from actes where CODE = '".$value2["CCAM_code"]."'";
-    $ccamr = mysql_query($sql);
-    $ccam = mysql_fetch_array($ccamr);
-	$plagesop[$key]["operations"][$key2]["CCAM"] = $ccam["LIBELLELONG"];
-	
-    $sql = "select LIBELLELONG from actes where CODE = '".$value2["CCAM_code2"]."'";
-    $ccamr = mysql_query($sql);
-    $ccam = mysql_fetch_array($ccamr);
-	$plagesop[$key]["operations"][$key2]["CCAM2"] = $ccam["LIBELLELONG"];
+    $plagesop[$key]->_ref_operations = $listOp;
   }
 }
-mysql_close();
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
