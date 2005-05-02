@@ -17,7 +17,8 @@ class CPathologies {
     "GAS", 
     "ARE",
     "RAD",
-    "GYN");
+    "GYN",
+    "EST");
     
   var $compat = array();
   
