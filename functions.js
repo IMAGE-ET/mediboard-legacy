@@ -4,7 +4,15 @@ function popup(width, height, url, name) {
   params = 'left=50, top=50, height=' + height + ', width=' + width
   params += ', resizable=yes, scrollbars=yes, menubar=yes';
   neo = window.open(url, name, params);
-  neo.window.focus();
+  neo.focus();
+}
+
+function popunder(width, height, url, name) {
+  params = 'left=50, top=50, height=' + height + ', width=' + width
+  params += ', resizable=yes, scrollbars=yes, menubar=yes';
+  neo = window.open(url, name, params);
+  neo.blur();
+  window.focus();
 }
 
 function main() {
