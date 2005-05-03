@@ -27,6 +27,7 @@ class CMedecin extends CDpObject {
 	var $tel = null;
 	var $fax = null;
 	var $email = null;
+  var $disciplines = null;
 
   // Form fields
 	var $_tel1 = null;
@@ -48,6 +49,8 @@ class CMedecin extends CDpObject {
 	}
   
   function updateFormFields() {
+    $this->_view = "$this->nom $this->prenom";
+    
     $this->_tel1 = substr($this->tel, 0, 2);
     $this->_tel2 = substr($this->tel, 2, 2);
     $this->_tel3 = substr($this->tel, 4, 2);

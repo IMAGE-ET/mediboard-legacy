@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPpatients';
-$config['mod_version'] = '0.21';
+$config['mod_version'] = '0.22';
 $config['mod_directory'] = 'dPpatients';
 $config['mod_setup_class'] = 'CSetupdPpatients';
 $config['mod_type'] = 'user';
@@ -42,37 +42,37 @@ class CSetupdPpatients {
 		switch ( $old_version )
 		{
 		case "all":
-		case "0.1": {
-		  $sql = "ALTER TABLE patients
-		  		  ADD tel2 VARCHAR( 10 ) AFTER tel ,
-		  		  ADD medecin1 INT( 11 ) AFTER medecin_traitant ,
-                  ADD medecin2 INT( 11 ) AFTER medecin1 ,
-                  ADD medecin3 INT( 11 ) AFTER medecin2 ,
-                  ADD rques TEXT;";
+		case "0.1":
+		  $sql = "ALTER TABLE patients" .
+          "\nADD tel2 VARCHAR( 10 ) AFTER tel ," .
+          "\nADD medecin1 INT( 11 ) AFTER medecin_traitant ," .
+          "\nADD medecin2 INT( 11 ) AFTER medecin1 ," .
+          "\nADD medecin3 INT( 11 ) AFTER medecin2 ," .
+          "\nADD rques TEXT;";
 		  db_exec( $sql ); db_error();
-		  $sql = "CREATE TABLE medecin (
-                  medecin_id int(11) NOT NULL auto_increment,
-                  nom varchar(50) NOT NULL default '',
-                  prenom varchar(50) NOT NULL default '',
-                  tel varchar(10) default NULL,
-                  fax varchar(10) default NULL,
-                  email varchar(50) default NULL,
-                  adresse varchar(50) default NULL,
-                  ville varchar(50) default NULL,
-                  cp varchar(5) default NULL,
-                  PRIMARY KEY  (medecin_id)
-                  ) TYPE=MyISAM COMMENT='Table des medecins correspondants';";
-		db_exec( $sql ); db_error();
-		}
-		case "0.2": {
-			$sql = "ALTER TABLE medecin ADD specialite TEXT AFTER prenom ;";
-		db_exec( $sql ); db_error();
-		}
+      
+		  $sql = "CREATE TABLE medecin (" .
+          "\nmedecin_id int(11) NOT NULL auto_increment," .
+          "\nnom varchar(50) NOT NULL default ''," .
+          "\nprenom varchar(50) NOT NULL default ''," .
+          "\ntel varchar(10) default NULL," .
+          "\nfax varchar(10) default NULL," .
+          "\nemail varchar(50) default NULL," .
+          "\nadresse varchar(50) default NULL," .
+          "\nville varchar(50) default NULL," .
+          "\ncp varchar(5) default NULL," .
+          "\nPRIMARY KEY  (medecin_id))" .
+          "\nTYPE=MyISAM COMMENT='Table des medecins correspondants';";
+  		db_exec( $sql ); db_error();
+		case "0.2":
+			$sql = "ALTER TABLE medecin " .
+          "\nADD specialite TEXT AFTER prenom ;";
+	    db_exec( $sql ); db_error();
+
 		case "0.21":
 			return true;
-		default:
-			return false;
 		}
+
 		return false;
 	}
 

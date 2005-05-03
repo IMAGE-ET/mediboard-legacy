@@ -1,0 +1,135 @@
+<script language="JavaScript" type="text/javascript">
+{literal}
+
+function show(elementId, doIt) {
+  element = document.getElementById(elementId);
+  element.style.display = doIt ? "" : "none";
+}
+
+function write(elementId, text) {
+  element = document.getElementById(elementId);
+  element.innerHTML = text;
+}
+
+is_running = null;
+
+function setRunning(running) {
+  is_running = running;
+  
+  show("running_step", is_running);
+  show("start_process", !is_running);
+  show("stop_process", is_running);
+}
+
+function addCell(tr, content) {
+  td = document.createElement("td");
+  tr.appendChild(td);
+  t = document.createTextNode(content);
+  td.appendChild(t);
+}
+
+function addHeader(tr, content) {
+  th = document.createElement("th");
+  tr.appendChild(th);
+  t = document.createTextNode(content);
+  th.appendChild(t);
+}
+
+nb_medecins_total = 0;
+time_total = 0.0;
+parse_errors_total = 0;
+stores_total = 0;
+
+function endStep(file, nb_medecins, time, parse_errors, stores) {
+  nb_medecins_total += nb_medecins;
+  time_total += time;
+  parse_errors_total += parse_errors;
+  stores_total += stores;
+
+  table = document.getElementById("process");
+  tbody = table.getElementsByTagName("tbody")[0];
+  
+  tr = document.createElement("tr"); 
+  table.appendChild(tr);
+
+  addCell(tr, file);
+  addCell(tr, time + ' seconds');
+  addCell(tr, nb_medecins);
+  addCell(tr, parse_errors);
+  addCell(tr, stores);
+  
+  if (is_running) {
+  	startStep();
+  }  
+}
+
+var step = 0;
+
+function startStep() {
+  step++;
+  setRunning(true);
+
+  url = "?m=dpPatients&a=medecin&dialog=1";
+  url += "&step=" + step;
+  popup(400, 100, url, 'import');
+}
+
+function startProcess() {
+  startStep();
+}
+
+function stopProcess() {
+  setRunning(false);
+}
+
+function endProcess() {
+  setRunning(false);
+  show("start_process", false);
+  
+  table = document.getElementById("process");
+  tbody = table.getElementsByTagName("tbody")[0];
+  
+  tr = document.createElement("tr"); 
+  table.appendChild(tr);
+
+  addHeader(tr, "Total");
+  addCell(tr, time_total + ' seconds');
+  addCell(tr, nb_medecins_total);
+  addCell(tr, parse_errors_total);
+  addCell(tr, stores_total);
+}
+
+function pageMain() {
+  setRunning(false);
+}
+
+{/literal}
+</script>
+
+<h2>Import de la base données de l'ordre des médecin</h2>
+<button id="start_process" onclick="startProcess()">
+  Commencer le processus
+</button>
+
+<button id="stop_process" onclick="stopProcess()">
+  Arrêter le processus après l'étape courante
+</button>
+
+<table class="tbl" id="process">
+  <thead>
+    <tr>
+      <th>Nom de fichier</th>
+      <th>Temps pris</th>
+      <th>Nombre de médecins importés</th>
+      <th>Erreurs de parsing</th>
+      <th>Sauvegardes réussies</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  <tfoot>
+    <tr id="running_step">
+      <td colspan="5">Etape <span id="step_number"/> en cours...
+    <tr>
+  </tfoot>
+</table>

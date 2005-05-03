@@ -1,29 +1,35 @@
-<?php
-ini_set("include_path", ".;..\..\lib\PEAR");
+<?php /* $Id$ */
 
-if(isset($_GET["debut"])) {
-  $debut = $_GET["debut"];
-}
-else
-  $debut = 0;
+/**
+* @package Mediboard
+* @subpackage dPpatients
+* @version $Revision$
+* @author Thomas Despoix
+*/
 
-if(isset($_GET["step"])) {
-  $step = $_GET["step"];
-}
-else
-  $step = 5;
+global $AppUI, $m;
+
+require_once($AppUI->getModuleClass("dPpatients", "medecin"));
+
+ini_set("include_path", ".;./lib/PEAR");
 
 // XML Helper functions
 require_once("XML/Tree.php");
 
+$parse_errors = 0;
+
 function getAllElements(&$node, $element) {
   $elements = array();
-  
-  if (is_a($node, "XML_Tree_Node")) {
-    foreach ($node->children as $child) {
-      if ($child->name == $element) {
-        $elements[] = $child;
-      }
+
+  if (!is_a($node, "XML_Tree_Node")) {
+    mbTrace(debug_backtrace());
+    $parse_errors++;
+    return $elements;
+  }
+
+  foreach ($node->children as $child) {
+    if ($child->name == $element) {
+      $elements[] = $child;
     }
   }
   
@@ -32,7 +38,9 @@ function getAllElements(&$node, $element) {
 
 function getElement(&$node, $element, $number = 1) {
   if (!is_a($node, "XML_Tree_Node")) {
-    return null;
+    mbTrace(debug_backtrace());
+    $parse_errors++;
+    return;
   }
   
   foreach ($node->children as $child) {
@@ -46,58 +54,14 @@ function getElement(&$node, $element, $number = 1) {
   return null;
 }
 
-// Chronometer
-class Chronometer {
-  var $startTotal = null;
-  var $startStep  = null;
-  var $nbSteps = 0;
-  var $prefix = null;
-    
-  function Chronometer() {
-	  $this->startTotal = $this->microtimeFloat();
-    $this->startStep  = $this->microtimeFloat();
-  }
-  
-  function microtimeFloat() {
-    list($usec, $sec) = explode(" ", microtime());
-    return ((float)$usec + (float)$sec);
-  }
-  
-  function showStep($str) {
-    $this->nbSteps++;
-    $elapsed = $this->microtimeFloat() - $this->startStep;
-    //echo "<p>Step #$this->nbSteps: $str... $elapsed seconds</p>";
-    $this->startStep = $this->microtimeFloat();
-  }
-  
-  function showTotal() {
-    $elapsed = $this->microtimeFloat() - $this->startTotal;
-    //echo "<p>Total $this->prefix: $this->nbSteps step(s) in $elapsed seconds</p>";
-	}
-}
-
 // Chrono start
 $chrono = new Chronometer;
+$chrono->start();
 
 require_once 'PHP/Compat/Function/file_get_contents.php';
 require_once 'PHP/Compat/Function/file_put_contents.php';
 
 // Emulates an HTTP request
-$fin = $debut + $step;
-if($fin > 193)
-  $fin = 193;
-for($i = $debut; $i <= $fin; $i++)
-{
-$path = null;
-$path = "medecins/";
-if($i < 10) {
-$path .= "0";
-}
-if($i < 100) {
-$path .= "0";
-}
-$path .= "$i.htm";
-$chrono->prefix = $i;
 //$url = "http://www.conseil-national.medecin.fr/annuaire.php"; //index.php?url=annuaire/result.php&from=100&to=200";
 //$fields = array(
 //  "nomexercice=Nom",
@@ -119,223 +83,202 @@ $chrono->prefix = $i;
 //curl_close($ch);
 //fclose($file);
 //
-//$chrono->showStep("Send HTTP request");
 
-// Step: Get data from http request
+// -- Step: Get data from html file
+$step = isset($_GET["step"]) ? $_GET["step"] : 1;
+$path = sprintf("modules/$m/medecins/%03d.htm", $step-1);
 
-$str = null;
-$str = file_get_contents($path);
+$str = @file_get_contents($path);
 
-$chrono->showStep("Load content from file");
-
-// Make data XML compliant
-// -- Step: Remove some HTML Entities (compatibility with XML Tree)
-$str = str_replace(
-  array('&eacute;', '&nbsp;', '&ecirc;'),
-  array('é', ' ', 'ê'),
-  $str);
+if (!$str) {
+  // Création du template
+  require_once( $AppUI->getSystemClass ('smartydp' ) );
+  $smarty = new CSmartyDP;
   
-$chrono->showStep("Remove HTML entities");
-
-// -- Step: Remove doctype 
-$str = preg_replace("/<!DOCTYPE[^>]*>/i", "", $str);
-
-$chrono->showStep("Remove DOCTYPE mention");
-
-// -- Step: Turn non-entity & to &amp;
-$str = preg_replace("/&(\w*)(?![;\w])/i", "&amp;$1", $str);
-
-$chrono->showStep("Fix ampersands");
-
-// -- Step: Enquote all attributes
-$str = preg_replace("/ ([^=]+)=([^ |^>|^'|^\"]+)/i", " $1='$2'", $str);
-
-$chrono->showStep("Fix attributes");
-
-// -- Step: Self-close HTML empty elements
-$str = preg_replace("/<(img|area|input|br|link|meta)([^>]*)>/i", "<$1$2 />", $str);
-
-$chrono->showStep("Fix self-closed elements");
-
-// -- Step: remove extra-closures
-$str = preg_replace("/<\/tr>([^<>]*)<\/tr>/i", "</tr>$1", $str);
-
-$chrono->showStep("Fix extra-closures");
-
-// Step: Save data on another file
-$tmp = null;
-$tmp = "medecintmp.htm";
-$bytes = null;
-$bytes = file_put_contents($tmp, $str);
-
-$chrono->showStep("Save content ($bytes bytes)");
-
-// Step: Parse XML Tree
-$tree = null;
-$tree = new XML_Tree();
-$node = null;
-$node =& $tree->getTreeFromString($str);
-
-$chrono->showStep("Parse XML Tree");
-
-// Step: Seek praticiens
-$medecins = null;
-$medecins = array();
-
-// /html/body/table/tr[3]/td/table/tr/td[2]/table/tr[7]/td/table/tr/td[2]/table/tr/td/b
-// /html/body/table/tr[3]/td/table/tr/td[2]/table/tr[7]/td/table
-$node =& getElement($node, "body");
-$node =& getElement($node, "table");
-$node =& getElement($node, "tr", 3);
-$node =& getElement($node, "td");
-$node =& getElement($node, "table");
-$node =& getElement($node, "tr");
-$node =& getElement($node, "td", 2);
-$node =& getElement($node, "table");
-$node =& getElement($node, "tr", 7);
-$node =& getElement($node, "td");
-$node =& getElement($node, "table");
-
-assert(is_a($node, "XML_Tree_Node"));
-foreach ($node->children as $key=>$child) {
-
-  if ($child->name == "tr") {
-    $ndx = intval($key / 3);
-    if (!isset($medecins[$ndx])) {
-      $medecins[$ndx] = array();
-    }
+  $smarty->assign("end_of_process", true);
+  $smarty->display("medecin.tpl");
+} else {
+   
+  // Make data XML compliant
+  // Remove some HTML Entities (compatibility with XML Tree)
+  $str = str_replace(
+    array('&eacute;', '&nbsp;', '&ecirc;'),
+    array('é', ' ', 'ê'),
+    $str);
     
-    $medecin =& $medecins[$ndx];
-    switch ($key % 3) {
-      case 0:
-        // /td[2]/table/tr/td/b
-
-        $node =& $child;
-        $node =& getElement($node, "td", 2);
-        $node =& getElement($node, "table");
-        $node =& getElement($node, "tr");
-        $node =& getElement($node, "td");
-        $node =& getElement($node, "b");
-        
-        $medecin['Nom'] = is_a($node, "XML_Tree_Node") ? 
-          substr($node->content, 0, -6) : 
-          null;
-        $espace = strpos($medecin['Nom'], " ");
-        $medecin['Prenom'] = addslashes(substr($medecin['Nom'], 0, $espace));
-        $medecin['Nom'] = addslashes(substr($medecin['Nom'], $espace + 1));
-        
-        // /td[3]/<empty>
-        $node =& $child;
-        $node =& getElement($node, "td", 3);
-        $node =& getElement($node, "");
-
-        $medecin['Departement'] = is_a($node, "XML_Tree_Node") ? 
-          trim(substr($node->content, 3)) : 
-          null;
-        $medecin['Departement'] = addslashes($medecin['Departement']);
-
-        break;
-      case 1:
-        // /td/table/tr[2]/td/<empty>*
-        $node =& $child;
-        $node =& getElement($node, "td");
-        $node =& getElement($node, "table");
-        $node =& getElement($node, "tr", 2);
-        $node =& getElement($node, "td");
-        
-        $disciplines = null;
-        $disciplines = array();
-        foreach (getAllElements($node, "") as $discNode) {
-          $disciplines[] = trim(addslashes(substr($discNode->content, 2)));
-        }
-
-        $medecin['Disciplines'] = implode($disciplines, "\n");
-
-        break;
-      case 2:
-        // /td/table/tr[2]/td
-        $node =& $child;
-        $node =& getElement($node, "td");
-        $node =& getElement($node, "table");
-        $node =& getElement($node, "tr", 2);
-        $node =& getElement($node, "td");
-
-        $medecin['Adresse'] = is_a($node, "XML_Tree_Node") ? $node->content : null;
-        $medecin['Adresse'] = addslashes($medecin['Adresse']);
-        
-        // /td/table/tr[3]/td
-        $node =& $child;
-        $node =& getElement($node, "td");
-        $node =& getElement($node, "table");
-        $node =& getElement($node, "tr", 3);
-        $node =& getElement($node, "td");
-
-        $medecin['CodePostal'] = is_a($node, "XML_Tree_Node") ? $node->content : null;
-        $medecin['Ville'] = addslashes(substr($medecin['CodePostal'], 6));
-        $medecin['CodePostal'] = addslashes(substr($medecin['CodePostal'], 0, 5));
-
-        // /td[2]/table/tr/td[3]
-        $node =& $child;
-        $node =& getElement($node, "td" , 2);
-        $node =& getElement($node, "table");
-        $node =& getElement($node, "tr");
-        $node =& getElement($node, "td", 3);
-
-        $medecin['Tel'] = is_a($node, "XML_Tree_Node") ? $node->content : null;
-        $medecin['Tel'] = str_replace(" ", "", $medecin['Tel']);
-        $medecin['Tel'] = str_replace("/", "", $medecin['Tel']);
-        $medecin['Tel'] = str_replace("-", "", $medecin['Tel']);
-        $medecin['Tel'] = addslashes(str_replace(".", "", $medecin['Tel']));
+  // Remove doctype 
+  $str = preg_replace("/<!DOCTYPE[^>]*>/i", "", $str);
+  
+  // Turn non-entity & to &amp;
+  $str = preg_replace("/&(\w*)(?![;\w])/i", "&amp;$1", $str);
+  
+  // Enquote all attributes
+  $str = preg_replace("/ ([^=]+)=([^ |^>|^'|^\"]+)/i", " $1='$2'", $str);
+  
+  // Self-close HTML empty elements
+  $str = preg_replace("/<(img|area|input|br|link|meta)([^>]*)>/i", "<$1$2 />", $str);
+  
+  // remove extra-closures
+  $str = preg_replace("/<\/tr>([^<>]*)<\/tr>/i", "</tr>$1", $str);
+  
+  // Step: Save data on another file
+  $tmp = "medecintmp.htm";
+  $bytes = file_put_contents($tmp, $str);
+  
+  // Step: Parse XML Tree
+  $tree = new XML_Tree();
+  $node =& $tree->getTreeFromString($str);
+  
+  // Step: Seek praticiens
+  $medecins = array();
+  
+  // /html/body/table/tr[3]/td/table/tr/td[2]/table/tr[7]/td/table
+  $node =& getElement($node, "body");
+  $node =& getElement($node, "table");
+  $node =& getElement($node, "tr", 3);
+  $node =& getElement($node, "td");
+  $node =& getElement($node, "table");
+  $node =& getElement($node, "tr");
+  $node =& getElement($node, "td", 2);
+  $node =& getElement($node, "table");
+  $node =& getElement($node, "tr", 7);
+  $node =& getElement($node, "td");
+  $node =& getElement($node, "table");
+  
+  foreach ($node->children as $key=>$child) {
+    if ($child->name == "tr") {
+      $ndx = intval($key / 3);
+      $mod = intval($key % 3);
+      if (!isset($medecins[$ndx])) {
+        $medecins[$ndx] = new CMedecin;
+      }
       
-        // /td[2]/table/tr[2]/td[3]
-        $node =& $child;
-        $node =& getElement($node, "td" , 2);
-        $node =& getElement($node, "table");
-        $node =& getElement($node, "tr", 2);
-        $node =& getElement($node, "td", 3);
-
-        $medecin['Fax'] = is_a($node, "XML_Tree_Node") ? $node->content : null;
-        $medecin['Fax'] = str_replace(" ", "", $medecin['Fax']);
-        $medecin['Fax'] = str_replace("/", "", $medecin['Fax']);
-        $medecin['Fax'] = str_replace("-", "", $medecin['Fax']);
-        $medecin['Fax'] = addslashes(str_replace(".", "", $medecin['Fax']));
-
-        // /td[2]/table/tr[3]/td[3]
-        $node =& $child;
-        $node =& getElement($node, "td" , 2);
-        $node =& getElement($node, "table");
-        $node =& getElement($node, "tr", 3);
-        $node =& getElement($node, "td", 3);
-
-        $medecin['E-mail'] = is_a($node, "XML_Tree_Node") ? $node->content : null;
-
-        break;
+      $medecin =& $medecins[$ndx];
+      switch ($mod) {
+        case 0:
+          // /td[2]/table/tr/td/b
+  
+          $node =& $child;
+          $node =& getElement($node, "td", 2);
+          $node =& getElement($node, "table");
+          $node =& getElement($node, "tr");
+          $node =& getElement($node, "td");
+          $node =& getElement($node, "b");
+          
+          $nom = is_a($node, "XML_Tree_Node") ? substr($node->content, 0, -6) : ""; 
+          $fragments = explode(" ", $nom, 2);
+          $medecin->prenom = @$fragments[0];
+          $medecin->nom    = @$fragments[1];
+          
+          break;
+        case 1:
+          // /td/table/tr[2]/td/<empty>*
+          $node =& $child;
+          $node =& getElement($node, "td");
+          $node =& getElement($node, "table");
+          $node =& getElement($node, "tr", 2);
+  
+          if ($node) {
+            $node =& getElement($node, "td");
+            
+            $disciplines = array();
+            $nodes = getAllElements($node, "");
+            foreach ($nodes as $discNode) {
+              $disciplines[] = trim(substr($discNode->content, 2));
+            }
+    
+            $medecin->disciplines = implode($disciplines, "\n");
+          } 
+  
+          break;
+        case 2:
+          // /td/table/tr[2]/td
+          $node =& $child;
+          $node =& getElement($node, "td");
+          $node =& getElement($node, "table");
+          $node =& getElement($node, "tr", 2);
+          $node =& getElement($node, "td");
+  
+          $adresses = array();
+          $nodes = getAllElements($node, "");
+          foreach ($nodes as $discNode) {
+            $adresses[] = $discNode->content;
+          }
+          
+          $medecin->adresse = implode($adresses, "\n");
+          
+          // /td/table/tr[3]/td
+          $node =& $child;
+          $node =& getElement($node, "td");
+          $node =& getElement($node, "table");
+          $node =& getElement($node, "tr", 3);
+          $node =& getElement($node, "td");
+  
+          $ville = is_a($node, "XML_Tree_Node") ? $node->content : null;
+          $medecin->ville = substr($ville, 6);
+          $medecin->cp    = substr($ville, 0, 5);
+  
+          // /td[2]/table/tr/td[3]
+          $node =& $child;
+          $node =& getElement($node, "td" , 2);
+          $node =& getElement($node, "table");
+          $node =& getElement($node, "tr");
+          $node =& getElement($node, "td", 3);
+  
+          $tel = is_a($node, "XML_Tree_Node") ? $node->content : null;
+          $strip = array(" ", "/", "-", ".");
+          $medecin->tel = str_replace($strip, "", $tel);
+        
+          // /td[2]/table/tr[2]/td[3]
+          $node =& $child;
+          $node =& getElement($node, "td" , 2);
+          $node =& getElement($node, "table");
+          $node =& getElement($node, "tr", 2);
+          $node =& getElement($node, "td", 3);
+  
+          $fax = is_a($node, "XML_Tree_Node") ? $node->content : null;
+          $medecin->fax = str_replace($strip, "", $fax);
+  
+          // /td[2]/table/tr[3]/td[3]
+          $node =& $child;
+          $node =& getElement($node, "td" , 2);
+          $node =& getElement($node, "table");
+          $node =& getElement($node, "tr", 3);
+          $node =& getElement($node, "td", 3);
+  
+          $medecin->email = is_a($node, "XML_Tree_Node") ? $node->content : null;
+  
+          break;
+      }
     }
   }
-}
-
-$chrono->showStep("Seek praticians (" . count($medecins). " found)");
-
-$mysql = mysql_connect("localhost", "root", "");
-mysql_select_db("dotproject");
-
-foreach ($medecins as $medecin) {
-	$query = "INSERT INTO medecin(nom, prenom, specialite, tel, fax, email, adresse, ville, cp)" .
-			"\nVALUES ('". $medecin['Nom'] ."', '". $medecin['Prenom'] ."', '". $medecin['Disciplines'] .
-            "', '". $medecin['Tel'] ."', '". $medecin['Fax'] ."', '". $medecin['E-mail'] .
-            "', '". $medecin['Adresse'] ."', '".$medecin['Ville']  ."', '". $medecin['CodePostal'] ."')";
-    mysql_query($query);
-    if(mysql_error()) {
-      echo "<p>Erreur :<br>$query<br>". mysql_error()."</p>";
+  
+  $chrono->stop();
+  
+  $stores = 0;
+  
+  foreach ($medecins as $medecin) {
+    if (!$medecin->store()) {
+      $stores++;
     }
-}
- mysql_close();
- 
- $chrono->showStep("Database queries");
- 
- $chrono->showTotal();
-}
+    
+    $medecin->updateFormFields();  
+  }
+  
+  // Création du template
+  require_once( $AppUI->getSystemClass ('smartydp' ) );
+  $smarty = new CSmartyDP;
+  
+  $smarty->debugging = false;
+  $smarty->assign("long_display", false);
 
-$goto = "Location:medecin.php?debut=".$fin;
-header($goto);
- ?>
+  $smarty->assign("end_of_process", false);
+  $smarty->assign("step", $step);
+  $smarty->assign("medecins", $medecins);
+  $smarty->assign("chrono", $chrono);
+  $smarty->assign("parse_errors", $parse_errors);
+  $smarty->assign("stores", $stores);
+  
+  $smarty->display("medecin.tpl");
+}
+?>
