@@ -64,7 +64,7 @@ function popPlanning() {
     </td>
     {else}
     <td class="Pane">
-      <strong><a href="#" onclick="popPlanning()">Afficher le planning</a></strong>
+      <strong><a href="#" onclick="popPlanning()">Etat des services</a></strong>
     </td>
     {/if}
     <td style="text-align: right;">
