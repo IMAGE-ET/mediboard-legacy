@@ -259,8 +259,6 @@ if (!$str) {
     }
   }
   
-  $chrono->stop();
-  
   $stores = 0;
   $sibling_errors = 0;
   
@@ -275,6 +273,8 @@ if (!$str) {
     $medecin->updateFormFields();  
   }
   
+  $chrono->stop();
+
   // Création du template
   require_once( $AppUI->getSystemClass ('smartydp' ) );
   $smarty = new CSmartyDP;

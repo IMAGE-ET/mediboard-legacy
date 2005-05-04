@@ -62,14 +62,14 @@ function endStep(file, nb_medecins, time, parse_errors, sibling_errors, stores) 
   addCell(tr, stores);
   
   if (is_running) {
+    step++;
   	startStep();
   }  
 }
 
-var step = 0;
+var step = 1;
 
 function startStep() {
-  step++;
   setRunning(true);
 
   url = "?m=dpPatients&a=medecin&dialog=1";
