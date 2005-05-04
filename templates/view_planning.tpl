@@ -51,7 +51,7 @@ function printAdmission(id) {
 		  {else}<td>{$curr_op->time_operation|date_format:"%Hh%M"}</td>{/if}
 		  
 		  <td class="text">{$curr_op->_ext_code_ccam->libelleLong|truncate:80:"...":false} <i>({$curr_op->CCAM_code})</i>
-		  {if $curr_op->CCAM_code2}<br />{$curr_op->_ext_code_ccam->libelleLong|truncate:80:"...":false} <i>({$curr_op->CCAM_code2}{/if}</td>
+		  {if $curr_op->CCAM_code2}<br />{$curr_op->_ext_code_ccam2->libelleLong|truncate:80:"...":false} <i>({$curr_op->CCAM_code2}{/if}</td>
 		  <td>{$curr_op->cote|truncate:1:""|capitalize}</td>
           <td>{if $curr_op->_lu_type_anesth != ''}{$curr_op->_lu_type_anesth}{else}Non Définie{/if}</td>
           <td>{$curr_op->type_adm|truncate:1:""|capitalize}</td>
