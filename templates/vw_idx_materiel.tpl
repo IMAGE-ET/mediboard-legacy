@@ -63,7 +63,13 @@ function popMateriel() {
             <input type="hidden" name="m" value="dPbloc" />
             <input type="hidden" name="a" value="do_edit_mat" />
             <input type="hidden" name="id" value="{$curr_op.id}" />
+            {if $typeAff}
+            <input type="hidden" name="value" value="n" />
+		    <input type="submit" value="annulé" />
+		    {else}
+            <input type="hidden" name="value" value="o" />
 		    <input type="submit" value="commandé" />
+			{/if}
 			</form>
 		  </td>
 		</tr>
@@ -97,5 +103,12 @@ function popMateriel() {
 	    <tr><td colspan="2" class="button"><input type="button" value="Afficher" onclick="checkForm()"</td></tr>
 	  </table>
 	  </form>
+	  <form name="typeVue" action="?m={$m}" method="get">
+        <input type="hidden" name="m" value="{$m}" />
+        <select name="typeAff" onchange="submit()">
+          <option value="0" {if $typeAff == 0}selected="selected"{/if}>Materiel à commander</option>
+          <option value="1" {if $typeAff == 1}selected="selected"{/if}>Materiel annulé</option>
+        </select>
+      </form>
   </tr>
 </table>
