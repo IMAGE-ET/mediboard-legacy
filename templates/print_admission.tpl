@@ -5,7 +5,7 @@
   
   <tr><th class="category" colspan="2">Informations sur le patient</th></tr>
   
-  <tr><th>Nom / Prenom: </th><td>{$admission->_ref_pat->nom} {$admission->_ref_pat->prenom}</td></tr>
+  <tr><th>Nom / Prenom: </th><td>{$admission->_ref_pat->_view}</td></tr>
   <tr><th>Date de naissance / Sexe: </th><td>né(e) le {$admission->_ref_pat->_jour}/{$admission->_ref_pat->_mois}/{$admission->_ref_pat->_annee} de sexe {$admission->_ref_pat->sexe}</td></tr>
   <tr><th>Incapable majeur: </th><td>{$admission->_ref_pat->incapable_majeur}</td></tr>
   <tr><th>Telephone: </th><td>{$admission->_ref_pat->tel}</td></tr>
@@ -15,20 +15,20 @@
   <tr><th>Remarques: </th><td>{$admission->_ref_pat->rques|nl2br:php}</td></tr>
 
   {if $admission->_ref_pat->_ref_medecin_traitant}
-  <tr><th>Medecin traitant: </th><td>{$admission->_ref_pat->_ref_medecin_traitant->nom} {$admission->_ref_pat->_ref_medecin_traitant->prenom}</td></tr>
-  <tr><th></th><td>{$admission->_ref_pat->_ref_medecin_traitant->adresse} - {$admission->_ref_pat->_ref_medecin_traitant->cp} {$admission->_ref_pat->_ref_medecin_traitant->ville}</td></tr>
+  <tr><th>Medecin traitant: </th><td>{$admission->_ref_pat->_ref_medecin_traitant->_view}</td></tr>
+  <tr><th></th><td>{$admission->_ref_pat->_ref_medecin_traitant->adresse|nl2br}<br />{$admission->_ref_pat->_ref_medecin_traitant->cp} {$admission->_ref_pat->_ref_medecin_traitant->ville}</td></tr>
   {/if}
   {if $admission->_ref_pat->_ref_medecin1}
-  <tr><th>Medecin correspondant 1: </th><td>{$admission->_ref_pat->_ref_medecin1->nom} {$admission->_ref_pat->_ref_medecin1->prenom}</td></tr>
-  <tr><th></th><td>{$admission->_ref_pat->_ref_medecin1->adresse} - {$admission->_ref_pat->_ref_medecin1->cp} {$admission->_ref_pat->_ref_medecin1->ville}</td></tr>
+  <tr><th>Medecin correspondant 1: </th><td>{$admission->_ref_pat->_ref_medecin1->_view}</td></tr>
+  <tr><th></th><td>{$admission->_ref_pat->_ref_medecin1->adresse|nl2br}<br />{$admission->_ref_pat->_ref_medecin1->cp} {$admission->_ref_pat->_ref_medecin1->ville}</td></tr>
   {/if}
   {if $admission->_ref_pat->_ref_medecin2}
-  <tr><th>Medecin correspondant 2: </th><td>{$admission->_ref_pat->_ref_medecin2->nom} {$admission->_ref_pat->_ref_medecin2->prenom}</td></tr>
-  <tr><th></th><td>{$admission->_ref_pat->_ref_medecin2->adresse} - {$admission->_ref_pat->_ref_medecin2->cp} {$admission->_ref_pat->_ref_medecin2->ville}</td></tr>
+  <tr><th>Medecin correspondant 2: </th><td>{$admission->_ref_pat->_ref_medecin2->_view}</td></tr>
+  <tr><th></th><td>{$admission->_ref_pat->_ref_medecin2->adresse|nl2br}<br />{$admission->_ref_pat->_ref_medecin2->cp} {$admission->_ref_pat->_ref_medecin2->ville}</td></tr>
   {/if}
   {if $admission->_ref_pat->_ref_medecin3}
-  <tr><th>Medecin correspondant 3: </th><td>{$admission->_ref_pat->_ref_medecin3->nom} {$admission->_ref_pat->_ref_medecin3->prenom}</td></tr>
-  <tr><th></th><td>{$admission->_ref_pat->_ref_medecin3->adresse} - {$admission->_ref_pat->_ref_medecin3->cp} {$admission->_ref_pat->_ref_medecin3->ville}</td></tr>
+  <tr><th>Medecin correspondant 3: </th><td>{$admission->_ref_pat->_ref_medecin3->_view}</td></tr>
+  <tr><th></th><td>{$admission->_ref_pat->_ref_medecin3->adresse|nl2br}<br />{$admission->_ref_pat->_ref_medecin3->cp} {$admission->_ref_pat->_ref_medecin3->ville}</td></tr>
   {/if}
   
   <tr><th class="category" colspan="2">Informations sur l'admission</th></tr>
@@ -38,6 +38,7 @@
   <tr><th>Bilan pré-opératoire: </th><td class="text">{$admission->examen}</td></tr>
   <tr><th>Admission en: </th><td>{$admission->type_adm}</td></tr>
   <tr><th>Chambre particulière: </th><td>{$admission->chambre}</td></tr>
+  <tr><th>Remarques: </th><td>{$admission->rques|nl2br}</td></tr>
   
   <tr><th class="category" colspan="2">Informations sur l'intervention</th></tr>
 

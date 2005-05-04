@@ -73,7 +73,6 @@ function printDepassement(id) {
       <table class="tbl">
         <tr>
           <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selTri=nom">Nom</a></th>
-          <th>Prénom</th>
           <th>Chirurgien</th>
           <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selTri=heure">Heure</a></th>
           <th>Chambre</th>
@@ -85,12 +84,7 @@ function printDepassement(id) {
         <tr>
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
             <a href="#" onclick="printAdmission({$curr_adm->operation_id})">
-            {$curr_adm->_ref_pat->nom}
-            </a>
-          </td>
-          <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
-            <a href="#" onclick="printAdmission({$curr_adm->operation_id})">
-            {$curr_adm->_ref_pat->prenom}
+            {$curr_adm->_ref_pat->_view}
             </a>
           </td>
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
