@@ -54,9 +54,11 @@ class CChambre extends CDpObject {
     $where = array (
       "chambre_id" => "= '$this->chambre_id'"
     );
+    // A cause de l'inversion porte - fenêtre
+    $order = "lit.nom DESC";
     
     $this->_ref_lits = new CLit;
-    $this->_ref_lits = $this->_ref_lits->loadList($where);
+    $this->_ref_lits = $this->_ref_lits->loadList($where, $order);
   }
 
   function canDelete(&$msg, $oid = null) {
