@@ -117,7 +117,7 @@ class CMedecin extends CDpObject {
   
   function getExactSiblings() {
   	$where = array();
-  	$where["medecins_id"] = "!= '$this->medecin_id'";
+  	$where["medecin_id"] = "!= '$this->medecin_id'";
   	$where["nom"] = "= '$this->nom'";
   	$where["prenom"] = "= '$this->prenom'";
   	$where["adresse"] = "= '$this->adresse'";
