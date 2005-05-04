@@ -122,7 +122,7 @@ class CChambre extends CDpObject {
           assert($chirurgien2);
 
           // Chambre seule
-          if ($operation->chambre ="o") {
+          if ($operation1->chambre == "o") {
             $this->_chambre_seule++;         
           }
 
