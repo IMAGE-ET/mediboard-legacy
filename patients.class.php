@@ -78,7 +78,7 @@ class CPatient extends CDpObject {
     if($this->sexe == "m")
       $this->_view = "M. ";
     else
-      $this->_view = "Mme ";
+      $this->_view = "Mme. ";
     $this->_view .= "$this->nom $this->prenom";
     
     $this->_jour  = substr($this->naissance, 8, 2);
