@@ -159,7 +159,7 @@ function setCalendar( idate, fdate ) {
             <input type="hidden" name="patient_id" value="{$pat->patient_id}" />
             <label for="editFrm_chir_id">Patient:</label>
           </th>
-          <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->nom} {$pat->prenom}" readonly="readonly" /></td>
+          <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->_view}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
         

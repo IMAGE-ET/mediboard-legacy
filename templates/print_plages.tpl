@@ -11,12 +11,11 @@
 	  <table class="tbl">
 	    <tr>
 		  <th rowspan="2"><b>Heure</b></th>
-		  <th colspan="3"><b>Patient</b></th>
+		  <th colspan="2"><b>Patient</b></th>
 		  <th colspan="3"><b>Consultation</b></th>
 		</tr>
 		<tr>
-		  <th>Nom</th>
-		  <th>Prénom</th>
+		  <th>Nom / Prénom</th>
           <th>Age</th>
           <th>Motif</th>
 		  <th>Remarques</th>
@@ -25,8 +24,7 @@
 		{foreach from=$curr_plage->_ref_consultations item=curr_consult}
 		<tr>
 		  <td>{$curr_consult->heure}</td>
-		  <td>{$curr_consult->_ref_patient->nom}</td>
-          <td>{$curr_consult->_ref_patient->prenom}</td>
+		  <td>{$curr_consult->_ref_patient->_view}</td>
           <td>{$curr_consult->_ref_patient->_age} ans</td>
           <td>{$curr_consult->motif|nl2br}</td>
           <td>{$curr_consult->rques|nl2br}</td>

@@ -88,8 +88,7 @@ if($plageSel) {
         $listPlace[$i]["patient"][$qte]["premiere"] = $plage->_ref_consultations[$key]->premiere;
         $listPlace[$i]["patient"][$qte]["duree"] = $plage->_ref_consultations[$key]->duree;
         $plage->_ref_consultations[$key]->loadRefs();
-        $listPlace[$i]["patient"][$qte]["patient"] = $plage->_ref_consultations[$key]->_ref_patient->nom;
-        $listPlace[$i]["patient"][$qte]["patient"] .= " ".$plage->_ref_consultations[$key]->_ref_patient->prenom;
+        $listPlace[$i]["patient"][$qte]["patient"] = $plage->_ref_consultations[$key]->_ref_patient->_view;
         $qte++;
       }
       else {

@@ -53,8 +53,7 @@
     <td colspan="2">
       <table class="tbl">
         <tr>
-          <th width="15%">Nom</th>
-          <th width="15%">Prenom</th>
+          <th width="15%">Nom / Prénom</th>
           <th width="10%">Telephone</th>
           <th width="10%">Mobile</th>
           <th width="10%">Type</th>
@@ -65,8 +64,7 @@
         </tr>
         {foreach from=$curr_plage->_ref_consultations item=curr_consult}
         <tr>
-          <td>{$curr_consult->_ref_patient->nom}</td>
-          <td>{$curr_consult->_ref_patient->prenom}</td>
+          <td>{$curr_consult->_ref_patient->_view}</td>
           <td>{$curr_consult->_ref_patient->tel}</td>
           <td>{$curr_consult->_ref_patient->tel2}</td>
           <td>{$curr_consult->type_tarif}</td>

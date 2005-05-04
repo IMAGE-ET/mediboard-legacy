@@ -244,7 +244,7 @@ function checkPlage() {
           {/if}
           
           <td {$style}><a href="{$href_consult}">{$curr_consult->_hour}h{if $curr_consult->_min}{$curr_consult->_min}{/if}</a></td>
-          <td {$style}><a href="{$href_consult}">{$curr_consult->_ref_patient->nom} {$curr_consult->_ref_patient->prenom}</a></td>
+          <td {$style}><a href="{$href_consult}">{$curr_consult->_ref_patient->_view}</a></td>
           <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->motif|nl2br}</a></td>
           <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->rques|nl2br}</a></td>
           <td {$style}>

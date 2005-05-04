@@ -118,7 +118,7 @@ function printPack(op, form) {
         <td class="readonly">
           <input type="hidden" name="m" value="{$m}" />
           <input type="hidden" name="patSel" value="{$patSel->patient_id}" />
-          <input type="text" readonly="readonly" name="patNom" value="{$patSel->nom} {$patSel->prenom}" />
+          <input type="text" readonly="readonly" name="patNom" value="{$patSel->_view}" />
         </td>
         <td class="button">
           <input type="button" value="chercher" onclick="popPat()" />
@@ -317,14 +317,13 @@ function printPack(op, form) {
           <tr><th colspan="3" class="title">{$total1} compte-rendu(s) de consultation</th></tr>
           {foreach from=$listPlageConsult item=curr_plage}
           <tr>
-            <th class="category" colspan="3">
+            <th class="category" colspan="2">
               Dr. {$curr_plage->_ref_chir->_view} le {$curr_plage->date|date_format:"%a %d/%m/%y"} ({$curr_plage->total})
             </th>
           </tr>
           {foreach from=$curr_plage->_ref_consultations item=curr_consult}
           <tr>
-            <td>{$curr_consult->_ref_patient->nom}</td>
-            <td>{$curr_consult->_ref_patient->prenom}</td>
+            <td>{$curr_consult->_ref_patient->_view}</td>
             <td class="button">
               <form name="editCRCListFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
               <input type="hidden" name="m" value="{$m}" />
@@ -362,7 +361,7 @@ function printPack(op, form) {
       </td>
       <td style="background:transparent">
         <table class="form">
-          <tr><th colspan="3" class="title">{$total2} compte-rendu(s) opératoire(s)</th></tr>
+          <tr><th colspan="2" class="title">{$total2} compte-rendu(s) opératoire(s)</th></tr>
           {foreach from=$listPlageOp item=curr_plage}
           <tr>
             <th class="category" colspan="3">
@@ -371,8 +370,7 @@ function printPack(op, form) {
           </tr>
           {foreach from=$curr_plage->_ref_operations item=curr_op}
           <tr>
-            <td>{$curr_op->_ref_pat->nom}</td>
-            <td>{$curr_op->_ref_pat->prenom}</td>
+            <td>{$curr_op->_ref_pat->_view}</td>
             <td class="button">
               <form name="editCROListFrm{$curr_op->operation_id}" action="?m=dPplanningOp" method="POST">
               <input type="hidden" name="m" value="dPplanningOp" />
