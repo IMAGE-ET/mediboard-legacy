@@ -44,7 +44,7 @@ function popMed(type) {
   url += '&a=vw_medecins';
   url += '&dialog=1';
   url += '&type=' + type;
-  popup(600, 400, url, 'Medecin');
+  popup(700, 400, url, 'Medecin');
 }
 
 function setMed( key, nom, prenom, type ){

@@ -76,6 +76,11 @@ function setClose() {ldelim}
           <th>Prénom</th>
           <th>Adresse</th>
           <th>Ville</th>
+          <th>CP</th>
+          {if !$dialog}
+          <th>Telephone</th>
+          <th>Fax</th>
+          {/if}
         </tr>
 
         {foreach from=$medecins item=curr_medecin}
@@ -83,13 +88,17 @@ function setClose() {ldelim}
           {if $dialog}
           <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->nom}</a></td>
           <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->prenom}</a></td>
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
+          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->cp}</a></td>
           {else}
           <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->nom}</a></td>
           <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->prenom}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->cp}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->tel}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->fax}</a></td>
           {/if}
         </tr>
         {/foreach}
@@ -124,7 +133,11 @@ function setClose() {ldelim}
         
         <tr>
           <th>Adresse:</th>
-          <td {if $dialog} class="readonly" {/if}><input type="text" {if $dialog} readonly {/if} name="adresse" value="{$medecin->adresse}" /></td>
+          <td {if $dialog} class="readonly" {/if}>
+            <textarea {if $dialog} readonly {/if} name="adresse" />
+              {$medecin->adresse}
+            </textarea>
+          </td>
         </tr>
         
         <tr>
