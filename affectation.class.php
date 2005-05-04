@@ -50,6 +50,19 @@ class CAffectation extends CDpObject {
     }
   }
   
+  function delete() {
+	if (!$this->canDelete( $msg )) {
+		return $msg;
+	}
+	$sql = "DELETE FROM `affectation` WHERE `operation_id = '".$this->operation_id."'";
+	if (!db_exec( $sql )) {
+      return db_error();
+	} else {
+		return NULL;
+	}
+  
+  }
+  
   function store() {
     $msg = parent::store();
     // Cas de la date d'admission de l'intervention qui diffère
