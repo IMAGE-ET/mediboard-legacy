@@ -72,8 +72,7 @@ function setClose() {ldelim}
       
       <table class="tbl">
         <tr>
-          <th>Nom</th>
-          <th>Prénom</th>
+          <th>Nom - Prénom</th>
           <th>Adresse</th>
           <th>Ville</th>
           <th>CP</th>
@@ -86,14 +85,12 @@ function setClose() {ldelim}
         {foreach from=$medecins item=curr_medecin}
         <tr>
           {if $dialog}
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->nom}</a></td>
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->prenom}</a></td>
+          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->_view}</a></td>
           <td class="text"><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
           <td class="text"><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
           <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->cp}</a></td>
           {else}
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->nom}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->prenom}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->_view}</a></td>
           <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
           <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
           <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->cp}</a></td>
@@ -185,7 +182,7 @@ function setClose() {ldelim}
             {if $medecin->medecin_id}
             <input type="hidden" name="medecin_id" value="{$medecin->medecin_id}" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le médecin', '{$medecin->nom|escape:javascript} {$medecin->prenom|escape:javascript}')"/>
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le médecin', '{$medecin->_view|escape:javascript}')"/>
             {else}
             <input type="submit" value="Créer" />
             {/if}

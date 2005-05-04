@@ -75,7 +75,11 @@ class CPatient extends CDpObject {
     
     $this->nom = strtoupper($this->nom);
     $this->prenom = ucwords(strtolower($this->prenom));
-    $this->_view = "$this->nom $this->prenom";
+    if($this->sexe == "m")
+      $this->_view = "M. ";
+    else
+      $this->_view = "Mme ";
+    $this->_view .= "$this->nom $this->prenom";
     
     $this->_jour  = substr($this->naissance, 8, 2);
     $this->_mois  = substr($this->naissance, 5, 2);

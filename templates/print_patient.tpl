@@ -5,7 +5,7 @@
   
   <tr><th class="category" colspan="2">Informations sur le patient</th></tr>
   
-  <tr><th>Nom / Prenom: </th><td>{$patient->nom} {$patient->prenom}</td></tr>
+  <tr><th>Nom / Prenom: </th><td>{$patient->_view}</td></tr>
   <tr><th>Date de naissance / Sexe: </th><td>né(e) le {$patient->_jour}/{$patient->_mois}/{$patient->_annee}
   de sexe {if $patient->sexe == "m"} masculin {else} féminin {/if}</td></tr>
   <tr><th>Incapable majeur: </th><td>{if $patient->incapable_majeur == "n"} non {else} oui {/if}</td></tr>
@@ -19,20 +19,20 @@
   {/if}
   
   {if $patient->_ref_medecin_traitant}
-  <tr><th>Medecin traitant: </th><td>{$patient->_ref_medecin_traitant->nom} {$patient->_ref_medecin_traitant->prenom}</td></tr>
-  <tr><th></th><td>{$patient->_ref_medecin_traitant->adresse} - {$patient->_ref_medecin_traitant->cp} {$patient->_ref_medecin_traitant->ville}</td></tr>
+  <tr><th>Medecin traitant: </th><td>{$patient->_ref_medecin_traitant->_view}</td></tr>
+  <tr><th></th><td>{$patient->_ref_medecin_traitant->adresse|nl2br}<br />{$patient->_ref_medecin_traitant->cp} {$patient->_ref_medecin_traitant->ville}</td></tr>
   {/if}
   {if $patient->_ref_medecin1}
-  <tr><th>Medecin correspondant 1: </th><td>{$patient->_ref_medecin1->nom} {$patient->_ref_medecin1->prenom}</td></tr>
-  <tr><th></th><td>{$patient->_ref_medecin1->adresse} - {$patient->_ref_medecin1->cp} {$patient->_ref_medecin1->ville}</td></tr>
+  <tr><th>Medecin correspondant 1: </th><td>{$patient->_ref_medecin1->_view}</td></tr>
+  <tr><th></th><td>{$patient->_ref_medecin1->adresse|nl2br}<br />{$patient->_ref_medecin1->cp} {$patient->_ref_medecin1->ville}</td></tr>
   {/if}
   {if $patient->_ref_medecin2}
-  <tr><th>Medecin correspondant 2: </th><td>{$patient->_ref_medecin2->nom} {$patient->_ref_medecin2->prenom}</td></tr>
-  <tr><th></th><td>{$patient->_ref_medecin2->adresse} - {$patient->_ref_medecin2->cp} {$patient->_ref_medecin2->ville}</td></tr>
+  <tr><th>Medecin correspondant 2: </th><td>{$patient->_ref_medecin2->_view}</td></tr>
+  <tr><th></th><td>{$patient->_ref_medecin2->adresse|nl2br}<br />{$patient->_ref_medecin2->cp} {$patient->_ref_medecin2->ville}</td></tr>
   {/if}
   {if $patient->_ref_medecin3}
-  <tr><th>Medecin correspondant 3: </th><td>{$patient->_ref_medecin3->nom} {$patient->_ref_medecin3->prenom}</td></tr>
-  <tr><th></th><td>{$patient->_ref_medecin3->adresse} - {$patient->_ref_medecin3->cp} {$patient->_ref_medecin3->ville}</td></tr>
+  <tr><th>Medecin correspondant 3: </th><td>{$patient->_ref_medecin3->_view}</td></tr>
+  <tr><th></th><td>{$patient->_ref_medecin3->adresse|nl2br}<br />{$patient->_ref_medecin3->cp} {$patient->_ref_medecin3->ville}</td></tr>
   {/if}
   
   <tr><th class="category" colspan="2">Antécédents chirurgicaux</th></tr>

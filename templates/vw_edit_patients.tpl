@@ -157,7 +157,7 @@ function setMed( key, nom, prenom, type ){
           <input type="hidden" name="medecin_traitant" value="{$patient->_ref_medecin_traitant->medecin_id}" />
           <label for="editFrm_medecin_traitant">Medecin traitant:</label>
         </th>
-        <td class="readonly"><input type="text" name="_medecin_traitant_name" size="30" value="{if ($patient->_ref_medecin_traitant)}Dr. {$patient->_ref_medecin_traitant->nom} {$patient->_ref_medecin_traitant->prenom}{/if}" readonly="readonly" /></td>
+        <td class="readonly"><input type="text" name="_medecin_traitant_name" size="30" value="{if ($patient->_ref_medecin_traitant)}Dr. {$patient->_ref_medecin_traitant->_view}{/if}" readonly="readonly" /></td>
         <td class="button"><input tabindex="26" type="button" value="choisir un medecin" onclick="popMed('_traitant')"></td>
       </tr>
       
@@ -168,7 +168,7 @@ function setMed( key, nom, prenom, type ){
           <input type="hidden" name="medecin1" value="{$patient->_ref_medecin1->medecin_id}" />
           <label for="editFrm_medecin1">Medecin correspondant 1:</label>
         </th>
-        <td class="readonly"><input type="text" name="_medecin1_name" size="30" value="{if ($patient->_ref_medecin1)}Dr. {$patient->_ref_medecin1->nom} {$patient->_ref_medecin1->prenom}{/if}" readonly="readonly" /></td>
+        <td class="readonly"><input type="text" name="_medecin1_name" size="30" value="{if ($patient->_ref_medecin1)}Dr. {$patient->_ref_medecin1->_view}{/if}" readonly="readonly" /></td>
         <td class="button"><input tabindex="27" type="button" value="choisir un medecin" onclick="popMed('1')"></td>
       </tr>
       
@@ -179,7 +179,7 @@ function setMed( key, nom, prenom, type ){
           <input type="hidden" name="medecin2" value="{$patient->_ref_medecin2->medecin_id}" />
           <label for="editFrm_medecin2">Medecin correspondant 2:</label>
         </th>
-        <td class="readonly"><input type="text" name="_medecin2_name" size="30" value="{if ($patient->_ref_medecin2)}Dr. {$patient->_ref_medecin2->nom} {$patient->_ref_medecin2->prenom}{/if}" readonly="readonly" /></td>
+        <td class="readonly"><input type="text" name="_medecin2_name" size="30" value="{if ($patient->_ref_medecin2)}Dr. {$patient->_ref_medecin2->_view}{/if}" readonly="readonly" /></td>
         <td class="button"><input tabindex="28" type="button" value="choisir un medecin" onclick="popMed('2')"></td>
       </tr>
       
@@ -196,7 +196,7 @@ function setMed( key, nom, prenom, type ){
           <input type="hidden" name="medecin3" value="{$patient->_ref_medecin3->medecin_id}" />
           <label for="editFrm_medecin3">Medecin correspondant 3:</label>
         </th>
-        <td class="readonly"><input type="text" name="_medecin3_name" size="30" value="{if ($patient->_ref_medecin3)}Dr. {$patient->_ref_medecin3->nom} {$patient->_ref_medecin3->prenom}{/if}" readonly="readonly" /></td>
+        <td class="readonly"><input type="text" name="_medecin3_name" size="30" value="{if ($patient->_ref_medecin3)}Dr. {$patient->_ref_medecin3->_view}{/if}" readonly="readonly" /></td>
         <td class="button"><input tabindex="29" type="button" value="choisir un medecin" onclick="popMed('3')"></td>
       </tr>
       
@@ -224,7 +224,7 @@ function setMed( key, nom, prenom, type ){
           {if $patient->patient_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Valider" />
-            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le patient', '{$patient->nom|escape:javascript} {$patient->prenom|escape:javascript}')"/>
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le patient', '{$patient->_view|escape:javascript}')"/>
           {else}
             <input tabindex="31" type="submit" value="Créer" />
           {/if}
