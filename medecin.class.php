@@ -117,12 +117,12 @@ class CMedecin extends CDpObject {
   
   function getExactSiblings() {
   	$where = array();
-  	$where["medecin_id"] = "!= '$this->medecin_id'";
-  	$where["nom"] = "= '$this->nom'";
-  	$where["prenom"] = "= '$this->prenom'";
-  	$where["adresse"] = "= '$this->adresse'";
-  	$where["cp"] = "= '$this->cp'";
-  	$where["ville"] = "= '$this->ville'";
+  	$where["medecin_id"] = "!= '".addslashes($this->medecin_id)."'";
+  	$where["nom"] = "= '".addslashes($this->nom)."'";
+  	$where["prenom"] = "= '".addslashes($this->prenom)."'";
+  	$where["adresse"] = "= '".addslashes($this->adresse)."'";
+  	$where["cp"] = "= '".addslashes($this->cp)."'";
+  	$where["ville"] = "= '".addslashes($this->ville)."'";
   	$siblings = new CMedecin;
   	$siblings = $siblings->loadList($where);
   	return $siblings;
