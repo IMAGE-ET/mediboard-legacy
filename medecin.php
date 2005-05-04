@@ -200,6 +200,12 @@ if (!$str) {
           $node =& getElement($node, "td");
   
           $adresses = array();
+          // One-line adress
+          if ($node->content) {
+            $adresses[] = $node->content;
+					}
+          
+          // Multi-lines adress
           $nodes = getAllElements($node, "");
           foreach ($nodes as $discNode) {
             $adresses[] = $discNode->content;
@@ -256,9 +262,13 @@ if (!$str) {
   $chrono->stop();
   
   $stores = 0;
+  $sibling_errors = 0;
   
   foreach ($medecins as $medecin) {
-    if (!$medecin->store()) {
+    if (count($medecin->getExactSiblings())) {
+      $sibling_errors++;
+    } 
+    elseif (!$medecin->store()) {
       $stores++;
     }
     
@@ -278,6 +288,7 @@ if (!$str) {
   $smarty->assign("chrono", $chrono);
   $smarty->assign("parse_errors", $parse_errors);
   $smarty->assign("stores", $stores);
+  $smarty->assign("sibling_errors", $sibling_errors);
   
   $smarty->display("medecin.tpl");
 }

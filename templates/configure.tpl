@@ -38,12 +38,14 @@ function addHeader(tr, content) {
 nb_medecins_total = 0;
 time_total = 0.0;
 parse_errors_total = 0;
+sibling_errors_total = 0;
 stores_total = 0;
 
-function endStep(file, nb_medecins, time, parse_errors, stores) {
+function endStep(file, nb_medecins, time, parse_errors, sibling_errors, stores) {
   nb_medecins_total += nb_medecins;
   time_total += time;
   parse_errors_total += parse_errors;
+  sibling_errors_total += sibling_errors;
   stores_total += stores;
 
   table = document.getElementById("process");
@@ -56,6 +58,7 @@ function endStep(file, nb_medecins, time, parse_errors, stores) {
   addCell(tr, time + ' seconds');
   addCell(tr, nb_medecins);
   addCell(tr, parse_errors);
+  addCell(tr, sibling_errors);
   addCell(tr, stores);
   
   if (is_running) {
@@ -96,6 +99,7 @@ function endProcess() {
   addCell(tr, time_total + ' seconds');
   addCell(tr, nb_medecins_total);
   addCell(tr, parse_errors_total);
+  addCell(tr, sibling_errors_total);
   addCell(tr, stores_total);
 }
 
@@ -122,6 +126,7 @@ function pageMain() {
       <th>Temps pris</th>
       <th>Nombre de médecins importés</th>
       <th>Erreurs de parsing</th>
+      <th>Erreurs de doublons</th>
       <th>Sauvegardes réussies</th>
     </tr>
   </thead>
@@ -129,7 +134,7 @@ function pageMain() {
   </tbody>
   <tfoot>
     <tr id="running_step">
-      <td colspan="5">Etape <span id="step_number"/> en cours...
+      <td colspan="10">Etape <span id="step_number"/> en cours...
     <tr>
   </tfoot>
 </table>

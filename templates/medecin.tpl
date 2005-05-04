@@ -20,6 +20,7 @@ function pageMain() {
     {$medecins|@count}, 
     {$chrono->total|string_format:"%.3f"}, 
     {$parse_errors}, 
+    {$sibling_errors}, 
     {$stores}
   );
   {literal}
