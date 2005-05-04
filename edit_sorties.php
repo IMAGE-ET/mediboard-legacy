@@ -17,6 +17,7 @@ if (!$canRead) {
 
 // Type d'affichage
 $vue = mbGetValueFromGetOrSession("vue", 0);
+$typeOrder = mbGetValueFromGetOrSession("typeOrder", 1);
 
 // Récupération de la journée à afficher
 $year  = mbGetValueFromGetOrSession("year" , date("Y"));
@@ -34,12 +35,18 @@ $limit1 = $cday." 00:00:00";
 $limit2 = $cday." 23:59:59";
 $ljoin["operations"] = "operations.operation_id = affectation.operation_id";
 $ljoin["patients"] = "operations.pat_id = patients.patient_id";
+$ljoin["lit"] = "lit.lit_id = affectation.lit_id";
+$ljoin["chambre"] = "chambre.chambre_id = lit.chambre_id";
+$ljoin["service"] = "service.service_id = chambre.service_id";
 $where["sortie"] = "BETWEEN '$limit1' AND '$limit2'";
 $where["type_adm"] = "= 'comp'";
 if($vue) {
   $where["confirme"] = "= 0";
 }
-$order = "patients.nom, patients.prenom";
+if($typeOrder)
+  $order = "service.nom, patients.nom, patients.prenom";
+else
+  $order = "patients.nom, patients.prenom";
 $list = $list->loadList($where, $order, null, null, $ljoin);
 foreach($list as $key => $value) {
   $list[$key]->loadRefsFwd();

@@ -32,9 +32,9 @@
 <table class="tbl">
   <tr>
     <th>Confirmation</th>
-    <th>Patient</th>
+    <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;typeOrder=0">Patient</a></th>
     <th>Praticien</th>
-    <th>Service</th>
+    <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;typeOrder=1">Service</a></th>
     <th>Chambre</th>
     <th>lit</th>
     <th>Sortie prévue</th>
