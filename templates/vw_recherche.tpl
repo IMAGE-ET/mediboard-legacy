@@ -42,10 +42,6 @@ function popPlanning() {
 {/literal}
 </script>
 
-<script type="text/javascript" src="lib/jscalendar/calendar.js"></script>
-<script type="text/javascript" src="lib/jscalendar/lang/calendar-fr.js"></script>
-<script type="text/javascript" src="lib/jscalendar/calendar-setup.js"></script>
-
 <table class="main">
   <tr>
     {if $typeVue}

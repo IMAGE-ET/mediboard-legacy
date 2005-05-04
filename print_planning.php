@@ -15,8 +15,8 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
-$deb = dPgetParam( $_GET, 'deb', mbDateTime("+0 day"));
-$fin = dPgetParam( $_GET, 'fin', mbDateTime("+1 day"));
+$deb = dPgetParam( $_GET, 'deb', date("Y-m-d")." 06:00:00");
+$fin = dPgetParam( $_GET, 'fin', date("Y-m-d")." 21:00:00");
 $service = dPgetParam( $_GET, 'service', 0);
 $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
@@ -99,10 +99,16 @@ foreach($listDays as $key => $value) {
       $adm->load($value3["operation_id"]);
       $adm->loadRefs();
       $adm->_first_aff = $adm->getFirstAffectation();
+      $adm->_last_aff = $adm->getLastAffectation();
       if($adm->_first_aff->affectation_id) {
         $adm->_first_aff->loadRefsFwd();
         $adm->_first_aff->_ref_lit->loadRefsFwd();
         $adm->_first_aff->_ref_lit->_ref_chambre->loadRefsFwd();
+      }
+      if($adm->_last_aff->affectation_id) {
+        $adm->_last_aff->loadRefsFwd();
+        $adm->_last_aff->_ref_lit->loadRefsFwd();
+        $adm->_last_aff->_ref_lit->_ref_chambre->loadRefsFwd();
       }
       if(!$service || ($adm->_first_aff->_ref_lit->_ref_chambre->_ref_service->service_id == $service)) {
         $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $adm;

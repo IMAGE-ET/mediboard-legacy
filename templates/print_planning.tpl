@@ -18,8 +18,8 @@ function printAdmission(id) {
   <tr>
     <th>
       <a href="javascript:window.print()">
-        Planning du {$deb|date_format:"%a %d %b %Y"}
-        au {$fin|date_format:"%a %d %b %Y"}
+        Planning du {$deb|date_format:"%A %d %b %Y à %Hh%M"}
+        au {$fin|date_format:"%A %d %B %Y à %Hh%M"}
       </a>
     </th>
   </tr>
@@ -97,8 +97,8 @@ function printAdmission(id) {
   <tr>
     <th>
       Total : {$total} admission(s) pour le planning 
-      Planning du {$deb|date_format:"%a %d %b %Y"}
-      au {$fin|date_format:"%a %d %b %Y"}
+      Planning du {$deb|date_format:"%A %d %B %Y à %Hh%M"}
+      au {$fin|date_format:"%A %d %B %Y à %Hh%M"}
     </th>
   </tr>
 </table>

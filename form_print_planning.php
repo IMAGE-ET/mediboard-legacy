@@ -30,8 +30,8 @@ $listServ = $listServ->loadlist();
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('today', mbDateTime("+0 day"));
-$smarty->assign('tomorrow', mbDateTime("+1 day"));
+$smarty->assign('today', date("Y-m-d")." 06:00:00");
+$smarty->assign('tomorrow', date("Y-m-d")." 21:00:00");
 
 $smarty->assign('listPrat', $listPrat);
 $smarty->assign('listSpec', $listSpec);
