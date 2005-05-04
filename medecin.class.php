@@ -27,7 +27,7 @@ class CMedecin extends CDpObject {
 	var $tel = null;
 	var $fax = null;
 	var $email = null;
-  var $disciplines = null;
+    var $disciplines = null;
 
   // Form fields
 	var $_tel1 = null;
@@ -113,6 +113,19 @@ class CMedecin extends CDpObject {
     // Backward references
     $obj = new CPatient();
     $this->_ref_patients = $obj->loadList("medecin_traitant = '$this->medecin_id'");
+  }
+  
+  function getExactSiblings() {
+  	$where = array();
+  	$where["medecins_id"] = "!= '$this->medecin_id'";
+  	$where["nom"] = "= '$this->nom'";
+  	$where["prenom"] = "= '$this->prenom'";
+  	$where["adresse"] = "= '$this->adresse'";
+  	$where["cp"] = "= '$this->cp'";
+  	$where["ville"] = "= '$this->ville'";
+  	$siblings = new CMedecin;
+  	$siblings = $siblings->loadList($where);
+  	return $siblings;
   }
 
   function getSiblings() {
