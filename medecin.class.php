@@ -120,9 +120,18 @@ class CMedecin extends CDpObject {
   	$where["medecin_id"] = "!= '".addslashes($this->medecin_id)."'";
   	$where["nom"] = "= '".addslashes($this->nom)."'";
   	$where["prenom"] = "= '".addslashes($this->prenom)."'";
-  	$where["adresse"] = "= '".addslashes($this->adresse)."'";
-  	$where["cp"] = "= '".addslashes($this->cp)."'";
-  	$where["ville"] = "= '".addslashes($this->ville)."'";
+  	if($this->adresse == null)
+  	  $where["adresse"] = "IS NULL";
+  	else
+  	  $where["adresse"] = "= '".addslashes($this->adresse)."'";
+  	if($this->cp == null)
+      $where["cp"] = "IS NULL";
+  	else
+  	  $where["cp"] = "= '".addslashes($this->cp)."'";
+  	if($this->ville == null)
+  	  $where["ville"] = "IS NULL";
+  	else
+  	  $where["ville"] = "= '".addslashes($this->ville)."'";
   	$siblings = new CMedecin;
   	$siblings = $siblings->loadList($where);
   	return $siblings;
