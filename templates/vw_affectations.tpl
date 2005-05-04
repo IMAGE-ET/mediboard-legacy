@@ -175,6 +175,10 @@ function popPlanning() {
 {/literal} 
 </script>
 
+<script type="text/javascript" src="lib/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="lib/jscalendar/lang/calendar-fr.js"></script>
+<script type="text/javascript" src="lib/jscalendar/calendar-setup.js"></script>
+
 <table class="main">
 
 <tr>
@@ -274,16 +278,18 @@ function popPlanning() {
               
               {if $curr_affectation->_ref_operation->type_adm == "ambu"}
               <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
+              {elseif $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
+              <img src="modules/{$m}/images/O.png" alt="O" title="Sortant demain">
+              {elseif $curr_affectation->sortie|date_format:"%Y-%m-%d" == $date}
+              <img src="modules/{$m}/images/Oo.png" alt="O" title="Sortant aujourd'hui">
+              {/if}
+              {if $curr_affectation->_ref_operation->type_adm == "ambu"}
               <em>{$curr_affectation->_ref_operation->_ref_pat->_view}</em>
               {else}
-              {if $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
-              <img src="modules/{$m}/images/O.png" alt="O" title="Sortant demain">
-              {/if}
               <strong>{$curr_affectation->_ref_operation->_ref_pat->_view}</strong>
               {/if}
-              
               {if $curr_affectation->_ref_operation->admis == "n"}
-              {$curr_affectation->sortie|date_format:"%Hh%M"}
+              {$curr_affectation->entree|date_format:"%Hh%M"}
               {/if}
             </font>
             </td>
@@ -423,8 +429,14 @@ function popPlanning() {
           {/if}
           {if $curr_affectation->_ref_operation->chambre == "o"}
           <tr class="dates">
-            <td class="text" colspan="2">
+            <td class="text" style="background-color: #f55;" colspan="2">
               <strong>Chambre seule</strong>
+            </td>
+          </tr>
+          {else}
+          <tr class="dates">
+            <td class="text" colspan="2">
+              <strong>Chambre double</strong>
             </td>
           </tr>
           {/if}
@@ -571,8 +583,14 @@ function popPlanning() {
       {/if}
       {if $curr_operation->chambre == "o"}
       <tr>
+        <td class="date" style="background-color: #f55;" colspan="2">
+          <strong>Chambre seule</strong>
+        </td>
+      </tr>
+      {else}
+      <tr>
         <td class="date" colspan="2">
-          Chambre seule
+          <strong>Chambre double</strong>
         </td>
       </tr>
       {/if}
