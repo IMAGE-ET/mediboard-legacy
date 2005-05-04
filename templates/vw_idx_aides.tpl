@@ -160,7 +160,7 @@ function checkForm() {
     <table class="tbl">
     
     <tr>
-      <th colspan="10"><strong>Liste des aides à la saisie</strong></th>
+      <th colspan="6"><strong>Liste des aides à la saisie</strong></th>
     </tr>
     
     <tr>
