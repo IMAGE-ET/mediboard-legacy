@@ -69,12 +69,17 @@ class CSetupdPpatients {
           "\nADD specialite TEXT AFTER prenom ;";
 	    db_exec( $sql ); db_error();
 
-    case "0.21":
-      $sql = "ALTER TABLE medecin " .
+        case "0.21":
+            $sql = "ALTER TABLE medecin " .
           "\nADD disciplines TEXT AFTER prenom ;";
-      db_exec( $sql ); db_error();
+        db_exec( $sql ); db_error();
 
 		case "0.22":
+		    $sql = "ALTER TABLE `medecin`" .
+		  "\nCHANGE `adresse` `adresse` TEXT DEFAULT NULL ;"
+        db_exec( $sql ); db_error();
+        
+        case "0.23":
 			return true;
 		}
 
