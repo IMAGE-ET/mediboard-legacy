@@ -81,7 +81,7 @@ function printAdmission(id) {
           <td class="text">{$curr_adm->_ext_code_ccam->libelleLong|truncate:80:"...":false} <i>({$curr_adm->CCAM_code})</i></td>
           <td>{$curr_adm->cote|truncate:1:""|capitalize}</td>
           <td><a href="#" onclick="printAdmission({$curr_adm->operation_id})">
-            {$curr_adm->_ref_pat->nom} {$curr_adm->_ref_pat->prenom}</a></td>
+            {$curr_adm->_ref_pat->_view}</a></td>
           <td><a href="#" onclick="printAdmission({$curr_adm->operation_id})">
             {$curr_adm->_ref_pat->_naissance} ({$curr_adm->_ref_pat->_age})</a></td>
           <td class="text"><a href="#" onclick="printAdmission({$curr_adm->operation_id})">
