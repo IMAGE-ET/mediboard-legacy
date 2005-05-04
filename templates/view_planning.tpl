@@ -40,8 +40,7 @@ function printAdmission(id) {
           <th>Hospi</th>
 		  <th>Remarques</th>
 		  <th>Materiel</th>
-		  <th>Nom</th>
-		  <th>Prénom</th>
+		  <th>Nom - Prénom</th>
 		  <th>Age</th>
 		  <th>Chambre</th>
 		</tr>
@@ -57,8 +56,7 @@ function printAdmission(id) {
           <td>{$curr_op->type_adm|truncate:1:""|capitalize}</td>
 		  <td class="text">{$curr_op->rques|nl2br}</td>
 		  <td class="text">{if $curr_op->commande_mat == 'n' && $curr_op->materiel != ''}<em>Materiel manquant:</em>{/if}{$curr_op->materiel|nl2br}</td>
-		  <td><a href="#" onclick="printAdmission({$curr_op->operation_id})">{$curr_op->_ref_pat->nom}</a></td>
-		  <td><a href="#" onclick="printAdmission({$curr_op->operation_id})">{$curr_op->_ref_pat->prenom}</a></td>
+		  <td><a href="#" onclick="printAdmission({$curr_op->operation_id})">{$curr_op->_ref_pat->_view}</a></td>
 		  <td><a href="#" onclick="printAdmission({$curr_op->operation_id})">{$curr_op->_ref_pat->_age} ans</a></td>
 		  <td class="text">
 		    {if $curr_op->_first_affectation}
