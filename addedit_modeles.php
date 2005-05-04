@@ -50,6 +50,7 @@ $compte_rendu->load($compte_rendu_id);
 
 // Gestion du modèle
 if($compte_rendu->compte_rendu_id) {
+  $prat_id = $compte_rendu->chir_id;
   $templateManager = new CTemplateManager;
   $templateManager->valueMode = false;
   $templateManager->loadLists($compte_rendu->chir_id, $compte_rendu->compte_rendu_id);
