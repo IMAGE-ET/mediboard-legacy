@@ -71,47 +71,44 @@ foreach($listDays as $key => $value) {
   		" ORDER BY chir_id";
   $listDays[$key]["listChirs"] = db_loadlist($sql);
   foreach($listDays[$key]["listChirs"] as $key2 => $value2) {
-    $sql = "SELECT operations.operation_id" .
-  		  " FROM operations" .
-  		  " LEFT JOIN patients" .
-  		  " ON operations.pat_id = patients.patient_id" .
-  		  " WHERE operations.date_adm = '". $value["date_adm"] ."'" .
-        " AND $whereImploded" .
-        " AND operations.annulee = 0" .
-  		  " AND operations.chir_id = '". $value2["chir_id"] ."'";
+  	$listAdm = new COperation;
+  	$ljoin = array();
+  	$ljoin["patients"] = "operations.pat_id = patients.patient_id";
+  	$where = array();
+  	$where["annulee"] = "= 0";
+  	$where["chir_id"] = "= '". $value2["chir_id"] ."'";
+  	$where["date_adm"] = "= '".$value["date_adm"]."'";
     if($type)
-      $sql .= " AND operations.type_adm = '$type'";
+      $where["type_adm"] = "'$type'";
     if($conv) {
       if($conv == "o")
-        $sql .= " AND (operations.convalescence IS NOT NULL AND operations.convalescence != '')";
+        $where[] = "(operations.convalescence IS NOT NULL AND operations.convalescence != '')";
       else
-        $sql .= " AND (operations.convalescence IS NULL OR operations.convalescence = '')";
+        $where[] = "(operations.convalescence IS NULL OR operations.convalescence = '')";
     }
+  	$where[] = $whereImploded;
     if($ordre == 'heure')
-      $sql .= " ORDER BY operations.time_adm, operations.chir_id, operations.time_operation";
+      $order = "operations.time_adm, operations.chir_id, operations.time_operation";
     else
-      $sql .= " ORDER BY patients.nom, patients.prenom, operations.chir_id, operations.time_adm";
-    $result = db_loadlist($sql);
+      $order = "patients.nom, patients.prenom, operations.chir_id, operations.time_adm";
+  	$listAdm = $listAdm->loadList($where, $order, null, null, $ljoin);
     $listDays[$key]["listChirs"][$key2]["admissions"] = array();
-    foreach($result as $key3 => $value3) {
-  	  $adm = array();
-      $adm = new COperation();
-      $adm->load($value3["operation_id"]);
-      $adm->loadRefs();
-      $adm->_first_aff = $adm->getFirstAffectation();
-      $adm->_last_aff = $adm->getLastAffectation();
-      if($adm->_first_aff->affectation_id) {
-        $adm->_first_aff->loadRefsFwd();
-        $adm->_first_aff->_ref_lit->loadRefsFwd();
-        $adm->_first_aff->_ref_lit->_ref_chambre->loadRefsFwd();
+    foreach($listAdm as $key3 => $value3) {
+      $listAdm[$key3]->loadRefs();
+      $listAdm[$key3]->_first_aff = $listAdm[$key3]->getFirstAffectation();
+      $listAdm[$key3]->_last_aff = $listAdm[$key3]->getLastAffectation();
+      if($listAdm[$key3]->_first_aff->affectation_id) {
+        $listAdm[$key3]->_first_aff->loadRefsFwd();
+        $listAdm[$key3]->_first_aff->_ref_lit->loadRefsFwd();
+        $listAdm[$key3]->_first_aff->_ref_lit->_ref_chambre->loadRefsFwd();
       }
-      if($adm->_last_aff->affectation_id) {
-        $adm->_last_aff->loadRefsFwd();
-        $adm->_last_aff->_ref_lit->loadRefsFwd();
-        $adm->_last_aff->_ref_lit->_ref_chambre->loadRefsFwd();
+      if($listAdm[$key3]->_last_aff->affectation_id) {
+        $listAdm[$key3]->_last_aff->loadRefsFwd();
+        $listAdm[$key3]->_last_aff->_ref_lit->loadRefsFwd();
+        $listAdm[$key3]->_last_aff->_ref_lit->_ref_chambre->loadRefsFwd();
       }
-      if(!$service || ($adm->_first_aff->_ref_lit->_ref_chambre->_ref_service->service_id == $service)) {
-        $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $adm;
+      if(!$service || ($listAdm[$key3]->_first_aff->_ref_lit->_ref_chambre->_ref_service->service_id == $service)) {
+        $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $listAdm[$key3];
       }
     }
     $total += count($listDays[$key]["listChirs"][$key2]["admissions"]);
@@ -121,6 +118,8 @@ foreach($listDays as $key => $value) {
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
+
+$smarty->debugging = false;
 
 $smarty->assign('deb', $deb);
 $smarty->assign('fin', $fin);
