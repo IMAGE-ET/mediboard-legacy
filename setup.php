@@ -76,7 +76,7 @@ class CSetupdPpatients {
 
 		case "0.22":
 		    $sql = "ALTER TABLE `medecin`" .
-		  "\nCHANGE `adresse` `adresse` TEXT DEFAULT NULL ;"
+		  "\nCHANGE `adresse` `adresse` TEXT DEFAULT NULL ;";
         db_exec( $sql ); db_error();
         
         case "0.23":
