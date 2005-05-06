@@ -117,10 +117,14 @@ class CMediusers extends CDpObject {
       $this->_shortview       = "";
       $arrayLastName = explode(" ", $user->user_last_name);
       $arrayFirstName = explode("-", $user->user_first_name);
-      foreach($arrayFirstName as $key => $value)
-      	$this->_shortview .=  strtoupper($value[0]);
-      foreach($arrayLastName as $key => $value)
-      	$this->_shortview .=  strtoupper($value[0]);
+      foreach($arrayFirstName as $key => $value) {
+      	if($value != '')
+      	  $this->_shortview .=  strtoupper($value[0]);
+      }
+      foreach($arrayLastName as $key => $value) {
+      	if($value != '')
+      	  $this->_shortview .=  strtoupper($value[0]);
+      }
     }
   }
 
