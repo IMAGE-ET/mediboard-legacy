@@ -190,6 +190,8 @@ if (!$str) {
             $medecin->disciplines = implode($disciplines, "\n");
           } 
   
+          // Ajouter les disciplines complémentaires...
+  
           break;
         case 2:
           // /td/table/tr[2]/td
