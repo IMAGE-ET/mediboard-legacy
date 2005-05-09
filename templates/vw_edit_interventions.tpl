@@ -33,13 +33,13 @@
 			<br />
             Côté : {$curr_op->cote}
             <br />
-            <form name="editFrm{$curr_op.id}" action="index.php" method="get">
+            <form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_order_op" />
             <input type="hidden" name="cmd" value="setanesth" />
-            <input type="hidden" name="id" value="{$curr_op.id}" />
+            <input type="hidden" name="id" value="{$curr_op->operation_id}" />
             <select name="type">
-              <option value="NULL">-- Anesthésie</option>
+              <option value="NULL">&mdash; Anesthésie &mdash;</option>
               {foreach from=$anesth item=curr_anesth}
               <option {if $curr_op->_lu_type_anesth == $curr_anesth} selected="selected" {/if}>{$curr_anesth}</option>
               {/foreach}
@@ -108,13 +108,13 @@
 			<br />
             Côté : {$curr_op->cote}
             <br />
-            <form name="editFrm{$curr_op.id}" action="index.php" method="get">
+            <form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_order_op" />
             <input type="hidden" name="cmd" value="setanesth" />
             <input type="hidden" name="id" value="{$curr_op->operation_id}" />
             <select name="type">
-              <option value="NULL">-- Anesthésie</option>
+              <option value="NULL">&mdash; Anesthésie &mdash;</option>
               {foreach from=$anesth item=curr_anesth}
               <option {if $curr_op->_lu_type_anesth == $curr_anesth} selected="selected" {/if}>{$curr_anesth}</option>
               {/foreach}
