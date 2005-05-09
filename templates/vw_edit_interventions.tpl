@@ -48,7 +48,7 @@
             </form>
 		  </td>
 		  <td>
-		    {if $curr_op.annulee}
+		    {if $curr_op->annulee}
 		    <img src="./modules/{$m}/images/cross.png" width="12" height="12" alt="annulée" border="0" />
 		    {else}
 		    <a href="index.php?m={$m}&a=do_order_op&cmd=insert&id={$curr_op->operation_id}">
@@ -71,7 +71,7 @@
 		<tr>
 		  <td width="50%">
 		    <a name="{$curr_op->operation_id}">
-			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
+			<form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_order_op" />
             <input type="hidden" name="cmd" value="sethour" />
