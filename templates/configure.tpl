@@ -72,7 +72,7 @@ var step = 1;
 function startStep() {
   setRunning(true);
 
-  url = "?m=dpPatients&a=medecin&dialog=1";
+  url = "?m=dPpatients&a=medecin&dialog=1";
   url += "&step=" + step;
   popup(400, 100, url, 'import');
 }
