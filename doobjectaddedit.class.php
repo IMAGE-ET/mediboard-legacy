@@ -56,7 +56,7 @@ class CDoObjectAddEdit {
     }
     
     if ($msg = $this->_obj->delete()) {
-      if ($this->$this->redirectError) {
+      if ($this->redirectError) {
         $AppUI->setMsg( $msg, UI_MSG_ERROR );
         $AppUI->redirect($this->redirectError);
       }
