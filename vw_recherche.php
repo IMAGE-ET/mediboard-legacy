@@ -27,13 +27,22 @@ $typeVue = mbGetValueFromGetOrSession("typeVue", 0);
 $selPrat = mbGetValueFromGetOrSession("selPrat", 0);
 
 $recMonth = $month + 1;
-if(sizeof($recMonth) == 1)
+if(strlen($recMonth) == 1)
   $recMonth = "0".$recMonth;
+$recDay = $day;
+if(strlen($recDay) == 1)
+  $recDay = "0".$recDay;
+$recHour = $hour;
+if(strlen($recHour) == 1)
+  $recHour = "0".$recHour;
+$recMin = $min;
+if(strlen($recMin) == 1)
+  $recMin = "0".$recMin;
 
 if($typeVue)
-  $date = $year."-".($recMonth)."-".$day;
+  $date = $year."-".$recMonth."-".$recDay;
 else
-  $date = $year."-".($recMonth)."-".$day." ".$hour.":".$min.":00";
+  $date = $year."-".$recMonth."-".$recDay." ".$recHour.":".$recMin.":00";
 
 // Liste des chirurgiens
 $listPrat = new CMediusers();
