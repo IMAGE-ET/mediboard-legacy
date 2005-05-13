@@ -34,6 +34,7 @@ class CChambre extends CDpObject {
   var $_ecart_age = null;
   var $_genres_melanges = null;
   var $_chambre_seule = null;
+  var $_chambre_double = null;
   var $_conflits_chirurgiens = null;
   var $_conflits_pathologies = null;
 
@@ -81,6 +82,7 @@ class CChambre extends CDpObject {
     $listAff = array();
     
     $this->_chambre_seule = 0;
+    $this->_chambre_double = 0;
     $this->_conflits_pathologies = 0;
     $this->_ecart_age = 0;
     $this->_genres_melanges = false;
@@ -95,7 +97,7 @@ class CChambre extends CDpObject {
 
       // Lits dispo
       if (count($lit->_ref_affectations)) {
-				$this->_nb_lits_dispo--;
+        $this->_nb_lits_dispo--;
       }
       
       // Liste des affectations
@@ -110,6 +112,8 @@ class CChambre extends CDpObject {
       assert($patient1);
       $chirurgien1 =& $operation1->_ref_chir;
       assert($chirurgien1);
+      if((count($this->_ref_lits) == 1) && $operation1->chambre == "n")
+        $this->_chambre_double++;         
       
       foreach($listAff as $affectation2) {
       	$flag = $affectation1->affectation_id != $affectation2->affectation_id;

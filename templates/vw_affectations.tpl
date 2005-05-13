@@ -235,6 +235,10 @@ function popPlanning() {
               {if $curr_chambre->_chambre_seule}
               <img src="modules/{$m}/images/seul.png" alt="warning" title="Chambre seule obligatoire">
               {/if}
+              
+              {if $curr_chambre->_chambre_double}
+              <img src="modules/{$m}/images/double.png" alt="warning" title="Chambre double possible">
+              {/if}
 
               {if $curr_chambre->_conflits_chirurgiens}
               <img src="modules/{$m}/images/prat.png" alt="warning" title="{$curr_chambre->_conflits_chirurgiens} Conflit(s) de praticiens">
@@ -275,9 +279,17 @@ function popPlanning() {
               {if $curr_affectation->_ref_operation->type_adm == "ambu"}
               <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
               {elseif $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
-              <img src="modules/{$m}/images/O.png" alt="O" title="Sortant demain">
+                {if $curr_affectation->_ref_next->affectation_id}
+                <img src="modules/{$m}/images/OC.png" alt="OC" title="Sortant demain">
+                {else}
+                <img src="modules/{$m}/images/O.png" alt="O" title="Sortant demain">
+                {/if}
               {elseif $curr_affectation->sortie|date_format:"%Y-%m-%d" == $date}
-              <img src="modules/{$m}/images/Oo.png" alt="O" title="Sortant aujourd'hui">
+                {if $curr_affectation->_ref_next->affectation_id}
+                <img src="modules/{$m}/images/OoC.png" alt="OoC" title="Sortant aujourd'hui">
+                {else}
+                <img src="modules/{$m}/images/Oo.png" alt="Oo" title="Sortant aujourd'hui">
+                {/if}
               {/if}
               {if $curr_affectation->_ref_operation->type_adm == "ambu"}
               <em>{$curr_affectation->_ref_operation->_ref_pat->_view}</em>
@@ -509,7 +521,7 @@ function popPlanning() {
           {/if}
         </td>
         <td class="patient" onclick="flipOperation({$curr_operation->operation_id})">
-          <strong>{$curr_operation->_ref_pat->_view}</strong>
+          <strong><a name="operation{$curr_operation->operation_id}">{$curr_operation->_ref_pat->_view}</a></strong>
           {if $curr_operation->type_adm == "comp"}
           ({$curr_operation->duree_hospi}j)
           {else}
