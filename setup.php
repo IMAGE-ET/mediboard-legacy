@@ -53,8 +53,9 @@ class CSetupdPanesth {
                   INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
                   VALUES ('', 'autres', 'autres.png');";
           db_exec( $sql ); db_error();
-          $sql ="ALTER TABLE `files_mediboard` ADD `file_consultation_anesth` BIGINT DEFAULT '0' NOT NULL AFTER `file_consultation` ;
-                 ALTER TABLE `files_mediboard` ADD INDEX ( `file_consultation_anesth` ) ;";
+          $sql = "ALTER TABLE `files_mediboard` ADD `file_consultation_anesth` BIGINT DEFAULT '0' NOT NULL AFTER `file_consultation` ;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `files_mediboard` ADD INDEX ( `file_consultation_anesth` ) ;";
           db_exec( $sql ); db_error();
 		case "0.1":
 		  return true;
