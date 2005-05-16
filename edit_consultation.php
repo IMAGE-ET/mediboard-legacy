@@ -16,7 +16,7 @@ require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie') );
 
-if (!$canEdit) {			// lock out users that do not have at least readPermission on this module
+if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
@@ -52,16 +52,37 @@ mbSetValueToSession("yearconsult", $year);
 $nyear = $year + 1;
 $pyear = $year - 1;
 
+$chir = null;
 // L'utilisateur est-il praticien?
 $mediuser = new CMediusers();
 $mediuser->load($AppUI->user_id);
 if ($mediuser->isPraticien()) {
   $chir = $mediuser->createUser();
 }
-else
-  $AppUI->redirect( "m=dPcabinet&tab=0" );
+// A t'on fourni l'id du patient et du chirurgien?
+$chir_id = mbGetValueFromGetOrSession("chirSel", null);
+if ($chir_id) {
+  $chir = new CMediusers;
+  $chir->load($chir_id);
+}
+// A t'on un chirurgien
+if($chir == null) {
+  $AppUI->setMsg("Vous devez selectionner un praticien", UI_MSG_ALERT);
+  $AppUI->redirect("m=dPcabinet&tab=0");
+}
+// Vérification des droits
+$listDroits = new CMediusers;
+$listDroits = $listDroits->loadPraticiens(PERM_EDIT);
+$droit = false;
+foreach($listDroits as $key => $value) {
+  if($key = $chir->user_id)
+    $droit = true;
+}
+if(!$droit) {
+  $AppUI->setMsg("Vous n'avez pas les droits suffisants", UI_MSG_ALERT);
+  $AppUI->redirect("m=dPcabinet&tab=0");
+}
 
-// L'utilisateur est-il le propriétaire de la consultation actuelle
 $selConsult = mbGetValueFromGetOrSession("selConsult", 0);
 if(dPgetParam($_GET, "change", 0)) {
   $selConsult = 0;
@@ -72,15 +93,15 @@ $consult = new CConsultation();
 if($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
-  if($consult->_ref_plageconsult->chir_id != $chir->user_id) {
-    $AppUI->setMsg("Vous n'avez pas les droits sur cette consultation", UI_MSG_ALERT);
-    $AppUI->redirect("m=dPpatients&tab=0&id=".$consult->_ref_patient->patient_id);
-  }
   $patient =& $consult->_ref_patient;
   $patient->loadRefs();
   foreach ($patient->_ref_consultations as $key => $value) {
     $patient->_ref_consultations[$key]->loadRefs();
     $patient->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
+  }
+  foreach ($patient->_ref_consultations_anesth as $key => $value) {
+    $patient->_ref_consultations_anesth[$key]->loadRefs();
+    $patient->_ref_consultations_anesth[$key]->_ref_plageconsult->loadRefs();
   }
   foreach ($patient->_ref_operations as $key => $value) {
     $patient->_ref_operations[$key]->loadRefs();

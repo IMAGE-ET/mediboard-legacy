@@ -14,10 +14,12 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 
 // Enum for Consultation.chrono
-define("CC_PLANIFIE"      , 16);
-define("CC_PATIENT_ARRIVE", 32);
-define("CC_EN_COURS"      , 48);
-define("CC_TERMINE"       , 64);
+if(!defined("CC_PLANIFIE")) {
+  define("CC_PLANIFIE"      , 16);
+  define("CC_PATIENT_ARRIVE", 32);
+  define("CC_EN_COURS"      , 48);
+  define("CC_TERMINE"       , 64);
+}
 
 class CConsultation extends CDpObject {
   // DB Table key

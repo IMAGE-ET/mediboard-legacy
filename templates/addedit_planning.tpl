@@ -68,7 +68,7 @@ function popPat() {
   var url = './index.php?m=dPpatients';
   url += '&a=pat_selector';
   url += '&dialog=1';
-  popup(500, 500, url, 'Patient');
+  popup(800, 500, url, 'Patient');
 }
 
 function setPat( key, val ) {
@@ -138,7 +138,19 @@ function setCalendar( idate, fdate ) {
 <input type="hidden" name="annule" value="0" />
 <input type="hidden" name="chrono" value="{$smarty.const.CC_PLANIFIE}" />
 
-<table class="main">
+<table class="main" style="margin: 4px; border-spacing: 0px;">
+  {if $consult->consultation_id}
+  <tr>
+    <td coslpan="2"><strong><a href="index.php?m={$m}&amp;consultation_id=0">Créer une nouvelle consultation</a></strong></td>
+  </tr>
+  {/if}
+  <tr>
+    {if $consult->consultation_id}
+      <th colspan="2" class="title" colspan="5">Modification de la consultation de {$pat->_view} pour le Dr. {$chir->_view}</th>
+    {else}
+      <th colspan="2" class="title" colspan="5">Création d'une consultation</th>
+    {/if}
+  </tr>
   <tr>
     <td>
   
@@ -232,7 +244,7 @@ function setCalendar( idate, fdate ) {
           {if $consult->consultation_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la consultation de', '{$consult->_ref_patient->nom|escape:javascript}' + ' ' + '{$consult->_ref_patient->prenom|escape:javascript}')" />
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la consultation de', '{$consult->_ref_patient->_view|escape:javascript}')" />
           {else}
             <input type="submit" value="Créer" />
           {/if}

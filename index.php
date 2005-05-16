@@ -28,8 +28,8 @@ $titleBlock->show();
 
 $tabBox = new CTabBox( "?m=dPcabinet", "{$AppUI->cfg['root_dir']}/modules/dPcabinet/", $tab );
 $tabBox->add( 'vw_planning', 'Programmes de consultation' );
-$tabBox->add( 'add_planning', 'Créer un rendez-vous' );
-$tabBox->add( 'edit_planning', 'Modifier un rendez-vous' );
+//$tabBox->add( 'add_planning', 'Créer un rendez-vous' );
+$tabBox->add( 'edit_planning', 'Créer / Modifier un rendez-vous' );
 $tabBox->add( 'edit_consultation', 'Consultation' );
 $tabBox->add( 'idx_compte_rendus', 'Compte-rendus');
 $tabBox->add( 'form_print_plages', 'Impression des plannings' );

@@ -13,6 +13,7 @@ class CFile extends CDpObject {
 	
 	// DB Fields
 	var $file_consultation = NULL;
+	var $file_consultation_anesth = NULL;
 	var $file_operation = NULL;
 	var $file_real_filename = NULL;
 	var $file_task = NULL;
@@ -36,6 +37,7 @@ class CFile extends CDpObject {
 	// ensure the integrity of some variables
 		$this->file_id = intval( $this->file_id );
 		$this->file_consultation = intval( $this->file_consultation );
+		$this->file_consultation_anesth = intval( $this->file_consultation );
 		$this->file_operation = intval( $this->file_operation );
 
 		return NULL; // object is ok
@@ -75,6 +77,9 @@ class CFile extends CDpObject {
 	    if($this->file_consultation) {
 		  @unlink( "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation/$this->file_real_filename" );
 	    }
+	    elseif($this->file_consultation_anesth) {
+		  @unlink( "{$AppUI->cfg['root_dir']}/files/consultations_anesth/$this->file_consultation_anesth/$this->file_real_filename" );
+	    }
 	    else {
 		  @unlink( "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation/$this->file_real_filename" );
 	    }
@@ -110,6 +115,15 @@ class CFile extends CDpObject {
 		  }
 		  $this->_filepath = "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation/$this->file_real_filename";
 		}
+		elseif($this->file_consultation_anesth) {
+		  if (!is_dir("{$AppUI->cfg['root_dir']}/files/consultations_anesth/$this->file_consultation_anesth")) {
+		      $res = mkdir( "{$AppUI->cfg['root_dir']}/files/consultations_anesth/$this->file_consultation_anesth", 0777 );
+			   if (!$res) {
+			       return false;
+			   }
+		  }
+		  $this->_filepath = "{$AppUI->cfg['root_dir']}/files/consultations_anesth/$this->file_consultation_anesth/$this->file_real_filename";
+		}
 		else {
 		  if (!is_dir("{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation")) {
 		      $res = mkdir( "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation", 0777 );
@@ -129,7 +143,7 @@ class CFile extends CDpObject {
 
 // parse file for indexing
 	function indexStrings() {
-		GLOBAL $ft, $AppUI;
+		global $ft, $AppUI;
 	// get the parser application
 		$parser = @$ft[$this->file_type];
 		if (!$parser) {

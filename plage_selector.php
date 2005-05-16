@@ -11,7 +11,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 setlocale(LC_ALL, 'fr_FR');
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
@@ -83,23 +83,60 @@ if($plageSel) {
     else
       $listPlace[$i]["min"] = "00";
     $qte = 0;
-    foreach($plage->_ref_consultations as $key => $value) {
-      if((intval($value->_hour) == $currHour) && (intval($value->_min) == $currMin)) {
-        $listPlace[$i]["patient"][$qte]["premiere"] = $plage->_ref_consultations[$key]->premiere;
-        $listPlace[$i]["patient"][$qte]["duree"] = $plage->_ref_consultations[$key]->duree;
-        $plage->_ref_consultations[$key]->loadRefs();
-        $listPlace[$i]["patient"][$qte]["patient"] = $plage->_ref_consultations[$key]->_ref_patient->_view;
-        $qte++;
-      }
-      else {
-        $listPlace[$i]["patient"][$qte]["patient"] = NULL;
-        $listPlace[$i]["patient"][$qte]["duree"] = NULL;
-      }
+    $nextHour = $currHour;
+    $nextMin = $currMin + intval($plage->_freq);
+    if($nextMin >= 60) {
+      $nextHour = $currHour + 1;
+      $nextMin -= 60;
     }
-    $currMin += intval($plage->_freq);
-    if($currMin >= 60) {
-      $currHour += 1;
-      $currMin -= 60;
+    if(count($plage->_ref_consultations)) {
+      foreach($plage->_ref_consultations as $key => $value) {
+        if($currHour == $nextHour) {
+          $rightPlace = (intval($value->_hour) == $currHour) && (intval($value->_min) >= $currMin) && (intval($value->_min) < $nextMin);
+        } else {
+          if(intval($value->_hour) == $currHour)
+            $rightPlace = (intval($value->_min) >= $currMin);
+          else
+            $rightPlace = (intval($value->_min) < $nextMin);
+        }
+        if($rightPlace) {
+          $listPlace[$i]["patient"][$qte]["premiere"] = $plage->_ref_consultations[$key]->premiere;
+          $listPlace[$i]["patient"][$qte]["duree"] = $plage->_ref_consultations[$key]->duree;
+          $plage->_ref_consultations[$key]->loadRefs();
+          $listPlace[$i]["patient"][$qte]["patient"] = $plage->_ref_consultations[$key]->_ref_patient->_view;
+          $qte++;
+        }
+        else {
+          $listPlace[$i]["patient"][$qte]["patient"] = NULL;
+          $listPlace[$i]["patient"][$qte]["duree"] = NULL;
+        }
+      }
+      $currMin = $nextMin;
+      $currHour = $nextHour;
+    } else {
+      foreach($plage->_ref_consultations_anesth as $key => $value) {
+        if($currHour == $nextHour) {
+          $rightPlace = (intval($value->_hour) == $currHour) && (intval($value->_min) >= $currMin) && (intval($value->_min) < $nextMin);
+        } else {
+          if(intval($value->_hour) == $currHour)
+            $rightPlace = (intval($value->_min) >= $currMin);
+          else
+            $rightPlace = (intval($value->_min) < $nextMin);
+        }
+        if($rightPlace) {
+          $listPlace[$i]["patient"][$qte]["premiere"] = $plage->_ref_consultations_anesth[$key]->premiere;
+          $listPlace[$i]["patient"][$qte]["duree"] = $plage->_ref_consultations_anesth[$key]->duree;
+          $plage->_ref_consultations_anesth[$key]->loadRefs();
+          $listPlace[$i]["patient"][$qte]["patient"] = $plage->_ref_consultations_anesth[$key]->_ref_patient->_view;
+          $qte++;
+        }
+        else {
+          $listPlace[$i]["patient"][$qte]["patient"] = NULL;
+          $listPlace[$i]["patient"][$qte]["duree"] = NULL;
+        }
+      }
+      $currMin = $nextMin;
+      $currHour = $nextHour;
     }
   }
 }

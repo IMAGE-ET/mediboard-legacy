@@ -49,16 +49,18 @@ function editModele(consult, modele) {
 }
 
 function newOperation() {
-  var url = '?m=dPplanningOp&tab=vw_add_planning';
+  var url = '?m=dPplanningOp&tab=vw_edit_planning';
   url +='&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}'
   url +='&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}'
+  url +='&operation_id=0'
   window.location.href = url;
 }
 
 function newConsultation() {
-  var url = '?m=dPcabinet&tab=add_planning';
+  var url = '?m=dPcabinet&tab=edit_planning';
   url +='&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}'
   url +='&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}'
+  url +='&consultation_id=0'
   window.location.href = url;
 }
 

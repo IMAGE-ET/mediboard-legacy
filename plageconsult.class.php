@@ -11,6 +11,7 @@ require_once( $AppUI->getSystemClass ('dp' ) );
 
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
+require_once( $AppUI->getModuleClass('dPanesth', 'consultation') );
 
 class CPlageconsult extends CDpObject {
   // DB Table key
@@ -41,6 +42,7 @@ class CPlageconsult extends CDpObject {
   // Object References
   var $_ref_chir = null;
   var $_ref_consultations = null;
+  var $_ref_consultations_anesth = null;
 
   function CPlageconsult() {
     $this->CDpObject( 'plageconsult', 'plageconsult_id' );
@@ -57,6 +59,13 @@ class CPlageconsult extends CDpObject {
     $order = "heure";
     $this->_ref_consultations = new CConsultation();
     $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order);
+    
+    if(!$withCanceled)
+      $where["annule"] = "= 0";
+    $where["plageconsult_id"] = "= '$this->plageconsult_id'";
+    $order = "heure";
+    $this->_ref_consultations_anesth = new CConsultationAnesth();
+    $this->_ref_consultations_anesth = $this->_ref_consultations_anesth->loadList($where, $order);
   }
   
   function loadRefsFwd() {
@@ -66,6 +75,7 @@ class CPlageconsult extends CDpObject {
   }
   
   function checkFrequence() {
+  	return true;
   	$oldValues = new CPlageconsult();
   	$oldValues->load($this->plageconsult_id);
   	$oldValues->loadRefs();

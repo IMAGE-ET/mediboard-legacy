@@ -73,6 +73,6 @@ window.close();
 <?php
     }
 	else
-	  $AppUI->redirect();
+	  $AppUI->redirect("m=$m&consultation_id=$obj->consultation_id");
 }
 ?>
