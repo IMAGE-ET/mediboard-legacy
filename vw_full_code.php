@@ -15,7 +15,7 @@ if (!$canRead) {
 
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 $codeacte = mbGetValueFromGetOrSession("codeacte");
-$acte = new Acte($codeacte);
+$acte = new CActeCCAM($codeacte);
 $acte->Load();
 
 // Création du template
