@@ -44,14 +44,6 @@ class CSetupdPanesth {
 	function upgrade( $old_version ) {
 		switch ( $old_version ) {
 		case "all":
-		  $sql = "CREATE TABLE `antecedent` (
-                    `antecedent_id` BIGINT NOT NULL AUTO_INCREMENT ,
-                    `text` TEXT NOT NULL ,
-                    `pontuel` TINYINT DEFAULT '0' NOT NULL ,
-                    `groupe` TINYINT DEFAULT '0' NOT NULL ,
-                    PRIMARY KEY ( `antecedent_id` )
-                  ) COMMENT = 'table des antécédents autres que CIM10 et CCAM';";
-          db_exec( $sql ); db_error();
           $sql = "INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
                   VALUES ('', 'obstétriques', 'obst.png');
                   INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
@@ -60,6 +52,26 @@ class CSetupdPanesth {
                   VALUES ('', 'traitements', 'traitments.png');
                   INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
                   VALUES ('', 'autres', 'autres.png');";
+          db_exec( $sql ); db_error();
+          $sql ="ALTER TABLE `files_mediboard` ADD `file_consultation_anesth` BIGINT DEFAULT '0' NOT NULL AFTER `file_consultation` ;
+                 ALTER TABLE `files_mediboard` ADD INDEX ( `file_consultation_anesth` ) ;";
+          db_exec( $sql ); db_error();
+		case "0.1":
+		  return true;
+		default:
+		  return false;
+		}
+		return false;
+	}
+
+	function install() {
+		  $sql = "CREATE TABLE `antecedent` (
+                    `antecedent_id` BIGINT NOT NULL AUTO_INCREMENT ,
+                    `text` TEXT NOT NULL ,
+                    `pontuel` TINYINT DEFAULT '0' NOT NULL ,
+                    `groupe` TINYINT DEFAULT '0' NOT NULL ,
+                    PRIMARY KEY ( `antecedent_id` )
+                  ) COMMENT = 'table des antécédents autres que CIM10 et CCAM';";
           db_exec( $sql ); db_error();
           $sql = "CREATE TABLE `groupe_antecedent` (
                     `groupe_antecedent_id` TINYINT NOT NULL AUTO_INCREMENT ,
@@ -98,20 +110,21 @@ class CSetupdPanesth {
                     `operation_id` BIGINT DEFAULT '0' NOT NULL ,
                     `heure` TIME NOT NULL ,
                     `duree` TINYINT DEFAULT '1' NOT NULL ,
+                    `annule` TINYINT DEFAULT '0' NOT NULL,
+                    `paye` TINYINT DEFAULT '0' NOT NULL,
+                    `motif` text,
+                    `secteur1` FLOAT DEFAULT '0' NOT NULL,
+                    `secteur2` FLOAT DEFAULT '0' NOT NULL,
+                    `rques` text,
+                    `chrono` TINYINT DEFAULT '16' NOT NULL,
+                    `premiere` TINYINT NOT NULL,
+                    `tarif` VARCHAR( 50 ),
+                    `type_tarif` ENUM( 'cheque', 'CB', 'especes', 'tiers', 'autre' ) DEFAULT NULL,
                     `type_anesth` TINYINT,
                     PRIMARY KEY ( `consultation_anesth_id` ) ,
                     INDEX ( `plageconsult_id` , `patient_id` )
                   ) COMMENT = 'table des consultations d\'anesthésie';";
           db_exec( $sql ); db_error();
-		case "0.1":
-		  return true;
-		default:
-		  return false;
-		}
-		return false;
-	}
-
-	function install() {
       $this->upgrade("all");
 	  return null;
 	}
