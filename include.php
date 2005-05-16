@@ -7,8 +7,65 @@
 * @author Romain Ollivier
 */
 
-function getInfo($sid)
-{
+function getSommaireCIM10() {
+  $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
+    or die("Could not connect");
+  mysql_select_db("cim10")
+    or die("Could not select database");
+
+  $query = "SELECT * FROM chapter ORDER BY chap";
+  $result = mysql_query($query);
+  $i = 0;
+  while($row = mysql_fetch_array($result)) {
+    $chapter[$i]["rom"] = $row['rom'];
+    $query = "SELECT * FROM master WHERE SID = '".$row['SID']."'";
+    $result2 = mysql_query($query);
+    $row2 = mysql_fetch_array($result2);
+    $chapter[$i]["code"] = $row2['abbrev'];
+    $query = "SELECT * FROM libelle WHERE SID = '".$row['SID']."' AND source = 'S'";
+    $result2 = mysql_query($query);
+    $row2 = mysql_fetch_array($result2);
+    $chapter[$i]["text"] = $row2['FR_OMS'];
+    $i++;
+  }
+
+  mysql_close();
+  return ($chapter);
+}
+
+function findCIM10($keys) {
+  $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
+    or die("Could not connect");
+  mysql_select_db("cim10")
+    or die("Could not select database");
+
+  $query = "SELECT * FROM libelle WHERE 0";
+  $keywords = explode(" ", $keys);
+  if($keys != "") {
+    $query .= " OR (1";
+    foreach($keywords as $key => $value) {
+    $query .= " AND FR_OMS LIKE '%".addslashes($value)."%'";
+    }
+    $query .= ")";
+  }
+  $query .= " ORDER BY SID LIMIT 0 , 100";
+  $result = mysql_query($query);
+  $master = array();
+  $i = 0;
+  while($row = mysql_fetch_array($result)) {
+    $master[$i]['text'] = $row['FR_OMS'];
+    $query = "SELECT * FROM master WHERE SID = '".$row['SID']."'";
+    $result2 = mysql_query($query);
+    $row2 = mysql_fetch_array($result2);
+    $master[$i]['code'] = $row2['abbrev'];
+    $i++;
+  }
+
+  mysql_close();
+  return($master);
+}
+
+function getInfoCIM10($sid) {
   $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
     or die("Could not connect");
   mysql_select_db("cim10")

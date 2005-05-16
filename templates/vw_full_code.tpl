@@ -22,7 +22,8 @@
       </form>
     </td>
      
-    {if $canEdit && !$master.levelinf}
+    {if $canEdit}
+    {*if $canEdit && !$master.levelinf*}
     <td class="rightPane">
       <form name="addFavoris" action="./index.php?m={$m}" method="post">
       <input type="hidden" name="dosql" value="do_favoris_aed">

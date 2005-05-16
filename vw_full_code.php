@@ -13,6 +13,8 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+require_once ("modules/$m/include.php");
+
 $code = mbGetValueFromGetOrSession("code", "(A00-B99)");
 
 $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10") or die("Could not connect");
@@ -25,12 +27,11 @@ if (mysql_num_rows($result) == 0) {
   $code = "(A00-B99)";
 }
 
-require_once ("modules/$m/include.php");
 $query = "SELECT * FROM master WHERE abbrev = '$code'";
 $result = mysql_query($query);
 $row = mysql_fetch_array($result);
 mysql_close();
-$master = getInfo($row['SID']);
+$master = getInfoCIM10($row['SID']);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
