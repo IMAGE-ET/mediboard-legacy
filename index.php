@@ -37,10 +37,10 @@ $titleBlock->show();
 
 $tabBox = new CTabBox("?m=$m", "{$AppUI->cfg['root_dir']}/modules/$m/", $tab );
 $tabBox->add("vw_idx_planning", "Consulter le planning");
-$tabBox->add("vw_edit_planning", "Modifier une intervention");
-$tabBox->add("vw_add_planning", "Planifier une intervention");
+$tabBox->add("vw_edit_planning", "Planifier / Modifier une intervention");
+//$tabBox->add("vw_add_planning", "Planifier une intervention");
 $tabBox->add("vw_protocoles", "Protocoles");
-$tabBox->add("vw_add_protocole", "Créer un protocole");
-$tabBox->add("vw_edit_protocole", "Modifier un protocole");
+//$tabBox->add("vw_add_protocole", "Créer un protocole");
+$tabBox->add("vw_edit_protocole", "Créer / Modifier un protocole");
 $tabBox->show();
 ?>

@@ -250,9 +250,9 @@ class COperation extends CDpObject {
     $this->_ref_plageop = new CPlageOp;
     $this->_ref_plageop->load($this->plageop_id);
     
-    $this->_ext_code_ccam = new Acte($this->CCAM_code);
+    $this->_ext_code_ccam = new CActeCCAM($this->CCAM_code);
     $this->_ext_code_ccam->LoadLite();
-    $this->_ext_code_ccam2 = new Acte($this->CCAM_code2);
+    $this->_ext_code_ccam2 = new CActeCCAM($this->CCAM_code2);
     $this->_ext_code_ccam2->LoadLite();
   }
 

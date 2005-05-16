@@ -15,16 +15,22 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$operation_id = mbGetValueFromGetOrSession("protocole_id");
+$operation_id = mbGetValueFromGetOrSession("protocole_id", 0);
 
+$op = null;
+$chir = null;
 if(!$operation_id) {
-  $AppUI->setMsg("Vous devez choisir un protocole", UI_MSG_ALERT);
-  $AppUI->redirect( "m=$m&tab=vw_protocoles");
+  // L'utilisateur est-il praticien?
+  $mediuser = new CMediusers;
+  $mediuser->load($AppUI->user_id);
+  if ($mediuser->isPraticien()) {
+    $chir = $mediuser->createUser();
+  }
+}  else {
+  $op = new COperation;
+  $op->load($operation_id);
+  $op->loadRefs();
 }
-
-$op = new COperation;
-$op->load($operation_id);
-$op->loadRefs();
 
 // Heures & minutes
 $start = 7;
@@ -45,9 +51,15 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('protocole', true);
 $smarty->assign('op', $op);
-$smarty->assign('chir', $op->_ref_chir);
-$smarty->assign('pat', $op->_ref_pat);
-$smarty->assign('plage', $op->_ref_plageop);
+if(!$operation_id) {
+  $smarty->assign('chir', $chir);
+  $smarty->assign('pat', null);
+  $smarty->assign('plage', null);
+} else{
+  $smarty->assign('chir', $op->_ref_chir);
+  $smarty->assign('pat', $op->_ref_pat);
+  $smarty->assign('plage', $op->_ref_plageop);
+}
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);
 

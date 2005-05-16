@@ -96,7 +96,7 @@ function popPat() {
   var url = './index.php?m=dPpatients';
   url += '&a=pat_selector';
   url += '&dialog=1';
-  popup(500, 500, url, 'Patient');
+  popup(800, 500, url, 'Patient');
 }
 
 function setPat( key, val ) {
@@ -329,7 +329,31 @@ function printForm() {
 <input type="hidden" name="annulee" value="0" />
 <input type="hidden" name="modifiee" value="{$op->modifiee}" />
 
-<table class="main">
+<table class="main" style="margin: 4px; border-spacing: 0px;">
+  {if $op->operation_id}
+  <tr>
+    {if $protocole}
+    <td coslpan="2"><strong><a href="index.php?m={$m}&amp;protocole_id=0">Créer un nouveau protocole</a></strong></td>
+    {else}
+    <td coslpan="2"><strong><a href="index.php?m={$m}&amp;operation_id=0">Créer une nouvelle intervention</a></strong></td>
+    {/if}
+  </tr>
+  {/if}
+  <tr>
+    {if $op->operation_id}
+      {if $protocole}
+      <th colspan="2" class="title" colspan="5">Modification du protocole {$op->CCAM_code} du Dr. {$chir->_view}</th>
+      {else}
+      <th colspan="2" class="title" colspan="5">Modification de l'intervention de {$pat->_view} par le Dr. {$chir->_view}</th>
+      {/if}
+    {else}
+      {if $protocole}
+      <th colspan="2" class="title" colspan="5">Création d'un protocole</th>
+      {else}
+      <th colspan="2" class="title" colspan="5">Création d'une intervention</th>
+      {/if}
+    {/if}
+  </tr>
   <tr>
     <td>
   
@@ -347,7 +371,7 @@ function printForm() {
             <input type="hidden" name="chir_id" value="{$chir->user_id}" />
             <label for="editFrm_chir_id">Chirurgien:</label>
           </th>
-          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if ($chir)}{$chir->_view}{/if}" readonly="readonly" /></td>
+          <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if $chir->user_id}{$chir->_view}{/if}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
         </tr>
 
@@ -359,6 +383,15 @@ function printForm() {
           </th>
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->_view}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
+        </tr>
+        
+        <tr>
+          <th class="mandatory">
+            <input type="hidden" name="plageop_id" value="{$plage->id}" />
+            <label for="editFrm_date">Date de l'intervention:</label>
+          </th>
+          <td class="readonly"><input type="text" name="date" readonly="readonly" size="10" value="{$plage->_date}" /></td>
+          <td class="button"><input type="button" value="choisir une date" onclick="popPlage()" /></td>
         </tr>
         
         <tr>
@@ -374,12 +407,13 @@ function printForm() {
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
 
-        {if !$protocole}
         <tr>
           <th class="mandatory"><label for="editFrm_CCAM_code">Acte secondaire (CCAM):</label></th>
           <td><input type="text" name="CCAM_code2" size="10" value="{$op->CCAM_code2}" /></td>
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam2')"/></td>
         </tr>
+        
+        {if !$protocole}
         <tr>
           <th class="mandatory"><label for="editFrm_cote">Coté:</label></th>
           <td colspan="2">
@@ -409,17 +443,6 @@ function printForm() {
             </select>
           </td>
         </tr>
-
-        {if !$protocole}
-        <tr>
-          <th class="mandatory">
-            <input type="hidden" name="plageop_id" value="{$plage->id}" />
-            <label for="editFrm_date">Date de l'intervention:</label>
-          </th>
-          <td class="readonly"><input type="text" name="date" readonly="readonly" size="10" value="{$plage->_date}" /></td>
-          <td class="button"><input type="button" value="choisir une date" onclick="popPlage()" /></td>
-        </tr>
-        {/if}
         
         <tr>
           <td class="text"><label for="editFrm_examen">Bilan pré-op</label></td>
@@ -595,6 +618,6 @@ function printForm() {
     </td>
   </tr>
 
-</table>
+</table></tr></td></table>
 
 </form>

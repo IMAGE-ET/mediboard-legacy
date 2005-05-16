@@ -56,11 +56,11 @@ if ($del) {
   if ($obj->plageop_id) {
     $_SESSION[$m]["operation_id"] = NULL;
     $AppUI->setMsg("Opération supprimée", UI_MSG_OK);
-    $AppUI->redirect("m=$m&amp;tab=0");
+    $AppUI->redirect("m=$m&tab=vw_edit_planning");
   } else {
     $_SESSION[$m]["protocole_id"] = NULL;
     $AppUI->setMsg("Protocole supprimé", UI_MSG_OK);
-    $AppUI->redirect("m=$m&amp;tab=3");
+    $AppUI->redirect("m=$m&tab=vw_add_protocole");
   }
 } 
 else {
@@ -90,6 +90,6 @@ window.close();
 <?php
     }
 	else
-	  $AppUI->redirect();
+	  $obj->plageop_id ? $AppUI->redirect("m=$m&operation_id=$obj->operation_id") : $AppUI->redirect("m=$mprotocole_id=$obj->operation_id");
 }
 ?>
