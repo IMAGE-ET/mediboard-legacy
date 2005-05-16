@@ -12,6 +12,7 @@ require_once( $AppUI->getSystemClass ('dp' ) );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('dPpatients', 'medecin') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
+require_once( $AppUI->getModuleClass('dPanesth', 'consultation') );
 require_once( $AppUI->getModuleClass('dPhospi', 'affectation') );
 
 /**
@@ -61,6 +62,7 @@ class CPatient extends CDpObject {
   // Object References
     var $_ref_operations = null;
     var $_ref_consultations = null;
+    var $_ref_consultations_anesth = null;
     var $_ref_curr_affectation = null;
     var $_ref_medecin_traitant = null;
     var $_ref_medecin1 = null;
@@ -98,15 +100,18 @@ class CPatient extends CDpObject {
     $this->_tel24 = substr($this->tel2, 6, 2);
     $this->_tel25 = substr($this->tel2, 8, 2);
 
-    $annais = substr($this->naissance, 0, 4);
-    $anjour = date("Y");
-    $moisnais = substr($this->naissance, 5, 2);
-    $moisjour = date("m");
-    $journais = substr($this->naissance, 8, 2);
-    $jourjour = date("d");
-    $this->_age = $anjour-$annais;
-    if($moisjour<$moisnais){$this->_age=$this->_age-1;}
-    if($jourjour<$journais && $moisjour==$moisnais){$this->_age=$this->_age-1;}
+    if($this->naissance != "0000-00-00") {
+      $annais = substr($this->naissance, 0, 4);
+      $anjour = date("Y");
+      $moisnais = substr($this->naissance, 5, 2);
+      $moisjour = date("m");
+      $journais = substr($this->naissance, 8, 2);
+      $jourjour = date("d");
+      $this->_age = $anjour-$annais;
+      if($moisjour<$moisnais){$this->_age=$this->_age-1;}
+      if($jourjour<$journais && $moisjour==$moisnais){$this->_age=$this->_age-1;}
+    } else
+      $this->_age = "??";
   }
   
   function updateDBFields() {
@@ -184,6 +189,14 @@ class CPatient extends CDpObject {
     $leftjoin = array();
     $leftjoin["plageconsult"] = "consultation.plageconsult_id = plageconsult.plageconsult_id";
     $this->_ref_consultations = $obj->loadList($where, $order, null, null, $leftjoin);
+    // consultations d'anesthésie
+    $obj = new CConsultationAnesth();
+    $where = array();
+    $where["patient_id"] = "= '$this->patient_id'";
+    $order = "plageconsult.date DESC";
+    $leftjoin = array();
+    $leftjoin["plageconsult"] = "consultation_anesth.plageconsult_id = plageconsult.plageconsult_id";
+    $this->_ref_consultations_anesth = $obj->loadList($where, $order, null, null, $leftjoin);
   	// affectation actuelle
   	$obj = new CAffectation();
   	$date = date("Y-m-d");

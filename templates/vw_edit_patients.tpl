@@ -10,9 +10,21 @@ function confirmCreation(id) {
     form.del.value = 1;
     form.submit();
   }
+  {/literal}
+  {if $dialog}
+  {literal}
+  else {
+    window.location.href = 'index.php?m=dPpatients&a=pat_selector&dialog=1'
+  }
+  {/literal}
+  {else}
+  {literal}
   else {
     window.location.href = 'index.php?m=dPpatients&tab=vw_idx_patients&id=' + id + '&nom=&prenom='
   }
+  {/literal}
+  {/if}
+  {literal}
 }
 
 function checkPatient() {
@@ -86,6 +98,11 @@ function setMed( key, nom, prenom, type ){
 {/literal}
 
 <table class="main">
+  {if $patient->patient_id}
+  <tr>
+    <td><strong><a href="index.php?m={$m}&amp;id=0">Créer un nouveau patient</a></strong></td>
+  </tr>
+  {/if}
   <tr>
     <td>
 
@@ -94,9 +111,20 @@ function setMed( key, nom, prenom, type ){
       <input type="hidden" name="dosql" value="do_patients_aed" />
       <input type="hidden" name="del" value="0" />
       <input type="hidden" name="patient_id" value="{$patient->patient_id}" />
+      {if $dialog}
+      <input type="hidden" name="dialog" value="{$dialog}" />
+      {/if}
       
       <table class="form">
-      
+
+      <tr>
+      {if $patient->patient_id}
+        <th class="title" colspan="5">Modification du dossier de {$patient->_view}</th>
+      {else}
+        <th class="title" colspan="5">Création d'un dossier</th>
+      {/if}
+      </tr>
+
       <tr>
         <th class="category" colspan="2">Identité</th>
         <th class="category" colspan="3">Informations médicales</th>

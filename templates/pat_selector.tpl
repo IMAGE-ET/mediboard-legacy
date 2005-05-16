@@ -3,8 +3,7 @@
 {literal}
 <script language="javascript">
 function createPat(){
-  window.opener.location = "index.php?m=dPpatients&tab=vw_add_planning";
-  window.close();
+  window.location = "index.php?m=dPpatients&a=vw_edit_patients&dialog=1&id=0";
 }
 
 function setClose(key, val){
@@ -28,7 +27,12 @@ function setClose(key, val){
 
 <tr>
   <th>Nom:</th>
-  <td><input name="name" value="{$name}" size=30 /></td>
+  <td><input name="name" value="{$name}" size="30" /></td>
+  <td></td>
+</tr>
+<tr>
+  <th>Prénom:</th>
+  <td><input name="firstName" value="{$firstName}" size="30" /></td>
   <td><input type="submit" value="rechercher" /></td>
 </tr>
 
@@ -40,17 +44,15 @@ function setClose(key, val){
 
 <table class="tbl">
 <tr>
-  <th align="center">Nom</th>
-  <th align="center">Prénom</th>
+  <th align="center">Patient</th>
   <th align="center">Date de naissance</th>
   <th align="center">Selectionner</th>
 </tr>
 {foreach from=$list item=curr_patient}
 <tr>
-  <td>{$curr_patient.lastname}</td>
-  <td>{$curr_patient.firstname}</td>
-  <td>{$curr_patient.naissance}</td>
-  <td class="button"><input type="button" class="button" value="selectionner" onclick="setClose({$curr_patient.id}, '{$curr_patient.lastname|escape:javascript} {$curr_patient.firstname|escape:javascript}')" /></td>
+  <td>{$curr_patient->_view}</td>
+  <td>{$curr_patient->_naissance}</td>
+  <td class="button"><input type="button" class="button" value="selectionner" onclick="setClose({$curr_patient->patient_id}, '{$curr_patient->_view|escape:javascript}')" /></td>
 </tr>
 {/foreach}
 </table>

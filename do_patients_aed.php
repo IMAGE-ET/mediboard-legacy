@@ -12,32 +12,30 @@ global $AppUI;
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 $obj = new CPatient();
-$msg = '';	// reset the message string
+$msg = '';
 
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
 
-// detect if a delete operation has to be processed
 $del = dPgetParam( $_POST, 'del', 0 );
+$dialog = dPgetParam( $_POST, 'dialog', 0 );
 
 if ($del) {
-	// check if there are dependencies on this object (not relevant for dPccam, left here for show-purposes)
 	if (!$obj->canDelete( $msg )) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	}
 
-	// see how easy it is to run database commands with the object oriented architecture !
-	// simply delete a quote from db and have detailed error or success report
 	if (($msg = $obj->delete())) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );			// message with error flag
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
     $_SESSION[$m]["id"] = NULL;
-		$AppUI->setMsg( "Patient supprimé", UI_MSG_ALERT);		// message with success flag
-		$AppUI->redirect( "m=$m&tab=vw_idx_patients" );
+		$AppUI->setMsg( "Patient supprimé", UI_MSG_ALERT);
+		if($dialog){$AppUI->redirect( "m=$m&a=vw_edit_patients&id=0&dialog=1" );}
+		$AppUI->redirect( "m=$m&id=0" );
 	}
 } else {
 	if (($msg = $obj->store())) {
@@ -45,7 +43,8 @@ if ($del) {
 	} else {
 		$isNotNew = @$_POST['patient_id'];
 		$AppUI->setMsg( $isNotNew ? 'Patient modifié' : 'Patient créé', UI_MSG_OK);
-		if(!$isNotNew){$AppUI->redirect( "m=$m&created=$obj->patient_id" );}
+		if($dialog){$AppUI->redirect( "m=$m&a=vw_edit_patients&id=$obj->patient_id&created=$obj->patient_id&dialog=1" );}
+		if(!$isNotNew){$AppUI->redirect( "m=$m&id=$obj->patient_id&created=$obj->patient_id" );}
 	}
 	$AppUI->redirect();
 }

@@ -50,8 +50,8 @@ $patient_nom    = mbGetValueFromGetOrSession("nom"   );
 $patient_prenom = mbGetValueFromGetOrSession("prenom");
 
 $where = null;
-if ($patient_nom   ) $where[] = "nom LIKE '$patient_nom%'";
-if ($patient_prenom) $where[] = "prenom LIKE '$patient_prenom%'";
+if ($patient_nom   ) $where[] = "nom LIKE '".addslashes($patient_nom)."%'";
+if ($patient_prenom) $where[] = "prenom LIKE '".addslashes($patient_prenom)."%'";
 
 $patients = null;
 if ($where) {

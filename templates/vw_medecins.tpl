@@ -64,6 +64,11 @@ function setClose() {ldelim}
         </tr>
         
         <tr>
+          <th>Département (00 pour tous):</th>
+          <td><input tabindex="3" type="text" name="medecin_dept" value="{$departement}" /></td>
+        </tr>
+        
+        <tr>
           <td class="button" colspan="2"><input type="submit" value="rechercher" /></td>
         </tr>
       </table>
@@ -73,7 +78,9 @@ function setClose() {ldelim}
       <table class="tbl">
         <tr>
           <th>Nom - Prénom</th>
+          {if !$dialog}
           <th>Adresse</th>
+          {/if}
           <th>Ville</th>
           <th>CP</th>
           {if !$dialog}
@@ -86,7 +93,6 @@ function setClose() {ldelim}
         <tr>
           {if $dialog}
           <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->_view}</a></td>
-          <td class="text"><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
           <td class="text"><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
           <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->cp}</a></td>
           {else}

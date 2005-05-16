@@ -39,8 +39,7 @@ $tabBox = new CTabBox("?m=$m", "{$AppUI->cfg['root_dir']}/modules/$m/", $tab);
 $tabBox->add('vw_idx_patients', 'Consulter un dossier');
 
 if($canEdit) {
-  $tabBox->add('vw_edit_patients', 'Modifier un dossier');
-  $tabBox->add('vw_add_patients', 'Créer un dossier');
+  $tabBox->add('vw_edit_patients', 'Créer / Modifier un dossier');
   $tabBox->add('vw_medecins', 'Médecins correspondants');
 }
 

@@ -34,10 +34,12 @@ else {
 // Récuperation des patients recherchés
 $medecin_nom    = mbGetValueFromGetOrSession("medecin_nom"   );
 $medecin_prenom = mbGetValueFromGetOrSession("medecin_prenom");
+$medecin_dept = mbGetValueFromGetOrSession("medecin_dept", "17");
 
 $where = null;
 if ($medecin_nom   ) $where[] = "nom LIKE '$medecin_nom%'";
 if ($medecin_prenom) $where[] = "prenom LIKE '$medecin_prenom%'";
+if ($medecin_dept != "00") $where[] = "cp LIKE '".$medecin_dept."___'";
 
 $medecins = null;
 if ($where) {
@@ -53,6 +55,7 @@ $smarty->assign('dialog', $dialog);
 $smarty->assign('type', $type);
 $smarty->assign('nom', $medecin_nom);
 $smarty->assign('prenom', $medecin_prenom);
+$smarty->assign('departement', $medecin_dept);
 $smarty->assign('medecins', $medecins);
 $smarty->assign('medecin', $medecin);
 

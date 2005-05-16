@@ -171,9 +171,9 @@ function printPatient(id) {
       <table class="form">
         <tr><th class="category" colspan="2">Nouvelle action</th></tr>
         <tr>
-          <td><a href="index.php?m=dPcabinet&amp;tab=add_planning&amp;pat_id={$patient->patient_id}">
+          <td><a href="index.php?m=dPcabinet&amp;tab=edit_planning&amp;pat_id={$patient->patient_id}&amp;consultation_id=0">
             Plannifier une consultation</a></th>
-          <td><a href="index.php?m=dPplanningOp&amp;tab=vw_add_planning&amp;pat_id={$patient->patient_id}">
+          <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;pat_id={$patient->patient_id}&amp;operation_id=0">
             Plannifier une intervention</a></th>
         </tr>
       </table>
