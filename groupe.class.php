@@ -11,9 +11,9 @@ require_once( $AppUI->getSystemClass ('dp' ) );
 
 require_once( $AppUI->getModuleClass('dPanesth', 'antecedent') );
 
-class CAntecedent extends CDpObject {
+class CGroupeAntecedent extends CDpObject {
   // DB Table key
-  var $group_antecedent_id = null;
+  var $groupe_antecedent_id = null;
 
   // DB fields
   var $text = null;
@@ -22,8 +22,8 @@ class CAntecedent extends CDpObject {
   // Object References
   var $_ref_antecedents = null;
 
-  function CAntecedent() {
-    $this->CDpObject( 'antecedent', 'antecedent_id' );
+  function CGroupeAntecedent() {
+    $this->CDpObject( 'groupe_antecedent', 'groupe_antecedent_id' );
   }
   
   function updateFormFields() {
@@ -38,7 +38,7 @@ class CAntecedent extends CDpObject {
   
   function loadRefsBack() {
     // Backward references
-    $where["groupe_antecedent_id"] = "= '$this->group_antecedent_id'";
+    $where["groupe_antecedent_id"] = "= '$this->groupe_antecedent_id'";
     $order = "text";
     $this->_ref_antecedents = new CCAntecedent();
     $this->_ref_antecedents = $this->_ref_antecedents->loadList($where, $order);

@@ -235,7 +235,7 @@ function checkPlage() {
         {foreach from=$plageSel->_ref_consultations_anesth item=curr_consult}
         <tr>
           {eval var=$curr_consult->consultation_anesth_id assign="consult_id"}
-          {assign var="href_consult" value="index.php?m=$m&amp;tab=edit_consultation&amp;selConsult=$consult_id"}
+          {assign var="href_consult" value="index.php?m=$m&amp;tab=edit_patient&amp;selConsult=$consult_id"}
           {assign var="href_planning" value="index.php?m=$m&amp;tab=edit_planning&amp;consultation_anesth_id=$consult_id"}
           {if $curr_consult->premiere} 
             {assign var="style" value="style='background: #faa;'"}

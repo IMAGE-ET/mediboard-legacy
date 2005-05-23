@@ -16,20 +16,21 @@ class CAntecedent extends CDpObject {
   var $antecedent_id = null;
 
   // DB References
-  var $group_antecedent_id = null;
+  var $groupe_antecedent_id = null;
 
   // DB fields
   var $text = null;
   var $ponctuel = null;
 
   // Object References
-  var $_ref_group_antecedent = null;
+  var $_ref_groupe_antecedent = null;
 
   function CAntecedent() {
     $this->CDpObject( 'antecedent', 'antecedent_id' );
   }
   
   function updateFormFields() {
+  	$this->loadRefsFwd();
   }
    
   function updateDBFields() {
@@ -37,8 +38,8 @@ class CAntecedent extends CDpObject {
   
   function loadRefsFwd() {
     // Forward references
-    $this->_ref_group_antecedent = new CGroupAntecedent;
-    $this->_ref_group_antecedent->load($this->group_antecedent_id);
+    $this->_ref_groupe_antecedent = new CGroupeAntecedent;
+    $this->_ref_groupe_antecedent->load($this->groupe_antecedent_id);
   }
   
   function loadRefsBack() {

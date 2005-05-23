@@ -51,13 +51,13 @@ class CPatientAntecedent extends CDpObject {
     $this->_ref_patient = new CPatient;
     $this->_ref_patient->load($this->patient_id);
     switch($this->type) {
-      case 'cim10' : {
+      case 'CIM10' : {
       	$this->_ref_cim10 = getInfoCIM10($this->code);
         break;
       }
-      case 'ccam' : {
-      	$this->_ref_ccam = new CActeCCAM;
-      	$this->_ref_ccam->loadLite($this->code);
+      case 'CCAM' : {
+      	$this->_ref_ccam = new CActeCCAM($this->code);
+      	$this->_ref_ccam->loadLite();
         break;
       }
       case 'autre' : {
@@ -65,6 +65,7 @@ class CPatientAntecedent extends CDpObject {
       	$this->_ref_antecedent->load($this->antecedent_id);
         break;
       }
+    }
   }
   
   function loadRefsBack() {

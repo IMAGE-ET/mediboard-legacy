@@ -82,6 +82,12 @@ if(!$droit) {
   $AppUI->redirect("m=dPanesth&tab=0");
 }
 
+$selConsult = mbGetValueFromGetOrSession("selConsult", 0);
+if(dPgetParam($_GET, "change", 0)) {
+  $selConsult = 0;
+  mbSetValueToSession("selConsult", 0);
+}
+
 $consult = new CConsultationAnesth();
 if($selConsult) {
   $consult->load($selConsult);
@@ -161,6 +167,6 @@ $smarty->assign('tarifsChir', $tarifsChir);
 $smarty->assign('tarifsCab', $tarifsCab);
 $smarty->assign('consult', $consult);
 
-$smarty->display('edit_consultation.tpl');
+$smarty->display('edit_operation.tpl');
 
 ?>

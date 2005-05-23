@@ -70,7 +70,7 @@ class CSetupdPanesth {
                     `antecedent_id` BIGINT NOT NULL AUTO_INCREMENT ,
                     `text` TEXT NOT NULL ,
                     `pontuel` TINYINT DEFAULT '0' NOT NULL ,
-                    `groupe` TINYINT DEFAULT '0' NOT NULL ,
+                    `groupe_antecedent_id` TINYINT DEFAULT '0' NOT NULL ,
                     PRIMARY KEY ( `antecedent_id` )
                   ) COMMENT = 'table des antécédents autres que CIM10 et CCAM';";
           db_exec( $sql ); db_error();
