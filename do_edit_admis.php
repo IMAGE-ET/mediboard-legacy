@@ -8,12 +8,13 @@
 */
 
 $mode = dPgetParam($_GET, 'mode', 0);
+$value = dPgetParam($_GET, 'value', 'o');
 $id = dPgetParam($_GET, 'id', 0);
 switch($mode) {
   case 'admis' : {
     if($id) {
       $sql = "UPDATE operations
-              SET admis = 'o'
+              SET admis = '$value'
               WHERE operation_id = '$id'";
       $result = db_exec($sql);
     }
@@ -22,7 +23,7 @@ switch($mode) {
   case 'saisie' : {
     if($id) {
       $sql = "UPDATE operations
-              SET saisie = 'o', modifiee = '0'
+              SET saisie = '$value', modifiee = '0'
               WHERE operation_id = '$id'";
       $result = db_exec($sql);
     }

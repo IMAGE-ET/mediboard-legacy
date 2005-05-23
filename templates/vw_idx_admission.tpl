@@ -82,12 +82,12 @@ function printDepassement(id) {
         </tr>
         {foreach from=$today item=curr_adm}
         <tr>
-          <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
+          <td class="text" style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
             <a href="#" onclick="printAdmission({$curr_adm->operation_id})">
             {$curr_adm->_ref_pat->_view}
             </a>
           </td>
-          <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
+          <td class="text" style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
             <a href="#" onclick="printAdmission({$curr_adm->operation_id})">
             Dr. {$curr_adm->_ref_chir->_view}
             </a>
@@ -97,7 +97,7 @@ function printDepassement(id) {
             {$curr_adm->time_adm|date_format:"%Hh%M"}
             </a>
           </td>
-          <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
+          <td class="text" style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
             {if $curr_adm->_first_aff->affectation_id}
             {$curr_adm->_first_aff->_ref_lit->_ref_chambre->_ref_service->nom}
             - {$curr_adm->_first_aff->_ref_lit->_ref_chambre->nom}
@@ -111,29 +111,45 @@ function printDepassement(id) {
             <b>ANNULE</b></td>
           {else}
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
-            {if $curr_adm->admis == "n"}
             <form name="editAdmFrm{$curr_adm->operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_edit_admis" />
             <input type="hidden" name="id" value="{$curr_adm->operation_id}" />
             <input type="hidden" name="mode" value="admis" />
-            <input type="submit" value="Admis" />
-            </form> 
+            {if $curr_adm->admis == "n"}
+            <input type="hidden" name="value" value="o" />
+            <button type="submit">
+              <img src="modules/{$m}/images/tick.png" alt="Admis"> Admis
+            </button>
+            {else}
+            <input type="hidden" name="value" value="n" />
+            <button type="submit">
+              <img src="modules/{$m}/images/cross.png" alt="Annuler"> Annuler
+            </button>
             {/if}
+            </form>
           </td>
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
-            {if $curr_adm->saisie == "n"}
             <form name="editSaisFrm{$curr_adm->operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_edit_admis" />
             <input type="hidden" name="id" value="{$curr_adm->operation_id}" />
             <input type="hidden" name="mode" value="saisie" />
-            <input type="submit" value="Saisie" />
+            {if $curr_adm->saisie == "n"}
+            <input type="hidden" name="value" value="o" />
+            <button type="submit">
+              <img src="modules/{$m}/images/tick.png" alt="Saisie"> Saisie
+            </button>
+            {else}
+            <input type="hidden" name="value" value="n" />
+            <button type="submit">
+              <img src="modules/{$m}/images/cross.png" alt="Annuler"> Annuler
+            </button>
+            {/if}
             {if $curr_adm.modifiee == 1}
             <img src="images/icons/rc-gui-status-downgr.png" alt="modifié">
             {/if}
-            </form> 
-            {/if}
+            </form>
           </td>
           {/if}
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
