@@ -50,13 +50,16 @@ else
 $list = $list->loadList($where, $order, null, null, $ljoin);
 foreach($list as $key => $value) {
   $list[$key]->loadRefsFwd();
-  if($list[$key]->_ref_next->affectation_id) {
+  if(!$list[$key]->_ref_next->affectation_id) {
     unset($list[$key]);
   } else {
     $list[$key]->_ref_operation->loadRefsFwd();
     $list[$key]->_ref_operation->_ref_chir->loadRefsFwd();
     $list[$key]->_ref_lit->loadRefsFwd();
     $list[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
+    $list[$key]->_ref_next->loadRefsFwd();
+    $list[$key]->_ref_next->_ref_lit->loadRefsFwd();
+    $list[$key]->_ref_next->_ref_lit->_ref_chambre->loadRefsFwd();
   }
 }
 
@@ -70,6 +73,6 @@ $smarty->assign('pday' , $pday );
 $smarty->assign('list' , $list );
 $smarty->assign('vue' , $vue );
 
-$smarty->display('edit_sorties.tpl');
+$smarty->display('edit_deplacement.tpl');
 
 ?>
