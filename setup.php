@@ -45,12 +45,15 @@ class CSetupdPanesth {
 		switch ( $old_version ) {
 		case "all":
           $sql = "INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
-                  VALUES ('', 'obstétriques', 'obst.png');
-                  INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
-                  VALUES ('', 'transfusionnels', 'transf.png');
-                  INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
-                  VALUES ('', 'traitements', 'traitments.png');
-                  INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
+                  VALUES ('', 'obstétriques', 'obst.png');";
+          db_exec( $sql ); db_error();
+          $sql = "INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
+                  VALUES ('', 'transfusionnels', 'transf.png');";
+          db_exec( $sql ); db_error();
+          $sql = "INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
+                  VALUES ('', 'traitements', 'traitments.png');";
+          db_exec( $sql ); db_error();
+          $sql = "INSERT INTO `groupe_antecedent` ( `groupe_antecedent_id` , `text` , `icone` )
                   VALUES ('', 'autres', 'autres.png');";
           db_exec( $sql ); db_error();
           $sql = "ALTER TABLE `files_mediboard` ADD `file_consultation_anesth` BIGINT DEFAULT '0' NOT NULL AFTER `file_consultation` ;";
