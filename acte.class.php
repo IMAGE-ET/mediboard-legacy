@@ -59,9 +59,10 @@ class CActeCCAM
       $this->libelleCourt = $row['LIBELLECOURT'];
       $this->libelleLong = $row['LIBELLELONG'];
     }
+    mysql_close($mysql);
+    
     // Reconnect to standard data base
     do_connect();
-    mysql_close($mysql);
   }
    
   // Chargement des variables
