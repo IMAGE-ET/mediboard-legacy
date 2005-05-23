@@ -26,8 +26,8 @@
 		  <td>{$curr_consult->heure}</td>
 		  <td>{$curr_consult->_ref_patient->_view}</td>
           <td>{$curr_consult->_ref_patient->_age} ans</td>
-          <td>{$curr_consult->motif|nl2br}</td>
-          <td>{$curr_consult->rques|nl2br}</td>
+          <td class="text">{$curr_consult->motif|nl2br}</td>
+          <td class="text">{$curr_consult->rques|nl2br}</td>
           <td>{if $curr_consult->compte_rendu}oui{else}non{/if}</td>
 		</tr>
 		{/foreach}
