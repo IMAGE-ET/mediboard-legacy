@@ -29,7 +29,11 @@ function getSommaireCIM10() {
     $i++;
   }
 
-  mysql_close();
+  mysql_close($mysql);
+
+  // Reconnect to standard data base
+  do_connect();
+
   return ($chapter);
 }
 
@@ -61,15 +65,31 @@ function findCIM10($keys) {
     $i++;
   }
 
-  mysql_close();
+  mysql_close($mysql);
+  
+  // Reconnect to standard data base
+  do_connect();
+
   return($master);
 }
 
-function getInfoCIM10($sid) {
+function getInfoCIM10($code) {
   $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
     or die("Could not connect");
   mysql_select_db("cim10")
     or die("Could not select database");
+  
+  $query = "SELECT * FROM master WHERE abbrev = '$code'";
+  $result = mysql_query($query);
+
+  if (mysql_num_rows($result) == 0) {
+    $code = "(A00-B99)";
+  }
+
+  $query = "SELECT * FROM master WHERE abbrev = '$code'";
+  $result = mysql_query($query);
+  $row = mysql_fetch_array($result);
+  $sid = $row['SID'];
 
   //sid
   $info['sid'] = $sid;
@@ -307,7 +327,11 @@ function getInfoCIM10($sid) {
     $info['note'][$i] = $row2['FR_OMS'];
     $i++;
   }
-  mysql_close();
+  mysql_close($mysql);
+
+  // Reconnect to standard data base
+  do_connect();
+
   return($info);
 }
 
