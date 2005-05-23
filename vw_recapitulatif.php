@@ -72,7 +72,6 @@ foreach($functions as $value){
             AND '$curr_day' BETWEEN affectation.entree AND affectation.sortie
             AND users_mediboard.function_id = '$function'
             AND operations.annulee = 0";
-    //mbTrace($sql, "Interventions effectuées du $curr_day de la fonction $value->text<br/>");
     $result = db_loadList($sql);
     $mainTab["allocated"]["functions"][$function]["days"]["$curr_day"]["nombre"] = $result[0]["total"];
     $mainTab["allocated"]["functions"][0]["days"]["$curr_day"]["nombre"] += $result[0]["total"];
@@ -90,7 +89,6 @@ foreach($functions as $value){
             AND affectation.affectation_id IS NULL
             AND users_mediboard.function_id = '$function'
             AND operations.annulee = 0";
-    //mbTrace($sql, "Interventions non effectuées du $curr_day de la fonction $value->text<br/>");
     $result = db_loadList($sql);
     $mainTab["notallocated"]["functions"][$function]["days"]["$curr_day"]["nombre"] = $result[0]["total"];
     $mainTab["notallocated"]["functions"][0]["days"]["$curr_day"]["nombre"] += $result[0]["total"];
@@ -101,8 +99,6 @@ foreach($functions as $value){
 
 $mainTab["busy"][$curr_day] = array();
 $mainTab["free"][$curr_day] = array();
-
-//mbTrace($mainTab, "tableau");
 
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));
