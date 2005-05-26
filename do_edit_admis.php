@@ -31,6 +31,6 @@ switch($mode) {
   }
 }
 
-$AppUI->redirect();
+$AppUI->redirect("m=$m#adm$id");
 
 ?>

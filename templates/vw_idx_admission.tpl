@@ -83,7 +83,7 @@ function printDepassement(id) {
         {foreach from=$today item=curr_adm}
         <tr>
           <td class="text" style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
-            <a href="#" onclick="printAdmission({$curr_adm->operation_id})">
+            <a name="adm{$curr_adm->operation_id}" onclick="printAdmission({$curr_adm->operation_id})">
             {$curr_adm->_ref_pat->_view}
             </a>
           </td>

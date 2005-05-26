@@ -63,7 +63,7 @@
     </form>
     </td>
     <td>
-      <b>{$curr_sortie->_ref_operation->_ref_pat->_view}</b>
+      <a name="sortie{$curr_sortie->affectation_id}"><b>{$curr_sortie->_ref_operation->_ref_pat->_view}</b></a>
     </td>
     <td>{$curr_sortie->sortie|date_format:"%H h %M"} ({$curr_sortie->_ref_operation->type_adm|truncate:1:""|capitalize})</td>
     <td>
