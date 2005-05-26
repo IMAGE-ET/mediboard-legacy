@@ -13,6 +13,7 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 
@@ -37,20 +38,36 @@ if($debut != $fin) {
   $date .= " au ".$dayOfWeekList[$dayOfWeekf]." $dayf ".$monthList[$monthf]." $yearf";
 }
 
+// Liste des chirurgiens
+if(!$chir) {
+  $mediusers = new CMediusers();
+  $listChir = $mediusers->loadPraticiens(PERM_EDIT);
+  $inArray = array();
+  foreach($listChir as $key => $value) {
+    $inArray[] = $key;
+    $in = "IN (".implode(", ", $inArray).")";
+  }
+} else {
+  $in = "= '$chir'";
+}
+
 // On selectionne les plages
 $sql = "SELECT *
 		FROM plageconsult
 		WHERE date >= '$yeard-$monthd-$dayd'
         AND date <= '$yearf-$monthf-$dayf'
-        AND chir_id = '$chir'
-        ORDER BY date";
+        AND chir_id $in
+        ORDER BY date, chir_id";
 $listPlage = db_loadObjectList($sql, new CPlageconsult());
 
 // Pour chaque plage on selectionne les consultations
 foreach($listPlage as $key => $value) {
   $listPlage[$key]->loadRefs();
   foreach($listPlage[$key]->_ref_consultations as $key2 => $value2) {
-    $listPlage[$key]->_ref_consultations[$key2]->loadRefs();
+  	if($listPlage[$key]->_ref_consultations[$key2]->annule)
+  	  unset($listPlage[$key]->_ref_consultations[$key2]);
+  	else
+      $listPlage[$key]->_ref_consultations[$key2]->loadRefs();
   }
 }
 
