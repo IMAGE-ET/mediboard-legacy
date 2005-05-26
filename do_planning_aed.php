@@ -89,7 +89,10 @@ window.close();
 </script>
 <?php
     }
-	else
-	  $obj->plageop_id ? $AppUI->redirect("m=$m&operation_id=$obj->operation_id") : $AppUI->redirect("m=$mprotocole_id=$obj->operation_id");
+	else {
+	  if($otherm = dPgetParam( $_POST, 'otherm', 0))
+	    $m = $otherm;
+	  $obj->plageop_id ? $AppUI->redirect("m=$m&operation_id=$obj->operation_id") : $AppUI->redirect("m=$m&protocole_id=$obj->operation_id");
+	}
 }
 ?>
