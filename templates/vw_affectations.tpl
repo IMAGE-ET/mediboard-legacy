@@ -414,6 +414,7 @@ function popPlanning() {
               <form name="SeptieOperation{$curr_affectation->_ref_operation->operation_id}" action="?m=dPplanningOp" method="post">
 
               <input type="hidden" name="m" value="dPplanningOp" />
+              <input type="hidden" name="otherm" value="dPhospi" />
               <input type="hidden" name="dosql" value="do_planning_aed" />
               <input type="hidden" name="operation_id" value="{$curr_affectation->_ref_operation->operation_id}" />
         
@@ -431,7 +432,14 @@ function popPlanning() {
           {if $curr_affectation->_ref_operation->rques != ""}
           <tr class="dates">
             <td class="text" colspan="2">
-              <em>Remarques</em>: {$curr_affectation->_ref_operation->rques|nl2br}
+              <em>Intervention</em>: {$curr_affectation->_ref_operation->rques|nl2br}
+            </td>
+          </tr>
+          {/if}
+          {if $curr_affectation->_ref_operation->_ref_pat->rques != ""}
+          <tr class="dates">
+            <td class="text" colspan="2">
+              <em>Patient</em>: {$curr_affectation->_ref_operation->_ref_pat->rques|nl2br}
             </td>
           </tr>
           {/if}
@@ -558,6 +566,7 @@ function popPlanning() {
         <form name="EditOperation{$curr_operation->operation_id}" action="?m=dPplanningOp" method="post">
 
         <input type="hidden" name="m" value="dPplanningOp" />
+        <input type="hidden" name="otherm" value="dPhospi" />
         <input type="hidden" name="dosql" value="do_planning_aed" />
         <input type="hidden" name="operation_id" value="{$curr_operation->operation_id}" />
         
@@ -585,7 +594,14 @@ function popPlanning() {
       {if $curr_operation->rques != ""}
       <tr>
         <td class="date" colspan="2">
-          <em>Remarques</em>: {$curr_operation->rques|escape:nl2br}
+          <em>Intervention</em>: {$curr_operation->rques|escape:nl2br}
+        </td>
+      </tr>
+      {/if}
+      {if $curr_operation->_ref_pat->rques != ""}
+      <tr>
+        <td class="date" colspan="2">
+          <em>Patient</em>: {$curr_operation->_ref_pat->rques|escape:nl2br}
         </td>
       </tr>
       {/if}
