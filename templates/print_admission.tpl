@@ -40,6 +40,7 @@
   <tr><th>Chambre particulière: </th><td>{$admission->chambre}</td></tr>
   <tr><th>Remarques: </th><td>{$admission->rques|nl2br}</td></tr>
   
+  {if $admission->plageop_id}
   <tr><th class="category" colspan="2">Informations sur l'intervention</th></tr>
 
   <tr><th>Date d'intervention: </th><td>{$admission->_ref_plageop->_day}/{$admission->_ref_plageop->_month}/{$admission->_ref_plageop->_year}</td></tr>
@@ -48,6 +49,9 @@
   <!-- Pas d'affichage des dépassements pour l'instant -->
   {if $admission->depassement}
   <!-- <tr><th>Dépassement d'honoraires: </th><td>{$admission->depassement} €</td></tr> -->
+  {/if}
+  {else}
+  <tr><th class="category" colspan="2">Pas d'intervention</th></tr>
   {/if}
 
 </table>
