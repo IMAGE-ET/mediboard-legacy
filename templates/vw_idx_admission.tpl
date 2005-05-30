@@ -105,6 +105,23 @@ function printDepassement(id) {
             {else}
             Pas de chambre
             {/if}
+            <br />
+            <form name="editChFrm{$curr_adm->operation_id}" action="index.php" method="get">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="a" value="do_edit_chambre" />
+            <input type="hidden" name="id" value="{$curr_adm->operation_id}" />
+            {if $curr_adm->chambre == 'o'}
+            <input type="hidden" name="value" value="n" />
+            <button type="submit">
+              <img src="modules/{$m}/images/refresh.png" alt="changer"> chambre simple
+            </button>
+            {else}
+            <input type="hidden" name="value" value="o" />
+            <button type="submit">
+              <img src="modules/{$m}/images/refresh.png" alt="changer"> chambre double
+            </button>
+            {/if}
+            </form>
           </td>
           {if $curr_adm->annulee == 1}
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}" align="center" colspan=2>
