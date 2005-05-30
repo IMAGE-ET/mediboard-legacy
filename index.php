@@ -38,14 +38,11 @@ $titleBlock->show();
 $tabBox = new CTabBox("?m=$m", "{$AppUI->cfg['root_dir']}/modules/$m/", $tab );
 
 $tabBox->add("form_print_planning", "Impression des plannings");
+$tabBox->add("edit_sorties", "Déplacements / Sorties");
 $tabBox->add("vw_recherche", "Chercher une chambre");
 if ($canEdit) {
-  $tabBox->add("vw_recapitulatif", "Recapitulatif");
   $tabBox->add("vw_affectations", "Affectations");
-}
-  $tabBox->add("edit_deplacement", "Confirmation déplacements");
-if ($canEdit) {
-  $tabBox->add("edit_sorties", "Confirmation sorties");
+  $tabBox->add("vw_recapitulatif", "Recapitulatif");
   $tabBox->add("vw_idx_services", "Services");
   $tabBox->add("vw_idx_chambres", "Chambres");
 }

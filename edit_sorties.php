@@ -29,8 +29,6 @@ $cday = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
 $nday = date("Y-m-d", mktime(0, 0, 0, $month, $day + 1, $year));
 $pday = date("Y-m-d", mktime(0, 0, 0, $month, $day - 1, $year));
 
-// Récupération des sorties du jour
-$list = new CAffectation;
 $limit1 = $cday." 00:00:00";
 $limit2 = $cday." 23:59:59";
 $ljoin["operations"] = "operations.operation_id = affectation.operation_id";
@@ -47,16 +45,37 @@ if($typeOrder)
   $order = "service.nom, patients.nom, patients.prenom";
 else
   $order = "patients.nom, patients.prenom";
-$list = $list->loadList($where, $order, null, null, $ljoin);
-foreach($list as $key => $value) {
-  $list[$key]->loadRefsFwd();
-  if($list[$key]->_ref_next->affectation_id) {
-    unset($list[$key]);
+
+// Récupération des déplacements du jour
+$deplacements = new CAffectation;
+$deplacements = $deplacements->loadList($where, $order, null, null, $ljoin);
+foreach($deplacements as $key => $value) {
+  $deplacements[$key]->loadRefsFwd();
+  if(!$deplacements[$key]->_ref_next->affectation_id) {
+    unset($deplacements[$key]);
   } else {
-    $list[$key]->_ref_operation->loadRefsFwd();
-    $list[$key]->_ref_operation->_ref_chir->loadRefsFwd();
-    $list[$key]->_ref_lit->loadRefsFwd();
-    $list[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
+    $deplacements[$key]->_ref_operation->loadRefsFwd();
+    $deplacements[$key]->_ref_operation->_ref_chir->loadRefsFwd();
+    $deplacements[$key]->_ref_lit->loadRefsFwd();
+    $deplacements[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
+    $deplacements[$key]->_ref_next->loadRefsFwd();
+    $deplacements[$key]->_ref_next->_ref_lit->loadRefsFwd();
+    $deplacements[$key]->_ref_next->_ref_lit->_ref_chambre->loadRefsFwd();
+  }
+}
+
+// Récupération des sorties du jour
+$sorties = new CAffectation;
+$sorties = $sorties->loadList($where, $order, null, null, $ljoin);
+foreach($sorties as $key => $value) {
+  $sorties[$key]->loadRefsFwd();
+  if($sorties[$key]->_ref_next->affectation_id) {
+    unset($sorties[$key]);
+  } else {
+    $sorties[$key]->_ref_operation->loadRefsFwd();
+    $sorties[$key]->_ref_operation->_ref_chir->loadRefsFwd();
+    $sorties[$key]->_ref_lit->loadRefsFwd();
+    $sorties[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
   }
 }
 
@@ -67,7 +86,8 @@ $smarty->assign('now' , $now );
 $smarty->assign('cday' , $cday );
 $smarty->assign('nday' , $nday );
 $smarty->assign('pday' , $pday );
-$smarty->assign('list' , $list );
+$smarty->assign('deplacements' , $deplacements );
+$smarty->assign('sorties' , $sorties );
 $smarty->assign('vue' , $vue );
 
 $smarty->display('edit_sorties.tpl');
