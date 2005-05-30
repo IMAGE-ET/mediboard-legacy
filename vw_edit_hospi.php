@@ -47,10 +47,6 @@ $op = null;
 if ($operation_id) {
   $op = new COperation;
   $op->load($operation_id);
-  // On vérifie qu'il y a bien une intervention
-  if(!$op->plageop_id) {
-    $AppUI->redirect( "m=$m&tab=vw_edit_hospi&operation_id=$op->operation_id" );
-  }
   // On vérifie que l'utilisateur a les droits sur l'operation
   $rigth = false;
   foreach($listChir as $key => $value) {
@@ -95,6 +91,6 @@ if($op) {
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);
 
-$smarty->display('vw_addedit_planning.tpl');
+$smarty->display('vw_addedit_hospi.tpl');
 
 ?>

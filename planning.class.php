@@ -252,6 +252,10 @@ class COperation extends CDpObject {
     
     $this->_ext_code_ccam = new CActeCCAM($this->CCAM_code);
     $this->_ext_code_ccam->LoadLite();
+    if(!$this->plageop_id && $this->pat_id && !$this->CCAM_code) {
+      $this->_ext_code_ccam->libelleCourt = "Simple surveillance";
+      $this->_ext_code_ccam->libelleLong = "Simple surveillance";
+    }
     $this->_ext_code_ccam2 = new CActeCCAM($this->CCAM_code2);
     $this->_ext_code_ccam2->LoadLite();
   }

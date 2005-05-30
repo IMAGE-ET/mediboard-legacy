@@ -32,6 +32,7 @@ $sql ="
   FROM users, operations
   WHERE users.user_id = operations.chir_id
   AND operations.plageop_id IS NULL
+  AND operations.pat_id = 0
   AND users.user_id IN ($in)
   GROUP BY users.user_id
   ORDER BY users.user_first_name";
@@ -45,6 +46,7 @@ $sql = "
     COUNT(operations.operation_id) AS nb_protocoles
   FROM operations
   WHERE operations.plageop_id IS NULL
+  AND operations.pat_id = 0
   AND chir_id IN ($in)
   GROUP BY operations.CCAM_code
   ORDER BY operations.CCAM_code";
@@ -59,6 +61,7 @@ $sql = "
   FROM operations, users
   WHERE operations.chir_id = users.user_id
   AND operations.chir_id IN ($in)
+  AND operations.pat_id = 0
   AND operations.plageop_id IS NULL";
 
 // L'utilisateur est-il chirurgien?
