@@ -49,7 +49,8 @@ if ($operation_id) {
   $op->load($operation_id);
   // On vérifie qu'il y a bien une intervention
   if(!$op->plageop_id) {
-    $AppUI->redirect( "m=$m&tab=vw_edit_hospi&operation_id=$op->operation_id" );
+  	mbSetValueToSession("operation_id", 0);
+    $AppUI->redirect( "m=$m&tab=vw_edit_hospi&hospitalisation_id=$op->operation_id" );
   }
   // On vérifie que l'utilisateur a les droits sur l'operation
   $rigth = false;

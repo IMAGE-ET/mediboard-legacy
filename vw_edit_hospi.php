@@ -17,7 +17,7 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$operation_id = mbGetValueFromGetOrSession("operation_id", 0);
+$operation_id = mbGetValueFromGetOrSession("hospitalisation_id", 0);
 $chir_id = mbGetValueFromGetOrSession("chir_id", null);
 $pat_id = dPgetParam($_GET, "pat_id");
 $chir = null;

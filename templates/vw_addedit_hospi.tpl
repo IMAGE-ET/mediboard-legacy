@@ -318,7 +318,7 @@ function printForm() {
 <table class="main" style="margin: 4px; border-spacing: 0px;">
   {if $op->operation_id}
   <tr>
-    <td coslpan="2"><strong><a href="index.php?m={$m}&amp;operation_id=0">Créer une nouvelle intervention</a></strong></td>
+    <td coslpan="2"><strong><a href="index.php?m={$m}&amp;hospitalisation_id=0">Créer une nouvelle hospitalisation</a></strong></td>
   </tr>
   {/if}
   <tr>
