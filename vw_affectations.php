@@ -35,8 +35,8 @@ $listFunctions = new CFunctions;
 $listFunctions = $listFunctions->loadList();
 
 // Récupération du service à ajouter/éditer
-$serviceSel = new CService;
-$serviceSel->load(mbGetValueFromGetOrSession("service_id"));
+//$serviceSel = new CService;
+//$serviceSel->load(mbGetValueFromGetOrSession("service_id"));
 $totalLits = 0;
 
 // Récupération des chambres/services

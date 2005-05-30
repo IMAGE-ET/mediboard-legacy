@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPhospi';
-$config['mod_version'] = '0.12';
+$config['mod_version'] = '0.13';
 $config['mod_directory'] = 'dPhospi';
 $config['mod_setup_class'] = 'CSetupdPhospi';
 $config['mod_type'] = 'user';
@@ -82,6 +82,12 @@ class CSetupdPhospi {
       $sql = "ALTER TABLE `affectation` " .
           "\nADD `confirme` TINYINT DEFAULT '0' NOT NULL," .
           "\nADD `effectue` TINYINT DEFAULT '0' NOT NULL ;";
+      db_exec($sql); db_error($sql);
+      
+    case "0.12":
+      $sql = "ALTER TABLE `affectation` ADD INDEX ( `entree` );";
+      db_exec($sql); db_error($sql);
+      $sql = "ALTER TABLE `affectation` ADD INDEX ( `sortie` );";
       db_exec($sql); db_error($sql);
 
 			return true;
