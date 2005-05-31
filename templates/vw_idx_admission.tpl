@@ -117,6 +117,7 @@ function printDepassement(id) {
             {else}
             Pas de chambre
             {/if}
+            <!-- Pas de modif des chambres pour l'instant
             <br />
             <form name="editChFrm{$curr_adm->operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
@@ -134,6 +135,7 @@ function printDepassement(id) {
             </button>
             {/if}
             </form>
+            -->
           </td>
           {if $curr_adm->annulee == 1}
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}" align="center" colspan=2>
