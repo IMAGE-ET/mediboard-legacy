@@ -193,13 +193,27 @@ function printPatient(id) {
         <tr><th colspan="3" class="category">Interventions</th></tr>
         {foreach from=$patient->_ref_operations item=curr_op}
         <tr>
-          <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-            {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"} (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})</a></td>
-          <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-            Dr. {$curr_op->_ref_chir->_view}</a></td>
+          <td>
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+            {if $curr_op->plageop_id}
+            {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
+            {else}
+            Simple hospi.
+            {/if}
+            </a>
+            <a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;day={$curr_op->date_adm|date_format:"%d"}&amp;month={$curr_op->date_adm|date_format:"%m"}&amp;year={$curr_op->date_adm|date_format:"%Y"}#adm{$curr_op->operation_id}">
+            (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})
+            </a>
+          </td>
+          <td>
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+            Dr. {$curr_op->_ref_chir->_view}
+            </a>
+          </td>
           <td>{if $curr_op->annulee}[ANNULE]{else}
-          <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-          <img src="modules/dPpatients/images/planning.png" title="modifier"></a>{/if}</td>
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+            <img src="modules/dPpatients/images/planning.png" title="modifier"></a>{/if}
+          </td>
         </tr>
         {/foreach}
         {/if}
