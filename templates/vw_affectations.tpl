@@ -443,19 +443,26 @@ function popPlanning() {
             </td>
           </tr>
           {/if}
-          {if $curr_affectation->_ref_operation->chambre == "o"}
-          <tr class="dates">
-            <td class="text" style="background-color: #f55;" colspan="2">
-              <strong>Chambre seule</strong>
-            </td>
-          </tr>
-          {else}
           <tr class="dates">
             <td class="text" colspan="2">
-              <strong>Chambre double</strong>
+              <form name="editChFrm{$curr_affectation->_ref_operation->operation_id}" action="index.php" method="get">
+              <input type="hidden" name="m" value="{$m}" />
+              <input type="hidden" name="a" value="do_edit_chambre" />
+              <input type="hidden" name="id" value="{$curr_affectation->_ref_operation->operation_id}" />
+              {if $curr_affectation->_ref_operation->chambre == 'o'}
+              <input type="hidden" name="value" value="n" />
+              <button type="submit" style="background-color: #f55;">
+                <img src="modules/{$m}/images/refresh.png" alt="changer"> chambre simple
+              </button>
+              {else}
+              <input type="hidden" name="value" value="o" />
+              <button type="submit">
+                <img src="modules/{$m}/images/refresh.png" alt="changer"> chambre double
+              </button>
+            {/if}
+            </form>
             </td>
           </tr>
-          {/if}
           {foreachelse}
           <tr class="litdispo"><td colspan="2">Lit disponible</td></tr>
           <tr class="litdispo">
