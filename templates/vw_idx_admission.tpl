@@ -32,7 +32,7 @@ function printDepassement(id) {
         {$title2}
         <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$nday}&amp;month={$ndaym}&amp;year={$ndayy}">>></a>
         <i>{if $selAdmis == "n"}Admissions non effectuées
-        {elseif $selSaisis == "n"}Préadmission AS/400 non faite
+        {elseif $selSaisis == "n"}Préadmission non faite
         {else}Toutes les admissions
         {/if}
         {if $selTri == "nom"}triées par nom
@@ -46,7 +46,7 @@ function printDepassement(id) {
         <tr>
           <th class="text">Date</th>
           <th class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selSaisis=0">Toutes les admissions</a></th>
-          <th class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selSaisis=n">Préadmission AS/400 non faite</a></th>
+          <th class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selSaisis=n">Préadmission non faite</a></th>
           <th class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=n&amp;selSaisis=0">Admissions non effectuées</a></th>
         </tr>
         {foreach from=$list1 item=curr_list}
@@ -77,7 +77,19 @@ function printDepassement(id) {
           <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selTri=heure">Heure</a></th>
           <th>Chambre</th>
           <th>Admis</th>
-          <th>Saisis</th>
+          <th>
+            <form name="editAllAdmFrm" action="index.php" method="get">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="a" value="do_edit_admis" />
+            <input type="hidden" name="id" value="{$year}-{$month}-{$day}" />
+            <input type="hidden" name="mode" value="allsaisie" />
+            <input type="hidden" name="value" value="o" />
+            Saisis
+            <button type="submit">
+              <img src="modules/{$m}/images/tick.png" alt="Admis">
+            </button>
+            </form>
+          </th>
           <th>DH</th>
         </tr>
         {foreach from=$today item=curr_adm}

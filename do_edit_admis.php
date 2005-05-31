@@ -29,6 +29,14 @@ switch($mode) {
     }
     break;
   }
+  case 'allsaisie' : {
+    $sql = "UPDATE operations" .
+    		"\nSET saisie = '$value', modifiee = '0'" .
+    		"\nWHERE date_adm = '$id'";
+    $result = db_exec($sql);
+    $id = 0;
+    break;
+  }
 }
 
 $AppUI->redirect("m=$m#adm$id");
