@@ -92,7 +92,12 @@ window.close();
 	else {
 	  if($otherm = dPgetParam( $_POST, 'otherm', 0))
 	    $m = $otherm;
-	  $obj->plageop_id ? $AppUI->redirect("m=$m&operation_id=$obj->operation_id") : $AppUI->redirect("m=$m&protocole_id=$obj->operation_id");
+	  if($obj->plageop_id && $obj->pat_id)
+	    $AppUI->redirect("m=$m&operation_id=$obj->operation_id");
+	  elseif($obj->pat_id)
+	    $AppUI->redirect("m=$m&hospitalisation_id=$obj->operation_id");
+	  else
+	    $AppUI->redirect("m=$m&protocole_id=$obj->operation_id");
 	}
 }
 ?>

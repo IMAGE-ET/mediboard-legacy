@@ -318,7 +318,8 @@ function printForm() {
 <table class="main" style="margin: 4px; border-spacing: 0px;">
   {if $op->operation_id}
   <tr>
-    <td coslpan="2"><strong><a href="index.php?m={$m}&amp;hospitalisation_id=0">Créer une nouvelle hospitalisation</a></strong></td>
+    <td><strong><a href="index.php?m={$m}&amp;hospitalisation_id=0">Créer une nouvelle hospitalisation</a></strong></td>
+    <td><strong><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$op->operation_id}&amp;trans=1">Programmer une intervention pour ce patient</a></strong></td>
   </tr>
   {/if}
   <tr>

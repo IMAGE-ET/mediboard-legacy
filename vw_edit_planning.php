@@ -20,6 +20,7 @@ if (!$canRead) {
 $operation_id = mbGetValueFromGetOrSession("operation_id", 0);
 $chir_id = mbGetValueFromGetOrSession("chir_id", null);
 $pat_id = dPgetParam($_GET, "pat_id");
+$trans = dPgetParam($_GET, "trans", 0);
 $chir = null;
 $pat = null;
 
@@ -48,7 +49,7 @@ if ($operation_id) {
   $op = new COperation;
   $op->load($operation_id);
   // On vérifie qu'il y a bien une intervention
-  if(!$op->plageop_id) {
+  if(!$op->plageop_id && !$trans) {
   	mbSetValueToSession("operation_id", 0);
     $AppUI->redirect( "m=$m&tab=vw_edit_hospi&hospitalisation_id=$op->operation_id" );
   }
