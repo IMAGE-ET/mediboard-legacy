@@ -10,10 +10,14 @@ span.hilite {
 
 @media screen {
   span.field {
-    background: #cce;
+    background: #bbd;
   }
 
   span.value {
     background: #ddd;
+  }
+
+  span.name {
+    background: #bdb;
   }
 }

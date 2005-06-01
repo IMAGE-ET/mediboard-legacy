@@ -18,12 +18,14 @@ function popunder(width, height, url, name) {
 function main() {
   prepareForms();
   initHTMLArea();
+  initFCKEditor();
   pageMain();
 }
 
 function pageMain() {}
 
 function initHTMLArea () {}
+function initFCKEditor() {}
 
 function prepareForms() {
   var msg = "Rapport: ";
