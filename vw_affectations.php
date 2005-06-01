@@ -7,6 +7,9 @@
 * @author Thomas Despoix
 */
 
+$totalChrono = new Chronometer();
+$totalChrono->start();
+
 global $AppUI, $canRead, $canEdit, $m;
 
 require_once($AppUI->getModuleClass("mediusers", "functions"));
@@ -179,5 +182,11 @@ $smarty->assign('services', $services);
 $smarty->assign('groupOpNonAffectees' , $groupOpNonAffectees);
 
 $smarty->display('vw_affectations.tpl');
+
+$totalChrono->stop();
+mbTrace($totalChrono, "Total");
+
+global $dbChrono;
+mbTrace($dbChrono, "Chrono");
 
 ?>
