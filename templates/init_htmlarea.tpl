@@ -1,3 +1,4 @@
+{if !$templateManager->editor == "FCKeditor" }
 {literal}
 
 <!-- Begin HTML Area Integration -->
@@ -121,3 +122,22 @@ function refreshHandler(editor, dropdown) {
 }
 </script>
 {/literal}
+{else}
+{literal}
+<script type="text/javascript" src="lib/fckeditor/fckeditor.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+function initFCKEditor() {
+	var oFCKeditor = new FCKeditor( 'htmlarea', '100%', '100%') ;
+	
+	// Be carefull: after that all Js code is executed in lib/fckeditor/
+	oFCKeditor.BasePath	= 'lib/fckeditor/';
+	
+	oFCKeditor.Config['CustomConfigurationsPath'] = '../../../modules/dPcompteRendu/mb_fckeditor.php' ;
+	
+	oFCKeditor.ReplaceTextarea() ;
+}
+
+</script>
+{/literal}
+{/if}

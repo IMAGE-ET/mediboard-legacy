@@ -100,7 +100,7 @@ function checkForm() {
 </table>
 
   </td>
-  <td class="greedyPane">
+  <td class="greedyPane" style="height: 400px">
   {if $compte_rendu->compte_rendu_id}
     <textarea style="width: 99%" id="htmlarea" name="source" rows="40">
     {$compte_rendu->source}

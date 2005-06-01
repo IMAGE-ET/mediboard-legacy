@@ -28,6 +28,8 @@ $listType[] = TMT_OPERATION;
 $listType[] = TMT_AUTRE;
 
 class CTemplateManager {
+  var $editor = "FCKeditor";
+  
   var $properties = array();
   var $helpers = array();
   var $lists = array();
@@ -74,13 +76,15 @@ class CTemplateManager {
   }
   
   function initHTMLArea () {
+    mbSetValueToSession("templateManager", $this);
+    
     $smarty = new CSmartyDP;
     $smarty->template_dir = "modules/dPcompteRendu/templates/";
     $smarty->compile_dir = "modules/dPcompteRendu/templates_c/";
     $smarty->config_dir = "modules/dPcompteRendu/configs/";
     $smarty->cache_dir = "modules/dPcompteRendu/cache/";
     $smarty->assign("templateManager", $this);
-    $smarty->display('init_htmlarea.tpl');      
+    $smarty->display('init_htmlarea.tpl');
 	}
   
   function setFields($modeleType) {
