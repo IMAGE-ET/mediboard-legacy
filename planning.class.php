@@ -136,7 +136,17 @@ class COperation extends CDpObject {
     // Re-numérotation des autres plages de la même plage
     if ($this->rank)
   	  $this->reorder();
-    return parent::delete();
+    $msg = parent::delete();
+    if($msg == null)
+      $this->delAff();
+      
+  }
+  
+  function delAff() {
+    $this->loadRefsBack();
+    foreach($this->_ref_affectations as $key => $value) {
+      $this->_ref_affectations[$key]->delete();
+    }
   }
   
   function updateFormFields() {
@@ -215,8 +225,10 @@ class COperation extends CDpObject {
   function store() {
     if($msg = parent::store())
       return $msg;
-    if($this->annulee)
+    if($this->annulee) {
       $this->reorder();
+      $this->delAff();
+    }
     // Cas de la création dans une plage de spécialité
     $plageTmp = new CPlageOp;
     $plageTmp->load($this->plageop_id);
