@@ -96,6 +96,23 @@
 	          Antécédents
 	        {/if}
 	      </th>
+	      <td rowspan="2">
+	        <form name="editFrm" action="?m={$m}" method="POST">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="dosql" value="do_consultation_anesth_aed" />
+            <input type="hidden" name="consultation_anesth_id" value="{$consult->consultation_anesth_id}" />
+            <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
+	        <table class="form">
+	          <tr><th>Nom :</th><td>{$consult->_ref_patient->_view}</td></tr>
+	          <tr><th>Age :</th><td>{$consult->_ref_patient->_age} ans</td></tr>
+	          <tr><th>Taille :</th><td><input name="taille" type="text" size="3" value="{$consult->taille}" /> cm</td></tr>
+	          <tr><th>Poid :</th><td><input name="poid" type="text" size="4" value="{$consult->poid}" /> Kg</td></tr>
+	          <tr><th>TA :</th><td><input name="ta1" type="text" size="2" value="{$consult->ta1}" /> / <input name="ta2" type="text" size="2" value="{$consult->ta2}" /></td></tr>
+	          <tr><td class="button" colspan="2"><button type="submit">Valider</button></td></tr>
+	        </table>
+	        </form>
+	      </td>
 	    </tr>
 	    <tr>
 	      <td>

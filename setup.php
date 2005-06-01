@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPanesth';
-$config['mod_version'] = '0.1';
+$config['mod_version'] = '0.11';
 $config['mod_directory'] = 'dPanesth';
 $config['mod_setup_class'] = 'CSetupdPanesth';
 $config['mod_type'] = 'user';
@@ -61,6 +61,12 @@ class CSetupdPanesth {
           $sql = "ALTER TABLE `files_mediboard` ADD INDEX ( `file_consultation_anesth` ) ;";
           db_exec( $sql ); db_error();
 		case "0.1":
+		  $sql = "ALTER TABLE `consultation_anesth` ADD `poid` FLOAT,
+                  ADD `taille` INT(5),
+                  ADD `ta1` TINYINT,
+                  ADD `ta2` TINYINT;";
+          db_exec( $sql ); db_error();
+		case "0.11":
 		  return true;
 		default:
 		  return false;

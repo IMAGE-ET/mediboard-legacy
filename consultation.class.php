@@ -44,7 +44,11 @@ class CConsultationAnesth extends CDpObject {
   var $premiere = null;
   var $tarif = null;
   var $type_tarif = null;
-  var $type_anesth = null; 
+  var $type_anesth = null;
+  var $poid = null;
+  var $taille = null;
+  var $ta1 = null;
+  var $ta2 = null;
 
   // Form fields
   var $_etat = null;

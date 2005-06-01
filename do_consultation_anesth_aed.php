@@ -32,7 +32,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-    mbSetValueToSession("consultation_anesth_id");
+        mbSetValueToSession("consultation_anesth_id");
 		$AppUI->setMsg( "Consultation supprimée", UI_MSG_ALERT);
 		$AppUI->redirect( "m=$m" );
 	}
