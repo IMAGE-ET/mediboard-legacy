@@ -10,15 +10,12 @@
 
 <table class="form">
   <tr>
-    <td class="button">
+    <td class="button" colspan="10">
       <input type="submit" value="Modifier" />
       <input type="reset" value="Réinitialiser" />
     </td>
   </tr>
-</table>
-
 {if $lists|@count}
-<table class="form">
   <tr>
     {foreach from=$lists item=curr_list}
     <td>{$curr_list->nom}</td>
@@ -35,11 +32,15 @@
     </td>
     {/foreach}
   </tr>
-</table>
 {/if}
+  <tr>
+    <td colspan="10" style="height: 600px"> 
+      <textarea id="htmlarea" name="compte_rendu">
+        {$templateManager->document}
+      </textarea>
+    </td>
+  </tr>
 
-<textarea style="width: 99%" id="htmlarea" name="compte_rendu" rows="40">
-  {$templateManager->document}
-</textarea>
+</table>
 
 </form>
