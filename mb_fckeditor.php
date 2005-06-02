@@ -4,6 +4,18 @@ $m = "dPcompteRendu";
 $dPconfig = array();
 
 class CTemplateManager {
+  var $editor = "FCKeditor";
+  
+  var $properties = array();
+  var $helpers = array();
+  var $lists = array();
+  
+  var $template = null;
+  var $document = null;
+  var $usedLists = array();
+  
+  // As wierd as it is, only this property seems mandatory in this redefinition
+  var $valueMode = true;
 };
 
 // required includes for start-up

@@ -34,9 +34,11 @@ for (var i = 0; i < aMbCombos.length; i++) {
   }
   
   FCKMbComboCommand.prototype.Execute = function(itemId, item) {
+	FCK.InsertHtml("&nbsp;");
     var oSpan = FCK.CreateElement("span") ;
 	oSpan.className = this.spanClass;
 	oSpan.innerHTML = itemId;
+	FCK.InsertHtml("&nbsp;");
   }
 
   FCKMbComboCommand.prototype.GetState = function() {

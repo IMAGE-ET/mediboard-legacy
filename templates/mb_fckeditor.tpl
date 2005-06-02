@@ -4,7 +4,7 @@ var aMbCombos = new Array();
 // Add properties Combo
 var oMbCombo = new Object();
 oMbCombo.commandName = "MbField";
-oMbCombo.spanClass = "field";
+oMbCombo.spanClass = {if $templateManager->valueMode} "value" {else} "field" {/if};
 oMbCombo.commandLabel = "Champs";
 
 var aOptions = new Array();
@@ -37,7 +37,7 @@ aMbCombos.push(oMbCombo);
 {foreach from=$templateManager->lists item=list}
   aOptions.push( {ldelim} 
     view: "{$list.name|escape:"htmlall"|escape:"javascript"}" ,
-    item: "[List - {$list.name|escape:"htmlall"|escape:"javascript"}]"
+    item: "[Liste - {$list.name|escape:"htmlall"|escape:"javascript"}]"
     {rdelim});
 {/foreach}
 {/if}
@@ -59,28 +59,39 @@ aMbCombos.push(oMbCombo);
     {rdelim});
 {/foreach}
 
-// Tools configuration
-aTableToolbar = ['Table','-','TableInsertRow','TableDeleteRows','TableInsertColumn','TableDeleteColumns','TableInsertCell','TableDeleteCells','TableMergeCells','TableSplitCell'];
+// Toolbar configuration
+aToolbarSet = FCKConfig.ToolbarSets['Default'];
 
+// Add Table toolbar
+// aTableToolbar = ['Table','-','TableInsertRow','TableDeleteRows','TableInsertColumn','TableDeleteColumns','TableInsertCell','TableDeleteCells','TableMergeCells','TableSplitCell'];
+// aToolbarSet.push(aTableToolbar); 
+
+// Add MbCombos toolbar
 aMbToolbar = new Array();
 for (var i = 0; i < aMbCombos.length; i++) {ldelim}
   aMbToolbar.push(aMbCombos[i].commandName);
 {rdelim}
+aToolbarSet.push(aMbToolbar);
 
+// Remove Form Toolbar
+aToolbarSet.splice(8, 1);
 
-FCKConfig.ToolbarSets['Default'].push(aTableToolbar);
-FCKConfig.ToolbarSets['Default'].push(aMbToolbar);
+// Remove About Toolbar
+aToolbarSet.splice(11, 1);
 
 // FCK editor general configuration
 sMbPath = "../../../";
-sMbComboPath = sMbPath + "modules/dpCompteRendu/fcke_plugins/" ;
 
+FCKConfig.Plugins.Add( 'tablecommands', null);
+
+sMbComboPath = sMbPath + "modules/dpCompteRendu/fcke_plugins/" ;
 FCKConfig.Plugins.Add( 'mbcombo', 'en,fr', sMbComboPath ) ;
+
 FCKConfig.EditorAreaCSS = sMbPath + "style/mediboard/htmlarea.css";
 FCKConfig.DefaultLanguage = "fr" ;
 FCKConfig.AutoDetectLanguage = false ;
-FCKConfig.SkinPath = "./skins/default/";
 
-// If you want to use plugins found on other directories, just use the third parameter.
-var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
-FCKConfig.Plugins.Add( 'tablecommands', null, sOtherPluginPath ) ;
+// Screws the context menu style away
+// FCKConfig.SkinPath = "./skins/default/";
+
+

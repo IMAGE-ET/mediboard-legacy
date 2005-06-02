@@ -43,22 +43,29 @@ class CTemplateManager {
   function CTemplateManager() {
   }
 
+  function makeSpan($spanClass, $text) {
+    // Escape entities cuz FCKEditor does so
+    $text = htmlentities($text);
+    
+    // Keep backslashed double quotes instead of quotes 
+    // cuz FCKEditor creates double quoted attributes
+    $html = "<span class=\"{$spanClass}\">{$text}</span>";
+    
+    return $html; 
+  }
+  
   function addProperty($field, $value = null) {
     $this->properties[$field] = array (
       'field' => $field,
       'value' => $value,
-      // Very important: Keep backslashed double quotes instead of quotes
-      //   cuz HTML Area turns quotes to double quotes
-      'fieldHTML' => "<span class=\"field\">[{$field}]</span>",
-      'valueHTML' => "<span class=\"value\">{$value}</span>");
+      'fieldHTML' => $this->makeSpan("field", "[{$field}]"),
+      'valueHTML' => $this->makeSpan("value", "{$value}"));
   }
 
   function addList($name, $choice = null) {
     $this->lists[$name] = array (
       'name' => $name,
-      // Very important: Keep backslashed double quotes instead of quotes
-      //   cuz HTML Area turns quotes to double quotes
-      'nameHTML' => "<span class=\"name\">[Liste - {$name}]</span>");
+      'nameHTML' => $this->makeSpan("name", "[Liste - {$name}]"));
   } 
   
   function addHelper($name, $text) {
@@ -76,8 +83,9 @@ class CTemplateManager {
   }
   
   function initHTMLArea () {
-    mbSetValueToSession("templateManager", $this);
-    
+    // Don't use mbSetValue which uses $m'
+    $_SESSION['dPcompteRendu']['templateManager'] = $this;
+   
     $smarty = new CSmartyDP;
     $smarty->template_dir = "modules/dPcompteRendu/templates/";
     $smarty->compile_dir = "modules/dPcompteRendu/templates_c/";
