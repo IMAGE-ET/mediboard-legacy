@@ -4,6 +4,11 @@ body {
   background: #ddf;
 }
 
+textarea#htmlarea {
+  width: 99%;
+  height: 100%;
+}
+
 span.hilite {
   background: #f5f;
 }

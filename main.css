@@ -524,6 +524,7 @@ td.tabox {
 /* Banner */
 
 #banner {
+  display: none;
   background: url(./images/titleGradient.jpg) no-repeat center;
   vertical-align: middle;
 }
@@ -655,6 +656,12 @@ td.tabox {
 body {
   font-family: Georgia, serifs;
   font-size: 12px;
+  background: #ddf;
+}
+
+textarea#htmlarea {
+  width: 99%;
+  height: 100%;
 }
 
 span.hilite {
@@ -663,11 +670,15 @@ span.hilite {
 
 @media screen {
   span.field {
-    background: #cce;
+    background: #bbd;
   }
 
   span.value {
     background: #ddd;
+  }
+
+  span.name {
+    background: #bdb;
   }
 }
 
