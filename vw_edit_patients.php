@@ -36,7 +36,7 @@ if($created = dPgetParam($_GET, 'created', 0)){
   	$textSiblings = "Risque de doublons :\\n";
     foreach($siblings as $key => $value) {
       $textSiblings .= ">> ".$value["nom"]." ".$value["prenom"].
-                       " né le ".$value["naissance"].
+                       " né(e) le ".$value["naissance"].
                        " habitant ".$value["adresse"]." ".$value["CP"]." ".$value["ville"]."\\n";
     }
     $textSiblings .= "Voulez-vous tout de meme le creer ?";

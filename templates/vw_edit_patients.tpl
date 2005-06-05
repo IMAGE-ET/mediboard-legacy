@@ -151,14 +151,21 @@ function setMed( key, nom, prenom, type ){
       </tr>
       
       <tr>
+        <th>Nom de jeune fille:</th>
+        <td><input tabindex="1" type="text" name="nom_jeune_fille" value="{$patient->nom_jeune_fille}" /></td>
+        <th>Numéro d'assuré social:</th>
+        <td colspan="2"><input tabindex="24" type="text" size="15" maxlength="15" name="matricule" value="{$patient->matricule}" /></td>
+      </tr>
+      
+      <tr>
         <th>Date de naissance:</th>
         <td>
           <input tabindex="3" type="text" name="_jour"  size="2" maxlength="2" value="{if $patient->_jour != "00"}{$patient->_jour}{/if}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._mois.focus();{rdelim}" /> -
           <input tabindex="4" type="text" name="_mois"  size="2" maxlength="2" value="{if $patient->_mois != "00"}{$patient->_mois}{/if}" onKeyup="if(this.value.length == 2){ldelim}document.editFrm._annee.focus();{rdelim}" /> -
           <input tabindex="5" type="text" name="_annee" size="4" maxlength="4" value="{if $patient->_annee != "0000"}{$patient->_annee}{/if}" />
         </td>
-        <th>Numéro d'assuré social:</th>
-        <td colspan="2"><input tabindex="24" type="text" size="15" maxlength="15" name="matricule" value="{$patient->matricule}" /></td>
+        <th>Code administratif:</th>
+        <td colspan="2"><input tabindex="25" type="text" name="SHS" value="{$patient->SHS}" /></td>
       </tr>
       
       <tr>
@@ -167,10 +174,10 @@ function setMed( key, nom, prenom, type ){
           <select tabindex="6" name="sexe">
             <option value="m" {if $patient->sexe == "m"} selected="selected" {/if}>masculin</option>
             <option value="f" {if $patient->sexe == "f"} selected="selected" {/if}>féminin</option>
+            <option value="j" {if $patient->sexe == "j"} selected="selected" {/if}>jeune fille</option>
           </select>
         </td>
-        <th>Code administratif:</th>
-        <td colspan="2"><input tabindex="25" type="text" name="SHS" value="{$patient->SHS}" /></td>
+        <td colspan="3"></td>
       </tr>
       
       <tr>

@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPpatients';
-$config['mod_version'] = '0.24';
+$config['mod_version'] = '0.25';
 $config['mod_directory'] = 'dPpatients';
 $config['mod_setup_class'] = 'CSetupdPpatients';
 $config['mod_type'] = 'user';
@@ -88,6 +88,16 @@ class CSetupdPpatients {
         db_exec( $sql ); db_error();
         
         case "0.24":
+          $sql = "ALTER TABLE `patients`" .
+          		"ADD `nom_jeune_fille` VARCHAR( 50 ) NOT NULL" .
+          		"AFTER `nom` ;";
+        db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `patients`" .
+          		"CHANGE `sexe` `sexe` ENUM( 'm', 'f', 'j' )" .
+          		"DEFAULT 'm' NOT NULL ";
+        db_exec( $sql ); db_error();
+        
+        case "0.25":
 			return true;
 		}
 

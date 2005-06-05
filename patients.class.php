@@ -24,6 +24,7 @@ class CPatient extends CDpObject {
 
   // DB Fields
 	var $nom = null;
+	var $nom_jeune_fille = null;
 	var $prenom = null;
 	var $naissance = null;
 	var $sexe = null;
@@ -79,8 +80,10 @@ class CPatient extends CDpObject {
     $this->prenom = ucwords(strtolower($this->prenom));
     if($this->sexe == "m")
       $this->_view = "M. ";
-    else
+    elseif($this->sexe == "f")
       $this->_view = "Mme. ";
+    else
+      $this->_view = "Mlle. ";
     $this->_view .= "$this->nom $this->prenom";
     
     $this->_jour  = substr($this->naissance, 8, 2);
