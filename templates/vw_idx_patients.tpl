@@ -103,6 +103,13 @@ function printPatient(id) {
         </tr>
         
         <tr>
+          <th>Nom de jeune fille:</th>
+          <td>{$patient->nom_jeune_fille}</td>
+          <th>Code administratif:</th>
+          <td>{$patient->SHS}</td>
+        </tr>
+        
+        <tr>
           <th>Date de naissance:</th>
           <td>{$patient->_jour} / {$patient->_mois} / {$patient->_annee}</td>
           <th>Numéro d'assuré social:</th>
@@ -113,10 +120,10 @@ function printPatient(id) {
           <th>Sexe:</th>
           <td>
             {if $patient->sexe == "m"} masculin {/if}
-            {if $patient->sexe == "f"} féminin  {/if} 
+            {if $patient->sexe == "f"} féminin {/if}
+            {if $patient->sexe == "j"} jeune fille {/if} 
           </td>
-          <th>Code administratif:</th>
-          <td>{$patient->SHS}</td>
+          <td colspan="2"></td>
         </tr>
         
         <tr>

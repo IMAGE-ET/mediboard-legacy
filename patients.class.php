@@ -62,6 +62,7 @@ class CPatient extends CDpObject {
 
   // Object References
     var $_ref_operations = null;
+    var $_ref_hospitalisations = null;
     var $_ref_consultations = null;
     var $_ref_consultations_anesth = null;
     var $_ref_curr_affectation = null;
@@ -180,10 +181,18 @@ class CPatient extends CDpObject {
     $obj = new COperation();
     $where = array();
     $where["pat_id"] = "= '$this->patient_id'";
+    $where["plageop_id"] = "<> 0";
     $order = "plagesop.date DESC";
     $leftjoin = array();
     $leftjoin["plagesop"] = "operations.plageop_id = plagesop.id";
     $this->_ref_operations = $obj->loadList($where, $order, null, null, $leftjoin);
+    // hospitalisations
+    $obj = new COperation();
+    $where = array();
+    $where["pat_id"] = "= '$this->patient_id'";
+    $where["plageop_id"] = "IS NULL";
+    $order = "date_adm DESC, time_adm DESC";
+    $this->_ref_hospitalisations = $obj->loadList($where, $order, null, null, $leftjoin);
     // consultations
     $obj = new CConsultation();
     $where = array();
