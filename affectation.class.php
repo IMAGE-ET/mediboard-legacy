@@ -45,9 +45,9 @@ class CAffectation extends CDpObject {
 
   function check() {
     return null;
-    if ($this->sortie <= $this->entree) {
-      return "La date de sortie doit être supérieure à la date d'entrée";
-    }
+    //if ($this->sortie <= $this->entree) {
+    //  return "La date de sortie doit être supérieure à la date d'entrée";
+    //}
   }
   
   function delete() {

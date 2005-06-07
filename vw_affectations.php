@@ -93,7 +93,7 @@ $leftjoin = array(
   "patients" => "operations.pat_id = patients.patient_id"
 );
 $ljwhere = "affectation.affectation_id IS NULL";
-$order = "users_mediboard.function_id, patients.nom, patients.prenom";
+$order = "users_mediboard.function_id, operations.date_adm, operations.time_adm, patients.nom, patients.prenom";
 
 // Admissions de la veille
 $where = array(

@@ -42,7 +42,7 @@ if($vue) {
   $where["confirme"] = "= 0";
 }
 if($typeOrder)
-  $order = "service.nom, patients.nom, patients.prenom";
+  $order = "service.nom, chambre.nom, lit.nom";
 else
   $order = "patients.nom, patients.prenom";
 

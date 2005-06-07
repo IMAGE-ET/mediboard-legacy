@@ -29,7 +29,7 @@
 <tr>
 <td colspan="3">
 
-<table><tr><td>
+<table width="100%"><tr><td>
 
 <table class="tbl">
   <tr>
