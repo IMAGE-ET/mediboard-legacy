@@ -373,13 +373,14 @@ function formatCurrency( $number, $format ) {
 	// This uses localeconv to get the information required
 	// to format the money.  It tries to set reasonable defaults.
 	$mondat = localeconv();
-	if (! isset($mondat['int_frac_digits']))
+	//les if font tout planter : currency inutilisable...
+	//if (! isset($mondat['int_frac_digits']))
 		$mondat['int_frac_digits'] = 2;
-	if (! isset($mondat['int_curr_symbol']))
+	//if (! isset($mondat['int_curr_symbol']))
 		$mondat['int_curr_symbol'] = '';
-	if (! isset($mondat['mon_decimal_point']))
+	//if (! isset($mondat['mon_decimal_point']))
 		$mondat['mon_decimal_point'] = '.';
-	if (! isset($mondat['mon_thousands_sep']))
+	//if (! isset($mondat['mon_thousands_sep']))
 		$mondat['mon_thousands_sep'] = ',';
 	$numeric_portion = number_format(abs($number),
 		$mondat['int_frac_digits'],
@@ -413,7 +414,10 @@ function formatCurrency( $number, $format ) {
 				break;
 		}
 	}
-	$currency .= $currency_prefix . $mondat['int_curr_symbol'] . $currency_suffix;
+	// Avant
+	//$currency .= $currency_prefix . $mondat['int_curr_symbol'] . $currency_suffix;
+	// Apres
+	$currency = $currency_prefix . $mondat['int_curr_symbol'] . $currency_suffix;
 	$space = "";
 	if ($mondat[$letter . "_sep_by_space"])
 		$space = " ";
