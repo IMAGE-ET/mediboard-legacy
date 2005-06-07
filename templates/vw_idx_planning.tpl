@@ -13,7 +13,7 @@ function editModele(operation, modele) {
   var url = '?m=dPplanningOp&a=edit_compte_rendu&dialog=1';
   url +='&operation=' + operation;
   url +='&modele=' + modele;
-  popup(700, 700, url, 'Compte-rendu');
+  popup(1000, 700, url, 'Compte-rendu');
 }
 
 function validerCompteRendu(form) {

@@ -1,4 +1,4 @@
-<form name="editFrm" action="?m={$m}" method="POST">
+<form name="editFrm" action="?m={$m}" method="POST" style="height: 650px">
 
 <input type="hidden" name="m" value="{$m}" />
 <input type="hidden" name="del" value="0" />
