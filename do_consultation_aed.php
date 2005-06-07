@@ -27,7 +27,9 @@ foreach($_POST as $key => $value) {
   }
 }
 
-$_POST["compte_rendu"] = str_replace($fields, $values, $_POST["compte_rendu"]);
+if(isset($_POST["compte_rendu"])) {
+  $_POST["compte_rendu"] = str_replace($fields, $values, $_POST["compte_rendu"]);
+}
 
 // Object binding
 $obj = new CConsultation();

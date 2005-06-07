@@ -106,6 +106,9 @@ if($selConsult) {
   foreach ($patient->_ref_operations as $key => $value) {
     $patient->_ref_operations[$key]->loadRefs();
   }
+  foreach ($patient->_ref_hospitalisations as $key => $value) {
+    $patient->_ref_hospitalisations[$key]->loadRefs();
+  }
 }
 
 // Récupération des plages de consultation du jour et chargement des références
