@@ -42,10 +42,10 @@
         {foreach from=$curr_plage.operations item=curr_operation}
         <tr>
           <td>{$curr_operation.heure}</td>
-          <td>{$curr_operation.CCAM_libelle} (<i>{$curr_operation.CCAM_code}</i>)</td>
+          <td class="text">{$curr_operation.CCAM_libelle} (<i>{$curr_operation.CCAM_code}</i>)</td>
           <td>{$curr_operation.cote}</td>
           <td>{$curr_operation.type_anesth}</td>
-          <td>{$curr_operation.remarques} {if $curr_operation.mat}({$curr_operation.mat}) {/if}</td>
+          <td class="text">{$curr_operation.remarques} {if $curr_operation.mat}({$curr_operation.mat}) {/if}</td>
           <td>{$curr_operation.nom} {$curr_operation.prenom}</td>
           <td>{$curr_operation.duree}</td>
           <td align="center">
