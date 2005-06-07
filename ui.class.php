@@ -512,28 +512,61 @@ class CAppUI {
 		$username = trim( db_escape( $username ) );
 		$password = trim( db_escape( $password ) );
 
-		$sql = "
-		SELECT user_id, user_password AS pwd, password('$password') AS pwdpwd, md5('$password') AS pwdmd5
-		FROM users, permissions
-		WHERE user_username = '$username'
-			AND users.user_id = permissions.permission_user
-			AND permission_value <> 0
-		";
+		$sql = 
+      "SELECT " .
+        "\nusers.user_id, " .
+        "\nusers.user_type, " .
+        "\nuser_password AS pwd, " .
+        "\npassword('$password') AS pwdpwd, " .
+        "\nmd5('$password') AS pwdmd5 " .
+      "\nFROM users, permissions " .
+      "\nWHERE user_username = '$username' " .
+      "\nAND users.user_id = permissions.permission_user " .
+      "\nAND permission_value <> 0";
 
-		$row = null;
-		if (!db_loadObject( $sql, $row )) {
+		$obj = null;
+		if (!db_loadObject( $sql, $obj )) {
 			return false;
 		}
+    
+    $export = var_export($obj, true); echo "<pre>obj: $export</pre>";
 
-		if (strcmp( $row->pwd, $row->pwdmd5 )) {
+    $sql = "SELECT remote FROM users_mediboard WHERE user_id = $obj->user_id";
+    // If can't find remote info, remote info doesn't exist so don't check
+    $remote = 1; // 1 IS don't check value
+    if ($cur = db_exec( $sql )) {
+      if ($row = db_fetch_row($cur)) {
+        $remote = intval($row[0]);
+      }
+    }
+    
+    $export = var_export($remote, true); echo "<pre>remote: $export</pre>";
+    
+    // Test if remote connection is allowed
+    $browserIP = explode(".", $_SERVER['REMOTE_ADDR']);
+    $ip0 = intval($browserIP[0]);
+    $ip1 = intval($browserIP[1]);
+    $ip2 = intval($browserIP[2]);
+    $ip3 = intval($browserIP[3]);
+    
+    if (!(($ip0 == 127 and $ip1 == 0 and $ip2 == 0 and $ip3 == 1) 
+      or ($ip0 == 172 and $ip1 >= 16 and $ip1 < 32)
+      or ($ip0 == 192 and $ip1 == 168)
+      or $remote == 1
+      or $obj->user_type == 1)) {
+        return false;
+      }
+      
+
+		if (strcmp( $obj->pwd, $obj->pwdmd5 )) {
 			if ($this->cfg['check_legacy_password']) {
 			/* next check the legacy password */
-				if (strcmp( $row->pwd, $row->pwdpwd )) {
+				if (strcmp( $obj->pwd, $obj->pwdpwd )) {
 					/* no match - failed login */
 					return false;
 				} else {
 					/* valid legacy login - update the md5 password */
-					$sql = "UPDATE users SET user_password=MD5('$password') WHERE user_id=$row->user_id";
+					$sql = "UPDATE users SET user_password=MD5('$password') WHERE user_id=$obj->user_id";
 					db_exec( $sql ) or die( "Password update failed." );
 					$this->setMsg( 'Password updated', UI_MSG_ALERT );
 				}
@@ -542,12 +575,19 @@ class CAppUI {
 			}
 		}
 
-		$sql = "
-		SELECT user_id, user_first_name, user_last_name, user_company, user_department, user_email, user_type
-		FROM users
-		WHERE user_id = $row->user_id AND user_username = '$username'
-		";
+		$sql = "SELECT " .
+        "\nuser_id, " .
+        "\nuser_first_name, " .
+        "\nuser_last_name, " .
+        "\nuser_company, " .
+        "\nuser_department, " .
+        "\nuser_email, " .
+        "\nuser_type" .
+        "\nFROM users" .
+        "\nWHERE user_id = '$obj->user_id' " .
+        "\nAND user_username = '$username'";
 
+    $export = var_export($sql, true); echo "<pre>SQL: $export</pre>";
 		writeDebug( $sql, 'Login SQL', __FILE__, __LINE__ );
 
 		if( !db_loadObject( $sql, $this ) ) {
