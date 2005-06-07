@@ -23,11 +23,14 @@ class CMediusers extends CDpObject {
   // DB Table key
 	var $user_id = null;
 
+  // DB Fields
+  var $remote = null;
+
   // DB References
 	var $function_id = null;
 
   // dotProject user fields
-    var $_user_type       = null;
+  var $_user_type       = null;
 	var $_user_username   = null;
 	var $_user_password   = null;
 	var $_user_first_name = null;
@@ -36,11 +39,11 @@ class CMediusers extends CDpObject {
 	var $_user_phone      = null;
 
   // Other fields
-    var $_view = null;
-    var $_shortview = null;
+  var $_view = null;
+  var $_shortview = null;
 
   // Object references
-    var $_ref_function = null;
+  var $_ref_function = null;
 
 	function CMediusers() {
 		$this->CDpObject( 'users_mediboard', 'user_id' );
@@ -152,7 +155,7 @@ class CMediusers extends CDpObject {
     // SQL coded instead
     if ($this->user_id) {
       $sql = "UPDATE `users_mediboard` 
-        SET `function_id` = '$this->function_id' 
+        SET `function_id` = '$this->function_id', `remote` = '$this->remote' 
         WHERE `user_id` = '$this->user_id'";
     } else {
       $this->user_id = $dPuser->user_id;

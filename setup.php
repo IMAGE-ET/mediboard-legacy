@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'Mediusers';
-$config['mod_version'] = '0.1';
+$config['mod_version'] = '0.11';
 $config['mod_directory'] = 'mediusers';
 $config['mod_setup_class'] = 'CSetupMediusers';
 $config['mod_type'] = 'user';
@@ -50,14 +50,14 @@ class CSetupMediusers {
 		{
 			// upgrade from scratch (called from install)
 			case "all":
-			case "0.9":
+			case "0.1":
 				//do some alter table commands
-
-			case "1.0":
-				return true;
-
-			default:
-				return false;
+        $sql = "ALTER TABLE `users_mediboard` ADD `remote` TINYINT DEFAULT NULL;";
+    
+        db_exec($sql);  db_error();
+        
+      case "0.11": 
+        return true;
 		}
 
 		return false;
@@ -71,8 +71,7 @@ class CSetupMediusers {
 			", UNIQUE KEY user_id (user_id)" .
 			") TYPE=MyISAM;";
 
-		db_exec( $sql );
-		db_error();
+		db_exec($sql); db_error();
 		
 		$sql = "CREATE TABLE functions_mediboard ( " .
 			"  function_id tinyint(4) unsigned NOT NULL auto_increment" .
@@ -83,8 +82,7 @@ class CSetupMediusers {
 			", UNIQUE KEY function_id (function_id)" .
 			") TYPE=MyISAM;";
 
-		db_exec( $sql );
-		db_error();
+		db_exec($sql); db_error();
 		
 		$sql = "CREATE TABLE groups_mediboard ( " .
 			"  group_id tinyint(4) unsigned NOT NULL auto_increment" .
@@ -93,23 +91,20 @@ class CSetupMediusers {
 			", UNIQUE KEY group_id (group_id)" .
 			") TYPE=MyISAM;";
 
-		db_exec( $sql );
-		db_error();
+		db_exec($sql); db_error();
 		
 		$sql = "INSERT INTO groups_mediboard(text) VALUES ('Chirurgie');
 				INSERT INTO groups_mediboard(text) VALUES ('Anesthésie');
 				INSERT INTO groups_mediboard(text) VALUES ('Administration');";
 
-		db_exec( $sql );
-		db_error();
+		db_exec($sql); db_error();
 		
 		$sql = "INSERT INTO functions_mediboard (group_id, text, color) VALUES (2, Chirurgie orthopédique et traumatologique', '99FF66');
 				INSERT INTO functions_mediboard (group_id, text, color) VALUES (2, 'Anesthésie - Réanimation', 'FFFFFF');
 				INSERT INTO functions_mediboard (group_id, text, color) VALUES (3, 'Direction', 'CCFFFF');
 				INSERT INTO functions_mediboard (group_id, text, color) VALUES (3, 'PMSI', 'FF3300');";
 
-		db_exec( $sql );
-		db_error();
+		db_exec($sql); 	db_error();
 		
 		$this->upgrade("all");
 

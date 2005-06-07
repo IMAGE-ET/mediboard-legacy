@@ -175,6 +175,15 @@ function toggleFunction(function_id) {
     </tr>
     
     <tr>
+      <th><label for="mediuser_remote_0" title="Permet ou non à l'utilisateur de se connecter à distance">Accès distant:</label></th>
+      <td>
+        <input type="radio" name="remote" value="0" {if $mediuserSel->remote == "0"} checked="checked" {/if} />
+        <label for="mediuser_remote_0" title="Accès distant authorisé">oui</label>
+        <input type="radio" name="remote" value="1" {if $mediuserSel->remote == "1"} checked="checked" {/if} />
+        <label for="mediuser_remote_1" title="Accès distant interdit">non</label>
+    </tr>
+    
+    <tr>
       <th class="mandatory"><label for="mediuser_function_id" title="Fonction de l'utilisateur au sein de l'établissement. Obligatoire">Fonction:</th>
       <td>
         <select name="function_id">

@@ -7,58 +7,53 @@
 * @author Romain Ollivier
 */
 
-$obj = new CMediusers();
-$msg = '';
+global $AppUI, $m;
 
-// bind the informations (variables) retrieved via post to the object
-if (!$obj->bind( $_POST )) {
-	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
-	$AppUI->redirect();
+require_once($AppUI->getSystemClass("doobjectaddedit"));
+
+class CDoMediuserAddEdit extends CDoObjectAddEdit {
+  function CDoMediuserAddEdit() {
+    $this->CDoObjectAddEdit("CMediusers", "user_id");
+    $this->createMsg = "Utilisateur créé";
+    $this->modifyMsg = "Utilisateur modifié";
+    $this->deleteMsg = "Utilisateur supprimé";
+  }
+  
+  function doStore () {
+    global $AppUI;
+
+    // get older function permission
+    $old = new CMediusers();
+    $old->load($this->_obj->user_id);
+
+    if ($msg = $this->_obj->store()) {
+      if ($this->redirectError) {
+        $AppUI->setMsg($msg, UI_MSG_ERROR);
+        $AppUI->redirect($this->redirectError);
+      }
+    } else {
+      // delete older function permission
+      $old->delFunctionPermission();
+
+      // copy permissions
+      if ($profile_id = dPgetParam($_POST, "_profile_id")) {
+        $user = new CUser;
+        $user->load($this->_obj->user_id);
+        $msg = $user->copyPermissionsFrom($profile_id, true);
+      }
+        
+      // insert new function permission
+      $this->_obj->insFunctionPermission();
+      
+      $isNotNew = @$_POST[$this->objectKeyGetVarName];
+      if ($this->redirectStore) {
+        $AppUI->setMsg( $isNotNew ? $this->createMsg : $this->createMsg, UI_MSG_OK);
+        $AppUI->redirect($this->redirectStore);
+      }
+    }
+  }
 }
 
-// detect if a delete operation has to be processed
-$del = dPgetParam( $_POST, 'del', 0 );
-
-if ($del) {
-	// check canDelete
-	if (!$obj->canDelete( $msg )) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-		$AppUI->redirect();
-	}
-
-	// delete object
-	if ($msg = $obj->delete()) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-		$AppUI->redirect();
-	} else {
-    $_SESSION[$m]["user_id"] = null;
-		$AppUI->setMsg( "Utilisateur supprimé", UI_MSG_ALERT);
-		$AppUI->redirect( "m=$m" );
-	}
-  
-} else {
-  // delete older function permission
-  $old = new CMediusers();
-  $old->load($obj->user_id);
-  $old->delFunctionPermission();
-
-  // Store object
-	if ($msg = $obj->store()) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-	} else {
-		$isNotNew = @$_POST['user_id'];
-		$AppUI->setMsg( $isNotNew ? 'Utilisateur mis à jour' : 'Utilisateur inséré', UI_MSG_OK);
-	}
-  
-  // copy permissions
-  if ($profile_id = dPgetParam($_POST, "_profile_id")) {
-		$user = new CUser;
-    $user->load($obj->user_id);
-    $msg = $user->copyPermissionsFrom($profile_id, true);
-	}
-    
-  $obj->insFunctionPermission();
-  
-	$AppUI->redirect();
-}
+$do = new CDoMediuserAddEdit();
+$do->doIt();
 ?>
