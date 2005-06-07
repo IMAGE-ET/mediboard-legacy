@@ -529,7 +529,7 @@ class CAppUI {
 			return false;
 		}
     
-    $export = var_export($obj, true); echo "<pre>obj: $export</pre>";
+    $export = var_export($obj, true); //echo "<pre>obj: $export</pre>";
 
     $sql = "SELECT remote FROM users_mediboard WHERE user_id = $obj->user_id";
     // If can't find remote info, remote info doesn't exist so don't check
@@ -540,7 +540,7 @@ class CAppUI {
       }
     }
     
-    $export = var_export($remote, true); echo "<pre>remote: $export</pre>";
+    $export = var_export($remote, true); //echo "<pre>remote: $export</pre>";
     
     // Test if remote connection is allowed
     $browserIP = explode(".", $_SERVER['REMOTE_ADDR']);
@@ -550,6 +550,7 @@ class CAppUI {
     $ip3 = intval($browserIP[3]);
     
     if (!(($ip0 == 127 and $ip1 == 0 and $ip2 == 0 and $ip3 == 1) 
+      or ($ip0 == 10)
       or ($ip0 == 172 and $ip1 >= 16 and $ip1 < 32)
       or ($ip0 == 192 and $ip1 == 168)
       or $remote == 1
@@ -587,7 +588,7 @@ class CAppUI {
         "\nWHERE user_id = '$obj->user_id' " .
         "\nAND user_username = '$username'";
 
-    $export = var_export($sql, true); echo "<pre>SQL: $export</pre>";
+    $export = var_export($sql, true); //echo "<pre>SQL: $export</pre>";
 		writeDebug( $sql, 'Login SQL', __FILE__, __LINE__ );
 
 		if( !db_loadObject( $sql, $this ) ) {
