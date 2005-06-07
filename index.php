@@ -40,7 +40,6 @@ $tabBox->add("vw_idx_planning", "Consulter le planning");
 $tabBox->add("vw_edit_planning", "Planifier / Modifier une intervention");
 $tabBox->add("vw_edit_hospi", "Planifier / Modifier une hospitalisation");
 $tabBox->add("vw_protocoles", "Protocoles");
-//$tabBox->add("vw_add_protocole", "Créer un protocole");
 $tabBox->add("vw_edit_protocole", "Créer / Modifier un protocole");
 $tabBox->show();
 ?>
