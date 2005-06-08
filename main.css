@@ -524,7 +524,7 @@ td.tabox {
 /* Banner */
 
 #banner {
-  display: none;
+  /*display: none;*/
   background: url(./images/titleGradient.jpg) no-repeat center;
   vertical-align: middle;
 }
