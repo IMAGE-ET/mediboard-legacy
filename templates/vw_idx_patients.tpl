@@ -176,12 +176,14 @@ function printPatient(id) {
       </table>
 
       <table class="form">
-        <tr><th class="category" colspan="2">Nouvelle action</th></tr>
+        <tr><th class="category" colspan="3">Plannifier</th></tr>
         <tr>
-          <td><a href="index.php?m=dPcabinet&amp;tab=edit_planning&amp;pat_id={$patient->patient_id}&amp;consultation_id=0">
-            Plannifier une consultation</a></th>
-          <td><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;pat_id={$patient->patient_id}&amp;operation_id=0">
-            Plannifier une intervention</a></th>
+          <td class="button"><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;pat_id={$patient->patient_id}&amp;operation_id=0">
+            une intervention</a></td>
+          <td class="button"><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;pat_id={$patient->patient_id}&amp;operation_id=0">
+            une hospitalisation</a></td>
+          <td class="button"><a href="index.php?m=dPcabinet&amp;tab=edit_planning&amp;pat_id={$patient->patient_id}&amp;consultation_id=0">
+            une consultation</a></td>
         </tr>
       </table>
       
@@ -202,11 +204,7 @@ function printPatient(id) {
         <tr>
           <td>
             <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-            {if $curr_op->plageop_id}
             {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
-            {else}
-            Simple hospi.
-            {/if}
             </a>
             <em><a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;day={$curr_op->date_adm|date_format:"%d"}&amp;month={$curr_op->date_adm|date_format:"%m"}&amp;year={$curr_op->date_adm|date_format:"%Y"}#adm{$curr_op->operation_id}">
             (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})
@@ -219,6 +217,30 @@ function printPatient(id) {
           </td>
           <td>{if $curr_op->annulee}[ANNULE]{else}
             <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+            <img src="modules/dPpatients/images/planning.png" title="modifier"></a>{/if}
+          </td>
+        </tr>
+        {/foreach}
+        {/if}
+        {if $patient->_ref_hospitalisations}
+        <tr><th colspan="3" class="category">hospitalisations</th></tr>
+        {foreach from=$patient->_ref_hospitalisations item=curr_op}
+        <tr>
+          <td>
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
+            Simple hospi.
+            </a>
+            <em><a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;day={$curr_op->date_adm|date_format:"%d"}&amp;month={$curr_op->date_adm|date_format:"%m"}&amp;year={$curr_op->date_adm|date_format:"%Y"}#adm{$curr_op->operation_id}">
+            (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})
+            </a></em>
+          </td>
+          <td>
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
+            Dr. {$curr_op->_ref_chir->_view}
+            </a>
+          </td>
+          <td>{if $curr_op->annulee}[ANNULE]{else}
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
             <img src="modules/dPpatients/images/planning.png" title="modifier"></a>{/if}
           </td>
         </tr>
