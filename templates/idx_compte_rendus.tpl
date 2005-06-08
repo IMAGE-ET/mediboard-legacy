@@ -6,6 +6,7 @@
 function pageMain() {
   initGroups("consult");
   initGroups("op");
+  initGroups("hospi");
 }
 
 function popPat() {
@@ -136,6 +137,7 @@ function printPack(op, form) {
       <tr><th>Adresse :</th><td colspan="3" class="text">{$patSel->adresse}, {$patSel->cp} - {$patSel->ville}</td></tr>
     </table>
     <table class="form">
+
       <tr><th class="category" colspan="4">Consultations</th></tr>
       {foreach from=$patSel->_ref_consultations item=curr_consult}
       <tr class="groupcollapse" id="consult{$curr_consult->consultation_id}" onclick="flipGroup({$curr_consult->consultation_id}, 'consult')">
@@ -229,7 +231,6 @@ function printPack(op, form) {
           </select>
         </td>
       </tr>
-      {/if}
       <tr class="op{$curr_op->operation_id}"><th colspan="2">Compte-rendu opératoire :</th>
         <td colspan="2">
           <form name="editCROListFrm{$curr_op->operation_id}" action="?m=dPplanningOp" method="POST">
@@ -260,6 +261,7 @@ function printPack(op, form) {
           {/if}
           </form>
       </td></tr>
+      {/if}
       <tr class="op{$curr_op->operation_id}"><th colspan="2">Compte-rendu d'anesthésie :</th>
         <td class="button" colspan="2">modifier imprimer supprimer</td></tr>
       <tr class="op{$curr_op->operation_id}"><th colspan="2"><i>Fichiers associés :</i></th><td colspan="2" /></tr>
@@ -291,6 +293,70 @@ function printPack(op, form) {
         </td>
       </tr>
       {/foreach}
+      
+      
+      
+      <tr><th class="category" colspan="4">Hospitalisations</th></tr>
+      {foreach from=$patSel->_ref_hospitalisations item=curr_hospi}
+      <tr class="groupcollapse" id="hospi{$curr_hospi->operation_id}" onclick="flipGroup({$curr_hospi->operation_id}, 'hospi')">
+        <td colspan="4"><strong>Dr. {$curr_hospi->_ref_chir->_view}
+        &mdash; {$curr_hospi->date_adm|date_format:"%A %d %B %Y"}
+      </strong></td></tr>
+      {if $curr_hospi->CCAM_code}
+      <tr class="hospi{$curr_hospi->operation_id}"><td class="text" colspan="4">{$curr_hospi->_ext_code_ccam->code} :
+        {$curr_hospi->_ext_code_ccam->libelleLong}</td></tr>
+      {else}
+      <tr class="hospi{$curr_hospi->operation_id}"><td class="text" colspan="4">Simple observation</td></tr>
+      {/if}
+      {if $curr_hospi->CCAM_code2}
+      <tr class="hospi{$curr_hospi->operation_id}"><td class="text" colspan="4">{$curr_hospi->_ext_code_ccam2->code} :
+        {$curr_hospi->_ext_code_ccam2->libelleLong}</td></tr>
+      {/if}
+      {if $chirSel}
+      <tr class="hospi{$curr_hospi->operation_id}"><th colspan="2">Pack de sortie :</th>
+        <td colspan="2">
+          <form name="printPackFrm{$curr_hospi->operation_id}" action="?m=dPhospi" method="POST">
+          <select name="pack" onchange="printPack({$curr_hospi->operation_id}, this.form)">
+            <option value="0">&mdash; packs &mdash;</option>
+            {foreach from=$packs item=curr_pack}
+            <option value="{$curr_pack->pack_id}">{$curr_pack->nom}</option>
+            {/foreach}
+          </select>
+        </td>
+      </tr>
+      {/if}
+      <tr class="hospi{$curr_hospi->operation_id}"><th colspan="2">Compte-rendu d'anesthésie :</th>
+        <td class="button" colspan="2">modifier imprimer supprimer</td></tr>
+      <tr class="hospi{$curr_hospi->operation_id}"><th colspan="2"><i>Fichiers associés :</i></th><td colspan="2" /></tr>
+      {foreach from=$curr_hospi->_ref_files item=curr_file}
+      <tr class="hospi{$curr_hospi->operation_id}">
+        <th colspan="2"><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
+        <td>{$curr_file->_file_size}</td>
+        <td>
+          <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+          <input type="hidden" name="dosql" value="do_file_aed" />
+	      <input type="hidden" name="del" value="1" />
+	      <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
+	      <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
+          </form>
+        </td>
+	  </tr>
+      {/foreach}
+      <tr class="hospi{$curr_hospi->operation_id}">
+        <th colspan="3">
+          <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+          <input type="hidden" name="dosql" value="do_file_aed" />
+          <input type="hidden" name="del" value="0" />
+	      <input type="hidden" name="file_operation" value="{$curr_hospi->operation_id}" />
+          <input type="file" name="formfile" />
+        </th>
+        <td>
+          <input type="submit" value="ajouter">
+          </form>
+        </td>
+      </tr>
+      {/foreach}
+      
     </table>
     {/if}
   </td>

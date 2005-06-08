@@ -103,6 +103,22 @@ if($pat_id) {
         unset($patSel->_ref_operations[$key]);
     }
   }
+  foreach($patSel->_ref_hospitalisations as $key => $value) {
+    $patSel->_ref_hospitalisations[$key]->loadRefs();
+    if($chirSel) {
+      if($patSel->_ref_hospitalisations[$key]->chir_id != $chirSel)
+        unset($patSel->_ref_hospitalisations[$key]);
+    }
+    else {
+      $toDel = true;
+      foreach($listPrat as $key2 => $value2) {
+        if($patSel->_ref_hospitalisations[$key]->chir_id == $listPrat[$key2]->user_id)
+          $toDel = false;
+      }
+      if($toDel)
+        unset($patSel->_ref_hospitalisations[$key]);
+    }
+  }
 }
 
 // Recherche des plages de consultation contenant des rapports non validés
