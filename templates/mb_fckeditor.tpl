@@ -84,7 +84,7 @@ sMbPath = "../../../";
 
 FCKConfig.Plugins.Add( 'tablecommands', null);
 
-sMbComboPath = sMbPath + "modules/dpCompteRendu/fcke_plugins/" ;
+sMbComboPath = sMbPath + "modules/dPcompteRendu/fcke_plugins/" ;
 FCKConfig.Plugins.Add( 'mbcombo', 'en,fr', sMbComboPath ) ;
 
 FCKConfig.EditorAreaCSS = sMbPath + "style/mediboard/htmlarea.css";
