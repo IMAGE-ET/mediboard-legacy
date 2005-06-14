@@ -33,6 +33,7 @@ if($canEdit) {
   $tabBox->add( "vw_idx_planning", "Planning de la semaine" );
   $tabBox->add( "vw_edit_plages", "Planning du jour" );
   $tabBox->add( "vw_edit_interventions", "Gestion des interventions" );
+  $tabBox->add( "vw_urgences", "Voir les urgences");
   $tabBox->add( "vw_idx_materiel", "Commande de materiel" );
   $tabBox->add( "vw_idx_salles", "Gestion des salles" );
 }
