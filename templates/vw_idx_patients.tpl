@@ -121,7 +121,7 @@ function printPatient(id) {
           <td>
             {if $patient->sexe == "m"} masculin {/if}
             {if $patient->sexe == "f"} féminin {/if}
-            {if $patient->sexe == "j"} jeune fille {/if} 
+            {if $patient->sexe == "j"} femme célibataire {/if} 
           </td>
           <td colspan="2"></td>
         </tr>
