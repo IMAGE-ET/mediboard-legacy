@@ -61,8 +61,8 @@ if ($operation_id) {
 }
 
 // Heures & minutes
-$start = 7;
-$stop = 20;
+$start = 0;
+$stop = 24;
 $step = 15;
 
 for ($i = $start; $i < $stop; $i++) {

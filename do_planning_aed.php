@@ -53,10 +53,14 @@ if ($del) {
 		$AppUI->redirect();
 	}
 
-  if ($obj->plageop_id) {
+  if($obj->plageop_id && $obj->pat_id) {
     $_SESSION[$m]["operation_id"] = NULL;
     $AppUI->setMsg("Opération supprimée", UI_MSG_OK);
     $AppUI->redirect("m=$m&tab=vw_edit_planning");
+  } elseif($obj->pat_id) {
+    $_SESSION[$m]["hospitalisation_id"] = NULL;
+    $AppUI->setMsg("Hospitalisation supprimée", UI_MSG_OK);
+    $AppUI->redirect("m=$m&tab=vw_edit_hospi");
   } else {
     $_SESSION[$m]["protocole_id"] = NULL;
     $AppUI->setMsg("Protocole supprimé", UI_MSG_OK);
@@ -92,8 +96,11 @@ window.close();
 	else {
 	  if($otherm = dPgetParam( $_POST, 'otherm', 0))
 	    $m = $otherm;
+	  // Petit hack pour mettre à la bonne ligne dans vw_affectation
+	  if($m == "dPhospi")
+	    $AppUI->redirect("m=$m#operation$obj->operation_id");
 	  if($obj->plageop_id && $obj->pat_id)
-	    $AppUI->redirect("m=$m&operation_id=$obj->operation_id");
+        $AppUI->redirect("m=$m&operation_id=$obj->operation_id");
 	  elseif($obj->pat_id)
 	    $AppUI->redirect("m=$m&hospitalisation_id=$obj->operation_id");
 	  else
