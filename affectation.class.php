@@ -38,16 +38,30 @@ class CAffectation extends CDpObject {
   var $_ref_operation = null;
   var $_ref_prev = null;
   var $_ref_next = null;
+  var $_ref_first = null; // à implémenter
+  var $_ref_last = null; //à implémenter
 
 	function CAffectation() {
 		$this->CDpObject('affectation', 'affectation_id');
 	}
 
   function check() {
-    return null;
-    //if ($this->sortie <= $this->entree) {
-    //  return "La date de sortie doit être supérieure à la date d'entrée";
-    //}
+  	$obj = new CAffectation();
+  	$obj->load($this->affectation_id);
+  	$obj->loadRefsFwd();
+  	if(!$this->entree)
+  	  $this->entree = $obj->entree;
+  	if(!$this->sortie)
+  	  $this->sortie = $obj->sortie;
+  	if($obj->_ref_next->affectation_id && ($this->sortie != $obj->sortie))
+  	  return "Le patient a subi un déplacement";
+  	if($obj->_ref_prev->affectation_id && ($this->entree != $obj->entree))
+  	  return "Le patient a subi un déplacement";
+    if ($this->sortie <= $this->entree) {
+      return "La date de sortie doit être supérieure à la date d'entrée";
+    }
+    else
+      return null;
   }
   
   function delete() {
@@ -66,7 +80,7 @@ class CAffectation extends CDpObject {
   
   function store() {
     $msg = parent::store();
-    // Cas de la date d'admission de l'intervention qui diffère
+    // Modification de la date d'admission et de la durée de l'hospi
     $this->load($this->affectation_id);
     $this->loadRefsFwd();
 
@@ -75,9 +89,18 @@ class CAffectation extends CDpObject {
         $this->_ref_operation->date_adm = mbDate("+0 days", $this->entree);
         $this->_ref_operation->time_adm = mbTime("+0 days", $this->entree);
         $this->_ref_operation->updateFormFields();
-        $this->_ref_operation->store();
       }
     }
+    if(!$this->_ref_next->affectation_id) {
+      $debut = $this->_ref_operation->date_adm;
+      $fin = mbDate("+0 days", $this->sortie);
+      $duree = mbDaysRelative($debut, $fin) + 1;
+      if($duree != $this->_ref_operation->duree_hospi) {
+        $this->_ref_operation->duree_hospi = $duree;
+        $this->_ref_operation->updateFormFields();
+      }
+    }
+    $this->_ref_operation->store();
     return $msg;
   }
   

@@ -7,8 +7,8 @@
 * @author Thomas Despoix
 */
 
-$totalChrono = new Chronometer();
-$totalChrono->start();
+//$totalChrono = new Chronometer();
+//$totalChrono->start();
 
 global $AppUI, $canRead, $canEdit, $m;
 
@@ -183,10 +183,7 @@ $smarty->assign('groupOpNonAffectees' , $groupOpNonAffectees);
 
 $smarty->display('vw_affectations.tpl');
 
-$totalChrono->stop();
-mbTrace($totalChrono, "Total");
-
-global $dbChrono;
-mbTrace($dbChrono, "Chrono");
+//$totalChrono->stop();
+//mbTrace($totalChrono, "Total");
 
 ?>

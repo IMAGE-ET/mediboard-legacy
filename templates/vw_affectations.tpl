@@ -307,10 +307,22 @@ function popPlanning() {
           </tr>
           <tr class="dates">
             {if $curr_affectation->_ref_prev->affectation_id}
-            <td class="text" colspan="2">
+            <td class="text">
               <em>Déplacé</em> (chambre: {$curr_affectation->_ref_prev->_ref_lit->_ref_chambre->nom}):
               {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
               ({$curr_affectation->_entree_relative} jours)
+            <td class="action">
+              <form name="rmvAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
+
+              <input type="hidden" name="dosql" value="do_affectation_aed" />
+              <input type="hidden" name="del" value="1" />
+              <input type="hidden" name="affectation_id" value="{$curr_affectation->affectation_id}" />
+
+              </form>
+              
+              <a style="float: right;" href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view}')">
+                <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
+              </a>
             {else}
             <td class="text">
               {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
@@ -431,14 +443,14 @@ function popPlanning() {
           </tr>
           {if $curr_affectation->_ref_operation->rques != ""}
           <tr class="dates">
-            <td class="text" colspan="2">
+            <td class="text" colspan="2" style="background-color: #ff5">
               <em>Intervention</em>: {$curr_affectation->_ref_operation->rques|nl2br}
             </td>
           </tr>
           {/if}
           {if $curr_affectation->_ref_operation->_ref_pat->rques != ""}
           <tr class="dates">
-            <td class="text" colspan="2">
+            <td class="text" colspan="2" style="background-color: #ff5">
               <em>Patient</em>: {$curr_affectation->_ref_operation->_ref_pat->rques|nl2br}
             </td>
           </tr>
@@ -600,14 +612,14 @@ function popPlanning() {
       </tr>
       {if $curr_operation->rques != ""}
       <tr>
-        <td class="date" colspan="2">
+        <td class="date" colspan="2" style="background-color: #ff5">
           <em>Intervention</em>: {$curr_operation->rques|escape:nl2br}
         </td>
       </tr>
       {/if}
       {if $curr_operation->_ref_pat->rques != ""}
       <tr>
-        <td class="date" colspan="2">
+        <td class="date" colspan="2" style="background-color: #ff5">
           <em>Patient</em>: {$curr_operation->_ref_pat->rques|escape:nl2br}
         </td>
       </tr>
