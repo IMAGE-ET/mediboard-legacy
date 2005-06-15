@@ -342,9 +342,9 @@ function printForm() {
   <tr>
     {if $op->operation_id}
       {if $protocole}
-      <th colspan="2" class="title" colspan="5">Modification du protocole {$op->CCAM_code} du Dr. {$chir->_view}</th>
+      <th colspan="2" class="title" colspan="5" style="color: #f00;">Modification du protocole {$op->CCAM_code} du Dr. {$chir->_view}</th>
       {else}
-      <th colspan="2" class="title" colspan="5">Modification de l'intervention de {$pat->_view} par le Dr. {$chir->_view}</th>
+      <th colspan="2" class="title" colspan="5" style="color: #f00;">Modification de l'intervention de {$pat->_view} par le Dr. {$chir->_view}</th>
       {/if}
     {else}
       {if $protocole}
