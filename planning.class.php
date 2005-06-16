@@ -139,7 +139,6 @@ class COperation extends CDpObject {
     $msg = parent::delete();
     if($msg == null)
       $this->delAff();
-      
   }
   
   function delAff() {
@@ -247,6 +246,10 @@ class COperation extends CDpObject {
       $affTmp->entree = $this->date_adm." ".$this->time_adm;
       $affTmp->store();
     }
+    
+    // Cas d'une annulation
+    if($this->annulee)
+      $this->delAff();
     
     return $msg;
     
