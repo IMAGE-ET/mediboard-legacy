@@ -9,8 +9,6 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
-require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
-
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
