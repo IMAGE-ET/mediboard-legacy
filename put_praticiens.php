@@ -29,7 +29,7 @@ foreach($listImport as $key => $value) {
   $match = db_loadlist($sql);
   if(!count($match)) {
   	$user = new CMediusers;
-  	// Primary key
+  	// DB Table key
   	$user->user_id = '';
   	// DB Fields
     $user->remote = 0;
@@ -42,7 +42,7 @@ foreach($listImport as $key => $value) {
 	$user->_user_password = "nevousconnectezpassvp";
 	$user->_user_first_name = trim($value["prenom"]);
 	$user->_user_last_name  = trim($value["nom"]);
-	$user->updateDBFields();
+	$user->store();
 	$sql = "UPDATE import_praticiens" .
     		"\nSET mb_id = '".$user->user_id."'" .
     		"\nWHERE praticien_id = '".$value["praticien_id"]."'";
@@ -51,7 +51,7 @@ foreach($listImport as $key => $value) {
   } else {
     $sql = "UPDATE import_praticiens" .
     		"\nSET mb_id = '".$match[0]["user_id"]."'" .
-    		"WHERE praticien_id = '".$value["praticien_id"]."'";
+    		"\nWHERE praticien_id = '".$value["praticien_id"]."'";
     db_exec($sql);
     $link++;
   }
