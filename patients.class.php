@@ -259,6 +259,17 @@ class CPatient extends CDpObject {
     $siblings = db_loadlist($sql);
     return $siblings;
   }
+
+  function getExactSiblings() {
+    $sql = "SELECT patient_id, nom, prenom, naissance, adresse, ville, CP " .
+      		"FROM patients WHERE " .
+      		"patient_id != '$this->patient_id' " .
+      		"AND nom    = '$this->nom'" .
+      		"AND prenom = '$this->prenom'" .
+      		"AND naissance = '$this->naissance'";
+    $siblings = db_loadlist($sql);
+    return $siblings;
+  }
   
   function fillTemplate(&$template) {
   	$this->loadRefsFwd();
