@@ -21,11 +21,10 @@
   <li>
     Voici les scripts à lancer :
     <ul>
-      <li><a name="patients" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_patients', 'patients')">Import des patients</a></li>
-      <li><a name="praticiens" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_praticiens', 'praticiens')">Import des praticiens</a></li>
-      <li><a name="medecins" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_medecins', 'medecins')">Import des médecins traitants</a></li>
-      <li><a name="consult1" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_consult1', 'consult1')">Import des consultations (horaire)</a></li>
-      <li><a name="consult2" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_consult2', 'consult2')">Import des consultations (examen)</a></li>
+      <li><a name="patients" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=put_patients', 'patients')">Envoie des patients vers Mediboard</a></li>
+      <li><a name="praticiens" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=put_praticiens', 'praticiens')">Envoie des praticiens vers Mediboard</a></li>
+      <li><a name="medecins" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=put_medecins', 'medecins')">Envoie des medecins vers Mediboard</a></li>
+      <li><a name="consult" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=put_consult', 'consult')">Envoie des consultations vers Mediboard</a></li>
     </ul>
   </li>
 
