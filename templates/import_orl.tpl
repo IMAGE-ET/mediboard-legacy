@@ -1,8 +1,9 @@
 <h1>Procédure</h1>
-<p>Pour chaque fichier de données:</p>
 <ol>
+  <li>Créer les tables qui accueilleront les données : fichier tables_import.sql dans le zip</li>
+  <li>Placer les fichiers TXT au format CSV contenus dans le zip dans la racine du module dPinterop.</li>
   <li>
-    Importer le CSV dans MySQL en créant un table telle quelle
+    Importer le CSV dans MySQL en créant un table telle quelle en suivant chaque lien :
     <ul>
       <li><a name="patients" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_patients', 'patients')">Import des patients</a></li>
       <li><a name="praticiens" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_praticiens', 'praticiens')">Import des praticiens</a></li>
@@ -20,5 +21,3 @@
 
   <li>Inscrire l'ID dans le champ mb_id de la table d'import</li>
 </ol>
-
-<p>Bien sûr il faut commencer par la table maîtresse, celle qui ne possède pas de clé étrangère vers d'autres table</p>
