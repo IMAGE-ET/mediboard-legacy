@@ -281,13 +281,7 @@ function printForm() {
     url += '&pat_id='      + eval('form.pat_id.value'      );
     url += '&CCAM_code='   + eval('form.CCAM_code.value'   );
     url += '&cote='        + eval('form.cote.value'        );
-    url += '&hour_op='     + eval('form._hour_op.value'    );
-    url += '&min_op='      + eval('form._min_op.value'     );
-    url += '&date='        + eval('form.date.value'        );
     url += '&info='        + eval('form.info.value'        );
-    url += '&rdv_anesth='  + eval('form._rdv_anesth.value' );
-    url += '&hour_anesth=' + eval('form._hour_anesth.value');
-    url += '&min_anesth='  + eval('form._min_anesth.value' );
     url += '&rdv_adm='     + eval('form._rdv_adm.value'    );
     url += '&hour_adm='    + eval('form._hour_adm.value'   );
     url += '&min_adm='     + eval('form._min_adm.value'    );

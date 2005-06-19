@@ -42,6 +42,7 @@ $adm["chirName"] = $chir->_view;
 
 $pat = new CPatient();
 $pat->load($pat_id);
+$pat->loadRefsFwd();
 $adm["patName"] = $pat->nom;
 $adm["patFirst"] = $pat->prenom;
 $adm["naissance"] = substr($pat->naissance, 8, 2)."/".substr($pat->naissance, 5, 2)."/".substr($pat->naissance, 0, 4);
@@ -55,7 +56,7 @@ else
   $adm["inc"] = "non";
 $adm["tel"] = $pat->tel;
 if($pat->medecin_traitant)
-  $adm["medTrait"] = $pat->medecin_traitant;
+  $adm["medTrait"] = $pat->_ref_medecin_traitant->_view;
 else
   $adm["medTrait"] = "/";
 $adm["adresse"] = $pat->adresse;
