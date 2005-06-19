@@ -95,5 +95,68 @@ function mbDaysRelative($from, $to) {
   return $days-1;
 }
 
+/**
+ * Insert a CSV file into a mysql table 
+ **/
+
+function mbInsertCSV( $fileName, $tableName )
+{
+    $file = fopen( $fileName, 'rw' );
+    if(! $file) {
+      echo "Fichier non trouvé<br>";
+      return;
+    }
+    $k = 0;
+    $reussite = 0;
+    $echec = 0;
+    $null = 0;
+    
+    //$contents = fread ($file, filesize ($fileName));
+    //$content = str_replace(chr(10), " ", $content);
+  
+    while ( ! feof( $file ) )
+    {
+        $k++;
+        $line = str_replace("NULL", "\"NULL\"", fgets( $file, 1024));
+        $size = strlen($line)-3;
+        $test1 = $line[$size] != "\"";
+        $test2 = $line[$size-1] == "\\";
+        $test3 = (! feof( $file ));
+        $test = ($test1 || (!$test1 && $test2)) && $test3;
+        while($test) {
+          $line .= str_replace("NULL", "\"NULL\"", fgets( $file, 1024));
+          $size = strlen($line)-3;
+          $test1 = $line[$size] != "\"";
+          $test2 = $line[$size-1] == "\\";
+          $test3 = (! feof( $file ));
+          $test = ($test1 || (!$test1 && $test2)) && $test3;
+        }
+
+        if ( strlen( $line ) > 2 )
+        {
+            $line = addslashes( $line );
+            $line = str_replace ( "\\\";\\\"", "', '", $line );
+            $line = str_replace ( "\\\"", "", $line );
+            $requete = 'INSERT INTO '.$tableName.' VALUES ( \''.$line.'\' ) ';
+            if ( ! db_exec ( $requete ) ) {
+                echo 'Erreur Ligne '.$k.' : '.mysql_error().'<br>'.$requete.'<br>';
+                $echec++;
+            }  else {
+                //echo 'Ligne '.$k.' valide.<br>'.$requete.'<br>';
+                $reussite++;
+            }
+        } else {
+            //echo 'Ligne '.$k.' ignorée.<br>';
+            $null++;
+        }
+    }
+
+    echo '<p>Insertion du fichier '.$fileName.' terminé.</p>';
+    echo '<p>'.$k.' lignes trouvées, '.$reussite.' enregistrées, ';
+    echo $echec.' non conformes, '.$null.' ignorées.</p><hr>';
+
+    fclose( $file );
+}
+
 
 ?>
