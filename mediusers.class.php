@@ -24,13 +24,13 @@ class CMediusers extends CDpObject {
 	var $user_id = null;
 
   // DB Fields
-  var $remote = null;
+    var $remote = null;
 
   // DB References
 	var $function_id = null;
 
   // dotProject user fields
-  var $_user_type       = null;
+    var $_user_type       = null;
 	var $_user_username   = null;
 	var $_user_password   = null;
 	var $_user_first_name = null;
