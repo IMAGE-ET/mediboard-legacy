@@ -18,6 +18,10 @@ if (!$canRead) {
 
 // Paramètres
 $freq = "00:15:00";
+$freqs = array (
+  "00:15:00" => 1,
+  "00:30:00" => 2,
+  "00:45:00" => 3);
 
 // Récupération des consultations
 $sql = "SELECT " .
@@ -78,24 +82,24 @@ foreach ($consults as $consult) {
     $consultation->plageconsult_id = $plage->plageconsult_id;
     $consultation->patient_id = $consult->patient_mb_id;
     
-    $consultation->heure =$consult->debut;
-    $consultation->duree = null;
-    $consultation->secteur1 = null;
-    $consultation->secteur2 = null;
+    $consultation->heure = $consult->debut;
+    $consultation->duree = @$freqs[$consult->freq] or 1;
+    $consultation->secteur1 = $consult->secteur1;
+    $consultation->secteur2 = $consult->secteur2;
     $consultation->chrono = date("%Y-%m-%d") > $consult->date ? CC_TERMINE : CC_PLANIFIE;
-    $consultation->annule = null;
-    $consultation->paye = null;
-    $consultation->cr_valide = null;
-    $consultation->motif = null;
-    $consultation->rques = null;
-    $consultation->examen = null;
-    $consultation->traitement = null;
+    $consultation->annule = 0;
+    $consultation->paye = date("%Y-%m-%d") > $consult->date ? 1 : 0;
+    $consultation->cr_valide = 0;
+    $consultation->motif = $consult->motif;
+    $consultation->rques = $consult->rques;
+    $consultation->examen = $consult->examen;
+    $consultation->traitement = $consult->traitement;
     $consultation->compte_rendu = null;
-    $consultation->premiere = null;
-    $consultation->tarif = null;
-    $consultation->type_tarif = null;
+    $consultation->premiere = $consult->premiere;
+    $consultation->tarif = $consult->tarif;
+    $consultation->type_tarif = $consult->type_tarif;
 
-//    $consultation->store();
+    $consultation->store();
     $nbConsultationsCreees++;
   } else {
     $nbConsultationsChargees++;
