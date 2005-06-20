@@ -32,12 +32,12 @@ foreach($listImport as $key => $value) {
   	// DB Table key
 	$pat->patient_id = '';
     // DB Fields
-    if(trim($value["nom"]) == '')
+    if(trim($value["nom"]) == "")
 	  $pat->nom= "-";
 	else
 	  $pat->nom = trim($value["nom"]);
 	$pat->nom_jeune_fille = trim($value["nom_jeune_fille"]);
-	if(trim($value["prenom"]) == '')
+	if(trim($value["prenom"]) == "")
 	  $pat->prenom = "-";
 	else
 	  $pat->prenom = trim($value["prenom"]);
