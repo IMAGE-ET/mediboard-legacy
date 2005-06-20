@@ -49,21 +49,21 @@ foreach($listImport as $key => $value) {
 	  $med = db_loadlist($sql);
 	  $pat->medecin_traitant = $med[0]["mb_id"];
 	}
-	if($pat->medecin_traitant) {
+	if($pat->medecin1) {
 	  $sql = "SELECT medecin_id" .
 	  		"FROM import_medecins" .
 	  		"WHERE medecin_id = '".$value["medecin1"]."'";
 	  $med = db_loadlist($sql);
 	  $pat->medecin1 = $med[0]["mb_id"];
 	}
-	if($pat->medecin_traitant) {
+	if($pat->medecin2) {
 	  $sql = "SELECT medecin_id" .
 	  		"FROM import_medecins" .
 	  		"WHERE medecin_id = '".$value["medecin2"]."'";
 	  $med = db_loadlist($sql);
 	  $pat->medecin2 = $med[0]["mb_id"];
 	}
-	if($pat->medecin_traitant) {
+	if($pat->medecin3) {
 	  $sql = "SELECT medecin_id" .
 	  		"FROM import_medecins" .
 	  		"WHERE medecin_id = '".$value["medecin3"]."'";
