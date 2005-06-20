@@ -10,6 +10,7 @@
       <li><a name="medecins" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_medecins', 'medecins')">Import des médecins traitants</a></li>
       <li><a name="consult1" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_consult1', 'consult1')">Import des consultations (horaire)</a></li>
       <li><a name="consult2" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_consult2', 'consult2')">Import des consultations (examen)</a></li>
+      <li><a name="rdv" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=orl_rdv', 'rdv')">Import RDV à venir</a></li>
     </ul>
   </li>
   <li>Ajouter un champ mb_id, indiquant la clé de l'objet correspondant dans la base Mediboard : utiliser le fichier mb_id.sql dans le zip</li>
@@ -25,6 +26,7 @@
       <li><a name="medecins" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=put_medecins', 'medecins')">Envoie des medecins vers Mediboard</a></li>
       <li><a name="patients" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=put_patients', 'patients')">Envoie des patients vers Mediboard</a></li>
       <li><a name="consult" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=put_consult', 'consult')">Envoie des consultations vers Mediboard</a></li>
+      <li><a name="rdv" onclick="popup(400, 400, 'index.php?m=dPinterop&dialog=1&a=put_rdv', 'rdv')">Envoie des rdv à venir vers Mediboard</a></li>
     </ul>
   </li>
 
