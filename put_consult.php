@@ -84,7 +84,6 @@ foreach ($consults as $consult) {
         AND consultation.patient_id = '$consult->patient_mb_id'
         AND plageconsult.date = '$consult->date'
         AND plageconsult.chir_id = '$consult->prat_mb_id'";
-  echo $sql."<br>";
   $result = db_loadlist($sql);
   if(count($result))
     $consultation->load($result[0]["consultation_id"]);
@@ -97,9 +96,9 @@ foreach ($consults as $consult) {
     $consultation->duree = @$freqs[$consult->freq] or 1;
     $consultation->secteur1 = $consult->secteur1;
     $consultation->secteur2 = $consult->secteur2;
-    $consultation->chrono = date("%Y-%m-%d") > $consult->date ? CC_TERMINE : CC_PLANIFIE;
+    $consultation->chrono = strftime("%Y-%m-%d") > $consult->date ? CC_TERMINE : CC_PLANIFIE;
     $consultation->annule = 0;
-    $consultation->paye = date("%Y-%m-%d") > $consult->date ? 1 : 0;
+    $consultation->paye = strftime("%Y-%m-%d") > $consult->date ? 1 : 0;
     $consultation->cr_valide = 0;
     $consultation->motif = $consult->motif;
     $consultation->rques = $consult->rques;
