@@ -12,6 +12,12 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once($AppUI->getModuleClass("dPcabinet", "plageconsult"));
 require_once($AppUI->getModuleClass("dPcabinet", "consultation"));
 
+$limit = mbGetValueFromGetOrSession("limit", 0);
+
+if ($limit == -1) {
+  return;	
+}
+
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -37,7 +43,7 @@ $sql = "SELECT " .
     "\nWHERE import_consultations1.chir_id = import_praticiens.praticien_id" .
     "\nAND import_consultations1.consultation1_id = import_consultations2.plageconsult_id" .
     "\nAND import_consultations2.patient_id = import_patients.patient_id" .
-    "\nLIMIT 0, 100";
+    "\nLIMIT $limit, 1000";
 $res = db_exec($sql);
 $consults = array();
 while ($row = db_fetch_object($res)) {
@@ -107,9 +113,13 @@ foreach ($consults as $consult) {
    
 }
 
+mbTrace($limit, "limit start");
 mbTrace($nbPlagesCreees, "nbPlagesCreees");
 mbTrace($nbPlagesChargees, "nbPlagesChargees");
 mbTrace($nbConsultationsCreees, "nbConsultationsCreees");
 mbTrace($nbConsultationsChargees, "nbConsultationsChargees");
 
+$limit = count($consults) ? $limit + 1000 : -1;
+mbSetValueToSession("limit", $limit);
+header( 'refresh: 0; url=index.php?m=dPinterop&dialog=1&a=put_consult' );
 ?>
