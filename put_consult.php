@@ -73,7 +73,7 @@ foreach ($consults as $consult) {
   // Création de la consultation
   $consultation = new CConsultation;
   $where = array(
-    "patient_id" => "= 'patient_mb_id'");
+    "patient_id" => "= '$consult->patient_mb_id'");
   $leftjoin = array(
     "plageconsult"    => "'date' = $consult->date AND 'chir_id' = $consult->prat_mb_id");
   $consultation->loadObject($where, null, null, $leftjoin);
