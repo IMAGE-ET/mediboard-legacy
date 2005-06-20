@@ -32,9 +32,15 @@ foreach($listImport as $key => $value) {
   	// DB Table key
 	$pat->patient_id = '';
     // DB Fields
-	$pat->nom = trim($value["nom"]);
+    if(trim($value["nom"]) == '')
+	  $pat->nom= "-";
+	else
+	  $pat->nom = trim($value["nom"]);
 	$pat->nom_jeune_fille = trim($value["nom_jeune_fille"]);
-	$pat->prenom = trim($value["prenom"]);
+	if(trim($value["prenom"]) == '')
+	  $pat->prenom = "-";
+	else
+	  $pat->prenom = trim($value["prenom"]);
 	$pat->naissance = $value["naissance"];
 	$pat->sexe = $value["sexe"];
 	$pat->adresse = $value["adresse"];
@@ -75,7 +81,7 @@ foreach($listImport as $key => $value) {
 	$pat->matricule = $value["matricule"];
 	$pat->SHS = null;
 	$pat->rques = $value["rques"];
-	$pat->store();
+	echo $pat->store();
 	$sql = "UPDATE import_patients" .
     		"\nSET mb_id = '".$pat->patient_id."'" .
     		"\nWHERE patient_id = '".$value["patient_id"]."'";
