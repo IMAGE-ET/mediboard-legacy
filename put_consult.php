@@ -78,11 +78,16 @@ foreach ($consults as $consult) {
   
   // Création de la consultation
   $consultation = new CConsultation;
-  $where = array(
-    "patient_id" => "= '$consult->patient_mb_id'");
-  $leftjoin = array(
-    "plageconsult"    => "'date' = $consult->date AND 'chir_id' = $consult->prat_mb_id");
-  $consultation->loadObject($where, null, null, $leftjoin);
+  $sql = "SELECT consultation.*, plageconsult.*
+        FROM consultation, plageconsult
+        WHERE consultation.plageconsult_id = plageconsult.plageconsult_id
+        AND consultation.patient_id = '$consult->patient_mb_id'
+        AND plageconsult.date = '$consult->date'
+        AND plageconsult.chir_id = '$consult->prat_mb_id'";
+  echo $sql."<br>";
+  $result = db_loadlist($sql);
+  if(count($result))
+    $consultation->load($result[0]["consultation_id"]);
   
   if ($consultation->consultation_id == null) {
     $consultation->plageconsult_id = $plage->plageconsult_id;
