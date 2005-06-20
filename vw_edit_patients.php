@@ -16,6 +16,14 @@ if (!$canRead) {
 
 $patient_id = mbGetValueFromGetOrSession("id", 0);
 
+$patient = new CPatient;
+$patient->load($patient_id);
+$patient->loadRefs();
+
+if (!$patient->patient_id) {
+  $patient = null;
+}
+
 // Vérification de l'existence de doublons
 $textSiblings = NULL;
 $patientSib = NULL;
@@ -28,7 +36,7 @@ if($created = dPgetParam($_GET, 'created', 0)){
   	$textSiblings = NULL;
   	$patientSib = NULL;
   	if($dialog)
-  	  $AppUI->redirect( "m=dPpatients&a=pat_selector&dialog=1name=&firstName=" );
+  	  $AppUI->redirect( "m=dPpatients&a=pat_selector&dialog=1&name=$patient->nom&firstName=$patient->prenom" );
   	else
   	  $AppUI->redirect( "m=dPpatients&tab=vw_idx_patients&id=$created&nom=&prenom=" );
   }
@@ -44,13 +52,6 @@ if($created = dPgetParam($_GET, 'created', 0)){
 }
 
 // Récuperation du patient sélectionné
-$patient = new CPatient;
-$patient->load($patient_id);
-$patient->loadRefs();
-
-if (!$patient->patient_id) {
-  $patient = null;
-}
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );

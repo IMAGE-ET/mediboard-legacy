@@ -14,8 +14,10 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$name = dPgetParam( $_GET, 'name', '' );
-$firstName = dPgetParam( $_GET, 'firstName', '' );
+$name = mbGetValueFromGetOrSession("name", "");
+$firstName = mbGetValueFromGetOrSession("firstName", "");
+//$name = dPgetParam( $_GET, 'name', '' );
+//$firstName = dPgetParam( $_GET, 'firstName', '' );
 
 $list = new CPatient;
 $where = array();

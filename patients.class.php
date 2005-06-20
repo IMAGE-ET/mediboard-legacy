@@ -79,13 +79,6 @@ class CPatient extends CDpObject {
     
     $this->nom = strtoupper($this->nom);
     $this->prenom = ucwords(strtolower($this->prenom));
-    if($this->sexe == "m")
-      $this->_view = "M. ";
-    elseif($this->sexe == "f")
-      $this->_view = "Mme. ";
-    else
-      $this->_view = "Mlle. ";
-    $this->_view .= "$this->nom $this->prenom";
     
     $this->_jour  = substr($this->naissance, 8, 2);
     $this->_mois  = substr($this->naissance, 5, 2);
@@ -116,6 +109,16 @@ class CPatient extends CDpObject {
       if($jourjour<$journais && $moisjour==$moisnais){$this->_age=$this->_age-1;}
     } else
       $this->_age = "??";
+    
+    if($this->_age != "??" && $this->_age <= 15)
+      $this->_view = "Enf. ";
+    elseif($this->sexe == "m")
+      $this->_view = "M. ";
+    elseif($this->sexe == "f")
+      $this->_view = "Mme. ";
+    else
+      $this->_view = "Mlle. ";
+    $this->_view .= "$this->nom $this->prenom";
   }
   
   function updateDBFields() {
