@@ -44,9 +44,12 @@ $listeTarifsSpe = new CTarif();
 $listeTarifsSpe = $listeTarifsSpe->loadList($where);
 
 // Liste des praticiens du cabinet -> on ne doit pas voir les autres...
-//$listPrat = new CMediusers();
-//$listPrat = $listPrat->loadPraticiens(PERM_READ);
-$listPrat[0] = $user;
+if($user->user_type == 'Administrator') {
+  $listPrat = new CMediusers();
+  $listPrat = $listPrat->loadPraticiens(PERM_READ);
+}
+else
+  $listPrat[0] = $user;
 
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));
