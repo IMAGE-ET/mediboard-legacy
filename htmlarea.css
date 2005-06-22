@@ -25,4 +25,8 @@ span.hilite {
   span.name {
     background: #bdb;
   }
+
+  span.choice {
+    background: #ddd;
+  }
 }
