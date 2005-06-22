@@ -19,13 +19,14 @@ function clickListener(e) {
   }  
 }
 
+if (!FCKBrowserInfo.IsIE && bAutoSelectSpans) {
+  FCK.EditorDocument.addEventListener('click', clickListener, true ) ;
+}
+
 for (var i = 0; i < aMbCombos.length; i++) {
 
   var oMbCombo = aMbCombos[i];
   
-  if (!FCKBrowserInfo.IsIE) {
-  	FCK.EditorDocument.addEventListener('click', clickListener, true ) ;
-  }
   
   // Defines command class
   var FCKMbComboCommand = function() {
@@ -34,7 +35,7 @@ for (var i = 0; i < aMbCombos.length; i++) {
   }
   
   FCKMbComboCommand.prototype.Execute = function(itemId, item) {
-	FCK.InsertHtml("&nbsp;");
+//	FCK.InsertHtml("&nbsp;");
     var oSpan = FCK.CreateElement("span") ;
 	oSpan.className = this.spanClass;
 	oSpan.innerHTML = itemId;

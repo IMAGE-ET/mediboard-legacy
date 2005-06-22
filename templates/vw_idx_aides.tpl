@@ -44,7 +44,9 @@ function loadItems(select, options, value) {
 
   // insert new ones
   for (var elm in options) {
-    select.options[select.length] = new Option(elm, elm, elm == value);
+	if (typeof(options[elm]) != "function") { // to filter prototype functions
+      select.options[select.length] = new Option(elm, elm, elm == value);
+	}
   }
   
 }

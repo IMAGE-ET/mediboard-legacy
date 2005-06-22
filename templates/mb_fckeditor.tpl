@@ -1,6 +1,8 @@
 // Mediboard Combo configuration
 var aMbCombos = new Array();
 
+var bAutoSelectSpans = {if $templateManager->valueMode} false {else} true {/if};
+
 // Add properties Combo
 var oMbCombo = new Object();
 oMbCombo.commandName = "MbField";
@@ -16,7 +18,7 @@ aMbCombos.push(oMbCombo);
     view: "{$property.field|escape:"htmlall"|escape:"javascript"}" ,
     item: 
       {if $templateManager->valueMode} 
-        "{$property.value|escape:"htmlall"|escape:"javascript"}" 
+        "{$property.value|escape:"htmlall"|nl2br|escape:"javascript"}" 
       {else} 
         "[{$property.field|escape:"htmlall"|escape:"javascript"}]" 
       {/if}
@@ -55,7 +57,7 @@ aMbCombos.push(oMbCombo);
 {foreach from=$templateManager->helpers key=helperName item=helperText}
   aOptions.push( {ldelim} 
     view: "{$helperName|escape:"htmlall"|escape:"javascript"}" ,
-    item: "{$helperText|escape:"htmlall"|escape:"javascript"}]"
+    item: "{$helperText|escape:"htmlall"|nl2br|escape:"javascript"}"
     {rdelim});
 {/foreach}
 
@@ -90,6 +92,12 @@ FCKConfig.Plugins.Add( 'mbcombo', 'en,fr', sMbComboPath ) ;
 FCKConfig.EditorAreaCSS = sMbPath + "style/mediboard/htmlarea.css";
 FCKConfig.DefaultLanguage = "fr" ;
 FCKConfig.AutoDetectLanguage = false ;
+
+// Warning: fckeditor/editor/filemanager/browser/default/connectors/php/config.php must contain:
+// $Config['UserFilesPath'] = '/Mediboard/UserFiles/' ;
+
+FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/php/connector.php' ; 
+FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=connectors/php/connector.php' ;
 
 // Screws the context menu style away
 // FCKConfig.SkinPath = "./skins/default/";
