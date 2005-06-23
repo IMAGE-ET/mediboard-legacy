@@ -135,8 +135,8 @@ function setMed( key, nom, prenom, type ){
         <td><input tabindex="1" type="text" name="nom" value="{$patient->nom}" /></td>
         <th>Incapable majeur:</th>
         <td colspan="2">
-          <input tabindex="20" type="radio" name="incapable_majeur" value="o" {if $patient->incapable_majeur == "o"} checked="checked" {/if} />oui
-          <input tabindex="21" type="radio" name="incapable_majeur" value="n" {if $patient->incapable_majeur == "n"} checked="checked" {/if} />non
+          <input tabindex="21" type="radio" name="incapable_majeur" value="o" {if $patient->incapable_majeur == "o"} checked="checked" {/if} />oui
+          <input tabindex="22" type="radio" name="incapable_majeur" value="n" {if $patient->incapable_majeur == "n"} checked="checked" {/if} />non
         </td>
       </tr>
       
@@ -145,8 +145,8 @@ function setMed( key, nom, prenom, type ){
         <td><input tabindex="2" type="text" name="prenom" value="{$patient->prenom}" /></td>
         <th>ATNC:</th>
         <td colspan="2">
-          <input tabindex="22" type="radio" name="ATNC" value="o" {if $patient->ATNC == "o"} checked="checked" {/if} />oui
-          <input tabindex="23" type="radio" name="ATNC" value="n" {if $patient->ATNC == "n"} checked="checked" {/if} />non
+          <input tabindex="23" type="radio" name="ATNC" value="o" {if $patient->ATNC == "o"} checked="checked" {/if} />oui
+          <input tabindex="24" type="radio" name="ATNC" value="n" {if $patient->ATNC == "n"} checked="checked" {/if} />non
         </td>
       </tr>
       
@@ -154,7 +154,7 @@ function setMed( key, nom, prenom, type ){
         <th>Nom de jeune fille:</th>
         <td><input tabindex="3" type="text" name="nom_jeune_fille" value="{$patient->nom_jeune_fille}" /></td>
         <th>Numéro d'assuré social:</th>
-        <td colspan="2"><input tabindex="24" type="text" size="15" maxlength="15" name="matricule" value="{$patient->matricule}" /></td>
+        <td colspan="2"><input tabindex="25" type="text" size="15" maxlength="15" name="matricule" value="{$patient->matricule}" /></td>
       </tr>
       
       <tr>
@@ -165,7 +165,7 @@ function setMed( key, nom, prenom, type ){
           <input tabindex="6" type="text" name="_annee" size="4" maxlength="4" value="{if $patient->_annee != "0000"}{$patient->_annee}{/if}" />
         </td>
         <th>Code administratif:</th>
-        <td colspan="2"><input tabindex="25" type="text" name="SHS" value="{$patient->SHS}" /></td>
+        <td colspan="2"><input tabindex="26" type="text" name="SHS" value="{$patient->SHS}" /></td>
       </tr>
       
       <tr>
@@ -187,13 +187,13 @@ function setMed( key, nom, prenom, type ){
       
       <tr>
         <th>Adresse:</th>
-        <td><input tabindex="8_" type="text" name="adresse" value="{$patient->adresse}" /></td>
+        <td><textarea tabindex="8" name="adresse" rows="1">{$patient->adresse}</textarea></td>
         <th>
           <input type="hidden" name="medecin_traitant" value="{$patient->_ref_medecin_traitant->medecin_id}" />
           <label for="editFrm_medecin_traitant">Medecin traitant:</label>
         </th>
         <td class="readonly"><input type="text" name="_medecin_traitant_name" size="30" value="{if ($patient->_ref_medecin_traitant)}Dr. {$patient->_ref_medecin_traitant->_view}{/if}" readonly="readonly" /></td>
-        <td class="button"><input tabindex="26" type="button" value="choisir un medecin" onclick="popMed('_traitant')"></td>
+        <td class="button"><input tabindex="27" type="button" value="choisir un medecin" onclick="popMed('_traitant')"></td>
       </tr>
       
       <tr>
@@ -204,7 +204,7 @@ function setMed( key, nom, prenom, type ){
           <label for="editFrm_medecin1">Medecin correspondant 1:</label>
         </th>
         <td class="readonly"><input type="text" name="_medecin1_name" size="30" value="{if ($patient->_ref_medecin1)}Dr. {$patient->_ref_medecin1->_view}{/if}" readonly="readonly" /></td>
-        <td class="button"><input tabindex="27" type="button" value="choisir un medecin" onclick="popMed('1')"></td>
+        <td class="button"><input tabindex="28" type="button" value="choisir un medecin" onclick="popMed('1')"></td>
       </tr>
       
       <tr>
@@ -215,7 +215,7 @@ function setMed( key, nom, prenom, type ){
           <label for="editFrm_medecin2">Medecin correspondant 2:</label>
         </th>
         <td class="readonly"><input type="text" name="_medecin2_name" size="30" value="{if ($patient->_ref_medecin2)}Dr. {$patient->_ref_medecin2->_view}{/if}" readonly="readonly" /></td>
-        <td class="button"><input tabindex="28" type="button" value="choisir un medecin" onclick="popMed('2')"></td>
+        <td class="button"><input tabindex="29" type="button" value="choisir un medecin" onclick="popMed('2')"></td>
       </tr>
       
       <tr>
@@ -232,7 +232,7 @@ function setMed( key, nom, prenom, type ){
           <label for="editFrm_medecin3">Medecin correspondant 3:</label>
         </th>
         <td class="readonly"><input type="text" name="_medecin3_name" size="30" value="{if ($patient->_ref_medecin3)}Dr. {$patient->_ref_medecin3->_view}{/if}" readonly="readonly" /></td>
-        <td class="button"><input tabindex="29" type="button" value="choisir un medecin" onclick="popMed('3')"></td>
+        <td class="button"><input tabindex="30" type="button" value="choisir un medecin" onclick="popMed('3')"></td>
       </tr>
       
       <tr>
@@ -250,7 +250,7 @@ function setMed( key, nom, prenom, type ){
       <tr>
         <th>Remarques:</th>
         <td colspan="4">
-          <textarea tabindex="30" name="rques">{$patient->rques}</textarea>
+          <textarea tabindex="31" name="rques">{$patient->rques}</textarea>
         </td>
       </tr>
       
@@ -261,7 +261,7 @@ function setMed( key, nom, prenom, type ){
             <input type="submit" value="Valider" />
             <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le patient', '{$patient->_view|escape:javascript}')"/>
           {else}
-            <input tabindex="31" type="submit" value="Créer" />
+            <input tabindex="32" type="submit" value="Créer" />
           {/if}
         </td>
       </tr>
