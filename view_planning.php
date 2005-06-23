@@ -20,6 +20,7 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 $chir_id = dPgetParam($_GET, "chir_id", 0);
 $pat_id = dPgetParam($_GET, "pat_id", 0);
 $CCAM_code = dPgetParam($_GET, "CCAM_code", 0);
+$CCAM_code2 = dPgetParam($_GET, "CCAM_code2", 0);
 $cote = dPgetParam($_GET, "cote", 0);
 $hour_op = dPgetParam($_GET, "hour_op", 0);
 $min_op = dPgetParam($_GET, "min_op", 0);
@@ -93,6 +94,13 @@ $sql = "select LIBELLELONG from actes where CODE = '$CCAM_code'";
 $ccamr = mysql_query($sql);
 $ccam = mysql_fetch_array($ccamr);
 $adm["CCAM"] = $ccam["LIBELLELONG"];
+if($CCAM_code2) {
+  $sql = "select LIBELLELONG from actes where CODE = '$CCAM_code2'";
+  $ccamr = mysql_query($sql);
+  $ccam = mysql_fetch_array($ccamr);
+  $adm["CCAM2"] = $ccam["LIBELLELONG"];
+} else
+  $adm["CCAM2"] = "";
 mysql_close();
 
 // Création du template
