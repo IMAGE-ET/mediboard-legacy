@@ -32,9 +32,15 @@ else {
 }
 
 // Récuperation des patients recherchés
-$medecin_nom    = mbGetValueFromGetOrSession("medecin_nom"   );
-$medecin_prenom = mbGetValueFromGetOrSession("medecin_prenom");
-$medecin_dept = mbGetValueFromGetOrSession("medecin_dept", "17");
+if($dialog) {
+  $medecin_nom    = dPgetParam($_GET, "medecin_nom", '');
+  $medecin_prenom = dPgetParam($_GET, "medecin_prenom", '');
+  $medecin_dept = dPgetParam($_GET, "medecin_dept", "17");
+} else {
+  $medecin_nom    = mbGetValueFromGetOrSession("medecin_nom"   );
+  $medecin_prenom = mbGetValueFromGetOrSession("medecin_prenom");
+  $medecin_dept = mbGetValueFromGetOrSession("medecin_dept", "17");
+}
 
 $where = null;
 if ($medecin_nom   ) $where[] = "nom LIKE '$medecin_nom%'";

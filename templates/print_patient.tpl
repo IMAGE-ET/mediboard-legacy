@@ -11,7 +11,7 @@
   <tr><th>Incapable majeur: </th><td>{if $patient->incapable_majeur == "n"} non {else} oui {/if}</td></tr>
   <tr><th>Telephone: </th><td>{$patient->tel}</td></tr>
   <tr><th>Portable: </th><td>{$patient->tel2}</td></tr>
-  <tr><th>Adresse: </th><td>{$patient->adresse} - {$patient->cp} {$patient->ville}</td></tr>
+  <tr><th>Adresse: </th><td>{$patient->adresse|nl2br} - {$patient->cp} {$patient->ville}</td></tr>
   <tr><th>Remarques: </th><td>{$patient->rques|nl2br}</td></tr>
   
   {if $patient->_ref_medecin_traitant || $patient->_ref_medecin1 || $patient->_ref_medecin2 || $patient->_ref_medecin3}

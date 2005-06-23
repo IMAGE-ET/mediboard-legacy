@@ -17,25 +17,24 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$patient_id = mbGetValueFromGetOrSession("id");
+$patient_id = mbGetValueFromGetOrSession("id", 0);
 
 // Récuperation du patient sélectionné
 $patient = new CPatient;
 if(dPgetParam($_GET, "new", 0)) {
   $patient->load(NULL);
   mbSetValueToSession("id", null);
-}
-else {
+} else {
   $patient->load($patient_id);
+}
+
+if($patient->patient_id) {
   $patient->loadRefs();
   if($patient->_ref_curr_affectation->affectation_id) {
     $patient->_ref_curr_affectation->loadRefsFwd();
     $patient->_ref_curr_affectation->_ref_lit->loadRefsFwd();
     $patient->_ref_curr_affectation->_ref_lit->_ref_chambre->loadRefsFwd();
   }
-}
-
-if($patient->patient_id) {
   foreach ($patient->_ref_operations as $key1 => $op) {
     $patient->_ref_operations[$key1]->loadRefs();
   }
@@ -49,8 +48,8 @@ if($patient->patient_id) {
 }
 
 // Récuperation des patients recherchés
-$patient_nom    = mbGetValueFromGetOrSession("nom"   );
-$patient_prenom = mbGetValueFromGetOrSession("prenom");
+$patient_nom    = mbGetValueFromGetOrSession("nom"   , '');
+$patient_prenom = mbGetValueFromGetOrSession("prenom", '');
 
 $where = null;
 if ($patient_nom   ) $where[] = "nom LIKE '".addslashes($patient_nom)."%'";
