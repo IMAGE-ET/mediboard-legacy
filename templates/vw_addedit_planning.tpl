@@ -545,7 +545,7 @@ function printForm() {
 
         <tr>
           <th><label for="editFrm_duree_hospi">Durée d'hospitalisation:</label></th>
-          <td><input type"text" name="duree_hospi" size="1" value="{$op->duree_hospi}"> jours</td>
+          <td><input type"text" name="duree_hospi" size="2" value="{$op->duree_hospi}"> jours</td>
         </tr>
         <tr>
           <th><label for="editFrm_type_adm_comp">{tr}type_adm{/tr}:</label></th>
