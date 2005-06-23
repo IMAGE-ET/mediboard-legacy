@@ -13,6 +13,8 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-mbInsertCSV("modules/dPinterop/PATIENT.TXT", "import_patients");
+mbInsertCSV("modules/dPinterop/PATIENT.TXT", "import_patients", true);
+
+mbInsertCSV("modules/dPinterop/PATIENT2.TXT", "import_patients", true);
 
 ?>

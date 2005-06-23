@@ -24,17 +24,12 @@ $freqs = array (
   "00:45:00" => 3);
 
 // Récupération des consultations
-$sql = "SELECT " .
-    "\nimport_rdv.*, " .
-    "\nimport_praticiens.mb_id AS prat_mb_id, " .
-    "\nimport_patients.mb_id AS patient_mb_id" .
-    "\nFROM " .
-    "\n`import_rdv`, " .
-    "\n`import_praticiens`, " .
-    "\n`import_patients`" .
-    "\nWHERE import_rdv.praticien_id = import_praticiens.praticien_id" .
-    "\nAND import_rdv.patient_id = import_patients.patient_id" .
-    "\nAND import_rdv.libelle NOT LIKE '%bloc opératoire%'";
+$sql = "SELECT import_rdv.*, import_praticiens.mb_id AS prat_mb_id, import_patients.mb_id AS patient_mb_id" .
+    "\nFROM `import_rdv`, `import_patients`" .
+    "\nLEFT JOIN `import_praticiens`" .
+    "\nON import_rdv.praticien_id = import_praticiens.praticien_id" .
+    "\nWHERE import_rdv.libelle NOT LIKE '%bloc opératoire%'" .
+    "\nAND import_rdv.patient_id = import_patients.patient_id";
 echo $sql;
 $res = db_exec($sql);
 $rdv = array();
