@@ -304,6 +304,16 @@ class COperation extends CDpObject {
     }
     return null;
   }
+
+  function getSiblings() {
+    $sql = "SELECT operation_id" .
+      		"\nFROM operations WHERE " .
+      		"\nAND pat_id = '$this->pat_id' " .
+      		"\nAND chir_id = '$this->chir_id'" .
+      		"\nAND date_adm BETWEEN(DATE_SUB($this->date_adm, INTERVAL 15 DAY) AND DATE_ADD($this->date_adm, INTERVAL 15 DAY))";
+    $siblings = db_loadlist($sql);
+    return $siblings;
+  }
   
   function fillTemplate(&$template) {
   	$this->loadRefsFwd();
