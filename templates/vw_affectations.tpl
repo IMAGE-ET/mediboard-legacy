@@ -273,10 +273,14 @@ function popPlanning() {
             {else}
             <td class="text">
             {/if}
-              {if $curr_affectation->_ref_operation->admis == "o"}
-              <font>
+              {if ($curr_affectation->_ref_operation->admis == "n") || ($curr_affectation->_ref_prev->affectation_id && $curr_affectation->_ref_prev->effectue == 0)}
+                <font style="color:#a33">
               {else}
-              <font style="color:#a33">
+                {if $curr_affectation->_ref_operation->septique == 1}
+                <font style="color:#3a3">
+                {else}
+                <font>
+                {/if}
               {/if}
               
               {if $curr_affectation->_ref_operation->type_adm == "ambu"}

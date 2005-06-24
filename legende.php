@@ -26,11 +26,23 @@
     <td class="text">Hospitalisation déplacée aujourd'hui</td>
   </tr>
   <tr>
-    <td align="right"><font style="color:#a33"><strong>M. X y 17h00</strong></font></td>
-    <td>Patient qui doit arriver aujourd'hui à 17h</td>
+    <td align="right"><i><strong>M. X y</strong></i></td>
+    <td>Patient en ambulatoire</td>
   </tr>
   <tr>
-    <td align="right" style="background-image:url(modules/dPhospi/images/ray.gif); background-repeat:repeat;"/>
+    <td align="right"><font style="color:#a33"><strong>M. X y 17h00</strong></font></td>
+    <td>Patient qui doit être admis aujourd'hui à 17h</td>
+  </tr>
+  <tr>
+    <td align="right"><font style="color:#a33"><strong>M. X y</strong></font></td>
+    <td>Patient qui doit arriver dans cette chambre dans la journée</td>
+  </tr>
+  <tr>
+    <td align="right"><font style="color:#3a3"><strong>M. X y</strong></font></td>
+    <td>Patient septique</td>
+  </tr>
+  <tr>
+    <td align="right" style="background-image:url(modules/dPhospi/images/ray.gif); background-repeat:repeat;"><strong>M. X y</strong></td>
     <td class="text">Patient dont la sortie aujourd'hui est confirmée</td>
   </tr>
   <tr>
