@@ -99,7 +99,7 @@ function mbDaysRelative($from, $to) {
  * Insert a CSV file into a mysql table 
  **/
 
-function mbInsertCSV( $fileName, $tableName )
+function mbInsertCSV( $fileName, $tableName, $oldid = false )
 {
     $file = fopen( $fileName, 'rw' );
     if(! $file) {
@@ -137,7 +137,10 @@ function mbInsertCSV( $fileName, $tableName )
             $line = addslashes( $line );
             $line = str_replace ( "\\\";\\\"", "', '", $line );
             $line = str_replace ( "\\\"", "", $line );
-            $requete = 'INSERT INTO '.$tableName.' VALUES ( \''.$line.'\' ) ';
+            if($oldid)
+              $requete = 'INSERT INTO '.$tableName.' VALUES ( \''.$line.'\', \'\' ) ';
+            else
+              $requete = 'INSERT INTO '.$tableName.' VALUES ( \''.$line.'\' ) ';
             if ( ! db_exec ( $requete ) ) {
                 echo 'Erreur Ligne '.$k.' : '.mysql_error().'<br>'.$requete.'<br>';
                 $echec++;
