@@ -38,21 +38,34 @@ $ljoin["chambre"] = "chambre.chambre_id = lit.chambre_id";
 $ljoin["service"] = "service.service_id = chambre.service_id";
 $ljoin["patients"] = "operations.pat_id = patients.patient_id";
 $where["sortie"] = "BETWEEN '$limit1' AND '$limit2'";
-$where["type_adm"] = "!= 'exte'";
 if($vue) {
   $where["effectue"] = "= 0";
 }
 $order = "patients.nom, patients.prenom";
-$list = $list->loadList($where, $order, null, null, $ljoin);
-foreach($list as $key => $value) {
-  $list[$key]->loadRefsFwd();
-  if($list[$key]->_ref_next->affectation_id) {
-    unset($list[$key]);
+$where["type_adm"] = "= 'ambu'";
+$listAmbu = $list->loadList($where, $order, null, null, $ljoin);
+$where["type_adm"] = "= 'comp'";
+$listComp = $list->loadList($where, $order, null, null, $ljoin);
+foreach($listAmbu as $key => $value) {
+  $listAmbu[$key]->loadRefsFwd();
+  if($listAmbu[$key]->_ref_next->affectation_id) {
+    unset($listAmbu[$key]);
   } else {
-    $list[$key]->_ref_operation->loadRefsFwd();
-    $list[$key]->_ref_operation->_ref_chir->loadRefsFwd();
-    $list[$key]->_ref_lit->loadRefsFwd();
-    $list[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
+    $listAmbu[$key]->_ref_operation->loadRefsFwd();
+    $listAmbu[$key]->_ref_operation->_ref_chir->loadRefsFwd();
+    $listAmbu[$key]->_ref_lit->loadRefsFwd();
+    $listAmbu[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
+  }
+}
+foreach($listComp as $key => $value) {
+  $listComp[$key]->loadRefsFwd();
+  if($listComp[$key]->_ref_next->affectation_id) {
+    unset($listComp[$key]);
+  } else {
+    $listComp[$key]->_ref_operation->loadRefsFwd();
+    $listComp[$key]->_ref_operation->_ref_chir->loadRefsFwd();
+    $listComp[$key]->_ref_lit->loadRefsFwd();
+    $listComp[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
   }
 }
 
@@ -64,7 +77,8 @@ $smarty->assign('cday' , $cday );
 $smarty->assign('nday' , $nday );
 $smarty->assign('pday' , $pday );
 $smarty->assign('vue' , $vue );
-$smarty->assign('list' , $list );
+$smarty->assign('listAmbu' , $listAmbu );
+$smarty->assign('listComp' , $listComp );
 
 $smarty->display('vw_idx_sortie.tpl');
 
