@@ -79,7 +79,7 @@ function printPatient(id) {
       <table class="form">
         <tr>
           <th class="category" colspan="2">Identité</th>
-          <th class="category" colspan="2">Information médicales</th>
+          <th class="category" colspan="2">Informations médicales</th>
         </tr>
 
         <tr>
@@ -176,17 +176,47 @@ function printPatient(id) {
       </table>
 
       <table class="form">
-        <tr><th class="category" colspan="3">Plannifier</th></tr>
+        <tr><th class="category" colspan="3">Planifier</th></tr>
         <tr>
-          <td class="button"><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;pat_id={$patient->patient_id}&amp;operation_id=0">
-            une intervention</a></td>
-          <td class="button"><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;pat_id={$patient->patient_id}&amp;operation_id=0">
-            une hospitalisation</a></td>
-          <td class="button"><a href="index.php?m=dPcabinet&amp;tab=edit_planning&amp;pat_id={$patient->patient_id}&amp;consultation_id=0">
-            une consultation</a></td>
+          <td class="button">
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;pat_id={$patient->patient_id}&amp;operation_id=0">
+              une intervention
+            </a>
+          </td>
+          <td class="button">
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;pat_id={$patient->patient_id}&amp;operation_id=0">
+              une hospitalisation
+            </a>
+          </td>
+          <td class="button">
+            <a href="index.php?m=dPcabinet&amp;tab=edit_planning&amp;pat_id={$patient->patient_id}&amp;consultation_id=0">
+              une consultation
+            </a>
+          </td>
         </tr>
+        {if $chir || $anesth}
+        <tr>
+          <td class="button" colspan="3">
+            {if $chir}
+            <form name="addConsFrm" action="index.php?m=dPcabinet" method="post" onsubmit="return checkPatient()">
+            <input type="hidden" name="m" value="dPcabinet" />
+            {/if}
+            {if $anesth}
+            <form name="addConsFrm" action="index.php?m=dPanesth" method="post" onsubmit="return checkPatient()">
+            <input type="hidden" name="m" value="dPanesth" />
+            {/if}
+            <input type="hidden" name="dosql" value="do_consult_now" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="patient_id" value="{$patient->patient_id}" />
+            <a href="javascript:document.forms['addConsFrm'].submit()">
+              une consultation immédiate
+            </a>
+            </form>
+          </td>
+        </tr>
+        {/if}
       </table>
-      
+
       <table class="form">
         {if $patient->_ref_curr_affectation->affectation_id}
         <tr><th colspan="3" class="category">Chambre actuelle</th></tr>

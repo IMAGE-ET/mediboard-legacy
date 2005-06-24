@@ -17,6 +17,22 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// L'utilisateur est-il un chirurgien
+$mediuser = new CMediusers;
+$mediuser->load($AppUI->user_id);
+if ($mediuser->isFromType(array("Chirurgien"))) {
+  $chir = $mediuser;
+} else
+  $chir = null;
+
+// L'utilisateur est-il un anesthésiste
+$mediuser = new CMediusers;
+$mediuser->load($AppUI->user_id);
+if ($mediuser->isFromType(array("Anesthésiste"))) {
+  $anesth = $mediuser;
+} else
+  $anesth = null;
+
 $patient_id = mbGetValueFromGetOrSession("id", 0);
 
 // Récuperation du patient sélectionné
@@ -69,6 +85,8 @@ $smarty->assign('nom', $patient_nom);
 $smarty->assign('prenom', $patient_prenom);
 $smarty->assign('patients', $patients);
 $smarty->assign('patient', $patient);
+$smarty->assign('chir', $chir);
+$smarty->assign('anesth', $anesth);
 
 $smarty->display('vw_idx_patients.tpl');
 ?>
