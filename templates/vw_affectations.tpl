@@ -178,6 +178,9 @@ function popPlanning() {
 <table class="main">
 
 <tr>
+  <td>
+    <a href="javascript:popup(500, 500, '?m=dPhospi&a=legende&dialog=1', 'Legende')">legende</a>
+  </td>
   <th>
     {if $dialog != 1}
     <a href="#" onclick="popPlanning()">
@@ -203,7 +206,7 @@ function popPlanning() {
 </tr>
 
 <tr>
-  <td class="greedyPane">
+  <td class="greedyPane" colspan="2">
 
     <table class="tbl">
 
