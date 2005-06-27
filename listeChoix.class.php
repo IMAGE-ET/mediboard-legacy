@@ -31,7 +31,7 @@ class CListeChoix extends CDpObject {
   
   // Referenced objects
   var $_ref_chir = null;
-  var $_ref_compte_rendu = null;
+  var $_ref_modele = null;
 
   function CListeChoix() {
     $this->CDpObject( 'liste_choix', 'liste_choix_id' );
@@ -41,8 +41,8 @@ class CListeChoix extends CDpObject {
     // Forward references
     $this->_ref_chir = new CMediusers;
     $this->_ref_chir->load($this->chir_id);
-    $this->_ref_compte_rendu = new CCompteRendu;
-    $this->_ref_compte_rendu->load($this->compte_rendu_id);
+    $this->_ref_modele = new CCompteRendu;
+    $this->_ref_modele->load($this->compte_rendu_id);
   }
   
   function updateFormFields() {

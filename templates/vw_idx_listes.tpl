@@ -76,8 +76,8 @@ function checkForm() {
       <td><a href="{$href}">{$curr_liste->_ref_chir->_view}</a></td>
       <td><a href="{$href}">{$curr_liste->nom}</a></td>
       <td><a href="{$href}">{$curr_liste->_valeurs|@count}</a></td>
-      {if $curr_liste->_ref_compte_rendu->compte_rendu_id}
-      <td><a href="{$href}">{$curr_liste->_ref_compte_rendu->nom} ({$curr_liste->_ref_compte_rendu->type})</a></td>
+      {if $curr_liste->_ref_modele->compte_rendu_id}
+      <td><a href="{$href}">{$curr_liste->_ref_modele->nom} ({$curr_liste->_ref_modele->type})</a></td>
       {else}
       <td><a href="{$href}">&mdash; Tous &mdash;</a></td>
       {/if}

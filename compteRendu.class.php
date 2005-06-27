@@ -17,14 +17,38 @@ class CCompteRendu extends CDpObject {
 
   // DB References
   var $chir_id = null;
+  var $object_id = null;
 
   // DB fields
   var $nom = null;
-  var $type = null;
   var $source = null;
+  var $type = null;
+  var $valide = null;
+  
+  /// Form fields
+  var $_is_document = false;
+  var $_is_modele = false;
   
   // Referenced objects
   var $_ref_chir = null;
+  var $_ref_object = null;
+
+  function loadModeles($where = null, $order = null, $limit = null, $group = null, $leftjoin = null) {
+    if (!isset($where['object_id'])) {
+      $where['object_id'] = "IS NULL";
+    }
+    
+    return parent::loadList($where, $order, $limit, $group, $leftjoin);
+  }
+
+  function loadDocuments($where = null, $order = null, $limit = null, $group = null, $leftjoin = null) {
+    if (!isset($where['object_id'])) {
+      $where['object_id'] = "IS NOT NULL";
+    }
+    
+    return parent::loadList($where, $order, $limit, $group, $leftjoin);
+  }
+
 
   function CCompteRendu() {
     $this->CDpObject( 'compte_rendu', 'compte_rendu_id' );
