@@ -14,11 +14,11 @@
 		</tr>
 		{foreach from=$op1 item=curr_op}
 		<tr>
-		  <td>{$curr_op.dateFormed}</td>
-		  <td>{$curr_op.chir_name}</td>
-		  <td>{$curr_op.pat_name}</td>
-		  <td class="text">{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i> (Côté : {$curr_op.cote})</td>
-		  <td class="text">{$curr_op.materiel}</td>
+		  <td>{$curr_op->_ref_plageop->date|date_format:"%d / %m / %Y"}</td>
+		  <td class="text">Dr. {$curr_op->_ref_chir->_view}</td>
+		  <td class="text">{$curr_op->_ref_pat->_view}</td>
+		  <td class="text">{$curr_op->_ext_code_ccam->code} : <i>{$curr_op->_ext_code_ccam->libelleLong}</i> (Côté : {$curr_op->cote})</td>
+		  <td class="text">{$curr_op->materiel|nl2br}</td>
 		</tr>
 		{/foreach}
 	  </table>
@@ -37,11 +37,11 @@
 		</tr>
 		{foreach from=$op2 item=curr_op}
 		<tr>
-		  <td>{$curr_op.dateFormed}</td>
-		  <td>{$curr_op.chir_name}</td>
-		  <td>{$curr_op.pat_name}</td>
-		  <td class="text">{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i> (Côté : {$curr_op.cote})</td>
-		  <td class="text">{$curr_op.materiel}</td>
+		  <td>{$curr_op->_ref_plageop->date|date_format:"%d / %m / %Y"}</td>
+		  <td class="text">Dr. {$curr_op->_ref_chir->_view}</td>
+		  <td class="text">{$curr_op->_ref_pat->_view}</td>
+		  <td class="text">{$curr_op->_ext_code_ccam->code} : <i>{$curr_op->_ext_code_ccam->libelleLong}</i> (Côté : {$curr_op->cote})</td>
+		  <td class="text">{$curr_op->materiel}</td>
 		</tr>
 		{/foreach}
 	  </table>

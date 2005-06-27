@@ -7,11 +7,13 @@
 * @author Romain Ollivier
 */
  
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
+
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 $typeAff = mbGetValueFromGetOrSession("typeAff", 0);
 
@@ -19,6 +21,25 @@ $todayi = date("Ymd");
 $todayf = date("d/m/Y");
 
 // Récupération des opérations
+$op = new COperation;
+$ljoin = array();
+$ljoin["plagesop"] = "operations.plageop_id = plagesop.id";
+$where = array();
+$where[] = "operations.materiel != ''";
+$where[] = "operations.plageop_id IS NOT NULL";
+if($typeAff) {
+  $where[] = "operations.commande_mat = 'o'";
+  $where[] = "operations.annulee = 1";
+} else {
+  $where[] = "operations.commande_mat != 'o'";
+  $where[] = "operations.annulee != 1";
+}
+$order = "plagesop.date, operations.rank";
+$op = $op->loadList($where, $order, null, null, $ljoin);
+foreach($op as $key => $value) {
+  $op[$key]->loadRefsFwd();
+}
+/*
 if($typeAff) {
   $sql = "SELECT plagesop.date as date, users.user_last_name as chir_lastname, users.user_first_name as chir_firstname,
           patients.nom as pat_lastname, patients.prenom as pat_firstname, operations.CCAM_code as CCAM_code,
@@ -50,7 +71,7 @@ $op = db_loadlist($sql);
 
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
   or die("Could not connect");
-mysql_select_db("ccam")
+mysql_select_db("ccamV1")
   or die("Could not select database");
 
 foreach($op as $key => $value) {
@@ -62,7 +83,8 @@ foreach($op as $key => $value) {
   $op[$key]["CCAM"] = $ccam["LIBELLELONG"];
 }
 mysql_close();
-
+echo count($op);
+*/
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;

@@ -53,11 +53,11 @@ function popMateriel() {
 		</tr>
 		{foreach from=$op item=curr_op}
 		<tr>
-		  <td>{$curr_op.date|date_format:"%a %d %b %Y"}</td>
-		  <td>{$curr_op.chir_name}</td>
-		  <td>{$curr_op.pat_name}</td>
-		  <td class="text">{$curr_op.CCAM_code} : <i>{$curr_op.CCAM}</i> (Côté : {$curr_op.cote})</td>
-		  <td class="text">{$curr_op.materiel|nl2br}</td>
+		  <td>{$curr_op->_ref_plageop->date|date_format:"%a %d %b %Y"}{*$curr_op.date|date_format:"%a %d %b %Y"*}</td>
+		  <td class="text">Dr. {$curr_op->_ref_chir->_view}</td>
+		  <td class="text">{$curr_op->_ref_pat->_view}</td>
+		  <td class="text">{$curr_op->_ext_code_ccam->code} : <i>{$curr_op->_ext_code_ccam->libelleLong}</i> (Côté : {$curr_op->cote})</td>
+		  <td class="text">{$curr_op->materiel|nl2br}</td>
 		  <td>
 			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
             <input type="hidden" name="m" value="dPbloc" />
