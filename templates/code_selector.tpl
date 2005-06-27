@@ -21,9 +21,9 @@ function setClose(code, type) {
   <tr>
   {foreach from=$list item=curr_code key=curr_key}
     <td>
-      <strong>{$curr_code.code}</strong><br />
-      {$curr_code.texte}<br />
-      <input type="button" class="button" value="selectionner" onclick="setClose('{$curr_code.code}', '{$type}')" />
+      <strong>{$curr_code->code}</strong><br />
+      {$curr_code->libelleLong}<br />
+      <input type="button" class="button" value="selectionner" onclick="setClose('{$curr_code->code}', '{$type}')" />
     </td>
   {if ($curr_key+1) is div by 3}
   </tr><tr>

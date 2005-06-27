@@ -280,6 +280,7 @@ function printForm() {
     url += '&chir_id='     + eval('form.chir_id.value'     );
     url += '&pat_id='      + eval('form.pat_id.value'      );
     url += '&CCAM_code='   + eval('form.CCAM_code.value'   );
+    url += '&CCAM_code2='   + eval('form.CCAM_code2.value' );
     url += '&cote='        + eval('form.cote.value'        );
     url += '&info='        + eval('form.info.value'        );
     url += '&rdv_adm='     + eval('form._rdv_adm.value'    );

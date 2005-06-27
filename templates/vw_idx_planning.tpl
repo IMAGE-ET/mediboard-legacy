@@ -80,21 +80,21 @@ function supprimerCompteRendu(form) {
           <th>Temps pris</th>
         </tr>
 
-        {foreach from=$list item=curr_plage}
-        {if $curr_plage.spe}
+        {foreach from=$listPlages item=curr_plage}
+        {if $curr_plage.id_spec}
          <tr>
-          <td style="background: #aae" align="right">{$curr_plage.date}</td>
-          <td style="background: #aae" align="center">{$curr_plage.horaires}</td>
-          <td style="background: #aae" align="center">{$curr_plage.operations}</td>
+          <td style="background: #aae" align="right">{$curr_plage.date|date_format:"%a %d %b %Y"}</td>
+          <td style="background: #aae" align="center">{$curr_plage.debut|date_format:"%Hh%M"} à {$curr_plage.fin|date_format:"%Hh%M"}</td>
+          <td style="background: #aae" align="center">{$curr_plage.total}</td>
           <td style="background: #aae" align="center">Plage de spécialité</td>
         </tr>
 
         {else}
         <tr>
-          <td align="right"><a href="index.php?m={$m}&amp;tab=0&amp;day={$curr_plage.day}&amp;month={$month}&amp;year={$year}">{$curr_plage.date}</a></td>
-          <td align="center">{$curr_plage.horaires}</td>
-          <td align="center">{$curr_plage.operations}</td>
-          <td align="center">{$curr_plage.occupe}</td>
+          <td align="right"><a href="index.php?m={$m}&amp;tab=0&amp;day={$curr_plage.date|date_format:"%d"}&amp;month={$month}&amp;year={$year}">{$curr_plage.date|date_format:"%a %d %b %Y"}</a></td>
+          <td align="center">{$curr_plage.debut|date_format:"%Hh%M"} à {$curr_plage.fin|date_format:"%Hh%M"}</td>
+          <td align="center">{$curr_plage.total}</td>
+          <td align="center">{$curr_plage.duree|date_format:"%Hh%M"}</td>
         </tr>
         {/if}
         {/foreach}
@@ -104,8 +104,7 @@ function supprimerCompteRendu(form) {
     <td>
       <table class="tbl">
         <tr>
-          <th>Nom</th>
-          <th>Prénom</th>
+          <th>Patient</th>
           <th>code CCAM</th>
           <th>Description</th>
           <th>Heure prévue</th>
@@ -115,31 +114,34 @@ function supprimerCompteRendu(form) {
           {/if}
         </tr>
 
-        {foreach from=$today item=curr_op}
+        {foreach from=$listDay item=curr_plage}
         <tr>
-          <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.nom}      </a></td>
-          <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.prenom}   </a></td>
-          <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.CCAM_code}</a></td>
-          <td class="text"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.CCAM}     </a></td>
-          <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.heure}</a></td>
-          <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op.id}">{$curr_op.temps}</a></td>
+          <th colspan="6">Salle {$curr_plage->_ref_salle->nom} : de {$curr_plage->debut} à {$curr_plage->fin}</th>
+        </tr>
+        {foreach from=$curr_plage->_ref_operations item=curr_op}
+        <tr>
+          <td class="text"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->_ref_pat->_view}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->_ext_code_ccam->code}{if $curr_op->CCAM_code2}<br />+ {$curr_op->_ext_code_ccam2->code}{/if}</a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->_ext_code_ccam->libelleLong}{if $curr_op->CCAM_code2}<br />+ {$curr_op->_ext_code_ccam2->libelleLong}{/if}</a></td>
+          <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->time_operation|date_format:"%Hh%M"}</a></td>
+          <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->temp_operation|date_format:"%Hh%M"}</a></td>
           {if $selChir == $app->user_id}
           <td>
             <form name="editCompteRenduFrm{$curr_op->operation_id}" action="?m={$m}" method="POST">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="dosql" value="do_planning_aed" />
-            <input type="hidden" name="operation_id" value="{$curr_op.id}" />
-            <input type="hidden" name="compte_rendu" value="{$curr_op.compte_rendu|escape:html}" />
-            <input type="hidden" name="cr_valide" value="{$curr_op.cr_valide}" />
+            <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
+            <input type="hidden" name="compte_rendu" value="{$curr_op->compte_rendu|escape:html}" />
+            <input type="hidden" name="cr_valide" value="{$curr_op->cr_valide}" />
             {if $curr_op.compte_rendu}
-            <button type="button" onclick="editModele({$curr_op.id}, 0)"><img src="modules/dPplanningOp/images/edit.png" /></button>
+            <button type="button" onclick="editModele({$curr_op->operation_id}, 0)"><img src="modules/dPplanningOp/images/edit.png" /></button>
             {if !$curr_op.cr_valide}
             <button type="button" onclick="validerCompteRendu(this.form)"><img src="modules/dPplanningOp/images/check.png" /></button>
             {/if}
             <button type="button" onclick="supprimerCompteRendu(this.form)"><img src="modules/dPplanningOp/images/trash.png" /></button>
             {else}
-            <select name="modele" onchange="selectCR({$curr_op.id}, this.form)">
+            <select name="modele" onchange="selectCR({$curr_op->operation_id}, this.form)">
               <option value="0">&mdash; modeles &mdash;</option>
               {foreach from=$crList item=curr_cr}
               <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>
@@ -150,6 +152,7 @@ function supprimerCompteRendu(form) {
           </td>
           {/if}
         </tr>
+        {/foreach}
         {/foreach}
       </table>
     </td>

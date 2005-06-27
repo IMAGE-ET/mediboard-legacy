@@ -10,12 +10,11 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
+require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('mediusers', 'functions') );
-require_once( $AppUI->getModuleClass('mediusers', 'groups') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
@@ -68,6 +67,74 @@ if ($selPrat->isPraticien()) {
 // Tous les praticiens
 $mediuser = new CMediusers;
 $listChir = $mediuser->loadPraticiens(PERM_EDIT);
+
+// récupération des modèles de compte-rendu disponibles
+$crList = new CCompteRendu;
+$where["chir_id"] = "= '$selChir'";
+$where["type"] = "= 'operation'";
+$order[] = "nom";
+$crList = $crList->loadList($where, $order);
+
+// Planning du mois
+$sql = "SELECT plagesop.*," .
+		"\nSEC_TO_TIME(SUM(TIME_TO_SEC(operations.temp_operation))) AS duree," .
+		"\nCOUNT(operations.operation_id) AS total" .
+		"\nFROM plagesop" .
+		"\nLEFT JOIN operations" .
+		"\nON plagesop.id = operations.plageop_id" .
+		"\nWHERE (plagesop.id_chir = '$selChirLogin' OR plagesop.id_spec = '$specialite')" .
+		"\nAND plagesop.date LIKE '$year-$month-__'" .
+		"\nGROUP BY plagesop.id" .
+		"\nORDER BY plagesop.date, plagesop.debut, plagesop.id";
+$listPlages = db_loadList($sql);
+
+// Liste des opérations du jour sélectionné
+$listDay = new CPlageOp;
+$where = array();
+$where["date"] = "= '$year-$month-$day'";
+$where["id_chir"] = "= '$selChirLogin'";
+$order = "debut";
+$listDay = $listDay->loadList($where, $order);
+foreach($listDay as $key => $value) {
+  $listDay[$key]->loadRefs();
+  foreach($listDay[$key]->_ref_operations as $key2 => $value2) {
+    $listDay[$key]->_ref_operations[$key2]->loadRefsFwd();
+  }
+}
+
+
+// Création du template
+require_once( $AppUI->getSystemClass ('smartydp' ) );
+$smarty = new CSmartyDP;
+
+$smarty->assign('year', $year);
+$smarty->assign('day', $day);
+$smarty->assign('nday', $nday);
+$smarty->assign('ndaym', $ndaym);
+$smarty->assign('ndayy', $ndayy);
+$smarty->assign('pday', $pday);
+$smarty->assign('pdaym', $pdaym);
+$smarty->assign('pdayy', $pdayy);
+$smarty->assign('month', $month);
+$smarty->assign('nmonthd', $nmonthd);
+$smarty->assign('nmonth', $nmonth);
+$smarty->assign('nmonthy', $nmonthy);
+$smarty->assign('pmonthd', $pmonthd);
+$smarty->assign('pmonth', $pmonth);
+$smarty->assign('pmonthy', $pmonthy);
+$smarty->assign('title1', $title1);
+$smarty->assign('title2', $title2);
+$smarty->assign('listChir', $listChir);
+$smarty->assign('selChir', $selChir);
+$smarty->assign('crList', $crList);
+$smarty->assign('listPlages', $listPlages);
+$smarty->assign('listDay', $listDay);
+
+
+$smarty->display('vw_idx_planning.tpl');
+
+
+/* 
 
 // Requete SQL pour le planning du mois
 // * temp total de chaque plage
@@ -225,7 +292,7 @@ if(@$result[0]["id"]) {
 
   $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
     or die("Could not connect");
-  mysql_select_db("ccam")
+  mysql_select_db("ccamV1")
     or die("Could not select database");
   if(isset($today)) {
     foreach($today as $key => $value) {
@@ -268,5 +335,5 @@ $smarty->assign('today', $today);
 
 
 $smarty->display('vw_idx_planning.tpl');
-
+*/
 ?>

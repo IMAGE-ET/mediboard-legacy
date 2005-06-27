@@ -13,55 +13,41 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$list = null;
+require_once( $AppUI->getModuleClass('dPccam', 'acte') );
+
+$list = array();
 $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
 
 switch($type) {
 	case 'ccam' : {
-		$sql = "select favoris_code as code
+		$sql = "select favoris_code
 				from ccamfavoris
 				where favoris_user = '$chir' or favoris_user = $AppUI->user_id
 				group by favoris_code
 				order by favoris_code";
 		$codes = db_loadlist($sql);
-		$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
-			or die("Could not connect");
-		mysql_select_db("ccam")
-			or die("Could not select database");
 		$i = 0;
-		foreach($codes as $key => $value) {
-			$query = "select CODE, LIBELLELONG from actes where CODE = '".$value['code']."'";
-			$result = mysql_query($query);
-			$row = mysql_fetch_array($result);
-			$list[$i]["code"] = $row['CODE'];
-			$list[$i]["texte"] = $row['LIBELLELONG'];
-			$i++;
-		}
-		mysql_close();
+        foreach($codes as $key => $value) {
+          $list[$i] = new CActeCCAM($value["favoris_code"]);
+          $list[$i]->loadLite();
+          $i++;
+        }
 		break;
 	}
 	case 'ccam2' : {
-		$sql = "select favoris_code as code
+		$sql = "select favoris_code
 				from ccamfavoris
 				where favoris_user = '$chir' or favoris_user = $AppUI->user_id
 				group by favoris_code
 				order by favoris_code";
 		$codes = db_loadlist($sql);
-		$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
-			or die("Could not connect");
-		mysql_select_db("ccam")
-			or die("Could not select database");
 		$i = 0;
-		foreach($codes as $key => $value) {
-			$query = "select CODE, LIBELLELONG from actes where CODE = '".$value['code']."'";
-			$result = mysql_query($query);
-			$row = mysql_fetch_array($result);
-			$list[$i]["code"] = $row['CODE'];
-			$list[$i]["texte"] = $row['LIBELLELONG'];
-			$i++;
-		}
-		mysql_close();
+        foreach($codes as $key => $value) {
+          $list[$i] = new CActeCCAM($value["favoris_code"]);
+          $list[$i]->loadLite();
+          $i++;
+        }
 		break;
 	}
 	default : {

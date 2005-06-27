@@ -11,8 +11,9 @@ global $AppUI, $canRead, $canEdit, $m;
 
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
+require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
@@ -86,22 +87,15 @@ $adm["dateAnesth"] = $rdv_anesth;
 $adm["hourAnesth"] = "$hour_anesth h";
 if($min_anesth)
    $adm["hourAnesth"] .= " $min_anesth";
-$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
-  or die("Could not connect");
-mysql_select_db("ccam")
-  or die("Could not select database");
-$sql = "select LIBELLELONG from actes where CODE = '$CCAM_code'";
-$ccamr = mysql_query($sql);
-$ccam = mysql_fetch_array($ccamr);
-$adm["CCAM"] = $ccam["LIBELLELONG"];
+$ccam = new CActeCCAM($CCAM_code);
+$ccam->loadLite();
+$adm["CCAM"] = $ccam->libelleLong;
 if($CCAM_code2) {
-  $sql = "select LIBELLELONG from actes where CODE = '$CCAM_code2'";
-  $ccamr = mysql_query($sql);
-  $ccam = mysql_fetch_array($ccamr);
-  $adm["CCAM2"] = $ccam["LIBELLELONG"];
+  $ccam = new CActeCCAM($CCAM_code2);
+  $ccam->loadLite();
+  $adm["CCAM2"] =$ccam->libelleLong;
 } else
   $adm["CCAM2"] = "";
-mysql_close();
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );

@@ -23,7 +23,7 @@
   <tr><th>Hospitalisation: </th><td>{$adm.hospi}</td></tr>
   <tr><th>Chambre seule: </th><td>{$adm.chambre}</td></tr>
   <tr><th>Date d'intervention: </th><td>{$adm.dateOp}</td></tr>
-  <tr><th>Diagnostic: </th><td class="text">{$adm.CCAM}{if $adm.CCAM2 != ""}<br />{$adm.CCAM2}{/if}</td></tr>
+  <tr><th>Diagnostic: </th><td class="text">{$adm.CCAM}{if $adm.CCAM2 != ""}<br />+ {$adm.CCAM2}{/if}</td></tr>
   <tr><th>Coté: </th><td>{$adm.cote}</td></tr>
   <tr><th>Durée prévue d'hospitalisation: </th><td>{$adm.dureeHospi} jours</td></tr>
   
