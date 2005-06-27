@@ -134,9 +134,9 @@ function supprimerCompteRendu(form) {
             <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
             <input type="hidden" name="compte_rendu" value="{$curr_op->compte_rendu|escape:html}" />
             <input type="hidden" name="cr_valide" value="{$curr_op->cr_valide}" />
-            {if $curr_op.compte_rendu}
+            {if $curr_op->compte_rendu}
             <button type="button" onclick="editModele({$curr_op->operation_id}, 0)"><img src="modules/dPplanningOp/images/edit.png" /></button>
-            {if !$curr_op.cr_valide}
+            {if !$curr_op->cr_valide}
             <button type="button" onclick="validerCompteRendu(this.form)"><img src="modules/dPplanningOp/images/check.png" /></button>
             {/if}
             <button type="button" onclick="supprimerCompteRendu(this.form)"><img src="modules/dPplanningOp/images/trash.png" /></button>
