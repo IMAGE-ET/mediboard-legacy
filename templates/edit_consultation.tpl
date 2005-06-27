@@ -104,7 +104,7 @@ function editDocument(consult, modele, prop_name, valid_name) {
 }
 
 function validerDocument(prop_name, valid_name) {
-  if (confirm('Veuillez confirmer la validation du document')) {
+  if (confirm('Veuillez confirmer la validation du document. ' + prop_name + " " + valid_name)) {
     var form = document.editDocumentFrm;
     form.elements[valid_name].value = "1";
     form.submit();
@@ -405,24 +405,23 @@ function supprimerDocument(prop_name, valid_name) {
                 </form>
                 </td>
                 <td>
+                  <form name="editDocumentFrm" action="?m={$m}" method="POST">
+
+                  <input type="hidden" name="m" value="{$m}" />
+                  <input type="hidden" name="del" value="0" />
+                  <input type="hidden" name="dosql" value="do_consultation_aed" />
+                  <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
+                  <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
+
                   <table class="form">
                       {foreach from=$consult->_ref_documents item=document}
                       <tr>
                         <th>{$document->nom}</th>
                         {if $document->source}
                         <td class="button">
-                          <form name="editDocumentFrm" action="?m={$m}" method="POST">
-        
-                          <input type="hidden" name="m" value="{$m}" />
-                          <input type="hidden" name="del" value="0" />
-                          <input type="hidden" name="dosql" value="do_consultation_aed" />
-                          <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-                          <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
                           <input type="hidden" name="{$document->_consult_prop_name}" value="{$document->source|escape:html}" />
                           <input type="hidden" name="{$document->_consult_valid_name}" value="{$document->valide}" />
 
-                          </form>
-                  
                           <button onclick="editDocument({$consult->consultation_id}, 0, '{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
                           	<img src="modules/dPcabinet/images/edit.png" /> 
                           </button>
@@ -452,6 +451,9 @@ function supprimerDocument(prop_name, valid_name) {
 
 					</tr>
                   </table>
+                  
+                  </form>
+                  
                 <td>
                   <form name="tarifFrm" action="?m={$m}" method="POST" onsubmit="return checkTarif()">
                   <input type="hidden" name="m" value="{$m}" />

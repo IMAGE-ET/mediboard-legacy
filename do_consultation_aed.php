@@ -9,13 +9,14 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
+require_once($AppUI->getSystemClass("doobjectaddedit"));
 require_once($AppUI->getModuleClass("dPcabinet", "consultation"));
 require_once($AppUI->getModuleClass("dPcompteRendu", "listeChoix"));
 
 if($chir_id = dPgetParam( $_POST, 'chir_id', null))
   mbSetValueToSession('chir_id', $chir_id);
 
-// Pré-traitement du document passé en post (remplacement des listes par le choix)
+// Préparation des listes de choix
 $fields = array();
 $values = array();
 foreach($_POST as $key => $value) {
@@ -27,55 +28,27 @@ foreach($_POST as $key => $value) {
   }
 }
 
+// Remplacement des listes par leur choix
 $document_prop_name = $_POST["_document_prop_name"]; 
 if(isset($_POST[$document_prop_name])) {
   $_POST[$document_prop_name] = str_replace($fields, $values, $_POST[$document_prop_name]);
 }
 
-// Object binding
-$obj = new CConsultation();
-if (!$obj->bind( $_POST )) {
-	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
-	$AppUI->redirect();
-}
+// @todo : Trouver une méthode un peu plus propre :/
+$special = dPgetParam( $_POST, 'special', 0);
 
-$del = intval( dPgetParam( $_POST, 'del', 0 ) );
-if ($del) {
-	if (!$obj->canDelete( $msg )) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-		$AppUI->redirect();
-	}
-	
-	if ($msg = $obj->delete()) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-		$AppUI->redirect();
-	} else {
-    mbSetValueToSession("consultation_id");
-		$AppUI->setMsg( "Consultation supprimée", UI_MSG_ALERT);
-		$AppUI->redirect( "m=$m" );
-	}
-} else {
-  
-	if ($msg = $obj->store()) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-	} else {
-		$isNotNew = @$_POST['consultation_id'];
-		$AppUI->setMsg( $isNotNew ? 'Consultation modifiée' : 'Consultation créée', UI_MSG_OK);
-	}
-
-  // @todo : Trouver une méthode un peu plus propre :/
-  $special = dPgetParam( $_POST, 'special', 0);
-	if($special) {
+$do = new CDoObjectAddEdit("CConsultation", "consultation_id");
+$do->createMsg = "Consultation créée";
+$do->modifyMsg = "Consultation modifiée";
+$do->deleteMsg = "Consultation supprimée";
+$do->redirectStore = !$special ? "m=$m&consultation_id=$obj->consultation_id" : null;
+$do->doIt();
 ?>
+
 <script language="javascript">
 
 window.opener.location.reload();
 window.close();
 
 </script>
-<?php
-    }
-	else
-	  $AppUI->redirect("m=$m&consultation_id=$obj->consultation_id");
-}
-?>
+<?php 

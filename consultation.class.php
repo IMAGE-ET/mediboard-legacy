@@ -52,6 +52,10 @@ class CConsultation extends CDpObject {
   var $cr_valide = null;
   var $ordonnance = null;
   var $or_valide = null;
+  var $courrier1 = null;
+  var $c1_valide = null;
+  var $courrier2 = null;
+  var $c2_valide = null;
   
 
   // Form fields
@@ -72,26 +76,6 @@ class CConsultation extends CDpObject {
   }
   
   function updateFormFields() {
-    $this->_hour = intval(substr($this->heure, 0, 2));
-    $this->_min  = intval(substr($this->heure, 3, 2));
-
-    $etat = array();
-    $etat[CC_PLANIFIE] = "Planifiée";
-    $etat[CC_PATIENT_ARRIVE] = "Patient arrivé";
-    $etat[CC_EN_COURS] = "En cours";
-    $etat[CC_TERMINE] = "Terminée";
-    
-    $this->_etat = $etat[$this->chrono];
-    if ($this->cr_valide && $this->or_valide ) {
-      $this->_etat = "Documents Validés";
-    }
-
-    if ($this->annule) {
-      $this->_etat = "Annulée";
-    }
-    
-    $this->_check_premiere = $this->premiere;
-    
     $this->_ref_documents = array();
 
     $document = new CCompteRendu();
@@ -111,6 +95,53 @@ class CConsultation extends CDpObject {
     $document->source = $this->ordonnance;
     $document->valide = $this->or_valide;
     $this->_ref_documents[] = $document;
+
+    $document = new CCompteRendu();
+    $document->type = "consultation";
+    $document->nom = "Courrier 1";
+    $document->_consult_prop_name = "courrier1";
+    $document->_consult_valid_name = "c1_valide";
+    $document->source = $this->courrier1;
+    $document->valide = $this->c1_valide;
+    $this->_ref_documents[] = $document;
+
+    $document = new CCompteRendu();
+    $document->type = "consultation";
+    $document->nom = "Courrier 2";
+    $document->_consult_prop_name = "courrier2";
+    $document->_consult_valid_name = "c2_valide";
+    $document->source = $this->courrier2;
+    $document->valide = $this->c2_valide;
+    $this->_ref_documents[] = $document;
+
+    $this->_hour = intval(substr($this->heure, 0, 2));
+    $this->_min  = intval(substr($this->heure, 3, 2));
+
+    $etat = array();
+    $etat[CC_PLANIFIE] = "Planifiée";
+    $etat[CC_PATIENT_ARRIVE] = "Patient arrivé";
+    $etat[CC_EN_COURS] = "En cours";
+    $etat[CC_TERMINE] = "Terminée";
+    
+    $this->_etat = $etat[$this->chrono];
+    
+    $docs_valid = 0;
+    foreach ($this->_ref_documents as $curr_doc) {
+		  if ($curr_doc->source) {
+        $docs_valid++;
+      }
+		}
+		
+    if ($this->chrono == CC_TERMINE) {
+      $this->_etat = "$docs_valid Doc. créé" . ($docs_valid > 1 ? "s" : "");
+		}
+
+    if ($this->annule) {
+      $this->_etat = "Annulée";
+    }
+    
+    $this->_check_premiere = $this->premiere;
+    
   }
    
   function updateDBFields() {

@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.27';
+$config['mod_version'] = '0.28';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -107,7 +107,17 @@ class CSetupdPcabinet {
             "\nADD `or_valide` TINYINT DEFAULT '0' NOT NULL"; 
         db_exec( $sql ); db_error();
         
-      case "0,27":
+      case "0.27":
+        $sql = "ALTER TABLE `consultation` " .
+            "\nADD `courrier1` TEXT DEFAULT NULL," .
+            "\nADD `c1_valide` TINYINT DEFAULT '0' NOT NULL"; 
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `consultation` " .
+            "\nADD `courrier2` TEXT DEFAULT NULL," .
+            "\nADD `c2_valide` TINYINT DEFAULT '0' NOT NULL"; 
+        db_exec( $sql ); db_error();
+        
+      case "0.28":
   	    return true;
 		}
 
