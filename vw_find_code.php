@@ -22,48 +22,34 @@ $seltopo2 = mbGetValueFromGetOrSession("seltopo2", "0");
 //Connection a la base de donnees pour la recherche
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
   or die("Could not connect");
-mysql_select_db("ccam")
+mysql_select_db("ccamV1")
   or die("Could not select database");
 
 //Création de la requête
-//$query = "select CODE, LIBELLELONG, CODEACTE, TEXTE from actes, notes where 0";
 $query = "SELECT CODE, LIBELLELONG FROM actes WHERE 0";
 
 //Si un autre élément est remplis
-if($code != "" || $clefs != "" || $selacces != "0" || $seltopo1 != "0")
-{
+if($code != "" || $clefs != "" || $selacces != "0" || $seltopo1 != "0") {
   $query .= " or (1";
   //On fait la recherche sur le code
-  if($code != "")
-  {
+  if($code != "") {
 	$query .= " AND CODE LIKE '" . addslashes($code) . "%'";
   }
   //On explode les mots clefs
-  if($clefs != "")
-  {
+  if($clefs != "") {
     $listeClefs = explode(" ", $clefs);
     foreach($listeClefs as $key => $value)
-    {
       $query .= " AND (LIBELLELONG LIKE '%" .  addslashes($value) . "%')";
-	  //$query .= " or (CODEACTE = CODE and TEXTE like '%" .  addslashes($value) . "%'))";
-    }
   }
   //On tris selon les voies d'accès
   if($selacces != "0")
-  {
     $query .= " AND CODE LIKE '___" . $selacces . "___'";
-  }
   //On tris selon les topologies de niveau 1 ou 2
-  if($seltopo1 != "0")
-  {
+  if($seltopo1 != "0") {
     if($seltopo2 != "0")
-    {
       $query .= " AND CODE LIKE '" . $seltopo2 . "_____'";
-    }
     else
-    {
       $query .= " AND CODE LIKE '" . $seltopo1 . "______'";
-    }
   }
   $query .= ")";
 }
@@ -73,8 +59,7 @@ $query .= " ORDER BY CODE LIMIT 0 , 100";
 $result = mysql_query($query);
 $i = 0;
 $codes = array();
-while($row = mysql_fetch_array($result))
-{
+while($row = mysql_fetch_array($result)) {
   $codes[$i]["code"] = $row['CODE'];
   $codes[$i]["texte"] = $row['LIBELLELONG'];
   $i++;
@@ -87,8 +72,7 @@ $result = mysql_query($query);
 $acces[0]["code"] = "0";
 $acces[0]["texte"] = "Selection d'une voie d'accès";
 $i = 1;
-while($row = mysql_fetch_array($result))
-{
+while($row = mysql_fetch_array($result)) {
   $acces[$i]["code"] = $row['CODE'];
   $acces[$i]["texte"] = $row['ACCES'];
   $i++;
@@ -101,8 +85,7 @@ $result = mysql_query($query);
 $topo1[0]["code"] = "0";
 $topo1[0]["texte"] = "Selection de l'appareil concerné";
 $i = 1;
-while($row = mysql_fetch_array($result))
-{
+while($row = mysql_fetch_array($result)) {
   $topo1[$i]["code"] = $row['CODE'];
   $topo1[$i]["texte"] = $row['LIBELLE'];
   $i++;
@@ -115,8 +98,7 @@ $result = mysql_query($query);
 $topo2[0]["code"] = "0";
 $topo2[0]["texte"] = "Selection du système concerné";
 $i = 1;
-while($row = mysql_fetch_array($result))
-{
+while($row = mysql_fetch_array($result)) {
   $topo2[$i]["code"] = $row['CODE'];
   $topo2[$i]["texte"] = $row['LIBELLE'];
   $i++;

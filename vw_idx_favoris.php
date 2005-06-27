@@ -7,11 +7,13 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
+	
+require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 
 $user = $AppUI->user_id;
 
@@ -22,24 +24,14 @@ $query = "SELECT favoris_id, favoris_code
 		  ORDER BY favoris_code";
 $favoris = db_loadList($query);
 
-$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
-  or die("Could not connect");
-mysql_select_db("ccam")
-  or die("Could not select database");
-
 $i = 0;
-foreach($favoris as $key => $value)
-{
-  $query = "select CODE, LIBELLELONG from actes where CODE = '".$value['favoris_code']."'";
-  $result = mysql_query($query);
-  $row = mysql_fetch_array($result);
-  $codes[$i]["id"] = $value['favoris_id'];
-  $codes[$i]["code"] = $row['CODE'];
-  $codes[$i]["texte"] = $row['LIBELLELONG'];
+$codes = array();
+foreach($favoris as $key => $value) {
+  $codes[$i] = new CActeCCAM($value["favoris_code"]);
+  $codes[$i]->loadLite();
+  $codes[$i]->favoris_id = $value["favoris_id"];
   $i++;
 }
-
-mysql_close();
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
