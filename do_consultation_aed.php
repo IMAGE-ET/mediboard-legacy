@@ -27,8 +27,9 @@ foreach($_POST as $key => $value) {
   }
 }
 
-if(isset($_POST["compte_rendu"])) {
-  $_POST["compte_rendu"] = str_replace($fields, $values, $_POST["compte_rendu"]);
+$document_prop_name = $_POST["_document_prop_name"]; 
+if(isset($_POST[$document_prop_name])) {
+  $_POST[$document_prop_name] = str_replace($fields, $values, $_POST[$document_prop_name]);
 }
 
 // Object binding

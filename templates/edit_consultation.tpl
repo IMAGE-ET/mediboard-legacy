@@ -34,10 +34,7 @@ function modifTarif() {
 
 function putTiers() {
   var form = document.tarifFrm;
-  if(form._tiers.checked)
-    form.type_tarif.value = "tiers";
-  else
-    form.type_tarif.value = "null";
+  form.type_tarif.value = form._tiers.checked ? "tiers" : "null";
 }
 
 function checkTarif() {
@@ -48,13 +45,6 @@ function checkTarif() {
     return false;
   }
   return true
-}
-
-function editModele(consult, modele) {
-  var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
-  url +='&consult=' + consult;
-  url +='&modele=' + modele;
-  popup(700, 700, url, 'Compte-rendu');
 }
 
 function editPat() {
@@ -101,19 +91,31 @@ function submitConsultWithChrono(chrono) {
   form.submit();
 }
 
-function validerCompteRendu() {
-  if (confirm('Veuillez confirmer la validation du compte-rendu')) {
-    var form = document.editCompteRenduFrm;
-    form.cr_valide.value = "1";
+function editDocument(consult, modele, prop_name, valid_name) {
+  var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
+  url += '&consult=' + consult;
+  url += '&modele=' + modele;
+  if (prop_name) {
+    url += '&prop_name='  + prop_name ;
+    url += '&valid_name=' + valid_name;
+  }
+  
+  popup(700, 700, url, 'Document');
+}
+
+function validerDocument(prop_name, valid_name) {
+  if (confirm('Veuillez confirmer la validation du document')) {
+    var form = document.editDocumentFrm;
+    form.elements[valid_name].value = "1";
     form.submit();
   }
 }
 
-function supprimerCompteRendu() {
-  if (confirm('Veuillez confirmer la suppression')) {
-    var form = document.editCompteRenduFrm;
-    form.compte_rendu.value = "";
-    form.cr_valide.value = "0";
+function supprimerDocument(prop_name, valid_name) {
+  if (confirm('Veuillez confirmer la suppression du document')) {
+    var form = document.editDocumentFrm;
+    form.elements[prop_name].value = "";
+    form.elements[valid_name].value = "0";
     form.submit();
   }
 }
@@ -374,13 +376,7 @@ function supprimerCompteRendu() {
             <table class="form">
               <tr>
                 <th class="category">Fichiers liés</th>
-                <th class="category">
-                {if $consult->compte_rendu}
-                  Compte-Rendu
-                {else}
-                  Modèles dispo.
-                {/if}
-                </th>
+                <th class="category">Documents</th>
                 <th colspan="2" class="category">Règlement</th>
               </tr>
               <tr>
@@ -408,40 +404,54 @@ function supprimerCompteRendu() {
                   <input type="submit" value="ajouter">
                 </form>
                 </td>
-                {if $consult->compte_rendu}
-                <td class="button">
-                  <form name="editCompteRenduFrm" action="?m={$m}" method="POST">
+                <td>
+                  <table class="form">
+                      {foreach from=$consult->_ref_documents item=document}
+                      <tr>
+                        <th>{$document->nom}</th>
+                        {if $document->source}
+                        <td class="button">
+                          <form name="editDocumentFrm" action="?m={$m}" method="POST">
+        
+                          <input type="hidden" name="m" value="{$m}" />
+                          <input type="hidden" name="del" value="0" />
+                          <input type="hidden" name="dosql" value="do_consultation_aed" />
+                          <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
+                          <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
+                          <input type="hidden" name="{$document->_consult_prop_name}" value="{$document->source|escape:html}" />
+                          <input type="hidden" name="{$document->_consult_valid_name}" value="{$document->valide}" />
 
-                  <input type="hidden" name="m" value="{$m}" />
-                  <input type="hidden" name="del" value="0" />
-                  <input type="hidden" name="dosql" value="do_consultation_aed" />
-                  <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-                  <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
-                  <input type="hidden" name="compte_rendu" value="{$consult->compte_rendu|escape:html}" />
-                  <input type="hidden" name="cr_valide" value="{$consult->cr_valide}" />
-
-                  </form>
+                          </form>
                   
-                  <button onclick="editModele({$consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /> Modifier</button>
-                  {if !$consult->cr_valide}
-                  <button onclick="validerCompteRendu()"><img src="modules/dPcabinet/images/check.png" /> Valider</button>
-                  {/if}
-                  <button onclick="supprimerCompteRendu()"><img src="modules/dPcabinet/images/trash.png" /> Supprimer</button>
-                </td>
-                {else}
-                <td><ul>
-                  {foreach from=$listModele item=curr_modele}
-                  <li>
-                  <a href="#" onclick="editModele({$consult->consultation_id}, {$curr_modele->compte_rendu_id})">
-                    {$curr_modele->nom}
-                  </a>
-                  <a href="?m=dPcompteRendu&amp;tab=addedit_modeles&amp;compte_rendu_id={$curr_modele->compte_rendu_id}">
-                    <img src="modules/dPcabinet/images/edit.png" />
-                  </a>
-                  </li>
-                  {/foreach}
-                </ul></td>
-                {/if}
+                          <button onclick="editDocument({$consult->consultation_id}, 0, '{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
+                          	<img src="modules/dPcabinet/images/edit.png" /> 
+                          </button>
+                          
+                          {if !$document->valide}
+                          <button onclick="validerDocument('{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
+                            <img src="modules/dPcabinet/images/check.png" /> 
+                          </button>
+                          {/if}
+                          
+                          <button onclick="supprimerDocument('{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
+                            <img src="modules/dPcabinet/images/trash.png" /> 
+                          </button>
+                        </td>
+                        {else}
+		                <td>
+                          <select name="_choix_modele" onchange="if (this.value) editDocument({$consult->consultation_id}, this.value, '{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
+                            <option value="">&mdash; Choisir un modèle</option>
+                            {foreach from=$listModele item=curr_modele}
+                            <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+                            {/foreach}
+                          </select>
+					    </td>
+                        {/if}
+                      </tr>
+                      {/foreach}
+
+					</tr>
+                  </table>
                 <td>
                   <form name="tarifFrm" action="?m={$m}" method="POST" onsubmit="return checkTarif()">
                   <input type="hidden" name="m" value="{$m}" />
@@ -493,14 +503,17 @@ function supprimerCompteRendu() {
                       </td>
                     {/if}
                     {if $consult->tarif && !$consult->paye}
-                    <tr><th>Moyen de paiement :<input type="hidden" name="paye" value="1" /></th>
-                      <td><select name="type_tarif">
-                        <option value="cheque" {if $consult->type_tarif == "cheque"}selected="selected"{/if}>Chèques</option>
-                        <option value="CB" {if $consult->type_tarif == "CB"}selected="selected"{/if}>CB</option>
-                        <option value="especes" {if $consult->type_tarif == "especes"}selected="selected"{/if}>Espèces</option>
-                        <option value="tiers" {if $consult->type_tarif == "tiers"}selected="selected"{/if}>Tiers-payant</option>
-                        <option value="autre" {if $consult->type_tarif == "autre"}selected="selected"{/if}>Autre</option>
-                      </select></td>
+                    <tr>
+                      <th>Moyen de paiement :<input type="hidden" name="paye" value="1" /></th>
+                      <td>
+                        <select name="type_tarif">
+                          <option value="cheque"  {if $consult->type_tarif == "cheque" }selected="selected"{/if}>Chèques     </option>
+                          <option value="CB"      {if $consult->type_tarif == "CB"     }selected="selected"{/if}>CB          </option>
+                          <option value="especes" {if $consult->type_tarif == "especes"}selected="selected"{/if}>Espèces     </option>
+                          <option value="tiers"   {if $consult->type_tarif == "tiers"  }selected="selected"{/if}>Tiers-payant</option>
+                          <option value="autre"   {if $consult->type_tarif == "autre"  }selected="selected"{/if}>Autre       </option>
+                        </select>
+                      </td>
                     </tr>
                     <tr><td colspan="2" class="button">
                       <input type="submit" value="Reglement effectué" />

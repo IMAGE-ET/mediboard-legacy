@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.26';
+$config['mod_version'] = '0.27';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -42,64 +42,75 @@ class CSetupdPcabinet {
 	}
 
 	function upgrade( $old_version ) {
-		switch ( $old_version )
-		{
-		case "all":
-		case "0.1":
-		  $sql = "ALTER TABLE plageconsult ADD freq TIME DEFAULT '00:15:00' NOT NULL AFTER date ;";
-		  db_exec( $sql ); db_error();
-		case "0.2":
-          $sql = "ALTER TABLE consultation ADD compte_rendu TEXT DEFAULT NULL";
-          db_exec( $sql ); db_error();
-        case "0.21":
-          $sql = "ALTER TABLE consultation CHANGE duree duree TINYINT DEFAULT '1' NOT NULL ";
-          db_exec( $sql ); db_error();
-          $sql = "UPDATE consultation SET duree='1' ";
-          db_exec( $sql ); db_error();
-        case "0.22":
-          $sql = "ALTER TABLE `consultation` " .
-              "\nADD `chrono` TINYINT DEFAULT '16' NOT NULL," .
-              "\nADD `annule` TINYINT DEFAULT '0' NOT NULL," .
-              "\nADD `paye` TINYINT DEFAULT '0' NOT NULL," .
-              "\nADD `cr_valide` TINYINT DEFAULT '0' NOT NULL," .
-              "\nADD `examen` TEXT," .
-              "\nADD `traitement` TEXT";
-          db_exec( $sql ); db_error();
-        case "0.23":
-          $sql = "ALTER TABLE `consultation` ADD `premiere` TINYINT NOT NULL";
-          db_exec( $sql ); db_error();
-        case "0.24":
-          $sql = "CREATE TABLE `tarifs` (
-                  `tarif_id` BIGINT NOT NULL AUTO_INCREMENT ,
-                  `chir_id` BIGINT DEFAULT '0' NOT NULL ,
-                  `function_id` BIGINT DEFAULT '0' NOT NULL ,
-                  `description` VARCHAR( 50 ) ,
-                  `valeur` TINYINT,
-                  PRIMARY KEY ( `tarif_id` ) ,
-                  INDEX ( `chir_id` , `function_id` )
-                  ) COMMENT = 'table des tarifs de consultation';";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `consultation` ADD `tarif` TINYINT,
-                  ADD `type_tarif` ENUM( 'cheque', 'CB', 'especes', 'tiers', 'autre' ) ;";
-          db_exec( $sql ); db_error();
-        case "0.25":
-          $sql = "ALTER TABLE `tarifs` CHANGE `valeur` `secteur1` FLOAT( 6 ) DEFAULT NULL;";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `tarifs` ADD `secteur2` FLOAT( 6 ) NOT NULL;";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `consultation` CHANGE `secteur1` `secteur1` FLOAT( 6 ) DEFAULT '0' NOT NULL;";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `consultation` CHANGE `secteur2` `secteur2` FLOAT( 6 ) DEFAULT '0' NOT NULL;";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `consultation` CHANGE `tarif` `tarif` VARCHAR( 50 ) DEFAULT NULL;";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `plageconsult` ADD `libelle` VARCHAR( 50 ) DEFAULT NULL AFTER `chir_id` ;";
-          db_exec( $sql ); db_error();
-        case "0.26":
-			return true;
-		default:
-			return false;
+		switch ( $old_version ) {
+  		case "all":
+  		case "0.1":
+  		  $sql = "ALTER TABLE plageconsult ADD freq TIME DEFAULT '00:15:00' NOT NULL AFTER date ;";
+  		  db_exec( $sql ); db_error();
+
+  		case "0.2":
+        $sql = "ALTER TABLE consultation ADD compte_rendu TEXT DEFAULT NULL";
+        db_exec( $sql ); db_error();
+
+      case "0.21":
+        $sql = "ALTER TABLE consultation CHANGE duree duree TINYINT DEFAULT '1' NOT NULL ";
+        db_exec( $sql ); db_error();
+        $sql = "UPDATE consultation SET duree='1' ";
+        db_exec( $sql ); db_error();
+
+      case "0.22":
+        $sql = "ALTER TABLE `consultation` " .
+            "\nADD `chrono` TINYINT DEFAULT '16' NOT NULL," .
+            "\nADD `annule` TINYINT DEFAULT '0' NOT NULL," .
+            "\nADD `paye` TINYINT DEFAULT '0' NOT NULL," .
+            "\nADD `cr_valide` TINYINT DEFAULT '0' NOT NULL," .
+            "\nADD `examen` TEXT," .
+            "\nADD `traitement` TEXT";
+        db_exec( $sql ); db_error();
+
+      case "0.23":
+        $sql = "ALTER TABLE `consultation` ADD `premiere` TINYINT NOT NULL";
+        db_exec( $sql ); db_error();
+
+      case "0.24":
+        $sql = "CREATE TABLE `tarifs` (
+                `tarif_id` BIGINT NOT NULL AUTO_INCREMENT ,
+                `chir_id` BIGINT DEFAULT '0' NOT NULL ,
+                `function_id` BIGINT DEFAULT '0' NOT NULL ,
+                `description` VARCHAR( 50 ) ,
+                `valeur` TINYINT,
+                PRIMARY KEY ( `tarif_id` ) ,
+                INDEX ( `chir_id` , `function_id` )
+                ) COMMENT = 'table des tarifs de consultation';";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `consultation` ADD `tarif` TINYINT,
+                ADD `type_tarif` ENUM( 'cheque', 'CB', 'especes', 'tiers', 'autre' ) ;";
+        db_exec( $sql ); db_error();
+
+      case "0.25":
+        $sql = "ALTER TABLE `tarifs` CHANGE `valeur` `secteur1` FLOAT( 6 ) DEFAULT NULL;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `tarifs` ADD `secteur2` FLOAT( 6 ) NOT NULL;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `consultation` CHANGE `secteur1` `secteur1` FLOAT( 6 ) DEFAULT '0' NOT NULL;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `consultation` CHANGE `secteur2` `secteur2` FLOAT( 6 ) DEFAULT '0' NOT NULL;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `consultation` CHANGE `tarif` `tarif` VARCHAR( 50 ) DEFAULT NULL;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `plageconsult` ADD `libelle` VARCHAR( 50 ) DEFAULT NULL AFTER `chir_id` ;";
+        db_exec( $sql ); db_error();
+
+      case "0.26":
+        $sql = "ALTER TABLE `consultation` " .
+            "\nADD `ordonnance` TEXT DEFAULT NULL," .
+            "\nADD `or_valide` TINYINT DEFAULT '0' NOT NULL"; 
+        db_exec( $sql ); db_error();
+        
+      case "0,27":
+  	    return true;
 		}
+
 		return false;
 	}
 

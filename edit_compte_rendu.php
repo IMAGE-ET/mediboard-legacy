@@ -47,20 +47,22 @@ $medichir->fillTemplate($templateManager);
 $patient->fillTemplate($templateManager);
 $consult->fillTemplate($templateManager);
 
-$templateManager->document = $consult->compte_rendu;
+$document_prop_name  = dPgetParam($_GET, "prop_name" );
+$document_valid_name = dPgetParam($_GET, "valid_name");
+$templateManager->document = $consult->$document_prop_name;
 $templateManager->loadHelpers($medichir->user_id, TMT_CONSULTATION);
 $templateManager->loadLists($medichir->user_id);
 
 // Chargement du modèle
-if (!$consult->compte_rendu) {
-  $compte_rendu_id = dPgetParam($_GET, "modele", 0);
+if (!$templateManager->document) {
+  $modele_id = dPgetParam($_GET, "modele");
   $modele = new CCompteRendu();
-  $modele->load($compte_rendu_id);
+  $modele->load($modele_id);
   $templateManager->applyTemplate($modele);
 }
 
 $where = array();
-$where["chir_id"] = "= $medichir->user_id";
+$where["chir_id"] = "= '$medichir->user_id'";
 $chirLists = new CListeChoix;
 $chirLists = $chirLists->loadList($where);
 $lists = $templateManager->getUsedLists($chirLists);
@@ -74,6 +76,9 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('templateManager', $templateManager);
 $smarty->assign('consult', $consult);
+$smarty->assign('document_prop_name' , $document_prop_name );
+$smarty->assign('document_valid_name', $document_valid_name);
+
 $smarty->assign('lists', $lists);
 
 $smarty->display('edit_compte_rendu.tpl');
