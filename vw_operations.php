@@ -66,7 +66,7 @@ foreach($plages as $key => $value) {
 }
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
   or die("Could not connect");
-mysql_select_db("ccam")
+mysql_select_db("ccamV1")
   or die("Could not select database");
 foreach($plages as $key => $value) {
   foreach($value["operations"] as $key2 => $value2) {
