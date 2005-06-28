@@ -15,26 +15,31 @@ if (!$canRead) {
 }
 
 $patient_id = mbGetValueFromGetOrSession("id", 0);
+$dialog = dPgetParam($_GET, "dialog", null);
+$name = dPgetParam($_GET, "name", null);
+$firstName = dPgetParam($_GET, "firstName", null);
 
 $patient = new CPatient;
-$patient->load($patient_id);
-$patient->loadRefs();
 
-if (!$patient->patient_id) {
-  $patient = null;
+if ($patient_id) {
+  $patient->load($patient_id);
+  $patient->loadRefsFwd();
+} else {
+  $patient->nom = $name;
+  $patient->prenom = $firstName;
 }
 
 // Vérification de l'existence de doublons
-$textSiblings = NULL;
-$patientSib = NULL;
+$textSiblings = null;
+$patientSib = null;
 if($created = dPgetParam($_GET, 'created', 0)){
   $patientSib = new CPatient();
   $where["patient_id"] = "= '$created'";
   $patientSib->loadObject($where);
   $siblings = $patientSib->getSiblings();
   if(count($siblings) == 0) {
-  	$textSiblings = NULL;
-  	$patientSib = NULL;
+  	$textSiblings = null;
+  	$patientSib = null;
   	if($dialog)
   	  $AppUI->redirect( "m=dPpatients&a=pat_selector&dialog=1&name=$patient->nom&firstName=$patient->prenom" );
   	else
@@ -50,8 +55,6 @@ if($created = dPgetParam($_GET, 'created', 0)){
     $textSiblings .= "Voulez-vous tout de meme le creer ?";
   }
 }
-
-// Récuperation du patient sélectionné
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
