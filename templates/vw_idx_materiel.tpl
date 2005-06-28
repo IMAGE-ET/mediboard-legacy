@@ -62,7 +62,7 @@ function popMateriel() {
 			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
             <input type="hidden" name="m" value="dPbloc" />
             <input type="hidden" name="a" value="do_edit_mat" />
-            <input type="hidden" name="id" value="{$curr_op.id}" />
+            <input type="hidden" name="id" value="{$curr_op->operation_id}" />
             {if $typeAff}
             <input type="hidden" name="value" value="n" />
 		    <input type="submit" value="annulé" />
