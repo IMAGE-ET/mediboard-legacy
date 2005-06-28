@@ -23,6 +23,9 @@ if ($mediuser->isPraticien()) {
   $chir = $mediuser->createUser();
 }
 
+// Type de vue
+$vue = mbGetValueFromGetOrSession("vue", 0);
+
 // Chirurgien selectionné
 $chirSel = mbGetValueFromGetOrSession("chirSel", $chir->user_id);
 
@@ -32,7 +35,10 @@ $plageSel = new CPlageconsult();
 $plageSel->load($plageconsult_id);
 $plageSel->loadRefs();
 foreach($plageSel->_ref_consultations as $key => $value) {
-  $plageSel->_ref_consultations[$key]->loadRefs();
+  if($vue && $plageSel->_ref_consultations[$key]->paye)
+    unset($plageSel->_ref_consultations[$key]);
+  else
+    $plageSel->_ref_consultations[$key]->loadRefs();
 }
 if($plageSel->chir_id != $chirSel) {
   $plageconsult_id = -1;
@@ -110,6 +116,7 @@ $daysOfWeek[6]["day"] = intval($currDay);
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->assign('vue', $vue);
 $smarty->assign('chirSel', $chirSel);
 $smarty->assign('plageSel', $plageSel);
 $smarty->assign('plageconsult_id', $plageconsult_id);
