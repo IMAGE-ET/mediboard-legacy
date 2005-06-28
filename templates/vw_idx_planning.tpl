@@ -116,7 +116,7 @@ function supprimerCompteRendu(form) {
 
         {foreach from=$listDay item=curr_plage}
         <tr>
-          <th colspan="6">Salle {$curr_plage->_ref_salle->nom} : de {$curr_plage->debut} à {$curr_plage->fin}</th>
+          <th colspan="6">{$curr_plage->_ref_salle->nom} : de {$curr_plage->debut|date_format:"%Hh%M"} à {$curr_plage->fin|date_format:"%Hh%M"}</th>
         </tr>
         {foreach from=$curr_plage->_ref_operations item=curr_op}
         <tr>

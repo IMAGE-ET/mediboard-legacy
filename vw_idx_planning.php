@@ -86,7 +86,10 @@ $sql = "SELECT plagesop.*," .
 		"\nAND plagesop.date LIKE '$year-$month-__'" .
 		"\nGROUP BY plagesop.id" .
 		"\nORDER BY plagesop.date, plagesop.debut, plagesop.id";
-$listPlages = db_loadList($sql);
+if($selChirLogin)
+  $listPlages = db_loadList($sql);
+else
+  $listPlages = null;
 
 // Liste des opérations du jour sélectionné
 $listDay = new CPlageOp;
