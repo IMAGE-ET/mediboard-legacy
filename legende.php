@@ -27,19 +27,15 @@
   </tr>
   <tr>
     <td align="right"><i><strong>M. X y</strong></i></td>
-    <td>Patient en ambulatoire</td>
+    <td class="text">Patient en ambulatoire</td>
   </tr>
   <tr>
-    <td align="right"><font style="color:#a33"><strong>M. X y 17h00</strong></font></td>
-    <td>Patient qui doit être admis aujourd'hui à 17h</td>
-  </tr>
-  <tr>
-    <td align="right"><font style="color:#a33"><strong>M. X y</strong></font></td>
-    <td>Patient qui doit arriver dans cette chambre dans la journée</td>
+    <td align="right"><font style="color:#a33"><strong>M. X y 27/03 17h00</strong></font></td>
+    <td class="text">Patient qui doit arriver dans cette chambre à 17h00 le 27/03</td>
   </tr>
   <tr>
     <td align="right"><font style="color:#3a3"><strong>M. X y</strong></font></td>
-    <td>Patient septique</td>
+    <td class="text">Patient septique</td>
   </tr>
   <tr>
     <td align="right" style="background-image:url(modules/dPhospi/images/ray.gif); background-repeat:repeat;"><strong>M. X y</strong></td>

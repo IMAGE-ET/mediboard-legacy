@@ -303,8 +303,8 @@ function popPlanning() {
               {else}
               <strong>{$curr_affectation->_ref_operation->_ref_pat->_view}</strong>
               {/if}
-              {if $curr_affectation->_ref_operation->admis == "n"}
-              {$curr_affectation->entree|date_format:"%Hh%M"}
+              {if ($curr_affectation->_ref_operation->admis == "n") || ($curr_affectation->_ref_prev->affectation_id && $curr_affectation->_ref_prev->effectue == 0)}
+              {$curr_affectation->entree|date_format:"%d/%m %Hh%M"}
               {/if}
             </font>
             </td>
