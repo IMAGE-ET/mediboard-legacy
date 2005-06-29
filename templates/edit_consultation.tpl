@@ -133,7 +133,7 @@ function supprimerDocument(prop_name, valid_name) {
           <form action="index.php" name="type" method="get">
           <input type="hidden" name="m" value="{$m}">
           <input type="hidden" name="tab" value="{$tab}">
-          <select name="vue" onchange="this.form.submit()">
+          <select name="vue2" onchange="this.form.submit()">
             <option value="0"{if !$vue}selected="selected"{/if}>Tout afficher</option>
             <option value="1"{if $vue}selected="selected"{/if}>Cacher les Terminées</option>
           </select>
