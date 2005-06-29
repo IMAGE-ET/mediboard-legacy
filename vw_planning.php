@@ -24,7 +24,7 @@ if ($mediuser->isPraticien()) {
 }
 
 // Type de vue
-$vue = mbGetValueFromGetOrSession("vue", 0);
+$vue = mbGetValueFromGetOrSession("vue1", 0);
 
 // Chirurgien selectionné
 $chirSel = mbGetValueFromGetOrSession("chirSel", $chir->user_id);

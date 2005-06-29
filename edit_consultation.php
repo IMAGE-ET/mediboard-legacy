@@ -21,6 +21,7 @@ if (!$canEdit) {
 }
 
 // Récupération des variables
+$vue = mbGetValueFromGetOrSession("vue2", 0);
 $day = mbGetValueFromGetOrSession("dayconsult", date("d"));
 $month = mbGetValueFromGetOrSession("monthconsult", date("m"));
 $year = mbGetValueFromGetOrSession("yearconsult", date("Y"));
@@ -118,7 +119,10 @@ $listPlage = $listPlage->loadList("chir_id = '$chir->user_id' AND date = '$year-
 foreach($listPlage as $key => $value) {
   $listPlage[$key]->loadRefs();
   foreach($listPlage[$key]->_ref_consultations as $key2 => $value2) {
-    $listPlage[$key]->_ref_consultations[$key2]->loadRefs();
+    if($vue && ($listPlage[$key]->_ref_consultations[$key2]->chrono == CC_TERMINE))
+      unset($listPlage[$key]->_ref_consultations[$key2]);
+    else
+      $listPlage[$key]->_ref_consultations[$key2]->loadRefs();
   }
 }
 
@@ -160,6 +164,7 @@ $tarifsCab = $tarifsCab->loadList($where);
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->assign('vue', $vue);
 $smarty->assign('day', $day);
 $smarty->assign('nday', $nday);
 $smarty->assign('nnday', $nnday);
