@@ -71,9 +71,10 @@ class CLit extends CDpObject {
   function checkOverBooking() {
     assert($this->_ref_affectations !== null);
     $this->_overbooking = 0;
+    $listAff = $this->_ref_affectations;
     
     foreach ($this->_ref_affectations as $aff1) {
-      foreach ($this->_ref_affectations as $aff2) {
+      foreach ($listAff as $aff2) {
         if ($aff1->affectation_id != $aff2->affectation_id) {
           if (($aff2->entree < $aff1->sortie and $aff2->sortie > $aff1->sortie)
             or ($aff2->entree < $aff1->entree and $aff2->sortie > $aff1->entree)
@@ -83,6 +84,7 @@ class CLit extends CDpObject {
         }
       }
     }
+    $this->_overbooking = $this->_overbooking / 2;
   }
   
   function checkDispo($date) {
