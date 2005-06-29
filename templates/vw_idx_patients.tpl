@@ -20,6 +20,12 @@ function printPatient(id) {
   url = url + '&patient_id=' + id;
   popup(700, 550, url, 'Patient');
 }
+
+function printIntervention(id) {
+  var url = './index.php?m=dPplanningOp&a=view_planning&dialog=1';
+  url = url + '&operation_id=' + id;
+  popup(700, 550, url, 'Admission');
+}
 //]]>
 </script>
 {/literal}
@@ -229,7 +235,7 @@ function printPatient(id) {
         </tr>
         {/if}
         {if $patient->_ref_operations}
-        <tr><th colspan="3" class="category">Interventions</th></tr>
+        <tr><th colspan="4" class="category">Interventions</th></tr>
         {foreach from=$patient->_ref_operations item=curr_op}
         <tr>
           <td>
@@ -239,6 +245,9 @@ function printPatient(id) {
             <em><a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;day={$curr_op->date_adm|date_format:"%d"}&amp;month={$curr_op->date_adm|date_format:"%m"}&amp;year={$curr_op->date_adm|date_format:"%Y"}#adm{$curr_op->operation_id}">
             (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})
             </a></em>
+            <a href="javascript:printIntervention({$curr_op->operation_id})">
+            <img src="modules/dPpatients/images/print.png" title="imprimer"/>
+            </a>
           </td>
           <td>
             <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
@@ -253,7 +262,7 @@ function printPatient(id) {
         {/foreach}
         {/if}
         {if $patient->_ref_hospitalisations}
-        <tr><th colspan="3" class="category">hospitalisations</th></tr>
+        <tr><th colspan="4" class="category">hospitalisations</th></tr>
         {foreach from=$patient->_ref_hospitalisations item=curr_op}
         <tr>
           <td>
@@ -263,6 +272,7 @@ function printPatient(id) {
             <em><a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;day={$curr_op->date_adm|date_format:"%d"}&amp;month={$curr_op->date_adm|date_format:"%m"}&amp;year={$curr_op->date_adm|date_format:"%Y"}#adm{$curr_op->operation_id}">
             (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})
             </a></em>
+            <img src="modules/dPpatients/images/print.png" title="imprimer" onclick="printIntervention({$curr_op->operation_id})"/>
           </td>
           <td>
             <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
