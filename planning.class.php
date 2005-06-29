@@ -255,16 +255,22 @@ class COperation extends CDpObject {
     
   }
   
-  function loadRefsFwd() {
+  function loadRefChir() {
     $this->_ref_chir = new CMediusers;
     $this->_ref_chir->load($this->chir_id);
-        
+  }
+  
+  function loadRefPat() {
     $this->_ref_pat = new CPatient;
     $this->_ref_pat->load($this->pat_id);
-    
+  }
+  
+  function loadRefPlageOp() {
     $this->_ref_plageop = new CPlageOp;
     $this->_ref_plageop->load($this->plageop_id);
-    
+  }
+  
+  function loadRefCCAM() {
     $this->_ext_code_ccam = new CActeCCAM($this->CCAM_code);
     $this->_ext_code_ccam->LoadLite();
     if(!$this->plageop_id && $this->pat_id && !$this->CCAM_code) {
@@ -273,6 +279,12 @@ class COperation extends CDpObject {
     }
     $this->_ext_code_ccam2 = new CActeCCAM($this->CCAM_code2);
     $this->_ext_code_ccam2->LoadLite();
+  }
+  
+  function loadRefsFwd() {
+    $this->loadRefChir();
+    $this->loadRefPat();
+    $this->loadRefPlageOp();
   }
 
   function loadRefsBack() {
