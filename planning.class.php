@@ -285,6 +285,7 @@ class COperation extends CDpObject {
     $this->loadRefChir();
     $this->loadRefPat();
     $this->loadRefPlageOp();
+    $this->loadRefCCAM();
   }
 
   function loadRefsBack() {
