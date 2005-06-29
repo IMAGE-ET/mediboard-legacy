@@ -146,7 +146,7 @@ function pageMain() {
 {foreach from=$curr_service->_ref_chambres item=curr_chambre}
 {foreach from=$curr_chambre->_ref_lits item=curr_lit}
 {foreach from=$curr_lit->_ref_affectations item=curr_affectation}
-  setupCalendar({$curr_affectation->affectation_id});
+  //setupCalendar({$curr_affectation->affectation_id});
 {/foreach}
 {/foreach}
 {/foreach}
@@ -222,7 +222,12 @@ function popPlanning() {
       {foreach from=$curr_service->_ref_chambres item=curr_chambre}
         <table class="chambrecollapse" id="chambre{$curr_chambre->chambre_id}">
           <tr>
-            <th class="chambre" colspan="2" onclick="flipChambre({$curr_chambre->chambre_id})">
+            <th class="chambre" colspan="2" onclick="javascript:flipChambre({$curr_chambre->chambre_id});
+                {foreach from=$curr_chambre->_ref_lits item=curr_lit}
+                {foreach from=$curr_lit->_ref_affectations item=curr_aff}
+                setupCalendar({$curr_aff->affectation_id});
+                {/foreach}
+                {/foreach}">
               {if $curr_chambre->_overbooking}
               <img src="modules/{$m}/images/surb.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
               {/if}
