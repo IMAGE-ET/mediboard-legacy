@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPhospi';
-$config['mod_version'] = '0.13';
+$config['mod_version'] = '0.14';
 $config['mod_directory'] = 'dPhospi';
 $config['mod_setup_class'] = 'CSetupdPhospi';
 $config['mod_type'] = 'user';
@@ -89,11 +89,20 @@ class CSetupdPhospi {
       db_exec($sql); db_error($sql);
       $sql = "ALTER TABLE `affectation` ADD INDEX ( `sortie` );";
       db_exec($sql); db_error($sql);
-
-			return true;
+      
+    case "0.13":
+      $sql = "ALTER TABLE `affectation` ADD INDEX ( `operation_id` ) ;";
+      db_exec($sql); db_error();
+      $sql = "ALTER TABLE `affectation` DROP INDEX ( `lit_id` ) ;";
+      db_exec($sql); db_error();
+      $sql = "ALTER TABLE `affectation` ADD INDEX ( `lit_id` ) ;";
+      db_exec($sql); db_error();
+    
+    case "0.14":
+	  return true;
     }
 
-		return false;
+	return false;
 	}
 
 	function install() {

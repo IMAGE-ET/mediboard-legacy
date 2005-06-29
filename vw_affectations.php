@@ -7,8 +7,10 @@
 * @author Thomas Despoix
 */
 
-//$totalChrono = new Chronometer();
-//$totalChrono->start();
+global $dbChrono;
+$totalChrono = new Chronometer();
+$recuperationChrono = new Chronometer();
+$totalChrono->start();
 
 global $AppUI, $canRead, $canEdit, $m;
 
@@ -33,6 +35,11 @@ $dateReal = date("Y-m-d H:i:s");
 $heureLimit = "16:00:00";
 $mode = mbGetValueFromGetOrSession("mode", 0);
 
+// Initialisation de la liste des chirs, patients et plagesop
+$listChirs = array();
+$listPats = array();
+$listPlagesOp = array();
+
 // Récupération des fonctions
 $listFunctions = new CFunctions;
 $listFunctions = $listFunctions->loadList();
@@ -46,11 +53,11 @@ $totalLits = 0;
 $services = new CService;
 $services = $services->loadList();
 foreach ($services as $service_id => $service) {
-  $services[$service_id]->loadRefs();
+  $services[$service_id]->loadRefsBack();
   $services[$service_id]->_nb_lits_dispo = 0;
   $chambres =& $services[$service_id]->_ref_chambres;
   foreach ($chambres as $chambre_id => $chambre) {
-    $chambres[$chambre_id]->loadRefs();
+    $chambres[$chambre_id]->loadRefsBack();
     $lits =& $chambres[$chambre_id]->_ref_lits;
     foreach ($lits as $lit_id => $lit) {
       $lits[$lit_id]->loadAffectations($date);
@@ -73,8 +80,36 @@ foreach ($services as $service_id => $service) {
           }
 
           $operation =& $affectations[$affectation_id]->_ref_operation;
+          $recuperationChrono->start();
+          if(isset($listChirs[$operation->chir_id])) {
+            $operation->_ref_chir =& $listChirs[$operation->chir_id];
+          }
+          else {
+            $operation->loadRefChir();
+            $operation->_ref_chir->_ref_function =& $listFunctions[$operation->_ref_chir->function_id];
+            $listChirs[$operation->chir_id] =& $operation->_ref_chir;
+          }
+          if(isset($listPats[$operation->pat_id])) {
+            $operation->_ref_pat =& $listPats[$operation->pat_id];
+          }
+          else {
+            $operation->loadRefPat();
+            $listPats[$operation->pat_id] =& $operation->_ref_pat;
+          }
+          if(isset($listPlagesOp[$operation->plageop_id])) {
+            $operation->_ref_plageop =& $listPlagesOp[$operation->plageop_id];
+          }
+          else {
+            $operation->loadRefPlageOp();
+            $listPlagesOp[$operation->plageop_id] =& $operation->_ref_plageop;
+          }
+          $operation->loadRefCCAM();
+          
+          /*
           $operation->loadRefsFwd();
           $operation->_ref_chir->_ref_function =& $listFunctions[$operation->_ref_chir->function_id];
+          */
+          $recuperationChrono->stop();
         } else
           unset($affectations[$affectation_id]);
       }
@@ -106,8 +141,33 @@ $opNonAffecteesVeille = new COperation;
 $opNonAffecteesVeille = $opNonAffecteesVeille->loadList($where, $order, null, null, $leftjoin);
 
 foreach ($opNonAffecteesVeille as $op_id => $op) {
-  $opNonAffecteesVeille[$op_id]->loadRefs();
-  $opNonAffecteesVeille[$op_id]->_ref_chir->loadRefsFwd();
+  $recuperationChrono->start();
+   if(isset($listChirs[$opNonAffecteesVeille[$op_id]->chir_id])) {
+     $opNonAffecteesVeille[$op_id]->_ref_chir =& $listChirs[$opNonAffecteesVeille[$op_id]->chir_id];
+   }
+   else {
+     $opNonAffecteesVeille[$op_id]->loadRefChir();
+     $opNonAffecteesVeille[$op_id]->_ref_chir->_ref_function =& $listFunctions[$opNonAffecteesVeille[$op_id]->_ref_chir->function_id];
+     $listChirs[$opNonAffecteesVeille[$op_id]->chir_id] =& $opNonAffecteesVeille[$op_id]->_ref_chir;
+   }
+   if(isset($listPats[$opNonAffecteesVeille[$op_id]->pat_id])) {
+     $opNonAffecteesVeille[$op_id]->_ref_pat =& $listPats[$opNonAffecteesVeille[$op_id]->pat_id];
+   }
+   else {
+     $opNonAffecteesVeille[$op_id]->loadRefPat();
+     $listPats[$opNonAffecteesVeille[$op_id]->pat_id] =& $opNonAffecteesVeille[$op_id]->_ref_pat;
+   }
+   if(isset($listPlagesOp[$opNonAffecteesVeille[$op_id]->plageop_id])) {
+     $opNonAffecteesVeille[$op_id]->_ref_plageop =& $listPlagesOp[$opNonAffecteesVeille[$op_id]->plageop_id];
+   }
+   else {
+     $opNonAffecteesVeille[$op_id]->loadRefPlageOp();
+     $listPlagesOp[$opNonAffecteesVeille[$op_id]->plageop_id] =& $opNonAffecteesVeille[$op_id]->_ref_plageop;
+   }
+   $opNonAffecteesVeille[$op_id]->loadRefCCAM();
+  //$opNonAffecteesVeille[$op_id]->loadRefsFwd();
+  //$opNonAffecteesVeille[$op_id]->_ref_chir->_ref_function =& $listFunctions[$opNonAffecteesVeille[$op_id]->_ref_chir->function_id];
+  $recuperationChrono->stop();
 }
 
 // Admissions du matin
@@ -122,8 +182,33 @@ $opNonAffecteesMatin = new COperation;
 $opNonAffecteesMatin = $opNonAffecteesMatin->loadList($where, $order, null, null, $leftjoin);
 
 foreach ($opNonAffecteesMatin as $op_id => $op) {
-  $opNonAffecteesMatin[$op_id]->loadRefs();
-  $opNonAffecteesMatin[$op_id]->_ref_chir->loadRefsFwd();
+  $recuperationChrono->start();
+   if(isset($listChirs[$opNonAffecteesMatin[$op_id]->chir_id])) {
+     $opNonAffecteesMatin[$op_id]->_ref_chir =& $listChirs[$opNonAffecteesMatin[$op_id]->chir_id];
+   }
+   else {
+     $opNonAffecteesMatin[$op_id]->loadRefChir();
+     $opNonAffecteesMatin[$op_id]->_ref_chir->_ref_function =& $listFunctions[$opNonAffecteesMatin[$op_id]->_ref_chir->function_id];
+     $listChirs[$opNonAffecteesMatin[$op_id]->chir_id] =& $opNonAffecteesMatin[$op_id]->_ref_chir;
+   }
+   if(isset($listPats[$opNonAffecteesMatin[$op_id]->pat_id])) {
+     $opNonAffecteesMatin[$op_id]->_ref_pat =& $listPats[$opNonAffecteesMatin[$op_id]->pat_id];
+   }
+   else {
+     $opNonAffecteesMatin[$op_id]->loadRefPat();
+     $listPats[$opNonAffecteesMatin[$op_id]->pat_id] =& $opNonAffecteesMatin[$op_id]->_ref_pat;
+   }
+   if(isset($listPlagesOp[$opNonAffecteesMatin[$op_id]->plageop_id])) {
+     $opNonAffecteesMatin[$op_id]->_ref_plageop =& $listPlagesOp[$opNonAffecteesMatin[$op_id]->plageop_id];
+   }
+   else {
+     $opNonAffecteesMatin[$op_id]->loadRefPlageOp();
+     $listPlagesOp[$opNonAffecteesMatin[$op_id]->plageop_id] =& $opNonAffecteesMatin[$op_id]->_ref_plageop;
+   }
+   $opNonAffecteesMatin[$op_id]->loadRefCCAM();
+  //$opNonAffecteesMatin[$op_id]->loadRefsFwd();
+  //$opNonAffecteesMatin[$op_id]->_ref_chir->_ref_function =& $listFunctions[$opNonAffecteesMatin[$op_id]->_ref_chir->function_id];
+  $recuperationChrono->stop();
 }
 
 // Admissions du soir
@@ -138,8 +223,33 @@ $opNonAffecteesSoir = new COperation;
 $opNonAffecteesSoir = $opNonAffecteesSoir->loadList($where, $order, null, null, $leftjoin);
 
 foreach ($opNonAffecteesSoir as $op_id => $op) {
-  $opNonAffecteesSoir[$op_id]->loadRefs();
-  $opNonAffecteesSoir[$op_id]->_ref_chir->loadRefsFwd();
+  $recuperationChrono->start();
+   if(isset($listChirs[$opNonAffecteesSoir[$op_id]->chir_id])) {
+     $opNonAffecteesSoir[$op_id]->_ref_chir =& $listChirs[$opNonAffecteesSoir[$op_id]->chir_id];
+   }
+   else {
+     $opNonAffecteesSoir[$op_id]->loadRefChir();
+     $opNonAffecteesSoir[$op_id]->_ref_chir->_ref_function =& $listFunctions[$opNonAffecteesSoir[$op_id]->_ref_chir->function_id];
+     $listChirs[$opNonAffecteesSoir[$op_id]->chir_id] =& $opNonAffecteesSoir[$op_id]->_ref_chir;
+   }
+   if(isset($listPats[$opNonAffecteesSoir[$op_id]->pat_id])) {
+     $opNonAffecteesSoir[$op_id]->_ref_pat =& $listPats[$opNonAffecteesSoir[$op_id]->pat_id];
+   }
+   else {
+     $opNonAffecteesSoir[$op_id]->loadRefPat();
+     $listPats[$opNonAffecteesSoir[$op_id]->pat_id] =& $opNonAffecteesSoir[$op_id]->_ref_pat;
+   }
+   if(isset($listPlagesOp[$opNonAffecteesSoir[$op_id]->plageop_id])) {
+     $opNonAffecteesSoir[$op_id]->_ref_plageop =& $listPlagesOp[$opNonAffecteesSoir[$op_id]->plageop_id];
+   }
+   else {
+     $opNonAffecteesSoir[$op_id]->loadRefPlageOp();
+     $listPlagesOp[$opNonAffecteesSoir[$op_id]->plageop_id] =& $opNonAffecteesSoir[$op_id]->_ref_plageop;
+   }
+   $opNonAffecteesSoir[$op_id]->loadRefCCAM();
+  //$opNonAffecteesSoir[$op_id]->loadRefsFwd();
+  //$opNonAffecteesSoir[$op_id]->_ref_chir->_ref_function =& $listFunctions[$opNonAffecteesSoir[$op_id]->_ref_chir->function_id];
+  $recuperationChrono->stop();
 }
 
 // Admissions antérieures
@@ -152,8 +262,33 @@ $opNonAffecteesAvant = new COperation;
 $opNonAffecteesAvant = $opNonAffecteesAvant->loadList($where, $order, null, null, $leftjoin);
 
 foreach ($opNonAffecteesAvant as $op_id => $op) {
-  $opNonAffecteesAvant[$op_id]->loadRefs();
-  $opNonAffecteesAvant[$op_id]->_ref_chir->loadRefsFwd();
+  $recuperationChrono->start();
+   if(isset($listChirs[$opNonAffecteesAvant[$op_id]->chir_id])) {
+     $opNonAffecteesAvant[$op_id]->_ref_chir =& $listChirs[$opNonAffecteesAvant[$op_id]->chir_id];
+   }
+   else {
+     $opNonAffecteesAvant[$op_id]->loadRefChir();
+     $opNonAffecteesAvant[$op_id]->_ref_chir->_ref_function =& $listFunctions[$opNonAffecteesAvant[$op_id]->_ref_chir->function_id];
+     $listChirs[$opNonAffecteesAvant[$op_id]->chir_id] =& $opNonAffecteesAvant[$op_id]->_ref_chir;
+   }
+   if(isset($listPats[$opNonAffecteesAvant[$op_id]->pat_id])) {
+     $opNonAffecteesAvant[$op_id]->_ref_pat =& $listPats[$opNonAffecteesAvant[$op_id]->pat_id];
+   }
+   else {
+     $opNonAffecteesAvant[$op_id]->loadRefPat();
+     $listPats[$opNonAffecteesAvant[$op_id]->pat_id] =& $opNonAffecteesAvant[$op_id]->_ref_pat;
+   }
+   if(isset($listPlagesOp[$opNonAffecteesAvant[$op_id]->plageop_id])) {
+     $opNonAffecteesAvant[$op_id]->_ref_plageop =& $listPlagesOp[$opNonAffecteesAvant[$op_id]->plageop_id];
+   }
+   else {
+     $opNonAffecteesAvant[$op_id]->loadRefPlageOp();
+     $listPlagesOp[$opNonAffecteesAvant[$op_id]->plageop_id] =& $opNonAffecteesAvant[$op_id]->_ref_plageop;
+   }
+   $opNonAffecteesAvant[$op_id]->loadRefCCAM();
+  //$opNonAffecteesAvant[$op_id]->loadRefsFwd();
+  //$opNonAffecteesAvant[$op_id]->_ref_chir->_ref_function =& $listFunctions[$opNonAffecteesAvant[$op_id]->_ref_chir->function_id];
+  $recuperationChrono->stop();
 }
 
 $groupOpNonAffectees = array(
@@ -183,7 +318,12 @@ $smarty->assign('groupOpNonAffectees' , $groupOpNonAffectees);
 
 $smarty->display('vw_affectations.tpl');
 
-//$totalChrono->stop();
-//mbTrace($totalChrono, "Total");
+$totalChrono->stop();
+mbTrace($totalChrono, "Total");
+mbTrace($dbChrono, "sql");
+mbTrace($recuperationChrono, "operations");
+echo "Nbr de chirs : ".count($listChirs)."<br/>";
+echo "Nbr de pats : ".count($listPats)."<br/>";
+echo "Nbr de plagesop : ".count($listPlagesOp)."<br/>";
 
 ?>
