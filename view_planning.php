@@ -10,6 +10,7 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 require_once( $AppUI->getModuleClass('mediusers') );
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 
@@ -18,24 +19,29 @@ if (!$canRead) {
 }
 
 // Récupération des variables passées en GET
-$chir_id = dPgetParam($_GET, "chir_id", 0);
-$pat_id = dPgetParam($_GET, "pat_id", 0);
-$CCAM_code = dPgetParam($_GET, "CCAM_code", 0);
-$CCAM_code2 = dPgetParam($_GET, "CCAM_code2", 0);
-$cote = dPgetParam($_GET, "cote", 0);
-$hour_op = dPgetParam($_GET, "hour_op", 0);
-$min_op = dPgetParam($_GET, "min_op", 0);
-$date = dPgetParam($_GET, "date", 0);
-$info = dPgetParam($_GET, "info", 0);
-$rdv_anesth = dPgetParam($_GET, "rdv_anesth", 0);
-$hour_anesth = dPgetParam($_GET, "hour_anesth", 0);
-$min_anesth = dPgetParam($_GET, "min_anesth", 0);
-$rdv_adm = dPgetParam($_GET, "rdv_adm", 0);
-$hour_adm = dPgetParam($_GET, "hour_adm", 0);
-$min_adm = dPgetParam($_GET, "min_adm", 0);
-$duree_hospi = dPgetParam($_GET, "duree_hospi", 0);
-$type_adm = dPgetParam($_GET, "type_adm", 0);
-$chambre = dPgetParam($_GET, "chambre", 0);
+$operation_id = dPgetParam($_GET, "operation_id", null);
+$operation = new COperation;
+$operation->load($operation_id);
+$operation->loadRefsFwd();
+
+$chir_id = dPgetParam($_GET, "chir_id", $operation->chir_id);
+$pat_id = dPgetParam($_GET, "pat_id", $operation->pat_id);
+$CCAM_code = dPgetParam($_GET, "CCAM_code", $operation->CCAM_code);
+$CCAM_code2 = dPgetParam($_GET, "CCAM_code2", $operation->CCAM_code2);
+$cote = dPgetParam($_GET, "cote", $operation->cote);
+$hour_op = dPgetParam($_GET, "hour_op", $operation->_hour_op);
+$min_op = dPgetParam($_GET, "min_op", $operation->_min_op);
+$date = dPgetParam($_GET, "date", mbTranformTime("+ 0 DAY", $operation->_ref_plageop->date, "%d/%m/%Y"));
+//$info = dPgetParam($_GET, "info", 0);
+//$rdv_anesth = dPgetParam($_GET, "rdv_anesth", 0);
+//$hour_anesth = dPgetParam($_GET, "hour_anesth", 0);
+//$min_anesth = dPgetParam($_GET, "min_anesth", 0);
+$rdv_adm = dPgetParam($_GET, "rdv_adm", mbTranformTime("+ 0 DAY", $operation->date_adm, "%d/%m/%Y"));
+$hour_adm = dPgetParam($_GET, "hour_adm", $operation->_hour_adm);
+$min_adm = dPgetParam($_GET, "min_adm", $operation->_min_adm);
+$duree_hospi = dPgetParam($_GET, "duree_hospi", $operation->duree_hospi);
+$type_adm = dPgetParam($_GET, "type_adm", $operation->type_adm);
+$chambre = dPgetParam($_GET, "chambre", $operation->chambre);
 
 //Création des champs de la variable $adm
 $chir = new CMediusers();
@@ -83,10 +89,10 @@ else
   $adm["chambre"] = "non";
 $adm["dateOp"] = $date;
 $adm["dureeHospi"] = $duree_hospi;
-$adm["dateAnesth"] = $rdv_anesth;
-$adm["hourAnesth"] = "$hour_anesth h";
-if($min_anesth)
-   $adm["hourAnesth"] .= " $min_anesth";
+//$adm["dateAnesth"] = $rdv_anesth;
+//$adm["hourAnesth"] = "$hour_anesth h";
+//if($min_anesth)
+//   $adm["hourAnesth"] .= " $min_anesth";
 $ccam = new CActeCCAM($CCAM_code);
 $ccam->loadLite();
 $adm["CCAM"] = $ccam->libelleLong;
