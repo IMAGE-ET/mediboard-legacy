@@ -28,9 +28,16 @@ foreach($_POST as $key => $value) {
   }
 }
 
+// Récupération des listes de choix
+if(isset($_POST["_document_prop_name"]))
+  $document_prop_name = $_POST["_document_prop_name"];
+else
+  $document_prop_name = null;
+
 // Remplacement des listes par leur choix
-$document_prop_name = dPgetParam($_POST, "_document_prop_name"); 
-$_POST[$document_prop_name] = str_replace($fields, $values, @$_POST[$document_prop_name]);
+if(isset($_POST[$document_prop_name])) {
+  $_POST[$document_prop_name] = str_replace($fields, $values, $_POST[$document_prop_name]);
+}
 
 // @todo : Trouver une méthode un peu plus propre :/
 $special = dPgetParam( $_POST, 'special', 0);
@@ -39,8 +46,23 @@ $do = new CDoObjectAddEdit("CConsultation", "consultation_id");
 $do->createMsg = "Consultation créée";
 $do->modifyMsg = "Consultation modifiée";
 $do->deleteMsg = "Consultation supprimée";
-$do->redirectStore = !$special ? "m=$m&consultation_id=$do->_obj->consultation_id" : null;
-$do->doIt();
+$do->doBind();
+if (intval(dPgetParam($_POST, 'del'))) {
+  $do->doDelete();
+} else {
+  $do->doStore();
+}
+
+if(!$special) {
+  if(isset($_POST["_dialog"])) {
+    $do->redirectStore = "m=$m&a=".$_POST['_dialog']."&dialog=1#consultation".$do->_obj->consultation_id;
+  } else {
+    $do->redirectStore = "m=$m&consultation_id=".$do->_obj->consultation_id;
+  }
+} else {
+  $do->redirectStore = null;
+}
+$do->doRedirect();
 ?>
 
 <script language="javascript">
@@ -49,4 +71,3 @@ window.opener.location.reload();
 window.close();
 
 </script>
-<?php 

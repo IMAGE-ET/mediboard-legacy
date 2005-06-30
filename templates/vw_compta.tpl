@@ -5,14 +5,14 @@
 function checkRapport(){
   var form = document.printFrm;
     
-  if (form.date_debut.value > form.date_fin.value) {
+  if (form.date_debut_rapport.value > form.date_fin_rapport.value) {
     alert("Date de début superieure à la date de fin");
     return false;
   }
 
   var url = './index.php?m=dPcabinet&a=print_rapport&dialog=1';
-  url += '&debut=' + form.date_debut.value;
-  url += '&fin='   + form.date_fin.value;
+  url += '&debut_rapport=' + form.date_debut_rapport.value;
+  url += '&fin_rapport='   + form.date_fin_rapport.value;
   url += '&chir='  + form.chir.value;
   url += '&etat='  + form.etat.value;
   url += '&type='  + form.type.value;
@@ -50,21 +50,21 @@ function setCalendar( idate, fdate ) {
     <tr><th class="title" colspan="2">Edition de rapports</th></tr>
     <tr><th class="category" colspan="2">Choix de la periode</th></tr>
     <tr>
-      <th><label for="paramFrm_debut">Début:</label></th>
+      <th><label for="paramFrm_debut_rapport">Début:</label></th>
       <td class="readonly" colspan="2">
-        <input type="hidden" name="date_debut" value="{$todayi}" />
-        <input type="text" name="debut" value="{$todayf}" readonly="readonly" />
-        <a href="#" onClick="popCalendar( 'debut', 'debut');">
+        <input type="hidden" name="date_debut_rapport" value="{$todayi}" />
+        <input type="text" name="debut_rapport" value="{$todayf}" readonly="readonly" />
+        <a href="#" onClick="popCalendar( 'debut_rapport', 'debut_rapport');">
           <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
         </a>
       </td>
     </tr>
     <tr>
-      <th><label for="paramFrm_fin">Fin:</label></th>
+      <th><label for="paramFrm_fin_rapport">Fin:</label></th>
       <td class="readonly" colspan="2">
-        <input type="hidden" name="date_fin" value="{$todayi}" />
-        <input type="text" name="fin" value="{$todayf}" readonly="readonly" />
-        <a href="#" onClick="popCalendar( 'fin', 'fin');">
+        <input type="hidden" name="date_fin_rapport" value="{$todayi}" />
+        <input type="text" name="fin_rapport" value="{$todayf}" readonly="readonly" />
+        <a href="#" onClick="popCalendar( 'fin_rapport', 'fin_rapport');">
           <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
         </a>
       </td>
