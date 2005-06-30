@@ -300,7 +300,7 @@ class CPatient extends CDpObject {
     $template->addProperty("Patient - prénom"                 , $this->prenom          );
     $template->addProperty("Patient - adresse"                , $this->adresse         );
     $template->addProperty("Patient - âge"                    , $this->_age            );
-    $template->addProperty("Patient - date de naissance"      , $this->naissance       );
+    $template->addProperty("Patient - date de naissance"      , $this->_naissance);
     if($this->medecin_traitant) {
       $template->addProperty("Patient - médecin traitant"          , "{$this->_ref_medecin_traitant->nom} {$this->_ref_medecin_traitant->prenom}");
       $template->addProperty("Patient - médecin traitant - adresse", "".nl2br($this->_ref_medecin_traitant->adresse)."<br />{$this->_ref_medecin_traitant->cp} {$this->_ref_medecin_traitant->ville}");
