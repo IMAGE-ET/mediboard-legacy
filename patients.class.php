@@ -238,14 +238,18 @@ class CPatient extends CDpObject {
   	  $where["operation_id"] ="IS NULL";
   	$obj->loadObject($where);
   	$this->_ref_curr_affectation = $obj;
-  	$where["entree"] = "> '$date 23:59:59'";
-  	$where["sortie"] = "> '$date 23:59:59'";
-  	$order = "entree";
-  	$obj = $obj->loadList($where, $order);
-  	foreach($obj as $key => $value) {
-  	  $this->_ref_next_affectation = @$obj[$key];
-  	  break;
-  }
+  	if(!$this->_ref_curr_affectation->affectation_id) {
+  	  $where["entree"] = "> '$date 23:59:59'";
+  	  $where["sortie"] = "> '$date 23:59:59'";
+  	  $order = "entree";
+  	  $obj = $obj->loadList($where, $order);
+  	  foreach($obj as $key => $value) {
+  	    $this->_ref_next_affectation = @$obj[$key];
+  	    break;
+      }
+  	} else {
+  	  $this->_ref_next_affectation = null;
+  	}
   }
 
   // Forward references
