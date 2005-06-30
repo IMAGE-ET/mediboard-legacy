@@ -21,7 +21,7 @@ function modifTarif() {
     form.secteur1.value = secteur1;
     form.secteur2.value = secteur2;
     form._somme.value = secteur1 + secteur2;
-    for(i=0;i<form.choix.length;++i)
+    for (i = 0;i < form.choix.length;++i)
     if(form.choix.options[i].selected == true)
      form.tarif.value = form.choix.options[i].text;
    } else {

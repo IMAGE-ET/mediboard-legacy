@@ -145,7 +145,14 @@ $where[] = "class = 'Consultation'";
 $aidesConsultation = new CAideSaisie();
 $aidesConsultation = $aidesConsultation->loadList($where);
 
-$aides = null;
+// Initialisation to prevent understandable smarty notices
+$aides = array(
+  "rques" => null,
+  "motif" => null,
+  "examen" => null,
+  "traitement" => null  
+);
+
 foreach ($aidesConsultation as $aideConsultation) {
   $aides[$aideConsultation->field][$aideConsultation->text] = $aideConsultation->name;  
 }
