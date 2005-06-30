@@ -66,6 +66,7 @@ class CPatient extends CDpObject {
     var $_ref_consultations = null;
     var $_ref_consultations_anesth = null;
     var $_ref_curr_affectation = null;
+    var $_ref_next_affectation = null;
     var $_ref_medecin_traitant = null;
     var $_ref_medecin1 = null;
     var $_ref_medecin2 = null;
@@ -175,6 +176,12 @@ class CPatient extends CDpObject {
       'idfield' => 'operation_id', 
       'joinfield' => 'pat_id'
     );
+    $tables[] = array (
+      'label' => 'consultation(s)', 
+      'name' => 'consultation', 
+      'idfield' => 'consultation_id', 
+      'joinfield' => 'patient_id'
+    );
     
     return parent::canDelete( $msg, $oid, $tables );
   }
@@ -213,12 +220,12 @@ class CPatient extends CDpObject {
     $leftjoin = array();
     $leftjoin["plageconsult"] = "consultation_anesth.plageconsult_id = plageconsult.plageconsult_id";
     $this->_ref_consultations_anesth = $obj->loadList($where, $order, null, null, $leftjoin);
-  	// affectation actuelle
+  	// affectation actuelle et prochaine affectation
   	$obj = new CAffectation();
   	$date = date("Y-m-d");
   	$where = array();
-  	$where["entree"] ="<= '$date 23:59:59'";
-  	$where["sortie"] =">= '$date 00:00:00'";
+  	$where["entree"] = "<= '$date 23:59:59'";
+  	$where["sortie"] = ">= '$date 00:00:00'";
   	$inArray = array();
   	foreach($this->_ref_operations as $key => $value) {
   	  $inArray[] = $key;
@@ -231,6 +238,14 @@ class CPatient extends CDpObject {
   	  $where["operation_id"] ="IS NULL";
   	$obj->loadObject($where);
   	$this->_ref_curr_affectation = $obj;
+  	$where["entree"] = "> '$date 23:59:59'";
+  	$where["sortie"] = "> '$date 23:59:59'";
+  	$order = "entree";
+  	$obj = $obj->loadList($where, $order);
+  	foreach($obj as $key => $value) {
+  	  $this->_ref_next_affectation = @$obj[$key];
+  	  break;
+  }
   }
 
   // Forward references

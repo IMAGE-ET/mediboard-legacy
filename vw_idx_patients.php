@@ -50,6 +50,10 @@ if($patient->patient_id) {
     $patient->_ref_curr_affectation->loadRefsFwd();
     $patient->_ref_curr_affectation->_ref_lit->loadRefsFwd();
     $patient->_ref_curr_affectation->_ref_lit->_ref_chambre->loadRefsFwd();
+  } elseif($patient->_ref_next_affectation->affectation_id) {
+    $patient->_ref_next_affectation->loadRefsFwd();
+    $patient->_ref_next_affectation->_ref_lit->loadRefsFwd();
+    $patient->_ref_next_affectation->_ref_lit->_ref_chambre->loadRefsFwd();
   }
   foreach ($patient->_ref_operations as $key1 => $op) {
     $patient->_ref_operations[$key1]->loadRefs();
