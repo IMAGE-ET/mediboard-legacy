@@ -80,7 +80,7 @@ $sql = "SELECT lit.nom AS lit, chambre.nom AS chambre, service.nom AS service, M
 		"\nON service.service_id = chambre.service_id" .
 		"\nWHERE lit.lit_id NOT IN($notIn)" .
 		"\nGROUP BY lit.lit_id" .
-		"\nORDER BY limite DESC, service.nom, chambre.nom, lit.nom";
+		"\nORDER BY service.nom, limite DESC, chambre.nom, lit.nom";
 $libre = db_loadlist($sql);
 $listAff = null;
 }
