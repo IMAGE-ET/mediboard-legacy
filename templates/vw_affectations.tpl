@@ -324,6 +324,8 @@ function popPlanning() {
               {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
               ({$curr_affectation->_entree_relative} jours)
             <td class="action">
+              {eval var=$curr_affectation->_ref_operation->_ref_pat->_view assign="pat_view"}
+
               <form name="rmvAffectation{$curr_affectation->affectation_id}" action="?m={$m}" method="post">
 
               <input type="hidden" name="dosql" value="do_affectation_aed" />
