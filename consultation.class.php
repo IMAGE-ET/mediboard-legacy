@@ -170,7 +170,7 @@ class CConsultation extends CDpObject {
   
   function fillTemplate(&$template) {
   	$this->loadRefsFwd();
-    $template->addProperty("Consultation - date"      , $this->_ref_plageconsult->date );
+    $template->addProperty("Consultation - date"      , mbTranformTime("+0 DAY", $this->_ref_plageconsult->date, "%d / %m / %Y") );
     $template->addProperty("Consultation - heure"     , $this->heure);
     $template->addProperty("Consultation - motif"     , nl2br($this->motif));
     $template->addProperty("Consultation - remarques" , nl2br($this->rques));
