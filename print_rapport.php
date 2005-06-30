@@ -16,12 +16,12 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 // Récupération des paramètres
-$debut = dPgetParam($_GET, "debut", date("Ymd"));
+$debut = mbGetValueFromGetOrSession("debut", date("Ymd"));
 $dayd = substr($debut, 6, 2);
 $monthd = substr($debut, 4, 2);
 $yeard = substr($debut, 0, 4);
 $debutsql = $yeard."-".$monthd."-".$dayd;
-$fin = dPgetParam($_GET, "fin", date("Ymd"));
+$fin = mbGetValueFromGetOrSession("fin", date("Ymd"));
 $dayf = substr($fin, 6, 2);
 $monthf = substr($fin, 4, 2);
 $yearf = substr($fin, 0, 4);
@@ -29,12 +29,12 @@ $finsql = $yearf."-".$monthf."-".$dayf;
 $titre = "Rapport du ".strftime("%d/%m/%Y", mktime(0, 0, 0, $monthd, $dayd, $yeard));
 if ($debut != $fin)
   $titre .= " au ".strftime("%d/%m/%Y", mktime(0, 0, 0, $monthf, $dayf, $yearf));
-$chir = dPgetParam($_GET, "chir", 0);
+$chir = mbGetValueFromGetOrSession("chir", 0);
 $chirSel = new CMediusers;
 $chirSel->load($chir);
-$etat = dPgetParam($_GET, "etat", 0);
-$type = dPgetParam($_GET, "type", 0);
-$aff = dPgetParam($_GET, "aff", 1);
+$etat = mbGetValueFromGetOrSession("etat", 0);
+$type = mbGetValueFromGetOrSession("type", 0);
+$aff = mbGetValueFromGetOrSession("aff", 1);
 
 // Requète sur les plages de consultation considérées
 $where = array();
@@ -71,14 +71,16 @@ $total["secteur2"] = 0;
 $total["tarif"] = 0;
 $total["nombre"] = 0;
 foreach($listPlage as $key => $value) {
-  $listPlage[$key]->loadRefs();
-  unset($listPlage[$key]->_ref_consultations);
+  $listPlage[$key]->loadRefsFwd();
+  //unset($listPlage[$key]->_ref_consultations);
   $where = array();
   $where["plageconsult_id"] = "= '".$value->plageconsult_id."'";
   $where["chrono"] = ">= '".CC_TERMINE."'";
   $where["annule"] = "= 0";
   if($etat != -1)
     $where["paye"] = "= '$etat'";
+  if($etat == 0)
+    $where[] = "(secteur1 + secteur2) != 0";
   $where["secteur1"] = "IS NOT NULL";
   if($type)
     $where["type_tarif"] = "= '$type'";
