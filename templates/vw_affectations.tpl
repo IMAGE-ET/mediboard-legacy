@@ -142,15 +142,15 @@ function pageMain() {
   );
   
 {/literal}
-{foreach from=$services item=curr_service}
-{foreach from=$curr_service->_ref_chambres item=curr_chambre}
-{foreach from=$curr_chambre->_ref_lits item=curr_lit}
-{foreach from=$curr_lit->_ref_affectations item=curr_affectation}
-  //setupCalendar({$curr_affectation->affectation_id});
-{/foreach}
-{/foreach}
-{/foreach}
-{/foreach}
+{*foreach from=$services item=curr_service*}
+{*foreach from=$curr_service->_ref_chambres item=curr_chambre*}
+{*foreach from=$curr_chambre->_ref_lits item=curr_lit*}
+{*foreach from=$curr_lit->_ref_affectations item=curr_affectation*}
+  //setupCalendar({*$curr_affectation->affectation_id*});
+{*/foreach*}
+{*/foreach*}
+{*/foreach*}
+{*/foreach*}
 {literal}
 
   // Opening cookied panes

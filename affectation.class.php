@@ -49,9 +49,9 @@ class CAffectation extends CDpObject {
   	$obj = new CAffectation();
   	$obj->load($this->affectation_id);
   	$obj->loadRefsFwd();
-  	if(!$this->entree)
+  	if(!$this->entree && $obj->affectation_id)
   	  $this->entree = $obj->entree;
-  	if(!$this->sortie)
+  	if(!$this->sortie && $obj->affectation_id)
   	  $this->sortie = $obj->sortie;
   	if($obj->_ref_next->affectation_id && ($this->sortie != $obj->sortie))
   	  return "Le patient a subi un déplacement";
@@ -111,7 +111,7 @@ class CAffectation extends CDpObject {
     
     $this->_ref_operation = new COperation;
     $this->_ref_operation->loadObject($where);
-    
+
     $where = array (
       "operation_id" => "= '$this->operation_id'",
       "entree" => "= '$this->sortie'"
@@ -120,7 +120,15 @@ class CAffectation extends CDpObject {
     $this->_ref_next = new CAffectation;
     $this->_ref_next->loadObject($where);
     
-    $flag = !$this->_ref_next->affectation_id && !$this->affectation_id;
+    $where = array (
+      "operation_id" => "= '$this->operation_id'",
+      "sortie" => "= '$this->entree'"
+    );
+    
+    $this->_ref_prev = new CAffectation;
+    $this->_ref_prev->loadObject($where);
+    
+    $flag = !$this->_ref_next->affectation_id && !$this->_ref_prev->affectation_id && !$this->affectation_id;
     $flagComp = $flag && ($this->_ref_operation->type_adm == "comp");
     $flagAmbu = $flag && ($this->_ref_operation->type_adm == "ambu");
     
