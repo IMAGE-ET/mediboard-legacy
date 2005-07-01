@@ -38,9 +38,7 @@ $_POST["sortie"] = $sortie;
 $_POST["lit_id"] = $_POST["_new_lit_id"] ;
 $_POST["affectation_id"] = null;
 
-//$do->redirectStore = "m={$m}";
-$do->redirectStore = null;
-$do->redirectError = null;
+$do->redirectStore = "m={$m}";
 $do->doIt();
 
 ?>
