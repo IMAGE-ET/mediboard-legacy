@@ -16,12 +16,12 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 // Récupération des paramètres
-$debut = mbGetValueFromGetOrSession("debut", date("Ymd"));
+$debut = mbGetValueFromGetOrSession("debut_rapport", date("Ymd"));
 $dayd = substr($debut, 6, 2);
 $monthd = substr($debut, 4, 2);
 $yeard = substr($debut, 0, 4);
 $debutsql = $yeard."-".$monthd."-".$dayd;
-$fin = mbGetValueFromGetOrSession("fin", date("Ymd"));
+$fin = mbGetValueFromGetOrSession("fin_rapport", date("Ymd"));
 $dayf = substr($fin, 6, 2);
 $monthf = substr($fin, 4, 2);
 $yearf = substr($fin, 0, 4);

@@ -51,6 +51,7 @@ $mediusers = new CMediusers();
 $listChirs = $mediusers->loadPraticiens(PERM_EDIT);
 
 // Periode
+$today = date("Y-m-d");
 $debut = mbGetValueFromGetOrSession("debut", date("Y-m-d"));
 $dayDebut = substr($debut, 8, 2);
 $monthDebut = substr($debut, 5, 2);
@@ -122,6 +123,7 @@ $smarty->assign('plageSel', $plageSel);
 $smarty->assign('plageconsult_id', $plageconsult_id);
 $smarty->assign('listChirs', $listChirs);
 $smarty->assign('plages', $plages);
+$smarty->assign('today', $today);
 $smarty->assign('debut', $debut);
 $smarty->assign('prec', $prec);
 $smarty->assign('suiv', $suiv);

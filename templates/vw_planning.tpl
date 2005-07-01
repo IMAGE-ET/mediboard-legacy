@@ -43,6 +43,8 @@ function checkPlage() {
       <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$prec}"><<</a>
       Semaine du Lundi {$debut|date_format:"%d %b %Y"} au dimanche {$fin|date_format:"%d %b %Y"}
       <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$suiv}">>></a>
+      <br />
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$today}">Aujourd'hui</a>
     </th>
     <td>
       <form action="index.php" name="selection" method="get">
@@ -255,8 +257,8 @@ function checkPlage() {
           
           <td {$style}><a href="{$href_consult}">{$curr_consult->_hour}h{if $curr_consult->_min}{$curr_consult->_min}{/if}</a></td>
           <td {$style}><a href="{$href_consult}">{$curr_consult->_ref_patient->_view}</a></td>
-          <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->motif|nl2br}</a></td>
-          <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->rques|nl2br}</a></td>
+          <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->motif|nl2br|truncate:35:"...":false}</a></td>
+          <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->rques|nl2br|truncate:35:"...":false}</a></td>
           <td {$style}>
             <form name="etatFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
             <input type="hidden" name="m" value="{$m}" />

@@ -171,6 +171,8 @@ $tarifsCab = $tarifsCab->loadList($where);
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->debugging = false;
+
 $smarty->assign('vue', $vue);
 $smarty->assign('day', $day);
 $smarty->assign('nday', $nday);
