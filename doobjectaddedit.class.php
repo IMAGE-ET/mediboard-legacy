@@ -90,7 +90,8 @@ class CDoObjectAddEdit {
   
   function doRedirect() {
     global $AppUI;
-    $AppUI->redirect($this->redirect);;
+    if($this->redirect !== null)
+      $AppUI->redirect($this->redirect);;
   }
   
   function doIt() {
