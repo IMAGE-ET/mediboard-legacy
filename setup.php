@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.28';
+$config['mod_version'] = '0.29';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -118,6 +118,15 @@ class CSetupdPcabinet {
         db_exec( $sql ); db_error();
         
       case "0.28":
+        $sql = "ALTER TABLE `consultation`" .
+        		"\nADD `date_paiement` DATE AFTER `paye` ;";
+        db_exec( $sql ); db_error();
+        $sql = "UPDATE consultation, plageconsult
+                SET consultation.date_paiement = plageconsult.date
+                WHERE consultation.plageconsult_id = plageconsult.plageconsult_id
+                AND consultation.paye = 1";
+        db_exec( $sql ); db_error();
+      case "0.29":
   	    return true;
 		}
 

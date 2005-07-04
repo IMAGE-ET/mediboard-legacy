@@ -3,10 +3,11 @@
 
 function cancelTarif() {
   var form = document.tarifFrm;
-  form.secteur1.value=0;
-  form.secteur2.value=0;
-  form.tarif.value="";
-  form.paye.value=0;
+  form.secteur1.value = 0;
+  form.secteur2.value =0;
+  form.tarif.value = "";
+  form.paye.value = 0;
+  form.date_paiement.value = null;
   form.submit();
 }
 
@@ -225,7 +226,7 @@ function supprimerDocument(prop_name, valid_name) {
                   <br />
                   <form><input type="text" readonly size="3" name="titre" value="{$consult->_ref_patient->_age}" /> ans</form>
                   <br />
-                  <a href="index.php?m=dPcabinet&amp;tab=idx_compte_rendus&amp;patSel={$consult->_ref_patient->patient_id}">
+                  <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$consult->_ref_patient->patient_id}">
                     Consulter le dossier
                   </a>
                 </td>
@@ -476,29 +477,36 @@ function supprimerDocument(prop_name, valid_name) {
                   <table width="100%">
                     <tr>
                       {if !$consult->tarif}
-                      <th>Choix du tarif :<input type="hidden" name="paye" value="0" /></th>
-                      <td><select name="choix" onchange="modifTarif()">
-                        <option value="" selected="selected">&mdash; Choix du tarif &mdash;</option>
-                        <optgroup label="Tarifs praticien">
-                        {foreach from=$tarifsChir item=curr_tarif}
-                        <option value="{$curr_tarif->secteur1}/{$curr_tarif->secteur2}">{$curr_tarif->description}</option>
-                        {/foreach}
-                        </optgroup>
-                        <optgroup label="Tarifs cabinet">
-                        {foreach from=$tarifsCab item=curr_tarif}
-                        <option value="{$curr_tarif->secteur1}/{$curr_tarif->secteur2}">{$curr_tarif->description}</option>
-                        {/foreach}
-                        </optgroup>
-                      </select></td>
+                      <th>
+                        Choix du tarif :
+                        <input type="hidden" name="paye" value="0" />
+                        <input type="hidden" name="date_paiement" value="null" />
+                      </th>
+                      <td>
+                        <select name="choix" onchange="modifTarif()">
+                          <option value="" selected="selected">&mdash; Choix du tarif &mdash;</option>
+                          <optgroup label="Tarifs praticien">
+                          {foreach from=$tarifsChir item=curr_tarif}
+                            <option value="{$curr_tarif->secteur1}/{$curr_tarif->secteur2}">{$curr_tarif->description}</option>
+                          {/foreach}
+                          </optgroup>
+                          <optgroup label="Tarifs cabinet">
+                          {foreach from=$tarifsCab item=curr_tarif}
+                            <option value="{$curr_tarif->secteur1}/{$curr_tarif->secteur2}">{$curr_tarif->description}</option>
+                          {/foreach}
+                          </optgroup>
+                        </select>
+                      </td>
                     </tr>
                     {/if}
                     {if !$consult->paye}
-                    <tr><th>Somme à régler :</th>
+                    <tr>
+                      <th>Somme à régler :</th>
                       <td class="readonly">
                         <input type="text" readonly size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
                         <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
                         <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
-                        <input type="hidden" name="tarif" value="{$consult->tarif}" />
+                        <input type="hidden" name="tarif" value="{if $consult->tarif == null}null{else}{$consult->tarif}{/if}" />
                       </td>
                     </tr>
                     {else}
@@ -508,6 +516,7 @@ function supprimerDocument(prop_name, valid_name) {
                         <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
                         <input type="hidden" name="tarif" value="{$consult->tarif}" />
                         <input type="hidden" name="paye" value="{$consult->paye}" />
+                        <input type="hidden" name="date_paiement" value="{$consult->date_paiement}" />
                         <strong>{$consult->secteur1+$consult->secteur2} € ont été réglés : {$consult->type_tarif}</strong>
                       </td>
                     </tr>
@@ -515,10 +524,15 @@ function supprimerDocument(prop_name, valid_name) {
                       <td colspan="2" class="button">
                         <input type="button" value="Annuler" onclick="cancelTarif()" />
                       </td>
+                    </tr>
                     {/if}
                     {if $consult->tarif && !$consult->paye}
                     <tr>
-                      <th>Moyen de paiement :<input type="hidden" name="paye" value="1" /></th>
+                      <th>
+                        Moyen de paiement :
+                        <input type="hidden" name="paye" value="1" />
+                        <input type="hidden" name="date_paiement" value="{$today}" />
+                      </th>
                       <td>
                         <select name="type_tarif">
                           <option value="cheque"  {if $consult->type_tarif == "cheque" }selected="selected"{/if}>Chèques     </option>
@@ -529,19 +543,27 @@ function supprimerDocument(prop_name, valid_name) {
                         </select>
                       </td>
                     </tr>
-                    <tr><td colspan="2" class="button">
-                      <input type="submit" value="Reglement effectué" />
-                      <input type="button" value="Annuler" onclick="cancelTarif()"/>
-                    </td></tr>
-                    {elseif !$consult->paye}
-                    <tr><th>Tiers-payant ?</th><td><input type="checkbox" name="_tiers" onchange="putTiers()" />
-                      <input type="hidden" name="type_tarif" value="null" /></td></tr>
-                    <tr><td colspan="2" class="button">
-                      <input type="submit" value="Valider ce tarif" />
-                      <input type="button" value="Annuler" onclick="cancelTarif()"/>
-                    </td></tr>
-                    {/if}
+                    <tr>
+                      <td colspan="2" class="button">
+                        <input type="submit" value="Reglement effectué" />
+                        <input type="button" value="Annuler" onclick="cancelTarif()"/>
+                      </td>
                     </tr>
+                    {elseif !$consult->paye}
+                    <tr>
+                      <th>Tiers-payant ?</th>
+                      <td>
+                        <input type="checkbox" name="_tiers" onchange="putTiers()" />
+                        <input type="hidden" name="type_tarif" value="null" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" class="button">
+                        <input type="submit" value="Valider ce tarif" />
+                        <input type="button" value="Annuler" onclick="cancelTarif()"/>
+                      </td>
+                    </tr>
+                    {/if}
                   </table>
                   </form>
                 </td>

@@ -38,6 +38,7 @@ class CConsultation extends CDpObject {
   var $chrono = null;
   var $annule = null;
   var $paye = null;
+  var $date_paiement = null;
   var $motif = null;
   var $rques = null;
   var $examen = null;
@@ -76,6 +77,8 @@ class CConsultation extends CDpObject {
   }
   
   function updateFormFields() {
+    if($this->date_paiement == "0000-00-00")
+      $this->date_paiement = null;
     $this->_ref_documents = array();
 
     $document = new CCompteRendu();
@@ -148,6 +151,8 @@ class CConsultation extends CDpObject {
   	if (($this->_hour !== null) && ($this->_min !== null)) {
       $this->heure = $this->_hour.":".$this->_min.":00";
     }
+    if($this->date_paiement == "0000-00-00")
+      $this->date_paiement = null;
     
     // @todo : verifier si on ne fait ça que si _check_premiere est non null
     $this->premiere = $this->_check_premiere ? 1 : 0;

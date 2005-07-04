@@ -33,16 +33,19 @@ if ($debut != $fin)
 $chir = mbGetValueFromGetOrSession("chir", 0);
 $chirSel = new CMediusers;
 $chirSel->load($chir);
-$etat = mbGetValueFromGetOrSession("etat", 0);
+//$etat = mbGetValueFromGetOrSession("etat", 0);
+$etat = 1;
 $type = mbGetValueFromGetOrSession("type", 0);
 $aff = mbGetValueFromGetOrSession("aff", 1);
 
-// Requète sur les plages de consultation considérées
-$where = array();
-$where[] = "date >= '$debutsql'";
-$where[] = "date <= '$finsql'";
+// Récupération des plages de dates de paiement
+$sql = "SELECT consultation.date_paiement AS date," .
+		"\n plageconsult.chir_id AS chir_id" .
+		"\n FROM consultation" .
+		"\n LEFT JOIN plageconsult" .
+		"\n ON consultation.plageconsult_id = plageconsult.plageconsult_id";
 if($chir)
-  $where["chir_id"] = "= '$chir'";
+  $sql .= "\n WHERE chir_id = '$chir'";
 else {
   $listPrat = new CMediusers();
   $listPrat = $listPrat->loadPraticiens(PERM_READ);
@@ -51,10 +54,14 @@ else {
     $in[] = "'$key'";
   }
   $in = implode(", ", $in);
-  $where["chir_id"] = "IN ($in)";
+  $sql .= "\n WHERE chir_id IN ($in)";
 }
-$listPlage = new CPlageconsult;
-$listPlage = $listPlage->loadList($where, "date, chir_id");
+$sql .= "\n AND date_paiement >= '$debutsql'";
+$sql .= "\n AND date_paiement <= '$finsql'";
+$sql .= "\n GROUP BY date_paiement";
+$sql .= "\n ORDER BY date_paiement";
+
+$listPlage = db_loadlist($sql);
 
 // On charge les références des consultations qui nous interessent
 $total["cheque"]["valeur"] = 0;
@@ -72,11 +79,12 @@ $total["secteur2"] = 0;
 $total["tarif"] = 0;
 $total["nombre"] = 0;
 foreach($listPlage as $key => $value) {
-  $listPlage[$key]->loadRefsFwd();
-  //unset($listPlage[$key]->_ref_consultations);
+  $curr_chir = new CMediusers;
+  $curr_chir->load($listPlage[$key]["chir_id"]);
+  $listPlage[$key]["_ref_chir"] = $curr_chir;
   $where = array();
-  $where["plageconsult_id"] = "= '".$value->plageconsult_id."'";
-  $where["chrono"] = ">= '".CC_TERMINE."'";
+  $where["date_paiement"] = "= '".$value["date"]."'";
+  //$where["chrono"] = ">= '".CC_TERMINE."'";
   $where["annule"] = "= 0";
   if($etat != -1)
     $where["paye"] = "= '$etat'";
@@ -85,33 +93,35 @@ foreach($listPlage as $key => $value) {
   $where["secteur1"] = "IS NOT NULL";
   if($type)
     $where["type_tarif"] = "= '$type'";
+  $ljoin = array();
+  $ljoin["plageconsult"] = "plageconsult.plageconsult_id = consultation.plageconsult_id";
   $listConsult = new CConsultation;
-  $listConsult = $listConsult->loadList($where, "heure");
-  $listPlage[$key]->_ref_consultations = $listConsult;
-  $listPlage[$key]->total1 = 0;
-  $listPlage[$key]->total2 = 0;
-  foreach($listPlage[$key]->_ref_consultations as $key2 => $value2) {
-    $listPlage[$key]->_ref_consultations[$key2]->loadRefs();
-    if($etat == -1 && $listPlage[$key]->_ref_consultations[$key2]->paye){
-      $listPlage[$key]->total1 += $value2->secteur1;
-      $listPlage[$key]->total2 += $value2->secteur2;
+  $listConsult = $listConsult->loadList($where, "heure", null, null, $ljoin);
+  $listPlage[$key]["_ref_consultations"] = $listConsult;
+  $listPlage[$key]["total1"] = 0;
+  $listPlage[$key]["total2"] = 0;
+  foreach($listPlage[$key]["_ref_consultations"] as $key2 => $value2) {
+    $listPlage[$key]["_ref_consultations"][$key2]->loadRefs();
+    if($etat == -1 && $listPlage[$key]["_ref_consultations"][$key2]->paye){
+      $listPlage[$key]["total1"] += $value2->secteur1;
+      $listPlage[$key]["total2"] += $value2->secteur2;
       $total[$value2->type_tarif]["valeur"] += $value2->secteur1 + $value2->secteur2;
       $total[$value2->type_tarif]["nombre"]++;
     }
     elseif($etat != -1){
-      $listPlage[$key]->total1 += $value2->secteur1;
-      $listPlage[$key]->total2 += $value2->secteur2;
+      $listPlage[$key]["total1"] += $value2->secteur1;
+      $listPlage[$key]["total2"] += $value2->secteur2;
       if($value2->type_tarif) {
         $total[$value2->type_tarif]["valeur"] += $value2->secteur1 + $value2->secteur2;
         $total[$value2->type_tarif]["nombre"]++;
       }
     }
   }
-  $total["secteur1"] += $listPlage[$key]->total1;
-  $total["secteur2"] += $listPlage[$key]->total2;
-  $total["tarif"] += $listPlage[$key]->total1 + $listPlage[$key]->total2;
-  $total["nombre"] += count($listPlage[$key]->_ref_consultations);
-  if(!count($listPlage[$key]->_ref_consultations))
+  $total["secteur1"] += $listPlage[$key]["total1"];
+  $total["secteur2"] += $listPlage[$key]["total2"];
+  $total["tarif"] += $listPlage[$key]["total1"] + $listPlage[$key]["total2"];
+  $total["nombre"] += count($listPlage[$key]["_ref_consultations"]);
+  if(!count($listPlage[$key]["_ref_consultations"]))
     unset($listPlage[$key]);
 }
 
@@ -119,6 +129,7 @@ foreach($listPlage as $key => $value) {
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
+$smarty->debugging = false;
 $smarty->assign('today', $today);
 $smarty->assign('titre', $titre);
 $smarty->assign('aff', $aff);
@@ -128,6 +139,6 @@ $smarty->assign('chirSel', $chirSel);
 $smarty->assign('listPlage', $listPlage);
 $smarty->assign('total', $total);
 
-$smarty->display('print_rapport.tpl');
+$smarty->display('print_compta.tpl');
 
 ?>

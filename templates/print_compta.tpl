@@ -47,7 +47,7 @@
   {if $aff}
   {foreach from=$listPlage item=curr_plage}
   <tr>
-    <td coslpan="2"><b>{$curr_plage->date|date_format:"%a %d %b %Y"} - Dr. {$curr_plage->_ref_chir->_view}</b></td>
+    <td coslpan="2"><b>{$curr_plage.date|date_format:"%a %d %b %Y"} - Dr. {$curr_plage._ref_chir->_view}</b></td>
   </tr>
   <tr>
     <td colspan="2">
@@ -61,9 +61,8 @@
           <th width="10%">Secteur 1</th>
           <th width="10%">Secteur 2</th>
           <th width="10%">Total</th>
-          <th width="10%">Paiement</th>
         </tr>
-        {foreach from=$curr_plage->_ref_consultations item=curr_consult}
+        {foreach from=$curr_plage._ref_consultations item=curr_consult}
         <tr>
           <td><a name="consultation{$curr_consult->consultation_id}">{$curr_consult->_ref_patient->_view}</a></td>
           <td>{$curr_consult->_ref_patient->tel}</td>
@@ -73,32 +72,6 @@
           <td>{$curr_consult->secteur1} €</td>
           <td>{$curr_consult->secteur2} €</td>
           <td>{if $etat == -1 && !$curr_consult->paye}0{else}{$curr_consult->secteur1+$curr_consult->secteur2}{/if} €</td>
-          <td>
-            <form name="tarifFrm" action="?m={$m}" method="POST" onsubmit="return checkTarif()">
-            <input type="hidden" name="m" value="{$m}" />
-            <input type="hidden" name="del" value="0" />
-            <input type="hidden" name="_dialog" value="print_rapport" />
-            <input type="hidden" name="dosql" value="do_consultation_aed" />
-            <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
-            <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
-            {if $curr_consult->paye}
-              <input type="hidden" name="paye" value="0" />
-              <input type="hidden" name="date_paiment" value="null" />
-              <button type="submit">Annuler</button>
-            {else}
-              <input type="hidden" name="paye" value="1" />
-              <input type="hidden" name="date_paiment" value="{$today}" />
-              <select name="type_tarif">
-                <option value="cheque"  {if $curr_consult->type_tarif == "cheque" }selected="selected"{/if}>Chèques     </option>
-                <option value="CB"      {if $curr_consult->type_tarif == "CB"     }selected="selected"{/if}>CB          </option>
-                <option value="especes" {if $curr_consult->type_tarif == "especes"}selected="selected"{/if}>Espèces     </option>
-                <option value="tiers"   {if $curr_consult->type_tarif == "tiers"  }selected="selected"{/if}>Tiers-payant</option>
-                <option value="autre"   {if $curr_consult->type_tarif == "autre"  }selected="selected"{/if}>Autre       </option>
-              </select>
-              <button type="submit"><img src="modules/{$m}/images/tick.png" title="valider" /></button>
-            {/if}
-            </form>
-          </td>
         </tr>
         {/foreach}
         <tr>
@@ -106,7 +79,6 @@
           <td style="font-weight:bold;">{$curr_plage->total1} €</td>
           <td style="font-weight:bold;">{$curr_plage->total2} €</td>
           <td style="font-weight:bold;">{$curr_plage->total1+$curr_plage->total2} €</td>
-          <td />
         </tr>
       </table>
     </td>

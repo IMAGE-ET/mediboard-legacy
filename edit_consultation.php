@@ -21,6 +21,7 @@ if (!$canEdit) {
 }
 
 // Récupération des variables
+$today = date("Y-m-d");
 $vue = mbGetValueFromGetOrSession("vue2", 0);
 $day = mbGetValueFromGetOrSession("dayconsult", date("d"));
 $month = mbGetValueFromGetOrSession("monthconsult", date("m"));
@@ -173,6 +174,7 @@ $smarty = new CSmartyDP;
 
 $smarty->debugging = false;
 
+$smarty->assign('today', $today);
 $smarty->assign('vue', $vue);
 $smarty->assign('day', $day);
 $smarty->assign('nday', $nday);
