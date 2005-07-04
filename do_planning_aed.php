@@ -12,6 +12,8 @@ global $AppUI;
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once($AppUI->getModuleClass("dPcompteRendu", "listeChoix"));
 
+//mbTrace($_POST, "POST", true);
+
 $msg = '';
 if($chir_id = dPgetParam( $_POST, 'chir_id', null))
   mbSetValueToSession('chir_id', $chir_id);

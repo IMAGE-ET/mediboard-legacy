@@ -120,10 +120,15 @@ function supprimerCompteRendu(form) {
         </tr>
         {foreach from=$curr_plage->_ref_operations item=curr_op}
         <tr>
-          <td class="text"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->_ref_pat->_view}</a></td>
+          <td class="text"><a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$curr_op->_ref_pat->patient_id}">{$curr_op->_ref_pat->_view}</a></td>
           <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->_ext_code_ccam->code}{if $curr_op->CCAM_code2}<br />+ {$curr_op->_ext_code_ccam2->code}{/if}</a></td>
           <td class="text"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->_ext_code_ccam->libelleLong}{if $curr_op->CCAM_code2}<br />+ {$curr_op->_ext_code_ccam2->libelleLong}{/if}</a></td>
-          <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->time_operation|date_format:"%Hh%M"}</a></td>
+          <td style="text-align: center;">
+            {if $curr_op->annulee}
+            [ANNULEE]
+            {else}
+            <a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->time_operation|date_format:"%Hh%M"}</a></td>
+            {/if}
           <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->temp_operation|date_format:"%Hh%M"}</a></td>
           {if $selChir == $app->user_id}
           <td>
