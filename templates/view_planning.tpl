@@ -46,7 +46,7 @@ function printAdmission(id) {
 		</tr>
 		{foreach from=$curr_plageop->_ref_operations item=curr_op}
 		<tr>
-		  {if $curr_op->annulee}<td>ANNULE</td>
+		  {if $curr_op->annulee}<td>[ANNULE]</td>
 		  {else}<td>{$curr_op->time_operation|date_format:"%Hh%M"}</td>{/if}
 		  
 		  <td class="text">{$curr_op->_ext_code_ccam->libelleLong|truncate:80:"...":false} <i>({$curr_op->CCAM_code})</i>

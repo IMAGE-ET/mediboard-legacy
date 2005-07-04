@@ -51,6 +51,11 @@ class CPlageOp extends CDpObject {
   function CPlageOp() {
     $this->CDpObject( 'plagesop', 'id' );
   }
+  
+  function loadRefs($annulee = 1) {
+    $this->loadRefsFwd();
+    $this->loadRefsBack($annulee);
+  }
 
   function loadRefsFwd() {
     // Forward references
@@ -77,9 +82,12 @@ class CPlageOp extends CDpObject {
     }
   }
   
-  function loadRefsBack() {
+  function loadRefsBack($annulee = 1) {
     // Backward references
-    $sql = "SELECT * FROM operations WHERE plageop_id = '$this->id'";
+    if($annulee)
+      $sql = "SELECT * FROM operations WHERE plageop_id = '$this->id'";
+    else
+      $sql = "SELECT * FROM operations WHERE plageop_id = '$this->id' and annulee = '0'";
     $this->_ref_operations = db_loadObjectList($sql, new COperation);
   }
 
