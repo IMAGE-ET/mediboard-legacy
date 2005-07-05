@@ -18,8 +18,7 @@ class Cplanning
   var $dayWeekList;
   var $monthList;
   
-  function Cplanning($day, $month, $year)
-  {
+  function Cplanning($day, $month, $year) {
     $this->dayWeekList = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
 	$this->monthList = array("", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout",
 							"Septembre", "Octobre", "Novembre", "Décembre");
@@ -35,8 +34,8 @@ class Cplanning
 	unset($this->salles);
     $sql = "SELECT id, nom FROM sallesbloc";
     $this->salles = db_loadlist($sql);
-	foreach($this->salles as $key => $value)
-	{
+    $mychrono = new Chronometer;
+	foreach($this->salles as $key => $value) {
 	  $sql = "SELECT plagesop.id AS id, plagesop.debut AS debut, plagesop.fin AS fin,
               plagesop.id_chir AS chir, plagesop.id_anesth AS anesth, plagesop.id_spec AS spec,
               functions_mediboard.color AS couleur, COUNT(operations.operation_id) AS numop
@@ -50,55 +49,47 @@ class Cplanning
               AND operations.annulee = '0'
               GROUP BY plagesop.id";
 	  $this->salles[$key]['plages'] = db_loadlist($sql);
-	  foreach($this->salles[$key]['plages'] as $key2 => $value2)
-	  {
+	  foreach($this->salles[$key]['plages'] as $key2 => $value2) {
 	  	$this->salles[$key]['plages'][$key2]['debut'] = substr($value2['debut'], 0, 5);
 		$this->salles[$key]['plages'][$key2]['fin'] = substr($value2['fin'], 0, 5);
 	  }
 	}
   }
-  function dispMed($idchir, $idanesth = 0, $idspec = 0)
-  {
+  function dispMed($idchir, $idanesth = 0, $idspec = 0) {
     $vide = 1;
     $sql = "select user_first_name, user_last_name from users, users_mediboard
 				where users.user_username = '$idchir' and users.user_id = users_mediboard.user_id";
 	$row = db_loadlist($sql);
-	if(sizeof($row)>0)
-	{
+	if(sizeof($row)>0) {
 	  $vide = 0;
 	  echo "Dr. ".$row[0]['user_first_name']." ".$row[0]['user_last_name'];
 	}
 	$sql = "select user_first_name, user_last_name from users, users_mediboard
 				where users.user_username = '$idanesth' and users.user_id = users_mediboard.user_id";
     $row = db_loadlist($sql);
-	if(sizeof($row)>0)
-	{
+	if(sizeof($row)>0) {
 	  $vide = 0;
 	  echo "Dr. ".$row[0]['user_first_name']." ".$row[0]['user_last_name'];
 	}
 	$sql = "select text from functions_mediboard where function_id = '$idspec'";
     $row = db_loadlist($sql);
-	if(sizeof($row)>0)
-	{
+	if(sizeof($row)>0) {
 	  $vide = 0;
 	  if(strlen($row[0]['text']) > 22)
 	    echo substr($row[0]['text'], 0, 22)."...";
 	  else
 	    echo $row[0]['text']."<br>";
 	}
-	if($vide)
-	{
+	if($vide) {
 	  echo "Plage vide";
 	}
   }
   
-  function display()
-  {
+  function display() {
     $today = strftime("%a %d %b", mktime(0, 0, 0, $this->month, $this->day, $this->year));
     echo "<table align=\"center\" bgcolor=\"#bbccff\" border=0>\n";
 	echo "<tr>\n";
-	for($i=0;$i<47;$i++)
-	{
+	for($i=0;$i<47;$i++) {
 	  echo "<td bgcolor=\"#000000\" height=\"2\">";
 	  echo "</td>\n";
 	}
@@ -109,8 +100,7 @@ class Cplanning
 	echo "<td align=\"center\" width=\"75\">";
 	echo "<a href=\"index.php?m=dPbloc&tab=1&day=".$this->day."&month=".$this->month."&year=".$this->year."\">$today</a>";
 	echo "</td>\n";
-	for($hours = 8; $hours <= 18; $hours++)
-	{
+	for($hours = 8; $hours <= 18; $hours++) {
 	  if(strlen($hours) == 1)
 		$hours = "0".$hours;
 	  echo "<td bgcolor=\"#3333ff\" colspan=4 width=\"60\"><b>$hours:00</b></td>\n";
@@ -118,24 +108,19 @@ class Cplanning
 	echo "<td bgcolor=\"#000000\" height=\"2\">";
 	echo "</td>\n";
 	echo "</tr>\n";
-	foreach($this->salles as $key => $value)
-	{
+	foreach($this->salles as $key => $value) {
 	  $fsize = 0;
 	  $f = 1;
 	  echo "<tr>\n";
 	  echo "<td bgcolor=\"#000000\" height=\"2\">";
 	  echo "</td>\n";
 	  echo "<td bgcolor=\"#ccddff\">".$value['nom']."</td>\n";
-	  for($hours = 8; $hours <= 18; $hours++)
-	  {
+	  for($hours = 8; $hours <= 18; $hours++) {
 	    if(strlen($hours) == 1)
 		  $hours = "0".$hours;
-	    if(isset($value['plages']))
-		{
-		  foreach($value['plages'] as $key2 => $value2)
-		  {
-		    if($value2['debut'] == "$hours:00")
-			{
+	    if(isset($value['plages'])) {
+		  foreach($value['plages'] as $key2 => $value2) {
+		    if($value2['debut'] == "$hours:00") {
 			  $f = 0;
 			  $fsize = (substr($value2['fin'], 0, 2) - substr($value2['debut'], 0, 2)) * 4;
 			  $fsize += (substr($value2['fin'], 3, 2) - substr($value2['debut'], 3, 2)) / 15;
@@ -150,21 +135,15 @@ class Cplanning
 			}
 		  }
 		}
-	    if(($f == 1) || ($fsize == 0))
-		{
+	    if(($f == 1) || ($fsize == 0)) {
 	      echo "<td bgcolor=\"#ffccdd\">&nbsp;</td>\n";
 		  $f = 1;
-		}
-		else
+		} else
 		  $fsize--;
-	    for($minutes = 15; $minutes < 60; $minutes += 15)
-	    {
-		  if(isset($value['plages']))
-		  {
-		    foreach($value['plages'] as $key2 => $value2)
-		    {
-		      if($value2['debut'] == "$hours:$minutes")
-			  {
+	    for($minutes = 15; $minutes < 60; $minutes += 15) {
+		  if(isset($value['plages'])) {
+		    foreach($value['plages'] as $key2 => $value2) {
+		      if($value2['debut'] == "$hours:$minutes") {
 			    $f = 0;
 			    $fsize = (substr($value2['fin'], 0, 2) - substr($value2['debut'], 0, 2)) * 4;
 			    $fsize += (substr($value2['fin'], 3, 2) - substr($value2['debut'], 3, 2)) / 15;
@@ -179,12 +158,10 @@ class Cplanning
 			  }
 		    }
 		  }
-	      if(($f == 1) || ($fsize == 0))
-		  {
+	      if(($f == 1) || ($fsize == 0)) {
 	        echo "<td bgcolor=\"#ffddcc\">&nbsp;</td>\n";
 		    $f = 1;
-		  }
-		  else
+		  } else
 		    $fsize--;
 	    }
 	  }
@@ -194,8 +171,7 @@ class Cplanning
 	}
 	echo "</table>\n";
   }
-  function displayJour()
-  {
+  function displayJour() {
     echo "<table align=\"center\" cellspacing=4 width=\"100%\">\n";
 	$nday = date("j");
 	$nmonth = date("n");
@@ -258,8 +234,7 @@ class Cplanning
 	echo "</tr>";
 	echo "</table>";
   }
-  function displaySem()
-  {
+  function displaySem() {
     echo "<table align=\"center\" cellspacing=4>\n";
 	$nday = date("j");
 	$nmonth = date("n");
@@ -297,8 +272,7 @@ class Cplanning
     $numDays = array(0, 6, 5, 4, 3, 2, 1);
 	$end = mktime(0, 0, 0, $this->month, $this->day + $numDays[$dayOfWeek], $this->year);
 	$current = $begin;
-	for($i = $begin; $i <= $end; $i += 86400)
-	{
+	for($i = $begin; $i <= $end; $i += 86400) {
 	  $nday = date("j", $i);
 	  $nmonth = date("n", $i);
 	  $nyear = date("Y", $i);
