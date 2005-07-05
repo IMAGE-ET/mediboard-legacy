@@ -78,6 +78,7 @@ foreach($listPlage as $key => $value) {
   $where["plageconsult_id"] = "= '".$value->plageconsult_id."'";
   $where["chrono"] = ">= '".CC_TERMINE."'";
   $where["annule"] = "= 0";
+  $where[] = "tarif IS NOT NULL AND tarif <> ''";
   if($etat != -1)
     $where["paye"] = "= '$etat'";
   if($etat == 0)
