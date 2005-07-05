@@ -37,7 +37,7 @@ $ljoin["lit"] = "lit.lit_id = affectation.lit_id";
 $ljoin["chambre"] = "chambre.chambre_id = lit.chambre_id";
 $ljoin["service"] = "service.service_id = chambre.service_id";
 $where["sortie"] = "BETWEEN '$limit1' AND '$limit2'";
-$where["type_adm"] = "= 'comp'";
+$where["type_adm"] = "<> 'exte'";
 if($vue) {
   $where["confirme"] = "= 0";
 }
