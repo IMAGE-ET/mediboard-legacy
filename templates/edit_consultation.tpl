@@ -502,8 +502,8 @@ function supprimerDocument(prop_name, valid_name) {
                     {if !$consult->paye}
                     <tr>
                       <th>Somme à régler :</th>
-                      <td class="readonly">
-                        <input type="text" readonly size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
+                      <td>
+                        <input type="text" size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
                         <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
                         <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
                         <input type="hidden" name="tarif" value="{if $consult->tarif == null}null{else}{$consult->tarif}{/if}" />

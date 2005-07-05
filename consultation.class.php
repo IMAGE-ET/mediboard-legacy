@@ -64,6 +64,7 @@ class CConsultation extends CDpObject {
   var $_hour = null;
   var $_min = null;
   var $_check_premiere = null; // CheckBox: must be present in all forms!
+  var $_somme = null;
   
 
   // Object References
@@ -77,6 +78,7 @@ class CConsultation extends CDpObject {
   }
   
   function updateFormFields() {
+  	$this->_somme = $this->secteur1 + $this->secteur2;
     if($this->date_paiement == "0000-00-00")
       $this->date_paiement = null;
     $this->_ref_documents = array();
@@ -153,6 +155,10 @@ class CConsultation extends CDpObject {
     }
     if($this->date_paiement == "0000-00-00")
       $this->date_paiement = null;
+    if(($this->_somme !== null) && ($this->_somme != $this->secteur1 + $this->secteur2)){
+      $this->secteur1 = 0;
+      $this->secteur2 = $this->_somme;
+    }
     
     // @todo : verifier si on ne fait ça que si _check_premiere est non null
     $this->premiere = $this->_check_premiere ? 1 : 0;

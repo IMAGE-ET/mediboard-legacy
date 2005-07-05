@@ -76,9 +76,9 @@
         {/foreach}
         <tr>
           <td colspan="5" style="text-align:right;font-weight:bold;">Total</td>
-          <td style="font-weight:bold;">{$curr_plage->total1} €</td>
-          <td style="font-weight:bold;">{$curr_plage->total2} €</td>
-          <td style="font-weight:bold;">{$curr_plage->total1+$curr_plage->total2} €</td>
+          <td style="font-weight:bold;">{$curr_plage.total1} €</td>
+          <td style="font-weight:bold;">{$curr_plage.total2} €</td>
+          <td style="font-weight:bold;">{$curr_plage.total1+$curr_plage.total2} €</td>
         </tr>
       </table>
     </td>
