@@ -33,6 +33,12 @@ class CFunctions extends CDpObject {
 		$this->CDpObject('functions_mediboard', 'function_id');
 	}
   
+  function updateFormFields () {
+		parent::updateFormFields();
+
+    $this->_view = $this->text;
+	}
+  
   function canDelete(&$msg, $oid = null) {
     $tables[] = array (
       'label' => 'utilisateurs', 
@@ -48,7 +54,7 @@ class CFunctions extends CDpObject {
       'joinfield' => 'id_spec'
     );
     
-    return CDpObject::canDelete( $msg, $oid, $tables );
+    return parent::canDelete( $msg, $oid, $tables );
   }
 
   // Forward references

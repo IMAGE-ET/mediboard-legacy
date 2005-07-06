@@ -246,6 +246,11 @@ class CMediusers extends CDpObject {
     return $this->loadListFromType(array("Chirurgien", "Anesthésiste"), $perm_type, $function_id, $name);
   }
   
+  function isAllowed($perm_type = PERM_READ) {
+    assert($this->function_id);
+    return isMbAllowed($perm_type, "mediusers", $this->function_id);
+  }
+  
   function isFromType($user_types) {
     // Warning: !== operator
     return array_search($this->_user_type, $user_types) !== false; 
