@@ -34,12 +34,14 @@
 ?>
 
 <table id="header" cellspacing="0"><!-- IE Hack: cellspacing should be useless --> 
+<!--
 <tr>
 	<td id="banner">
 		<p>Mediboard :: Système de gestion des structures de santé</p>
 		<a href='http://www.mediboard.org'><img src="./style/<?php echo $uistyle;?>/images/mbSmall.gif" alt="Logo Mediboard"  /></a>
 	</td>
 </tr>
+-->
 <tr>
 	<td id="menubar">
 		<table>
