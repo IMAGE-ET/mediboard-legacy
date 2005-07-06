@@ -79,6 +79,12 @@ class CUser extends CDpObject {
 		}
 	}
   
+  function updateFormFields () {
+    parent::updateFormFields();
+
+    $this->_view = "$this->user_last_name $this->user_first_name";
+  }
+  
   /**
 	 * @return string error message when necessary, null otherwise
 	 */
