@@ -44,7 +44,7 @@ $listeTarifsSpe = new CTarif();
 $listeTarifsSpe = $listeTarifsSpe->loadList($where);
 
 // Liste des praticiens du cabinet -> on ne doit pas voir les autres...
-if($user->user_type == 'Administrator') {
+if($user->user_type == 'Administrator' || $user->user_type == 'Secrétaire') {
   $listPrat = new CMediusers();
   $listPrat = $listPrat->loadPraticiens(PERM_READ);
 }
