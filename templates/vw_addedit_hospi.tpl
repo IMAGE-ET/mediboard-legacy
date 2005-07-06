@@ -361,13 +361,18 @@ function printForm() {
         </tr>
 
         <tr>
-          <th><label for="editFrm_CCAM_code">Acte secondaire (CCAM):</label></th>
+          <th><label for="editFrm_CCAM_code2">Acte secondaire (CCAM):</label></th>
           <td><input type="text" name="CCAM_code2" size="10" value="{$op->CCAM_code2}" /></td>
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam2')"/></td>
         </tr>
         
         <tr>
-          <th class="mandatory"><label for="editFrm_cote">Coté:</label></th>
+          <th><label for="editFrm_libelle">Libellé:</label></th>
+          <td colspan="2"><input type="text" name="libelle" size="70" value="{$op->libelle}"/></td>
+        </tr>
+        
+        <tr>
+          <th><label for="editFrm_cote">Coté:</label></th>
           <td colspan="2">
             <select name="cote" onchange="modifOp()";>
               <option value="total"     {if !$op || $op->cote == "total"} selected="selected" {/if} >total</option>
@@ -435,7 +440,7 @@ function printForm() {
         </tr>
 
         <tr>
-          <th><label for="editFrm_duree_hospi">Durée d'hospitalisation:</label></th>
+          <th class="mandatory"><label for="editFrm_duree_hospi">Durée d'hospitalisation:</label></th>
           <td><input type"text" name="duree_hospi" size="2" value="{$op->duree_hospi}"> jours</td>
         </tr>
         <tr>

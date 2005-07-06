@@ -30,6 +30,7 @@ class COperation extends CDpObject {
   var $CCAM_code = null;
   var $CCAM_code2 = null;
   var $CIM10_code = null;
+  var $libelle = null;
   var $cote = null;
   var $temp_operation = null;
   var $entree_bloc = null;
@@ -276,6 +277,10 @@ class COperation extends CDpObject {
     if(!$this->plageop_id && $this->pat_id && !$this->CCAM_code) {
       $this->_ext_code_ccam->libelleCourt = "Simple surveillance";
       $this->_ext_code_ccam->libelleLong = "Simple surveillance";
+    }
+    if($this->libelle !== null && $this->libelle != "") {
+      $this->_ext_code_ccam->libelleCourt = "[<em>libelle :</em> $this->libelle]<br />".$this->_ext_code_ccam->libelleCourt;
+      $this->_ext_code_ccam->libelleLong = "[<em>libelle :</em> $this->libelle]<br />".$this->_ext_code_ccam->libelleLong;
     }
     $this->_ext_code_ccam2 = new CActeCCAM($this->CCAM_code2);
     $this->_ext_code_ccam2->LoadLite();
