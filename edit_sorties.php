@@ -64,31 +64,49 @@ foreach($deplacements as $key => $value) {
   }
 }
 
-// Récupération des sorties du jour
-$sorties = new CAffectation;
-$sorties = $sorties->loadList($where, $order, null, null, $ljoin);
-foreach($sorties as $key => $value) {
-  $sorties[$key]->loadRefsFwd();
-  if($sorties[$key]->_ref_next->affectation_id) {
-    unset($sorties[$key]);
+// Récupération des sorties ambu du jour
+$where["type_adm"] = "= 'ambu'";
+$sortiesAmbu = new CAffectation;
+$sortiesAmbu = $sortiesAmbu->loadList($where, $order, null, null, $ljoin);
+foreach($sortiesAmbu as $key => $value) {
+  $sortiesAmbu[$key]->loadRefsFwd();
+  if($sortiesAmbu[$key]->_ref_next->affectation_id) {
+    unset($sortiesAmbu[$key]);
   } else {
-    $sorties[$key]->_ref_operation->loadRefsFwd();
-    $sorties[$key]->_ref_operation->_ref_chir->loadRefsFwd();
-    $sorties[$key]->_ref_lit->loadRefsFwd();
-    $sorties[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
+    $sortiesAmbu[$key]->_ref_operation->loadRefsFwd();
+    $sortiesAmbu[$key]->_ref_operation->_ref_chir->loadRefsFwd();
+    $sortiesAmbu[$key]->_ref_lit->loadRefsFwd();
+    $sortiesAmbu[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
+  }
+}
+
+// Récupération des sorties hospi complete du jour
+$where["type_adm"] = "= 'comp'";
+$sortiesComp = new CAffectation;
+$sortiesComp = $sortiesComp->loadList($where, $order, null, null, $ljoin);
+foreach($sortiesComp as $key => $value) {
+  $sortiesComp[$key]->loadRefsFwd();
+  if($sortiesComp[$key]->_ref_next->affectation_id) {
+    unset($sortiesComp[$key]);
+  } else {
+    $sortiesComp[$key]->_ref_operation->loadRefsFwd();
+    $sortiesComp[$key]->_ref_operation->_ref_chir->loadRefsFwd();
+    $sortiesComp[$key]->_ref_lit->loadRefsFwd();
+    $sortiesComp[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
   }
 }
 
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
-$smarty->assign('now' , $now );
-$smarty->assign('cday' , $cday );
-$smarty->assign('nday' , $nday );
-$smarty->assign('pday' , $pday );
+$smarty->assign('now'          , $now          );
+$smarty->assign('cday'         , $cday         );
+$smarty->assign('nday'         , $nday         );
+$smarty->assign('pday'         , $pday         );
 $smarty->assign('deplacements' , $deplacements );
-$smarty->assign('sorties' , $sorties );
-$smarty->assign('vue' , $vue );
+$smarty->assign('sortiesAmbu'  , $sortiesAmbu  );
+$smarty->assign('sortiesComp'  , $sortiesComp  );
+$smarty->assign('vue'          , $vue          );
 
 $smarty->display('edit_sorties.tpl');
 

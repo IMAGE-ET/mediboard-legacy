@@ -93,9 +93,7 @@
           </td>
           <td>
             <table class="tbl">
-              <tr>
-                <th class="title" colspan="5">Confirmation des sorties</th>
-              </tr>
+              <tr><th class="title" colspan="5">Confirmation des sorties</th></tr>
               <tr>
                 <th>Confirmation</th>
                 <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;typeOrder=0">Patient</a></th>
@@ -103,7 +101,50 @@
                 <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;typeOrder=1">Service</a></th>
                 <th>Chambre</th>
               </tr>
-              {foreach from=$sorties item=curr_sortie}
+              <tr><th colspan="5">Hospitalisations complètes</th></tr>
+              {foreach from=$sortiesComp item=curr_sortie}
+              <tr>
+                <td>
+                <form name="editFrm{$curr_sortie->affectation_id}" action="?m={$m}" method="post">
+                <input type="hidden" name="m" value="{$m}" />
+                <input type="hidden" name="del" value="0" />
+                <input type="hidden" name="dosql" value="do_affectation_aed" />
+                <input type="hidden" name="affectation_id" value="{$curr_sortie->affectation_id}" />
+                {if $curr_sortie->confirme}
+                <input type="hidden" name="confirme" value="0" />
+                <button type="submit">
+                <img src="modules/{$m}/images/cross.png" alt="Annuler" title="Annuler la sortie">
+                Annuler la sortie
+                </button>
+                {else}
+                <input type="hidden" name="confirme" value="1" />
+                <button type="submit">
+                <img src="modules/{$m}/images/tick.png" alt="Confirmer" title="Confirmer la sortie">
+                Confirmer la sortie
+                </button>
+                {/if}
+                </form>
+                </td>
+                {if $curr_sortie->confirme}
+                <td class="text" style="background-image:url(modules/{$m}/images/ray.gif); background-repeat:repeat;">
+                {else}
+                <td class="text">
+                {/if}
+                  <b>{$curr_sortie->_ref_operation->_ref_pat->_view}</b>
+                </td>
+                <td class="text" style="background:#{$curr_sortie->_ref_operation->_ref_chir->_ref_function->color}">
+                  {$curr_sortie->_ref_operation->_ref_chir->_view}
+                </td>
+                <td class="text">
+                  {$curr_sortie->_ref_lit->_ref_chambre->_ref_service->nom} -
+                  {$curr_sortie->_ref_lit->_ref_chambre->nom} -
+                  {$curr_sortie->_ref_lit->nom}
+                </td>
+                <td>{$curr_sortie->sortie|date_format:"%H h %M"}</td>
+              </tr>
+              {/foreach}
+              <tr><th colspan="5">Ambulatoires</th></tr>
+              {foreach from=$sortiesAmbu item=curr_sortie}
               <tr>
                 <td>
                 <form name="editFrm{$curr_sortie->affectation_id}" action="?m={$m}" method="post">
