@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcompteRendu';
-$config['mod_version'] = '0.16';
+$config['mod_version'] = '0.17';
 $config['mod_directory'] = 'dPcompteRendu';
 $config['mod_setup_class'] = 'CSetupdPcompteRendu';
 $config['mod_type'] = 'user';
@@ -87,6 +87,13 @@ class CSetupdPcompteRendu {
           $sql = "ALTER TABLE `compte_rendu` ADD `valide` TINYINT DEFAULT 0;";
           db_exec( $sql ); db_error();
         case "0.16":
+          $sql = "ALTER TABLE `compte_rendu` ADD `function_id` BIGINT DEFAULT NULL AFTER `chir_id` ;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `compte_rendu` ADD INDEX ( `function_id` ) ;";
+          db_exec( $sql ); db_error();
+          $sql = " ALTER TABLE `compte_rendu` CHANGE `chir_id` `chir_id` BIGINT( 20 ) DEFAULT NULL";
+          db_exec( $sql ); db_error();
+        case "0.17":
           return true;
 		}
 		return false;

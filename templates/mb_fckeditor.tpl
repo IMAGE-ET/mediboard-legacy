@@ -94,7 +94,7 @@ FCKConfig.DefaultLanguage = "fr" ;
 FCKConfig.AutoDetectLanguage = false ;
 
 // Warning: fckeditor/editor/filemanager/browser/default/connectors/php/config.php must contain:
-// $Config['UserFilesPath'] = '/Mediboard/UserFiles/' ;
+// $Config['UserFilesPath'] = '/mediboard/files/editor/' ;
 
 FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/php/connector.php' ; 
 FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=connectors/php/connector.php' ;

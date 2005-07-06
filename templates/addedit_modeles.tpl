@@ -1,7 +1,10 @@
 {literal}
 <script language="JavaScript" type="text/javascript">
+
 function nouveau() {
-  var url = "index.php?m=dPcompteRendu&tab=addedit_modeles&new=1";
+  var url = "index.php?m=dPcompteRendu";
+  url += "&tab=addedit_modeles";
+  url += "&compte_rendu_id=0";
   window.location.href = url;
 }
 
@@ -15,10 +18,13 @@ function checkForm() {
   var form = document.editFrm;
   var field = null;
    
-  if (field = form.elements['chir_id']) {
-    if (field.value == 0) {
-      alert("Utilisateur indéterminé");
-      field.focus();
+  var fieldChir = form.elements['chir_id'];
+  var fieldFunc = form.elements['function_id'];
+  
+  if (fieldChir && fieldFunc) {
+    if (fieldChir.value == 0 && fieldFunc.value == 0) {
+      alert("Le modèle doit être associé à une fonction ou un praticien");
+      fieldChir.focus();
       return false;
     }
   }
@@ -55,18 +61,18 @@ function checkForm() {
   </tr>
   
   <tr>
-    <th>Nom: </th>
+    <th><label for="editFrm_nom" title="Intitulé du modèle">Nom:</label></th>
     <td><input type="text" name="nom" value="{$compte_rendu->nom}"></td>
   </tr>
   
   <tr>
-    <th>Praticien:</th>
+    <th><label for="editFrm_function_id" title="Fonction à laquelle le modèle est associé">Fonction:</label></th>
     <td>
-      <select name="chir_id">
-        <option value="0">&mdash; Choisir un praticien &mdash;</options>
-        {foreach from=$listPrat item=curr_prat}
-          <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $prat_id} selected="selected" {/if}>
-            {$curr_prat->user_last_name} {$curr_prat->user_first_name}
+      <select name="function_id" onchange="this.form.chir_id.value = 0">
+        <option value="0">&mdash; Associer à une fonction &mdash;</options>
+        {foreach from=$listFunc item=curr_func}
+          <option value="{$curr_func->function_id}" {if $curr_func->function_id == $compte_rendu->function_id} selected="selected" {/if}>
+            {$curr_func->_view}
           </option>
         {/foreach}
       </select>
@@ -74,10 +80,24 @@ function checkForm() {
   </tr>
   
   <tr>
-    <th>Type de compte-rendu: </th>
+    <th><label for="editFrm_chir_id" title="Praticien auquel le modèle est associé">Praticien:</label></th>
+    <td>
+      <select name="chir_id" onchange="this.form.function_id.value = 0">
+        <option value="0">&mdash; Associer à un praticien &mdash;</options>
+        {foreach from=$listPrat item=curr_prat}
+          <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $prat_id} selected="selected" {/if}>
+            {$curr_prat->_view}
+          </option>
+        {/foreach}
+      </select>
+    </td>
+  </tr>
+  
+  <tr>
+    <th><label for="editFrm_type" title="Contexte dans lequel est utilisé le modèle">Type de modèle: </label></th>
     <td>
       <select name="type">
-        {foreach from=$listType item=curr_type}
+        {foreach from=$ECompteRenduType item=curr_type}
           <option value="{$curr_type}" {if $curr_type == $compte_rendu->type} selected="selected" {/if}>
             {$curr_type}
           </option>
@@ -90,7 +110,7 @@ function checkForm() {
     <td class="button" colspan="2">
     {if $compte_rendu->compte_rendu_id}
       <input type="submit" value="modifier" />
-      <input type="button" value="supprimer" onclick="supprimer()" />
+      <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le modèle', '{$compte_rendu->nom|escape:javascript}')" />
       <input type="button" value="nouveau" onclick="nouveau()" />
     {else}
       <input type="submit" value="créer" />
