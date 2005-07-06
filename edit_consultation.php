@@ -54,45 +54,31 @@ mbSetValueToSession("yearconsult", $year);
 $nyear = $year + 1;
 $pyear = $year - 1;
 
-$chir = null;
-// L'utilisateur est-il praticien?
-$mediuser = new CMediusers();
-$mediuser->load($AppUI->user_id);
-if ($mediuser->isPraticien()) {
-  $chir = $mediuser->createUser();
-}
-// A t'on fourni l'id du patient et du chirurgien?
-$chir_id = mbGetValueFromGetOrSession("chirSel", null);
-if ($chir_id) {
-  $chir = new CMediusers;
-  $chir->load($chir_id);
-}
-// A t'on un chirurgien
-if($chir == null) {
+// Utilisateur sélectionné ou utilisateur courant
+$prat_id = mbGetValueFromGetOrSession("chirSel");
+
+$userSel = new CMediusers;
+$userSel->load($prat_id ? $prat_id : $AppUI->user_id);
+$userSel->loadRefs();
+
+if (!$userSel->isPraticien()) {
   $AppUI->setMsg("Vous devez selectionner un praticien", UI_MSG_ALERT);
   $AppUI->redirect("m=dPcabinet&tab=0");
 }
-// Vérification des droits
-$listDroits = new CMediusers;
-$listDroits = $listDroits->loadPraticiens(PERM_EDIT);
-$droit = false;
-foreach($listDroits as $key => $value) {
-  if($key = $chir->user_id)
-    $droit = true;
-}
-if(!$droit) {
+
+if (!$userSel->isAllowed(PERM_EDIT)) {
   $AppUI->setMsg("Vous n'avez pas les droits suffisants", UI_MSG_ALERT);
   $AppUI->redirect("m=dPcabinet&tab=0");
 }
 
-$selConsult = mbGetValueFromGetOrSession("selConsult", 0);
-if(dPgetParam($_GET, "change", 0)) {
+$selConsult = mbGetValueFromGetOrSession("selConsult");
+if (dPgetParam($_GET, "change")) {
   $selConsult = 0;
-  mbSetValueToSession("selConsult", 0);
+  mbSetValueToSession("selConsult");
 }
 
 $consult = new CConsultation();
-if($selConsult) {
+if ($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
   $patient =& $consult->_ref_patient;
@@ -116,7 +102,12 @@ if($selConsult) {
 // Récupération des plages de consultation du jour et chargement des références
 
 $listPlage = new CPlageconsult();
-$listPlage = $listPlage->loadList("chir_id = '$chir->user_id' AND date = '$year-$month-$day' ORDER BY debut");
+$where = array();
+$where["chir_id"] = "= '$userSel->user_id'";
+$where["date"] = "= '$year-$month-$day'";
+$order = "debut";
+$listPlage = $listPlage->loadList($where, $order);
+
 foreach($listPlage as $key => $value) {
   $listPlage[$key]->loadRefs();
   foreach($listPlage[$key]->_ref_consultations as $key2 => $value2) {
@@ -128,20 +119,30 @@ foreach($listPlage as $key => $value) {
 }
 
 // Récupération des modèles de l'utilisateur
-$where = array();
-$where[] = "chir_id = '$chir->user_id'";
-$where[] = "type = 'consultation'";
-$order = array();
-$order[] = "nom";
+$listModelePrat = array();
+if ($userSel->user_id) {
+  $where = array();
+  $where["chir_id"] = "= '$userSel->user_id'";
+  $order = "nom";
+  $listModelePrat = new CCompteRendu;
+  $listModelePrat = $listModelePrat->loadlist($where, $order);
+}
 
-$listModele = new CCompteRendu();
-$listModele = $listModele->loadList($where, $order);
+// Liste des modèles pour le praticien
+$listModeleFunc = array();
+if ($userSel->user_id) {
+  $where = array();
+  $where["function_id"] = "= '$userSel->function_id'";
+  $order = "nom";
+  $listModeleFunc = new CCompteRendu;
+  $listModeleFunc = $listModeleFunc->loadlist($where, $order);
+}
 
 // Récupération des aides à la saisie
 $where = array();
-$where[] = "user_id = '$chir->user_id'";
-$where[] = "module = '$m'";
-$where[] = "class = 'Consultation'";
+$where["user_id"] = " = '$userSel->user_id'";
+$where["module"] = " = '$m'";
+$where["class"] = " = 'Consultation'";
 
 $aidesConsultation = new CAideSaisie();
 $aidesConsultation = $aidesConsultation->loadList($where);
@@ -160,11 +161,11 @@ foreach ($aidesConsultation as $aideConsultation) {
 
 // Récupération des tarifs
 $where = array();
-$where["chir_id"] = "= '$chir->user_id'";
+$where["chir_id"] = "= '$userSel->user_id'";
 $tarifsChir = new CTarif;
 $tarifsChir = $tarifsChir->loadList($where);
 $where = array();
-$where["function_id"] = "= '$mediuser->function_id'";
+$where["function_id"] = "= '$userSel->function_id'";
 $tarifsCab = new CTarif;
 $tarifsCab = $tarifsCab->loadList($where);
 
@@ -192,7 +193,8 @@ $smarty->assign('year', $year);
 $smarty->assign('nyear', $nyear);
 $smarty->assign('pyear', $pyear);
 $smarty->assign('listPlage', $listPlage);
-$smarty->assign('listModele', $listModele);
+$smarty->assign('listModelePrat', $listModelePrat);
+$smarty->assign('listModeleFunc', $listModeleFunc);
 $smarty->assign('aides', $aides);
 $smarty->assign('tarifsChir', $tarifsChir);
 $smarty->assign('tarifsCab', $tarifsCab);

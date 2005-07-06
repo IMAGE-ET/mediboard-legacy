@@ -453,9 +453,16 @@ function supprimerDocument(prop_name, valid_name) {
 		                <td>
                           <select name="_choix_modele" onchange="if (this.value) editDocument({$consult->consultation_id}, this.value, '{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
                             <option value="">&mdash; Choisir un modèle</option>
-                            {foreach from=$listModele item=curr_modele}
-                            <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
-                            {/foreach}
+                            <optgroup label="Modèles du praticien">
+                              {foreach from=$listModelePrat item=curr_modele}
+                              <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+                              {/foreach}
+                            </optgroup>
+                            <optgroup label="Modèles du cabinet">
+                              {foreach from=$listModeleFunc item=curr_modele}
+                              <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+                              {/foreach}
+                            </optgroup>
                           </select>
 					    </td>
                         {/if}
