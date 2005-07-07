@@ -279,8 +279,8 @@ class COperation extends CDpObject {
       $this->_ext_code_ccam->libelleLong = "Simple surveillance";
     }
     if($this->libelle !== null && $this->libelle != "") {
-      $this->_ext_code_ccam->libelleCourt = "[<em>libelle :</em> $this->libelle]<br />".$this->_ext_code_ccam->libelleCourt;
-      $this->_ext_code_ccam->libelleLong = "[<em>libelle :</em> $this->libelle]<br />".$this->_ext_code_ccam->libelleLong;
+      $this->_ext_code_ccam->libelleCourt = "<em>[$this->libelle]</em><br />".$this->_ext_code_ccam->libelleCourt;
+      $this->_ext_code_ccam->libelleLong = "<em>[ $this->libelle]</em><br />".$this->_ext_code_ccam->libelleLong;
     }
     $this->_ext_code_ccam2 = new CActeCCAM($this->CCAM_code2);
     $this->_ext_code_ccam2->LoadLite();
