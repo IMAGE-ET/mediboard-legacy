@@ -216,3 +216,12 @@ function makeDateFromDATE(sDate) {
   
   return new Date(year, month - 1, day); // Js months are 0-11!!
 }
+
+function makeDATEFromDate(date) {
+  var y = date.getFullYear();
+  var m = date.getMonth()+1; // Js months are 0-11!!
+  var d = date.getDate();
+  
+  var sDate = "" + y + "-" + m + "-" + d; 
+  return sDate;
+}
