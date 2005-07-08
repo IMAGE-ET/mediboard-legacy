@@ -20,39 +20,7 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// Récupération des variables
-$today = date("Y-m-d");
-$vue = mbGetValueFromGetOrSession("vue2", 0);
-$day = mbGetValueFromGetOrSession("dayconsult", date("d"));
-$month = mbGetValueFromGetOrSession("monthconsult", date("m"));
-$year = mbGetValueFromGetOrSession("yearconsult", date("Y"));
-if($tempSelConsult = dPgetParam($_GET, "selConsult", 0)) {
-  $tempConsult = new CConsultation;
-  $tempConsult->load($tempSelConsult);
-  $tempConsult->loadRefs();
-  $day = substr($tempConsult->_ref_plageconsult->date, 8, 2);
-  $month = substr($tempConsult->_ref_plageconsult->date, 5, 2);
-  $year = substr($tempConsult->_ref_plageconsult->date, 0, 4);
-}
-$realtime = mktime(0, 0, 0, $month, $day, $year);
-$day = date("d", $realtime);
-mbSetValueToSession("dayconsult", $day);
-$nday = $day + 1;
-$nnday = $day + 7;
-$pday = $day - 1;
-$ppday = $day - 7;
-$dayName = strftime ("%a", $realtime);
-$month = date("m", $realtime);
-mbSetValueToSession("monthconsult", $month);
-$nmonth = $month + 1;
-$nnmonth = $month + 4;
-$pmonth = $month - 1;
-$ppmonth = $month - 4;
-$monthName = strftime ("%B", $realtime);
-$year = date("Y", $realtime);
-mbSetValueToSession("yearconsult", $year);
-$nyear = $year + 1;
-$pyear = $year - 1;
+$xdate = mbGetValueFromGetOrSession("xdate", mbDate()); 
 
 // Utilisateur sélectionné ou utilisateur courant
 $prat_id = mbGetValueFromGetOrSession("chirSel");
@@ -72,8 +40,8 @@ if (!$userSel->isAllowed(PERM_EDIT)) {
 }
 
 $selConsult = mbGetValueFromGetOrSession("selConsult");
-if (dPgetParam($_GET, "change")) {
-  $selConsult = 0;
+if (isset($_GET["xdate"])) {
+  $selConsult = null;
   mbSetValueToSession("selConsult");
 }
 
@@ -97,16 +65,22 @@ if ($selConsult) {
   foreach ($patient->_ref_hospitalisations as $key => $value) {
     $patient->_ref_hospitalisations[$key]->loadRefs();
   }
+  
+  // Affecter la date de la consultation
+  $xdate = $consult->_ref_plageconsult->date;
+  
 }
 
 // Récupération des plages de consultation du jour et chargement des références
-
 $listPlage = new CPlageconsult();
 $where = array();
 $where["chir_id"] = "= '$userSel->user_id'";
-$where["date"] = "= '$year-$month-$day'";
+$where["date"] = "= '$xdate'";
 $order = "debut";
 $listPlage = $listPlage->loadList($where, $order);
+
+$vue = mbGetValueFromGetOrSession("vue2", 0);
+
 
 foreach($listPlage as $key => $value) {
   $listPlage[$key]->loadRefs();
@@ -118,22 +92,25 @@ foreach($listPlage as $key => $value) {
   }
 }
 
-// Récupération des modèles de l'utilisateur
+// Récupération des modèles
+$whereCommon = array();
+$whereCommon["type"] = "= 'consultation'";
+$order = "nom";
+
+// Modèles de l'utilisateur
 $listModelePrat = array();
 if ($userSel->user_id) {
-  $where = array();
+  $where = $whereCommon;
   $where["chir_id"] = "= '$userSel->user_id'";
-  $order = "nom";
   $listModelePrat = new CCompteRendu;
   $listModelePrat = $listModelePrat->loadlist($where, $order);
 }
 
-// Liste des modèles pour le praticien
+// Modèles de la fonction
 $listModeleFunc = array();
 if ($userSel->user_id) {
-  $where = array();
+  $where = $whereCommon;
   $where["function_id"] = "= '$userSel->function_id'";
-  $order = "nom";
   $listModeleFunc = new CCompteRendu;
   $listModeleFunc = $listModeleFunc->loadlist($where, $order);
 }
@@ -175,23 +152,10 @@ $smarty = new CSmartyDP;
 
 $smarty->debugging = false;
 
-$smarty->assign('today', $today);
+$smarty->assign('xdate' , $xdate );
+
 $smarty->assign('vue', $vue);
-$smarty->assign('day', $day);
-$smarty->assign('nday', $nday);
-$smarty->assign('nnday', $nnday);
-$smarty->assign('pday', $pday);
-$smarty->assign('ppday', $ppday);
-$smarty->assign('dayName', $dayName);
-$smarty->assign('month', $month);
-$smarty->assign('nmonth', $nmonth);
-$smarty->assign('nnmonth', $nnmonth);
-$smarty->assign('pmonth', $pmonth);
-$smarty->assign('ppmonth', $ppmonth);
-$smarty->assign('monthName', $monthName);
-$smarty->assign('year', $year);
-$smarty->assign('nyear', $nyear);
-$smarty->assign('pyear', $pyear);
+
 $smarty->assign('listPlage', $listPlage);
 $smarty->assign('listModelePrat', $listModelePrat);
 $smarty->assign('listModeleFunc', $listModeleFunc);

@@ -121,6 +121,32 @@ function supprimerDocument(prop_name, valid_name) {
   }
 }
 
+function dateChanged(calendar) {
+  var y = calendar.date.getFullYear();
+  var m = calendar.date.getMonth()+1;
+  var d = calendar.date.getDate();
+   
+  var url = "index.php?m={/literal}{$m}{literal}";
+  url += "&tab={/literal}{$tab}{literal}";
+  url += "&xdate="  + y + "-" + m + "-" + d;
+
+  window.location = url;
+}
+
+function pageMain() {
+  Calendar.setup( {
+      flat         : "calendar-container",
+      flatCallback : dateChanged         ,
+      date         : {/literal} makeDateFromDATE("{$xdate}") {literal}
+    }
+  );
+  
+  initGroups("consultations");
+  initGroups("operations");
+  initGroups("hospitalisations");
+  
+}
+
 </script>
 {/literal}
 
@@ -128,8 +154,11 @@ function supprimerDocument(prop_name, valid_name) {
   <tr>
     <td style="vertical-align: top">
 
-    <table align="center" width="100%">
+    <div id="calendar-container" style="width: 200px"></div>
+
+    <table class="form">
       <tr>
+        <th>Type de vue:</th>
         <td colspan="5">
           <form action="index.php" name="type" method="get">
           <input type="hidden" name="m" value="{$m}">
@@ -140,27 +169,6 @@ function supprimerDocument(prop_name, valid_name) {
           </select>
           </form>
         </td>
-      </tr>
-      <tr>
-        <th></th>
-        <th><a href="?m={$m}&amp;change=1&amp;yearconsult={$pyear}"><</a></th>
-        <th>{$year}</th>
-        <th><a href="?m={$m}&amp;change=1&amp;yearconsult={$nyear}">></a></th>
-        <th></th>
-      </tr>
-      <tr>
-        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$ppmonth}"><<</a></th>
-        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$pmonth}"><</a></th>
-        <th>{$monthName}</th>
-        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$nmonth}">></a></th>
-        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$nnmonth}">>></a></th>
-      </tr>
-      <tr>
-        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$ppday}"><<</a></th>
-        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$pday}"><</a></th>
-        <th>{$dayName} {$day}</th>
-        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$nday}">></a></th>
-        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$nnday}">>></a></th>
       </tr>
     </table>
 
@@ -218,7 +226,7 @@ function supprimerDocument(prop_name, valid_name) {
                 <th class="category" colspan="2">Patient</th>
                 <th class="category">Correpondants</th>
                 <th class="category">Historique</th>
-                <th class="category">Plannification</th>
+                <th class="category">Planification</th>
               </tr>
               <tr>
                 <td class="readonly">
@@ -253,48 +261,55 @@ function supprimerDocument(prop_name, valid_name) {
                   {/if}
                 </td>
                 <td class="text">
-                  {if $consult->_ref_patient->_ref_operations|@count}
-                  Interventions :
-                  <ul>
-                  {foreach from=$consult->_ref_patient->_ref_operations item=curr_op}
-                    <li><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-                      {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
-                      -
-                      Dr. {$curr_op->_ref_chir->_view}
-                    </a></li>
-                  {/foreach}
-                  </ul>
-                  {/if}
-                  {if $consult->_ref_patient->_ref_hospitalisations|@count}
-                  Hospitalisations :
-                  <ul>
-                  {foreach from=$consult->_ref_patient->_ref_hospitalisations item=curr_op}
-                    <li><a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
-                      {$curr_op->date_adm|date_format:"%d %b %Y"}
-                      -
-                      Dr. {$curr_op->_ref_chir->_view}
-                    </a></li>
-                  {/foreach}
-                  </ul>
-                  {/if}
-                  {if $consult->_ref_patient->_ref_consultations|@count}
-                  Consultations :
-                  <ul>
-                  {foreach from=$consult->_ref_patient->_ref_consultations item=curr_consult}
-                    <li><a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
-                      {$curr_consult->_ref_plageconsult->date|date_format:"%d %b %Y"}
-                      -
-                      Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}
-                    </a></li>
-                  {/foreach}
-                  </ul>
-                  {/if}
+                  <table class="form">
+                  
+                    <tr class="groupcollapse" id="operations" onclick="flipGroup('', 'operations')">
+                      <td colspan="2">Interventions ({$consult->_ref_patient->_ref_operations|@count})</td>
+                    </tr>
+                    {foreach from=$consult->_ref_patient->_ref_operations item=curr_op}
+                    <tr class="operations">
+                      <td>
+                      	<a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+                          {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
+                        </a>
+                      </td>
+                      <td>Dr. {$curr_op->_ref_chir->_view}</td>
+                    </tr>
+                    {/foreach}
+                    
+                    <tr class="groupcollapse" id="hospitalisations" onclick="flipGroup('', 'hospitalisations')">
+                      <td colspan="2">Hospitalisations ({$consult->_ref_patient->_ref_hospitalisations|@count})</td>
+                    </tr>
+                    {foreach from=$consult->_ref_patient->_ref_hospitalisations item=curr_op}
+                    <tr class="hospitalisations">
+                      <td>
+                        <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
+                          {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
+                        </a>
+                      </td>
+                      <td>Dr. {$curr_op->_ref_chir->_view}</td>
+                    </tr>
+                    {/foreach}
+                    
+                    <tr class="groupcollapse" id="consultations" onclick="flipGroup('', 'consultations')">
+                      <td colspan="2">Consultations ({$consult->_ref_patient->_ref_consultations|@count})</td>
+                    </tr>
+                    {foreach from=$consult->_ref_patient->_ref_consultations item=curr_consult}
+                    <tr class="consultations">
+                      <td>
+                        <a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+                          {$curr_consult->_ref_plageconsult->date|date_format:"%d %b %Y"}
+                        </a>
+                      </td>
+                      <td>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}</td>
+                    </tr>
+                    {/foreach}
+                    
+                  </table>
                 </td>
                 <td class="button">
-                  <input type="button" value="intervention" onclick="newOperation()" />
-                  <br />
-                  <input type="button" value="hospitalisation" onclick="newHospitalisation()" />
-                  <br />
+                  <input type="button" value="intervention" onclick="newOperation()" /><br />
+                  <input type="button" value="hospitalisation" onclick="newHospitalisation()" /><br />
                   <input type="button" value="consultation" onclick="newConsultation()" />
                 </td>
               </tr>
