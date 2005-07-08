@@ -136,8 +136,8 @@ function CJL_CookieUtil(name, duration, path, domain, secure)
          var keys = ck.match(new RegExp(attrMatch, 'g'));
          var values = new Array();
          
-         for (var keyIndex in keys) {
-           var key = keys[keyIndex].slice(1, -1);
+         for (var i = 0; i < keys.length; i++) {
+           var key = keys[i].slice(1, -1);
            var subValue = this.getSubValue(key);
            values[key] = subValue;
          }

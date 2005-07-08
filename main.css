@@ -303,12 +303,6 @@ table.tbl td {
   white-space: nowrap;
 }
 
-table.tbl tr.groupexpand td,
-table.tbl tr.groupcollapse td {
-  background-color: #eee;
-  font-weight: bold;
-}
-
 table.tbl th.text {
   white-space: normal;
 }
@@ -542,7 +536,7 @@ td.tabox {
 /* Banner */
 
 #banner {
-  /*display: none;*/
+  display: none;
   background: url(./images/titleGradient.jpg) no-repeat center;
   vertical-align: middle;
 }
@@ -1178,6 +1172,11 @@ table.operationcollapse td.date {
 }
 
   /* @import "./collapser.css"; */
+
+tr.groupexpand td,
+tr.groupcollapse td {
+  font-weight: bold;
+}
 
 tr.groupcollapse td {
   padding-left: 25px;

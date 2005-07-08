@@ -204,3 +204,15 @@ function throwError(msg) {
  funcName.replace(/^\s+/,'').replace(/\s+$/,''); //trim
  throw "Error in " + funcName + "(): " + msg;
 }
+
+function makeDateFromDATE(sDate) {
+  // sDate must be: YYYY-MM-DD
+  var aParts = sDate.split("-");
+  if (aParts.length != 3) throwError("Bad DATE format");
+
+  var year  = parseInt(aParts[0]);
+  var month = parseInt(aParts[1]);
+  var day   = parseInt(aParts[2]);
+  
+  return new Date(year, month - 1, day); // Js months are 0-11!!
+}
