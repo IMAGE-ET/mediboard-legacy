@@ -72,7 +72,7 @@ function mbDateTime($relative, $ref = null) {
  * Transforms absolute or relative time into DB friendly DATE format
  * @return string: the transformed time 
  **/
-function mbDate($relative, $ref = null) {
+function mbDate($relative = "+ 0 days", $ref = null) {
   return mbTranformTime($relative, $ref, "%Y-%m-%d");
 }
 
