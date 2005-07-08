@@ -122,13 +122,9 @@ function supprimerDocument(prop_name, valid_name) {
 }
 
 function dateChanged(calendar) {
-  var y = calendar.date.getFullYear();
-  var m = calendar.date.getMonth()+1;
-  var d = calendar.date.getDate();
-   
   var url = "index.php?m={/literal}{$m}{literal}";
   url += "&tab={/literal}{$tab}{literal}";
-  url += "&xdate="  + y + "-" + m + "-" + d;
+  url += "&date=" + makeDATEFromDate(calendar.date);
 
   window.location = url;
 }
@@ -137,7 +133,7 @@ function pageMain() {
   Calendar.setup( {
       flat         : "calendar-container",
       flatCallback : dateChanged         ,
-      date         : {/literal} makeDateFromDATE("{$xdate}") {literal}
+      date         : {/literal} makeDateFromDATE("{$date}") {literal}
     }
   );
   

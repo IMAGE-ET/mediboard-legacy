@@ -20,7 +20,7 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$xdate = mbGetValueFromGetOrSession("xdate", mbDate()); 
+$date = mbGetValueFromGetOrSession("date", mbDate()); 
 
 // Utilisateur sélectionné ou utilisateur courant
 $prat_id = mbGetValueFromGetOrSession("chirSel");
@@ -40,7 +40,7 @@ if (!$userSel->isAllowed(PERM_EDIT)) {
 }
 
 $selConsult = mbGetValueFromGetOrSession("selConsult");
-if (isset($_GET["xdate"])) {
+if (isset($_GET["date"])) {
   $selConsult = null;
   mbSetValueToSession("selConsult");
 }
@@ -67,7 +67,7 @@ if ($selConsult) {
   }
   
   // Affecter la date de la consultation
-  $xdate = $consult->_ref_plageconsult->date;
+  $date = $consult->_ref_plageconsult->date;
   
 }
 
@@ -75,7 +75,7 @@ if ($selConsult) {
 $listPlage = new CPlageconsult();
 $where = array();
 $where["chir_id"] = "= '$userSel->user_id'";
-$where["date"] = "= '$xdate'";
+$where["date"] = "= '$date'";
 $order = "debut";
 $listPlage = $listPlage->loadList($where, $order);
 
@@ -152,7 +152,7 @@ $smarty = new CSmartyDP;
 
 $smarty->debugging = false;
 
-$smarty->assign('xdate' , $xdate );
+$smarty->assign('date' , $date );
 
 $smarty->assign('vue', $vue);
 
