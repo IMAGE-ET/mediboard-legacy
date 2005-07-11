@@ -42,20 +42,6 @@ function submitAffectation() {
   }
 }
 
-function dateChanged(calendar) {
-  var y = calendar.date.getFullYear();
-  var m = calendar.date.getMonth();
-  var d = calendar.date.getDate();
-   
-  var url = "index.php?m={/literal}{$m}{literal}";
-  url += "&tab={/literal}{$tab}{literal}";
-  url += "&year="  + y;
-  url += "&month=" + m;
-  url += "&day="   + d;
-
-  window.location = url;
-}
-
 function submitAffectationSplit(form) {
   form._new_lit_id.value = selected_lit;
   if (!selected_lit) {
@@ -133,6 +119,20 @@ function setupCalendar(affectation_id) {
 {if $dialog != 1}
 {literal}
 
+function dateChanged(calendar) {
+  var y = calendar.date.getFullYear();
+  var m = calendar.date.getMonth();
+  var d = calendar.date.getDate();
+   
+  var url = "index.php?m={/literal}{$m}{literal}";
+  url += "&tab={/literal}{$tab}{literal}";
+  url += "&year="  + y;
+  url += "&month=" + m;
+  url += "&day="   + d;
+
+  window.location = url;
+}
+
 function pageMain() {
   Calendar.setup( {
       flat         : "calendar-container",
@@ -140,27 +140,6 @@ function pageMain() {
       date         : {/literal}new Date({$year}, {$month}, {$day}){literal}
     }
   );
-  
-{/literal}
-{*foreach from=$services item=curr_service*}
-{*foreach from=$curr_service->_ref_chambres item=curr_chambre*}
-{*foreach from=$curr_chambre->_ref_lits item=curr_lit*}
-{*foreach from=$curr_lit->_ref_affectations item=curr_affectation*}
-  //setupCalendar({*$curr_affectation->affectation_id*});
-{*/foreach*}
-{*/foreach*}
-{*/foreach*}
-{*/foreach*}
-{literal}
-
-  // Opening cookied panes
-//  var cookie = new CJL_CookieUtil("chambres");
-//  chambres = cookie.getAllSubValues();
-//  for (chambreId in chambres) {
-//    if (chambre = document.getElementById(chambreId)) {
-//      chambre.className = chambres[chambreId];
-//    }
-//  }
 }
 
 {/literal}
@@ -182,15 +161,9 @@ function popPlanning() {
     <a href="javascript:popup(500, 500, '?m=dPhospi&a=legende&dialog=1', 'Legende')">legende</a>
   </td>
   <th>
-    {if $dialog != 1}
-    <a href="#" onclick="popPlanning()">
-    Planning du {$date|date_format:"%A %d %B %Y"} : {$totalLits} place(s) de libre
+    <a href="javascript:{if $dialog}window.print(){else}popPlanning(){/if}">
+      Planning du {$date|date_format:"%A %d %B %Y"} : {$totalLits} place(s) de libre
     </a>
-    {else}
-    <a href="javascript:window.print()">
-    Planning du {$date|date_format:"%A %d %B %Y"} : {$totalLits} place(s) de libre
-    </a>
-    {/if}
   </th>
   {if $dialog != 1}
   <td>
