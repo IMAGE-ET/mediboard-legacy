@@ -112,14 +112,14 @@ class CPatient extends CDpObject {
       $this->_age = "??";
     
     if($this->_age != "??" && $this->_age <= 15)
-      $this->_view = "Enf. ";
+      $this->_shortview = "Enf.";
     elseif($this->sexe == "m")
-      $this->_view = "M. ";
+      $this->_shortview = "M.";
     elseif($this->sexe == "f")
-      $this->_view = "Mme. ";
+      $this->_shortview = "Mme.";
     else
-      $this->_view = "Mlle. ";
-    $this->_view .= "$this->nom $this->prenom";
+      $this->_shortview = "Mlle.";
+    $this->_view = $this->_shortview." $this->nom $this->prenom";
   }
   
   function updateDBFields() {
@@ -298,6 +298,7 @@ class CPatient extends CDpObject {
   	$this->loadRefsFwd();
     $template->addProperty("Patient - nom"                    , $this->nom             );
     $template->addProperty("Patient - prénom"                 , $this->prenom          );
+    $template->addProperty("Patient - article"                , $this->_shortview      );
     $template->addProperty("Patient - adresse"                , $this->adresse         );
     $template->addProperty("Patient - âge"                    , $this->_age            );
     $template->addProperty("Patient - date de naissance"      , $this->_naissance);
