@@ -161,39 +161,46 @@ function printPack(op, form) {
           <th colspan="2">Motif :</th>
           <td class="text" colspan="2">{$curr_consult->motif}</td>
         </tr>
+        {foreach from=$curr_consult->_ref_documents item=document}
         <tr class="consult{$curr_consult->consultation_id}">
-          <th colspan="2">Compte-rendu de consultation :</th>
-          <td colspan="2">
-            <form name="editCRConsultFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
-            {if $curr_consult->compte_rendu}
-            <input type="hidden" name="m" value="{$m}" />
-            <input type="hidden" name="del" value="0" />
-            <input type="hidden" name="dosql" value="do_consultation_aed" />
-            <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
-            <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
-            <input type="hidden" name="compte_rendu" value="{$curr_consult->compte_rendu|escape:html}" />
-            <input type="hidden" name="cr_valide" value="{$curr_consult->cr_valide}" />
-            <button type="button" onclick="editModeleC({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
-              {if !$curr_consult->cr_valide}
-              <button type="button" onclick="validerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/check.png" /></button>
-              {/if}
-            <button type="button" onclick="supprimerCompteRenduC(this.form)"><img src="modules/dPcabinet/images/trash.png" /></button>
-            <button type="button" onclick="imprimerCRC({$curr_consult->consultation_id})"><img src="modules/dPcabinet/images/print.png" /></button>
-            {else}
-              {if $chirSel}
-              <select name="modele" onchange="selectCRC({$curr_consult->consultation_id}, this.form)">
-              <option value="0">&mdash; modeles &mdash;</option>
-              {foreach from=$crConsult item=curr_cr}
-              <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>
-              {/foreach}
-              </select>
-              {else}
-              <button type="button" onclick="editModeleC({$curr_consult->consultation_id}, 0)"><img src="modules/dPcabinet/images/edit.png" /></button>
-              {/if}
+          <th colspan="2">{$document->nom}</th>
+          {if $document->source}
+          <td colspan="2" class="button">
+            <input type="hidden" name="{$document->_consult_prop_name}" value="{$document->source|escape:html}" />
+            <input type="hidden" name="{$document->_consult_valid_name}" value="{$document->valide}" />
+            <button onclick="editDocument({$consult->consultation_id}, 0, '{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
+              <img src="modules/dPcabinet/images/edit.png" /> 
+            </button>
+                          
+            {if !$document->valide}
+            <button onclick="validerDocument('{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
+              <img src="modules/dPcabinet/images/check.png" /> 
+            </button>
             {/if}
-            </form>
+                          
+            <button onclick="supprimerDocument('{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
+              <img src="modules/dPcabinet/images/trash.png" /> 
+            </button>
           </td>
+          {else}
+          <td colspan="2">
+            <select name="_choix_modele" onchange="if (this.value) editDocument({$curr_consult->consultation_id}, this.value, '{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
+              <option value="">&mdash; Choisir un modèle</option>
+              <optgroup label="Modèles du praticien">
+                {foreach from=$listModelePrat item=curr_modele}
+                <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+                {/foreach}
+              </optgroup>
+              <optgroup label="Modèles du cabinet">
+                {foreach from=$listModeleFunc item=curr_modele}
+                <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+                {/foreach}
+              </optgroup>
+            </select>
+          </td>
+          {/if}
         </tr>
+        {/foreach}
         <tr class="consult{$curr_consult->consultation_id}">
           <th colspan="2"><i>Fichiers associés :</i></th>
           <td colspan="2" />

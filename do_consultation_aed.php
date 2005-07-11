@@ -23,7 +23,7 @@ foreach($_POST as $key => $value) {
   if(preg_match("/_liste([0-9]+)/", $key, $result)) {
     $temp = new CListeChoix;
     $temp->load($result[1]);
-    $fields[] = "<span class=\"name\">[Liste - $temp->nom]</span>";
+    $fields[] = "<span class=\"name\">[Liste - ".htmlentities($temp->nom)."]</span>";
     $values[] = "<span class=\"choice\">$value</span>";
   }
 }

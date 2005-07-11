@@ -480,7 +480,6 @@ function pageMain() {
                       </tr>
                       {/foreach}
 
-					</tr>
                   </table>
                   
                   </form>

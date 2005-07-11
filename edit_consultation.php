@@ -137,14 +137,15 @@ foreach ($aidesConsultation as $aideConsultation) {
 }
 
 // Récupération des tarifs
+$order = "description";
 $where = array();
 $where["chir_id"] = "= '$userSel->user_id'";
 $tarifsChir = new CTarif;
-$tarifsChir = $tarifsChir->loadList($where);
+$tarifsChir = $tarifsChir->loadList($where, $order);
 $where = array();
 $where["function_id"] = "= '$userSel->function_id'";
 $tarifsCab = new CTarif;
-$tarifsCab = $tarifsCab->loadList($where);
+$tarifsCab = $tarifsCab->loadList($where, $order);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
