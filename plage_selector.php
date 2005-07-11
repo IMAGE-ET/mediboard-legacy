@@ -47,6 +47,19 @@ $nameMonth = $monthList[$month-1];
 $mediChir = new CMediusers();
 $mediChir->load($chir);
 
+// Selection des plages opératoires ayant suffisament de temps pour  caser l'opération
+$sql = "SELECT plagesop.*," .
+		"\nSEC_TO_TIME(SUM(TIME_TO_SEC(operations.temp_operation))) AS duree," .
+		"\nCOUNT(operations.operation_id) AS total" .
+		"\nFROM plagesop" .
+		"\nLEFT JOIN operations" .
+		"\nON plagesop.id = operations.plageop_id" .
+		"\nWHERE plagesop.id_chir = '$mediChir->_user_username'" .
+		"\nAND plagesop.date LIKE '$year-$month-__'" .
+		"\nAND duree >= '$curr_op_hour:$curr_op_min:00'" .
+		"\nGROUP BY plagesop.id" .
+		"\nORDER BY plagesop.date, plagesop.debut, plagesop.id";
+
 // Calcul du temps occupé par chaque opération
 $sql = "SELECT operations.temp_operation AS duree, plagesop.id AS id
 		FROM plagesop

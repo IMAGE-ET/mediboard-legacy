@@ -273,9 +273,27 @@ function setCalendar( idate, fdate ) {
   fld_date.value = idate;
   fld_fdate.value = fdate;
 }
+
+function printDocument() {
+  form = document.editFrm;
+  if(checkForm() && (form._choix_modele.value != 0)) {
+    url = './index.php?m=dPplanningOp';
+    url += '&a=print_document';
+    url += '&dialog=1';
+    url += '&operation_id=' + eval('form.operation_id.value');
+    url += '&document_id='  + eval('form._choix_modele.value'     );
+    popup(700, 500, url, 'printAdm');
+    return true
+  }
+  else {
+    return false;
+  }
+}
   
 function printForm() {
   // @todo Pourquoi ne pas seulement passer le operation_id? ca parait bcp moins régressif
+  // Rque : il est maintenant possible de passer l'operation_id, mais l'ancienne possibilité
+  //        est gardée pour éviter la régréssion et surtout imprimer avant de créer...
   if (checkForm()) {
     form = document.editFrm;
     if(form.chambre[0].checked)
@@ -294,7 +312,7 @@ function printForm() {
     url += '&chir_id='     + eval('form.chir_id.value'     );
     url += '&pat_id='      + eval('form.pat_id.value'      );
     url += '&CCAM_code='   + eval('form.CCAM_code.value'   );
-    url += '&CCAM_code2='   + eval('form.CCAM_code2.value' );
+    url += '&CCAM_code2='  + eval('form.CCAM_code2.value' );
     url += '&cote='        + eval('form.cote.value'        );
     url += '&hour_op='     + eval('form._hour_op.value'    );
     url += '&min_op='      + eval('form._min_op.value'     );
@@ -613,6 +631,19 @@ function printForm() {
           {if !$protocole}
             {if $op}
             <input type="button" value="Imprimer" onClick="printForm();" />
+            <select name="_choix_modele" onchange="printDocument()">
+              <option value="">&mdash; Choisir un modèle</option>
+              <optgroup label="Modèles du praticien">
+              {foreach from=$listModelePrat item=curr_modele}
+                <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+              {/foreach}
+              </optgroup>
+              <optgroup label="Modèles du cabinet">
+              {foreach from=$listModeleFunc item=curr_modele}
+                <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+              {/foreach}
+              </optgroup>
+            </select>
             {else}
             <input type="button" value="Imprimer et créer" onClick="if(printForm()) this.form.submit()" />
             {/if}

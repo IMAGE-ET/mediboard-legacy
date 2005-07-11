@@ -336,12 +336,17 @@ class COperation extends CDpObject {
   function fillTemplate(&$template) {
   	$this->loadRefsFwd();
   	$this->_ref_plageop->loadRefsFwd();
+    $template->addProperty("Admission - Date", mbTranformTime("+0 DAY", $this->date_adm, "%d / %m / %Y"));
+    $template->addProperty("Admission - Heure", mbTranformTime("+0 DAY", $this->time_adm, "%Hh%M"));
     $template->addProperty("Opération - Anesthésiste - nom", $this->_ref_plageop->_ref_anesth->user_last_name);
     $template->addProperty("Opération - Anesthésiste - prénom", $this->_ref_plageop->_ref_anesth->user_first_name);
+    $template->addProperty("Opération - libellé", $this->libelle);
     $template->addProperty("Opération - CCAM - code", $this->_ext_code_ccam->code);
     $template->addProperty("Opération - CCAM - description", $this->_ext_code_ccam->libelleLong);
+    $template->addProperty("Opération - CCAM2 - code", $this->_ext_code_ccam2->code);
+    $template->addProperty("Opération - CCAM2 - description", $this->_ext_code_ccam2->libelleLong);
     $template->addProperty("Opération - côté", $this->cote);
-    $template->addProperty("Opération - date", $this->_ref_plageop->date);
+    $template->addProperty("Opération - date", mbTranformTime("+0 DAY", $this->_ref_plageop->date, "%d / %m / %Y"));
     if($this->time_operation)
       $template->addProperty("Opération - heure", substr($this->time_operation, 0, 5));
     else

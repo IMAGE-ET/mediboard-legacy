@@ -66,6 +66,29 @@ if ($operation_id) {
   $op->loadRefs();
 }
 
+// Récupération des modèles
+$whereCommon = array();
+$whereCommon["type"] = "= 'hospitalisation'";
+$order = "nom";
+
+// Modèles de l'utilisateur
+$listModelePrat = array();
+if ($op->chir_id) {
+  $where = $whereCommon;
+  $where["chir_id"] = "= '".$op->_ref_chir->user_id."'";
+  $listModelePrat = new CCompteRendu;
+  $listModelePrat = $listModelePrat->loadlist($where, $order);
+}
+
+// Modèles de la fonction
+$listModeleFunc = array();
+if ($op->chir_id) {
+  $where = $whereCommon;
+  $where["function_id"] = "= '".$op->_ref_chir->function_id."'";
+  $listModeleFunc = new CCompteRendu;
+  $listModeleFunc = $listModeleFunc->loadlist($where, $order);
+}
+
 // Heures & minutes
 $start = 7;
 $stop = 20;
@@ -94,6 +117,8 @@ if($op) {
   $smarty->assign('pat', $pat);
   $smarty->assign('plage', null);
 }
+$smarty->assign('listModelePrat', $listModelePrat);
+$smarty->assign('listModeleFunc', $listModeleFunc);
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);
 

@@ -12,8 +12,6 @@ global $AppUI;
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once($AppUI->getModuleClass("dPcompteRendu", "listeChoix"));
 
-//mbTrace($_POST, "POST", true);
-
 $msg = '';
 if($chir_id = dPgetParam( $_POST, 'chir_id', null))
   mbSetValueToSession('chir_id', $chir_id);
@@ -26,7 +24,7 @@ if (isset ($_POST["compte_rendu"])) {
     if(preg_match("/_liste([0-9]+)/", $key, $result)) {
       $temp = new CListeChoix;
       $temp->load($result[1]);
-      $fields[] = "<span class=\"name\">[Liste - $temp->nom]</span>";
+      $fields[] = "<span class=\"name\">[Liste - ".htmlentities($temp->nom)."]</span>";
       $values[] = "<span class=\"choice\">$value</span>";
     }
   }

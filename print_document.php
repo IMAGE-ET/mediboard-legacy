@@ -20,11 +20,12 @@ if (!$canEdit) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$operation_id = dPgetParam($_GET, "operation", 0);
+$operation_id = dPgetParam($_GET, "operation_id", dPgetParam($_POST, "operation_id", 0));
+$document_id = dPgetParam($_GET, "document_id", dPgetParam($_POST, "document_id", 0));
 
 if (!$operation_id) {
   $AppUI->setmsg("Vous devez choisir une intervention", UI_MSG_ALERT);
-  $AppUI->redirect("m=$m&tab=view_plannning");
+  $AppUI->redirect("m=$m&tab=view_planning");
 }
 
 // Chargement de l'operation
@@ -39,6 +40,23 @@ $plageop =& $op->_ref_plageop;
 $medichir = new CMediusers();
 $medichir->load($op->_ref_chir->user_id);
 
+// Chargement du document
+$CR = new CCompteRendu;
+$CR->load($document_id);
+
+// Application des listes
+$fields = array();
+$values = array();
+foreach($_POST as $key => $value) {
+  if(preg_match("/_liste([0-9]+)/", $key, $result)) {
+    $temp = new CListeChoix;
+    $temp->load($result[1]);
+    $fields[] = "<span class=\"name\">[Liste - ".htmlentities($temp->nom)."]</span>";
+    $values[] = "<span class=\"choice\">$value</span>";
+  }
+}
+$CR->source = str_replace($fields, $values, $CR->source);
+
 // Gestion du template
 $templateManager = new CTemplateManager;
 
@@ -46,17 +64,10 @@ $medichir->fillTemplate($templateManager);
 $patient->fillTemplate($templateManager);
 $op->fillTemplate($templateManager);
 
-$templateManager->document = $op->compte_rendu;
+//$templateManager->document = $CR->source;
 $templateManager->loadHelpers($medichir->user_id, TMT_OPERATION);
 $templateManager->loadLists($medichir->user_id);
-
-// Chargement du modèle
-if (!$op->compte_rendu) {
-  $compte_rendu_id = dPgetParam($_GET, "modele", 0);
-  $modele = new CCompteRendu();
-  $modele->load($compte_rendu_id);
-  $templateManager->applyTemplate($modele);
-}
+$templateManager->applyTemplate($CR);
 
 $where = array();
 $where["chir_id"] = "= $medichir->user_id";
@@ -73,8 +84,9 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('templateManager', $templateManager);
 $smarty->assign('op', $op);
+$smarty->assign('CR', $CR);
 $smarty->assign('lists', $lists);
 
-$smarty->display('edit_compte_rendu.tpl');
+$smarty->display('print_document.tpl');
 
 ?>
