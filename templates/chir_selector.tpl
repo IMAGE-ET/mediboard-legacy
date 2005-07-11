@@ -52,7 +52,7 @@ function setClose(){
     <select name="list"  size="8">
       <option value="0" selected="selected">&mdash; Choisir un chirurgien </option>
       {foreach from=$prats item=curr_prat}
-      <option value="{$curr_prat->user_id}" ondblclick="setClose()">{$curr_prat->user_last_name} {$curr_prat->user_first_name}</option>
+      <option value="{$curr_prat->user_id}" ondblclick="setClose()">{$curr_prat->_view}</option>
       {/foreach}
     </select>
   </td>
