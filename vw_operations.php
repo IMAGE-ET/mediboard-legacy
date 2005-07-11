@@ -44,6 +44,8 @@ foreach($plages as $key => $value) {
 $selOp = new COperation;
 $selOp->load($op);
 $selOp->loadRefsFwd();
+$selOp->_ext_code_ccam->load($selOp->CCAM_code);
+$selOp->_ext_code_ccam2->load($selOp->CCAM_code2);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
