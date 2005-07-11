@@ -135,7 +135,9 @@ function checkForm() {
         <select name="compte_rendu_id">
           <option value="0">&mdash; Tous &mdash;</option>
           {foreach from=$listCr item=curr_cr}
-          <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>
+          <option value="{$curr_cr->compte_rendu_id}" {if $liste->compte_rendu_id == $curr_cr->compte_rendu_id}selected="selected"{/if}>
+            {$curr_cr->nom}
+          </option>
           {/foreach}
         </select>
 
