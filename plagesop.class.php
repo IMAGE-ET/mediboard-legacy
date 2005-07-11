@@ -85,9 +85,9 @@ class CPlageOp extends CDpObject {
   function loadRefsBack($annulee = 1) {
     // Backward references
     if($annulee)
-      $sql = "SELECT * FROM operations WHERE plageop_id = '$this->id'";
+      $sql = "SELECT * FROM operations WHERE plageop_id = '$this->id' order by rank";
     else
-      $sql = "SELECT * FROM operations WHERE plageop_id = '$this->id' and annulee = '0'";
+      $sql = "SELECT * FROM operations WHERE plageop_id = '$this->id' and annulee = '0' order by rank";
     $this->_ref_operations = db_loadObjectList($sql, new COperation);
   }
 
