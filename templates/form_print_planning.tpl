@@ -124,7 +124,7 @@ function pageMain() {
           <td><select name="chir">
             <option value="0">&mdash; Tous les praticiens &mdash;</option>
             {foreach from=$listPrat item=curr_prat}
-              <option value="{$curr_prat->user_id}">{$curr_prat->user_last_name} {$curr_prat->user_first_name}</option>
+              <option value="{$curr_prat->user_id}">{$curr_prat->_view}</option>
             {/foreach}
           </select></td>
         </tr>

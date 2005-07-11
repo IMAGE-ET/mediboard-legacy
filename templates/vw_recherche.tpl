@@ -52,7 +52,7 @@ function popPlanning() {
       <option value="0" {if $selPrat == 0}selected="selected"{/if}>&mdash; Selectionner un praticien &mdash;</option>
       {foreach from=$listPrat item=curr_prat}
         <option value="{$curr_prat->user_id}" {if $selPrat == $curr_prat->user_id}selected="selected"{/if}>
-          {$curr_prat->user_last_name} {$curr_prat->user_first_name}
+          {$curr_prat->_view}
         </option>
       {/foreach}
       </select>
