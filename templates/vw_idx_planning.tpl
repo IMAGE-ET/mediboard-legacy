@@ -48,7 +48,7 @@ function supprimerCompteRendu(form) {
         <option value="-1">&mdash; Choisir un chirurgien</option>
         {foreach from=$listChir item=curr_chir}
         <option value="{$curr_chir->user_id}" {if $curr_chir->user_id == $selChir} selected="selected" {/if}>
-          {$curr_chir->user_last_name} {$curr_chir->user_first_name}
+          {$curr_chir->_view}
         </option>
         {/foreach}
       </select>

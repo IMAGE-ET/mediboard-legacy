@@ -64,13 +64,13 @@ $medichir->fillTemplate($templateManager);
 $patient->fillTemplate($templateManager);
 $op->fillTemplate($templateManager);
 
-//$templateManager->document = $CR->source;
 $templateManager->loadHelpers($medichir->user_id, TMT_OPERATION);
 $templateManager->loadLists($medichir->user_id);
 $templateManager->applyTemplate($CR);
 
 $where = array();
-$where["chir_id"] = "= $medichir->user_id";
+$where[] = "(chir_id = '$medichir->user_id' OR function_id = '$medichir->function_id')";
+$order = "chir_id, function_id";
 $chirLists = new CListeChoix;
 $chirLists = $chirLists->loadList($where);
 $lists = $templateManager->getUsedLists($chirLists);
