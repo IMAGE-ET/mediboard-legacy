@@ -371,7 +371,7 @@ function printPack(op, form) {
             <option value="0">&mdash; Tous &mdash;</option>
             {foreach from=$listPrat item=curr_prat}
             <option value="{$curr_prat->user_id}" {if $chirSel == $curr_prat->user_id}selected="selected"{/if}>
-              {$curr_prat->user_last_name} {$curr_prat->user_first_name}
+              {$curr_prat->_view}
             </option>
             {/foreach}
           </select>

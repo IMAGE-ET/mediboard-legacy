@@ -62,9 +62,10 @@ if (!$templateManager->document) {
 }
 
 $where = array();
-$where["chir_id"] = "= '$medichir->user_id'";
+$where[] = "(chir_id = '$medichir->user_id' OR function_id = '$medichir->function_id')";
+$order = "chir_id, function_id";
 $chirLists = new CListeChoix;
-$chirLists = $chirLists->loadList($where);
+$chirLists = $chirLists->loadList($where, $order);
 $lists = $templateManager->getUsedLists($chirLists);
 
 $templateManager->initHTMLArea();

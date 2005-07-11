@@ -81,7 +81,7 @@ function popPlages() {
           <td><select name="chir">
             <option value="0">-- Tous</option>
             {foreach from=$listChir item=curr_chir}
-	            <option value="{$curr_chir->user_id}">{$curr_chir->user_last_name} {$curr_chir->user_first_name}</option>
+	            <option value="{$curr_chir->user_id}">{$curr_chir->_view}</option>
             {/foreach}
           </select></td>
         </tr>
