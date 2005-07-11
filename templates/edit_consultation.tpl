@@ -121,21 +121,40 @@ function supprimerDocument(prop_name, valid_name) {
   }
 }
 
-function dateChanged(calendar) {
-  var url = "index.php?m={/literal}{$m}{literal}";
-  url += "&tab={/literal}{$tab}{literal}";
-  url += "&date=" + makeDATEFromDate(calendar.date);
-
-  window.location = url;
+function regDateFlatCalendar(sContainerId, sInitDATE, sRedirectBase) {
+  Calendar.setup( {
+      date         : makeDateFromDATE(sInitDATE) ,
+      flat         : sContainerId,
+      flatCallback : function(calendar) { 
+        window.location = sRedirectBase + makeDATEFromDate(calendar.date);
+      }
+    } 
+  );
 }
 
+
 function pageMain() {
+  {/literal}
+//  regDateFlatCalendar("calendar-container", "{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  {literal}
+
   Calendar.setup( {
-      flat         : "calendar-container",
-      flatCallback : dateChanged         ,
-      date         : {/literal} makeDateFromDATE("{$date}") {literal}
+    displayArea : "changeView_date_da",
+    inputField  : "changeView_date",
+    ifFormat    : "%Y-%m-%d",
+    daFormat    : "%d/%m/%Y",
+    button      : "changeView_date_trigger",
+    showsTime   : false,
+    onUpdate    : function(calendar) { 
+      if (calendar.dateClicked) {
+        var url = "index.php?m={/literal}{$m}{literal}";
+        url += "&tab={/literal}{$tab}{literal}";
+        url += "&date=" + makeDATEFromDate(calendar.date);
+        window.location = url;
+      }
     }
-  );
+  } );
+  
   
   initGroups("consultations");
   initGroups("operations");
@@ -152,7 +171,17 @@ function pageMain() {
 
     <div id="calendar-container" style="width: 200px"></div>
 
+	<form name="changeView">
+
     <table class="form">
+      <tr>
+        <th><label for="changeView_date">Date:</label></th>
+        <td class="date" colspan="2">
+          <div id="changeView_date_da">{$date|date_format:"%d/%m/%Y"}</div>
+          <input type="hidden" name="date" value="{$date}" />
+          <img id="changeView_date_trigger" src="./images/calendar.gif" width="24" height="12" title="Choisir une date de début" alt="calendar" />
+        </td>
+      </tr>
       <tr>
         <th>Type de vue:</th>
         <td colspan="5">
@@ -167,6 +196,8 @@ function pageMain() {
         </td>
       </tr>
     </table>
+
+	</form>
 
     <table class="tbl">
       {if $listPlage}
