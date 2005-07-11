@@ -14,6 +14,7 @@ require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 require_once( $AppUI->getModuleClass('mediusers'));
+require_once( $AppUI->getModuleClass('mediusers', 'functions'));
 require_once( $AppUI->getSystemClass('smartydp'));
 
 define("TMT_CONSULTATION"   , "consultation"   );
@@ -122,8 +123,10 @@ class CTemplateManager {
   
   function loadLists($user_id, $compte_rendu_id = 0) {
     // Liste de choix
+    $chir = new CMediusers;
+    $chir->load($user_id);
     $where = array();
-    $where["chir_id"] = "= '$user_id'";
+    $where[] = "(chir_id = '$chir->user_id' OR function_id = '$chir->function_id')";
     $where["compte_rendu_id"] = "IN ('0', '$compte_rendu_id')";
     
     $lists = new CListeChoix();

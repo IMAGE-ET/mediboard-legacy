@@ -9,6 +9,7 @@
 
 require_once($AppUI->getSystemClass('dp' ));
 require_once($AppUI->getModuleClass('mediusers'));
+require_once($AppUI->getModuleClass('mediusers', 'functions'));
 
 $ECompteRenduType = array(
   "consultation", 
@@ -38,6 +39,7 @@ class CCompteRendu extends CDpObject {
   
   // Referenced objects
   var $_ref_chir = null;
+  var $_ref_function = null;
   var $_ref_object = null;
 
   function CCompteRendu() {
@@ -79,7 +81,9 @@ class CCompteRendu extends CDpObject {
   function loadRefsFwd() {
     // Forward references
     $this->_ref_chir = new CMediusers;
-    $this->_ref_chir->load($this->user_id);
+    $this->_ref_chir->load($this->chir_id);
+    $this->_ref_function = new CFunctions;
+    $this->_ref_function->load($this->function_id);
   }
 }
 

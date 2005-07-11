@@ -41,7 +41,7 @@ if ($userSel->user_id) {
   $listModelePrat = $listModelePrat->loadlist($where, $order);
 }
 
-// Liste des modèles pour le praticien
+// Liste des modèles pour la fonction du praticien
 $listModeleFunc = array();
 if ($userSel->user_id) {
   $where = array();

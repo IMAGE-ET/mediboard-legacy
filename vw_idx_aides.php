@@ -16,9 +16,9 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// Utilisateurs modifiables
-$users = new CMediusers;
-$users = $users->loadListFromType(null, PERM_EDIT);
+// Liste des praticiens accessibles
+$users = new CMediusers();
+$users = $users->loadPraticiens(PERM_EDIT);
 
 // Modules, classes & fields
 $modules = array (

@@ -46,7 +46,7 @@ function checkForm() {
             <option value="0">&mdash; Tous les utilisateurs</option>
             {foreach from=$users item=curr_user}
             <option value="{$curr_user->user_id}" {if $curr_user->user_id == $user_id} selected="selected" {/if}>
-              {$curr_user->user_last_name} {$curr_user->user_first_name}
+              {$curr_user->_view}
             </option>
             {/foreach}
           </select>
@@ -59,7 +59,7 @@ function checkForm() {
     <table class="tbl">
     
     <tr>
-      <th colspan="4"><strong>Listes de choix créées</strong></th>
+      <th class="title" colspan="4">Listes de choix créées</th>
     </tr>
     
     <tr>
@@ -68,16 +68,39 @@ function checkForm() {
       <th>Valeurs</th>
       <th>Compte-rendu associé</th>
     </tr>
+    
+    <tr>
+      <th colspan="4"><strong>Modèles personnels</strong></th>
+    </tr>
 
-    {foreach from=$listes item=curr_liste}
+    {foreach from=$listesPrat item=curr_liste}
     <tr>
       {eval var=$curr_liste->liste_choix_id assign="liste_id"}
       {assign var="href" value="?m=$m&amp;tab=$tab&amp;liste_id=$liste_id"}
-      <td><a href="{$href}">{$curr_liste->_ref_chir->_view}</a></td>
-      <td><a href="{$href}">{$curr_liste->nom}</a></td>
+      <td class="text"><a href="{$href}">{$curr_liste->_ref_chir->_view}</a></td>
+      <td class="text"><a href="{$href}">{$curr_liste->nom}</a></td>
       <td><a href="{$href}">{$curr_liste->_valeurs|@count}</a></td>
       {if $curr_liste->_ref_modele->compte_rendu_id}
-      <td><a href="{$href}">{$curr_liste->_ref_modele->nom} ({$curr_liste->_ref_modele->type})</a></td>
+      <td class="text"><a href="{$href}">{$curr_liste->_ref_modele->nom} ({$curr_liste->_ref_modele->type})</a></td>
+      {else}
+      <td><a href="{$href}">&mdash; Tous &mdash;</a></td>
+      {/if}
+    </tr>
+    {/foreach}
+    
+    <tr>
+      <th colspan="4"><strong>Modèles de cabinet</strong></th>
+    </tr>
+
+    {foreach from=$listesFunc item=curr_liste}
+    <tr>
+      {eval var=$curr_liste->liste_choix_id assign="liste_id"}
+      {assign var="href" value="?m=$m&amp;tab=$tab&amp;liste_id=$liste_id"}
+      <td class="text"><a href="{$href}">{$curr_liste->_ref_function->text}</a></td>
+      <td class="text"><a href="{$href}">{$curr_liste->nom}</a></td>
+      <td><a href="{$href}">{$curr_liste->_valeurs|@count}</a></td>
+      {if $curr_liste->_ref_modele->compte_rendu_id}
+      <td class="text"><a href="{$href}">{$curr_liste->_ref_modele->nom} ({$curr_liste->_ref_modele->type})</a></td>
       {else}
       <td><a href="{$href}">&mdash; Tous &mdash;</a></td>
       {/if}
@@ -109,16 +132,30 @@ function checkForm() {
       {/if}
       </th>
     </tr>
-
+  
     <tr>
-      <th class="mandatory"><label for="editFrm_user_id" title="Utilisateur concerné, obligatoire.">Utilisateur:</label></th>
+      <th><label for="editFrm_function_id" title="Fonction à laquelle le modèle est associé">Fonction:</label></th>
       <td>
-        <select name="chir_id">
-          <option value="0">&mdash; Choisir un utilisateur</option>
-          {foreach from=$users item=curr_user}
-          <option value="{$curr_user->user_id}" {if $curr_user->user_id == $liste->chir_id} selected="selected" {/if}>
-            {$curr_user->user_last_name} {$curr_user->user_first_name}
-          </option>
+        <select name="function_id" onchange="this.form.chir_id.value = 0">
+          <option value="0">&mdash; Associer à une fonction &mdash;</options>
+          {foreach from=$listFunc item=curr_func}
+            <option value="{$curr_func->function_id}" {if $curr_func->function_id == $liste->function_id} selected="selected" {/if}>
+              {$curr_func->_view}
+            </option>
+          {/foreach}
+        </select>
+      </td>
+    </tr>
+  
+    <tr>
+      <th><label for="editFrm_chir_id" title="Praticien auquel le modèle est associé">Praticien:</label></th>
+      <td>
+        <select name="chir_id" onchange="this.form.function_id.value = 0">
+          <option value="0">&mdash; Associer à un praticien &mdash;</options>
+          {foreach from=$listPrat item=curr_prat}
+            <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $liste->chir_id} selected="selected" {/if}>
+              {$curr_prat->_view}
+            </option>
           {/foreach}
         </select>
       </td>
@@ -134,11 +171,20 @@ function checkForm() {
       <td>
         <select name="compte_rendu_id">
           <option value="0">&mdash; Tous &mdash;</option>
-          {foreach from=$listCr item=curr_cr}
+          <optgroup label="CR du praticien">
+          {foreach from=$listCrPrat item=curr_cr}
           <option value="{$curr_cr->compte_rendu_id}" {if $liste->compte_rendu_id == $curr_cr->compte_rendu_id}selected="selected"{/if}>
             {$curr_cr->nom}
           </option>
           {/foreach}
+          </optgroup>
+          <optgroup label="CR du cabinet">
+          {foreach from=$listCrFunc item=curr_cr}
+          <option value="{$curr_cr->compte_rendu_id}" {if $liste->compte_rendu_id == $curr_cr->compte_rendu_id}selected="selected"{/if}>
+            {$curr_cr->nom}
+          </option>
+          {/foreach}
+          </optgroup>
         </select>
 
     <tr>
