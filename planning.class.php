@@ -338,6 +338,7 @@ class COperation extends CDpObject {
   	$this->_ref_plageop->loadRefsFwd();
     $template->addProperty("Admission - Date", mbTranformTime("+0 DAY", $this->date_adm, "%d / %m / %Y"));
     $template->addProperty("Admission - Heure", mbTranformTime("+0 DAY", $this->time_adm, "%Hh%M"));
+    $template->addProperty("Hospitalisation - Durée", $this->duree_hospi);
     $template->addProperty("Opération - Anesthésiste - nom", $this->_ref_plageop->_ref_anesth->user_last_name);
     $template->addProperty("Opération - Anesthésiste - prénom", $this->_ref_plageop->_ref_anesth->user_first_name);
     $template->addProperty("Opération - libellé", $this->libelle);
@@ -363,6 +364,10 @@ class COperation extends CDpObject {
       $template->addProperty("Opération - sortie bloc", substr($this->sortie_bloc, 0, 5));
     else
       $template->addProperty("Opération - sortie bloc");
+    if($this->depassement)
+      $template->addProperty("Opération - depassement", $this->depassement);
+    else
+      $template->addProperty("Opération - depassement", 0);
     $template->addProperty("Opération - exams pre-op", nl2br($this->examen));
     $template->addProperty("Opération - matériel", nl2br($this->materiel));
     $template->addProperty("Opération - convalescence", nl2br($this->convalescence));
