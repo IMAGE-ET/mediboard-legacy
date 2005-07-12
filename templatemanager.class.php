@@ -59,14 +59,19 @@ class CTemplateManager {
     $this->properties[$field] = array (
       'field' => $field,
       'value' => $value,
-      'fieldHTML' => $this->makeSpan("field", "[{$field}]"),
-      'valueHTML' => $this->makeSpan("value", "{$value}"));
+      // @todo : passer en regexp
+      //'fieldHTML' => $this->makeSpan("field", "[{$field}]"),
+      //'valueHTML' => $this->makeSpan("value", "{$value}"));
+      'fieldHTML' => htmlentities("[{$field}]"),
+      'valueHTML' => $value);
   }
 
   function addList($name, $choice = null) {
     $this->lists[$name] = array (
       'name' => $name,
-      'nameHTML' => $this->makeSpan("name", "[Liste - {$name}]"));
+      // @todo : passer en regexp
+      //'nameHTML' => $this->makeSpan("name", "[Liste - {$name}]"));
+      'nameHTML' => htmlentities("[Liste - {$name}]"));
   } 
   
   function addHelper($name, $text) {
