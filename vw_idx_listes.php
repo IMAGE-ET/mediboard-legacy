@@ -51,7 +51,7 @@ foreach($listesPrat as $key => $value) {
 $where = array();
 $inFuncs = array();
 foreach($listFunc as $key => $value) {
-  $inFuncs[] = $key;
+  $inFuncs[] = $listFunc[$key]->function_id;
 }
 $where ["function_id"] = "IN (".implode(",", $inFuncs).")";
 

@@ -114,9 +114,8 @@ class CTemplateManager {
         $op->fillTemplate($this);
         break;
       case TMT_HOSPITALISATION:
-        // @todo : créer et aplliquer la methode fillTemplate pour l'hospi
-        $this->addProperty("Hospitalisation - durée");
-        $this->addProperty("Hospitalisation - examens");
+        $op = new COperation;
+        $op->fillTemplate($this);
         break;
     }
   }
@@ -149,7 +148,7 @@ class CTemplateManager {
         $where["class"  ] = "= 'Consultation'";
         break;
       case TMT_OPERATION:
-        $where["module" ] = "= 'dPplanninOp'";
+        $where["module" ] = "= 'dPplanningOp'";
         $where["class"  ] = "= 'Operation'";
         break;
       case TMT_HOSPITALISATION:
