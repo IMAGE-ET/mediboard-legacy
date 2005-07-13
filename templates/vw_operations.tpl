@@ -70,18 +70,25 @@
           </th>
         </tr>
         <tr>
+          <th>Patient</th>
+          <td>{$selOp->_ref_pat->_view} - {$selOp->_ref_pat->_age} ans</td>
+        </tr>
+        <tr>
           <th>Entrée en salle</th>
           <td>
-            {if $selOp->entree_bloc}
-            {$selOp->entree_bloc}
-            {else}
             <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
               <input type="hidden" name="m" value="dPsalleOp" />
               <input type="hidden" name="a" value="do_set_hours" />
               <input type="hidden" name="entree" value="{$selOp->operation_id}" />
+              {if $selOp->entree_bloc}
+              <input type="hidden" name="del" value="1" />
+              {$selOp->entree_bloc|date_format:"%Hh%M"}
+              <button type="submit"><img src="modules/{$m}/images/cross.png"></button>
+              {else}
+              <input type="hidden" name="del" value="0" />
               <input type="submit" value="Entrée" />
+              {/if}
             </form>
-            {/if}
           </td>
         </tr>
         <tr>
@@ -130,16 +137,19 @@
         <tr>
           <th>Sortie de salle</th>
           <td>
-            {if $selOp->sortie_bloc}
-            {$selOp->sortie_bloc}
-            {else}
             <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
               <input type="hidden" name="m" value="dPsalleOp" />
               <input type="hidden" name="a" value="do_set_hours" />
               <input type="hidden" name="sortie" value="{$selOp->operation_id}" />
+              {if $selOp->sortie_bloc}
+              <input type="hidden" name="del" value="1" />
+              {$selOp->sortie_bloc|date_format:"%Hh%M"}
+              <button type="submit"><img src="modules/{$m}/images/cross.png"></button>
+              {else}
+              <input type="hidden" name="del" value="0" />
               <input type="submit" value="Sortie" />
+              {/if}
             </form>
-            {/if}
           </td>
         </tr>
         {else}
