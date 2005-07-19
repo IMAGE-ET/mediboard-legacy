@@ -1,7 +1,16 @@
 <!-- $Id$ -->
 
 <table class="main">
-  <tr><th><a href="javascript:window.print()">Planning du {$date}</a></th></tr>
+  <tr>
+    <th>
+      <a href="javascript:window.print()">
+        Rapport du {$deb|date_format:"%d/%m/%Y"}
+        {if $deb != $fin}
+        au {$fin|date_format:"%d/%m/%Y"}
+        {/if}
+      </a>
+    </th>
+  </tr>
   {foreach from=$listPlage item=curr_plage}
   <tr>
     <td><b>{$curr_plage->date|date_format:"%d/%m/%Y"} - Dr. {$curr_plage->_ref_chir->_view}</b></td>

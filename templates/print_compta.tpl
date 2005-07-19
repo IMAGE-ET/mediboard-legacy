@@ -4,8 +4,19 @@
   <tr>
     <td class="halfPane">
       <table>
-        <tr><th><a href="javascript:window.print()">{$titre}</a></th></tr>
-        {if $chirSel->user_id}<tr><th>Dr. {$chirSel->_view}</th></tr>{/if}
+        <tr>
+          <th>
+            <a href="javascript:window.print()">
+              Rapport du {$deb|date_format:"%d/%m/%Y"}
+              {if $deb != $fin}
+              au {$fin|date_format:"%d/%m/%Y"}
+              {/if}
+            </a>
+          </th>
+        </tr>
+        {if $chirSel->user_id}
+        <tr><th>Dr. {$chirSel->_view}</th></tr>
+        {/if}
         <tr><td>affichage {if $etat == -1}de tous les montants{elseif $etat}des montants réglés{else}des impayés{/if}</td></tr>
         <tr><td>Paiments pris en compte : {if $type}{$type}{else}tous{/if}</td></tr>
       </table>

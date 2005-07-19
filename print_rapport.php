@@ -16,31 +16,21 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 // Récupération des paramètres
-$today = date("Y-m-d");
-$debut = mbGetValueFromGetOrSession("debut_rapport", date("Ymd"));
-$dayd = substr($debut, 6, 2);
-$monthd = substr($debut, 4, 2);
-$yeard = substr($debut, 0, 4);
-$debutsql = $yeard."-".$monthd."-".$dayd;
-$fin = mbGetValueFromGetOrSession("fin_rapport", date("Ymd"));
-$dayf = substr($fin, 6, 2);
-$monthf = substr($fin, 4, 2);
-$yearf = substr($fin, 0, 4);
-$finsql = $yearf."-".$monthf."-".$dayf;
-$titre = "Rapport du ".strftime("%d/%m/%Y", mktime(0, 0, 0, $monthd, $dayd, $yeard));
-if ($debut != $fin)
-  $titre .= " au ".strftime("%d/%m/%Y", mktime(0, 0, 0, $monthf, $dayf, $yearf));
+$deb = mbGetValueFromGetOrSession("deb", mbDate());
+$fin = mbGetValueFromGetOrSession("fin", mbDate());
+
 $chir = mbGetValueFromGetOrSession("chir", 0);
 $chirSel = new CMediusers;
 $chirSel->load($chir);
+
 $etat = mbGetValueFromGetOrSession("etat", 0);
 $type = mbGetValueFromGetOrSession("type", 0);
 $aff = mbGetValueFromGetOrSession("aff", 1);
 
 // Requète sur les plages de consultation considérées
 $where = array();
-$where[] = "date >= '$debutsql'";
-$where[] = "date <= '$finsql'";
+$where[] = "date >= '$deb'";
+$where[] = "date <= '$fin'";
 if($chir)
   $where["chir_id"] = "= '$chir'";
 else {
@@ -120,8 +110,8 @@ foreach($listPlage as $key => $value) {
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
-$smarty->assign('today', $today);
-$smarty->assign('titre', $titre);
+$smarty->assign('deb', $deb);
+$smarty->assign('fin', $fin);
 $smarty->assign('aff', $aff);
 $smarty->assign('etat', $etat);
 $smarty->assign('type', $type);

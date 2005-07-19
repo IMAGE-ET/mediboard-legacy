@@ -121,40 +121,10 @@ function supprimerDocument(prop_name, valid_name) {
   }
 }
 
-function regDateFlatCalendar(sContainerId, sInitDATE, sRedirectBase) {
-  Calendar.setup( {
-      date         : makeDateFromDATE(sInitDATE) ,
-      flat         : sContainerId,
-      flatCallback : function(calendar) { 
-        window.location = sRedirectBase + makeDATEFromDate(calendar.date);
-      }
-    } 
-  );
-}
-
-
 function pageMain() {
   {/literal}
-//  regDateFlatCalendar("calendar-container", "{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  regPopupCalendar("changeView", "date", "index.php?m={$m}&tab={$tab}&date=");
   {literal}
-
-  Calendar.setup( {
-    displayArea : "changeView_date_da",
-    inputField  : "changeView_date",
-    ifFormat    : "%Y-%m-%d",
-    daFormat    : "%d/%m/%Y",
-    button      : "changeView_date_trigger",
-    showsTime   : false,
-    onUpdate    : function(calendar) { 
-      if (calendar.dateClicked) {
-        var url = "index.php?m={/literal}{$m}{literal}";
-        url += "&tab={/literal}{$tab}{literal}";
-        url += "&date=" + makeDATEFromDate(calendar.date);
-        window.location = url;
-      }
-    }
-  } );
-  
   
   initGroups("consultations");
   initGroups("operations");
@@ -168,8 +138,6 @@ function pageMain() {
 <table>
   <tr>
     <td style="vertical-align: top">
-
-    <div id="calendar-container" style="width: 200px"></div>
 
 	<form name="changeView">
 

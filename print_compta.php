@@ -16,21 +16,9 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 // Récupération des paramètres
-$today = date("Y-m-d");
-$debut = mbGetValueFromGetOrSession("debut_rapport", date("Ymd"));
-$dayd = substr($debut, 6, 2);
-$monthd = substr($debut, 4, 2);
-$yeard = substr($debut, 0, 4);
-$debutsql = $yeard."-".$monthd."-".$dayd;
-$fin = mbGetValueFromGetOrSession("fin_rapport", date("Ymd"));
-$dayf = substr($fin, 6, 2);
-$monthf = substr($fin, 4, 2);
-$yearf = substr($fin, 0, 4);
-$finsql = $yearf."-".$monthf."-".$dayf;
-$titre = "Rapport du ".strftime("%d/%m/%Y", mktime(0, 0, 0, $monthd, $dayd, $yeard));
-if ($debut != $fin)
-  $titre .= " au ".strftime("%d/%m/%Y", mktime(0, 0, 0, $monthf, $dayf, $yearf));
-$chir = mbGetValueFromGetOrSession("chir", 0);
+$deb = mbGetValueFromGetOrSession("deb", mbDate());
+$fin = mbGetValueFromGetOrSession("fin", mbDate());
+$chir = mbGetValueFromGetOrSession("chir");
 $chirSel = new CMediusers;
 $chirSel->load($chir);
 //$etat = mbGetValueFromGetOrSession("etat", 0);
@@ -44,7 +32,7 @@ $sql = "SELECT consultation.date_paiement AS date," .
 		"\n FROM consultation" .
 		"\n LEFT JOIN plageconsult" .
 		"\n ON consultation.plageconsult_id = plageconsult.plageconsult_id";
-if($chir)
+if ($chir)
   $sql .= "\n WHERE chir_id = '$chir'";
 else {
   $listPrat = new CMediusers();
@@ -56,8 +44,8 @@ else {
   $in = implode(", ", $in);
   $sql .= "\n WHERE chir_id IN ($in)";
 }
-$sql .= "\n AND date_paiement >= '$debutsql'";
-$sql .= "\n AND date_paiement <= '$finsql'";
+$sql .= "\n AND date_paiement >= '$deb'";
+$sql .= "\n AND date_paiement <= '$fin'";
 $sql .= "\n GROUP BY date_paiement";
 $sql .= "\n ORDER BY date_paiement";
 
@@ -131,8 +119,8 @@ require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
 $smarty->debugging = false;
-$smarty->assign('today', $today);
-$smarty->assign('titre', $titre);
+$smarty->assign('deb', $deb);
+$smarty->assign('fin', $fin);
 $smarty->assign('aff', $aff);
 $smarty->assign('etat', $etat);
 $smarty->assign('type', $type);

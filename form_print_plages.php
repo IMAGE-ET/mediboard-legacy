@@ -17,8 +17,9 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$todayi = date("Ymd");
-$todayf = date("d/m/Y");
+$deb = mbDate();
+$fin = mbDate("+ 1 day");
+
 // Liste des chirurgiens
 $mediusers = new CMediusers();
 $listChir = $mediusers->loadPraticiens(PERM_EDIT);
@@ -27,8 +28,8 @@ $listChir = $mediusers->loadPraticiens(PERM_EDIT);
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('todayi', $todayi);
-$smarty->assign('todayf', $todayf);
+$smarty->assign('deb', $deb);
+$smarty->assign('fin', $fin);
 $smarty->assign('listChir', $listChir);
 
 $smarty->display('form_print_plages.tpl');

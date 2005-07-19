@@ -13,8 +13,8 @@ require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'tarif') );
 
-$todayi = date("Ymd");
-$todayf = date("d/m/Y");
+$deb = mbDate();
+$fin = mbDate("+ 1 day");
 
 // Edite t'on un tarif ?
 $tarif_id = mbGetValueFromGetOrSession("tarif_id", null);
@@ -28,8 +28,9 @@ $user = $mediuser->createUser();
 
 // Liste des tarifs du chirurgien
 if ($mediuser->isPraticien()) {
+  $where = array();
   $where["function_id"] = "= 0";
-  $where["chir_id"] = "= '".$user->user_id."'";
+  $where["chir_id"] = "= '$user->user_id'";
   $listeTarifsChir = new CTarif();
   $listeTarifsChir = $listeTarifsChir->loadList($where);
 }
@@ -37,9 +38,9 @@ else
   $listeTarifsChir = null;
 
 // Liste des tarifs de la spécialité
-unset($where);
+$where = array();
 $where["chir_id"] = "= 0";
-$where["function_id"] = "= '".$mediuser->function_id."'";
+$where["function_id"] = "= '$mediuser->function_id'";
 $listeTarifsSpe = new CTarif();
 $listeTarifsSpe = $listeTarifsSpe->loadList($where);
 
@@ -55,8 +56,8 @@ else
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
-$smarty->assign('todayi', $todayi);
-$smarty->assign('todayf', $todayf);
+$smarty->assign('deb', $deb);
+$smarty->assign('fin', $fin);
 $smarty->assign('mediuser', $mediuser);
 $smarty->assign('listeTarifsChir', $listeTarifsChir);
 $smarty->assign('listeTarifsSpe', $listeTarifsSpe);
