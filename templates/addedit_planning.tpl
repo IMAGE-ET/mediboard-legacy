@@ -40,11 +40,9 @@ function checkChir() {
       popChir();
       return false;
     }
-    else
-      return true;
   }
-  else
-    return false;
+
+  return true;
 }
 
 function popChir() {
@@ -59,8 +57,6 @@ function setChir( key, val ){
    if (val != '') {
       f.chir_id.value = key;
       f._chir_name.value = val;
-      window.chir_id = key;
-      window._chir_name = val;
     }
 }
 
@@ -77,8 +73,6 @@ function setPat( key, val ) {
   if (val != '') {
     f.patient_id.value = key;
     f._pat_name.value = val;
-    window.patient_id = key;
-    window._pat_name = val;
   }
 }
 
@@ -94,38 +88,12 @@ function popRDV() {
 function setRDV( hour, min, id, date, freq ) {
   var f = document.editFrm;
   f.plageconsult_id.value = id;
-  window.plageconsult_id = id;
   f._date.value = date;
-  window._date_id = date;
   f._hour.value = hour;
-  window._hour = hour;
   f._min.value = min;
-  window._min = min;
   f.duree.value = freq;
-  window.duree = freq;
 }
 
-var calendarField = '';
-var calWin = null;
- 
-function popCalendar( field ) {
-  calendarField = field;
-  idate = eval( 'document.editFrm._date' + field + '.value' );
-  
-  var url =  'index.php?m=public';
-  url += '&a=calendar';
-  url += '&dialog=1';
-  url += '&callback=setCalendar';
-  url += '&date=' + idate;
-  popup(280, 250, url, 'calwin');
-}
-
-function setCalendar( idate, fdate ) {
-  fld_date = eval( 'document.editFrm._date' + calendarField );
-  fld_fdate = eval( 'document.editFrm.' + calendarField );
-  fld_date.value = idate;
-  fld_fdate.value = fdate;
-}
 </script>
 {/literal}
 
