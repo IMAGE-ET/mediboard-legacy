@@ -54,7 +54,11 @@ function mbTrace(&$var, $label = null, $die = false) {
  * Transforms absolute or relative time into a given format
  * @return string: the transformed time 
  **/
-function mbTranformTime($relative, $ref = null, $format) {
+function mbTranformTime($relative = null, $ref = null, $format) {
+  if (!$relative) {
+    $relative = "+ 0 days";
+  }
+  
   $timestamp = $ref ? strtotime($ref) : time();
   $transtime = strtotime($relative, $timestamp);
   return strftime($format, $transtime);
@@ -64,7 +68,7 @@ function mbTranformTime($relative, $ref = null, $format) {
  * Transforms absolute or relative time into DB friendly DATETIME format
  * @return string: the transformed time 
  **/
-function mbDateTime($relative = "+ 0 days", $ref = null) {
+function mbDateTime($relative = null, $ref = null) {
   return mbTranformTime($relative, $ref, "%Y-%m-%d %H:%M:%S");
 }
 
@@ -72,7 +76,7 @@ function mbDateTime($relative = "+ 0 days", $ref = null) {
  * Transforms absolute or relative time into DB friendly DATE format
  * @return string: the transformed time 
  **/
-function mbDate($relative = "+ 0 days", $ref = null) {
+function mbDate($relative = null, $ref = null) {
   return mbTranformTime($relative, $ref, "%Y-%m-%d");
 }
 
