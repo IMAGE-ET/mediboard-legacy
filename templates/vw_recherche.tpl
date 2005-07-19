@@ -3,13 +3,13 @@
 
 function popPlanning() {
   var url = "?m=dPhospi&a=vw_affectations&dialog=1";
-  url += "&date={/literal}{$date}{literal}";  
+  url += "&date={/literal}{$date_recherche}{literal}";  
   popup(700, 550, url, 'Planning');
 }
 
 function pageMain() {
   {/literal}
-  regFlatCalendar("calendar-container", "{$date}", "index.php?m={$m}&tab={$tab}&date=" {if !$typeVue}, true{/if});
+  regFlatCalendar("calendar-container", "{$date_recherche}", "index.php?m={$m}&tab={$tab}&date_recherche=", true);
   {literal}
 }
 
@@ -54,7 +54,7 @@ function pageMain() {
         {if $typeVue == 0}
         <tr>
           <th class="title" colspan="4">
-            {$date|date_format:"%A %d %B %Y à %H h %M"} : {$libre|@count} lit(s) disponible(s)
+            {$date_recherche|date_format:"%A %d %B %Y à %H h %M"} : {$libre|@count} lit(s) disponible(s)
           </th>
         </tr>
         <tr>
@@ -74,7 +74,7 @@ function pageMain() {
         {else}
         <tr>
           <th class="title" colspan="7">
-            {$date|date_format:"%A %d %B %Y"}
+            {$date_recherche|date_format:"%A %d %B %Y"}
           </th>
         </tr>
         <tr>

@@ -20,10 +20,7 @@ require_once($AppUI->getModuleClass("dPhospi", "affectation"));
 $typeVue = mbGetValueFromGetOrSession("typeVue");
 $selPrat = mbGetValueFromGetOrSession("selPrat");
 
-$date = mbGetValueFromGetOrSession("date", mbDateTime());
-if ($typeVue) {
-  $date = mbDate(null, $date);
-}
+$date_recherche = mbGetValueFromGetOrSession("date_recherche", mbDateTime());
 
 // Liste des chirurgiens
 $listPrat = new CMediusers();
@@ -38,7 +35,7 @@ $sql = "SELECT lit.lit_id" .
 		"\nFROM affectation" .
 		"\nLEFT JOIN lit" .
 		"\nON lit.lit_id = affectation.lit_id" .
-		"\nWHERE '$date' BETWEEN affectation.entree AND affectation.sortie" .
+		"\nWHERE '$date_recherche' BETWEEN affectation.entree AND affectation.sortie" .
 		"\nGROUP BY lit.lit_id";
 $occupes = db_loadlist($sql);
 $arrayIn = array();
@@ -54,7 +51,7 @@ $sql = "SELECT lit.nom AS lit, chambre.nom AS chambre, service.nom AS service, M
 		"\nFROM lit" .
 		"\nLEFT JOIN affectation" .
 		"\nON affectation.lit_id = lit.lit_id" .
-		"\nAND (affectation.entree > '$date' OR affectation.entree IS NULL)" .
+		"\nAND (affectation.entree > '$date_recherche' OR affectation.entree IS NULL)" .
 		"\nLEFT JOIN chambre" .
 		"\nON chambre.chambre_id = lit.chambre_id" .
 		"\nLEFT JOIN service" .
@@ -69,9 +66,11 @@ $listAff = null;
 //
 // Cas de l'affichage des lits d'un praticien
 //
-if($typeVue == 1) {
-// Recherche des patients du praticien
-$sql = "SELECT affectation.*" .
+if ($typeVue == 1) {
+  // Recherche des patients du praticien
+  $date = mbDate(null, $date_recherche);
+
+  $sql = "SELECT affectation.*" .
 		"\nFROM affectation" .
 		"\nLEFT JOIN lit" .
 		"\nON affectation.lit_id = lit.lit_id" .
@@ -87,22 +86,23 @@ $sql = "SELECT affectation.*" .
 		"\nAND affectation.sortie > '$date 00:00:00'" .
 		"\nAND operations.chir_id = '$selPrat'" .
 		"\nORDER BY service.nom, chambre.nom, lit.nom";
-$listAff = new CAffectation;
-$listAff = db_loadObjectList($sql, $listAff);
-foreach($listAff as $key => $currAff) {
-  $listAff[$key]->loadRefs();
-  $listAff[$key]->_ref_operation->loadRefsFwd();
-  $listAff[$key]->_ref_lit->loadRefsFwd();
-  $listAff[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
-}
-$libre = null;
+  $listAff = new CAffectation;
+  $listAff = db_loadObjectList($sql, $listAff);
+  foreach($listAff as $key => $currAff) {
+    $listAff[$key]->loadRefs();
+    $listAff[$key]->_ref_operation->loadRefsFwd();
+    $listAff[$key]->_ref_lit->loadRefsFwd();
+    $listAff[$key]->_ref_lit->_ref_chambre->loadRefsFwd();
+  }
+
+  $libre = null;
 }
 
 // Création du template
 require_once($AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
-$smarty->assign('date', $date);
+$smarty->assign('date_recherche', $date_recherche);
 $smarty->assign('libre', $libre);
 $smarty->assign('typeVue', $typeVue);
 $smarty->assign('selPrat', $selPrat);
