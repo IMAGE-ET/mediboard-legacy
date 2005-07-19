@@ -16,6 +16,20 @@ function printDepassement(id) {
   popup(700, 550, url, 'Depassement');
 }
 
+function pageMain() {
+  Calendar.setup( {
+      button      : "changeDate",
+      align       : "Bc",
+      date        : makeDateFromDATE("{/literal}{$date}{literal}"),
+      onUpdate    : function(calendar) { 
+        {/literal}
+        window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
+        {literal}
+      }
+    } 
+  );
+}
+
 //]]>
 </script>
 {/literal}
@@ -23,21 +37,18 @@ function printDepassement(id) {
 <table class="main">
   <tr>
     <th>
-        <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$pmonthd}&amp;month={$pmonth}&amp;year={$pmonthy}"><<</a>
-        {$title1}
-        <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$nmonthd}&amp;month={$nmonth}&amp;year={$nmonthy}">>></a>
-      </th>
-      <th>
-        <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$pday}&amp;month={$pdaym}&amp;year={$pdayy}"><<</a>
-        {$title2}
-        <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$nday}&amp;month={$ndaym}&amp;year={$ndayy}">>></a>
-        <i>{if $selAdmis == "n"}Admissions non effectuées
-        {elseif $selSaisis == "n"}Préadmission non faite
-        {else}Toutes les admissions
-        {/if}
-        {if $selTri == "nom"}triées par nom
-        {elseif $selTri == "heure"}triées par heure
-        {/if}</i>
+      {$date|date_format:"%B %Y"}
+      <img id="changeDate" src="./images/calendar.gif" width="24" height="12" title="Choisir la date" alt="calendar" />
+    </th>
+    <th>
+      {$date|date_format:"%A %d %B %Y"} - 
+      <i>{if $selAdmis == "n"}Admissions non effectuées
+      {elseif $selSaisis == "n"}Dossiers non préparés
+      {else}Toutes les admissions
+      {/if}
+      {if $selTri == "nom"}triées par nom
+      {elseif $selTri == "heure"}triées par heure
+      {/if}</i>
     </th>
   </tr>
   <tr>
@@ -46,14 +57,14 @@ function printDepassement(id) {
         <tr>
           <th class="text">Date</th>
           <th class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selSaisis=0">Toutes les admissions</a></th>
-          <th class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selSaisis=n">Préadmission non faite</a></th>
+          <th class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=0&amp;selSaisis=n">Dossiers non préparés</a></th>
           <th class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;selAdmis=n&amp;selSaisis=0">Admissions non effectuées</a></th>
         </tr>
         {foreach from=$list1 item=curr_list}
         <tr>
           <td align="right">
-            <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$curr_list.day}&amp;month={$month}&amp;year={$year}">
-            {$curr_list.dateFormed}
+            <a href="index.php?m={$m}&amp;tab={$tab}&amp;date={$curr_list.date|date_format:"%Y-%m-%d"}">
+            {$curr_list.date|date_format:"%A %d"}
             </a>
           </td>
           <td align="center">

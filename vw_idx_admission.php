@@ -16,35 +16,11 @@ if (!$canRead) {
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 // Initialisation de variables
-$listDay = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
-$listMonth = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-				"Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
 
 $selAdmis = mbGetValueFromGetOrSession("selAdmis", "0");
 $selSaisis = mbGetValueFromGetOrSession("selSaisis", "0");
 $selTri = mbGetValueFromGetOrSession("selTri", "nom");
-$day = mbGetValueFromGetOrSession("day", date("d"));
-$month = mbGetValueFromGetOrSession("month", date("m"));
-$year = mbGetValueFromGetOrSession("year", date("Y"));
-
-$nday = date("d", mktime(0, 0, 0, $month, $day + 1, $year));
-$ndaym = date("m", mktime(0, 0, 0, $month, $day + 1, $year));
-$ndayy = date("Y", mktime(0, 0, 0, $month, $day + 1, $year));
-$pday = date("d", mktime(0, 0, 0, $month, $day - 1, $year));
-$pdaym = date("m", mktime(0, 0, 0, $month, $day - 1, $year));
-$pdayy = date("Y", mktime(0, 0, 0, $month, $day - 1, $year));
-$nmonth = date("m", mktime(0, 0, 0, $month + 1, $day, $year));
-$nmonthd = date("d", mktime(0, 0, 0, $month + 1, $day, $year));
-$nmonthy = date("Y", mktime(0, 0, 0, $month + 1, $day, $year));
-$pmonth = date("m", mktime(0, 0, 0, $month - 1, $day, $year));
-$pmonthd = date("d", mktime(0, 0, 0, $month - 1, $day, $year));
-$pmonthy = date("Y", mktime(0, 0, 0, $month - 1, $day, $year));
-
-$dayOfWeek = date("w", mktime(0, 0, 0, $month, $day, $year));
-$dayName = $listDay[$dayOfWeek];
-$monthName = $listMonth[$month - 1];
-$title1 = "$monthName $year";
-$title2 = "$dayName $day $monthName $year";
+$date = mbGetValueFromGetOrSession("date", mbDate());
 
 // Liste des admissions par jour
 $sql = "SELECT plagesop.id AS pid, operations.operation_id, operations.date_adm AS date,
@@ -52,15 +28,10 @@ $sql = "SELECT plagesop.id AS pid, operations.operation_id, operations.date_adm 
 		FROM plagesop
 		LEFT JOIN operations
 		ON operations.plageop_id = plagesop.id
-		WHERE operations.date_adm LIKE '$year-$month-__'
+		WHERE operations.date_adm LIKE '".mbTranformTime("+ 0 day", $date, "%Y-%m")."-__'
 		GROUP BY operations.date_adm
 		ORDER BY operations.date_adm";
 $list1 = db_loadlist($sql);
-foreach($list1 as $key => $value) {
-  $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
-  $list1[$key]["dateFormed"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
-  $list1[$key]["day"] = substr($value["date"], 8, 2);
-}
 
 // Liste des admissions non effectuées par jour
 $sql = "SELECT operations.date_adm AS date,
@@ -68,35 +39,25 @@ $sql = "SELECT operations.date_adm AS date,
 		FROM plagesop
 		LEFT JOIN operations
 		ON operations.plageop_id = plagesop.id
-		WHERE operations.date_adm LIKE '$year-$month-__'
+		WHERE operations.date_adm LIKE '".mbTranformTime("+ 0 day", $date, "%Y-%m")."-__'
 		AND operations.admis = 'n'
 		AND operations.annulee = 0
 		GROUP BY operations.date_adm
 		ORDER BY operations.date_adm";
 $list2 = db_loadlist($sql);
-foreach($list2 as $key => $value) {
-  $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
-  $list2[$key]["dateFormed"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
-  $list2[$key]["day"] = substr($value["date"], 8, 2);
-}
 
-// Liste des admissions non remplies dans l'AS/400 par jour
+// Liste des admissions non préparées
 $sql = "SELECT operations.date_adm AS date,
 		operations.depassement AS depassement, count(operation_id) AS num
 		FROM plagesop
 		LEFT JOIN operations
 		ON operations.plageop_id = plagesop.id
-		WHERE operations.date_adm LIKE '$year-$month-__'
+		WHERE operations.date_adm LIKE '".mbTranformTime("+ 0 day", $date, "%Y-%m")."-__'
 		AND operations.saisie = 'n'
 		AND operations.annulee = 0
 		GROUP BY operations.date_adm
 		ORDER BY operations.date_adm";
 $list3 = db_loadlist($sql);
-foreach($list3 as $key => $value) {
-  $currentDayOfWeek = $listDay[date("w", mktime(0, 0, 0, substr($value["date"], 5, 2), substr($value["date"], 8, 2), substr($value["date"], 0, 4)))];
-  $list3[$key]["dateFormed"] = $currentDayOfWeek." ".intval(substr($value["date"], 8, 2));
-  $list3[$key]["day"] = substr($value["date"], 8, 2);
-}
 
 // On met toutes les sommes d'intervention dans le même tableau
 foreach($list1 as $key => $value) {
@@ -127,7 +88,7 @@ $today = new COperation;
 $ljoin["patients"] = "operations.pat_id = patients.patient_id";
 $ljoin["plagesop"] = "operations.plageop_id = plagesop.id";
 
-$where["date_adm"] = "= '$year-$month-$day'";
+$where["date_adm"] = "= '$date'";
 if($selAdmis != "0") {
   $where["admis"] = "= '$selAdmis'";
   $where["annulee"] = "= 0";
@@ -159,26 +120,11 @@ $smarty = new CSmartyDP;
 
 $smarty->debugging = false;
 
-$smarty->assign('year', $year);
-$smarty->assign('day', $day);
-$smarty->assign('nday', $nday);
-$smarty->assign('ndaym', $ndaym);
-$smarty->assign('ndayy', $ndayy);
-$smarty->assign('pday', $pday);
-$smarty->assign('pdaym', $pdaym);
-$smarty->assign('pdayy', $pdayy);
-$smarty->assign('month', $month);
-$smarty->assign('nmonthd', $nmonthd);
-$smarty->assign('nmonth', $nmonth);
-$smarty->assign('nmonthy', $nmonthy);
-$smarty->assign('pmonthd', $pmonthd);
-$smarty->assign('pmonth', $pmonth);
-$smarty->assign('pmonthy', $pmonthy);
+
+$smarty->assign('date', $date);
 $smarty->assign('selAdmis', $selAdmis);
 $smarty->assign('selSaisis', $selSaisis);
 $smarty->assign('selTri', $selTri);
-$smarty->assign('title1', $title1);
-$smarty->assign('title2', $title2);
 $smarty->assign('list1', $list1);
 $smarty->assign('today', $today);
 

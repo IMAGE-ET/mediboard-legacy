@@ -1,7 +1,23 @@
 {literal}
 <script language="javascript">
+
+function pageMain() {
+  Calendar.setup( {
+      button      : "changeDate",
+      align       : "Bc",
+      date        : makeDateFromDATE("{/literal}{$date}{literal}"),
+      onUpdate    : function(calendar) { 
+        {/literal}
+        window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
+        {literal}
+      }
+    } 
+  );
+}
+
 </script>
 {/literal}
+
 <table class="main">
   <tr>
     <td>
@@ -14,12 +30,11 @@
       </form>
     </td>
     <th>
-      <a href="index.php?m={$m}&amp;day={$pday|date_format:"%d"}&amp;month={$pday|date_format:"%m"}&amp;year={$pday|date_format:"%Y"}"><<</a>
-      {$cday|date_format:"%A %d %B %Y"}
-      <a href="index.php?m={$m}&amp;day={$nday|date_format:"%d"}&amp;month={$nday|date_format:"%m"}&amp;year={$nday|date_format:"%Y"}">>></a>
+      {$date|date_format:"%A %d %B %Y"}
+      <img id="changeDate" src="./images/calendar.gif" width="24" height="12" title="Choisir la date" alt="calendar" />
     </th>
     <th>
-      <a href="index.php?m={$m}&amp;day={$now|date_format:"%d"}&amp;month={$now|date_format:"%m"}&amp;year={$now|date_format:"%Y"}">Aujourd'hui : {$now|date_format:"%A %d %B %Y"}</a>
+      <a href="index.php?m={$m}&amp;date={$now|date_format:"%Y-%m%-d"}">Aujourd'hui : {$now|date_format:"%A %d %B %Y"}</a>
     </th>
   </tr>
   <tr>
