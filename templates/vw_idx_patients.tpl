@@ -251,7 +251,7 @@ function printIntervention(id) {
             <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
             {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
             </a>
-            <em><a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;day={$curr_op->date_adm|date_format:"%d"}&amp;month={$curr_op->date_adm|date_format:"%m"}&amp;year={$curr_op->date_adm|date_format:"%Y"}#adm{$curr_op->operation_id}">
+            <em><a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;date={$curr_op->date_adm|date_format:"%Y-%m-%d"}#adm{$curr_op->operation_id}">
             (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})
             </a></em>
             <a href="javascript:printIntervention({$curr_op->operation_id})">
@@ -278,7 +278,7 @@ function printIntervention(id) {
             <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
             Simple hospi.
             </a>
-            <em><a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;day={$curr_op->date_adm|date_format:"%d"}&amp;month={$curr_op->date_adm|date_format:"%m"}&amp;year={$curr_op->date_adm|date_format:"%Y"}#adm{$curr_op->operation_id}">
+            <em><a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;date={$curr_op->date_adm|date_format:"%Y-%m-%d"}#adm{$curr_op->operation_id}">
             (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})
             </a></em>
             <img src="modules/dPpatients/images/print.png" title="imprimer" onclick="printIntervention({$curr_op->operation_id})"/>
