@@ -45,7 +45,7 @@ function checkPlage() {
         <option value="-1" {if $chirSel == -1} selected="selected" {/if}>&mdash; Choisir un anesthésiste &mdash;</option>
         {foreach from=$listChirs item=curr_chir}
         <option value="{$curr_chir->user_id}" {if $chirSel == $curr_chir->user_id} selected="selected" {/if}>
-          {$curr_chir->user_last_name} {$curr_chir->user_first_name}
+          {$curr_chir->_view}
         </option>
         {/foreach}
       </select>
