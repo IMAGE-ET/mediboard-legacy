@@ -218,7 +218,7 @@ function throwError(msg) {
 function makeDateFromDATE(sDate) {
   // sDate must be: YYYY-MM-DD
   var aParts = sDate.split("-");
-  if (aParts.length != 3) throwError("Bad DATE format");
+  if (aParts.length != 3) throwError("'" + sDate + "' :Bad DATE format");
 
   var year  = parseInt(aParts[0]);
   var month = parseInt(aParts[1]);
@@ -227,6 +227,24 @@ function makeDateFromDATE(sDate) {
   return new Date(year, month - 1, day); // Js months are 0-11!!
 }
 
+function makeDateFromDATETIME(sDateTime) {
+  // sDateTime must be: YYYY-MM-DD HH:MM:SS
+  var aHalves = sDateTime.split(" ");
+  if (aHalves.length != 2) throwError("'" + sDateTime + "' :Bad DATETIME format");
+
+  var sDate = aHalves[0];
+  var date = makeDateFromDATE(sDate);
+
+  var sTime = aHalves[1];
+  var aParts = sTime.split(":");
+  if (aParts.length != 3) throwError("'" + sTime + "' :Bad TIME format");
+
+  date.setHours  (parseInt(aParts[0]));
+  date.setMinutes(parseInt(aParts[1]));
+  date.setSeconds(parseInt(aParts[2]));
+  
+  return date;
+}
 
 function makeDateFromLocaleDate(sDate) {
   // sDate must be: dd/mm/yyyy
@@ -261,18 +279,28 @@ function makeLocaleDateFromDate(date) {
 function makeDATETIMEFromDate(date) {
   var h = date.getHours();
   var m = date.getMinutes();
-  var d = date.getSeconds();
+  var s = date.getSeconds();
   
   var sDate = makeDATEFromDate(date) + " " + h + ":" + m + ":" + s; 
   return sDate;
 }
 
-function regFlatCalendar(sContainerId, sInitDATE, sRedirectBase) {
+function regFlatCalendar(sContainerId, sInitDATE, sRedirectBase, bTime) {
+  if (bTime == null) bTime = false;
+
   Calendar.setup( {
-      date         : makeDateFromDATE(sInitDATE) ,
+      date         : bTime ? 
+      	makeDateFromDATETIME(sInitDATE) : 
+      	makeDateFromDATE(sInitDATE) ,
+      showsTime   : bTime,
       flat         : sContainerId,
       flatCallback : function(calendar) { 
-        window.location = sRedirectBase + makeDATEFromDate(calendar.date);
+        if (calendar.dateClicked && sRedirectBase) {
+          var sdate = bTime ? 
+            makeDATETIMEFromDate(calendar.date) : 
+            makeDATEFromDate(calendar.date)
+          window.location = sRedirectBase + sdate;
+        }
       }
     } 
   );
@@ -290,17 +318,15 @@ function regPopupCalendar(sFormName, sFieldName, sRedirectBase, bTime) {
   Calendar.setup( {
       inputField  : sInputId,
       displayArea : sInputId + "_da",
-      ifFormat    : "%Y-%m-%d" + (bTime ? " %H:%M" : ""),
-      daFormat    : "%d/%m/%Y" + (bTime ? " %H:%M" : ""),
+      ifFormat    : "%Y-%m-%d" + (bTime ? " %H:%M:%S" : ""),
+      daFormat    : "%d/%m/%Y" + (bTime ? " %H:%M:%S" : ""),
       button      : sInputId + "_trigger",
       showsTime   : bTime,
       onUpdate    : function(calendar) { 
         if (calendar.dateClicked && sRedirectBase) {
-          var sUrl = sRedirectBase;
-          sUrl += bTime ? 
-          	makeDATETIMEFromDate(calendar.date) : 
-          	makeDATEFromDate(calendar.date)
-          window.location = sUrl;
+          window.location = sRedirectBase + bTime ? 
+            makeDATETIMEFromDate(calendar.date) : 
+            makeDATEFromDate(calendar.date);
         }
       }
     } 
