@@ -5,27 +5,12 @@
 function checkForm() {
   var form = document.paramFrm;
     
-  if (form.date_debut.value > form.date_fin.value) {
+  if (form.date_deb.value > form.date_fin.value) {
     alert("Date de début superieure à la date de fin");
     return false;
   }
+  
   popPlanning();
-}
-
-var calendarField = '';
-var calWin = null;
-
-function popCalendar( field ){
-  calendarField = field;
-  idate = eval( 'document.paramFrm.date_' + field + '.value' );
-  popup(280, 250, 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin');
-}
-
-function setCalendar( idate, fdate ) {
-  fld_date = eval( 'document.paramFrm.date_' + calendarField );
-  fld_fdate = eval( 'document.paramFrm.' + calendarField );
-  fld_date.value = idate;
-  fld_fdate.value = fdate;
 }
 
 function popCode(type) {
@@ -37,39 +22,30 @@ function popCode(type) {
 }
 
 function setCode( key, type ) {
-  var f = document.paramFrm;
-   if (key != '') {
-    if(type == 'ccam'){
-      f.CCAM_code.value = key;
-        window.CCAM_code = key;
-    }
-    else{
-      f.CIM10_code.value = key;
-        window.CIM10_code = key;
-    }
-  }
+  var form = document.paramFrm;
+  var field = type == 'ccam' ? form.CCAM_code : form.CIM10_code;
+  field.value = key;
 }
 
 function popPlanning() {
-  var debut = document.paramFrm.date_debut.value;
-  var fin = document.paramFrm.date_fin.value;
-  var vide = document.paramFrm.vide.checked;
-  var CCAM = document.paramFrm.CCAM_code.value;
-  var type = document.paramFrm.type.value;
-  var chir = document.paramFrm.chir.value;
-  var spe = document.paramFrm.spe.value;
-  var salle = document.paramFrm.salle.value;
+  form = document.paramFrm;
   var url = './index.php?m=dPbloc&a=view_planning&dialog=1';
-  url += '&debut=' + debut;
-  url += '&fin=' + fin;
-  url += '&vide=' + vide;
-  url += '&CCAM=' + CCAM;
-  url += '&type=' + type;
-  url += '&chir=' + chir;
-  url += '&spe=' + spe;
-  url += '&salle=' + salle;
+  url += '&debut=' + form.date_deb.value;
+  url += '&fin='   + form.date_fin.value;
+  url += '&vide='  + form.vide.checked;
+  url += '&CCAM='  + form.CCAM_code.value;
+  url += '&type='  + form.type.value;
+  url += '&chir='  + form.chir.value;
+  url += '&spe='   + form.spe.value;
+  url += '&salle=' + form.salle.value;
   popup(700, 550, url, 'Planning');
 }
+
+function pageMain() {
+  regPopupCalendar("paramFrm", "deb");
+  regPopupCalendar("paramFrm", "fin");
+}
+
 </script>
 {/literal}
 
@@ -80,25 +56,21 @@ function popPlanning() {
     <td>
 
       <table class="form">
-        <tr><th class="category" colspan="3">Choix de la periode</th></tr>
+        <tr><th class="category" colspan="3">Choix de la période</th></tr>
         <tr>
-          <th><label for="paramFrm_debut" title="Date de début de la recherche">Début:</label></th>
-          <td class="readonly" colspan="2">
-            <input type="hidden" name="date_debut" value="{$todayi}" />
-            <input type="text" name="debut" value="{$todayf}" readonly="readonly" />
-            <a href="#" onClick="popCalendar( 'debut', 'debut');">
-              <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
-            </a>
+          <th><label for="paramFrm_deb" title="Date de début de la recherche">Début:</label></th>
+          <td class="date" colspan="2">
+            <div id="paramFrm_deb_da">{$deb|date_format:"%d/%m/%Y"}</div>
+            <input type="hidden" name="date_deb" value="{$deb}" />
+            <img id="paramFrm_deb_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de début"/>
           </td>
         </tr>
         <tr>
           <th><label for="paramFrm_fin" title="Date de fin de la recherche">Fin:</label></th>
-          <td class="readonly" colspan="2">
-            <input type="hidden" name="date_fin" value="{$todayi}" />
-            <input type="text" name="fin" value="{$todayf}" readonly="readonly" />
-            <a href="#" onClick="popCalendar( 'fin', 'fin');">
-              <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
-            </a>
+          <td class="date" colspan="2">
+            <div id="paramFrm_fin_da">{$fin|date_format:"%d/%m/%Y"}</div>
+            <input type="hidden" name="date_fin" value="{$fin}" />
+            <img id="paramFrm_fin_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de fin"/>
           </td>
         </tr>
         <tr>
@@ -148,7 +120,7 @@ function popPlanning() {
           <td><select name="salle">
             <option value="0">&mdash; Toutes les salles &mdash;</option>
             {foreach from=$listSalles item=curr_salle}
-	            <option value="{$curr_salle.id}">{$curr_salle.nom}</option>
+	            <option value="{$curr_salle->id}">{$curr_salle->nom}</option>
             {/foreach}
           </select></td>
         </tr>

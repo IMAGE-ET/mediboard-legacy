@@ -98,7 +98,7 @@ class Cplanning
 	echo "<td bgcolor=\"#000000\" height=\"2\">";
 	echo "</td>\n";
 	echo "<td align=\"center\" width=\"75\">";
-	echo "<a href=\"index.php?m=dPbloc&tab=1&day=".$this->day."&month=".$this->month."&year=".$this->year."\">$today</a>";
+	echo "<a href=\"index.php?m=dPbloc&tab=1&date=$this->year-$this->month-$this->day\">$today</a>";
 	echo "</td>\n";
 	for($hours = 8; $hours <= 18; $hours++) {
 	  if(strlen($hours) == 1)
@@ -128,7 +128,7 @@ class Cplanning
 			  echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			  echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
 			  echo "</a> (".$value2['numop'].")";
-			  echo "<a href=\"index.php?m=dPbloc&tab=1&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			  echo "<a href=\"index.php?m=dPbloc&tab=1&id=".$value2['id']."&date=$this->year-$this->month-$this->day\" target=\"_self\">";
 			  echo " <img src=\"./modules/dPbloc/images/edit.png\" alt=\"editer la plage\" border=\"0\" height=\"16\" width=\"16\">";
 			  echo "</a>";
 			  echo "</b></td>\n";
@@ -151,7 +151,7 @@ class Cplanning
 			    echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			    echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
 			    echo "</a> (".$value2['numop'].")";
-			    echo "<a href=\"index.php?m=dPbloc&tab=1&id=".$value2['id']."&day=".$this->day."&month=".$this->month."&year=".$this->year."\" target=\"_self\">";
+			    echo "<a href=\"index.php?m=dPbloc&tab=1&id=".$value2['id']."&date=$this->year-$this->month-$this->day\" target=\"_self\">";
 			    echo " <img src=\"./modules/dPbloc/images/edit.png\" alt=\"editer la plage\" border=\"0\" height=\"16\" width=\"16\">";
 			    echo "</a>";
 			    echo "</b></td>\n";
@@ -186,7 +186,7 @@ class Cplanning
 	echo "</a>";
 	echo "</td>";
 	echo "<td bgcolor=\"#ffffff\" align=\"center\" colspan=2>\n";
-	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
+	echo "<a href=\"index.php?m=dPbloc&date=$nyear-$nmonth-$nday\">";
 	$today = $this->dayWeekList[date("w", mktime(0, 0, 0, $nmonth, $nday, $nyear))];
 	$tomonth = $this->monthList[$nmonth];
 	echo "aujourd'hui : $today $nday $tomonth $nyear\n";
@@ -199,13 +199,13 @@ class Cplanning
 	echo "<tr>\n";
 	echo "<td bgcolor=\"#ffffff\">\n";
 	$nday = $this->day - 7;
-	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
+	echo "<a href=\"index.php?m=dPbloc&date=$nyear-$nmonth-$nday\">";
 	echo "<< semaine précédente\n";
 	echo "</a>";
 	echo "</td>\n";
 	echo "<td align=\"right\" bgcolor=\"#ffffff\">\n";
 	$nday = $this->day + 7;
-	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
+	echo "<a href=\"index.php?m=dPbloc&date=$nyear-$nmonth-$nday\">";
 	echo "semaine suivante >>\n";
 	echo "</a>";
 	echo "</td>\n";
@@ -213,13 +213,13 @@ class Cplanning
 	echo "<tr>\n";
 	echo "<td bgcolor=\"#ffffff\">\n";
 	$nday = $this->day - 1;
-	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
+	echo "<a href=\"index.php?m=dPbloc&date=$nyear-$nmonth-$nday\">";
 	echo "< jour précédent\n";
 	echo "</a>";
 	echo "</td>";
 	echo "<td align=\"right\" bgcolor=\"#ffffff\">\n";
 	$nday = $this->day + 1;
-	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
+	echo "<a href=\"index.php?m=dPbloc&date=$nyear-$nmonth-$nday\">";
 	echo "jour suivant >\n";
 	echo "</a>";
 	echo "</td>\n";
@@ -241,7 +241,7 @@ class Cplanning
 	$nyear = date("Y");
 	echo "<tr>\n";
 	echo "<td bgcolor=\"#ffffff\" align=\"center\" colspan=2>\n";
-	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
+	echo "<a href=\"index.php?m=dPbloc&date=$nyear-$nmonth-$nday\">";
 	$today = $this->dayWeekList[date("w", mktime(0, 0, 0, $nmonth, $nday, $nyear))];
 	$tomonth = $this->monthList[$nmonth];
 	echo "aujourd'hui : $today $nday $tomonth $nyear\n";
@@ -254,13 +254,13 @@ class Cplanning
 	echo "<tr>\n";
 	echo "<td bgcolor=\"#ffffff\">\n";
 	$nday = $this->day - 7;
-	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
+	echo "<a href=\"index.php?m=dPbloc&date=$nyear-$nmonth-$nday\"\">";
 	echo "<< semaine précédente\n";
 	echo "</a>";
 	echo "</td>\n";
 	echo "<td align=\"right\" bgcolor=\"#ffffff\">\n";
 	$nday = $this->day + 7;
-	echo "<a href=\"index.php?m=dPbloc&day=".$nday."&month=".$nmonth."&year=".$nyear."\">";
+	echo "<a href=\"index.php?m=dPbloc&date=$nyear-$nmonth-$nday\">";
 	echo "semaine suivante >>\n";
 	echo "</a>";
 	echo "</td>\n";

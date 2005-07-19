@@ -9,28 +9,24 @@
 
 include_once("modules/dPbloc/checkDate.php");
 require_once($AppUI->getModuleClass('dPbloc', 'planning'));
-require_once($AppUI->getModuleClass('dPbloc', 'calendar'));
 require_once($AppUI->getModuleClass('mediusers', 'functions'));
 
-$planning = new Cplanning($_SESSION['day'], $_SESSION['month'], $_SESSION['year']);
-$calendar = new Ccalendar("index.php?m=dPbloc", $_SESSION['day'], $_SESSION['month'], $_SESSION['year']);
+$date = mbGetValueFromGetOrSession("date", mbDate());
+
+$dateParts = explode("-", $date);
+$year  = $dateParts[0];
+$month = $dateParts[1];
+$day   = $dateParts[2];
+
+$planning = new Cplanning($day, $month, $year);
 ?>
 
-<table width="100%">
+<table class="main">
 	<tr>
-		<td rowspan=2 width="100%" align="center">
-<?php
-$planning->displaySem();
-?>
-		</td>
-		<td valign="top" align="right" height="100%">
-<?php
-echo $calendar->display();
-?>
-		</td>
+		<td class="greedyPane" rowspan="2"><?php $planning->displaySem(); ?></td>
 	</tr>
 	<tr>
-		<td valign="top">
+		<td>
 <?php
 $listSpec = new CFunctions();
 $listSpec = $listSpec->loadSpecialites();
@@ -39,6 +35,7 @@ $listSpec = $listSpec->loadSpecialites();
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
+$smarty->assign('date', $date);
 $smarty->assign('listSpec', $listSpec);
 
 $smarty->display('vw_idx_planning.tpl');

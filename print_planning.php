@@ -9,14 +9,15 @@
  
 global $AppUI, $canRead, $canEdit, $m;
 
+require_once($AppUI->getModuleClass($m, "salle"));
 require_once($AppUI->getModuleClass("mediusers"));
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$todayi = date("Ymd");
-$todayf = date("d/m/Y");
+$deb = mbDate();
+$fin = mbDate("+ 1 day");
 
 $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_READ);
@@ -24,17 +25,17 @@ $listPrat = $listPrat->loadPraticiens(PERM_READ);
 $listSpec = new CFunctions();
 $listSpec = $listSpec->loadSpecialites(PERM_READ);
 
-$sql = "SELECT id, nom
-        FROM sallesbloc
-        ORDER BY nom";
-$listSalles = db_loadlist($sql);
+
+$order = "nom";
+$listSalles = new CSalle();
+$listSalles = $listSalles->loadList(null, $order);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('todayi', $todayi);
-$smarty->assign('todayf', $todayf);
+$smarty->assign('deb', $deb);
+$smarty->assign('fin', $fin);
 $smarty->assign('listPrat', $listPrat);
 $smarty->assign('listSpec', $listSpec);
 $smarty->assign('listSalles', $listSalles);

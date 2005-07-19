@@ -15,42 +15,32 @@ if (!$canRead) {
 
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
-$debut = dPgetParam( $_GET, 'debut', date("Ymd") );
-$dayd = intval(substr($debut, 6, 2));
-$monthd = intval(substr($debut, 4, 2));
-$yeard = substr($debut, 0, 4);
-$fin = dPgetParam( $_GET, 'fin', date("Ymd") );
-$dayf = intval(substr($fin, 6, 2));
-$monthf = intval(substr($fin, 4, 2));
-$yearf = substr($fin, 0, 4);
+$deb = mbGetValueFromGetOrSession("deb", mbDate());
+$fin = mbGetValueFromGetOrSession("fin", mbDate());
 
 // Récupération des opérations
-$op1 = new COperation();
 $ljoin = array();
 $ljoin["plagesop"] = "operations.plageop_id = plagesop.id";
 $where = array();
-$where[] = "operations.materiel != ''";
-$where[] = "operations.commande_mat != 'o'";
-$where[] = "operations.plageop_id IS NOT NULL";
-$where[] = "plagesop.date >= '$yeard-$monthd-$dayd'";
-$where[] = "plagesop.date <= '$yearf-$monthf-$dayf'";
-$order = "plagesop.date, operations.rank";
-$op1 = $op1->loadList($where, $order, null, null, $ljoin);
+$where["materiel"] = "!= ''";
+$where["plageop_id"] = "IS NOT NULL";
+$where[] = "plagesop.date BETWEEN '$deb' AND '$fin'";
+$order = array();
+$order[] = "date";
+$order[] = "rank";
+
+$where1 = $where;
+$where1["commande_mat"] = "!= 'o'";
+$op1 = new COperation();
+$op1 = $op1->loadList($where1, $order, null, null, $ljoin);
 foreach($op1 as $key => $value) {
   $op1[$key]->loadRefsFwd();
 }
 
+$where2 = $where;
+$where2["commande_mat"] = "!= 'n'";
 $op2 = new COperation();
-$ljoin = array();
-$ljoin["plagesop"] = "operations.plageop_id = plagesop.id";
-$where = array();
-$where[] = "operations.materiel != ''";
-$where[] = "operations.commande_mat != 'n'";
-$where[] = "operations.plageop_id IS NOT NULL";
-$where[] = "plagesop.date >= '$yeard-$monthd-$dayd'";
-$where[] = "plagesop.date <= '$yearf-$monthf-$dayf'";
-$order = "plagesop.date, operations.rank";
-$op2 = $op2->loadList($where, $order, null, null, $ljoin);
+$op2 = $op2->loadList($where2, $order, null, null, $ljoin);
 foreach($op2 as $key => $value) {
   $op2[$key]->loadRefsFwd();
 }
