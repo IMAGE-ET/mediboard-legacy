@@ -18,7 +18,7 @@ require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 $typeAff = mbGetValueFromGetOrSession("typeAff");
 
 $deb = mbDate();
-$fin = mbDate("+ 1 day");
+$fin = mbDate("+ 0 day");
 
 // Récupération des opérations
 $ljoin = array();

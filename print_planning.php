@@ -17,7 +17,7 @@ if (!$canRead) {
 }
 
 $deb = mbDate();
-$fin = mbDate("+ 1 day");
+$fin = mbDate("+ 0 day");
 
 $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_READ);
