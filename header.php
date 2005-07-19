@@ -19,6 +19,7 @@
   <script type="text/javascript" src="./style/<?php echo $uistyle;?>/gosu/validate.js"></script>
   <script type="text/javascript" src="./style/<?php echo $uistyle;?>/functions.js"></script>
   <script type="text/javascript" src="./style/<?php echo $uistyle;?>/cjl_cookie.js"></script>
+  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/printf.js"></script>
   <script type="text/javascript" src="./lib/jscalendar/calendar.js"></script>
   <script type="text/javascript" src="./lib/jscalendar/lang/calendar-fr.js"></script>
   <script type="text/javascript" src="./lib/jscalendar/calendar-setup.js"></script>

@@ -263,8 +263,7 @@ function makeDATEFromDate(date) {
   var m = date.getMonth()+1; // Js months are 0-11!!
   var d = date.getDate();
   
-  var sDate = "" + y + "-" + m + "-" + d; 
-  return sDate;
+  return printf("%04d-%02d-%02d", y, m, d);
 }
 
 function makeLocaleDateFromDate(date) {
@@ -272,8 +271,7 @@ function makeLocaleDateFromDate(date) {
   var m = date.getMonth()+1; // Js months are 0-11!!
   var d = date.getDate();
   
-  var sDate = "" + d + "/" + m + "/" + y; 
-  return sDate;
+  return printf("%02d/%02d-%04d", d, m, y);
 }
 
 function makeDATETIMEFromDate(date) {
@@ -281,8 +279,7 @@ function makeDATETIMEFromDate(date) {
   var m = date.getMinutes();
   var s = date.getSeconds();
   
-  var sDate = makeDATEFromDate(date) + " " + h + ":" + m + ":" + s; 
-  return sDate;
+  return makeDATEFromDate(date) + printf("+%02d:%02d:%02d", h, m, s);
 }
 
 function regFlatCalendar(sContainerId, sInitDATE, sRedirectBase, bTime) {
