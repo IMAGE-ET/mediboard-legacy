@@ -11,12 +11,14 @@ function pageMain() {
 
 <table class="tbl">
   <tr>
-    <th></th>
+    <th />
     {foreach from=$listDays item=curr_day}
     {assign var="myMonth" value=$curr_day|date_format:"%m"}
-    <th><a href="index.php?m={$m}&amp;tab=vw_affectations&amp;day={$curr_day|date_format:"%d"}&amp;month={$myMonth-1}&amp;year={$curr_day|date_format:"%Y"}">
+    <th>
+      <a href="index.php?m={$m}&amp;tab=vw_affectations&amp;date={$curr_day}">
     {$curr_day|date_format:"%a %d %b %y"}
-    </a></th>
+      </a>
+    </th>
     {/foreach}
   </tr>
   {foreach from=$mainTab.allocated.functions item=curr_function}

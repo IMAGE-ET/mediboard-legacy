@@ -1,5 +1,18 @@
 {literal}
 <script language="javascript">
+function pageMain() {
+  Calendar.setup( {
+      button      : "changeDate",
+      align       : "Bc",
+      date        : makeDateFromDATE("{/literal}{$date}{literal}"),
+      onUpdate    : function(calendar) { 
+        {/literal}
+        window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
+        {literal}
+      }
+    } 
+  );
+}
 </script>
 {/literal}
 <table class="main">
@@ -8,21 +21,15 @@
       <form name="typeVue" action="?m={$m}" method="get">
       <input type="hidden" name="m" value="{$m}" />
       <select name="vue" onchange="submit()">
-        <option value="0" {if $vue == 0}selected="selected"{/if}>Tout afficher</option>
-        <option value="1" {if $vue == 1}selected="selected"{/if}>Ne pas afficher les validés</option>
+        <option value="0" {if $vue == 0} selected="selected"{/if}>Tout afficher</option>
+        <option value="1" {if $vue == 1} selected="selected"{/if}>Ne pas afficher les validés</option>
       </select>
       </form>
     </td>
     <th>
-      {assign var="mypmonth" value=$pday|date_format:"%m"}
-      {assign var="mynmonth" value=$nday|date_format:"%m"}
-      {assign var="mynowmonth" value=$now|date_format:"%m"}
-      <a href="index.php?m={$m}&amp;day={$pday|date_format:"%d"}&amp;month={$mypmonth-1}&amp;year={$pday|date_format:"%Y"}"><<</a>
-        {$cday|date_format:"%A %d %B %Y"}
-      <a href="index.php?m={$m}&amp;day={$nday|date_format:"%d"}&amp;month={$mynmonth-1}&amp;year={$nday|date_format:"%Y"}">>></a>
-    </th>
-    <th>
-      <a href="index.php?m={$m}&amp;day={$now|date_format:"%d"}&amp;month={$mynowmonth-1}&amp;year={$now|date_format:"%Y"}">Aujourd'hui : {$now|date_format:"%A %d %B %Y"}</a>
+    {$date|date_format:"%A %d %B %Y"}
+    <img id="changeDate" src="./images/calendar.gif" width="24" height="12" title="Choisir la date" alt="calendar" />
+    
     </th>
   <tr>
     <td colspan="3">

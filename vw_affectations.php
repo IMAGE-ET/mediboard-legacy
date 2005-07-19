@@ -20,15 +20,9 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$year  = mbGetValueFromGetOrSession("year" , date("Y"));
-$month = mbGetValueFromGetOrSession("month", date("m")-1);
-$day   = mbGetValueFromGetOrSession("day"  , date("d"));
-$date = ($year and $month and $day) ? 
-  date("Y-m-d", mktime(0, 0, 0, $month+1, $day, $year)) : 
-  date("Y-m-d");
-$dateReal = date("Y-m-d H:i:s");
+$date = mbGetValueFromGetOrSession("date", mbDate()); 
 $heureLimit = "16:00:00";
-$mode = mbGetValueFromGetOrSession("mode", 0);
+$mode = mbGetValueFromGetOrSession("mode");
 
 // Initialisation de la liste des chirs, patients et plagesop
 $listChirs = array();
@@ -276,12 +270,8 @@ $smarty = new CSmartyDP;
 
 $smarty->debugging = false;
 $smarty->assign('pathos' , $pathos);
-$smarty->assign('year' , $year );
-$smarty->assign('month', $month);
-$smarty->assign('day'  , $day  );
 $smarty->assign('date' , $date );
 $smarty->assign('demain', mbDate("+ 1 day", $date));
-$smarty->assign('dateReal', $dateReal);
 $smarty->assign('heureLimit', $heureLimit);
 $smarty->assign('mode', $mode);
 $smarty->assign('totalLits', $totalLits);

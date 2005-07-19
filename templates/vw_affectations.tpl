@@ -115,36 +115,13 @@ function setupCalendar(affectation_id) {
 
 }
 
-{/literal}
-{if $dialog != 1}
-{literal}
-
-function dateChanged(calendar) {
-  var y = calendar.date.getFullYear();
-  var m = calendar.date.getMonth();
-  var d = calendar.date.getDate();
-   
-  var url = "index.php?m={/literal}{$m}{literal}";
-  url += "&tab={/literal}{$tab}{literal}";
-  url += "&year="  + y;
-  url += "&month=" + m;
-  url += "&day="   + d;
-
-  window.location = url;
-}
-
 function pageMain() {
-  Calendar.setup( {
-      flat         : "calendar-container",
-      flatCallback : dateChanged         ,
-      date         : {/literal}new Date({$year}, {$month}, {$day}){literal}
-    }
-  );
+  {/literal}
+  {if $dialog != 1}
+  regFlatCalendar("calendar-container", "{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  {/if}
+  {literal}
 }
-
-{/literal}
-{/if}
-{literal}
 
 function popPlanning() {
   var url = '?m=dPhospi&a=vw_affectations&dialog=1';

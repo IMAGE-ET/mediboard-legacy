@@ -17,12 +17,7 @@ if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$year  = mbGetValueFromGetOrSession("year" , date("Y"));
-$month = mbGetValueFromGetOrSession("month", date("m")-1);
-$day   = mbGetValueFromGetOrSession("day"  , date("d"));
-$date = ($year and $month and $day) ? 
-  date("Y-m-d", mktime(0, 0, 0, $month+1, $day, $year)) : 
-  date("Y-m-d");
+$date = mbGetValueFromGetOrSession("date", mbDate()); 
 $firstDayOfWeek = mbDate("last sunday", $date);
 $firstDayOfWeek = mbDate("+ 1 day", $firstDayOfWeek);
 $nextDay = mbDate("+ 7 days", $firstDayOfWeek);

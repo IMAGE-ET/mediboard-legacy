@@ -30,24 +30,8 @@ function popPlanning() {
 }
 
 function pageMain() {
-  Calendar.setup( {
-    displayArea : "paramFrm_deb_fr",
-    inputField  : "paramFrm_deb",
-    ifFormat    : "%Y-%m-%d %H:%M",
-    daFormat    : "%d/%m/%Y %H:%M",
-    button      : "trigger_paramFrm_deb",
-    showsTime   : true
-    } );
-  
-  Calendar.setup( {
-    displayArea : "paramFrm_fin_fr",
-    inputField  : "paramFrm_fin",
-    ifFormat    : "%Y-%m-%d %H:%M",
-    daFormat    : "%d/%m/%Y %H:%M",
-    button      : "trigger_paramFrm_fin",
-    showsTime   : true
-    } );
-  
+  regPopupCalendar("paramFrm", "deb", null, true);
+  regPopupCalendar("paramFrm", "fin", null, true);
 }
 
 </script>
@@ -65,22 +49,18 @@ function pageMain() {
         <tr>
           <th><label for="paramFrm_deb">Début:</label></th>
           <td class="date" colspan="2">
-            <div id="paramFrm_deb_fr">{$today|date_format:"%d/%m/%Y %H:%M"}</div>
+            <div id="paramFrm_deb_da">{$today|date_format:"%d/%m/%Y %H:%M"}</div>
             <input type="hidden" name="deb" value="{$today}" />
-            <a id="trigger_paramFrm_deb" href="#" title="Choisir une date de début">
-              <img src="./images/calendar.gif" width="24" height="12" alt="calendar" />
-            </a>
+            <img id="paramFrm_deb_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de début"/>
           </td>
         </tr>
 
         <tr>
           <th><label for="paramFrm_fin">Fin:</label></th>
           <td class="date" colspan="2">
-            <div id="paramFrm_fin_fr">{$tomorrow|date_format:"%d/%m/%Y %H:%M"}</div>
+            <div id="paramFrm_fin_da">{$tomorrow|date_format:"%d/%m/%Y %H:%M"}</div>
             <input type="hidden" name="fin" value="{$tomorrow}" />
-            <a id="trigger_paramFrm_fin" href="#" title="Choisir une date de fin">
-              <img src="./images/calendar.gif" width="24" height="12" alt="calendar" />
-            </a>
+            <img id="paramFrm_fin_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de fin"/>
           </td>
         </tr>
 
