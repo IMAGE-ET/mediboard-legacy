@@ -46,7 +46,7 @@ function checkForm() {
             <option value="0">&mdash; Tous les utilisateurs</option>
             {foreach from=$users item=curr_user}
             <option value="{$curr_user->user_id}" {if $curr_user->user_id == $user_id} selected="selected" {/if}>
-              {$curr_user->user_last_name} {$curr_user->user_first_name}
+              {$curr_user->_view}
             </option>
             {/foreach}
           </select>
@@ -111,7 +111,7 @@ function checkForm() {
           <option value="0">&mdash; Choisir un utilisateur</option>
           {foreach from=$users item=curr_user}
           <option value="{$curr_user->user_id}" {if $curr_user->user_id == $pack->chir_id} selected="selected" {/if}>
-            {$curr_user->user_last_name} {$curr_user->user_first_name}
+            {$curr_user->_view}
           </option>
           {/foreach}
         </select>

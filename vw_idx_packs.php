@@ -19,7 +19,7 @@ if (!$canRead) {
 
 // Utilisateurs modifiables
 $users = new CMediusers;
-$users = $users->loadListFromType(null, PERM_EDIT);
+$users = $users->loadPraticiens(PERM_EDIT);
 
 // Filtres sur la liste des packs
 $where = null;
