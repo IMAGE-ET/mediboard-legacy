@@ -1,75 +1,92 @@
 <!-- $Id$ -->
 
-{literal}
 <script language="javascript">
+{literal}
 function checkForm() {
   var form = document.editFrm;
   var field = null;
   
-  if (field = form.chir_id)
+  if (field = form.chir_id) {
     if (field.value == 0) {
       alert("Chirurgien manquant");
       popChir();
       return false;
     }
+  }
 
-  if (field = form.pat_id)
+  if (field = form.pat_id) {
     if (field.value == 0) {
       alert("Patient manquant");
       popPat();
       return false;
     }
+  }
 
-  if (field = form.CCAM_code)
+{/literal}{if !$hospitalisation}{literal}
+
+  if (field = form.CCAM_code) {
     if (field.value.length == 0) {
       alert("Code CCAM Manquant");
       popCode('ccam');
       return false;
     }
+  }
+  
+{/literal}{/if}{literal}
 
 /* Bug in IE
-  if (form._hour_op.value == 0 && form._min_op.value == 0) {
-    alert("Temps opératoire invalide");
-    form.hour_op.focus();
-    return false;
+  field1 = form._hour_op;
+  field2 = form._min_op;
+  if (field1 && field2) {
+    if (field1.value == 0 && field2.value == 0) {
+      alert("Temps opératoire invalide");
+      form.hour_op.focus();
+      return false;
+    }
   }
 */
 
-  if (field = form.plageop_id)
+  if (field = form.plageop_id) {
     if (field.value == 0) {
       alert("Intervention non planifiée");
       popPlage();
       return false;
     }
+  }
 
-  if (field = form._date_rdv_adm)
+  if (field = form.date_adm) {
     if (field.value.length == 0) {
       alert("Admission: date manquante");
-      popCalendar('_rdv_adm', '_rdv_adm');
       return false;
     }
+  }
+    
 /* Bug in IE
-  if (field = form._hour_adm)
+  if (field = form._hour_adm) {
     if (field.value.length == 0) {
       alert("Admission: heure manquante");
       field.focus();
       return false;
     }
+  }
 */
 
-  if((field1 = form.type_adm) && (field2 = form.duree_hospi))
-    if(field1[0].checked && ((field2.value == 0) || (field2.value == ''))) {
+  field1 = form.type_adm;
+  field2 = form.duree_hospi;
+  if (field1 && field2) {
+    if (field1[0].checked && (field2.value == 0 || field2.value == '')) {
       field2.value = prompt("Veuillez saisir un temps d'hospitalisation prévu superieur à 0", "");
       field2.focus();
       return false;
     }
+  }
 
   return true;
 }
 
 function modifOp() {
   f = document.editFrm;
-  if(f.saisie.value == 'o') {
+  if (f.saisie.value == 'o') {
     f.modifiee.value = 1;
     f.saisie.value = 'n';
   }
@@ -84,12 +101,10 @@ function popChir() {
 
 function setChir( key, val ){
   var f = document.editFrm;
-   if (val != '') {
-      f.chir_id.value = key;
-      f._chir_name.value = val;
-      window.chir_id = key;
-      window._chir_name = val;
-    }
+  if (val != '') {
+     f.chir_id.value = key;
+     f._chir_name.value = val;
+  }
 }
 
 function popPat() {
@@ -105,8 +120,6 @@ function setPat( key, val ) {
   if (val != '') {
     f.pat_id.value = key;
     f._pat_name.value = val;
-    window.pat_id = key;
-    window._pat_name = val;
   }
 }
 
@@ -119,25 +132,13 @@ function popCode(type) {
   popup(600, 500, url, type);
 }
 
-function setCode( key, type ){
-  var f = document.editFrm;
-
-  if (key != '') {
-    if(type == 'ccam') {
-      if(f.CCAM_code.value != key) {
-        modifOp();
-      }
-      f.CCAM_code.value = key;
-      window.CCAM_code = key;
-    }
-    else if(type == 'ccam2') {
-      f.CCAM_code2.value = key;
-      window.CCAM_code2 = key;
-    }
-    else {
-      f.CIM10_code.value = key;
-      window.CIM10_code = key;
-    }
+function setCode( key, type ) {
+  if (key) {
+    var form = document.editFrm;
+    var field = form.CIM10_code;
+    if (type == 'ccam')  field = form.CCAM_code;
+    if (type == 'ccam2') field = form.CCAM_code2;
+    field.value = key;
   }
 }
 
@@ -151,11 +152,9 @@ function checkChir() {
       popChir();
       return false;
     }
-    else
-      return true;
   }
-  else
-    return false;
+
+  return true;
 }
 
 function popPlage() {
@@ -165,49 +164,30 @@ function popPlage() {
   url += '&chir=' + document.editFrm.chir_id.value;
   url += '&curr_op_hour=' + document.editFrm._hour_op.value;
   url += '&curr_op_min=' + document.editFrm._min_op.value;
-  if(checkChir())
+  if (checkChir())
     popup(400, 250, url, 'Plage');
 }
 
-function setPlage( key, val, adm ) {
-  var f = document.editFrm;
+function setPlage(plage_id, sDate, bAdmVeille) {
+  var form = document.editFrm;
 
-  if (key != '') {
-    f.plageop_id.value = key;
-    f.date.value = val;
-    window.plageop_id = key;
-    window.date = val;
-    var sdate = val;
-    if(sdate.slice(0,1) == "0")
-      var tmpday = parseInt(sdate.slice(1,2));
-    else
-      var tmpday = parseInt(sdate.slice(0,2));
-    if(sdate.slice(3,4) == "0")
-      var tmpmonth = parseInt(sdate.slice(4,5)) - 1;
-    else
-      var tmpmonth = parseInt(sdate.slice(3,5)) - 1;
-    var tmpyear = parseInt(sdate.slice(6,10));
-    var date = new Date(tmpyear, tmpmonth, tmpday);
-    if(adm) {
-      date.setDate(parseInt(date.getDate()) - 1);
-      f._hour_adm.value = 17;
+  if (plage_id) {
+    form.plageop_id.value = plage_id;
+    form.date.value = sDate;
+    
+    // Initialize adminission date according to operation date
+    var dAdm = makeDateFromLocaleDate(sDate);
+    dAdm.setHours(bAdmVeille ? 17 : 8);
+    if (bAdmVeille) {
+      dAdm.setDate(dAdm.getDate()-1);
     }
-    else {
-      f._hour_adm.value = 8;
-    }
-    var day = "" + date.getDate();
-    if(day.length == 1) {
-      day = "0" + day;
-    }
-    var month = "" + (date.getMonth() + 1);
-    if(month.length == 1) {
-      month = "0" + month;
-    }
-    var year = "" + date.getFullYear();
-    if(f._rdv_adm.value != day + "/" + month + "/" + year)
-      modifOp();
-    f._rdv_adm.value = day + "/" + month + "/" + year;
-    f._date_rdv_adm.value = year + month + day;
+    
+    form._hour_adm.value = dAdm.getHours();
+    form._min_adm.value = dAdm.getMinutes();
+    form.date_adm.value = makeDATEFromDate(dAdm);
+    
+    var div_rdv_adm = document.getElementById("editFrm_date_adm_da");
+    div_rdv_adm.innerHTML = makeLocaleDateFromDate(dAdm);
   }
 }
 
@@ -234,44 +214,20 @@ function setProtocole(
     prot_duree_hospi,
     prot_rques) {
 
-  var f = document.editFrm;
+  var form = document.editFrm;
   
-  f.chir_id.value       = chir_id;
-  f._chir_name.value    = chir_last_name + " " + chir_first_name;
-  f.CCAM_code.value     = prot_CCAM_code;
-  f._hour_op.value      = prot_hour_op;
-  f._min_op.value       = prot_min_op;
-  f.examen.value        = prot_examen;
-  f.materiel.value      = prot_materiel;
-  f.convalescence.value = prot_convalescence;
-  f.depassement.value   = prot_depassement;
-  f.type_adm.value      = prot_type_adm;
-  f.duree_hospi.value   = prot_duree_hospi;
-  f.rques.value         = prot_rques;
-}
-
-var calendarField = '';
-var calWin = null;
- 
-function popCalendar( field ) {
-  calendarField = field;
-  idate = eval( 'document.editFrm._date' + field + '.value' );
-  
-  var url =  'index.php?m=public';
-  url += '&a=calendar';
-  url += '&dialog=1';
-  url += '&callback=setCalendar';
-  url += '&date=' + idate;
-  popup(280, 250, url, 'calwin');
-}
-
-function setCalendar( idate, fdate ) {
-  fld_date = eval( 'document.editFrm._date' + calendarField );
-  fld_fdate = eval( 'document.editFrm.' + calendarField );
-  if((calendarField == '_rdv_adm') && (fld_date.value != idate))
-    modifOp();
-  fld_date.value = idate;
-  fld_fdate.value = fdate;
+  form.chir_id.value       = chir_id;
+  form._chir_name.value    = chir_last_name + " " + chir_first_name;
+  form.CCAM_code.value     = prot_CCAM_code;
+  form._hour_op.value      = prot_hour_op;
+  form._min_op.value       = prot_min_op;
+  form.examen.value        = prot_examen;
+  form.materiel.value      = prot_materiel;
+  form.convalescence.value = prot_convalescence;
+  form.depassement.value   = prot_depassement;
+  form.type_adm.value      = prot_type_adm;
+  form.duree_hospi.value   = prot_duree_hospi;
+  form.rques.value         = prot_rques;
 }
 
 function printDocument() {
@@ -289,53 +245,61 @@ function printDocument() {
     return false;
   }
 }
-  
+
 function printForm() {
   // @todo Pourquoi ne pas seulement passer le operation_id? ca parait bcp moins régressif
   // Rque : il est maintenant possible de passer l'operation_id, mais l'ancienne possibilité
   //        est gardée pour éviter la régréssion et surtout imprimer avant de créer...
   if (checkForm()) {
     form = document.editFrm;
-    if(form.chambre[0].checked)
-      chambre = 'o';
-    else
-      chambre = 'n';
-    if(form.type_adm[0].checked)
-      type_adm = 'comp';
-    else if(form.type_adm[1].checked)
-      type_adm = 'ambu';
-    else
-      type_adm = 'exte';
+    
+    chambre = form.chambre[0].checked ? 'o' : 'n';
+    if (form.type_adm[0].checked) type_adm = 'comp';
+    if (form.type_adm[1].checked) type_adm = 'ambu';
+    if (form.type_adm[2].checked) type_adm = 'exte';
+    
     url = './index.php?m=dPplanningOp';
     url += '&a=view_planning';
     url += '&dialog=1';
-    url += '&chir_id='     + eval('form.chir_id.value'     );
-    url += '&pat_id='      + eval('form.pat_id.value'      );
-    url += '&CCAM_code='   + eval('form.CCAM_code.value'   );
-    url += '&CCAM_code2='  + eval('form.CCAM_code2.value' );
-    url += '&cote='        + eval('form.cote.value'        );
-    url += '&hour_op='     + eval('form._hour_op.value'    );
-    url += '&min_op='      + eval('form._min_op.value'     );
-    url += '&date='        + eval('form.date.value'        );
-    url += '&info='        + eval('form.info.value'        );
-    url += '&rdv_anesth='  + eval('form._rdv_anesth.value' );
-    url += '&hour_anesth=' + eval('form._hour_anesth.value');
-    url += '&min_anesth='  + eval('form._min_anesth.value' );
-    url += '&rdv_adm='     + eval('form._rdv_adm.value'    );
-    url += '&hour_adm='    + eval('form._hour_adm.value'   );
-    url += '&min_adm='     + eval('form._min_adm.value'    );
-    url += '&duree_hospi=' + eval('form.duree_hospi.value' );
-    url += '&type_adm='    + eval('type_adm'               );
-    url += '&chambre='     + eval('chambre'                ); 
+    
+    url += makeURLParam(form.chir_id);
+    url += makeURLParam(form.pat_id);
+    url += makeURLParam(form.CCAM_code);
+    url += makeURLParam(form.CCAM_code2);
+    url += makeURLParam(form._hour_op, "hour_op");
+    url += makeURLParam(form._min_op , "min_op" );
+    url += makeURLParam(form.date);
+    url += makeURLParam(form.info);
+    
+    if (element = document.getElementById("editFrm_date_anesth_da")) {
+      url += '&rdv_anesth='  + element.innerHTML;
+      url += makeURLParam(form._hour_anesth, "hour_anesth");
+      url += makeURLParam(form._min_anesth , "min_anesth" );
+    }
+    
+    if (element = document.getElementById("editFrm_date_adm_da")) {
+      url += '&rdv_adm='  + element.innerHTML;
+      url += makeURLParam(form._hour_adm, "hour_adm");
+      url += makeURLParam(form._min_adm , "min_adm" );
+      url += makeURLParam(form.duree_hospi);
+      url += '&type_adm='    + type_adm;
+      url += '&chambre='     + chambre;
+    }
+
     popup(700, 500, url, 'printAdm');
-    return true
+    return true;
   }
-  else {
-    return false;
-  }
+  
+  return false;
 }
-</script>
+
+function pageMain() {
+  regPopupCalendar("editFrm", "date_anesth");
+  regPopupCalendar("editFrm", "date_adm");
+}
+
 {/literal}
+</script>
 
 <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkForm()">
 
@@ -351,37 +315,76 @@ function printForm() {
 <table class="main" style="margin: 4px; border-spacing: 0px;">
   {if $op->operation_id}
   <tr>
-    {if $protocole}
-    <td coslpan="2"><strong><a href="index.php?m={$m}&amp;protocole_id=0">Créer un nouveau protocole</a></strong></td>
+    {if $hospitalisation}
+    <td>
+      <strong>
+        <a href="index.php?m={$m}&amp;hospitalisation_id=0">Créer une nouvelle hospitalisation</a>
+      </strong>
+    </td>
+    <td>
+      <strong>
+        <a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$op->operation_id}&amp;trans=1">Programmer une intervention pour ce patient</a>
+      </strong>
+    </td>
     {else}
-    <td coslpan="2"><strong><a href="index.php?m={$m}&amp;operation_id=0">Créer une nouvelle intervention</a></strong></td>
+    <td colspan="2">
+      <strong>
+       {if $protocole}
+       <a href="index.php?m={$m}&amp;protocole_id=0">Créer un nouveau protocole</a>
+       {else}
+       <a href="index.php?m={$m}&amp;operation_id=0">Programmer une nouvelle intervention</a>
+       {/if}
+      </strong>
+    </td>
     {/if}
   </tr>
   {/if}
+
   <tr>
     {if $op->operation_id}
+      <th colspan="2" class="title" colspan="5" style="color: #f00;">
       {if $protocole}
-      <th colspan="2" class="title" colspan="5" style="color: #f00;">Modification du protocole {$op->CCAM_code} du Dr. {$chir->_view}</th>
+      Modification du protocole {$op->CCAM_code} du Dr. {$chir->_view}
+      {elseif $hospitalisation}
+      Modification de l'hospitalisation de {$pat->_view} par le Dr. {$chir->_view}
       {else}
-      <th colspan="2" class="title" colspan="5" style="color: #f00;">Modification de l'intervention de {$pat->_view} par le Dr. {$chir->_view}</th>
+      Modification de l'intervention de {$pat->_view} par le Dr. {$chir->_view}
       {/if}
+      </th>
     {else}
+      <th colspan="2" class="title" colspan="5">      
       {if $protocole}
-      <th colspan="2" class="title" colspan="5">Création d'un protocole</th>
+      Création d'un protocole
+      {elseif $hospitalisation}
+      Création d'une hospitalisation
       {else}
-      <th colspan="2" class="title" colspan="5">Création d'une intervention</th>
+      Création d'une intervention
       {/if}
+      </th>
     {/if}
   </tr>
+  
   <tr>
     <td>
   
       <table class="form">
-        <tr><th class="category" colspan="3">Informations concernant l'opération</th></tr>
+        <tr>
+          <th class="category" colspan="3">
+            {if $protocole}
+            Informations concernant le protocole
+            {elseif $hospitalisation}
+            Informations concernant l'hospitalisation
+            {else}
+            Informations concernant l'opération
+            {/if}
+          </th>
+        </tr>
 
         {if !$protocole}
         <tr>
-          <td class="button" colspan="3"><input type="button" value="Choisir un protocole" onclick="popProtocole()" /></td>
+          <td class="button" colspan="3">
+            <input type="button" value="Choisir un protocole" onclick="popProtocole()" />
+          </td>
         </tr>
         {/if}
         
@@ -404,6 +407,7 @@ function printForm() {
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
         
+        {if !$hospitalisation}
         <tr>
           <th class="mandatory">
             <input type="hidden" name="plageop_id" value="{$plage->id}" />
@@ -412,6 +416,7 @@ function printForm() {
           <td class="readonly"><input type="text" name="date" readonly="readonly" size="10" value="{$plage->_date}" /></td>
           <td class="button"><input type="button" value="choisir une date" onclick="popPlage()" /></td>
         </tr>
+        {/if}
         
         <tr>
           <th><label for="editFrm_CIM10_code">Diagnostic (CIM10):</label></th>
@@ -421,8 +426,8 @@ function printForm() {
         {/if}
 
         <tr>
-          <th class="mandatory"><label for="editFrm_CCAM_code">Acte médical (CCAM):</label></th>
-          <td><input type="text" name="CCAM_code" size="10" value="{$op->CCAM_code}"/></td>
+          <th {if !$hospitalisation}class="mandatory"{/if}><label for="editFrm_CCAM_code">Acte médical (CCAM):</label></th>
+          <td><input type="text" name="CCAM_code" size="10" value="{$op->CCAM_code}" onchange="modifOp()" /></td>
           <td class="button"><input type="button" value="selectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
 
@@ -439,9 +444,9 @@ function printForm() {
         
         {if !$protocole}
         <tr>
-          <th class="mandatory"><label for="editFrm_cote">Coté:</label></th>
+          <th class="mandatory"><label for="editFrm_cote">Côté:</label></th>
           <td colspan="2">
-            <select name="cote" onchange="modifOp()";>
+            <select name="cote" onchange="modifOp()">
               <option value="total"     {if !$op || $op->cote == "total"} selected="selected" {/if} >total</option>
               <option value="droit"     {if $op->cote == "droit"        } selected="selected" {/if} >droit    </option>
               <option value="gauche"    {if $op->cote == "gauche"       } selected="selected" {/if} >gauche   </option>
@@ -451,6 +456,7 @@ function printForm() {
         </tr>
         {/if}
 
+        {if !$hospitalisation}
         <tr>
           <th class="mandatory"><label for="editFrm__hour_op">Temps opératoire:</label></th>
           <td colspan="2">
@@ -467,7 +473,14 @@ function printForm() {
             </select>
           </td>
         </tr>
+        {/if}
         
+        {if $hospitalisation}
+        <tr>
+          <th><label for="editFrm_examen">Bilan pré-op</label></th>
+          <td colspan="2"><textarea name="examen" rows="3">{$op->examen}</textarea></td>
+        </tr>
+        {else}
         <tr>
           <td class="text"><label for="editFrm_examen">Bilan pré-op</label></td>
           <td class="text"><label for="editFrm_materiel">Matériel à prévoir / examens per-op</label></td>
@@ -479,6 +492,7 @@ function printForm() {
           <td><textarea name="materiel" rows="3">{$op->materiel}</textarea></td>
           <td><textarea name="convalescence" rows="3">{$op->convalescence}</textarea></td>
         </tr>
+        {/if}
         
         <tr>
           <th><label for="editFrm_depassement">Dépassement d'honoraire:</label></th>
@@ -503,17 +517,15 @@ function printForm() {
     <td>
 
       <table class="form">
-        {if !$protocole}
+        {if !$protocole && !$hospitalisation}
         <tr><th class="category" colspan="3">RDV d'anesthésie</th></tr>
 
         <tr>
-          <th><label for="editFrm__rdv_anesth">Date:</label></th>
-          <td class="readonly">
-            <input type="hidden" name="_date_rdv_anesth" value="{$op->_date_rdv_anesth}" />
-            <input type="text" name="_rdv_anesth" value="{$op->_rdv_anesth}" readonly="readonly" />
-            <a href="#" onClick="popCalendar('_rdv_anesth', '_rdv_anesth');">
-              <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
-            </a>
+          <th><label for="editFrm_date_anesth_trigger">Date:</label></th>
+          <td class="date">
+            <div id="editFrm_date_anesth_da">{$op->date_anesth|date_format:"%d/%m/%Y"}</div>
+            <input type="hidden" name="date_anesth" value="{$op->date_anesth}" onchange="modifOp()" />
+            <img id="editFrm_date_anesth_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de début" />
           </td>
         </tr>
 
@@ -539,13 +551,11 @@ function printForm() {
 
         {if !$protocole}
         <tr>
-          <th class="mandatory"><label for="editFrm__rdv_adm">Date:</label></th>
-          <td class="readonly">
-            <input type="hidden" name="_date_rdv_adm" value="{$op->_date_rdv_adm}" />
-            <input type="text" name="_rdv_adm" value="{$op->_rdv_adm}" readonly="readonly" />
-            <a href="#" onClick="popCalendar( '_rdv_adm', '_rdv_adm');">
-              <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
-            </a>
+          <th class="mandatory"><label for="editFrm_date_adm_trigger">Date:</label></th>
+          <td class="date">
+            <div id="editFrm_date_adm_da">{$op->date_adm|date_format:"%d/%m/%Y"}</div>
+            <input type="hidden" name="date_adm" value="{$op->date_adm}" onchange="modifOp()"/>
+            <img id="editFrm_date_adm_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de début" />
           </td>
         </tr>
 
@@ -645,7 +655,7 @@ function printForm() {
               </optgroup>
             </select>
             {else}
-            <input type="button" value="Imprimer et créer" onClick="if(printForm()) this.form.submit()" />
+            <input type="button" value="Imprimer et créer" onClick="if (printForm()) this.form.submit()" />
             {/if}
           {/if}
           </td>
@@ -655,6 +665,6 @@ function printForm() {
     </td>
   </tr>
 
-</table></tr></td></table>
+</table>
 
 </form>

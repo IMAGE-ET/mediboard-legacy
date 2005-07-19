@@ -78,19 +78,16 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('protocole', false);
+$smarty->assign('hospitalisation', true);
+
 $smarty->assign('op', $op);
-if($op) {
-  $smarty->assign('chir', $op->_ref_chir);
-  $smarty->assign('pat', $op->_ref_pat);
-  $smarty->assign('plage', $op->_ref_plageop);
-} else {
-  $smarty->assign('chir', $chir);
-  $smarty->assign('pat', $pat);
-  $smarty->assign('plage', null);
-}
+$smarty->assign('chir' , $op ? $op->_ref_chir    : $chir);
+$smarty->assign('pat'  , $op ? $op->_ref_pat     : $pat );
+$smarty->assign('plage', $op ? $op->_ref_plageop : null );
+
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);
 
-$smarty->display('vw_addedit_hospi.tpl');
+$smarty->display('vw_addedit_planning.tpl');
 
 ?>

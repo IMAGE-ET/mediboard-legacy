@@ -65,11 +65,9 @@ class COperation extends CDpObject {
   // Form fields
   var $_hour_op = null;
   var $_min_op = null;
-  var $_date_rdv_anesth = null;
   var $_hour_anesth = null;
   var $_min_anesth = null;
   var $_lu_type_anesth = null;
-  var $_date_rdv_adm = null;
   var $_hour_adm = null;
   var $_min_adm = null;
   var $_entree_adm = null;
@@ -153,16 +151,7 @@ class COperation extends CDpObject {
     $this->_hour_op = intval(substr($this->temp_operation, 0, 2));
     $this->_min_op  = intval(substr($this->temp_operation, 3, 2));
 
-    $this->_date_rdv_anesth = 
-      substr($this->date_anesth, 0, 4).
-      substr($this->date_anesth, 5, 2).
-      substr($this->date_anesth, 8, 2);
-    $this->_rdv_anesth = 
-      substr($this->date_anesth, 8, 2)."/".
-      substr($this->date_anesth, 5, 2)."/".
-      substr($this->date_anesth, 0, 4);
-      
-    if($this->type_anesth != null) {
+    if ($this->type_anesth != null) {
       $anesth = dPgetSysVal("AnesthType");
       $this->_lu_type_anesth = $anesth[$this->type_anesth];
     }
@@ -170,14 +159,6 @@ class COperation extends CDpObject {
     $this->_hour_anesth = substr($this->time_anesth, 0, 2);
     $this->_min_anesth  = substr($this->time_anesth, 3, 2);
 
-    $this->_date_rdv_adm = 
-      substr($this->date_adm, 0, 4).
-      substr($this->date_adm, 5, 2).
-      substr($this->date_adm, 8, 2);
-    $this->_rdv_adm = 
-      substr($this->date_adm, 8, 2)."/".
-      substr($this->date_adm, 5, 2)."/".
-      substr($this->date_adm, 0, 4);
     $this->_hour_adm = substr($this->time_adm, 0, 2);
     $this->_min_adm  = substr($this->time_adm, 3, 2);
 
@@ -186,17 +167,12 @@ class COperation extends CDpObject {
   }
   
   function updateDBFields() {
-  	if($this->_date_rdv_anesth !== null) {
-      $this->date_anesth = 
-        substr($this->_date_rdv_anesth, 0, 4)."-".
-        substr($this->_date_rdv_anesth, 4, 2)."-".
-        substr($this->_date_rdv_anesth, 6, 2);
-  	}
-  	if(($this->_hour_anesth !== null) && ($this->_min_anesth !== null)) {
+  	if ($this->_hour_anesth !== null and $this->_min_anesth !== null) {
       $this->time_anesth = 
         $this->_hour_anesth.":".
         $this->_min_anesth.":00";
   	}
+    
     if ($this->_lu_type_anesth) {
       $anesth = dPgetSysVal("AnesthType");
       foreach($anesth as $key => $value) {
@@ -204,46 +180,45 @@ class COperation extends CDpObject {
           $this->type_anesth = $key;
       }
     }
-    if($this->_date_rdv_adm !== null) {
-    $this->date_adm = 
-      substr($this->_date_rdv_adm, 0, 4)."-".
-      substr($this->_date_rdv_adm, 4, 2)."-".
-      substr($this->_date_rdv_adm, 6, 2);
+
+    if ($this->_hour_adm !== null and $this->_min_adm !== null) {
+      $this->time_adm = 
+        $this->_hour_adm.":".
+        $this->_min_adm.":00";
     }
-    if(($this->_hour_adm !== null) && ($this->_min_adm !== null)) {
-    $this->time_adm = 
-      $this->_hour_adm.":".
-      $this->_min_adm.":00";
-    }
-    if(($this->_hour_op !== null) && ($this->_min_op !== null)) {
-    $this->temp_operation = 
-      $this->_hour_op.":".
-      $this->_min_op.":00";
+
+    if ($this->_hour_op !== null and $this->_min_op !== null) {
+      $this->temp_operation = 
+        $this->_hour_op.":".
+        $this->_min_op.":00";
     }
   }
   
   function store() {
-    if($msg = parent::store())
+    if ($msg = parent::store())
       return $msg;
-    if($this->annulee) {
+
+    if ($this->annulee) {
       $this->reorder();
       $this->delAff();
     }
+    
     // Cas de la création dans une plage de spécialité
     $plageTmp = new CPlageOp;
     $plageTmp->load($this->plageop_id);
-    if($plageTmp->id_spec) {
+    if ($plageTmp->id_spec) {
       $plageTmp->id_spec = 0;
       $chirTmp = new CMediusers;
       $chirTmp->load($this->chir_id);
       $plageTmp->id_chir = $chirTmp->_user_username;
       $plageTmp->store();
     }
+    
     // Cas ou on a une premiere affectation d'entrée différente
     // à l'heure d'admission
     $affTmp = new CAffectation;
     $affTmp = $this->getFirstAffectation();
-    if($affTmp->affectation_id && ($affTmp->entree != $this->date_adm." ".$this->time_adm)) {
+    if ($affTmp->affectation_id && ($affTmp->entree != $this->date_adm." ".$this->time_adm)) {
       $affTmp->entree = $this->date_adm." ".$this->time_adm;
       $affTmp->store();
     }
