@@ -5,7 +5,7 @@
 function checkForm() {
   var form = document.paramFrm;
     
-  if (form.date_deb.value > form.date_fin.value) {
+  if (form.deb.value > form.fin.value) {
     alert("Date de début superieure à la date de fin");
     return false;
   }
@@ -30,8 +30,8 @@ function setCode( key, type ) {
 function popPlanning() {
   form = document.paramFrm;
   var url = './index.php?m=dPbloc&a=view_planning&dialog=1';
-  url += '&debut=' + form.date_deb.value;
-  url += '&fin='   + form.date_fin.value;
+  url += '&deb='   + form.deb.value;
+  url += '&fin='   + form.fin.value;
   url += '&vide='  + form.vide.checked;
   url += '&CCAM='  + form.CCAM_code.value;
   url += '&type='  + form.type.value;
@@ -61,7 +61,7 @@ function pageMain() {
           <th><label for="paramFrm_deb" title="Date de début de la recherche">Début:</label></th>
           <td class="date" colspan="2">
             <div id="paramFrm_deb_da">{$deb|date_format:"%d/%m/%Y"}</div>
-            <input type="hidden" name="date_deb" value="{$deb}" />
+            <input type="hidden" name="deb" value="{$deb}" />
             <img id="paramFrm_deb_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de début"/>
           </td>
         </tr>
@@ -69,7 +69,7 @@ function pageMain() {
           <th><label for="paramFrm_fin" title="Date de fin de la recherche">Fin:</label></th>
           <td class="date" colspan="2">
             <div id="paramFrm_fin_da">{$fin|date_format:"%d/%m/%Y"}</div>
-            <input type="hidden" name="date_fin" value="{$fin}" />
+            <input type="hidden" name="fin" value="{$fin}" />
             <img id="paramFrm_fin_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de fin"/>
           </td>
         </tr>

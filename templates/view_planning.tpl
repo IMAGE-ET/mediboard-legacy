@@ -15,7 +15,16 @@ function printAdmission(id) {
 {/literal}
 
 <table class="main">
-  <tr><th><a href="javascript:window.print()">Planning du {$date}</a></th></tr>
+  <tr>
+    <th>
+      <a href="javascript:window.print()">
+        Planning du {$deb|date_format:"%d/%m/%Y"}
+        {if $deb != $fin}
+        au {$fin|date_format:"%d/%m/%Y"}
+        {/if}
+      </a>
+    </th>
+  </tr>
   {foreach from=$plagesop item=curr_plageop}
   <tr>
     <td>
@@ -39,7 +48,7 @@ function printAdmission(id) {
           <th>Anesthésie</th>
           <th>Hospi</th>
 		  <th>Remarques</th>
-		  <th>Materiel</th>
+		  <th>Matériel</th>
 		  <th>Nom - Prénom</th>
 		  <th>Age</th>
 		  <th>Chambre</th>

@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -17,14 +17,9 @@ require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('dPbloc', 'plagesop'));
 require_once( $AppUI->getModuleClass('dPhospi', 'affectation'));
 
-$debut = dPgetParam( $_GET, 'debut', date("Ymd") );
-$dayd = intval(substr($debut, 6, 2));
-$monthd = intval(substr($debut, 4, 2));
-$yeard = substr($debut, 0, 4);
-$fin = dPgetParam( $_GET, 'fin', date("Ymd") );
-$dayf = intval(substr($fin, 6, 2));
-$monthf = intval(substr($fin, 4, 2));
-$yearf = substr($fin, 0, 4);
+$deb = mbGetValueFromGetOrSession("deb", mbDate());
+$fin = mbGetValueFromGetOrSession("fin", mbDate());
+
 $vide = dPgetParam( $_GET, 'vide', false );
 $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
@@ -32,35 +27,34 @@ $spe = dPgetParam( $_GET, 'spe', 0);
 $salle = dPgetParam( $_GET, 'salle', 0 );
 $CCAM = dPgetParam( $_GET, 'CCAM', '' );
 
-$dayOfWeekList = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
-$monthList = array("", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet",
-					"Aout", "Septembre", "Octobre", "Novembre", "Décembre");
-
-$dayOfWeekd = date("w", mktime(0, 0, 0, $monthd, $dayd, $yeard));
-$dayOfWeekf = date("w", mktime(0, 0, 0, $monthf, $dayf, $yearf));
-$date = $dayOfWeekList[$dayOfWeekd]." $dayd ".$monthList[$monthd]." $yeard";
-if($debut != $fin) {
-  $date .= " au ".$dayOfWeekList[$dayOfWeekf]." $dayf ".$monthList[$monthf]." $yearf";
-}
-
 //On sort les plages opératoires
 //  Chir - Salle - Horaires
 
 $plagesop = new CPlageOp;
 
-$ljoin = array();
 $where = array();
+$where["date"] =  "BETWEEN '$deb' AND '$fin'";
+
+$ljoin = array();
 $ljoin["users"] = "plagesop.id_chir = users.user_username";
 $ljoin["sallesbloc"] = "plagesop.id_salle = sallesbloc.id";
-$where[] = "date >= '$yeard-$monthd-$dayd' AND date <= '$yearf-$monthf-$dayf'";
-if($chir) {
+
+$order = array();
+$order[] = "date";
+$order[] = "id_salle";
+$order[] = "debut";
+
+// En fonction du chirurgien
+if ($chir) {
   $sql = "SELECT user_username
            FROM users
            WHERE user_id = '$chir'";
   $chir_id = db_loadlist($sql);
   $where["id_chir"] = "= '".$chir_id[0]["user_username"]."'";
 }
-if($spe) {
+
+// En fonction du cabinet
+if ($spe) {
   $sql = "SELECT user_username " .
   		"FROM users, users_mediboard " .
   		"WHERE users.user_id = users_mediboard.user_id " .
@@ -69,34 +63,31 @@ if($spe) {
   $inSpe = array();
   foreach($listChirs as $key =>$value)
     $inSpe[] = "'".$value["user_username"]."'";
-  $where[] = "id_chir IN(".implode(", ", $inSpe).")";
+  $where["id_chir"] = "IN(".implode(", ", $inSpe).")";
 }
-if($salle) {
+
+// En fonction de la salle
+if ($salle) {
   $where["id_salle"] = "= '$salle'";
 }
-$order = "plagesop.date, plagesop.id_salle, plagesop.debut";
+
 $plagesop = $plagesop->loadList($where, $order, null, null, $ljoin);
 
-//Operations de chaque plage
-//  Patient - ...
+// Operations de chaque plage
 foreach($plagesop as $key=>$value) {
   $plagesop[$key]->loadRefsFwd();
   $listOp = new COperation;
   $where = array();
   $where["plageop_id"] = "= '".$value->id."'";
-  switch($type) {
-    case "1" : {
-      $where["rank"] = "!= '0'";
-      break;
-    }
-    case "2" : {
-      $where["rank"] = "= '0'";
-      break;
-    }
+  switch ($type) {
+    case "1" : $where["rank"] = "!= '0'"; break;
+    case "2" : $where["rank"] = "= '0'"; break;
   }
-  if($CCAM != "") {
+  
+  if ($CCAM) {
     $where["CCAM_code"] = "LIKE '$CCAM%'";
   }
+  
   $order = "operations.rank";
   $listOp = $listOp->loadList($where, $order);
   if((sizeof($listOp) == 0) && ($vide == "false"))
@@ -119,7 +110,8 @@ foreach($plagesop as $key=>$value) {
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('date', $date);
+$smarty->assign('deb', $deb);
+$smarty->assign('fin', $fin);
 $smarty->assign('plagesop', $plagesop);
 
 $smarty->display('view_planning.tpl');
