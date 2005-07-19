@@ -51,7 +51,7 @@ function pageMain() {
         <optgroup label="Chirurgiens">
         {foreach from=$chirs item=chir}
           <option value="{$chir->user_username}" {if $plagesel->id_chir == $chir->user_username} selected="selected" {/if} >
-            Dr. {$chir->user_last_name} {$chir->user_first_name}
+            Dr. {$chir->_view}
           </option>
         {/foreach}
         </optgroup>
@@ -59,7 +59,7 @@ function pageMain() {
         <optgroup label="Anesthésistes">
         {foreach from=$anesths item=anesth}
           <option value="{$anesth->user_username}" {if $plagesel->id_anesth == $anesth->user_username} selected="selected" {/if} >
-            Dr. {$anesth->user_last_name} {$anesth->user_first_name}
+            Dr. {$anesth->_view}
           </option>
         {/foreach}
         </optgroup>
@@ -104,7 +104,7 @@ function pageMain() {
         <option value="0">-- Choisir un anesthésiste</option>
       {foreach from=$anesths item=anesth}
         <option value="{$anesth->user_username}" {if $plagesel->id_anesth == $anesth->user_username} selected="selected" {/if} >
-          Dr. {$anesth->user_last_name} {$anesth->user_first_name}
+          Dr. {$anesth->_view}
         </option>
       {/foreach}
 	  </select>
