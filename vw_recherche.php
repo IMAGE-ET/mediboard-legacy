@@ -20,7 +20,7 @@ require_once($AppUI->getModuleClass("dPhospi", "affectation"));
 $typeVue = mbGetValueFromGetOrSession("typeVue");
 $selPrat = mbGetValueFromGetOrSession("selPrat");
 
-$date_recherche = mbGetValueFromGetOrSession("date_recherche", mbDateTime());
+$date_recherche = mbDateTime(null, mbGetValueFromGetOrSession("date_recherche", mbDateTime()));
 
 // Liste des chirurgiens
 $listPrat = new CMediusers();
