@@ -17,32 +17,13 @@ require_once($AppUI->getModuleClass("mediusers"));
 require_once($AppUI->getModuleClass("dPhospi", "affectation"));
 
 // Récupération des paramètres
-$hour = dPgetParam($_GET, "hour", date("H"));
-$min = dPgetParam($_GET, "min", date("i"));
-$day = dPgetParam($_GET, "day", date("d"));
-$month = dPgetParam($_GET, "month", date("m")-1);
-$year = dPgetParam($_GET, "year", date("Y"));
+$typeVue = mbGetValueFromGetOrSession("typeVue");
+$selPrat = mbGetValueFromGetOrSession("selPrat");
 
-$typeVue = mbGetValueFromGetOrSession("typeVue", 0);
-$selPrat = mbGetValueFromGetOrSession("selPrat", 0);
-
-$recMonth = $month + 1;
-if(strlen($recMonth) == 1)
-  $recMonth = "0".$recMonth;
-$recDay = $day;
-if(strlen($recDay) == 1)
-  $recDay = "0".$recDay;
-$recHour = $hour;
-if(strlen($recHour) == 1)
-  $recHour = "0".$recHour;
-$recMin = $min;
-if(strlen($recMin) == 1)
-  $recMin = "0".$recMin;
-
-if($typeVue)
-  $date = $year."-".$recMonth."-".$recDay;
-else
-  $date = $year."-".$recMonth."-".$recDay." ".$recHour.":".$recMin.":00";
+$date = mbGetValueFromGetOrSession("date", mbDateTime());
+if ($typeVue) {
+  $date = mbDate(null, $date);
+}
 
 // Liste des chirurgiens
 $listPrat = new CMediusers();
@@ -121,16 +102,11 @@ $libre = null;
 require_once($AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
-$smarty->assign('hour', $hour);
-$smarty->assign('min', $min);
-$smarty->assign('day', $day);
-$smarty->assign('month', $month);
-$smarty->assign('year', $year);
 $smarty->assign('date', $date);
+$smarty->assign('libre', $libre);
 $smarty->assign('typeVue', $typeVue);
 $smarty->assign('selPrat', $selPrat);
 $smarty->assign('listPrat', $listPrat);
-$smarty->assign('libre', $libre);
 $smarty->assign('listAff', $listAff);
 
 $smarty->display('vw_recherche.tpl');

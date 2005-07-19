@@ -1,42 +1,16 @@
 <script language="JavaScript" type="text/javascript">
 {literal}
 
-function pageMain() {
-  Calendar.setup( {
-      flat         : "calendar-container",
-      flatCallback : dateChanged         ,
-	  showsTime    : true,
-      date         : {/literal}new Date({$year}, {$month}, {$day}, {$hour}, {$min}, 0){literal}
-    }
-  );
-}
-
-function dateChanged(calendar) {
-  if (calendar.dateClicked) {
-    var y = calendar.date.getFullYear();
-    var m = calendar.date.getMonth();
-    var d = calendar.date.getDate();
-    var h  = calendar.date.getHours();
-    var mi = calendar.date.getMinutes();
-   
-    var url = "index.php?m={/literal}{$m}{literal}";
-    url += "&tab={/literal}{$tab}{literal}";
-    url += "&year="  + y;
-    url += "&month=" + m;
-    url += "&day="   + d;
-    url += "&hour="  + h;
-    url += "&min="   + mi;
-
-    window.location = url;
-  }
-}
-
 function popPlanning() {
-  var url = '?m=dPhospi&a=vw_affectations&dialog=1';
-  {/literal}
-  url += '&day=' + {$day} + '&month=' + {$month} + '&year=' + {$year}
-  {literal}
+  var url = "?m=dPhospi&a=vw_affectations&dialog=1";
+  url += "&date={/literal}{$date}{literal}";  
   popup(700, 550, url, 'Planning');
+}
+
+function pageMain() {
+  {/literal}
+  regFlatCalendar("calendar-container", "{$date}", "index.php?m={$m}&tab={$tab}&date=" {if !$typeVue}, true{/if});
+  {literal}
 }
 
 {/literal}
@@ -60,7 +34,7 @@ function popPlanning() {
     </td>
     {else}
     <td class="Pane">
-      <strong><a href="#" onclick="popPlanning()">Etat des services</a></strong>
+      <strong><a href="javascript:popPlanning()">Etat des services</a></strong>
     </td>
     {/if}
     <td style="text-align: right;">
