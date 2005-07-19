@@ -1,5 +1,15 @@
 // $Id$
 
+function makeURLParam(field, sParamName) {
+  if (!field) return null;
+
+  if (!sParamName) {
+    sParamName = field.name;
+  }
+
+  return "&" + sParamName + "=" + field.value;
+}
+
 function popup(width, height, url, name) {
   params = 'left=50, top=50, height=' + height + ', width=' + width
   params += ', resizable=yes, scrollbars=yes, menubar=yes';
@@ -217,6 +227,19 @@ function makeDateFromDATE(sDate) {
   return new Date(year, month - 1, day); // Js months are 0-11!!
 }
 
+
+function makeDateFromLocaleDate(sDate) {
+  // sDate must be: dd/mm/yyyy
+  var aParts = sDate.split("/");
+  if (aParts.length != 3) throwError("Bad Display date format");
+
+  var year  = parseInt(aParts[2]);
+  var month = parseInt(aParts[1]);
+  var day   = parseInt(aParts[0]);
+  
+  return new Date(year, month - 1, day); // Js months are 0-11!!
+}
+
 function makeDATEFromDate(date) {
   var y = date.getFullYear();
   var m = date.getMonth()+1; // Js months are 0-11!!
@@ -224,4 +247,62 @@ function makeDATEFromDate(date) {
   
   var sDate = "" + y + "-" + m + "-" + d; 
   return sDate;
+}
+
+function makeLocaleDateFromDate(date) {
+  var y = date.getFullYear();
+  var m = date.getMonth()+1; // Js months are 0-11!!
+  var d = date.getDate();
+  
+  var sDate = "" + d + "/" + m + "/" + y; 
+  return sDate;
+}
+
+function makeDATETIMEFromDate(date) {
+  var h = date.getHours();
+  var m = date.getMinutes();
+  var d = date.getSeconds();
+  
+  var sDate = makeDATEFromDate(date) + " " + h + ":" + m + ":" + s; 
+  return sDate;
+}
+
+function regFlatCalendar(sContainerId, sInitDATE, sRedirectBase) {
+  Calendar.setup( {
+      date         : makeDateFromDATE(sInitDATE) ,
+      flat         : sContainerId,
+      flatCallback : function(calendar) { 
+        window.location = sRedirectBase + makeDATEFromDate(calendar.date);
+      }
+    } 
+  );
+}
+
+function regPopupCalendar(sFormName, sFieldName, sRedirectBase, bTime) {
+  if (bTime == null) bTime = false;
+  
+  var sInputId = sFormName + "_" + sFieldName;
+  
+  if (!document.getElementById(sInputId)) {
+    return;
+  }
+
+  Calendar.setup( {
+      inputField  : sInputId,
+      displayArea : sInputId + "_da",
+      ifFormat    : "%Y-%m-%d" + (bTime ? " %H:%M" : ""),
+      daFormat    : "%d/%m/%Y" + (bTime ? " %H:%M" : ""),
+      button      : sInputId + "_trigger",
+      showsTime   : bTime,
+      onUpdate    : function(calendar) { 
+        if (calendar.dateClicked && sRedirectBase) {
+          var sUrl = sRedirectBase;
+          sUrl += bTime ? 
+          	makeDATETIMEFromDate(calendar.date) : 
+          	makeDATEFromDate(calendar.date)
+          window.location = sUrl;
+        }
+      }
+    } 
+  );
 }
