@@ -14,7 +14,7 @@ require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'tarif') );
 
 $deb = mbDate();
-$fin = mbDate("+ 1 day");
+$fin = mbDate("+ 0 day");
 
 // Edite t'on un tarif ?
 $tarif_id = mbGetValueFromGetOrSession("tarif_id", null);

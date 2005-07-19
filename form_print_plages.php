@@ -18,7 +18,7 @@ if (!$canRead) {
 }
 
 $deb = mbDate();
-$fin = mbDate("+ 1 day");
+$fin = mbDate("+ 0 day");
 
 // Liste des chirurgiens
 $mediusers = new CMediusers();
