@@ -79,13 +79,24 @@ class CTemplateManager {
   }
   
   function applyTemplate($template) {
-    assert(is_a($template, "CCompteRendu"));
+    assert(is_a($template, "CCompteRendu") && is_a($template, "CPack"));
     
-    if (!$this->valueMode) {
-      $this->SetFields($template->type, $template->chir_id);
-    }
+    if(is_a($template, "CCompteRendu")) {
+    
+      if (!$this->valueMode) {
+        $this->SetFields($template->type, $template->chir_id);
+      }
 
-    $this->renderDocument($template->source);
+      $this->renderDocument($template->source);
+    
+    } else {
+    
+      if (!$this->valueMode) {
+        $this->SetFields('hospitalisation', $template->chir_id);
+      }
+
+      $this->renderDocument($template->_source);
+    }
   }
   
   function initHTMLArea () {

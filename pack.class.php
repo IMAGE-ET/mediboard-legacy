@@ -24,9 +24,10 @@ class CPack extends CDpObject {
   var $modeles = null;
   
   // Form fields
-  var $_modeles;
-  var $_new;
-  var $_del;
+  var $_modeles = null;
+  var $_new = null;
+  var $_del = null;
+  var $_source = null;
   
   // Referenced objects
   var $_ref_chir = null;
@@ -43,11 +44,13 @@ class CPack extends CDpObject {
   
   function updateFormFields() {
   	$this->_modeles = array();
+    $this->_source = "";
     if($this->modeles != '') {
       $modeles = explode("|", $this->modeles);
       foreach($modeles as $key => $value) {
         $this->_modeles[$value] = new CCompteRendu;
-        $this->_modeles[$value]->load($value);        
+        $this->_modeles[$value]->load($value);
+        $this->_source .= $this->_modeles[$value]->source.'<br style="page-break-after:always" />';        
       }
     }
   }
