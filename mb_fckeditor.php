@@ -7,14 +7,16 @@ $connectorPath = "lib/fckeditor/editor/filemanager/browser/default/connectors/ph
 require_once($mbPath . $connectorPath);
 
 $runningUserFilePath  = $Config['UserFilesPath'];
-$correctUserFilePath = "/Mediboard/UserFiles/";
+$correctUserFilePath1 = "/Mediboard/UserFiles/";
+$correctUserFilePath2 = "/dotproject/UserFiles/";
 
 $runningEnabled = $Config['Enabled'];
 $correctEnabled = true;
 
 $configAlert = null;
-if ($runningUserFilePath != $correctUserFilePath or
-    $runningEnabled != $correctEnabled) {
+if (($runningUserFilePath != $correctUserFilePath1
+     and $runningUserFilePath != $correctUserFilePath2)
+    or $runningEnabled != $correctEnabled) {
   $configAlert = "FCKEditor file connector not configured properly." .
       "\n\nFile $connectorPath" .
       "\nShould contain these lines: " .
