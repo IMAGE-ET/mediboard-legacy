@@ -79,7 +79,7 @@ class CTemplateManager {
   }
   
   function applyTemplate($template) {
-    assert(is_a($template, "CCompteRendu") && is_a($template, "CPack"));
+    assert(is_a($template, "CCompteRendu") || is_a($template, "CPack"));
     
     if(is_a($template, "CCompteRendu")) {
     
