@@ -146,7 +146,7 @@ function checkForm() {
   
     <table class="form">
       {if $pack->_modeles|@count}
-      <tr><th class="category" colspan="2">Modeles diponibles</th></tr>
+      <tr><th class="category" colspan="2">Modèles du pack</th></tr>
       {foreach from=$pack->_modeles item=curr_modele}
       <tr><td>{$curr_modele->nom}</td>
         <td>
@@ -162,7 +162,7 @@ function checkForm() {
       </tr>
       {/foreach}
       {/if}
-      <tr><th class="category" colspan="2">Ajouter un modele</th></tr>
+      <tr><th class="category" colspan="2">Ajouter un modèle</th></tr>
       <tr><td colspan="2">
         <form name="addFrm" action="?m={$m}" method="post" onsubmit="return checkForm()">
         <input type="hidden" name="dosql" value="do_pack_aed" />
@@ -170,9 +170,17 @@ function checkForm() {
         <input type="hidden" name="del" value="0" />
         <input type="hidden" name="modeles" value="{$pack->modeles|escape:javascript}" />
         <select name="_new">
-        {foreach from=$listModeles item=curr_modele}
-          <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
-        {/foreach}
+          <option value="">&mdash; Choisir un modèle</option>
+          <optgroup label="Modèles du praticien">
+            {foreach from=$listModelePrat item=curr_modele}
+            <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+            {/foreach}
+          </optgroup>
+          <optgroup label="Modèles du cabinet">
+            {foreach from=$listModeleFunc item=curr_modele}
+            <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+            {/foreach}
+          </optgroup>
         </select>
         <button type="submit"><img src="modules/dPcompteRendu/images/check.png" /></button>
         </form>
