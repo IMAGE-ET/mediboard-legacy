@@ -65,7 +65,10 @@ foreach($_POST as $key => $value) {
     $values[] = "$value";
   }
 }
-$CR->source = str_replace($fields, $values, $CR->source);
+if($document_id)
+  $CR->source = str_replace($fields, $values, $CR->source);
+else
+  $CR->_source = str_replace($fields, $values, $CR->_source);
 
 // Gestion du template
 $templateManager = new CTemplateManager;
