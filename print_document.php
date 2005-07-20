@@ -12,6 +12,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('mediusers'));
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'pack'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'listeChoix'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'templatemanager'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie'));
@@ -22,6 +23,7 @@ if (!$canEdit) {
 
 $operation_id = dPgetParam($_GET, "operation_id", dPgetParam($_POST, "operation_id", 0));
 $document_id = dPgetParam($_GET, "document_id", dPgetParam($_POST, "document_id", 0));
+$pack_id = dPgetParam($_GET, "pack_id", dPgetParam($_POST, "pack_id", 0));
 
 if (!$operation_id) {
   $AppUI->setmsg("Vous devez choisir une intervention", UI_MSG_ALERT);
@@ -41,8 +43,13 @@ $medichir = new CMediusers();
 $medichir->load($op->_ref_chir->user_id);
 
 // Chargement du document
-$CR = new CCompteRendu;
-$CR->load($document_id);
+if($document_id) {
+  $CR = new CCompteRendu;
+  $CR->load($document_id);
+} else {
+  $CR = new CPack;
+  $CR->load($pack_id);
+}
 
 // Application des listes
 $fields = array();
@@ -88,6 +95,7 @@ $smarty = new CSmartyDP;
 $smarty->assign('templateManager', $templateManager);
 $smarty->assign('op', $op);
 $smarty->assign('CR', $CR);
+$smarty->assign('type', is_a($CR, "CCompteRendu"));
 $smarty->assign('lists', $lists);
 
 $smarty->display('print_document.tpl');

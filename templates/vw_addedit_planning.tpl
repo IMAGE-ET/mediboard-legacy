@@ -246,6 +246,22 @@ function printDocument() {
   }
 }
 
+function printPack() {
+  form = document.editFrm;
+  if(checkForm() && (form._choix_pack.value != 0)) {
+    url = './index.php?m=dPplanningOp';
+    url += '&a=print_document';
+    url += '&dialog=1';
+    url += '&operation_id=' + eval('form.operation_id.value');
+    url += '&pack_id='  + eval('form._choix_pack.value'     );
+    popup(700, 500, url, 'printAdm');
+    return true
+  }
+  else {
+    return false;
+  }
+}
+
 function printForm() {
   // @todo Pourquoi ne pas seulement passer le operation_id? ca parait bcp moins régressif
   // Rque : il est maintenant possible de passer l'operation_id, mais l'ancienne possibilité
@@ -653,6 +669,12 @@ function pageMain() {
                 <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
               {/foreach}
               </optgroup>
+            </select>
+            <select name="_choix_pack" onchange="printPack()">
+              <option value="">&mdash; Choisir un pack</option>
+              {foreach from=$listPack item=curr_pack}
+                <option value="{$curr_pack->pack_id}">{$curr_pack->nom}</option>
+              {/foreach}
             </select>
             {else}
             <input type="button" value="Imprimer et créer" onClick="if (printForm()) this.form.submit()" />

@@ -12,6 +12,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'pack') );
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -89,6 +90,15 @@ if ($op->chir_id) {
   $listModeleFunc = $listModeleFunc->loadlist($where, $order);
 }
 
+// Packs d'hospitalisation
+$listPack = array();
+if($op->chir_id) {
+  $where = array();
+  $where["chir_id"] = "= '".$op->_ref_chir->user_id."'";
+  $listPack = new CPack;
+  $listPack = $listPack->loadlist($where, $order);
+}
+
 // Heures & minutes
 $start = 7;
 $stop = 20;
@@ -116,6 +126,7 @@ $smarty->assign('plage', $op ? $op->_ref_plageop : null );
 
 $smarty->assign('listModelePrat', $listModelePrat);
 $smarty->assign('listModeleFunc', $listModeleFunc);
+$smarty->assign('listPack'      , $listPack      );
 
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);

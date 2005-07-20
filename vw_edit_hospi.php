@@ -12,6 +12,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'pack') );
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -60,6 +61,38 @@ if ($operation_id) {
   $op->loadRefs();
 }
 
+// Récupération des modèles
+$whereCommon = array();
+$whereCommon["type"] = "= 'hospitalisation'";
+$order = "nom";
+
+// Modèles de l'utilisateur
+$listModelePrat = array();
+if ($op->chir_id && $mediuser->isPraticien()) {
+  $where = $whereCommon;
+  $where["chir_id"] = "= '".$op->_ref_chir->user_id."'";
+  $listModelePrat = new CCompteRendu;
+  $listModelePrat = $listModelePrat->loadlist($where, $order);
+}
+
+// Modèles de la fonction
+$listModeleFunc = array();
+if ($op->chir_id && $mediuser->isPraticien()) {
+  $where = $whereCommon;
+  $where["function_id"] = "= '".$op->_ref_chir->function_id."'";
+  $listModeleFunc = new CCompteRendu;
+  $listModeleFunc = $listModeleFunc->loadlist($where, $order);
+}
+
+// Packs d'hospitalisation
+$listPack = array();
+if($op->chir_id && $mediuser->isPraticien()) {
+  $where = array();
+  $where["chir_id"] = "= '".$op->_ref_chir->user_id."'";
+  $listPack = new CPack;
+  $listPack = $listPack->loadlist($where, $order);
+}
+
 // Heures & minutes
 $start = 0;
 $stop = 24;
@@ -84,6 +117,10 @@ $smarty->assign('op', $op);
 $smarty->assign('chir' , $op ? $op->_ref_chir    : $chir);
 $smarty->assign('pat'  , $op ? $op->_ref_pat     : $pat );
 $smarty->assign('plage', $op ? $op->_ref_plageop : null );
+
+$smarty->assign('listModelePrat', $listModelePrat);
+$smarty->assign('listModeleFunc', $listModeleFunc);
+$smarty->assign('listPack'      , $listPack      );
 
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);
