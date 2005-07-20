@@ -20,7 +20,8 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$date = mbGetValueFromGetOrSession("date", mbDate()); 
+$date = mbGetValueFromGetOrSession("date", mbDate());
+$today = mbDate();
 
 // Utilisateur sélectionné ou utilisateur courant
 $prat_id = mbGetValueFromGetOrSession("chirSel");
@@ -157,6 +158,7 @@ $smarty->assign('date' , $date );
 
 $smarty->assign('vue', $vue);
 
+$smarty->assign('today', $today);
 $smarty->assign('listPlage', $listPlage);
 $smarty->assign('listModelePrat', $listModelePrat);
 $smarty->assign('listModeleFunc', $listModeleFunc);
