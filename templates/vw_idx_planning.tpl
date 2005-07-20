@@ -31,6 +31,20 @@ function supprimerCompteRendu(form) {
   }
 }
 
+function pageMain() {
+  Calendar.setup( {
+      button      : "changeDate",
+      align       : "Bc",
+      date        : makeDateFromDATE("{/literal}{$date}{literal}"),
+      onUpdate    : function(calendar) { 
+        {/literal}
+        window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
+        {literal}
+      }
+    } 
+  );
+}
+
 </script>
 {/literal}
 
@@ -59,14 +73,11 @@ function supprimerCompteRendu(form) {
 
   <tr>
     <th>
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$pmonthd}&amp;month={$pmonth}&amp;year={$pmonthy}">&lt;&lt</a>
-      {$title1}
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$nmonthd}&amp;month={$nmonth}&amp;year={$nmonthy}">&gt;&gt;</a>
+      {$date|date_format:"%B %Y"}
+      <img id="changeDate" src="./images/calendar.gif" width="24" height="12" title="Choisir la date" alt="calendar" />
     </th>
     <th class="greedyPane">
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$pday}&amp;month={$pdaym}&amp;year={$pdayy}">&lt;&lt</a>
-      {$title2}
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;day={$nday}&amp;month={$ndaym}&amp;year={$ndayy}">&gt;&gt;</a>
+      {$date|date_format:"%A %d %B %Y"}
     </th>
   </tr>
 
@@ -91,7 +102,7 @@ function supprimerCompteRendu(form) {
 
         {else}
         <tr>
-          <td align="right"><a href="index.php?m={$m}&amp;tab=0&amp;day={$curr_plage.date|date_format:"%d"}&amp;month={$month}&amp;year={$year}">{$curr_plage.date|date_format:"%a %d %b %Y"}</a></td>
+          <td align="right"><a href="index.php?m={$m}&amp;tab=0&amp;date={$curr_plage.date|date_format:"%Y-%m-%d"}">{$curr_plage.date|date_format:"%a %d %b %Y"}</a></td>
           <td align="center">{$curr_plage.debut|date_format:"%Hh%M"} à {$curr_plage.fin|date_format:"%Hh%M"}</td>
           <td align="center">{$curr_plage.total}</td>
           <td align="center">{$curr_plage.duree|date_format:"%Hh%M"}</td>
@@ -109,9 +120,7 @@ function supprimerCompteRendu(form) {
           <th>Description</th>
           <th>Heure prévue</th>
           <th>Durée</th>
-          {if $selChir == $app->user_id}
           <th>Compte-rendu</th>
-          {/if}
         </tr>
 
         {foreach from=$listDay item=curr_plage}
@@ -130,7 +139,6 @@ function supprimerCompteRendu(form) {
             <a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->time_operation|date_format:"%Hh%M"}</a></td>
             {/if}
           <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->temp_operation|date_format:"%Hh%M"}</a></td>
-          {if $selChir == $app->user_id}
           <td>
             <form name="editCompteRenduFrm{$curr_op->operation_id}" action="?m={$m}" method="POST">
             <input type="hidden" name="m" value="{$m}" />
@@ -155,7 +163,6 @@ function supprimerCompteRendu(form) {
             {/if}
             </form>
           </td>
-          {/if}
         </tr>
         {/foreach}
         {/foreach}
