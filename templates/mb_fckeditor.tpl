@@ -84,6 +84,10 @@ aToolbarSet.splice(11, 1);
 // FCK editor general configuration
 sMbPath = "../../../";
 
+{if $configAlert}
+alert('{$configAlert|escape:javascript}');
+{/if}
+
 FCKConfig.Plugins.Add( 'tablecommands', null);
 
 sMbComboPath = sMbPath + "modules/dPcompteRendu/fcke_plugins/" ;

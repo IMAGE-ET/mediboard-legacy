@@ -3,6 +3,25 @@ $mbPath = "../../";
 $m = "dPcompteRendu";
 $dPconfig = array();
 
+$connectorPath = "lib/fckeditor/editor/filemanager/browser/default/connectors/php/config.php";
+require_once($mbPath . $connectorPath);
+
+$runningUserFilePath  = $Config['UserFilesPath'];
+$correctUserFilePath = "/Mediboard/UserFiles/";
+
+$runningEnabled = $Config['Enabled'];
+$correctEnabled = true;
+
+$configAlert = null;
+if ($runningUserFilePath != $correctUserFilePath or
+    $runningEnabled != $correctEnabled) {
+  $configAlert = "FCKEditor file connector not configured properly." .
+      "\n\nFile $connectorPath" .
+      "\nShould contain these lines: " .
+      "\n\$Config['UserFilesPath'] = '$correctUserFilePath';" .
+      "\n\$Config['Enabled'] = 'true';";
+}
+
 class CTemplateManager {
   var $editor = "FCKeditor";
   
@@ -38,8 +57,11 @@ $templateManager =& $_SESSION['dPcompteRendu']['templateManager'];
 
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));
+
 $smarty = new CSmartyDP;
 $smarty->debugging = false;
+
+$smarty->assign("configAlert", $configAlert);
 $smarty->assign("templateManager", $templateManager);
 $smarty->display('mb_fckeditor.tpl');      
 
