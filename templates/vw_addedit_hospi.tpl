@@ -417,7 +417,7 @@ function printForm() {
             <input type="hidden" name="_date_rdv_adm" value="{$op->_date_rdv_adm}" />
             <input type="text" name="_rdv_adm" value="{$op->_rdv_adm}" readonly="readonly" />
             <a href="#" onClick="popCalendar( '_rdv_adm', '_rdv_adm');">
-              <img src="./images/calendar.gif" width="24" height="12" alt="Choisir une date" />
+              <img src="./images/calendar.gif" alt="Choisir une date" />
             </a>
           </td>
         </tr>
