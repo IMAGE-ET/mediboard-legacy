@@ -86,7 +86,7 @@ else {
 
   // @todo : Trouver une méthode un peu plus propre :/
   $special = dPgetParam( $_POST, 'special', 0);
-	if($special) {
+	if($special == 1) {
 ?>
 <script language="javascript">
 
@@ -96,7 +96,9 @@ window.close();
 </script>
 <?php
     }
-	else {
+	elseif($special == 2) {
+    $AppUI->redirect("m=$m&a=".$_POST['_dialog']."&dialog=1&operation=".$obj->operation_id."&modele=0");
+  } else {
 	  if($otherm = dPgetParam( $_POST, 'otherm', 0))
 	    $m = $otherm;
 	  // Petit hack pour mettre à la bonne ligne dans vw_affectation
