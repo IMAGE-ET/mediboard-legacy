@@ -56,14 +56,16 @@ if (intval(dPgetParam($_POST, 'del'))) {
   $do->doStore();
 }
 
-if(!$special) {
+if(!$special == 1) {
   if(isset($_POST["_dialog"])) {
     $do->redirectStore = "m=$m&a=".$_POST['_dialog']."&dialog=1#consultation".$do->_obj->consultation_id;
   } else {
     $do->redirectStore = "m=$m&consultation_id=".$do->_obj->consultation_id;
   }
-} else {
+} elseif($special == 1) {
   $do->redirectStore = null;
+} elseif($special == 2) {
+  $do->redirectStore = "m=$m&a=".$_POST['_dialog']."&dialog=1&consult=".$do->_obj->consultation_id."&modele=0&prop_name=".$document_prop_name."&valid_name=cr_valide";
 }
 $do->doRedirect();
 ?>
