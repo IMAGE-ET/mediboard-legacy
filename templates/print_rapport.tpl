@@ -1,5 +1,7 @@
 <!-- $Id$ -->
 
+{$today}
+
 <table class="main">
   <tr>
     <td class="halfPane">
@@ -92,11 +94,11 @@
             <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
             {if $curr_consult->paye}
               <input type="hidden" name="paye" value="0" />
-              <input type="hidden" name="date_paiment" value="null" />
+              <input type="hidden" name="date_paiement" value="null" />
               <button type="submit">Annuler</button>
             {else}
               <input type="hidden" name="paye" value="1" />
-              <input type="hidden" name="date_paiment" value="{$today}" />
+              <input type="hidden" name="date_paiement" value="{$today}" />
               <select name="type_tarif">
                 <option value="cheque"  {if $curr_consult->type_tarif == "cheque" }selected="selected"{/if}>Chèques     </option>
                 <option value="CB"      {if $curr_consult->type_tarif == "CB"     }selected="selected"{/if}>CB          </option>

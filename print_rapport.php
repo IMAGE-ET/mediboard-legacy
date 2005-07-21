@@ -16,6 +16,7 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 // Récupération des paramètres
+$today = mbDate();
 $deb = mbGetValueFromGetOrSession("deb", mbDate());
 $fin = mbGetValueFromGetOrSession("fin", mbDate());
 
@@ -86,15 +87,27 @@ foreach($listPlage as $key => $value) {
     if($etat == -1 && $listPlage[$key]->_ref_consultations[$key2]->paye){
       $listPlage[$key]->total1 += $value2->secteur1;
       $listPlage[$key]->total2 += $value2->secteur2;
-      $total[$value2->type_tarif]["valeur"] += $value2->secteur1 + $value2->secteur2;
-      $total[$value2->type_tarif]["nombre"]++;
+      if(isset($total[$value2->type_tarif]["valeur"]))
+        $total[$value2->type_tarif]["valeur"] += $value2->secteur1 + $value2->secteur2;
+      else
+        $total[$value2->type_tarif]["valeur"] = $value2->secteur1 + $value2->secteur2;
+      if(isset($total[$value2->type_tarif]["nombre"]))
+        $total[$value2->type_tarif]["nombre"]++;
+      else
+        $total[$value2->type_tarif]["nombre"] = 1;
     }
     elseif($etat != -1){
       $listPlage[$key]->total1 += $value2->secteur1;
       $listPlage[$key]->total2 += $value2->secteur2;
       if($value2->type_tarif) {
-        $total[$value2->type_tarif]["valeur"] += $value2->secteur1 + $value2->secteur2;
-        $total[$value2->type_tarif]["nombre"]++;
+        if(isset($total[$value2->type_tarif]["valeur"]))
+          $total[$value2->type_tarif]["valeur"] += $value2->secteur1 + $value2->secteur2;
+        else
+          $total[$value2->type_tarif]["valeur"] += $value2->secteur1 + $value2->secteur2;
+        if(isset($total[$value2->type_tarif]["nombre"]))
+          $total[$value2->type_tarif]["nombre"]++;
+        else
+          $total[$value2->type_tarif]["nombre"] = 1;
       }
     }
   }
@@ -110,6 +123,7 @@ foreach($listPlage as $key => $value) {
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
+$smarty->assign('today', $today);
 $smarty->assign('deb', $deb);
 $smarty->assign('fin', $fin);
 $smarty->assign('aff', $aff);
