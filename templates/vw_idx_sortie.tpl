@@ -7,9 +7,11 @@ function pageMain() {
       align       : "Bc",
       date        : makeDateFromDATE("{/literal}{$date}{literal}"),
       onUpdate    : function(calendar) { 
-        {/literal}
-        window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
-        {literal}
+        if (calendar.dateClicked) {
+          {/literal}
+          window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
+          {literal}
+        }
       }
     } 
   );
@@ -31,14 +33,11 @@ function pageMain() {
     </td>
     <th>
       {$date|date_format:"%A %d %B %Y"}
-      <img id="changeDate" src="./images/calendar.gif" width="24" height="12" title="Choisir la date" alt="calendar" />
-    </th>
-    <th>
-      <a href="index.php?m={$m}&amp;date={$now|date_format:"%Y-%m%-d"}">Aujourd'hui : {$now|date_format:"%A %d %B %Y"}</a>
+      <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
     </th>
   </tr>
   <tr>
-    <td colspan="3">
+    <td colspan="2">
       <table width="100%">
         <tr>
           <td>

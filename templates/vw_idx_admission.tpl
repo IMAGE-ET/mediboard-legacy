@@ -1,9 +1,7 @@
 <!-- $Id$ -->
 
-{literal}
 <script type="text/javascript">
-//<![CDATA[
-
+{literal}
 function printAdmission(id) {
   var url = './index.php?m=dPadmissions&a=print_admission&dialog=1';
   url = url + '&id=' + id;
@@ -22,23 +20,24 @@ function pageMain() {
       align       : "Bc",
       date        : makeDateFromDATE("{/literal}{$date}{literal}"),
       onUpdate    : function(calendar) { 
-        {/literal}
-        window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
-        {literal}
+        if (calendar.dateClicked) {
+          {/literal}
+          window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
+          {literal}
+        }
       }
     } 
   );
 }
 
-//]]>
-</script>
 {/literal}
+</script>
 
 <table class="main">
   <tr>
     <th>
       {$date|date_format:"%B %Y"}
-      <img id="changeDate" src="./images/calendar.gif" width="24" height="12" title="Choisir la date" alt="calendar" />
+      <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
     </th>
     <th>
       {$date|date_format:"%A %d %B %Y"} - 
