@@ -147,7 +147,7 @@ function pageMain() {
         <td class="date" colspan="2">
           <div id="changeView_date_da">{$date|date_format:"%d/%m/%Y"}</div>
           <input type="hidden" name="date" value="{$date}" />
-          <img id="changeView_date_trigger" src="./images/calendar.gif" width="24" height="12" title="Choisir une date de début" alt="calendar" />
+          <img id="changeView_date_trigger" src="./images/calendar.gif" title="Choisir une date de début" alt="calendar" />
         </td>
       </tr>
       <tr>
