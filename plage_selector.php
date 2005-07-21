@@ -48,117 +48,24 @@ $mediChir = new CMediusers();
 $mediChir->load($chir);
 
 // Selection des plages opératoires ayant suffisament de temps pour  caser l'opération
-$sql = "SELECT plagesop.*," .
-		"\nSEC_TO_TIME(SUM(TIME_TO_SEC(operations.temp_operation))) AS duree," .
+$sql = "SELECT plagesop.*, sallesbloc.nom," .
+		"\nSUM(TIME_TO_SEC(operations.temp_operation)) AS duree," .
+    "\nTIME_TO_SEC(plagesop.fin)-TIME_TO_SEC(plagesop.debut) AS plage," .
 		"\nCOUNT(operations.operation_id) AS total" .
 		"\nFROM plagesop" .
 		"\nLEFT JOIN operations" .
 		"\nON plagesop.id = operations.plageop_id" .
-		"\nWHERE plagesop.id_chir = '$mediChir->_user_username'" .
-		"\nAND plagesop.date LIKE '$year-$month-__'" .
-		"\nAND duree >= '$curr_op_hour:$curr_op_min:00'" .
+    "\nLEFT JOIN sallesbloc" .
+    "\nON plagesop.id_salle = sallesbloc.id" .
+		"\nWHERE plagesop.date LIKE '$year-$month-__'" .
+		"\nAND (plagesop.id_chir = '$mediChir->_user_username' OR plagesop.id_spec = '$mediChir->function_id')" .
 		"\nGROUP BY plagesop.id" .
-		"\nORDER BY plagesop.date, plagesop.debut, plagesop.id";
+		"\nORDER BY plagesop.date, plagesop.debut, sallesbloc.nom, plagesop.id";
+$list = db_loadlist($sql);
 
-// Calcul du temps occupé par chaque opération
-$sql = "SELECT operations.temp_operation AS duree, plagesop.id AS id
-		FROM plagesop
-		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id AND operations.annulee != 1
-		WHERE plagesop.id_chir = '$mediChir->_user_username'
-		AND plagesop.date LIKE '$year-$month-__'
-		AND operations.operation_id IS NOT NULL
-		ORDER BY plagesop.date, plagesop.id";
-$result = db_loadlist($sql);
-foreach($result as $key => $value) {
-  $plageop = $value["id"];
-  
-  if (!isset($duree[$plageop])) {
-    $duree[$plageop] = array(
-      "hour" => 0, 
-      "min" => 0);
-	}
-
-  $hour = $duree[$plageop]["hour"] + intval(substr($value["duree"], 0, 2));
-  $min  = $duree[$plageop]["min" ] + intval(substr($value["duree"], 3, 2));
-  $newtime = mktime($hour, $min);
-  $duree[$plageop]["hour"] = date("H", $newtime);
-  $duree[$plageop]["min" ] = date("i", $newtime);
-}
-
-// Liste des plages opératoires vides
-$sql = "SELECT plagesop.id AS id, plagesop.date,
-		plagesop.fin AS fin, plagesop.debut AS debut,
-		plagesop.id_spec AS spec
-		FROM plagesop
-		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id
-		WHERE (plagesop.id_chir = '$mediChir->_user_username' OR plagesop.id_spec = '$mediChir->function_id')
-		AND plagesop.date LIKE '$year-$month-__'
-		AND operations.operation_id IS NULL";
-$result1 = db_loadlist($sql);
-// Liste des plages opératoires non vides
-$sql = "SELECT plagesop.id AS id, plagesop.date,
-		plagesop.fin AS fin, plagesop.debut AS debut,
-		plagesop.id_spec AS spec
-		FROM plagesop
-		LEFT JOIN operations
-		ON plagesop.id = operations.plageop_id
-		WHERE plagesop.id_chir = '$mediChir->_user_username'
-		AND plagesop.date LIKE '$year-$month-__'
-		AND operations.operation_id IS NOT NULL
-		GROUP BY operations.plageop_id";
-$result2 = db_loadlist($sql);
-unset($result);
-$i = 0;
-foreach($result1 as $key => $value){
-  $result[$i] = $value;
-  $i++;
-}
-foreach($result2 as $key => $value){
-  $result[$i] = $value;
-  $i++;
-}
-
-// Tri du tableau par date (tri bulle)
-$size = sizeof($result);
-do {
-  $inverse = false;
-  for($i=0;$i<$size-1;$i++){
-    if($result[$i]["date"]>$result[$i+1]["date"]) {
-      $temp = $result[$i];
-      $result[$i] = $result[$i+1];
-      $result[$i+1] = $temp;
-      $inverse = true;
-    }
-  }
-}
-while($inverse);
-
-$i = 0;
-foreach($result as $key => $value) {
-  $plageop = $value["id"];
-  $cumul =& $duree[$plageop];
-  
-  $hour = $cumul["hour"] + intval($curr_op_hour);
-  $min  = $cumul["min" ] + intval($curr_op_min );
-  $newtime = mktime($hour, $min);
-  $cumul["hour"] = date("H", $newtime);
-  $cumul["min" ] = date("i", $newtime);
-  
-  $hour_plage = intval(substr($value["fin"], 0, 2)) - intval(substr($value["debut"], 0, 2));
-  $min_plage  = intval(substr($value["fin"], 3, 2)) - intval(substr($value["debut"], 3, 2));
-  $temp_plage = mktime($hour_plage, $min_plage);
-  $hour_plage = date("H", $temp_plage);
-  $min_plage  = date("i", $temp_plage);
-  
-  $is_time_left = $hour_plage > $cumul["hour"] or 
-    ($hour_plage == $cumul["hour"] and $min_plage >= $cumul["min"]);
-    
-  if ($is_time_left) {
-    $list[$i] = $value;
-    $i++;
-  }
+foreach($list as $key => $value) {
+  $list[$key]["free_time"] = $value["plage"] - $value["duree"];
+  $list[$key]["free_time"] -= $curr_op_hour*3600 + $curr_op_min*60;
 }
 
 // Création du template
@@ -176,7 +83,6 @@ $smarty->assign('curr_op_hour', $curr_op_hour);
 $smarty->assign('curr_op_min', $curr_op_min);
 $smarty->assign('chir', $chir);
 $smarty->assign('list', $list);
-$smarty->assign('duree', $duree);
 
 $smarty->display('plage_selector.tpl');
 

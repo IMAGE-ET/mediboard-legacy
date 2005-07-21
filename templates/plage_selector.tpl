@@ -39,11 +39,17 @@ function setClose(date) {
   <td rowspan="2">
     <select name="list"  size="14">
       <option value="0" selected="selected">&mdash; Choisir une date &mdash;</option>
-    {foreach from=$list item=curr_elem}
-      <option value="{$curr_elem.id}" ondblclick="setClose('{$curr_elem.date|date_format:"%d/%m/%Y"}')"
-      onclick="document.frmSelector.fmtdate.value='{$curr_elem.date|date_format:"%d/%m/%Y"}'"
-      {if $curr_elem.spec}style="background:#aae"{/if}>
-        {$curr_elem.date|date_format:"%A %d %B %Y"}
+    {foreach from=$list item=curr_plage}
+      <option value="{$curr_plage.id}" ondblclick="setClose('{$curr_plage.date|date_format:"%d/%m/%Y"}')"
+      onclick="document.frmSelector.fmtdate.value='{$curr_plage.date|date_format:"%d/%m/%Y"}'"
+      {if $curr_plage.id_spec }
+        style="background:#aae"
+      {elseif $curr_plage.free_time < 0}
+        style="background:#eaa"
+      {else}
+        style="background:transparent"
+      {/if}>
+        {$curr_plage.date|date_format:"%a %d %b %Y"} - {$curr_plage.nom}
       </option>
     {/foreach}
     </select>
@@ -62,6 +68,7 @@ function setClose(date) {
 </tr>
 <tr>
   <td class="text"><i>Remarques :<ul>
+    <li>Les jours notés en rouge représentent des plages pleines</li>
     <li>Les jours notés en bleu représentent des plages de spécialité</li>
     <li>Par défaut, une admission la veille se fait à 17h et à 8h pour le jour même</li>
   </ul></i></td>
