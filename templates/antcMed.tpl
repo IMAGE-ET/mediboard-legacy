@@ -61,7 +61,7 @@ function pageMain() {
       <div id="paramFrm_deb_fr"></div>
       <input type="hidden" name="deb" value="" />
       <a id="trigger_paramFrm_deb" href="#" title="Choisir une date de début">
-        <img src="./images/calendar.gif" width="24" height="12" alt="calendar" />
+        <img src="./images/calendar.gif" alt="calendar" />
       </a>
     </td>
   </tr>
@@ -73,7 +73,7 @@ function pageMain() {
       <div id="paramFrm_fin_fr"></div>
       <input type="hidden" name="fin" value="" />
       <a id="trigger_paramFrm_fin" href="#" title="Choisir une date de fin">
-        <img src="./images/calendar.gif" width="24" height="12" alt="calendar" />
+        <img src="./images/calendar.gif" height="12" alt="calendar" />
       </a>
     </td>
   </tr>
