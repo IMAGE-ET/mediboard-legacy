@@ -271,7 +271,7 @@ function makeLocaleDateFromDate(date) {
   var m = date.getMonth()+1; // Js months are 0-11!!
   var d = date.getDate();
   
-  return printf("%02d/%02d-%04d", d, m, y);
+  return printf("%02d/%02d/%04d", d, m, y);
 }
 
 function makeDATETIMEFromDate(date) {
