@@ -220,9 +220,9 @@ function makeDateFromDATE(sDate) {
   var aParts = sDate.split("-");
   if (aParts.length != 3) throwError("'" + sDate + "' :Bad DATE format");
 
-  var year  = parseInt(aParts[0]);
-  var month = parseInt(aParts[1]);
-  var day   = parseInt(aParts[2]);
+  var year  = parseInt(aParts[0], 10);
+  var month = parseInt(aParts[1], 10);
+  var day   = parseInt(aParts[2], 10);
   
   return new Date(year, month - 1, day); // Js months are 0-11!!
 }
@@ -239,9 +239,9 @@ function makeDateFromDATETIME(sDateTime) {
   var aParts = sTime.split(":");
   if (aParts.length != 3) throwError("'" + sTime + "' :Bad TIME format");
 
-  date.setHours  (parseInt(aParts[0]));
-  date.setMinutes(parseInt(aParts[1]));
-  date.setSeconds(parseInt(aParts[2]));
+  date.setHours  (parseInt(aParts[0], 10));
+  date.setMinutes(parseInt(aParts[1], 10));
+  date.setSeconds(parseInt(aParts[2], 10));
   
   return date;
 }
@@ -251,9 +251,9 @@ function makeDateFromLocaleDate(sDate) {
   var aParts = sDate.split("/");
   if (aParts.length != 3) throwError("Bad Display date format");
 
-  var year  = parseInt(aParts[2]);
-  var month = parseInt(aParts[1]);
-  var day   = parseInt(aParts[0]);
+  var year  = parseInt(aParts[2], 10);
+  var month = parseInt(aParts[1], 10);
+  var day   = parseInt(aParts[0], 10);
   
   return new Date(year, month - 1, day); // Js months are 0-11!!
 }
