@@ -329,3 +329,21 @@ function regPopupCalendar(sFormName, sFieldName, sRedirectBase, bTime) {
     } 
   );
 }
+
+function regRedirectPopupCal(sInitDate, sRedirectBase, sContainerId, bTime) {
+  if (sContainerId == null) sContainerId = "changeDate";
+  if (bTime == null) bTime = false;
+
+  Calendar.setup( {
+      button      : sContainerId,
+      date        : makeDateFromDATE(sInitDate),
+      onUpdate    : function(calendar) { 
+        if (calendar.dateClicked) {
+          window.location = sRedirectBase + bTime ? 
+            makeDATETIMEFromDate(calendar.date) : 
+            makeDATEFromDate(calendar.date);
+        }
+      }
+    } 
+  );
+}
