@@ -4,30 +4,20 @@
 {literal}
 function printAdmission(id) {
   var url = './index.php?m=dPadmissions&a=print_admission&dialog=1';
-  url = url + '&id=' + id;
+  url += '&id=' + id;
   popup(700, 550, url, 'Patient');
 }
 
 function printDepassement(id) {
   var url = './index.php?m=dPadmissions&a=print_depassement&dialog=1';
-  url = url + '&id=' + id;
+  url += '&id=' + id;
   popup(700, 550, url, 'Depassement');
 }
 
 function pageMain() {
-  Calendar.setup( {
-      button      : "changeDate",
-      align       : "Bc",
-      date        : makeDateFromDATE("{/literal}{$date}{literal}"),
-      onUpdate    : function(calendar) { 
-        if (calendar.dateClicked) {
-          {/literal}
-          window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
-          {literal}
-        }
-      }
-    } 
-  );
+  {/literal}
+  regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  {literal}
 }
 
 {/literal}
@@ -105,17 +95,17 @@ function pageMain() {
         {foreach from=$today item=curr_adm}
         <tr>
           <td class="text" style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
-            <a name="adm{$curr_adm->operation_id}" onclick="printAdmission({$curr_adm->operation_id})">
+            <a name="adm{$curr_adm->operation_id}" href="javascript:printAdmission({$curr_adm->operation_id})">
             {$curr_adm->_ref_pat->_view}
             </a>
           </td>
           <td class="text" style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
-            <a href="#" onclick="printAdmission({$curr_adm->operation_id})">
+            <a href="javascript:printAdmission({$curr_adm->operation_id})">
             Dr. {$curr_adm->_ref_chir->_view}
             </a>
           </td>
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
-            <a href="#" onclick="printAdmission({$curr_adm->operation_id})">
+            <a href="javascript:printAdmission({$curr_adm->operation_id})">
             {$curr_adm->time_adm|date_format:"%Hh%M"}
             </a>
           </td>
@@ -196,7 +186,7 @@ function pageMain() {
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
           {if $curr_adm.depassement}
           <!-- Pas de possibilité d'imprimer les dépassements pour l'instant -->
-          <!-- <a href="#" onclick="printDepassement({$curr_adm->operation_id})"></a> -->
+          <!-- <a href="javascript:printDepassement({$curr_adm->operation_id})"></a> -->
           {$curr_adm->depassement} €
           {else}-{/if}</td>
         </tr>
