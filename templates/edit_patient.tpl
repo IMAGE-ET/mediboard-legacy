@@ -11,24 +11,24 @@
     <table align="center" width="100%">
       <tr>
         <th></th>
-        <th><a href="?m={$m}&amp;change=1&amp;yearconsult={$pyear}"><</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;yearconsult={$pyear}">&lt;&lt;</a></th>
         <th>{$year}</th>
-        <th><a href="?m={$m}&amp;change=1&amp;yearconsult={$nyear}">></a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;yearconsult={$nyear}">&gt;&gt;</a></th>
         <th></th>
       </tr>
       <tr>
-        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$ppmonth}"><<</a></th>
-        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$pmonth}"><</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$ppmonth}">&lt;&lt;&lt;&lt;</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$pmonth}">&lt;&lt;</a></th>
         <th>{$monthName}</th>
-        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$nmonth}">></a></th>
-        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$nnmonth}">>></a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$nmonth}">&gt;&gt;</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;monthconsult={$nnmonth}">&gt;&gt;</a></th>
       </tr>
       <tr>
-        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$ppday}"><<</a></th>
-        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$pday}"><</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$ppday}">&lt;&lt;<</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$pday}">&lt;&lt;</a></th>
         <th>{$dayName} {$day}</th>
-        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$nday}">></a></th>
-        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$nnday}">>></a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$nday}">&gt;&gt;</a></th>
+        <th><a href="?m={$m}&amp;change=1&amp;dayconsult={$nnday}">&gt;&gt;&gt;&gt;</a></th>
       </tr>
     </table>
 
