@@ -11,13 +11,13 @@ function checkRapport(){
   }
 
   var url = './index.php?m=dPcabinet&dialog=1';
-  url += '&a=' + form.a.value;
-  url += '&deb=' + form.deb.value;
-  url += '&fin='   + form.fin.value;
-  url += '&chir='  + form.chir.value;
-  url += '&etat='  + form.etat.value;
-  url += '&type='  + form.type.value;
-  url += '&aff='   + form.aff.value;
+  url += makeURLParam(form.a);
+  url += makeURLParam(form.deb);
+  url += makeURLParam(form.fin);
+  url += makeURLParam(form.chir);
+  url += makeURLParam(form.etat);
+  url += makeURLParam(form.type);
+  url += makeURLParam(form.aff);
 
   popup(700, 550, url, 'Rapport');
   
@@ -25,8 +25,8 @@ function checkRapport(){
 }
 
 function pageMain() {
-  regPopupCalendar("printFrm", "deb");
-  regPopupCalendar("printFrm", "fin");
+  regFieldCalendar("printFrm", "deb");
+  regFieldCalendar("printFrm", "fin");
 }
 
 </script>
