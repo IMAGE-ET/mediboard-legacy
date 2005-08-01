@@ -21,6 +21,8 @@ $selAdmis = mbGetValueFromGetOrSession("selAdmis", "0");
 $selSaisis = mbGetValueFromGetOrSession("selSaisis", "0");
 $selTri = mbGetValueFromGetOrSession("selTri", "nom");
 $date = mbGetValueFromGetOrSession("date", mbDate());
+$lastmonth = mbDate("-1 month", $date);
+$nextmonth = mbDate("+1 month", $date);
 
 // Liste des admissions par jour
 $sql = "SELECT plagesop.id AS pid, operations.operation_id, operations.date_adm AS date,
@@ -122,6 +124,8 @@ $smarty->debugging = false;
 
 
 $smarty->assign('date', $date);
+$smarty->assign('lastmonth', $lastmonth);
+$smarty->assign('nextmonth', $nextmonth);
 $smarty->assign('selAdmis', $selAdmis);
 $smarty->assign('selSaisis', $selSaisis);
 $smarty->assign('selTri', $selTri);

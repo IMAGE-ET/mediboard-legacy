@@ -26,18 +26,23 @@ function pageMain() {
 <table class="main">
   <tr>
     <th>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;date={$lastmonth}">&lt;&lt;&lt;</a>
       {$date|date_format:"%B %Y"}
-      <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;date={$nextmonth}">&gt;&gt;&gt;</a>
     </th>
     <th>
-      {$date|date_format:"%A %d %B %Y"} - 
-      <i>{if $selAdmis == "n"}Admissions non effectuées
+      {$date|date_format:"%A %d %B %Y"}
+      <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
+      <br /> 
+      <em>
+      {if $selAdmis == "n"}Admissions non effectuées
       {elseif $selSaisis == "n"}Dossiers non préparés
       {else}Toutes les admissions
       {/if}
       {if $selTri == "nom"}triées par nom
       {elseif $selTri == "heure"}triées par heure
-      {/if}</i>
+      {/if}
+      </em>
     </th>
   </tr>
   <tr>
