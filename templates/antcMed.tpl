@@ -30,22 +30,8 @@ function setCode( key, type ){
 }
 
 function pageMain() {
-  Calendar.setup( {
-    displayArea : "paramFrm_deb_fr",
-    inputField  : "paramFrm_deb",
-    ifFormat    : "%Y-%m-%d",
-    daFormat    : "%d %b %Y",
-    button      : "trigger_paramFrm_deb",
-    showsTime   : true
-    } );
-  Calendar.setup( {
-    displayArea : "paramFrm_fin_fr",
-    inputField  : "paramFrm_fin",
-    ifFormat    : "%Y-%m-%d",
-    daFormat    : "%d %b %Y",
-    button      : "trigger_paramFrm_fin",
-    showsTime   : true
-    } );
+  regFieldCalendar("codeFrm", "deb");
+  regFieldCalendar("codeFrm", "fin");
 }
 
 </script>
@@ -56,25 +42,21 @@ function pageMain() {
   <tr>
     <th><label for="codeFrm_CIM10_code">Diagnostic (CIM10):</label></th>
     <td><input type="text" name="CIM10_code" size="10" value="" /><button type="button" onclick="popCode('cim10')">Choisir un code</button></td>
-    <th><label for="codeFrm_debut">Début:</label></th>
-    <td class="date">
-      <div id="paramFrm_deb_fr"></div>
-      <input type="hidden" name="deb" value="" />
-      <a id="trigger_paramFrm_deb" href="#" title="Choisir une date de début">
-        <img src="./images/calendar.gif" alt="calendar" />
-      </a>
+    <th><label for="codeFrm_deb" title="Date de début de la période">Début:</label></th>
+    <td class="date" colspan="2">
+      <div id="codeFrm_deb_da">{$deb|date_format:"%d/%m/%Y"}</div>
+      <input type="hidden" name="deb" value="{$deb}" />
+      <img id="codeFrm_deb_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de début"/>
     </td>
   </tr>
   <tr>
     <th>Actif:</th>
-    <td><input type="checkbox"></td>
-    <th><label for="codeFrm_fin">Fin:</label></th>
-    <td class="date">
-      <div id="paramFrm_fin_fr"></div>
-      <input type="hidden" name="fin" value="" />
-      <a id="trigger_paramFrm_fin" href="#" title="Choisir une date de fin">
-        <img src="./images/calendar.gif" height="12" alt="calendar" />
-      </a>
+    <td><input type="checkbox" /></td>
+    <th><label for="codeFrm_fin" title="Date de fin de la période">Fin:</label></th>
+    <td class="date" colspan="2">
+      <div id="codeFrm_fin_da">{$fin|date_format:"%d/%m/%Y"}</div>
+      <input type="hidden" name="fin" value="{$fin}" />
+      <img id="codeFrm_fin_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de fin"/>
     </td>
   </tr>
   <tr>
