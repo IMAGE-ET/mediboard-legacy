@@ -9,9 +9,9 @@ function setClose(hour, min) {ldelim}
 
 <tr>
   <th class="category" colspan="2">
-    <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;month={$pmonth}&amp;year={$pyear}"><<</a>
+    <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;month={$pmonth}&amp;year={$pyear}">&lt;&lt;&lt;</a>
     {$nameMonth} {$year}
-    <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;month={$nmonth}&amp;year={$nyear}">>></a>
+    <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;month={$nmonth}&amp;year={$nyear}">&gt;&gt;&gt;</a>
   </th>
 </tr>
 

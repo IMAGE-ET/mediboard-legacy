@@ -29,20 +29,10 @@ function checkPlage() {
 
 <table class="main">
   <tr>
-    <td>
-      <form action="index.php" name="type" method="get">
-      <input type="hidden" name="m" value="{$m}">
-      <input type="hidden" name="tab" value="{$tab}">
-      <select name="vue1" onchange="this.form.submit()">
-        <option value="0"{if !$vue}selected="selected"{/if}>Tout afficher</option>
-        <option value="1"{if $vue}selected="selected"{/if}>Cacher les payés</option>
-      </select>
-      </form>
-    </td>
     <th>
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$prec}"><<</a>
-      Semaine du Lundi {$debut|date_format:"%d %b %Y"} au dimanche {$fin|date_format:"%d %b %Y"}
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$suiv}">>></a>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$prec}">&lt;&lt;&lt;</a>
+      Semaine du {$debut|date_format:"%A %d %b %Y"} au {$fin|date_format:"%A %d %b %Y"}
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$suiv}">&gt;&gt;&gt;</a>
       <br />
       <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$today}">Aujourd'hui</a>
     </th>
@@ -62,11 +52,18 @@ function checkPlage() {
         {/foreach}
       </select>
   
+      <label for="selection_vue1">Type de vue:</label>
+      <select name="vue1" onchange="this.form.submit()">
+        <option value="0"{if !$vue}selected="selected"{/if}>Tout afficher</option>
+        <option value="1"{if $vue}selected="selected"{/if}>Cacher les payés</option>
+      </select>
+
       </form>
+
     </td>
   </tr>
   <tr>
-    <td colspan="2">
+    <td>
       <table width="100%">
         <tr>
           <th></th>
