@@ -32,19 +32,9 @@ function supprimerCompteRendu(form) {
 }
 
 function pageMain() {
-  Calendar.setup( {
-      button      : "changeDate",
-      align       : "Bc",
-      date        : makeDateFromDATE("{/literal}{$date}{literal}"),
-      onUpdate    : function(calendar) { 
-        if (calendar.dateClicked) {
-          {/literal}
-          window.location = "index.php?m={$m}&tab={$tab}&date=" + makeDATEFromDate(calendar.date);
-          {literal}
-        }
-      }
-    } 
-  );
+  {/literal}
+  regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  {literal}
 }
 
 </script>

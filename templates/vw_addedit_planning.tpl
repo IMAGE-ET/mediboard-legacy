@@ -310,8 +310,8 @@ function printForm() {
 }
 
 function pageMain() {
-  regPopupCalendar("editFrm", "date_anesth");
-  regPopupCalendar("editFrm", "date_adm");
+  regFieldCalendar("editFrm", "date_anesth");
+  regFieldCalendar("editFrm", "date_adm");
 }
 
 {/literal}
