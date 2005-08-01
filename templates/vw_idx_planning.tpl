@@ -65,7 +65,9 @@ function pageMain() {
 
   <tr>
     <th>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;date={$lastmonth}">&lt;&lt;&lt;</a>
       {$date|date_format:"%B %Y"}
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;date={$nextmonth}">&gt;&gt;&gt;</a>
     </th>
     <th class="greedyPane">
       {$date|date_format:"%A %d %B %Y"}

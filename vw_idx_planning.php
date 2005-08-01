@@ -18,9 +18,9 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// Initialisation de variables
-
 $date   = mbGetValueFromGetOrSession("date", mbDate());
+$lastmonth = mbDate("-1 month", $date);
+$nextmonth = mbDate("+1 month", $date);
 
 // Sélection du praticien
 $mediuser = new CMediusers;
@@ -85,6 +85,8 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('date', $date);
+$smarty->assign('lastmonth', $lastmonth);
+$smarty->assign('nextmonth', $nextmonth);
 $smarty->assign('listChir', $listChir);
 $smarty->assign('selChir', $selChir);
 $smarty->assign('crList', $crList);
