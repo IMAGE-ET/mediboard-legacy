@@ -282,28 +282,7 @@ function makeDATETIMEFromDate(date) {
   return makeDATEFromDate(date) + printf("+%02d:%02d:%02d", h, m, s);
 }
 
-function regFlatCalendar(sContainerId, sInitDATE, sRedirectBase, bTime) {
-  if (bTime == null) bTime = false;
-
-  Calendar.setup( {
-      date         : bTime ? 
-      	makeDateFromDATETIME(sInitDATE) : 
-      	makeDateFromDATE(sInitDATE) ,
-      showsTime   : bTime,
-      flat         : sContainerId,
-      flatCallback : function(calendar) { 
-        if (calendar.dateClicked && sRedirectBase) {
-          var sdate = bTime ? 
-            makeDATETIMEFromDate(calendar.date) : 
-            makeDATEFromDate(calendar.date)
-          window.location = sRedirectBase + sdate;
-        }
-      }
-    } 
-  );
-}
-
-function regPopupCalendar(sFormName, sFieldName, sRedirectBase, bTime) {
+function regFieldCalendar(sFormName, sFieldName, bTime) {
   if (bTime == null) bTime = false;
   
   var sInputId = sFormName + "_" + sFieldName;
@@ -318,14 +297,7 @@ function regPopupCalendar(sFormName, sFieldName, sRedirectBase, bTime) {
       ifFormat    : "%Y-%m-%d" + (bTime ? " %H:%M:%S" : ""),
       daFormat    : "%d/%m/%Y" + (bTime ? " %H:%M:%S" : ""),
       button      : sInputId + "_trigger",
-      showsTime   : bTime,
-      onUpdate    : function(calendar) { 
-        if (calendar.dateClicked && sRedirectBase) {
-          window.location = sRedirectBase + bTime ? 
-            makeDATETIMEFromDate(calendar.date) : 
-            makeDATEFromDate(calendar.date);
-        }
-      }
+      showsTime   : bTime
     } 
   );
 }
@@ -333,15 +305,35 @@ function regPopupCalendar(sFormName, sFieldName, sRedirectBase, bTime) {
 function regRedirectPopupCal(sInitDate, sRedirectBase, sContainerId, bTime) {
   if (sContainerId == null) sContainerId = "changeDate";
   if (bTime == null) bTime = false;
-
+	
   Calendar.setup( {
       button      : sContainerId,
       date        : makeDateFromDATE(sInitDate),
+      showsTime   : bTime,
       onUpdate    : function(calendar) { 
         if (calendar.dateClicked) {
-          window.location = sRedirectBase + bTime ? 
-            makeDATETIMEFromDate(calendar.date) : 
-            makeDATEFromDate(calendar.date);
+          sDate = bTime ? makeDATETIMEFromDate(calendar.date) : makeDATEFromDate(calendar.date)
+          window.location = sRedirectBase + sDate;
+        }
+      }
+    } 
+  );
+}
+
+function regRedirectFlatCal(sInitDate, sRedirectBase, sContainerId, bTime) {
+  if (sContainerId == null) sContainerId = "calendar-container";
+  if (bTime == null) bTime = false;
+
+  dInit = bTime ? makeDateFromDATETIME(sInitDate) : makeDateFromDATE(sInitDate);
+  
+  Calendar.setup( {
+      date         : dInit,
+      showsTime    : bTime,
+      flat         : sContainerId,
+      flatCallback : function(calendar) { 
+        if (calendar.dateClicked) {
+          sDate = bTime ? makeDATETIMEFromDate(calendar.date) : makeDATEFromDate(calendar.date)
+          window.location = sRedirectBase + sDate;
         }
       }
     } 
