@@ -42,8 +42,8 @@ function popPlanning() {
 }
 
 function pageMain() {
-  regPopupCalendar("paramFrm", "deb");
-  regPopupCalendar("paramFrm", "fin");
+  regFieldCalendar("paramFrm", "deb");
+  regFieldCalendar("paramFrm", "fin");
 }
 
 </script>

@@ -22,7 +22,7 @@ function checkPlage() {
 
 function pageMain() {
   {/literal}
-  regFlatCalendar("calendar-container", "{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  regRedirectFlatCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
   {literal}
 }
 
