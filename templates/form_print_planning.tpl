@@ -30,8 +30,8 @@ function popPlanning() {
 }
 
 function pageMain() {
-  regPopupCalendar("paramFrm", "deb", null, true);
-  regPopupCalendar("paramFrm", "fin", null, true);
+  regFieldCalendar("paramFrm", "deb", true);
+  regFieldCalendar("paramFrm", "fin", true);
 }
 
 </script>

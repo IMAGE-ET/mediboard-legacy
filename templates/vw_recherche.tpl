@@ -9,7 +9,7 @@ function popPlanning() {
 
 function pageMain() {
   {/literal}
-  regFlatCalendar("calendar-container", "{$date_recherche}", "index.php?m={$m}&tab={$tab}&date_recherche=", true);
+  regRedirectFlatCal("{$date_recherche}", "index.php?m={$m}&tab={$tab}&date_recherche=", null, true);
   {literal}
 }
 

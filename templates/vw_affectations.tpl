@@ -118,7 +118,7 @@ function setupCalendar(affectation_id) {
 function pageMain() {
   {/literal}
   {if $dialog != 1}
-  regFlatCalendar("calendar-container", "{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  regRedirectFlatCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
   {/if}
   {literal}
 }
@@ -135,7 +135,7 @@ function popPlanning() {
 
 <tr>
   <td>
-    <a href="javascript:popup(500, 500, '?m=dPhospi&a=legende&dialog=1', 'Legende')">legende</a>
+    <a href="javascript:popup(500, 500, '?m=dPhospi&a=legende&dialog=1', 'Legende')">Légende</a>
   </td>
   <th>
     <a href="javascript:{if $dialog}window.print(){else}popPlanning(){/if}">
