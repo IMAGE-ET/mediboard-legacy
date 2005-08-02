@@ -28,6 +28,7 @@ for($i = -5; $i < 0; $i++) {
   $where["date_adm"] = "= '$curr_day'";
   $where["plageop_id"] = "IS NULL";
   $where["pat_id"] = "IS NOT NULL";
+  $where["annulee"] = "= 0";
   $ljoin = array();
   $ljoin["patients"] = "operations.pat_id = patients.patient_id";
   $order = "operations.time_adm, patients.nom, patients.prenom";
