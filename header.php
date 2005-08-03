@@ -8,21 +8,22 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
 	<meta name="Description" content="dotProject openXtrem Style" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
-	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css?<?php echo time() ?>" media="all" />
-	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/gosu/array.js"></script>
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/gosu/cookie.js"></script>
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/gosu/debug.js"></script>
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/gosu/ie5.js"></script>
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/gosu/keyboard.js"></script>
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/gosu/string.js"></script>
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/gosu/validate.js"></script>
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/functions.js"></script>
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/cjl_cookie.js"></script>
-  <script type="text/javascript" src="./style/<?php echo $uistyle;?>/printf.js"></script>
-  <script type="text/javascript" src="./lib/jscalendar/calendar.js"></script>
-  <script type="text/javascript" src="./lib/jscalendar/lang/calendar-fr.js"></script>
-  <script type="text/javascript" src="./lib/jscalendar/calendar-setup.js"></script>
+  <?php mbLinkShortcutIcon("style/$uistyle/images/favicon.icos"); ?>
+  <?php mbLinkStyleSheet("style/$uistyle/main.css"); ?>
+  <?php mbLinkStyleSheet("style/$uistyle/main.css"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/array.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/cookie.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/debug.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/ie5.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/keyboard.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/string.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/validate.js"); ?>
+  <?php mbLoadScript("style/$uistyle/functions.js"); ?>
+  <?php mbLoadScript("style/$uistyle/cjl_cookie.js"); ?>
+  <?php mbLoadScript("style/$uistyle/printf.js"); ?>
+  <?php mbLoadScript("lib/jscalendar/calendar.js"); ?>
+  <?php mbLoadScript("lib/jscalendar/lang/calendar-fr.js"); ?>
+  <?php mbLoadScript("lib/jscalendar/calendar-setup.js"); ?>
 </head>
 
 <body onload="main()">
@@ -35,14 +36,12 @@
 ?>
 
 <table id="header" cellspacing="0"><!-- IE Hack: cellspacing should be useless --> 
-<!--
 <tr>
 	<td id="banner">
 		<p>Mediboard :: Système de gestion des structures de santé</p>
 		<a href='http://www.mediboard.org'><img src="./style/<?php echo $uistyle;?>/images/mbSmall.gif" alt="Logo Mediboard"  /></a>
 	</td>
 </tr>
--->
 <tr>
 	<td id="menubar">
 		<table>
