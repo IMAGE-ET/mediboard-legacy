@@ -7,6 +7,8 @@
  * @author Thomas Despoix
  */
 
+require_once("mb_version.php");
+
 /**
  * Returns the value of a variable retreived it from HTTP Get, then from the session
  * Stores it in _SESSION in all cases, with at least a default value
@@ -89,7 +91,7 @@ function mbTime($relative, $ref = null) {
 }
 
 /**
- * Return the difference between two dates in days
+ * Returns the difference between two dates in days
  * @return int: number of days
  **/
 function mbDaysRelative($from, $to) {
@@ -100,7 +102,7 @@ function mbDaysRelative($from, $to) {
 }
 
 /**
- * Insert a CSV file into a mysql table 
+ * Inserts a CSV file into a mysql table 
  **/
 
 function mbInsertCSV( $fileName, $tableName, $oldid = false )
@@ -165,5 +167,28 @@ function mbInsertCSV( $fileName, $tableName, $oldid = false )
     fclose( $file );
 }
 
+/**
+ * Loads a javascript with build version postfix to prevent nasty cache effects
+ * while updating the system.  */
+function mbLoadScript ($filepath) {
+  global $mb_version_build;
+  echo "\n<script type='text/javascript' src='$filepath?build=$mb_version_build'></script>";
+}
 
+
+/**
+ * Links a style sheet with build version postfix to prevent nasty cache effects
+ * Only to be called while in the HTML header.  */
+function mbLinkStylesheet ($filepath, $media = "all") {
+  global $mb_version_build;
+  echo "<link rel='stylesheet' type='text/css' href='$filepath?build=$mb_version_build' media='$media' />";
+}
+
+/**
+ * Links a shotcut icon version postfix to prevent nasty cache effects 
+ * Only to be called while in the HTML header.  */
+function mbLinkShortcutIcon($filepath) {
+  global $mb_version_build;
+  echo "<link rel='shortcut icon' type='image/ico' href='$filepath?build=$mb_version_build' />";
+}
 ?>
