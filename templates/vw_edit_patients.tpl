@@ -2,10 +2,9 @@
 
 {literal}
 <script type="text/javascript">
- //<![CDATA[
 function confirmCreation(id) {
   var form = document.editFrm;
-  check = confirm("{/literal}{$textSiblings}{literal}");
+  check = confirm("{/literal}{$textSiblings|escape:javascript}{literal}");
   if(!check) {
     form.del.value = 1;
     form.submit();
@@ -71,29 +70,21 @@ function delMed(type) {
     case '_traitant' : {
       f.medecin_traitant.value = '';
       f._medecin_traitant_name.value = '';
-      window.medecin_traitant = '';
-      window._medecin_traitant_name = '';
       break;
     }
     case '1' : {
       f.medecin1.value = '';
       f._medecin1_name.value = '';
-      window.medecin1 = '';
-      window._medecin1_name = '';
       break;
     }
     case '2' : {
       f.medecin2.value = '';
       f._medecin2_name.value = '';
-      window.medecin2 = '';
-      window._medecin2_name = '';
       break;
     }
     case '3' : {
       f.medecin3.value = '';
       f._medecin3_name.value = '';
-      window.medecin3 = '';
-      window._medecin3_name = '';
       break;
     }
   }
@@ -105,29 +96,21 @@ function setMed( key, nom, prenom, type ){
     case '_traitant' : {
       f.medecin_traitant.value = key;
       f._medecin_traitant_name.value = 'Dr. ' + nom + ' ' + prenom;
-      window.medecin_traitant = key;
-      window._medecin_traitant_name = 'Dr. ' + nom + ' ' + prenom;
       break;
     }
     case '1' : {
       f.medecin1.value = key;
       f._medecin1_name.value = 'Dr. ' + nom + ' ' + prenom;
-      window.medecin1 = key;
-      window._medecin1_name = 'Dr. ' + nom + ' ' + prenom;
       break;
     }
     case '2' : {
       f.medecin2.value = key;
       f._medecin2_name.value = 'Dr. ' + nom + ' ' + prenom;
-      window.medecin2 = key;
-      window._medecin2_name = 'Dr. ' + nom + ' ' + prenom;
       break;
     }
     case '3' : {
       f.medecin3.value = key;
       f._medecin3_name.value = 'Dr. ' + nom + ' ' + prenom;
-      window.medecin3 = key;
-      window._medecin3_name = 'Dr. ' + nom + ' ' + prenom;
       break;
     }
   }
