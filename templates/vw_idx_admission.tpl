@@ -182,14 +182,14 @@ function pageMain() {
               <img src="modules/{$m}/images/cross.png" alt="Annuler"> Annuler
             </button>
             {/if}
-            {if $curr_adm.modifiee == 1}
+            {if $curr_adm->modifiee == 1}
             <img src="images/icons/rc-gui-status-downgr.png" alt="modifié">
             {/if}
             </form>
           </td>
           {/if}
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
-          {if $curr_adm.depassement}
+          {if $curr_adm->depassement}
           <!-- Pas de possibilité d'imprimer les dépassements pour l'instant -->
           <!-- <a href="javascript:printDepassement({$curr_adm->operation_id})"></a> -->
           {$curr_adm->depassement} €
