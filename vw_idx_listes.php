@@ -29,6 +29,10 @@ $where = array();
 $user_id = mbGetValueFromGetOrSession("filter_user_id", $AppUI->user_id);
 $user = new CMediusers;
 $user->load($user_id);
+if(!$user->isPraticien()) {
+  $user_id = 0;
+  $user->load($user_id);
+}
 if ($user_id) {
 	$where["chir_id"] = "= '$user_id'";
 } else {
