@@ -285,7 +285,7 @@ class COperation extends CDpObject {
       foreach($this->_ref_affectations as $key => $value)
         return $this->_ref_affectations[$key];
     }
-    return null;
+    return new CAffectation;
   }
   
   function getFirstAffectation(){
@@ -295,7 +295,7 @@ class COperation extends CDpObject {
       foreach($tempAff as $key => $value)
         return $tempAff[$key];
     }
-    return null;
+    return new CAffectation;
   }
 
   function getSiblings() {
