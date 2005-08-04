@@ -49,7 +49,6 @@ class CConsultation extends CDpObject {
   var $type_tarif = null;
   
   // Document fields:  to be externalized
-  var $compte_rendu = null;
   var $cr_valide = null;
   var $ordonnance = null;
   var $or_valide = null;
