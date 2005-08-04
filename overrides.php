@@ -70,6 +70,10 @@ class CTitleBlock extends CTitleBlock_core {
 // This overrides the show() function of the CTabBox_core class
 //
 class CTabBox extends CTabBox_core {
+  function CTabBox($baseHRef, $baseInc, $active) {
+    parent::CTabBox($baseHRef, $baseInc, $active);
+  }
+
   function show( $extra='' ) {
     $this->checkActive();
     global $AppUI;
