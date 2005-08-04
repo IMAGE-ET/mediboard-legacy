@@ -134,8 +134,8 @@ class CDpObject {
  *  @param string $order the SQL order clause, can also be an array of strings
  *  @return a copy of the object
  */
-  function loadObject($where = null, $order = null) {
-    $list =& $this->loadList($where, $order, "0,1");
+  function loadObject($where = null, $order = null, $group = null, $leftjoin = null) {
+    $list =& $this->loadList($where, $order, "0,1", $group, $leftjoin);
     foreach ($list as $key => $object) {
       foreach(get_object_vars($object) as $key => $value) {
         $this->$key = $value;
