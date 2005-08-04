@@ -24,13 +24,11 @@ $listPrat = $listPrat->loadPraticiens(PERM_EDIT);
 $listFunc = new CFunctions();
 $listFunc = $listFunc->loadSpecialites(PERM_EDIT);
 
-// Utilisateurs modifiables
-//$users = new CMediusers;
-//$users = $users->loadListFromType(null, PERM_EDIT);
-
 // Liste des comptes-rendus persos
 $where = array();
 $user_id = mbGetValueFromGetOrSession("filter_user_id", $AppUI->user_id);
+$user = new CMediusers;
+$user->load($user_id);
 if ($user_id) {
 	$where["chir_id"] = "= '$user_id'";
 } else {
@@ -50,10 +48,14 @@ foreach($listesPrat as $key => $value) {
 // Liste des comptes-rendus de cabinet
 $where = array();
 $inFuncs = array();
-foreach($listFunc as $key => $value) {
-  $inFuncs[] = $listFunc[$key]->function_id;
+if($user_id) {
+  $where["function_id"] = "= '$user->function_id'";
+} else {
+  foreach($listFunc as $key => $value) {
+    $inFuncs[] = $listFunc[$key]->function_id;
+  }
+  $where ["function_id"] = "IN (".implode(",", $inFuncs).")";
 }
-$where ["function_id"] = "IN (".implode(",", $inFuncs).")";
 
 $listesFunc = new CListeChoix();
 $listesFunc = $listesFunc->loadList($where);
@@ -80,7 +82,7 @@ $listCrPrat = $listCrPrat->loadList($where, $order);
 $where = array();
 $listCrFunc = new CCompteRendu;
 if($user_id)
-  $where["function_id"] = "= '".$listPrat[$user_id]->function_id."'";
+  $where["function_id"] = "= '$user->function_id'";
 else {
   $inFunc = array();
   foreach($listFunc as $key => $value) {
