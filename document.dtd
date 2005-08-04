@@ -1,0 +1,15 @@
+<!ELEMENT note (de, a+, sujet, CMU, contenu, attache*, postscriptum?)>
+
+<!ELEMENT de (#PCDATA)>
+<!ELEMENT a (#PCDATA)>
+<!ELEMENT sujet (#PCDATA)>
+<!ELEMENT CMU (yes|no)>
+<!ELEMENT yes EMPTY>
+<!ELEMENT no EMPTY>
+
+<!ELEMENT contenu (#PCDATA)>
+<!ELEMENT postscriptum (#PCDATA)>
+<!ELEMENT attache EMPTY>
+
+<!ATTLIST note date NMTOKEN #IMPLIED>
+<!ATTLIST attache url CDATA #REQUIRED>
