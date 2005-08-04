@@ -189,39 +189,40 @@ class CPatient extends CDpObject {
   // Backward references
   function loadRefsBack() {
     // opérations
-    $obj = new COperation();
+    $this->_ref_operations = new COperation();
     $where = array();
     $where["pat_id"] = "= '$this->patient_id'";
     $where["plageop_id"] = "<> 0";
     $order = "plagesop.date DESC";
     $leftjoin = array();
     $leftjoin["plagesop"] = "operations.plageop_id = plagesop.id";
-    $this->_ref_operations = $obj->loadList($where, $order, null, null, $leftjoin);
+    $this->_ref_operations = $this->_ref_operations->loadList($where, $order, null, null, $leftjoin);
     // hospitalisations
-    $obj = new COperation();
+    $this->_ref_hospitalisations = new COperation();
     $where = array();
     $where["pat_id"] = "= '$this->patient_id'";
     $where["plageop_id"] = "IS NULL";
     $order = "date_adm DESC, time_adm DESC";
-    $this->_ref_hospitalisations = $obj->loadList($where, $order, null, null, $leftjoin);
+    $this->_ref_hospitalisations = $this->_ref_hospitalisations->loadList($where, $order, null, null, $leftjoin);
     // consultations
-    $obj = new CConsultation();
+    $this->_ref_consultations = new CConsultation();
     $where = array();
     $where["patient_id"] = "= '$this->patient_id'";
     $order = "plageconsult.date DESC";
     $leftjoin = array();
     $leftjoin["plageconsult"] = "consultation.plageconsult_id = plageconsult.plageconsult_id";
-    $this->_ref_consultations = $obj->loadList($where, $order, null, null, $leftjoin);
+    $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order, null, null, $leftjoin);
     // consultations d'anesthésie
-    $obj = new CConsultationAnesth();
+    $this->_ref_consultations_anesth = new CConsultationAnesth();
     $where = array();
     $where["patient_id"] = "= '$this->patient_id'";
     $order = "plageconsult.date DESC";
     $leftjoin = array();
     $leftjoin["plageconsult"] = "consultation_anesth.plageconsult_id = plageconsult.plageconsult_id";
-    $this->_ref_consultations_anesth = $obj->loadList($where, $order, null, null, $leftjoin);
+    $this->_ref_consultations_anesth = $this->_ref_consultations_anesth->loadList($where, $order, null, null, $leftjoin);
   	// affectation actuelle et prochaine affectation
-  	$obj = new CAffectation();
+  	$this->_ref_curr_affectation = new CAffectation();
+    $this->_ref_next_affectation = new CAffectation();
   	$date = date("Y-m-d");
   	$where = array();
   	$where["entree"] = "<= '$date 23:59:59'";
@@ -236,40 +237,28 @@ class CPatient extends CDpObject {
   	}
   	else
   	  $where["operation_id"] ="IS NULL";
-  	$obj->loadObject($where);
-  	$this->_ref_curr_affectation = $obj;
-  	if(!$this->_ref_curr_affectation->affectation_id) {
-  	  $where["entree"] = "> '$date 23:59:59'";
-  	  $where["sortie"] = "> '$date 23:59:59'";
-  	  $order = "entree";
-  	  $obj = $obj->loadList($where, $order);
-  	  foreach($obj as $key => $value) {
-  	    $this->_ref_next_affectation = @$obj[$key];
-  	    break;
-      }
-  	} else {
-  	  $this->_ref_next_affectation = null;
-  	}
+  	$this->_ref_curr_affectation->loadObject($where);
+  	
+    $where["entree"] = "> '$date 23:59:59'";
+  	$where["sortie"] = "> '$date 23:59:59'";
+  	$order = "entree";
+  	$this->_ref_next_affectation->loadObject($where, $order);
   }
 
   // Forward references
   function loadRefsFwd() {
     // medecin_traitant
-    $obj = new CMedecin();
-    if($obj->load($this->medecin_traitant))
-      $this->_ref_medecin_traitant = $obj;
+    $this->_ref_medecin_traitant = new CMedecin();
+    $this->_ref_medecin_traitant->load($this->medecin_traitant);
     // medecin1
-    $obj = new CMedecin();
-    if($obj->load($this->medecin1))
-      $this->_ref_medecin1 = $obj;
+    $this->_ref_medecin1 = new CMedecin();
+    $this->_ref_medecin1->load($this->medecin1);
     // medecin2
-    $obj = new CMedecin();
-    if($obj->load($this->medecin2))
-      $this->_ref_medecin2 = $obj;
+    $this->_ref_medecin2 = new CMedecin();
+    $this->_ref_medecin2->load($this->medecin2);
     // medecin3
-    $obj = new CMedecin();
-    if($obj->load($this->medecin3))
-      $this->_ref_medecin3 = $obj;
+    $this->_ref_medecin3 = new CMedecin();
+    $this->_ref_medecin3->load($this->medecin3);
   }
 
   function getSiblings() {
