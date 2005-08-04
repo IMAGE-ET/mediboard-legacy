@@ -137,7 +137,10 @@ class CDpObject {
   function loadObject($where = null, $order = null) {
     $list =& $this->loadList($where, $order, "0,1");
     foreach ($list as $key => $object) {
-      $this = $object;
+      foreach(get_object_vars($object) as $key => $value) {
+        $this->$key = $value;
+      }
+      
       return;
 		}
   }
@@ -202,7 +205,7 @@ class CDpObject {
 *	@author	handco <handco@users.sourceforge.net>
 *	@return	object	The new record object or null if error
 **/
-	function clone() {
+	function cloneObject() {
 		$_key = $this->_tbl_key;
 		
 		$newObj = $this;
