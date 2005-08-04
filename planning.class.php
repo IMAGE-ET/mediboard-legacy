@@ -124,7 +124,7 @@ class Cplanning
 			  $f = 0;
 			  $fsize = (substr($value2['fin'], 0, 2) - substr($value2['debut'], 0, 2)) * 4;
 			  $fsize += (substr($value2['fin'], 3, 2) - substr($value2['debut'], 3, 2)) / 15;
-			  echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\" nowrap=\"nowrap\"><b>";
+			  echo "<td style=\"white-space: normal;\" bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\" nowrap=\"nowrap\"><b>";
 			  echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			  echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
 			  echo "</a> (".$value2['numop'].")";
@@ -136,7 +136,7 @@ class Cplanning
 		  }
 		}
 	    if(($f == 1) || ($fsize == 0)) {
-	      echo "<td bgcolor=\"#ffccdd\">&nbsp;</td>\n";
+	      echo "<td bgcolor=\"#ffccdd\"></td>\n";
 		  $f = 1;
 		} else
 		  $fsize--;
@@ -147,7 +147,7 @@ class Cplanning
 			    $f = 0;
 			    $fsize = (substr($value2['fin'], 0, 2) - substr($value2['debut'], 0, 2)) * 4;
 			    $fsize += (substr($value2['fin'], 3, 2) - substr($value2['debut'], 3, 2)) / 15;
-			    echo "<td bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\" nowrap=\"nowrap\"><b>";
+			    echo "<td style=\"white-space: normal;\" bgcolor=\"#".$value2['couleur']."\" colspan=\"$fsize\" align=\"center\" nowrap=\"nowrap\"><b>";
 			    echo "<a href=\"index.php?m=dPbloc&tab=2&id=".$value2['id']."\" target=\"_self\">";
 			    echo $this->dispMed($value2['chir'], $value2['anesth'], $value2['spec']);
 			    echo "</a> (".$value2['numop'].")";
@@ -159,7 +159,7 @@ class Cplanning
 		    }
 		  }
 	      if(($f == 1) || ($fsize == 0)) {
-	        echo "<td bgcolor=\"#ffddcc\">&nbsp;</td>\n";
+	        echo "<td bgcolor=\"#ffddcc\"></td>\n";
 		    $f = 1;
 		  } else
 		    $fsize--;
