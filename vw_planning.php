@@ -8,6 +8,7 @@
 */
 
 global $AppUI, $canRead, $canEdit, $m;
+
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('mediusers') );
 
@@ -24,94 +25,60 @@ if ($mediuser->isPraticien()) {
 }
 
 // Type de vue
-$vue = mbGetValueFromGetOrSession("vue1", 0);
+$vue = mbGetValueFromGetOrSession("vue1");
 
 // Chirurgien selectionné
-$chirSel = mbGetValueFromGetOrSession("chirSel", $chir->user_id);
+$chirSel = mbGetValueFromGetOrSession("chirSel", $chir ? $chir->user_id : null);
 
 // Plage de consultation selectionnée
-$plageconsult_id = mbGetValueFromGetOrSession("plageconsult_id", -1);
+$plageconsult_id = mbGetValueFromGetOrSession("plageconsult_id");
 $plageSel = new CPlageconsult();
 $plageSel->load($plageconsult_id);
 $plageSel->loadRefs();
 foreach($plageSel->_ref_consultations as $key => $value) {
-  if($vue && $plageSel->_ref_consultations[$key]->paye)
+  if ($vue && $plageSel->_ref_consultations[$key]->paye)
     unset($plageSel->_ref_consultations[$key]);
   else
     $plageSel->_ref_consultations[$key]->loadRefs();
 }
-if($plageSel->chir_id != $chirSel) {
-  $plageconsult_id = -1;
-  mbSetValueToSession("plageconsult_id", -1);
-  $plageSel = null;
+
+if ($plageSel->chir_id != $chirSel) {
+  $plageconsult_id = null;
+  mbSetValueToSession("plageconsult_id", $plageconsult_id);
+  $plageSel = new CPlageconsult();
 }
 
 // Liste des chirurgiens
 $mediusers = new CMediusers();
 $listChirs = $mediusers->loadPraticiens(PERM_EDIT);
 
-// Periode
-$today = date("Y-m-d");
-$debut = mbGetValueFromGetOrSession("debut", date("Y-m-d"));
-$dayDebut = substr($debut, 8, 2);
-$monthDebut = substr($debut, 5, 2);
-$yearDebut = substr($debut, 0, 4);
-$dayOfWeek = date("w", mktime(0, 0, 0, $monthDebut, $dayDebut, $yearDebut));
-$rectif = array(-6, 0, -1, -2, -3, -4, -5);
-$debut = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]  , $yearDebut));
-$fin   = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+6, $yearDebut));
-$prec  = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]-7, $yearDebut));
-$suiv  = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+7, $yearDebut));
-$day = substr($debut, 8, 2);
-$month = substr($debut, 5, 2);
-$year = substr($debut, 0, 4);
-for($i = 0; $i < 7; $i++) {
-  $plages[$i]["dateFormed"] = date("d/m/Y", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+$i, $yearDebut));
-  $plages[$i]["dateMysql"]  = date("Y-m-d", mktime(0, 0, 0, $monthDebut, intval($dayDebut)+$rectif[$dayOfWeek]+$i, $yearDebut));
-  $sql = "SELECT * FROM plageconsult" .
-  		"\nWHERE date = '".$plages[$i]["dateMysql"]."'" .
-  		"\nAND chir_id = '$chirSel'";
-  $plages[$i]["plages"] = db_loadObjectList($sql, new CPlageconsult);
-  foreach($plages[$i]["plages"] as $key => $value)
-    $plages[$i]["plages"][$key]->loadRefs(false);
+// Période
+$today = mbDate();
+$debut = mbGetValueFromGetOrSession("debut", $today);
+$debut = mbDate("last sunday", $debut);
+$fin   = mbDate("next sunday", $debut);
+$debut = mbDate("+1 day", $debut);
+
+$prec = mbDate("-1 week", $debut);
+$suiv = mbDate("+1 week", $debut);
+
+// Sélection des plages
+$plage = new CPlageconsult();
+$where["chir_id"] = "= '$chirSel'";
+for ($i = 0; $i < 7; $i++) {
+  $date = mbDate("+$i day", $debut);
+  $where["date"] = "= '$date'";
+  $plagesPerDay = $plage->loadList($where);
+  foreach($plagesPerDay as $key => $value) {
+    $plagesPerDay[$key]->loadRefs(false);
+  }
+  $plages[$date] = $plagesPerDay;
 }
 
 // Liste des heures
-for($i = 8; $i <= 20; $i++) {
-  if(strlen($i) == 1)
-    $listHours[$i] = "0".$i;
-  else
-    $listHours[$i] = $i;
+for ($i = 8; $i <= 20; $i++) {
+  $listHours[$i] = $i;
 }
-// Liste des jours
-$daysOfWeek[0]["index"] = 0;
-$daysOfWeek[0]["name"] = "Lundi";
-$currDay = intval(date("d", mktime(0, 0, 0, $month, $day, $year)));
-$daysOfWeek[0]["day"] = intval($currDay);
-$daysOfWeek[1]["index"] = 1;
-$daysOfWeek[1]["name"] = "Mardi";
-$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+1, $year)));
-$daysOfWeek[1]["day"] = intval($currDay);
-$daysOfWeek[2]["index"] = 2;
-$daysOfWeek[2]["name"] = "Mercredi";
-$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+2, $year)));
-$daysOfWeek[2]["day"] = intval($currDay);
-$daysOfWeek[3]["index"] = 3;
-$daysOfWeek[3]["name"] = "Jeudi";
-$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+3, $year)));
-$daysOfWeek[3]["day"] = intval($currDay);
-$daysOfWeek[4]["index"] = 4;
-$daysOfWeek[4]["name"] = "Vendredi";
-$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+4, $year)));
-$daysOfWeek[4]["day"] = intval($currDay);
-$daysOfWeek[5]["index"] = 5;
-$daysOfWeek[5]["name"] = "Samedi";
-$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+5, $year)));
-$daysOfWeek[5]["day"] = intval($currDay);
-$daysOfWeek[6]["index"] = 6;
-$daysOfWeek[6]["name"] = "Dimanche";
-$currDay = intval(date("d", mktime(0, 0, 0, $month, $day+6, $year)));
-$daysOfWeek[6]["day"] = intval($currDay);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
@@ -120,19 +87,14 @@ $smarty = new CSmartyDP;
 $smarty->assign('vue', $vue);
 $smarty->assign('chirSel', $chirSel);
 $smarty->assign('plageSel', $plageSel);
-$smarty->assign('plageconsult_id', $plageconsult_id);
 $smarty->assign('listChirs', $listChirs);
 $smarty->assign('plages', $plages);
 $smarty->assign('today', $today);
 $smarty->assign('debut', $debut);
+$smarty->assign('fin', $fin);
 $smarty->assign('prec', $prec);
 $smarty->assign('suiv', $suiv);
-$smarty->assign('fin', $fin);
-$smarty->assign('day', $day);
-$smarty->assign('month', $month);
-$smarty->assign('year', $year);
 $smarty->assign('listHours', $listHours);
-$smarty->assign('daysOfWeek', $daysOfWeek);
 
 $smarty->display('vw_planning.tpl');
 

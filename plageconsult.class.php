@@ -33,11 +33,6 @@ class CPlageconsult extends CDpObject {
   var $_hour_fin = null;
   var $_min_fin = null;
   var $_freq = null;
-  var $_jour = null;
-  var $_year = null;
-  var $_month = null;
-  var $_day = null;
-  var $_dateFormated = null;
 
   // Object References
   var $_ref_chir = null;
@@ -52,18 +47,18 @@ class CPlageconsult extends CDpObject {
     // Forward references
     $this->_ref_chir = new CMediusers();
     $this->_ref_chir->load($this->chir_id);
+    
     // Backward references
-    if(!$withCanceled)
+    if (!$withCanceled) {
       $where["annule"] = "= 0";
+    }
+    
     $where["plageconsult_id"] = "= '$this->plageconsult_id'";
     $order = "heure";
+
     $this->_ref_consultations = new CConsultation();
     $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order);
     
-    if(!$withCanceled)
-      $where["annule"] = "= 0";
-    $where["plageconsult_id"] = "= '$this->plageconsult_id'";
-    $order = "heure";
     $this->_ref_consultations_anesth = new CConsultationAnesth();
     $this->_ref_consultations_anesth = $this->_ref_consultations_anesth->loadList($where, $order);
   }
@@ -76,13 +71,13 @@ class CPlageconsult extends CDpObject {
   
   function checkFrequence() {
   	return true;
+
   	$oldValues = new CPlageconsult();
   	$oldValues->load($this->plageconsult_id);
   	$oldValues->loadRefs();
-  	if(($oldValues->_freq != $this->_freq) && (count($oldValues->_ref_consultations) > 0))
-  	  return false;
-  	else
-  	  return true;
+
+	  return $oldValues->_freq == $this->_freq 
+      or count($oldValues->_ref_consultations) == 0;
   }
   
   function canDelete(&$msg, $oid = null) {
@@ -100,32 +95,39 @@ class CPlageconsult extends CDpObject {
  */
   function hasCollisions() {
     // Get all other plages the same day
-    $sql = "SELECT * FROM plageconsult " .
-        "WHERE chir_id = '$this->chir_id' " .
-        "AND date = '$this->date' " .
-        "AND plageconsult_id != '$this->plageconsult_id'";
-    $row = db_loadlist($sql);
+    $where["chir_id"] = "= '$this->chir_id'";
+    $where["date"] = "= '$this->date'";
+    $where["plageconsult_id"] = "!= '$this->plageconsult_id'";
+    $plages = new CPlageconsult;
+    $plages = $plages->loadList($where);
+
+    mbTrace(count($plages), "Nombre de plages avec des collisions possibles");
     $msg = null;
-    foreach ($row as $key => $value) {
-      if (($value['debut'] < $this->fin and $value['fin'] > $this->fin)
-        or($value['debut'] < $this->debut and $value['fin'] > $this->debut)
-        or($value['debut'] >= $this->debut and $value['fin'] <= $this->fin)) {
-        $msg .= "Collision avec la plage du $this->date, de {$value['debut']} à {$value['fin']}.";
+    
+    foreach ($plages as $plage) {
+      if (($plage->debut < $this->fin and $plage->fin > $this->fin)
+        or($plage->debut < $this->debut and $plage->fin > $this->debut)
+        or($plage->debut >= $this->debut and $plage->fin <= $this->fin)) {
+        $msg .= "Collision avec la plage du $this->date, de $plage->debut à $plage->fin.";
       }
     }
+    
     return $msg;
   }
   
   function store() {
     $this->updateDBFields();
+    
     if ($msg = $this->hasCollisions()) {
       return $msg;
     }
+
     if ($this->plageconsult_id) {
       if (!$this->checkFrequence()) {
         return "Vous ne pouvez pas modifier la fréquence de cette plage";
       }
     }
+
     return parent::store();
   }
   
@@ -135,59 +137,39 @@ class CPlageconsult extends CDpObject {
     $this->_hour_fin = intval(substr($this->fin, 0, 2));
     $this->_min_fin  = intval(substr($this->fin, 3, 2));
     $this->_freq     = substr($this->freq, 3, 2);
-    $currday = substr($this->date, 8, 2);
-    $currmonth = substr($this->date, 5, 2);
-    $curryear = substr($this->date, 0, 4);
-    $this->_jour     = date("w", mktime(0, 0, 0, $currmonth, $currday-1, $curryear));
-    $this->_jour     = intval($this->_jour);
-    $this->_day      = date("d", mktime(0, 0, 0, $currmonth, $currday-$this->_jour, $curryear));
-    $this->_month    = date("m", mktime(0, 0, 0, $currmonth, $currday-$this->_jour, $curryear));
-    $this->_year     = date("Y", mktime(0, 0, 0, $currmonth, $currday-$this->_jour, $curryear));
-    $this->_dateFormated = date("d/m/Y", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
   }
   
   function updateDBFields() {
-  	if($this->_hour_deb !== null)
+  	if ($this->_hour_deb !== null)
       $this->debut = $this->_hour_deb.":00:00";
-    if($this->_hour_fin !== null)
+    if ($this->_hour_fin !== null)
       $this->fin   = $this->_hour_fin.":00:00";
-    if($this->_freq !== null)
+    if ($this->_freq !== null)
       $this->freq   = "00:". $this->_freq. ":00";
-    if(($this->_month !== null) && ($this->_day !== null) && ($this->_jour !== null) && ($this->_year !== null))
-    $this->date = date("Y-m-d", mktime(0, 0, 0, $this->_month, $this->_day + $this->_jour, $this->_year));
   }
   
   function becomeNext() {
-  	$nextFirstDay = mktime (0, 0, 0, $this->_month, $this->_day+7, $this->_year);
-  	$nextRealDay = mktime (0, 0, 0, $this->_month, $this->_day+7+$this->_jour, $this->_year);
+    // Store form fields
     $_hour_deb = $this->_hour_deb;
     $_min_deb = $this->_min_deb;
     $_hour_fin = $this->_hour_fin;
     $_min_fin = $this->_min_fin;
     $_freq = $this->_freq;
-    $_jour = $this->_jour;
-    $_dateFormated = $this->_dateFormated;
-  	$sql = "SELECT plageconsult_id" .
-      "\nFROM plageconsult" .
-      "\nWHERE date = '".date("Y-m-d", $nextRealDay)."'" .
-      "\nAND chir_id = '$this->chir_id'" .
-      "\nAND (debut = '$this->debut' OR fin = '$this->fin')";
-    $row = db_loadlist($sql);
-    if(@$row[0]['plageconsult_id']) {
-      $this->load(@$row[0]['plageconsult_id']);
-    } else {
+
+    $this->date = mbDate("+1 week", $this->date);
+    $where["date"] = "= '$this->date'";
+    $where["chir_id"] = "= '$this->chir_id'";
+    $where[] = "`debut` = '$this->debut' OR `fin` = '$this->fin'";
+    if (!$this->loadObject($where)) {
       $this->plageconsult_id = null;
-      $this->_year  = date("Y", $nextFirstDay);
-      $this->_month = date("m", $nextFirstDay);
-      $this->_day = date("d", $nextFirstDay);
     }
+
+    // Restore form fields
     $this->_hour_deb = $_hour_deb;
     $this->_min_deb = $_min_deb;
     $this->_hour_fin = $_hour_fin;
     $this->_min_fin = $_min_fin;
     $this->_freq = $_freq;
-    $this->_jour = $_jour;
-    $this->_dateFormated = $_dateFormated;
     $this->updateDBFields();
   }    
 }

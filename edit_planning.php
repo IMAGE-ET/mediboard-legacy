@@ -8,16 +8,18 @@
 */
 
 global $AppUI, $canRead, $canEdit, $m;
+
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$consult = new CConsultation();
+$chir = new CMediusers;
+$pat = new CPatient;
+
 $consultation_id = mbGetValueFromGetOrSession("consultation_id");
-$consult = null;
-$chir = null;
-$pat = null;
 if (!$consultation_id) {
   // L'utilisateur est-il praticien?
   $mediuser = new CMediusers();
@@ -25,20 +27,17 @@ if (!$consultation_id) {
   if ($mediuser->isPraticien()) {
     $chir = $mediuser;
   }
-  // A t'on fourni l'id du patient et du chirurgien?
-  $chir_id = mbGetValueFromGetOrSession("chir_id", null);
-  if ($chir_id) {
-    $chir = new CMediusers;
+  
+  // A t'on fourni l'id du chirurgien
+  if ($chir_id = mbGetValueFromGetOrSession("chir_id")) {
     $chir->load($chir_id);
   }
 
-  $pat_id = dPgetParam($_GET, "pat_id", 0);
-  if ($pat_id) {
-    $pat = new CPatient;
+  // A t'on fourni l'id du chirurgien
+  if ($pat_id = mbGetValueFromGet("pat_id")) {
     $pat->load($pat_id);
   }
 } else {
-  $consult = new CConsultation();
   $consult->load($consultation_id);
   $consult->loadRefs();
   $consult->_ref_plageconsult->loadRefs();

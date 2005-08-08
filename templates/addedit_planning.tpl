@@ -177,8 +177,8 @@ function setRDV( hour, min, id, date, freq ) {
         <tr>
           <th><label for="editFrm__date">Date:</label></th>
           <td class="readonly">
-            <input type="text" name="_date" value="{$consult->_ref_plageconsult->date|date_format:"%d/%m/%Y"}" readonly="readonly" />
-            <input type="hidden" name="plageconsult_id" value="{$consult->_ref_plageconsult->plageconsult_id}" />
+            <input type="text" name="_date" value="{$consult->_date}" readonly="readonly" />
+            <input type="hidden" name="plageconsult_id" value="{$consult->plageconsult_id}" />
           </td>
         </tr>
 

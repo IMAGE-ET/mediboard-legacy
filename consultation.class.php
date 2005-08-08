@@ -56,7 +56,6 @@ class CConsultation extends CDpObject {
   var $c1_valide = null;
   var $courrier2 = null;
   var $c2_valide = null;
-  
 
   // Form fields
   var $_etat = null;
@@ -64,6 +63,7 @@ class CConsultation extends CDpObject {
   var $_min = null;
   var $_check_premiere = null; // CheckBox: must be present in all forms!
   var $_somme = null;
+  var $_date = null; // updated at loadRefs()
   
 
   // Object References
@@ -169,6 +169,7 @@ class CConsultation extends CDpObject {
     $this->_ref_patient->load($this->patient_id);
     $this->_ref_plageconsult = new CPlageconsult;
     $this->_ref_plageconsult->load($this->plageconsult_id);
+    $this->_date = $this->_ref_plageconsult->date;
   }
   
   function loadRefsBack() {

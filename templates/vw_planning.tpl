@@ -6,21 +6,31 @@ function checkPlage() {
   var form = document.editFrm;
   var field = null;
   
-  if (field = form.chir_id)
-    if (field.value == -1) {
+  if (field = form.chir_id) {
+    if (!field.value) {
       alert("Merci de choisir un chirurgien");
       field.focus();
       return false;
     }
+  }
   
+  if (field = form.date) {
+    if (!field.value) {
+      alert("Merci de choisir un jour de la semaine");
+      field.focus();
+      return false;
+    }
+  }
+
   var fieldDeb = form._hour_deb;
   var fieldFin = form._hour_fin;
-  if (fieldDeb && fieldFin)
+  if (fieldDeb && fieldFin) {
     if (fieldDeb.value >= fieldFin.value) {
       alert("L'heure de début doit être inférieure à la l'heure de fin");
       fieldFin.focus();
       return false;
     }
+  }
   
   return true;
 }
@@ -67,16 +77,16 @@ function checkPlage() {
       <table width="100%">
         <tr>
           <th></th>
-          {foreach from=$daysOfWeek item=curr_day}
-          <th>{$curr_day.name} {$curr_day.day}</th>
+          {foreach from=$plages key=curr_day item=plagesPerDay}
+          <th>{$curr_day|date_format:"%A %d"}</th>
           {/foreach}
         </tr>
         {foreach from=$listHours item=curr_hour}
         <tr>
           <th>{$curr_hour}h</th>
-          {foreach from=$plages item=curr_day}
+          {foreach from=$plages key=curr_day item=plagesPerDay}
             {assign var="isNotIn" value=1}
-            {foreach from=$curr_day.plages item=curr_plage}
+            {foreach from=$plagesPerDay item=curr_plage}
               {if $curr_plage->_hour_deb == $curr_hour}
                 <td align="center" bgcolor="#aaaaaa" rowspan="{$curr_plage->_hour_fin-$curr_plage->_hour_deb}">
                   <a href="index.php?m={$m}&amp;tab={$tab}&amp;plageconsult_id={$curr_plage->plageconsult_id}">
@@ -101,14 +111,11 @@ function checkPlage() {
 
             <input type='hidden' name='dosql' value='do_plageconsult_aed' />
             <input type='hidden' name='del' value='0' />
-            <input type='hidden' name='plageconsult_id' value='{if $plageconsult_id != -1}{$plageconsult_id}{/if}' />
-            <input type='hidden' name='_year' value='{$year}' />
-            <input type='hidden' name='_month' value='{$month}' />
-            <input type='hidden' name='_day' value='{$day}' />
+            <input type='hidden' name='plageconsult_id' value='{$plageSel->plageconsult_id}' />
             
             <table class="form">
               <tr>
-                {if $plageconsult_id == -1}
+                {if !$plageSel->plageconsult_id}
                 <th class="category" colspan="4">Créer une plage</th>
                 {else}
                 <th class="category" colspan="4">Modifier cette plage</th>
@@ -118,7 +125,7 @@ function checkPlage() {
               <tr>
                 <th><label for="editFrm_chir_id">Praticien:</label></th>
                 <td><select name="chir_id">
-                    <option value="-1" {if $chirSel == -1} selected="selected" {/if}>-- Choisir un praticien</option>
+                    <option value="">&mdash; Choisir un praticien</option>
                     {foreach from=$listChirs item=curr_chir}
                       <option value="{$curr_chir->user_id}" {if $chirSel == $curr_chir->user_id} selected="selected" {/if}>
                       {$curr_chir->_view}
@@ -126,7 +133,7 @@ function checkPlage() {
                     {/foreach}
                     </select>
                 </td>
-                <th><labl for="editFrm_libelle">Libelle:</label></th>
+                <th><label for="editFrm_libelle">Libellé:</label></th>
                 <td><input type="text" name="libelle" value="{$plageSel->libelle}" />
               </tr>
 
@@ -134,20 +141,22 @@ function checkPlage() {
                 <th><label for="editFrm__hour_deb">Heure de début:</label></th>
                 <td><select name="_hour_deb">
                     {foreach from=$listHours item=curr_hour}
-                      <option value="{$curr_hour}" {if $curr_hour == $plageSel->_hour_deb} selected="selected" {/if}>
-                        {$curr_hour}
+                      <option value="{$curr_hour|string_format:"%02d"}" {if $curr_hour == $plageSel->_hour_deb} selected="selected" {/if}>
+                        {$curr_hour|string_format:"%02d"}
                       </option>
                     {/foreach}
                     </select>
                 </td>
-                <th><label for="editFrm__jour">Jour de la semaine:</label></th>
-                <td><select name="_jour">
-                    {foreach from=$daysOfWeek item=curr_day}
-                    <option value="{$curr_day.index}" {if $curr_day.index == $plageSel->_jour} selected="selected" {/if}>
-                      {$curr_day.name}
+                <th><label for="editFrm_date">Jour de la semaine:</label></th>
+                <td>
+                  <select name="date">
+                    <option value="">&mdash; Jour de la semaine</option>
+                    {foreach from=$plages key=curr_day item=plagesPerDay}
+                    <option value="{$curr_day}" {if $curr_day == $plageSel->date} selected="selected" {/if}>
+                      {$curr_day|date_format:"%A"}
                     </option>
                     {/foreach}
-                    </select>
+                  </select>
                 </td>
               </tr>
 
@@ -155,8 +164,8 @@ function checkPlage() {
                 <th><label for="editFrm__hour_fin">Heure de fin:</label></th>
                 <td><select name="_hour_fin">
                     {foreach from=$listHours item=curr_hour}
-                      <option value="{$curr_hour}" {if $curr_hour == $plageSel->_hour_fin} selected="selected" {/if}>
-                        {$curr_hour}
+                      <option value="{$curr_hour|string_format:"%02d"}" {if $curr_hour == $plageSel->_hour_fin} selected="selected" {/if}>
+                        {$curr_hour|string_format:"%02d"}
                       </option>
                     {/foreach}
                     </select>
@@ -168,7 +177,7 @@ function checkPlage() {
               <tr>
                 <th><label>Fréquence:</label></th>
                 <td><select name="_freq">
-                  <option value="05" {if ($plageSel->_freq == "05")} selected="selected" {/if}>5</option>
+                  <option value="05" {if ($plageSel->_freq == "05")} selected="selected" {/if}>05</option>
                   <option value="10" {if ($plageSel->_freq == "10")} selected="selected" {/if}>10</option>
                   <option value="15" {if ($plageSel->_freq == "15") || (!$plageSel->plageconsult_id)} selected="selected" {/if}>15</option>
                   <option value="20" {if ($plageSel->_freq == "20")} selected="selected" {/if}>20</option>
@@ -180,8 +189,8 @@ function checkPlage() {
                   <label for="editFrm__double">Une semaine sur deux</label>
                 </td>
               <tr>
-                {if $plageconsult_id == -1}
-                <td class="button" colspan="4"><input type="submit" value="Creer" /></td>
+                {if !$plageSel->plageconsult_id}
+                <td class="button" colspan="4"><input type="submit" value="Créer" /></td>
                 {else}
                 <td class="button" colspan="4"><input type="submit" value="Modifier" /></td>
                 {/if}
@@ -190,13 +199,13 @@ function checkPlage() {
             </form>
           </td>
         </tr>
-        {if $plageconsult_id != -1}
+        {if $plageSel->plageconsult_id}
         <tr>
           <td colspan="8">
           <form name='removeFrm' action='./index.php?m=dPcabinet' method='post'>
           <input type='hidden' name='dosql' value='do_plageconsult_aed' />
           <input type='hidden' name='del' value='1' />
-          <input type='hidden' name='plageconsult_id' value='{$plageconsult_id}' />
+          <input type='hidden' name='plageconsult_id' value='{$plageSel->plageconsult_id}' />
             <table class="form">
               <tr>
                 <th class="category" colspan="2">Supprimer cette plage</th>
@@ -218,13 +227,13 @@ function checkPlage() {
       </table>
     </td>
     <td>
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;plageconsult_id=-1">cliquez ici pour créer une nouvelle plage</a>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;plageconsult_id=0">cliquez ici pour créer une nouvelle plage</a>
       
       <table class="tbl">
         <tr>
           <th colspan="10">
             <strong>
-            {if $plageconsult_id != -1}
+            {if $plageSel->plageconsult_id}
             Consultations du {$plageSel->date|date_format:"%A %d %B %Y"}
             {else}
             Pas de plage selectionnée

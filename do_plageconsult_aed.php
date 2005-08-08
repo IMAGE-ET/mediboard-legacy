@@ -25,13 +25,14 @@ $header = array();
 $msgNo = null;
 
 if ($del) {
+  mbTrace($obj, "Objet à supprimer");
   $obj->load();
 
   $deleted = 0;
   $not_deleted = 0;
   $not_found = 0;
 
-  while ($repeat--) {
+  while ($repeat-- > 0) {
     $msg = NULL;
     if ($obj->plageconsult_id) {
       if ($obj->canDelete($msg)) {
@@ -52,7 +53,7 @@ if ($del) {
       $msg = "Impossible de supprimer, plage non trouvée";
     }
     
-    $body_msg .= "<br />Plage du $obj->_day-$obj->_month-$obj->_year: " . $msg;
+    $body_msg .= "<br />Plage du $obj->date: $msg";
     
     $obj->becomeNext();
   }
@@ -63,14 +64,14 @@ if ($del) {
   
   $msgNo = $deleted ? UI_MSG_ALERT : UI_MSG_ERROR;
 
-  $_SESSION["dPcabinet"]["plageconsult_id"] = null;
+  mbSetValueToSession("plageconsult_id");
 } else {
   $created = 0;
   $updated = 0;
   $not_created = 0;
   $not_updated = 0;
 
-  while ($repeat--) {
+  while ($repeat--  > 0) {
     $msg = null;
     if ($obj->plageconsult_id) {
       if ($msg = $obj->store()) {
@@ -96,7 +97,7 @@ if ($del) {
     $obj->becomeNext();
     
     if ($double) {
-	  $repeat--;
+      $repeat--;
       $obj->becomeNext();
 	  }
   }
