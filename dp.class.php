@@ -88,6 +88,8 @@ class CDpObject {
         if (is_string($field)) {
           $where[$field] = "`$field` $eq";
         }
+        
+        $where[$field] = "(" . $where[$field] . ")";
       }
 		}
     
@@ -141,8 +143,10 @@ class CDpObject {
         $this->$key = $value;
       }
       
-      return;
+      return true;
 		}
+    
+    return false;
   }
 
 /**
