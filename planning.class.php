@@ -299,11 +299,14 @@ class COperation extends CDpObject {
   }
 
   function getSiblings() {
+    $twoWeeksBefore = mbDate("-15 days", $this->date_adm);
+    $twoWeeksAfter  = mbDate("+15 days", $this->date_adm);
+    
     $sql = "SELECT operation_id" .
-      		"\nFROM operations WHERE " .
-      		"\nAND pat_id = '$this->pat_id' " .
-      		"\nAND chir_id = '$this->chir_id'" .
-      		"\nAND date_adm BETWEEN(DATE_SUB($this->date_adm, INTERVAL 15 DAY) AND DATE_ADD($this->date_adm, INTERVAL 15 DAY))";
+  		"\nFROM operations WHERE " .
+  		"\nAND pat_id = '$this->pat_id' " .
+  		"\nAND chir_id = '$this->chir_id'" .
+  		"\nAND date_adm BETWEEN($twoWeeksBefore AND $twoWeeksAfter)";
     $siblings = db_loadlist($sql);
     return $siblings;
   }
@@ -311,38 +314,25 @@ class COperation extends CDpObject {
   function fillTemplate(&$template) {
   	$this->loadRefsFwd();
   	$this->_ref_plageop->loadRefsFwd();
-    $template->addProperty("Admission - Date", mbTranformTime("+0 DAY", $this->date_adm, "%d / %m / %Y"));
-    $template->addProperty("Admission - Heure", mbTranformTime("+0 DAY", $this->time_adm, "%Hh%M"));
+    $dateFormat = "%d / %m / %Y";
+    $timeFormat = "%Hh%M";
+    $template->addProperty("Admission - Date", mbTranformTime(null, $this->date_adm, $dateFormat));
+    $template->addProperty("Admission - Heure", mbTranformTime(null, $this->time_adm, $timeFormat));
     $template->addProperty("Hospitalisation - Durée", $this->duree_hospi);
-    $template->addProperty("Opération - Anesthésiste - nom", $this->_ref_plageop->_ref_anesth->user_last_name);
-    $template->addProperty("Opération - Anesthésiste - prénom", $this->_ref_plageop->_ref_anesth->user_first_name);
+    $template->addProperty("Opération - Anesthésiste - nom", $this->_ref_plageop->_ref_anesth->_user_last_name);
+    $template->addProperty("Opération - Anesthésiste - prénom", $this->_ref_plageop->_ref_anesth->_user_first_name);
     $template->addProperty("Opération - libellé", $this->libelle);
     $template->addProperty("Opération - CCAM - code", $this->_ext_code_ccam->code);
     $template->addProperty("Opération - CCAM - description", $this->_ext_code_ccam->libelleLong);
     $template->addProperty("Opération - CCAM2 - code", $this->_ext_code_ccam2->code);
     $template->addProperty("Opération - CCAM2 - description", $this->_ext_code_ccam2->libelleLong);
     $template->addProperty("Opération - côté", $this->cote);
-    $template->addProperty("Opération - date", mbTranformTime("+0 DAY", $this->_ref_plageop->date, "%d / %m / %Y"));
-    if($this->time_operation)
-      $template->addProperty("Opération - heure", substr($this->time_operation, 0, 5));
-    else
-      $template->addProperty("Opération - heure");
-    if($this->temp_operation)
-      $template->addProperty("Opération - durée", substr($this->temp_operation, 0, 5));
-    else
-      $template->addProperty("Opération - durée");
-    if($this->entree_bloc)
-      $template->addProperty("Opération - entrée bloc", substr($this->entree_bloc, 0, 5));
-    else
-      $template->addProperty("Opération - entrée bloc");
-    if($this->sortie_bloc)
-      $template->addProperty("Opération - sortie bloc", substr($this->sortie_bloc, 0, 5));
-    else
-      $template->addProperty("Opération - sortie bloc");
-    if($this->depassement)
-      $template->addProperty("Opération - depassement", $this->depassement);
-    else
-      $template->addProperty("Opération - depassement", 0);
+    $template->addProperty("Opération - date", mbTranformTime(null, $this->_ref_plageop->date, $dateFormat));
+    $template->addProperty("Opération - heure", mbTranformTime(null, $this->time_operation, $timeFormat));
+    $template->addProperty("Opération - durée", mbTranformTime(null, $this->temp_operation, $timeFormat));
+    $template->addProperty("Opération - entrée bloc",  mbTranformTime(null, $this->entree_bloc, $timeFormat));
+    $template->addProperty("Opération - sortie bloc",  mbTranformTime(null, $this->sortie_bloc, $timeFormat));
+    $template->addProperty("Opération - depassement", $this->depassement);
     $template->addProperty("Opération - exams pre-op", nl2br($this->examen));
     $template->addProperty("Opération - matériel", nl2br($this->materiel));
     $template->addProperty("Opération - convalescence", nl2br($this->convalescence));
