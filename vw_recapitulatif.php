@@ -34,10 +34,12 @@ for($i=0; $i<7; $i++){
   $listDays[] = $curr_day;
   $mainTab["allocated"]["functions"][0]["text"] = "Total placés";
   $mainTab["allocated"]["functions"][0]["class"] = "groupcollapse";
+  $mainTab["allocated"]["functions"][0]["color"] = null;
   $mainTab["allocated"]["functions"][0]["days"]["$curr_day"]["nombre"] = 0;
   $mainTab["notallocated"]["functions"][0]["text"] = "Total à placer";
   $mainTab["notallocated"]["functions"][0]["class"] = "groupcollapse";
   $mainTab["notallocated"]["functions"][0]["days"]["$curr_day"]["nombre"] = 0;
+  $mainTab["notallocated"]["functions"][0]["color"] = null;
   $curr_day = mbDate("+ 1 day", $curr_day);
 }
 
