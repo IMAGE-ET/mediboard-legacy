@@ -10,6 +10,16 @@
 require_once("mb_version.php");
 
 /**
+ * Returns the value of a variable retreived it from HTTP Get, with at least a
+ * default value
+ * @access public
+ * @return any 
+ **/
+function mbGetValueFromGet($valName, $valDefault = NULL) {
+  return isset($_GET[$valName]) ? $_GET[$valName] : $valDefault;
+}
+
+/**
  * Returns the value of a variable retreived it from HTTP Get, then from the session
  * Stores it in _SESSION in all cases, with at least a default value
  * @access public
