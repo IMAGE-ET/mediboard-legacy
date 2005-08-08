@@ -59,27 +59,24 @@ class CPlageOp extends CDpObject {
 
   function loadRefsFwd() {
     // Forward references
-    // Pour le chir et l'anesth, on est obligé de passer par sql a cause des id pourris
-    if ($this->id_chir) {
-      $sql = "SELECT user_id FROM users WHERE user_username = '$this->id_chir'";
-      $result = db_loadlist($sql);
-      $this->_ref_chir = new CMediusers;
-      $this->_ref_chir->load($result[0]["user_id"]);
-    }
-    if ($this->id_anesth) {
-      $sql = "SELECT user_id FROM users WHERE user_username = '$this->id_anesth'";
-      $result = db_loadlist($sql);
-      $this->_ref_anesth = new CMediusers;
-      $this->_ref_anesth->load($result[0]["user_id"]);
-    }
-    if ($this->id_spec) {
-      $this->_ref_spec = new CFunctions;
-      $this->_ref_spec->load($this->id_spec);
-    }
-    if ($this->id_salle) {
-      $this->_ref_salle = new CSalle;
-      $this->_ref_salle->load($this->id_salle);
-    }
+    // Pour le chir et l'anesth, on est obligé de passer le user à cause des id pourris
+    $user = new CUser;
+    
+    $where["user_username"] = "= '$this->id_chir'";
+    $user->loadObject($where);
+    $this->_ref_chir = new CMediusers;
+    $this->_ref_chir->load($user->user_id);
+
+    $where["user_username"] = "= '$this->id_anesth'";
+    $user->loadObject($where);
+    $this->_ref_anesth = new CMediusers;
+    $this->_ref_anesth->load($user->user_id);
+
+    $this->_ref_spec = new CFunctions;
+    $this->_ref_spec->load($this->id_spec);
+
+    $this->_ref_salle = new CSalle;
+    $this->_ref_salle->load($this->id_salle);
   }
   
   function loadRefsBack($annulee = 1) {

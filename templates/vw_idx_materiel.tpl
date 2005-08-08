@@ -38,7 +38,7 @@ function pageMain() {
 		  <th>Chirurgien</th>
 		  <th>Patient</th>
 		  <th>Opération</th>
-		  <th>Materiel à commander</th>
+		  <th>Matériel à commander</th>
 		  <th>Valider</th>
 		</tr>
 		{foreach from=$op item=curr_op}
@@ -49,7 +49,7 @@ function pageMain() {
 		  <td class="text">{$curr_op->_ext_code_ccam->code} : <i>{$curr_op->_ext_code_ccam->libelleLong}</i> (Côté : {$curr_op->cote})</td>
 		  <td class="text">{$curr_op->materiel|nl2br}</td>
 		  <td>
-			<form name="editFrm{$curr_op.id}" action="index.php" method="get">
+			<form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="dPbloc" />
             <input type="hidden" name="a" value="do_edit_mat" />
             <input type="hidden" name="id" value="{$curr_op->operation_id}" />
