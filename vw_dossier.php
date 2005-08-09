@@ -19,11 +19,11 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 // L'utilisateur est-il praticien?
-$chir = null;
+$chir = new CMediusers();
 $mediuser = new CMediusers();
 $mediuser->load($AppUI->user_id);
 if ($mediuser->isPraticien()) {
-  $chir = $mediuser->createUser();
+  $chir = $mediuser;
 }
 
 $chirSel = mbGetValueFromGetOrSession("chirSel", $chir->user_id);
