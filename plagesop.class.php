@@ -145,8 +145,10 @@ class CPlageOp extends CDpObject {
       $this->debut = $this->_heuredeb.":".$this->_minutedeb.":00";
     if(($this->_heurefin !== null) && ($this->_minutefin !== null))
       $this->fin   = $this->_heurefin.":".$this->_minutefin.":00";
-    if(($this->_year !== null) && ($this->_month !== null) && ($this->_day !== null))
+    if(($this->_year !== null) && ($this->_month !== null) && ($this->_day !== null)) {
       $this->date = $this->_year."-".$this->_month."-".$this->_day;
+      $this->_date = $this->_day."/".$this->_month."/".$this->_year;
+    }
   }
   
   function becomeNext() {

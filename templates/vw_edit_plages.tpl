@@ -24,6 +24,7 @@ function pageMain() {
   {/literal}
   regRedirectFlatCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
   {literal}
+  regFieldCalendar("editFrm", "date");
 }
 
 </script>
@@ -111,10 +112,15 @@ function pageMain() {
     </td>
 
     <th>Date:</th>
-    <td class="readonly">
-      <input type="text" name="_day"   value="{$day  }" readonly="readonly" size='1' />-
-      <input type="text" name="_month" value="{$month}" readonly="readonly" size='1' />-
-      <input type="text" name="_year"  value="{$year }" readonly="readonly" size='2' />
+    <td class="date">
+      {if $plagesel->id}
+      <div id="editFrm_date_da">{$plagesel->date|date_format:"%d/%m/%Y"}</div>
+      <input type="hidden" name="date" value="{$plagesel->date}" />
+      {else}
+      <div id="editFrm_date_da">{$date|date_format:"%d/%m/%Y"}</div>
+      <input type="hidden" name="date" value="{$date}" />
+      {/if}
+      <img id="editFrm_date_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date"/>
     </td>
 
     <th class="mandatory">Fin:</th>
