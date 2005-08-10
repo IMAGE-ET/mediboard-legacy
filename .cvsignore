@@ -1,3 +1,5 @@
 *.txt
 *.TXT
+*.zip
 tables_import.sql
+doc_recus

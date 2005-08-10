@@ -44,4 +44,14 @@ function doAction(sAction) {
   </li>
 
   <li>Inscrire l'ID dans le champ mb_id de la table d'import</li>
+  <li>
+    Ajout des fichiers liés :
+    <ul>
+      <li>Placer le dossier doc_recus et le fichier doc_recus.txt dans le module dPinterop</li>
+      <li><a href="javascript:doAction('orl_files')">Import des fichiers</a></li>
+      <li><a href="javascript:doAction('put_files')">Envoie des fichiers vers Mediboard</a></li>
+      <li>Les fichiers ainsi envoyés iront se placer (le cas échéant) dans la dernière consultation du patient lié</li>
+    </ul>
+  </li>
+  
 </ol>
