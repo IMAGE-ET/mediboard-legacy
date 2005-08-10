@@ -37,7 +37,7 @@ class CFile extends CDpObject {
 	// ensure the integrity of some variables
 		$this->file_id = intval( $this->file_id );
 		$this->file_consultation = intval( $this->file_consultation );
-		$this->file_consultation_anesth = intval( $this->file_consultation );
+		$this->file_consultation_anesth = intval( $this->file_consultation_anesth );
 		$this->file_operation = intval( $this->file_operation );
 
 		return NULL; // object is ok
