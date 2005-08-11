@@ -600,7 +600,7 @@ function pageMain() {
         <tr>
           <th><label for="editFrm_type_adm_comp">{tr}type_adm{/tr}:</label></th>
           <td>
-            <input name="type_adm" value="comp" type="radio" {if !$op || $op->type_adm == "comp"} checked="checked" {/if} onchange="modifOp()" />
+            <input name="type_adm" value="comp" type="radio" {if !$op->operation_id || $op->type_adm == "comp"} checked="checked" {/if} onchange="modifOp()" />
             <label for="editFrm_type_adm_comp">{tr}comp{/tr}</label><br />
             <input name="type_adm" value="ambu" type="radio" {if $op->type_adm == "ambu"} checked="checked" {/if} onchange="modifOp()" />
             <label for="editFrm_type_adm_ambu">{tr}ambu{/tr}</label><br />
@@ -615,7 +615,7 @@ function pageMain() {
           <td>
             <input name="chambre" value="o" type="radio" {if $op->chambre == "o"} checked="checked" {/if} onchange="modifOp()" />
             <label for="editFrm_chambre_o">Oui</label>
-            <input name="chambre" value="n" type="radio" {if !$op || $op->chambre == "n"} checked="checked" {/if} onchange="modifOp()" />
+            <input name="chambre" value="n" type="radio" {if !$op->operation_id || $op->chambre == "n"} checked="checked" {/if} onchange="modifOp()" />
             <label for="editFrm_chambre_n">Non</label>
           </td>
         </tr>
@@ -646,7 +646,7 @@ function pageMain() {
       <table class="form">
         <tr>
           <td class="button">
-          {if $op}
+          {if $op->operation_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
             <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'l\'intervention du Dr', '{$op->_ref_chir->_view}')" />
@@ -655,7 +655,7 @@ function pageMain() {
             <input type="submit" value="Créer" />
           {/if}
           {if !$protocole}
-            {if $op}
+            {if $op->operation_id}
             <input type="button" value="Imprimer" onClick="printForm();" />
             <select name="_choix_modele" onchange="printDocument()">
               <option value="">&mdash; Choisir un modèle</option>

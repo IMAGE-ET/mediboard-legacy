@@ -21,32 +21,30 @@ if (!$canRead) {
 $operation_id = mbGetValueFromGetOrSession("hospitalisation_id", 0);
 $chir_id = mbGetValueFromGetOrSession("chir_id", null);
 $pat_id = dPgetParam($_GET, "pat_id");
-$chir = null;
-$pat = null;
+$chir = new CMediusers;
+$pat = new CPatient;
 
 // L'utilisateur est-il un praticiens
 $mediuser = new CMediusers;
 $mediuser->load($AppUI->user_id);
 if ($mediuser->isPraticien()) {
   $chir = $mediuser;
-} else
-  $chir = null;
+}
+
 // Vérification des droits sur les praticiens
 $listChir = $mediuser->loadPraticiens(PERM_EDIT);
+
 // A t'on fourni l'id du patient et du chirurgien?
 if ($chir_id) {
-  $chir = new CMediusers;
   $chir->load($chir_id);
 }
 if ($pat_id) {
-  $pat = new CPatient;
   $pat->load($pat_id);
 }
 
 // On récupère l'opération
-$op = null;
+$op = new COperation;
 if ($operation_id) {
-  $op = new COperation;
   $op->load($operation_id);
   // On vérifie que l'utilisateur a les droits sur l'operation
   $rigth = false;
@@ -114,9 +112,9 @@ $smarty->assign('protocole', false);
 $smarty->assign('hospitalisation', true);
 
 $smarty->assign('op', $op);
-$smarty->assign('chir' , $op ? $op->_ref_chir    : $chir);
-$smarty->assign('pat'  , $op ? $op->_ref_pat     : $pat );
-$smarty->assign('plage', $op ? $op->_ref_plageop : null );
+$smarty->assign('chir' , $op->chir_id    ? $op->_ref_chir    : $chir);
+$smarty->assign('pat'  , $op->pat_id     ? $op->_ref_pat     : $pat );
+$smarty->assign('plage', $op->plageop_id ? $op->_ref_plageop : new CPlageop );
 
 $smarty->assign('listModelePrat', $listModelePrat);
 $smarty->assign('listModeleFunc', $listModeleFunc);

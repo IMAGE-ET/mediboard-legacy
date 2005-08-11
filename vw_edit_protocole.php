@@ -17,17 +17,16 @@ if (!$canRead) {
 
 $operation_id = mbGetValueFromGetOrSession("protocole_id", 0);
 
-$op = null;
-$chir = null;
+$op = new COperation;
+$chir = new CMediusers;
 if(!$operation_id) {
   // L'utilisateur est-il praticien?
   $mediuser = new CMediusers;
   $mediuser->load($AppUI->user_id);
   if ($mediuser->isPraticien()) {
-    $chir = $mediuser->createUser();
+    $chir = $mediuser;
   }
 }  else {
-  $op = new COperation;
   $op->load($operation_id);
   $op->loadRefs();
 }
@@ -53,9 +52,9 @@ $smarty->assign('protocole', true);
 $smarty->assign('hospitalisation', false);
 
 $smarty->assign('op', $op);
-$smarty->assign('chir' , $op ? $op->_ref_chir    : $chir);
-$smarty->assign('pat'  , $op ? $op->_ref_pat     : null );
-$smarty->assign('plage', $op ? $op->_ref_plageop : null );
+$smarty->assign('chir' , $op->chir_id    ? $op->_ref_chir    : $chir);
+$smarty->assign('pat'  , $op->pat_id     ? $op->_ref_pat     : null );
+$smarty->assign('plage', $op->plageop_id ? $op->_ref_plageop : new CPlageop );
 
 $smarty->assign('hours', $hours);
 $smarty->assign('mins', $mins);
