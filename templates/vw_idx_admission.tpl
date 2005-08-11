@@ -86,7 +86,7 @@ function pageMain() {
             <form name="editAllAdmFrm" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_edit_admis" />
-            <input type="hidden" name="id" value="{$year}-{$month}-{$day}" />
+            <input type="hidden" name="id" value="{$date}" />
             <input type="hidden" name="mode" value="allsaisie" />
             <input type="hidden" name="value" value="o" />
             Saisis
@@ -122,25 +122,23 @@ function pageMain() {
             {else}
             Pas de chambre
             {/if}
-            <!-- Pas de modif des chambres pour l'instant
-            <br />
-            <form name="editChFrm{$curr_adm->operation_id}" action="index.php" method="get">
-            <input type="hidden" name="m" value="{$m}" />
-            <input type="hidden" name="a" value="do_edit_chambre" />
-            <input type="hidden" name="id" value="{$curr_adm->operation_id}" />
-            {if $curr_adm->chambre == 'o'}
-            <input type="hidden" name="value" value="n" />
-            <button type="submit">
-              <img src="modules/{$m}/images/refresh.png" alt="changer"> chambre simple
-            </button>
-            {else}
-            <input type="hidden" name="value" value="o" />
-            <button type="submit">
-              <img src="modules/{$m}/images/refresh.png" alt="changer"> chambre double
-            </button>
-            {/if}
-            </form>
-            -->
+              <form name="editChFrm{$curr_adm->operation_id}" action="index.php" method="get">
+              <input type="hidden" name="m" value="dPhospi" />
+              <input type="hidden" name="otherm" value="dPadmissions" />
+              <input type="hidden" name="a" value="do_edit_chambre" />
+              <input type="hidden" name="id" value="{$curr_adm->operation_id}" />
+              {if $curr_adm->chambre == 'o'}
+              <input type="hidden" name="value" value="n" />
+              <button type="submit" style="background-color: #f55;">
+                <img src="modules/{$m}/images/refresh.png" alt="changer"> simple
+              </button>
+              {else}
+              <input type="hidden" name="value" value="o" />
+              <button type="submit">
+                <img src="modules/{$m}/images/refresh.png" alt="changer"> double
+              </button>
+              {/if}
+              </form>
           </td>
           {if $curr_adm->annulee == 1}
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}" align="center" colspan=2>
