@@ -95,11 +95,17 @@ $adm["dureeHospi"] = $duree_hospi;
 //   $adm["hourAnesth"] .= " $min_anesth";
 $ccam = new CActeCCAM($CCAM_code);
 $ccam->loadLite();
-$adm["CCAM"] = $ccam->libelleLong;
+if($ccam->libelleLong != "Acte invalide")
+  $adm["CCAM"] = $ccam->libelleLong;
+else
+  $adm["CCAM"] = "-";
 if($CCAM_code2) {
   $ccam = new CActeCCAM($CCAM_code2);
   $ccam->loadLite();
-  $adm["CCAM2"] =$ccam->libelleLong;
+  if($ccam->libelleLong != "Acte invalide")
+    $adm["CCAM2"] = $ccam->libelleLong;
+  else
+    $adm["CCAM2"] = "-";
 } else
   $adm["CCAM2"] = "";
 
