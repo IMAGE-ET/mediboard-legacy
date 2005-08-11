@@ -282,6 +282,7 @@ function printForm() {
     url += makeURLParam(form.pat_id);
     url += makeURLParam(form.CCAM_code);
     url += makeURLParam(form.CCAM_code2);
+    url += makeURLParam(form.cote , "cote" );
     url += makeURLParam(form._hour_op, "hour_op");
     url += makeURLParam(form._min_op , "min_op" );
     url += makeURLParam(form.date);
