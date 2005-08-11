@@ -435,8 +435,8 @@ function popPlanning() {
               <button type="submit">
                 <img src="modules/{$m}/images/refresh.png" alt="changer"> chambre double
               </button>
-            {/if}
-            </form>
+              {/if}
+              </form>
             </td>
           </tr>
           {foreachelse}

@@ -9,6 +9,7 @@
 
 $value = dPgetParam($_GET, 'value', 'o');
 $id = dPgetParam($_GET, 'id', 0);
+$m = dPgetParam($_GET, 'otherm', dPgetParam($_GET, 'm', ''));
 
 if($id) {
   $sql = "UPDATE operations
@@ -17,6 +18,6 @@ if($id) {
   $result = db_exec($sql);
 }
 
-$AppUI->redirect();
+$AppUI->redirect("m=$m#adm$id");
 
 ?>
