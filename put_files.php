@@ -20,7 +20,7 @@ $chrono = new Chronometer;
 set_time_limit( 1800 );
 ignore_user_abort( 1 );
 
-$step = 100;
+$step = 10;
 
 $current = mbGetValueFromGet("current", 0);
 $new = mbGetValueFromGet("new", 0);
@@ -128,6 +128,8 @@ if ($gbytes >= 1) {
 $value = round($value, $value > 99 ? 0 : $value >  9 ? 1 : 2);
 $totalSizePrint = "$value $unit";
 
+// @todo : forcer l'affichage à chaque étape
+
 mbTrace($chrono, "Chrono :");
 
 echo '<p>Opération terminée (step '.$current.'/'.ceil(14000/$step).').</p>';
@@ -137,29 +139,23 @@ echo $link.' éléments liés, ';
 echo $nofile.' fichiers non trouvés, ';
 echo $noconsult.' consultations non trouvés</p><hr>';
 
-echo '<a onclick="javascript:next();">'.(count($listImport)).' suivant >>></a>';
-
-if((count($listImport) == $step) || (count($listImport) != 0)) {
+if(count($listImport) == $step) {
+  echo '<a onclick="javascript:next();">'.(count($listImport)).' suivant >>></a>';
   ?>
-  
-<script language="JavaScript" type="text/javascript">
-
-  function next() {
-    var url = "index.php?m=dPinterop&dialog=1&a=put_files";
-    url += "&current=<?php echo $current; ?>";
-    url += "&new=<?php echo $new; ?>";
-    url += "&link=<?php echo $link; ?>";
-    url += "&nofile=<?php echo $nofile; ?>";
-    url += "&noconsult=<?php echo $noconsult; ?>";
-    url += "&totalSize=<?php echo $totalSize; ?>";
-    url += "&total=<?php echo $total; ?>";
-    window.location.href = url;
-  }
-  
-  //next();
-
-</script>
-  
+  <script language="JavaScript" type="text/javascript">
+    function next() {
+      var url = "index.php?m=dPinterop&dialog=1&a=put_files";
+      url += "&current=<?php echo $current; ?>";
+      url += "&new=<?php echo $new; ?>";
+      url += "&link=<?php echo $link; ?>";
+      url += "&nofile=<?php echo $nofile; ?>";
+      url += "&noconsult=<?php echo $noconsult; ?>";
+      url += "&totalSize=<?php echo $totalSize; ?>";
+      url += "&total=<?php echo $total; ?>";
+      window.location.href = url;
+    }
+    next();
+  </script>
   <?php
 }
 
