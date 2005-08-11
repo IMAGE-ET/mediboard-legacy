@@ -147,7 +147,7 @@ class CChambre extends CDpObject {
           $this->_ecart_age = max($ecart, $this->_ecart_age);
 
           // Genres mélangés
-          if($patient1->sexe != $patient2->sexe)
+          if(($patient1->sexe != $patient2->sexe) && (($patient1->sexe == "m") || ($patient2->sexe == "m")))
             $this->_genres_melanges = true;
         
           // Conflit de chirurgiens
