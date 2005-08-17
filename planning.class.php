@@ -89,10 +89,16 @@ class COperation extends CDpObject {
   }
 
   function check() {
+    // Data checking
+    $msg = null;
     global $pathos;
+    
+    if (!$this->chir_id) {
+      $msg .= "Praticien non valide";
+    }
 
     if ($this->pathologie != null && (!in_array($this->pathologie, $pathos->dispo))) {
-      return "Pathologie non disponible";
+      $msg.= "Pathologie non disponible<br />";
     }
     
     return parent::check();      
