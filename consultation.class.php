@@ -162,6 +162,21 @@ class CConsultation extends CDpObject {
     // @todo : verifier si on ne fait ça que si _check_premiere est non null
     $this->premiere = $this->_check_premiere ? 1 : 0;
   }
+
+  function check() {
+    // Data checking
+    $msg = null;
+
+    if (!$this->plageconsult_id) {
+      $msg .= "Plage de consultation non valide<br />";
+    }
+
+    if (!$this->patient_id) {
+      $msg .= "Patient non valide<br />";
+    }
+        
+    return $msg . parent::check();
+  }
   
   function loadRefsFwd() {
     // Forward references

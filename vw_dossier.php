@@ -19,103 +19,78 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 // L'utilisateur est-il praticien?
-$chir = null;
-$mediuser = new CMediusers();
+$chirSel = new CMediusers;
+$mediuser = new CMediusers;
 $mediuser->load($AppUI->user_id);
 if ($mediuser->isPraticien()) {
-  $chir = $mediuser->createUser();
+  $chirSel = $mediuser;
 }
 
-$chirSel = mbGetValueFromGetOrSession("chirSel", $chir->user_id);
 $pat_id = mbGetValueFromGetOrSession("patSel", 0);
 $patSel = new CPatient;
 $patSel->load($pat_id);
+$patient = new CPatient;
+$patient->load($pat_id);
 $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_READ);
 
-// récupération des modèles de compte-rendu disponibles
-if($chirSel) {
-  // Compte-rendus opératoires
-  $crOp = new CCompteRendu;
-  $where = array();
-  $order = array();
-  $where["chir_id"] = "= '$chirSel'";
-  $where["type"] = "= 'operation'";
-  $order[] = "nom";
-  $crOp = $crOp->loadList($where, $order);
-  // Compte-rendus de consultation
-  $where = array();
-  $order = array();
-  $crConsult = new CCompteRendu;
-  $where["chir_id"] = "= '$chirSel'";
-  $where["type"] = "= 'consultation'";
-  $order[] = "nom";
-  $crConsult = $crConsult->loadList($where, $order);
-  // Packs de sortie
-  $where = array();
-  $order = array();
-  $packs = new CPack;
-  $where["chir_id"] = "= '$chirSel'";
-  $order[] = "nom";
-  $packs = $packs->loadList($where, $order);
-}
-else {
-  $crOp = null;
-  $crConsult = null;
-  $packs = null;
-}
-
 // Chargement des références du patient
 if($pat_id) {
+  
+  // Infos patient complètes (tableau de gauche)
+  $patient->loadRefs();
+  if($patient->_ref_curr_affectation->affectation_id) {
+    $patient->_ref_curr_affectation->loadRefsFwd();
+    $patient->_ref_curr_affectation->_ref_lit->loadRefsFwd();
+    $patient->_ref_curr_affectation->_ref_lit->_ref_chambre->loadRefsFwd();
+  } elseif($patient->_ref_next_affectation->affectation_id) {
+    $patient->_ref_next_affectation->loadRefsFwd();
+    $patient->_ref_next_affectation->_ref_lit->loadRefsFwd();
+    $patient->_ref_next_affectation->_ref_lit->_ref_chambre->loadRefsFwd();
+  }
+  foreach ($patient->_ref_operations as $key => $op) {
+    $patient->_ref_operations[$key]->loadRefs();
+  }
+  foreach ($patient->_ref_hospitalisations as $key => $op) {
+    $patient->_ref_hospitalisations[$key]->loadRefs();
+  }
+  foreach ($patient->_ref_consultations as $key => $consult) {
+    $patient->_ref_consultations[$key]->loadRefs();
+    $patient->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
+  }
+  
+  // Infos patient du cabinet (tableau de droite)
   $patSel->loadRefs();
   foreach($patSel->_ref_consultations as $key => $value) {
     $patSel->_ref_consultations[$key]->loadRefs();
     $patSel->_ref_consultations[$key]->_ref_plageconsult->loadRefsFwd();
-    if($chirSel) {
-      if($patSel->_ref_consultations[$key]->_ref_plageconsult->chir_id != $chirSel)
-        unset($patSel->_ref_consultations[$key]);
+    $toDel = true;
+    foreach($listPrat as $key2 => $value2) {
+      if($patSel->_ref_consultations[$key]->_ref_plageconsult->chir_id == $listPrat[$key2]->user_id)
+        $toDel = false;
     }
-    else {
-      $toDel = true;
-      foreach($listPrat as $key2 => $value2) {
-        if($patSel->_ref_consultations[$key]->_ref_plageconsult->chir_id == $listPrat[$key2]->user_id)
-          $toDel = false;
-      }
-      if($toDel)
-        unset($patSel->_ref_consultations[$key]);
-    }
+    if($toDel)
+      unset($patSel->_ref_consultations[$key]);
   }
   foreach($patSel->_ref_operations as $key => $value) {
     $patSel->_ref_operations[$key]->loadRefs();
-    if($chirSel) {
-      if($patSel->_ref_operations[$key]->chir_id != $chirSel)
-        unset($patSel->_ref_operations[$key]);
+    $toDel = true;
+    foreach($listPrat as $key2 => $value2) {
+      if($patSel->_ref_operations[$key]->chir_id == $listPrat[$key2]->user_id)
+        $toDel = false;
     }
-    else {
-      $toDel = true;
-      foreach($listPrat as $key2 => $value2) {
-        if($patSel->_ref_operations[$key]->chir_id == $listPrat[$key2]->user_id)
-          $toDel = false;
-      }
-      if($toDel)
-        unset($patSel->_ref_operations[$key]);
-    }
+    if($toDel)
+      unset($patSel->_ref_operations[$key]);
   }
   foreach($patSel->_ref_hospitalisations as $key => $value) {
     $patSel->_ref_hospitalisations[$key]->loadRefs();
-    if($chirSel) {
-      if($patSel->_ref_hospitalisations[$key]->chir_id != $chirSel)
-        unset($patSel->_ref_hospitalisations[$key]);
+    $toDel = true;
+    foreach($listPrat as $key2 => $value2) {
+      if($patSel->_ref_hospitalisations[$key]->chir_id == $listPrat[$key2]->user_id)
+        $toDel = false;
     }
-    else {
-      $toDel = true;
-      foreach($listPrat as $key2 => $value2) {
-        if($patSel->_ref_hospitalisations[$key]->chir_id == $listPrat[$key2]->user_id)
-          $toDel = false;
-      }
-      if($toDel)
-        unset($patSel->_ref_hospitalisations[$key]);
-    }
+    if($toDel)
+      unset($patSel->_ref_hospitalisations[$key]);
   }
 }
 
@@ -124,10 +99,8 @@ require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
 $smarty->assign('patSel', $patSel);
+$smarty->assign('patient', $patient);
 $smarty->assign('chirSel', $chirSel);
-$smarty->assign('crOp', $crOp);
-$smarty->assign('crConsult', $crConsult);
-$smarty->assign('packs', $packs);
 $smarty->assign('listPrat', $listPrat);
 
 $smarty->display('vw_dossier.tpl');

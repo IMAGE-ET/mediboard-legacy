@@ -101,7 +101,7 @@ class CPlageconsult extends CDpObject {
     $plages = new CPlageconsult;
     $plages = $plages->loadList($where);
 
-    mbTrace(count($plages), "Nombre de plages avec des collisions possibles");
+    //mbTrace(count($plages), "Nombre de plages avec des collisions possibles");
     $msg = null;
     
     foreach ($plages as $plage) {
@@ -113,6 +113,17 @@ class CPlageconsult extends CDpObject {
     }
     
     return $msg;
+  }
+
+  function check() {
+    // Data checking
+    $msg = null;
+
+    if (!$this->chir_id) {
+      $msg .= "Praticien non valide<br />";
+    }
+        
+    return $msg . parent::check();
   }
   
   function store() {

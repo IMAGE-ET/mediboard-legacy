@@ -24,11 +24,14 @@ $date = mbGetValueFromGetOrSession("date", mbDate());
 $today = mbDate();
 
 // Utilisateur sélectionné ou utilisateur courant
-$prat_id = mbGetValueFromGetOrSession("chirSel");
+$prat_id = mbGetValueFromGetOrSession("chirSel", 0);
 
 $userSel = new CMediusers;
 $userSel->load($prat_id ? $prat_id : $AppUI->user_id);
 $userSel->loadRefs();
+
+// Vérification des droits sur les praticiens
+$listChir = $userSel->loadPraticiens(PERM_EDIT);
 
 if (!$userSel->isPraticien()) {
   $AppUI->setMsg("Vous devez selectionner un praticien", UI_MSG_ALERT);
@@ -50,6 +53,16 @@ $consult = new CConsultation();
 if ($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
+  // On vérifie que l'utilisateur a les droits sur la consultation
+  $rigth = false;
+  foreach($listChir as $key => $value) {
+    if($value->user_id == $consult->_ref_plageconsult->chir_id)
+      $right = true;
+  }
+  if(!$right) {
+    $AppUI->setMsg("Vous n'avez pas accès à cette consultation", UI_MSG_ALERT);
+    $AppUI->redirect( "m=dPpatients&tab=0&id=$consult->patient_id");
+  }
   $patient =& $consult->_ref_patient;
   $patient->loadRefs();
   foreach ($patient->_ref_consultations as $key => $value) {
