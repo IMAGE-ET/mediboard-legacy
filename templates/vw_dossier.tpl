@@ -28,83 +28,10 @@ function setPat( key, val ) {
   f.submit();
 }
 
-function selectCRC(id, form) {
-  var modele = form.modele.value;
-  if(modele != 0)
-    editModeleC(id, modele);
-}
-
-function editModeleC(consult, modele) {
-  if(modele != -1) {
-    var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
-    url +='&consult=' + consult;
-    url +='&modele=' + modele;
-    popup(700, 700, url, 'Compte-rendu');
-  }
-}
-
-function validerCompteRenduC(form) {
-  if (confirm('Veuillez confirmer la validation du compte-rendu')) {
-    form.cr_valide.value = "1";
-    form.submit();
-  }
-}
-
-function supprimerCompteRenduC(form) {
-  if (confirm('Veuillez confirmer la suppression')) {
-    form.compte_rendu.value = "";
-    form.cr_valide.value = "0";
-    form.submit();
-  }
-}
-
-function imprimerCRC(consult) {
-  var url = '?m=dPcabinet&a=print_cr&dialog=1';
-  url +='&consult_id=' + consult;
-  popup(700, 700, url, 'Compte-rendu');
-}
-
-function selectCRO(id, form) {
-  var modele = form.modele.value;
-  if(modele != 0)
-    editModeleO(id, modele);
-}
-
-function editModeleO(operation, modele) {
-  var url = '?m=dPplanningOp&a=edit_compte_rendu&dialog=1';
-  url +='&operation=' + operation;
-  url +='&modele=' + modele;
-  popup(700, 700, url, 'Compte-rendu');
-}
-
-function validerCompteRenduO(form) {
-  if (confirm('Veuillez confirmer la validation du compte-rendu')) {
-    form.cr_valide.value = "1";
-    form.submit();
-  }
-}
-
-function supprimerCompteRenduO(form) {
-  if (confirm('Veuillez confirmer la suppression')) {
-    form.compte_rendu.value = "";
-    form.cr_valide.value = "0";
-    form.submit();
-  }
-}
-
 function imprimerCRO(op) {
   var url = '?m=dPplanningOp&a=print_cr&dialog=1';
   url +='&operation_id=' + op;
   popup(700, 700, url, 'Compte-rendu');
-}
-
-function printPack(op, form) {
-  if(form.pack.value != 0) {
-    var url = '?m=dPcabinet&a=print_pack&dialog=1';
-    url +='&operation_id=' + op;
-    url +='&pack_id=' + form.pack.value;
-    popup(700, 700, url, 'Compte-rendu');
-  }
 }
 
 </script>
@@ -157,20 +84,22 @@ function printPack(op, form) {
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
-          <td class="text" colspan="4">
+          <th colspan="2">CCAM 1 :</th>
+          <td class="text" colspan="2">
             {$curr_op->_ext_code_ccam->code} : {$curr_op->_ext_code_ccam->libelleLong}
           </td>
         </tr>
         {if $curr_op->CCAM_code2}
         <tr class="op{$curr_op->operation_id}">
-          <td class="text" colspan="4">
+          <th colspan="2">CCAM 2 :</th>
+          <td class="text" colspan="2">
             {$curr_op->_ext_code_ccam2->code} : {$curr_op->_ext_code_ccam2->libelleLong}
           </td>
         </tr>
         {/if}
         <tr class="op{$curr_op->operation_id}">
           <th colspan="2">Compte-rendu opératoire :</th>
-          <td colspan="2">
+          <td colspan="2" class="greedyPane">
             {if $curr_op->compte_rendu}
             <form name="editCROListFrm{$curr_op->operation_id}" action="?m=dPplanningOp" method="POST">
             <input type="hidden" name="m" value="dPplanningOp" />
@@ -188,39 +117,7 @@ function printPack(op, form) {
         </tr>
         <tr class="op{$curr_op->operation_id}">
           <th colspan="2">Compte-rendu d'anesthésie :</th>
-          <td class="button" colspan="2">modifier imprimer supprimer</td>
-        </tr>
-        <tr class="op{$curr_op->operation_id}">
-          <th colspan="2"><i>Fichiers associés :</i></th>
-          <td colspan="2" />
-        </tr>
-        {foreach from=$curr_op->_ref_files item=curr_file}
-        <tr class="op{$curr_op->operation_id}">
-          <th colspan="2">
-            <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
-          </th>
-          <td>{$curr_file->_file_size}</td>
-          <td>
-            <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-            <input type="hidden" name="dosql" value="do_file_aed" />
-	        <input type="hidden" name="del" value="1" />
-	        <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
-	        </form>
-          </td>
-	    </tr>
-        {/foreach}
-        <tr class="op{$curr_op->operation_id}">
-          <th colspan="3">
-            <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-            <input type="hidden" name="dosql" value="do_file_aed" />
-            <input type="hidden" name="del" value="0" />
-	        <input type="hidden" name="file_operation" value="{$curr_op->operation_id}" />
-            <input type="file" name="formfile" />
-          </th>
-          <td>
-            <input type="submit" value="ajouter">
-            </form>
-          </td>
+          <td colspan="2">Pas de compte rendu</td>
         </tr>
         {/foreach}
         <tr>
@@ -237,7 +134,8 @@ function printPack(op, form) {
         </tr>
         {if $curr_hospi->CCAM_code}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <td class="text" colspan="4">
+          <th colspan="2">CCAM 1 :</th>
+          <td class="text" colspan="2">
             {$curr_hospi->_ext_code_ccam->code} : {$curr_hospi->_ext_code_ccam->libelleLong}
           </td>
         </tr>
@@ -248,32 +146,16 @@ function printPack(op, form) {
         {/if}
         {if $curr_hospi->CCAM_code2}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <td class="text" colspan="4">
+          <th colspan="2">CCAM 2 :</th>
+          <td class="text" colspan="2">
             {$curr_hospi->_ext_code_ccam2->code} : {$curr_hospi->_ext_code_ccam2->libelleLong}
           </td>
         </tr>
         {/if}
         <tr class="hospi{$curr_hospi->operation_id}">
           <th colspan="2">Compte-rendu d'anesthésie :</th>
-          <td class="button" colspan="2">modifier imprimer supprimer</td>
+          <td colspan="2" class="greedyPane">Pas de compte rendu</td>
         </tr>
-        <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2"><i>Fichiers associés :</i></th>
-          <td colspan="2" />
-        </tr>
-        {foreach from=$curr_hospi->_ref_files item=curr_file}
-        <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2"><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
-          <td>{$curr_file->_file_size}</td>
-          <td>
-            <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-            <input type="hidden" name="dosql" value="do_file_aed" />
-	        <input type="hidden" name="del" value="1" />
-	        <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
-	        </form>
-          </td>
-	    </tr>
-        {/foreach}
         {/foreach}
        </table>
       {/if}
