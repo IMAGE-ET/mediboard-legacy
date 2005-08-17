@@ -167,14 +167,15 @@ class CConsultation extends CDpObject {
     // Data checking
     $msg = null;
 
-    if (!$this->plageconsult_id) {
-      $msg .= "Plage de consultation non valide<br />";
+    if(!$this->consultation_id) {
+      if (!$this->plageconsult_id) {
+        $msg .= "Plage de consultation non valide<br />";
+      }
+      if (!$this->patient_id) {
+        $msg .= "Patient non valide<br />";
+      }
     }
 
-    if (!$this->patient_id) {
-      $msg .= "Patient non valide<br />";
-    }
-        
     return $msg . parent::check();
   }
   

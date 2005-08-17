@@ -119,10 +119,12 @@ class CPlageconsult extends CDpObject {
     // Data checking
     $msg = null;
 
-    if (!$this->chir_id) {
-      $msg .= "Praticien non valide<br />";
+    if(!$this->plageconsult_id) {
+      if (!$this->chir_id) {
+        $msg .= "Praticien non valide<br />";
+      }
     }
-        
+
     return $msg . parent::check();
   }
   
