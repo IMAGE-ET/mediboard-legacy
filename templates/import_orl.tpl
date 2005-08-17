@@ -51,6 +51,7 @@ function doAction(sAction) {
       <li><a href="javascript:doAction('orl_files')">Import des fichiers</a></li>
       <li><a href="javascript:doAction('put_files')">Envoie des fichiers vers Mediboard</a></li>
       <li>Les fichiers ainsi envoyés iront se placer (le cas échéant) dans la dernière consultation du patient lié</li>
+      <li><a href="javascript:doAction('put_correct_files')">Petite correction</a> (les fichiers allaient dans n'importe quelle consultation et pas eulement chez les ORL)</li>
     </ul>
   </li>
   
