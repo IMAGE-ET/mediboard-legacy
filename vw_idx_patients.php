@@ -78,7 +78,7 @@ if ($patient_prenom) $where[] = "prenom LIKE '".addslashes($patient_prenom)."%'"
 $patients = null;
 if ($where) {
   $patients = new CPatient();
-  $patients = $patients->loadList($where, "nom, prenom", "0, 100");
+  $patients = $patients->loadList($where, "nom, prenom, naissance", "0, 100");
 }
 
 // Création du template
