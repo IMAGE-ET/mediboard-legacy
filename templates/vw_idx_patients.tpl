@@ -64,15 +64,17 @@ function printIntervention(id) {
       <table class="tbl">
         <tr>
           <th>Nom - Prénom</th>
+          <th>Date de naissance</th>
           <th>Adresse</th>
           <th>Ville</th>
         </tr>
 
         {foreach from=$patients item=curr_patient}
         <tr>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->_view}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->adresse}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->ville}</a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->_view}</a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->_naissance}</a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->adresse}</a></td>
+          <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->ville}</a></td>
         </tr>
         {/foreach}
         
