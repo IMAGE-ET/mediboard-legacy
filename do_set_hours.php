@@ -9,7 +9,9 @@
 
 $entree = dPgetParam($_GET, 'entree', 0);
 $sortie = dPgetParam($_GET, 'sortie', 0);
-$del = dPgetParam($_GET, 'del', 0);
+$anesth = dPgetParam($_GET, 'anesth', null);
+$id     = dPgetParam($_GET, 'id'    , null);
+$del    = dPgetParam($_GET, 'del'   , 0);
 $hour = date("H:i:00");
 if($entree) {
   if($del) {
@@ -36,6 +38,19 @@ if($sortie) {
             WHERE operation_id = '$sortie'";
     $result = db_exec($sql);
   }
+}
+if($anesth !== null) {
+  $listAnesth = dPgetSysVal("AnesthType");
+  $lu = null;
+  foreach($listAnesth as $key => $value) {
+    if(trim($value) == $anesth) {
+      $lu = $key;
+    }
+  }
+  $sql = "UPDATE operations
+          SET type_anesth = '$lu'
+          WHERE operations.operation_id = '$id'";
+  $result = db_exec($sql);
 }
 
 $AppUI->redirect();

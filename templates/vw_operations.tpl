@@ -3,10 +3,10 @@
     <td>
       <table>
         <tr>
-          <td>
+          <th>
             <form action="index.php" target="_self" name="selection" method="get" encoding="">
             <input type="hidden" name="m" value="{$m}">
-            <input type="hidden" name="tab" value="{$t}">
+            <input type="hidden" name="tab" value="{$tab}" />
             Choisir une salle :
             <select name="salle" onchange="this.form.submit()">
               <option value="0">Aucune salle</option>
@@ -17,14 +17,34 @@
               {/foreach}
             </select>
             </form>
-          </td>
+            <hr />
+          </th>
         </tr>
 
         {foreach from=$plages item=curr_plage}
         <tr>
           <td>
-            <strong>Dr. {$curr_plage->_ref_chir->_view}
-            de {$curr_plage->debut|date_format:"%Hh%M"} à {$curr_plage->fin|date_format:"%Hh%M"}</strong>
+            <strong>
+            Dr. {$curr_plage->_ref_chir->_view}
+            de {$curr_plage->debut|date_format:"%Hh%M"} à {$curr_plage->fin|date_format:"%Hh%M"}
+            <form action="index.php" target="_self" name="anesth{$curr_plage->id}" method="post" encoding="">
+            <input type="hidden" name="m" value="dPbloc" />
+            <input type="hidden" name="tab" value="{$tab}" />
+            <input type="hidden" name="otherm" value="{$m}" />
+            <input type="hidden" name="dosql" value="do_plagesop_aed" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="_repeat" value="1" />
+            <input type="hidden" name="id" value="{$curr_plage->id}" />
+            <input type="hidden" name="id_chir" value="{$curr_plage->id_chir}" />
+            Dr.
+            <select name="id_anesth" onchange="submit()">
+              <option value="0">&mdash; Anesthésiste</option>
+              {foreach from=$listPratAnesth item=curr_anesth}
+              <option value="{$curr_anesth->user_username}" {if $curr_plage->id_anesth == $curr_anesth->user_username} selected="selected" {/if}>{$curr_anesth->_view}</option>
+              {/foreach}
+            </select>
+            </form>
+            </strong>
           </td>
         </tr>
         <tr>
@@ -92,11 +112,13 @@
           </td>
         </tr>
         <tr>
-          <th>Durée prévue</th>
-          <td>{$selOp->temp_operation|date_format:"%Hh%M"}</td>
-        </tr>
-        <tr>
-          <th>Intervention</th>
+          <th>
+            Intervention
+            <br />
+            Coté {$selOp->cote}
+            <br />
+            ({$selOp->temp_operation|date_format:"%Hh%M"})
+          </th>
           <td class="text">
             <strong>{$selOp->_ext_code_ccam->libelleLong}</strong> <i>({$selOp->_ext_code_ccam->code})</i>
             <ul>
@@ -117,12 +139,21 @@
             {/if}
         </tr>
         <tr>
-          <th>Coté</th>
-          <td>{$selOp->cote}</td>
-        </tr>
-        <tr>
           <th>Anesthésie</th>
-          <td>{$selOp->_lu_type_anesth} par le Dr. ??</td>
+          <td>
+            <form name="editAnesth" action="index.php" method="get">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="a" value="do_set_hours" />
+            <input type="hidden" name="id" value="{$selOp->operation_id}" />
+            <select name="anesth">
+              <option value="null">&mdash; Type d'anesthésie</option>
+              {foreach from=$listAnesth item=curr_anesth}
+              <option {if $selOp->_lu_type_anesth == $curr_anesth} selected="selected" {/if}>{$curr_anesth}</option>
+              {/foreach}
+            </select>
+            <input type="submit" value="changer" />
+            </form>
+          </td>
         </tr>
         {if $selOp->materiel}
         <tr>
@@ -130,10 +161,12 @@
           <td><strong>{$selOp->materiel|nl2br}</strong></td>
         </tr>
         {/if}
+        {if $selOp->rques}
         <tr>
           <th>Remarques</th>
           <td>{$selOp->rques|nl2br}</td>
         </tr>
+        {/if}
         <tr>
           <th>Sortie de salle</th>
           <td>

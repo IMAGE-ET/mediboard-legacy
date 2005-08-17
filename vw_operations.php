@@ -14,6 +14,7 @@ if (!$canRead) {
 }
 
 require_once($AppUI->getModuleClass("mediusers", "functions"));
+require_once($AppUI->getModuleClass("mediusers"));
 require_once($AppUI->getModuleClass("dPbloc", "salle"));
 require_once($AppUI->getModuleClass("dPbloc", "plagesop"));
 require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
@@ -21,6 +22,10 @@ require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 $salle = mbGetValueFromGetOrSession("salle", 0);
 $op = mbGetValueFromGetOrSession("op", 0);
 $today = date("Y-m-d");
+
+// Chargement des anesthésistes
+$listPratAnesth = new CMediusers;
+$listPratAnesth = $listPratAnesth->loadAnesthesistes();
 
 // Selection des salles
 $listSalles = new CSalle;
@@ -44,6 +49,7 @@ foreach($plages as $key => $value) {
 $selOp = new COperation;
 $selOp->load($op);
 $selOp->loadRefsFwd();
+$selOp->_ref_plageop->loadRefsFwd();
 $selOp->_ext_code_ccam->load($selOp->CCAM_code);
 $selOp->_ext_code_ccam2->load($selOp->CCAM_code2);
 
@@ -53,6 +59,8 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('salle', $salle);
 $smarty->assign('listSalles', $listSalles);
+$smarty->assign('listAnesth', dPgetSysVal("AnesthType"));
+$smarty->assign('listPratAnesth', $listPratAnesth);
 $smarty->assign('plages', $plages);
 $smarty->assign('selOp', $selOp);
 
