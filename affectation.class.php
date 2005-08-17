@@ -66,16 +66,16 @@ class CAffectation extends CDpObject {
   
   function delete() {
   	$this->load();
-	if (!$this->canDelete( $msg )) {
-		return $msg;
-	}
-	$sql = "DELETE FROM `affectation` WHERE `operation_id` = '".$this->operation_id."'";
-	if (!db_exec( $sql )) {
+    $msg = null;
+	  if (!$this->canDelete( $msg )) {
+		  return $msg;
+	  }
+	  $sql = "DELETE FROM `affectation` WHERE `operation_id` = '".$this->operation_id."'";
+	  if (!db_exec( $sql )) {
       return db_error();
-	} else {
-		return NULL;
-	}
-  
+	  } else {
+		  return NULL;
+	  }
   }
   
   function store() {
