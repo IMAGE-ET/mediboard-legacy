@@ -113,7 +113,9 @@ class CChambre extends CDpObject {
       $chirurgien1 =& $operation1->_ref_chir;
       assert($chirurgien1);
       if((count($this->_ref_lits) == 1) && $operation1->chambre == "n")
-        $this->_chambre_double++;         
+        $this->_chambre_double++;
+      if((count($this->_ref_lits) > 1) && $operation1->chambre == "o")
+        $this->_chambre_seule++;
       
       foreach($listAff as $affectation2) {
       	$flag = $affectation1->affectation_id != $affectation2->affectation_id;
@@ -126,11 +128,6 @@ class CChambre extends CDpObject {
           assert($patient2);
           $chirurgien2 =& $operation2->_ref_chir;
           assert($chirurgien2);
-
-          // Chambre seule
-          if ($operation1->chambre == "o") {
-            $this->_chambre_seule++;         
-          }
 
           // Conflits de pathologies
           $pathologie1 = array(
