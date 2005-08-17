@@ -9,6 +9,8 @@
 
 GLOBAL $AppUI, $canRead, $canEdit, $m;
 
+// @todo : passer tout ça avec une simple date
+
 class Cplanning
 {
   var $salles;
@@ -68,8 +70,8 @@ class Cplanning
 				where users.user_username = '$idanesth' and users.user_id = users_mediboard.user_id";
     $row = db_loadlist($sql);
 	if(sizeof($row)>0) {
-	  $vide = 0;
-	  echo "Dr. ".$row[0]['user_first_name']." ".$row[0]['user_last_name'];
+	  echo " &mdash; ".substr($row[0]['user_first_name'], 0, 1).".".substr($row[0]['user_last_name'], 0, 1);
+    //echo "Dr. ".$row[0]['user_first_name']." ".$row[0]['user_last_name'];
 	}
 	$sql = "select text from functions_mediboard where function_id = '$idspec'";
     $row = db_loadlist($sql);
@@ -81,7 +83,7 @@ class Cplanning
 	    echo $row[0]['text']."<br>";
 	}
 	if($vide) {
-	  echo "Plage vide";
+	  echo "!! Plage vide !!";
 	}
   }
   

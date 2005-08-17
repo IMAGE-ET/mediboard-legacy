@@ -118,6 +118,9 @@ if ($body_msg) {
 // $complete_msg .= $body_msg; 
 }
 
+if( $otherm = dPgetParam($_POST, "otherm", 0) )
+  $m = $otherm;
+
 $AppUI->setMsg($complete_msg, $msgNo);
 $AppUI->redirect("m=$m");
 ?>

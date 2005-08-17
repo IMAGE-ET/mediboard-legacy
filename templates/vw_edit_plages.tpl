@@ -59,8 +59,8 @@ function pageMain() {
 
         <optgroup label="Anesthésistes">
         {foreach from=$anesths item=anesth}
-          <option value="{$anesth->user_username}" {if $plagesel->id_anesth == $anesth->user_username} selected="selected" {/if} >
-            Dr. {$anesth->_view}
+          <option value="{$anesth->user_username}" {if $plagesel->id_chir == $anesth->user_username} selected="selected" {/if} >
+            {$anesth->_view}
           </option>
         {/foreach}
         </optgroup>
@@ -105,7 +105,7 @@ function pageMain() {
         <option value="0">-- Choisir un anesthésiste</option>
       {foreach from=$anesths item=anesth}
         <option value="{$anesth->user_username}" {if $plagesel->id_anesth == $anesth->user_username} selected="selected" {/if} >
-          Dr. {$anesth->_view}
+          {$anesth->_view}
         </option>
       {/foreach}
 	  </select>
@@ -120,7 +120,8 @@ function pageMain() {
       <div id="editFrm_date_da">{$date|date_format:"%d/%m/%Y"}</div>
       <input type="hidden" name="date" value="{$date}" />
       {/if}
-      <img id="editFrm_date_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date"/>
+      <!-- Possibilité de changer la date ? -->
+      <!--img id="editFrm_date_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date"/-->
     </td>
 
     <th class="mandatory">Fin:</th>

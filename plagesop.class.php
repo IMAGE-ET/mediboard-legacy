@@ -120,6 +120,17 @@ class CPlageOp extends CDpObject {
     }
     return $msg;   
   }
+
+  function check() {
+    // Data checking
+    $msg = null;
+
+    if (!$this->id_chir && !$this->id_spec) {
+      $msg .= "Praticien ou spécialité non valide<br />";
+    }
+        
+    return $msg . parent::check();
+  }
   
   function store () {
     $this->updateDBFields();
@@ -152,21 +163,16 @@ class CPlageOp extends CDpObject {
   }
   
   function becomeNext() {
-    $nextTime = mktime (0, 0, 0, $this->_month, $this->_day+7, $this->_year);
-    $this->_year  = date("Y", $nextTime);
-    $this->_month = date("m", $nextTime);
-    $this->_day   = date("d", $nextTime);
-    $this->date = $this->_year."-".$this->_month."-".$this->_day;   
+    $this->date = mbDate("+7 DAYS", $this->date);
     $sql = "SELECT id" .
       "\nFROM plagesop" .
       "\nWHERE date = '{$this->date}'" .
       "\nAND id_salle = '{$this->id_salle}'" .
       ($this->id_chir ? "\nAND id_chir = '$this->id_chir'" : "\nAND id_spec = '$this->id_spec'");
     $row = db_loadlist($sql);
-    $this->id = @$row[0]['id'];
     $debut = $this->debut;
     $fin = $this->fin;
-    $msg = $this->load();
+    $msg = $this->load(@$row[0]['id']);
     $this->debut = $debut;
     $this->fin = $fin;
     $this->updateFormFields();
