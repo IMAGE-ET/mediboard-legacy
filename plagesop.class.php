@@ -125,10 +125,12 @@ class CPlageOp extends CDpObject {
     // Data checking
     $msg = null;
 
-    if (!$this->id_chir && !$this->id_spec) {
-      $msg .= "Praticien ou spécialité non valide<br />";
+    if(!$this->id) {
+      if (!$this->id_chir && !$this->id_spec) {
+        $msg .= "Praticien ou spécialité non valide<br />";
+      }
     }
-        
+
     return $msg . parent::check();
   }
   
