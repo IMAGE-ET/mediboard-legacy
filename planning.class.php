@@ -92,9 +92,11 @@ class COperation extends CDpObject {
     // Data checking
     $msg = null;
     global $pathos;
-    
-    if (!$this->chir_id) {
-      $msg .= "Praticien non valide";
+
+    if(!$this->operation_id) {
+      if (!$this->chir_id) {
+        $msg .= "Praticien non valide";
+      }
     }
 
     if ($this->pathologie != null && (!in_array($this->pathologie, $pathos->dispo))) {
