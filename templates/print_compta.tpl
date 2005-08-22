@@ -65,19 +65,15 @@
       <table class="tbl">
         <tr>
           <th width="15%">Patient</th>
-          <th width="10%">Telephone</th>
-          <th width="10%">Mobile</th>
-          <th width="10%">Type</th>
-          <th width="10%">Code</th>
-          <th width="10%">Secteur 1</th>
-          <th width="10%">Secteur 2</th>
-          <th width="10%">Total</th>
+          <th width="15%">Type</th>
+          <th width="15%">Code</th>
+          <th width="15%">Secteur 1</th>
+          <th width="15%">Secteur 2</th>
+          <th width="15%">Total</th>
         </tr>
         {foreach from=$curr_plage._ref_consultations item=curr_consult}
         <tr>
           <td><a name="consultation{$curr_consult->consultation_id}">{$curr_consult->_ref_patient->_view}</a></td>
-          <td>{$curr_consult->_ref_patient->tel}</td>
-          <td>{$curr_consult->_ref_patient->tel2}</td>
           <td>{$curr_consult->type_tarif}</td>
           <td>{$curr_consult->tarif}</td>
           <td>{$curr_consult->secteur1} €</td>
@@ -86,7 +82,7 @@
         </tr>
         {/foreach}
         <tr>
-          <td colspan="5" style="text-align:right;font-weight:bold;">Total</td>
+          <td colspan="3" style="text-align:right;font-weight:bold;">Total</td>
           <td style="font-weight:bold;">{$curr_plage.total1} €</td>
           <td style="font-weight:bold;">{$curr_plage.total2} €</td>
           <td style="font-weight:bold;">{$curr_plage.total1+$curr_plage.total2} €</td>

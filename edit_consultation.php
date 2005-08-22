@@ -53,6 +53,8 @@ $consult = new CConsultation();
 if ($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
+  $userSel->load($consult->_ref_plageconsult->chir_id);
+  $userSel->loadRefs();
   // On vérifie que l'utilisateur a les droits sur la consultation
   $rigth = false;
   foreach($listChir as $key => $value) {
