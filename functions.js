@@ -37,45 +37,179 @@ function pageMain() {}
 function initHTMLArea () {}
 function initFCKEditor() {}
 
-function prepareForms() {
-  var msg = "Rapport: ";
+function getLabelFor(oElement) {
+  aLabels = document.getElementsByTagName("label");
+  iLabel = 0;
+  while (oLabel = aLabels[iLabel++]) {
+    if (oElement.id == oLabel.getAttribute("for")) {
+      return oLabel;
+    }  
+  } 
   
-  var giveFocus = true;
+  return null; 
+}
 
-  // Retrieve labels
-  var labels = new Array;
-  var labelIt = 0;
-  while (label = document.getElementsByTagName("label")[labelIt++]) {
-    labels[label.attributes.id] = label;
-    msg += "\n\tlabel for: " + label.getAttribute('for');
-  }
-  
+function prepareForms() {
+  var bGiveFocus = true;
+
   // For each form
-  var formIt = 0;
-  while (form = document.forms[formIt++]) {
-    var formName = form.getAttribute("name");
+  var iForm = 0;
+  while (oForm = document.forms[iForm++]) {
+    var sFormName = oForm.getAttribute("name");
     
     // For each element
-    var elementIt = 0;
-    while (element = form.elements[elementIt++]) {
+    var iElement = 0;
+    while (oElement = oForm.elements[iElement++]) {
       // Create id for each element if id is null
-      if (!element.id) {
-        element.id = formName + "_" + element.name;
-        if (element.type == "radio") {
-          element.id += "_" + element.value;
+      if (!oElement.id) {
+        oElement.id = sFormName + "_" + oElement.name;
+        if (oElement.type == "radio") {
+          oElement.id += "_" + oElement.value;
         }
       }
 
+      // Label emphasized for notNull elements
+      if (sPropSpec = oElement.getAttribute("alt")) {
+        aSpecFragments = sPropSpec.split("|");
+        if (aSpecFragments.contains("notNull")) {
+          if (oLabel = getLabelFor(oElement)) {
+            oLabel.className = "notNull";
+          }
+        }
+      }
+      
       // Focus on first text input
-      if (giveFocus && element.type == "text" && !element.getAttribute("readonly")) {
-        element.focus();
-        giveFocus = false;
+      if (bGiveFocus && oElement.type == "text" && !oElement.getAttribute("readonly")) {
+        oElement.focus();
+        bGiveFocus = false;
       }
     }
   }
   
-//  alert (msg);
+}
+
+function checkElement(oElement, aSpecFragments) {
+  bNotNull = aSpecFragments.removeByValue("notNull") > 0;
+  if (oElement.value == "") {
+    return bNotNull ? "Ne pas peut pas avoir une valeur nulle" : null;
+  }
   
+  switch (aSpecFragments[0]) {
+    case "ref":
+      if (isNaN(oElement.value)) {
+        return "N'est pas une référence (format non numérique)";
+      }
+
+      iElementValue = parseInt(oElement.value, 10);
+      
+      if (iElementValue == 0 && bNotNull) {
+        return "ne peut pas être une référence nulle";
+      }
+
+      if (iElementValue < 0) {
+        return "N'est pas une référence (entier négatif)";
+      }
+				
+      break;
+      
+    case "str":
+      if (sFragment1 = aSpecFragments[1]) {
+        switch (sFragment1) {
+          case "length":
+            iLength = parseInt(aSpecFragments[2], 10);
+           
+            if (iLength < 1 || iLength > 255) {
+              return printf("Spécification de longueur invalide (longueur = %s)", iLength);
+            }
+
+  
+            if (oElement.value.length != iLength) {
+              return printf("N'a pas la bonne longueur (longueur souhaité : %s)'", iLength);
+            }
+  
+            break;
+  
+          default:
+            return "Spécification de chaîne de caractères invalide";
+        }
+      };
+      
+   	  break;
+
+    case "num":
+      if (isNaN(oElement.value)) {
+        return "N'est pas une chaîne numérique";
+      }
+
+      if (sFragment1 = aSpecFragments[1]) {
+        switch (sFragment1) {
+          case "length":
+            iLength = parseInt(aSpecFragments[2], 10);
+           
+            if (iLength < 1 || iLength > 255) {
+              return printf("Spécification de longueur invalide (longueur = %s)", iLength);
+            }
+
+  
+            if (oElement.value.length != iLength) {
+              return printf("N'a pas la bonne longueur (longueur souhaité : %s)'", iLength);
+            }
+  
+            break;
+  
+          default:
+            return "Spécification de chaîne de caractères invalide";
+        }
+      };
+      
+   	  break;
+    
+    case "enum":
+      aSpecFragments.removeByIndex(0);
+      if (!aSpecFragments.contains(oElement.value)) {
+        return "N'est pas une valeur possible";
+      }
+
+      break;
+    default:
+      return "Spécification invalide";
+  }
+  
+  return null;
+}
+
+function checkForm(oForm) {
+  bGaveFocus = false;
+  aMsgFailed = new Array;
+  iElement = 0;
+  while (oElement = oForm.elements[iElement++]) {
+    if (sPropSpec = oElement.getAttribute("alt")) {
+      aSpecFragments = sPropSpec.split("|");
+      if (sMsg = checkElement(oElement, aSpecFragments)) {
+        if (oLabel = getLabelFor(oElement)) {
+          oLabel.style.color = "#f00";
+        }
+        
+        sMsgFailed = oLabel ? oLabel.getAttribute("title") : printf("%s (val:'%s', spec:'%s')", oElement.name, oElement.value, sPropSpec);
+        sMsgFailed += " (" + sMsg + ")";
+        aMsgFailed.push(sMsgFailed);
+        
+        if (!bGaveFocus) {
+          oElement.focus();
+          bGaveFocus = true;
+        }
+      }
+    }
+  }
+
+  if (aMsgFailed.length) {
+  	sMsg = "Merci de remplir/corriger les champs suivants : \n";
+  	sMsg += aMsgFailed.join("\n")
+    alert(sMsg);
+    return false;
+  }
+  
+  return true;
 }
 
 function setSelectionRange(textarea, selectionStart, selectionEnd) {

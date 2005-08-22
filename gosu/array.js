@@ -65,6 +65,8 @@ Array.prototype.removeByValue = function(value) {
     for (i = indexes.length - 1; i >= 0; --i) {
         this.splice(indexes[i], 1);
     }
+    
+    return indexes.length;
 };
  
 /* Remove duplicate values (mutates)
