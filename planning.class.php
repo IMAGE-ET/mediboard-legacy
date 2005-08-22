@@ -266,7 +266,8 @@ class COperation extends CDpObject {
       $this->_ext_code_ccam->libelleLong = "<em>[ $this->libelle]</em><br />".$this->_ext_code_ccam->libelleLong;
     }
     $this->_ext_code_ccam2 = new CActeCCAM($this->CCAM_code2);
-    $this->_ext_code_ccam2->LoadLite();
+    if($this->CCAM_code2 != null && $this->CCAM_code2 != "")
+      $this->_ext_code_ccam2->LoadLite();
   }
   
   function loadRefsFwd() {
