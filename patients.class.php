@@ -7,18 +7,18 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once($AppUI->getSystemClass('mbobject'));
 
-require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
-require_once( $AppUI->getModuleClass('dPpatients', 'medecin') );
-require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
-require_once( $AppUI->getModuleClass('dPanesth', 'consultation') );
-require_once( $AppUI->getModuleClass('dPhospi', 'affectation') );
+require_once($AppUI->getModuleClass('dPplanningOp', 'planning') );
+require_once($AppUI->getModuleClass('dPpatients', 'medecin') );
+require_once($AppUI->getModuleClass('dPcabinet', 'consultation') );
+require_once($AppUI->getModuleClass('dPanesth', 'consultation') );
+require_once($AppUI->getModuleClass('dPhospi', 'affectation') );
 
 /**
  * The CPatient Class
  */
-class CPatient extends CDpObject {
+class CPatient extends CMbObject {
   // DB Table key
 	var $patient_id = null;
 
@@ -44,8 +44,8 @@ class CPatient extends CDpObject {
 	var $rques = null;
 
   // Form fields
-    var $_naissance = null;
-    var $_jour = null;
+  var $_naissance = null;
+  var $_jour = null;
 	var $_mois = null;
 	var $_annee = null;
 	var $_tel1 = null;
@@ -61,19 +61,31 @@ class CPatient extends CDpObject {
 	var $_age = null;
 
   // Object References
-    var $_ref_operations = null;
-    var $_ref_hospitalisations = null;
-    var $_ref_consultations = null;
-    var $_ref_consultations_anesth = null;
-    var $_ref_curr_affectation = null;
-    var $_ref_next_affectation = null;
-    var $_ref_medecin_traitant = null;
-    var $_ref_medecin1 = null;
-    var $_ref_medecin2 = null;
-    var $_ref_medecin3 = null;
+  var $_ref_operations = null;
+  var $_ref_hospitalisations = null;
+  var $_ref_consultations = null;
+  var $_ref_consultations_anesth = null;
+  var $_ref_curr_affectation = null;
+  var $_ref_next_affectation = null;
+  var $_ref_medecin_traitant = null;
+  var $_ref_medecin1 = null;
+  var $_ref_medecin2 = null;
+  var $_ref_medecin3 = null;
 
 	function CPatient() {
-		$this->CDpObject( 'patients', 'patient_id' );
+		$this->CMbObject('patients', 'patient_id');
+    
+    $this->_props["nom"] = "str|notNull";
+    $this->_props["prenom"] = "str|notNull";
+    $this->_props["medecin_traitant"] = "ref|notNull";
+    $this->_props["medecin1"] = "ref";
+    $this->_props["medecin2"] = "ref";
+    $this->_props["medecin3"] = "ref";
+    $this->_props["matricule"] = "num|length|15";
+    $this->_props["sexe"] = "enum|m|f|j";
+    $this->_props["incapable_majeur"] = "enum|o|n";
+    $this->_props["ATNC"] = "enum|o|n";
+    $this->_props["naissance"] = "date";
 	}
   
   function updateFormFields() {
@@ -149,26 +161,6 @@ class CPatient extends CDpObject {
   	}
   }
 
-	function check() {
-    // Data checking
-    $msg = null;
-
-    if (!strlen($this->nom)) {
-      $msg .= "Nom invalide: '$this->nom'<br />";
-    }
-
-    if (!strlen($this->prenom)) {
-      $msg .= "Prénom invalide: '$this->prenom'<br />";
-    }
-    
-    if ($this->matricule && !ereg ("([1-2])([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{3})([0-9]{3})([0-9]{2})", $this->matricule)) {
-      $this->matricule = null;
-      //$msg .= "Matricule invalide: '$this->matricule'<br />";
-    }
-        
-    return $msg . parent::check();
-	}
-	
   function canDelete(&$msg, $oid = null) {
     $tables[] = array (
       'label' => 'opération(s)', 
@@ -197,6 +189,7 @@ class CPatient extends CDpObject {
     $leftjoin = array();
     $leftjoin["plagesop"] = "operations.plageop_id = plagesop.id";
     $this->_ref_operations = $this->_ref_operations->loadList($where, $order, null, null, $leftjoin);
+
     // hospitalisations
     $this->_ref_hospitalisations = new COperation();
     $where = array();
@@ -204,6 +197,7 @@ class CPatient extends CDpObject {
     $where["plageop_id"] = "IS NULL";
     $order = "date_adm DESC, time_adm DESC";
     $this->_ref_hospitalisations = $this->_ref_hospitalisations->loadList($where, $order, null, null, $leftjoin);
+
     // consultations
     $this->_ref_consultations = new CConsultation();
     $where = array();
@@ -212,6 +206,7 @@ class CPatient extends CDpObject {
     $leftjoin = array();
     $leftjoin["plageconsult"] = "consultation.plageconsult_id = plageconsult.plageconsult_id";
     $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order, null, null, $leftjoin);
+
     // consultations d'anesthésie
     $this->_ref_consultations_anesth = new CConsultationAnesth();
     $where = array();
@@ -220,6 +215,7 @@ class CPatient extends CDpObject {
     $leftjoin = array();
     $leftjoin["plageconsult"] = "consultation_anesth.plageconsult_id = plageconsult.plageconsult_id";
     $this->_ref_consultations_anesth = $this->_ref_consultations_anesth->loadList($where, $order, null, null, $leftjoin);
+
   	// affectation actuelle et prochaine affectation
   	$this->_ref_curr_affectation = new CAffectation();
     $this->_ref_next_affectation = new CAffectation();
@@ -250,12 +246,15 @@ class CPatient extends CDpObject {
     // medecin_traitant
     $this->_ref_medecin_traitant = new CMedecin();
     $this->_ref_medecin_traitant->load($this->medecin_traitant);
+
     // medecin1
     $this->_ref_medecin1 = new CMedecin();
     $this->_ref_medecin1->load($this->medecin1);
+
     // medecin2
     $this->_ref_medecin2 = new CMedecin();
     $this->_ref_medecin2->load($this->medecin2);
+
     // medecin3
     $this->_ref_medecin3 = new CMedecin();
     $this->_ref_medecin3->load($this->medecin3);

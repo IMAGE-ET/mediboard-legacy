@@ -171,7 +171,7 @@ function printIntervention(id) {
             <form name="modif" action="./index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="tab" value="vw_edit_patients" />
-            <input type="hidden" name="id" value="{$patient->patient_id}" />
+            <input type="hidden" name="patient_id" value="{$patient->patient_id}" />
             <input type="submit" value="Modifier" />
 
             <input type="button" value="Imprimer" onclick="printPatient({$patient->patient_id})" />

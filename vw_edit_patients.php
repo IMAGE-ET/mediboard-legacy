@@ -14,17 +14,16 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$patient_id = mbGetValueFromGetOrSession("id", 0);
-$dialog = dPgetParam($_GET, "dialog", null);
-$name = dPgetParam($_GET, "name", null);
-$firstName = dPgetParam($_GET, "firstName", null);
+$patient_id = mbGetValueFromGetOrSession("patient_id");
+$dialog = dPgetParam($_GET, "dialog");
+$name = dPgetParam($_GET, "name");
+$firstName = dPgetParam($_GET, "firstName");
 
 $patient = new CPatient;
+$patient->load($patient_id);
+$patient->loadRefsFwd();
 
-if ($patient_id) {
-  $patient->load($patient_id);
-  $patient->loadRefsFwd();
-} else {
+if (!$patient_id) {
   $patient->nom = $name;
   $patient->prenom = $firstName;
 }
@@ -46,13 +45,13 @@ if($created = dPgetParam($_GET, 'created', 0)){
   	  $AppUI->redirect( "m=dPpatients&tab=vw_idx_patients&id=$created&nom=&prenom=" );
   }
   else {
-  	$textSiblings = "Risque de doublons :\\n";
+  	$textSiblings = "Risque de doublons :";
     foreach($siblings as $key => $value) {
-      $textSiblings .= ">> ".$value["nom"]." ".$value["prenom"].
+      $textSiblings .= "\n>> ".$value["nom"]." ".$value["prenom"].
                        " né(e) le ".$value["naissance"].
-                       " habitant ".$value["adresse"]." ".$value["CP"]." ".$value["ville"]."\\n";
+                       " habitant ".$value["adresse"]." ".$value["CP"]." ".$value["ville"];
     }
-    $textSiblings .= "Voulez-vous tout de meme le creer ?";
+    $textSiblings .= "\nVoulez-vous tout de même le créer ?";
   }
 }
 

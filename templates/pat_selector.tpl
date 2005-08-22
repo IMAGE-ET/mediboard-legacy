@@ -4,9 +4,10 @@
 <script language="javascript">
 function createPat(){
   var form = document.frmSelector;
-  var nom = form.name.value;
-  var prenom = form.firstName.value;
-  window.location = "index.php?m=dPpatients&a=vw_edit_patients&dialog=1&id=0&name=" + nom + "&firstName=" + prenom;
+  var url = "index.php?m=dPpatients&a=vw_edit_patients&dialog=1&patient_id=0";
+  url += makeURLParam(form.name);
+  url += makeURLParam(form.firstName);
+  window.location = url;
 }
 
 function setClose(key, val){
