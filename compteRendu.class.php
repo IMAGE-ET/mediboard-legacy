@@ -7,7 +7,8 @@
 * @author Romain Ollivier
 */
 
-require_once($AppUI->getSystemClass('dp' ));
+require_once($AppUI->getSystemClass('mbobject' ));
+
 require_once($AppUI->getModuleClass('mediusers'));
 require_once($AppUI->getModuleClass('mediusers', 'functions'));
 
@@ -18,7 +19,7 @@ $ECompteRenduType = array(
   "autre"
 );
 
-class CCompteRendu extends CDpObject {
+class CCompteRendu extends CMbObject {
   // DB Table key
   var $compte_rendu_id = null;
 
@@ -43,7 +44,9 @@ class CCompteRendu extends CDpObject {
   var $_ref_object = null;
 
   function CCompteRendu() {
-    $this->CDpObject( 'compte_rendu', 'compte_rendu_id' );
+    $this->CMbObject("compte_rendu", "compte_rendu_id");
+
+    $this->_props["nom"] = "str|notNull";
   }
   
   function check() {
@@ -58,6 +61,8 @@ class CCompteRendu extends CDpObject {
     if ($this->object_id and ($this->chir_id or $this->function_id)) {
 		  return "un document n'appartient ni à un utilisateur ni une fonction, il doit être lié à un objet'";
 		}
+    
+    return parent::check();
 
   }
   

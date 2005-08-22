@@ -14,7 +14,7 @@ function supprimer() {
   form.submit();
 }
 
-function checkForm() {
+function checkModele() {
   var form = document.editFrm;
   var field = null;
    
@@ -29,21 +29,13 @@ function checkForm() {
     }
   }
 
-  if (field = form.elements['nom']) {    
-    if (field.value == 0) {
-      alert("Intitulé indéterminé");
-      field.focus();
-      return false;
-    }
-  }
-    
-  return true;
+  return checkForm(form);
 }
 
 {/literal}
 </script>
 
-<form name="editFrm" action="?m={$m}" method="POST" onsubmit="return checkForm()">
+<form name="editFrm" action="?m={$m}" method="POST" onsubmit="return checkModele()">
 
 <input type="hidden" name="m" value="{$m}" />
 <input type="hidden" name="del" value="0" />
@@ -61,8 +53,8 @@ function checkForm() {
   </tr>
   
   <tr>
-    <th><label for="editFrm_nom" title="Intitulé du modèle">Nom:</label></th>
-    <td><input type="text" name="nom" value="{$compte_rendu->nom}"></td>
+    <th><label for="editFrm_nom" title="Intitulé du modèle. Obligatoire">Nom:</label></th>
+    <td><input type="text" name="nom" value="{$compte_rendu->nom}" alt="{$compte_rendu->_props.nom}"></td>
   </tr>
   
   <tr>
@@ -109,11 +101,11 @@ function checkForm() {
   <tr>
     <td class="button" colspan="2">
     {if $compte_rendu->compte_rendu_id}
-      <input type="submit" value="modifier" />
+      <input type="submit" value="Modifier" />
       <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le modèle', '{$compte_rendu->nom|escape:javascript}')" />
-      <input type="button" value="nouveau" onclick="nouveau()" />
+      <input type="button" value="Nouveau" onclick="nouveau()" />
     {else}
-      <input type="submit" value="créer" />
+      <input type="submit" value="Créer" />
     {/if}
     </td>
   </tr>
