@@ -82,7 +82,7 @@ class CDoObjectAddEdit {
     } else {
       $isNotNew = @$_POST[$this->objectKeyGetVarName];
       if ($this->redirectStore) {
-        $AppUI->setMsg( $isNotNew ? $this->createMsg : $this->createMsg, UI_MSG_OK);
+        $AppUI->setMsg( $isNotNew ? $this->modifyMsg : $this->createMsg, UI_MSG_OK);
         $this->redirect =& $this->redirectStore;
       }
     }
