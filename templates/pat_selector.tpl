@@ -49,12 +49,16 @@ function setClose(key, val){
 <tr>
   <th align="center">Patient</th>
   <th align="center">Date de naissance</th>
+  <th align="center">Telephone</th>
+  <th align="center">Mobile</th>
   <th align="center">Selectionner</th>
 </tr>
 {foreach from=$list item=curr_patient}
 <tr>
   <td>{$curr_patient->_view}</td>
   <td>{$curr_patient->_naissance}</td>
+  <td>{$curr_patient->tel}</td>
+  <td>{$curr_patient->tel2}</td>
   <td class="button"><input type="button" class="button" value="selectionner" onclick="setClose({$curr_patient->patient_id}, '{$curr_patient->_view|escape:javascript}')" /></td>
 </tr>
 {/foreach}
