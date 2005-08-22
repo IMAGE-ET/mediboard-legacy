@@ -50,7 +50,7 @@ function checkTarif() {
 
 function editPat() {
   var url = '?m=dPpatients&tab=vw_edit_patients';
-  url += '&id={/literal}{$consult->_ref_patient->patient_id}{literal}';
+  url += '&patient_id={/literal}{$consult->_ref_patient->patient_id}{literal}';
   window.location.href = url;
 }
 
