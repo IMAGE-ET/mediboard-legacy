@@ -38,6 +38,7 @@ $titleBlock->show();
 $tabBox = new CTabBox("?m=$m", $AppUI->cfg['root_dir'] . "/modules/$m/", $tab );
 $tabBox->add("import_orl", "Import ORL");
 $tabBox->add("export_hprim", "Export HPRIM");
+$tabBox->add("send_mail", "Envoie de mails");
 $tabBox->show();
 
 ?>
