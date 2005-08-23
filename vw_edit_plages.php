@@ -27,7 +27,7 @@ $planning = new Cplanning($day, $month, $year);
 <script language="javascript">
 function popPlanning(debut) {
   var url = "index.php?m=dPbloc&a=view_planning&dialog=1";
-  url += "&debut=" + debut;
+  url += "&deb=" + debut;
   url += "&fin=" + debut;
   popup(700, 550, url, "Planning");
 }
