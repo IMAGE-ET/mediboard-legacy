@@ -47,6 +47,7 @@ class CCompteRendu extends CMbObject {
     $this->CMbObject("compte_rendu", "compte_rendu_id");
 
     $this->_props["nom"] = "str|notNull";
+    $this->_props["source"] = "html";
   }
   
   function check() {
