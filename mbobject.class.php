@@ -9,6 +9,37 @@
 
 require_once($AppUI->getSystemClass('dp'));
 
+function htmlReplace($find, $replace, &$source) {
+
+  $matches = array();
+  $nbFound = preg_match_all("/$find/", $source, $matches);
+//  $output = preg_replace("/($find)/", "XXXspan style='color: red'YYY$1XXX/spanYYY", $source);
+//  $output = htmlentities($output);
+//  $output = str_replace("XXX", "<", $output);
+//  $output = str_replace("YYY", ">", $output);
+//  echo "<h1>Subject</h1>";
+//  echo "<h2>pattern: <kbd>". htmlentities($find) . "</kbd><h2>";
+//  echo "<h2>found: $nbFound</h2>";
+//  echo "<h2>text: ". strlen($source). " bytes</h2>";
+//  echo "$output";
+
+  $source = preg_replace("/$find/", $replace, $source);
+//  echo "<h1>Result</h1>" . htmlentities($source);
+  
+  return $nbFound;
+}
+
+function purgeHtmlText($regexps, &$source) {
+  $total = 0;
+  foreach ($regexps as $find => $replace) {
+    $total += htmlReplace($find, $replace, $source); 
+  }
+
+//  echo "<h1>Total found: $total<h1><hr />";
+  
+  return $total;
+}
+
 /**
  * Class CMbObject 
  * @abstract Adds Mediboard abstraction layer functionality
@@ -147,7 +178,14 @@ class CMbObject extends CDpObject {
         // @todo Should validate against XHTML DTD
         
         // Purges empty spans
+        $regexps = array (
+          "<span[^>]*>[\s]*<\/span>" => " ",
+          "<font[^>]*>[\s]*<\/font>" => " ",
+          "<span class=\"field\">([^\[].*)<\/span>" => "$1"
+          );
         
+        while (purgeHtmlText($regexps, $propValue));
+
         break;
     
       default:
