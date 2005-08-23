@@ -62,6 +62,7 @@ class CAntecedentFavoris extends CDpObject {
       	$this->_ref_antecedent->load($this->antecedent_id);
         break;
       }
+    }
   }
   
   function loadRefsBack() {
