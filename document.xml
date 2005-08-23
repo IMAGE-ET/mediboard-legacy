@@ -1,15 +1,13 @@
-<?xml version="1.0" ?>
-<!DOCTYPE note SYSTEM "document.dtd">
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<!DOCTYPE note SYSTEM "./document.dtd">
 <note date="02-02-2005">
-<de/>
-<a>LucrÃ¨ce</a>
-<a>JosÃ©phine</a>
-<sujet>Rappel</sujet>
-<CMU>
-<yes />
-</CMU>
-<contenu>
-N'oublie pas la fÃªte de fin d'exams!
-</contenu>
-<attache url="http://www.party.com/flyer.jpg"/>
+	<de>Isidore</de>
+	<a>Lucrèce</a>
+	<a>Joséphine</a>
+	<sujet>Rappel</sujet>
+	<CMU>
+			<yes />
+	</CMU>
+	<contenu>N'oublie pas la fête de fin d'exams!</contenu>
+	<attache url="http://www.party.com/flyer.jpg"/>
 </note>
