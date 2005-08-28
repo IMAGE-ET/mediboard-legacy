@@ -549,12 +549,13 @@ class CAppUI {
     $ip2 = intval($browserIP[2]);
     $ip3 = intval($browserIP[3]);
     
-    if (!(($ip0 == 127 and $ip1 == 0 and $ip2 == 0 and $ip3 == 1) 
-      or ($ip0 == 10)
-      or ($ip0 == 172 and $ip1 >= 16 and $ip1 < 32)
-      or ($ip0 == 192 and $ip1 == 168)
-      or $remote == 1
-      or $obj->user_type == 1)) {
+    $is_local[1] = ($ip0 == 127 && $ip1 == 0 && $ip2 == 0 && $ip3 == 1); 
+    $is_local[2] = ($ip0 == 10);
+    $is_local[3] = ($ip0 == 172 && $ip1 >= 16 && $ip1 < 32);
+    $is_local[4] = ($ip0 == 192 && $ip1 == 168);
+    $is_local[0] = $is_local[1] || $is_local[2] || $is_local[3] || $is_local[4];
+    
+    if (!$is_local[0] && $remote == 1 && $obj->user_type != 1) {
         return false;
       }
       
