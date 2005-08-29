@@ -20,7 +20,7 @@ if (!$canRead) {
 $deb = mbDate();
 $fin = mbDate("+ 0 day");
 
-// Liste des chirurgiens
+// Liste des praticiens
 $mediusers = new CMediusers();
 $listChir = $mediusers->loadPraticiens(PERM_EDIT);
 

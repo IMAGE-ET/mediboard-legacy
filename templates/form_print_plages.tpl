@@ -64,7 +64,7 @@ function pageMain() {
       <table class="form">
         <tr><th class="category" colspan="2">Choix des paramètres de tri</th></tr>
         <tr>
-          <th>Chirurgien:</th>
+          <th>Praticien:</th>
           <td><select name="chir">
             <option value="0">&mdash; Tous</option>
             {foreach from=$listChir item=curr_chir}

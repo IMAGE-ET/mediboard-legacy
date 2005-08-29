@@ -8,7 +8,7 @@ function checkPlage() {
   
   if (field = form.chir_id) {
     if (!field.value) {
-      alert("Merci de choisir un chirurgien");
+      alert("Merci de choisir un praticien");
       field.focus();
       return false;
     }

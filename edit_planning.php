@@ -28,12 +28,12 @@ if (!$consultation_id) {
     $chir = $mediuser;
   }
   
-  // A t'on fourni l'id du chirurgien
+  // A t'on fourni l'id du praticien
   if ($chir_id = mbGetValueFromGetOrSession("chir_id")) {
     $chir->load($chir_id);
   }
 
-  // A t'on fourni l'id du chirurgien
+  // A t'on fourni l'id du patient
   if ($pat_id = mbGetValueFromGet("pat_id")) {
     $pat->load($pat_id);
   }

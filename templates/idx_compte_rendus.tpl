@@ -363,7 +363,7 @@ function printPack(op, form) {
   <td class="halfPane">
     <table class="form">
       <tr>
-        <th>Choix du chirurgien :</th>
+        <th>Choix du praticien :</th>
         <td>
           <form name="chirFrm" action="index.php" method="get">
           <input type="hidden" name="m" value="{$m}" />

@@ -21,7 +21,7 @@ $deb = mbGetValueFromGetOrSession("deb", mbDate());
 $fin = mbGetValueFromGetOrSession("fin", mbDate());
 $chir = mbGetValueFromGetOrSession("chir");
 
-// Liste des chirurgiens
+// Liste des praticiens
 if(!$chir) {
   $mediusers = new CMediusers();
   $listChir = $mediusers->loadPraticiens(PERM_EDIT);

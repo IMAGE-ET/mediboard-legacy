@@ -27,7 +27,7 @@ if ($mediuser->isPraticien()) {
 // Type de vue
 $vue = mbGetValueFromGetOrSession("vue1");
 
-// Chirurgien selectionné
+// Praticien selectionné
 $chirSel = mbGetValueFromGetOrSession("chirSel", $chir ? $chir->user_id : null);
 
 // Plage de consultation selectionnée

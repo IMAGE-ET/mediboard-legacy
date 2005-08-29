@@ -26,7 +26,7 @@ $mediuser = new CMediusers();
 $mediuser->load($AppUI->user_id);
 $user = $mediuser->createUser();
 
-// Liste des tarifs du chirurgien
+// Liste des tarifs du praticien
 if ($mediuser->isPraticien()) {
   $where = array();
   $where["function_id"] = "= 0";

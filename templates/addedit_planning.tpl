@@ -8,7 +8,7 @@ function checkForm() {
   
   if (field = form.chir_id)
     if (field.value == 0) {
-      alert("Chirurgien manquant");
+      alert("Praticien manquant");
       popChir();
       return false;
     }
@@ -36,7 +36,7 @@ function checkChir() {
   
   if (field = form.chir_id) {
     if (field.value == 0) {
-      alert("Chirurgien manquant");
+      alert("Praticien manquant");
       popChir();
       return false;
     }
@@ -49,7 +49,7 @@ function popChir() {
   var url = './index.php?m=mediusers';
   url += '&a=chir_selector';
   url += '&dialog=1';
-  popup(400, 250, url, 'Chirurgien');
+  popup(400, 250, url, 'Praticien');
 }
 
 function setChir( key, val ){
@@ -130,10 +130,10 @@ function setRDV( hour, min, id, date, freq ) {
         <tr>
           <th class="mandatory">
             <input type="hidden" name="chir_id" value="{$chir->user_id}" />
-            <label for="editFrm_chir_id">Chirurgien:</label>
+            <label for="editFrm_chir_id">Praticien:</label>
           </th>
             <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$chir->_view}" readonly="readonly" /></td>
-            <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
+            <td class="button"><input type="button" value="choisir un praticien" onclick="popChir()"></td>
         </tr>
 
         <tr>

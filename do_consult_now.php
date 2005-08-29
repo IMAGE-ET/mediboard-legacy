@@ -14,7 +14,7 @@ require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
-// L'utilisateur est-il un chirurgien
+// L'utilisateur est-il un praticien
 $mediuser = new CMediusers;
 $mediuser->load($AppUI->user_id);
 if ($mediuser->isPraticien()) {
