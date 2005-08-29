@@ -25,7 +25,6 @@ $header = array();
 $msgNo = null;
 
 if ($del) {
-  mbTrace($obj, "Objet à supprimer");
   $obj->load();
 
   $deleted = 0;

@@ -169,7 +169,7 @@ class CPlageconsult extends CDpObject {
     $_min_fin = $this->_min_fin;
     $_freq = $this->_freq;
 
-    $this->date = mbDate("+1 week", $this->date);
+    $this->date = mbDate("+7 DAYS", $this->date);
     $where["date"] = "= '$this->date'";
     $where["chir_id"] = "= '$this->chir_id'";
     $where[] = "`debut` = '$this->debut' OR `fin` = '$this->fin'";
