@@ -1,34 +1,15 @@
-<script language="JavaScript" type="text/javascript">
-{literal}
+<h1>Essai de validation d'un document XML</h1>
 
-function doAction(sAction) {
-  url = "index.php?m=dPinterop&dialog=1";
-  url += "&a=" + sAction;
-  
-  popup(400, 400, url, sAction);
-}  
+<h2>Utilisation de DOM</h2>
 
-{/literal}
-</script>
+<h3>XML Dump</h3>
 
-<p>Essai de validation d'un document XML.</p>
+<pre>{$dom_export|escape:html}</pre>
 
-<h1>Utilisation de SimpleXML</h1>
-
-<h2>XML Dump</h2>
-
-<pre>  {$simpleXML_export}</pre>
-
-<h1>Utilisation de DOM</h1>
-
-<h2>XML Dump</h2>
-
-{$dom_export}
-
-<h2>XML Validation</h2>
+<h3>XML Schema Validation</h3>
 
 {if $dom_valid}
-Le document est valide
+Le document est valide!
 {else}
-Le document n'est pas valide
+Le document n'est pas valide...
 {/if}

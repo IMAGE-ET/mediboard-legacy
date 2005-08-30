@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="note">
+    <xs:complexType>
+    	<xs:sequence>
+			<xs:element name="de" type="xs:string"/>
+	 		<xs:element name="a" type="xs:string" maxOccurs="unbounded"/>
+			<xs:element name="sujet" type="xs:string"/>
+			<xs:element name="CMU" type="boolType"/>
+			<xs:element name="contenu" type="xs:string"/>
+			<xs:element name="postscriptum" type="xs:string" minOccurs="0" />
+			<xs:element name="attache" type="attacheType" macOccurs="unbounded" />
+    	</xs:sequence>
+		<xs:attribute name="date" type="xs:string"/>
+    </xs:complexType>
+</xs:element>
+
+<xs:complexType name="boolType">
+	<xs:choice>
+    	<xs:element name="yes"><xs:complexType /></xs:element>
+	    <xs:element name="no"><xs:complexType /></xs:element>
+  	</xs:choice>
+</xs:complexType>
+
+<xs:complexType name="attacheType">
+	<xs:attribute name="url" type="xs:token"/>
+</xs:complexType>
+
+</xs:schema>
