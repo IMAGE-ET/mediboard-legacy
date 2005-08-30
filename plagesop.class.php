@@ -174,7 +174,11 @@ class CPlageOp extends CDpObject {
     $row = db_loadlist($sql);
     $debut = $this->debut;
     $fin = $this->fin;
-    $msg = $this->load(@$row[0]['id']);
+    $msg = null;
+    if(count($row) > 0)
+      $msg = $this->load($row[0]["id"]);
+    else
+      $this->id = null;
     $this->debut = $debut;
     $this->fin = $fin;
     $this->updateFormFields();
