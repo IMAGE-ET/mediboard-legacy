@@ -137,7 +137,7 @@ class CPatient extends CMbObject {
   function updateDBFields() {
   	$this->nom = strtoupper($this->nom);
     $this->prenom = ucwords(strtolower($this->prenom));
-  	if(($this->_tel1 !== null) && ($this->_tel2 !== null) && ($this->_tel3 !== null) && ($this->_tel4 !== null) && ($this->_tel5 !== null)) {
+  	if(($this->_tel1 != null) && ($this->_tel2 != null) && ($this->_tel3 != null) && ($this->_tel4 !== null) && ($this->_tel5 !== null)) {
       $this->tel = 
         $this->_tel1 .
         $this->_tel2 .
@@ -145,7 +145,7 @@ class CPatient extends CMbObject {
         $this->_tel4 .
         $this->_tel5;
     }
-  	if(($this->_tel21 !== null) && ($this->_tel22 !== null) && ($this->_tel23 !== null) && ($this->_tel24 !== null) && ($this->_tel25 !== null)) {
+  	if(($this->_tel21 != null) && ($this->_tel22 != null) && ($this->_tel23 != null) && ($this->_tel24 !== null) && ($this->_tel25 !== null)) {
       $this->tel2 = 
         $this->_tel21 .
         $this->_tel22 .
@@ -153,7 +153,7 @@ class CPatient extends CMbObject {
         $this->_tel24 .
         $this->_tel25;
   	}
-  	if(($this->_annee !== null) && ($this->_mois !== null) && ($this->_jour !== null)) {
+  	if(($this->_annee != null) && ($this->_mois != null) && ($this->_jour != null)) {
       $this->naissance = 
         $this->_annee . "-" .
         $this->_mois  . "-" .
