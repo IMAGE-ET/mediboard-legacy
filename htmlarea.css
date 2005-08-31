@@ -29,4 +29,19 @@ span.hilite {
   span.choice {
     background: #ddd;
   }
+  
+  hr.pagebreak {
+    border-style: dashed;
+    border-top-color: #fff;
+    border-right-color: #fff;
+    border-bottom-color: #aaa;
+    border-left-color: #aaa;
+  }
+}
+
+@media print {
+  hr.pagebreak {
+    display: none;
+    page-break-before:always;
+  }
 }
