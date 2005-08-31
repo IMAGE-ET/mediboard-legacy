@@ -73,6 +73,8 @@ aMbToolbar = new Array();
 for (var i = 0; i < aMbCombos.length; i++) {ldelim}
   aMbToolbar.push(aMbCombos[i].commandName);
 {rdelim}
+// Add MbPageBreak button
+aMbToolbar.push("mbPageBreak");
 aToolbarSet.push(aMbToolbar);
 
 // Remove Form Toolbar
@@ -90,8 +92,11 @@ alert('{$configAlert|escape:javascript}');
 
 FCKConfig.Plugins.Add( 'tablecommands', null);
 
-sMbComboPath = sMbPath + "modules/dPcompteRendu/fcke_plugins/" ;
-FCKConfig.Plugins.Add( 'mbcombo', 'en,fr', sMbComboPath ) ;
+sMbPluginsPath = sMbPath + "modules/dPcompteRendu/fcke_plugins/" ;
+FCKConfig.Plugins.Add( 'mbcombo'    , 'en,fr', sMbPluginsPath ) ;
+FCKConfig.Plugins.Add( 'mbpagebreak', 'en,fr', sMbPluginsPath ) ;
+
+//oMbPageBreakItem.iconPath = FCKPlugins.Items['mbPageBreak'].Path + 'images/pageBreak.gif';
 
 FCKConfig.EditorAreaCSS = sMbPath + "style/mediboard/htmlarea.css";
 FCKConfig.DefaultLanguage = "fr" ;
