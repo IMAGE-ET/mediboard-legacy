@@ -63,7 +63,7 @@ if ($del) {
   
   $msgNo = $deleted ? UI_MSG_ALERT : UI_MSG_ERROR;
 
-  mbSetValueToSession("plageconsult_id");
+  mbSetValueToSession("plage_id");
 } else {
   $created = 0;
   $updated = 0;
