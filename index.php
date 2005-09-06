@@ -37,8 +37,10 @@ $titleBlock->show();
 
 $tabBox = new CTabBox("?m=$m", $AppUI->cfg['root_dir'] . "/modules/$m/", $tab );
 $tabBox->add("view_planning", "Planning réservations");
-$tabBox->add("edit_planning", "Administration des plages");
-$tabBox->add("view_compta", "Comptabilité");
+if($canEdit) {
+  $tabBox->add("edit_planning", "Administration des plages");
+  $tabBox->add("view_compta", "Comptabilité");
+}
 $tabBox->show();
 
 ?>
