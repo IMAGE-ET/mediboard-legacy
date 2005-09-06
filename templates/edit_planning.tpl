@@ -1,0 +1,160 @@
+{literal}
+<script language="JavaScript" type="text/javascript">
+
+function pageMain() {
+  
+  regFieldCalendar("addPlage", "date");
+
+  {/literal}
+  regRedirectPopupCal("{$debut}", "index.php?m={$m}&tab={$tab}&debut=");
+  {literal}
+  
+}
+
+</script>
+{/literal}
+
+<table class="main">
+  <tr>
+    <th class="title" colspan="2">
+      <a href="index.php?m={$m}&amp;debut={$prec}"><<<</a>
+      semaine du {$debut|date_format:"%A %d %B %Y"}
+      <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
+      <a href="index.php?m={$m}&amp;debut={$suiv}">>>></a>
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <table width="100%">
+        <tr>
+          <th></th>
+          {foreach from=$plages key=curr_day item=plagesPerDay}
+          <th>{$curr_day|date_format:"%A %d"}</th>
+          {/foreach}
+        </tr>
+        {foreach from=$listHours item=curr_hour}
+        <tr>
+          <th>{$curr_hour}h</th>
+          {foreach from=$plages key=curr_day item=plagesPerDay}
+            {assign var="isNotIn" value=1}
+            {foreach from=$plagesPerDay item=curr_plage}
+              {if $curr_plage->_hour_deb == $curr_hour}
+                <td align="center" bgcolor="{$curr_plage->_state}" rowspan="{$curr_plage->_hour_fin-$curr_plage->_hour_deb}">
+                  <a href="index.php?m={$m}&amp;tab={$tab}&amp;plage_id={$curr_plage->plageressource_id}">
+                    {if $curr_plage->libelle}
+                    {$curr_plage->libelle}
+                    <br />
+                    {/if}
+                    {$curr_plage->tarif} €
+                    <br />
+                    {$curr_plage->debut|date_format:"%H"}h - {$curr_plage->fin|date_format:"%H"}h
+                    {if $curr_plage->prat_id}
+                    <br />
+                    {$curr_plage->_ref_prat->_view}
+                    {/if}
+                  </a>
+                </td>
+              {/if}
+              {if ($curr_plage->_hour_deb <= $curr_hour) && ($curr_plage->_hour_fin > $curr_hour)}
+                {assign var="isNotIn" value=0}
+              {/if}
+            {/foreach}
+            {if $isNotIn}
+              <td bgcolor="#ffffff"></td>
+            {/if}
+          {/foreach}
+        </tr>
+        {/foreach}
+      </table>
+    </td>
+    <td>
+      <form name="addPlage" action="?m={$m}" method="post">
+      <table class="form">
+        {if $plage->plageressource_id}
+        <tr>
+          <td colspan="4">
+            <a href="index.php?m={$m}&amp;plage_id=0">Créer de nouvelles plages</a>
+          </td>
+        </tr>
+        <tr>
+          <th colspan="4" class="category">
+            Modifier la plage du {$plage->date|date_format:"%d/%m/%Y"}
+            ({$plage->debut|date_format:"%H"}h-{$plage->fin|date_format:"%H"}h)
+          </th>
+        </tr>
+        {else}
+        <tr><th colspan="4" class="category">Ajouter des plages</th></tr>
+        {/if}
+        <tr>
+          <th>Date:</th>
+          <td class="date">
+            {if $plage->plageressource_id}
+            <div id="addPlage_date_da">{$plage->date|date_format:"%d/%m/%Y"}</div>
+            <input type="hidden" name="date" value="{$plage->date}" />
+            {else}
+            <div id="addPlage_date_da">{$debut|date_format:"%d/%m/%Y"}</div>
+            <input type="hidden" name="date" value="{$debut}" />
+            {/if}
+            <img id="addPlage_date_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date"/>
+          </td>
+          <th>Début:</th>
+          <td>
+            <select name="_hour_deb">
+              {foreach from=$listHours item=curr_hour}
+              <option value="{$curr_hour|string_format:"%02d"}" {if $curr_hour == $plage->_hour_deb} selected="selected" {/if}>
+              {$curr_hour|string_format:"%02d"}
+              </option>
+            {/foreach}
+            </select> heures
+          </td>
+        </tr>
+        <tr>
+          <th>Libellé:</th>
+          <td><input type="text" name="libelle" value="{$plage->libelle}" /></td>
+          <th>Fin:</th>
+          <td>
+            <select name="_hour_fin">
+              {foreach from=$listHours item=curr_hour}
+              <option value="{$curr_hour|string_format:"%02d"}" {if $curr_hour == $plage->_hour_fin} selected="selected" {/if}>
+              {$curr_hour|string_format:"%02d"}
+              </option>
+            {/foreach}
+            </select> heures
+          </td>
+        </tr>
+        <tr>
+          <th>Tarif:</th>
+          <td><input type="text" name="tarif" size="3" value="{$plage->tarif}" />€</td>
+          <th>Répétition:</th>
+          <td><input type="text" name="_repeat" size="3" value="1" /></td>
+        </tr>
+        <tr>
+          <td class="button" colspan="4">
+            <input type='hidden' name='dosql' value='do_plageressource_aed' />
+            <input type='hidden' name='del' value='0' />
+            <input type='hidden' name='plageressource_id' value='{$plage->plageressource_id}' />
+            <button type="submit">Créer</button>
+        </tr>
+      </table>
+      </form>
+      {if $plage->plageressource_id}
+      <form name="addPlage" action="?m={$m}" method="post">
+      <table class="form">
+        <tr><th colspan="2" class="category">Supprimer cette plage</th></tr>
+        <tr>
+          <th>Répétition:</th>
+          <td><input type="text" name="_repeat" size="3" value="1" /></td>
+        </tr>
+        <tr>
+          <td class="button" colspan="2">
+            <input type='hidden' name='dosql' value='do_plageressource_aed' />
+            <input type='hidden' name='del' value='1' />
+            <input type='hidden' name='plageressource_id' value='{$plage->plageressource_id}' />
+            <button type="submit">Supprimer</button>
+        </tr>
+      </table>
+      </form>
+      {/if}
+    </td>
+  </tr>
+</table>
