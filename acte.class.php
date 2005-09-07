@@ -11,26 +11,29 @@ class CActeCCAM
 {
   // Variables de structure 
   // Code de l'acte
-  var $code; 
+  var $code = null; 
   // Chapitres de la CCAM concernes
-  var $chapitres;
+  var $chapitres = null;
   // Libelles
-  var $libelleCourt;
-  var $libelleLong;
+  var $libelleCourt = null;
+  var $libelleLong = null;
   // Place dans la CCAM
-  var $place;
+  var $place = null;
   // Remarques sur l'acte
-  var $remarques;
+  var $remarques = null;
   // Activites correspondantes
-  var $activites;
+  var $activites = null;
   // Nombre de phases par activités
-  var $phases;
+  var $phases = null;
   // Incompatibilite
-  var $incomps; 
+  var $incomps = null; 
   // Associabilite
-  var $assos;
+  var $assos = null;
   // Procedure
-  var $procedure; 
+  var $procedure = null; 
+  
+  // Variable calculées
+  var $_code7 = null;
   
   // Constructeur
   function CActeCCAM($code)
@@ -56,17 +59,32 @@ class CActeCCAM
         //On rentre les champs de la table actes
         $this->libelleCourt = "Acte invalide";
         $this->libelleLong = "Acte invalide";
+        $this->_code7 = 1;
       } else {
         $row = mysql_fetch_array($result);
         //On rentre les champs de la table actes
         $this->libelleCourt = "[Acte obsolete V0bis] - ".$row['LIBELLECOURT'];
         $this->libelleLong = "[Acte obsolete V0bis] - ".$row['LIBELLELONG'];
+        $this->_code7 = 1;
       }
     } else {
       $row = mysql_fetch_array($result);
       //On rentre les champs de la table actes
       $this->libelleCourt = $row['LIBELLECOURT'];
       $this->libelleLong = $row['LIBELLELONG'];
+      $query1 = "select * from activiteacte where ";
+      $query1 .= "CODEACTE = '" . $this->code . "' ";
+      $query1 .= "and ACTIVITE = '4'";
+      $result1 = mysql_query($query1);
+      if(mysql_num_rows($result1)) {
+        $query2 = "select * from modificateuracte where ";
+        $query2 .= "CODEACTE = '" . $this->code . "' ";
+        $query2 .= "and CODEACTIVITE = '4'";
+        $query2 .= "and MODIFICATEUR = '7'";
+        $result2 = mysql_query($query2);
+        $this->_code7 = mysql_num_rows($result2);
+      } else
+        $this->_code7 = 1;
     }
     mysql_close($mysql);
     
