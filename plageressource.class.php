@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once( $AppUI->getModuleClass('mediusers') );
 
@@ -20,7 +20,7 @@ if(!defined("PR_FREE")) {
   define("PR_PAYED"  , "#aea");
 }
 
-class CPlageressource extends CDpObject {
+class CPlageressource extends CMbObject {
   // DB Table key
   var $plageressource_id = null;
 
@@ -41,14 +41,18 @@ class CPlageressource extends CDpObject {
   var $_hour_fin = null;
   var $_min_fin = null;
   var $_state = null;
-  var $_color = null;
 
   // Object References
   var $_ref_prat = null;
   var $_ref_patients = null;
 
   function CPlageressource() {
-    $this->CDpObject( 'plageressource', 'plageressource_id' );
+    $this->CMbObject( 'plageressource', 'plageressource_id' );
+    
+    $this->_props["prat_id"] = "ref";
+    $this->_props["date"] = "date|notNull";
+    $this->_props["tarif"] = "float|notNull";
+    $this->_props["libelle"] = "str";
   }
   
   function loadRefsFwd() {
@@ -83,13 +87,13 @@ class CPlageressource extends CDpObject {
     
     return $msg;
   }
-
+/*
   function check() {
     // Data checking
     $msg = null;
     return $msg . parent::check();
   }
-  
+*/
   function store() {
     $this->updateDBFields();
     

@@ -68,7 +68,7 @@ function pageMain() {
       </table>
     </td>
     <td>
-      <form name="addPlage" action="?m={$m}" method="post">
+      <form name="addPlage" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
       <table class="form">
         {if $plage->plageressource_id}
         <tr>
@@ -86,18 +86,18 @@ function pageMain() {
         <tr><th colspan="4" class="category">Ajouter des plages</th></tr>
         {/if}
         <tr>
-          <th>Date:</th>
+          <th><label for="addPlage_date" title="Date de la plage. Obligatoire">Date:</label></th>
           <td class="date">
             {if $plage->plageressource_id}
             <div id="addPlage_date_da">{$plage->date|date_format:"%d/%m/%Y"}</div>
-            <input type="hidden" name="date" value="{$plage->date}" />
+            <input type="hidden" name="date" value="{$plage->date}" alt="{$plage->_props.date}" />
             {else}
             <div id="addPlage_date_da">{$debut|date_format:"%d/%m/%Y"}</div>
-            <input type="hidden" name="date" value="{$debut}" />
+            <input type="hidden" name="date" value="{$debut}" alt="{$plage->_props.date}" />
             {/if}
             <img id="addPlage_date_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date"/>
           </td>
-          <th>Début:</th>
+          <th><label for="addPlage__hour_deb" title="Heure de début">Début:</label></th>
           <td>
             <select name="_hour_deb">
               {foreach from=$listHours item=curr_hour}
@@ -109,9 +109,9 @@ function pageMain() {
           </td>
         </tr>
         <tr>
-          <th>Libellé:</th>
-          <td><input type="text" name="libelle" value="{$plage->libelle}" /></td>
-          <th>Fin:</th>
+          <th><label for="addPlage_libelle" title="Libellé de la plage">Libellé:</label></th>
+          <td><input type="text" name="libelle" value="{$plage->libelle}" alt="{$plage->_props.libelle}" /></td>
+          <th><label for="addPlage__hour_fin" title="Heure de fin">Fin:</label</th>
           <td>
             <select name="_hour_fin">
               {foreach from=$listHours item=curr_hour}
@@ -123,9 +123,9 @@ function pageMain() {
           </td>
         </tr>
         <tr>
-          <th>Tarif:</th>
-          <td><input type="text" name="tarif" size="3" value="{$plage->tarif}" />€</td>
-          <th>Répétition:</th>
+          <th><label for="addPlage_tarif" title="Tarif de la plage. Obligatoire">Tarif:</label></th>
+          <td><input type="text" name="tarif" size="3" value="{$plage->tarif}" alt="{$plage->_props.tarif}" />€</td>
+          <th><label for="addPlage__repeat" title="Nombre de semaine concernées">Répétition:</th>
           <td><input type="text" name="_repeat" size="3" value="1" /></td>
         </tr>
         <tr>
@@ -138,11 +138,11 @@ function pageMain() {
       </table>
       </form>
       {if $plage->plageressource_id}
-      <form name="addPlage" action="?m={$m}" method="post">
+      <form name="delPlage" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
       <table class="form">
         <tr><th colspan="2" class="category">Supprimer cette plage</th></tr>
         <tr>
-          <th>Répétition:</th>
+          <th><label for="delPlage__repeat" title="Nombre de semaine concernées">Répétition:</label></th>
           <td><input type="text" name="_repeat" size="3" value="1" /></td>
         </tr>
         <tr>
