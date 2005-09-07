@@ -42,7 +42,7 @@ class CActeCCAM
   function LoadLite() {
     $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
       or die("Could not connect");
-    mysql_select_db("ccamV1")
+    mysql_select_db("ccamV2")
       or die("Could not select database");
 
     $query = "select * from actes where CODE = '$this->code'";
@@ -78,7 +78,7 @@ class CActeCCAM
   function Load() {
     $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
       or die("Could not connect");
-    mysql_select_db("ccamV1")
+    mysql_select_db("ccamV2")
       or die("Could not select database");
 
     $query = "select * from actes where CODE = '$this->code'";

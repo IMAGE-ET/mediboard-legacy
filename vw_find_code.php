@@ -22,7 +22,7 @@ $seltopo2 = mbGetValueFromGetOrSession("seltopo2", "0");
 //Connection a la base de donnees pour la recherche
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
   or die("Could not connect");
-mysql_select_db("ccamV1")
+mysql_select_db("ccamV2")
   or die("Could not select database");
 
 //Création de la requête
