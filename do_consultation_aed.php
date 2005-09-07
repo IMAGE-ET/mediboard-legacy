@@ -52,6 +52,9 @@ $do->deleteMsg = "Consultation supprimée";
 $do->doBind();
 if (intval(dPgetParam($_POST, 'del'))) {
   $do->doDelete();
+  $curr_consult = mbGetValueFromGetOrSession("selConsult", null);
+  if($curr_consult == $do->_obj->consultation_id)
+    mbSetValueToSession("selConsult");
 } else {
   $do->doStore();
 }
