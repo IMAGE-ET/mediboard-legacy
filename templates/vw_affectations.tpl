@@ -284,7 +284,7 @@ function popPlanning() {
 
               </form>
               
-              <a style="float: right;" href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view}')">
+              <a style="float: right;" href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view|addslashes}')">
                 <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
               </a>
             {else}
@@ -299,7 +299,7 @@ function popPlanning() {
 
               </form>
               
-              <a style="float: right;" href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view}')">
+              <a style="float: right;" href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view|addslashes}')">
                 <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
               </a>
               <em>Entrée</em>:
