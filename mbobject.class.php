@@ -123,11 +123,11 @@ class CMbObject extends CDpObject {
         }
         
         break;
-    
+
       // numerical string
       case "num":
         if (!is_numeric($propValue)) {
-          return "N'est pas une châine numérique'";
+          return "N'est pas une chaîne numérique";
         }
       
         switch (@$specFragments[1]) {
@@ -169,9 +169,6 @@ class CMbObject extends CDpObject {
         }
         
         break;
-    
-			default:
-				return "Spécification invalide";
         
       // HTML Text
       case "html":
@@ -187,7 +184,14 @@ class CMbObject extends CDpObject {
         while (purgeHtmlText($regexps, $propValue));
 
         break;
-    
+      
+      case "currency":
+        if (!preg_match ("/^(\d+)(\.\d{0,2}){0,1}$/", $propValue)) {
+          return "N'est pas une valeur monétaire (utilisez le . pour la virgule)";
+        }
+        
+        break;
+
       default:
         return "Spécification invalide";
 		}
