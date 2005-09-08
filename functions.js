@@ -171,6 +171,20 @@ function checkElement(oElement, aSpecFragments) {
       }
 
       break;
+    case "date":
+      if(!oElement.value.match(/(\d{4})-(\d{1,2})-(\d{1,2})/)) {
+        return "N'as pas un format correct";
+      }
+      
+      break;
+    
+    case "currency":
+      if(!oElement.value.match(/^(\d+)(\.\d{0,2}){0,1}$/)) {
+        return "N'est pas une valeur monétaire (utilisez le . pour la virgule)";
+      }
+      
+      break;
+    
     default:
       return "Spécification invalide";
   }
