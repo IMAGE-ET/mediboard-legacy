@@ -51,7 +51,7 @@ class CPlageressource extends CMbObject {
     
     $this->_props["prat_id"] = "ref";
     $this->_props["date"] = "date|notNull";
-    $this->_props["tarif"] = "float|notNull";
+    $this->_props["tarif"] = "currency|notNull";
     $this->_props["libelle"] = "str";
   }
   
