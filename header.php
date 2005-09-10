@@ -103,7 +103,7 @@ foreach ($nav as $module) {
 			<tr>
 				<td id="userWelcome"><?php echo $AppUI->_('Welcome') . " $AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 				<td id="userMenu">
-					<?php echo dPcontextHelp( 'Help' );?> |
+					<?php echo mbPortalLink( $m, "Aide en ligne" );?> |
 					<a href="./index.php?m=admin&amp;a=viewuser&amp;user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
 <?php
 	if (!getDenyRead( 'calendar' )) {
