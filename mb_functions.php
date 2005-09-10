@@ -207,4 +207,12 @@ function mbLinkShortcutIcon($filepath) {
   global $mb_version_build;
   echo "<link rel='shortcut icon' type='image/ico' href='$filepath?build=$mb_version_build' />";
 }
+
+/**
+ * Link to the mediboard.org documentation page depending on the module 
+ * Only to be called while in the HTML header.  */
+function mbPortalLink( $page="Accueil", $title="Portail Mediboard" ) {
+  global $AppUI;
+  return "<a href=\"http://www.mediboard.org/public/tiki-index.php?page=$page\" target=\"_blank\">$title</a>";
+}
 ?>
