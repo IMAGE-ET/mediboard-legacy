@@ -208,8 +208,8 @@ function mbLinkShortcutIcon($filepath) {
 }
 
 /**
- * Link to the mediboard.org documentation page depending on the module 
- * Only to be called while in the HTML header.  */
+ * Link to the mediboard.org documentation page 
+ * @return string: the link to mediboard.org  */
 function mbPortalLink( $page="Accueil", $title="Portail Mediboard" ) {
   global $AppUI;
   return "<a href=\"http://www.mediboard.org/public/tiki-index.php?page=$page\" target=\"_blank\">$title</a>";
