@@ -37,7 +37,6 @@ function mbGetValueFromGetOrSession($valName, $valDefault = NULL) {
 
 /**
  * Sets a value to the session. Very useful to nullify object ids after deletion
- * @todo -c make it accessable from do_aed_class.php (can't be used upt to now)
  * @access public
  * @return void
  **/
