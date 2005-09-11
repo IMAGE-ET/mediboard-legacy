@@ -168,7 +168,7 @@ function popPlage() {
     popup(400, 250, url, 'Plage');
 }
 
-function setPlage(plage_id, sDate, bAdmVeille) {
+function setPlage(plage_id, sDate, bAdm) {
   var form = document.editFrm;
 
   if (plage_id) {
@@ -177,17 +177,24 @@ function setPlage(plage_id, sDate, bAdmVeille) {
     
     // Initialize adminission date according to operation date
     var dAdm = makeDateFromLocaleDate(sDate);
-    dAdm.setHours(bAdmVeille ? 17 : 8);
-    if (bAdmVeille) {
-      dAdm.setDate(dAdm.getDate()-1);
+    switch(bAdm) {
+      case 0 :
+        dAdm.setHours(17);
+        dAdm.setDate(dAdm.getDate()-1);
+        break;
+      case 1 :
+        dAdm.setHours(8);
+        break;
     }
     
-    form._hour_adm.value = dAdm.getHours();
-    form._min_adm.value = dAdm.getMinutes();
-    form.date_adm.value = makeDATEFromDate(dAdm);
+    if(bAdm != 2) {
+      form._hour_adm.value = dAdm.getHours();
+      form._min_adm.value = dAdm.getMinutes();
+      form.date_adm.value = makeDATEFromDate(dAdm);
     
-    var div_rdv_adm = document.getElementById("editFrm_date_adm_da");
-    div_rdv_adm.innerHTML = makeLocaleDateFromDate(dAdm);
+      var div_rdv_adm = document.getElementById("editFrm_date_adm_da");
+      div_rdv_adm.innerHTML = makeLocaleDateFromDate(dAdm);
+    }
   }
 }
 

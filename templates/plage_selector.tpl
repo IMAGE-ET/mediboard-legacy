@@ -10,9 +10,15 @@ function setClose(date) {
   var val = date;
   
   if (key == 0) {
+    alert('choisissez une plage non pleine');
   	return;
   }
-  var adm = form.admission[0].checked;
+  var adm = 0;
+  if(form.admission[1].checked) {
+    adm = 1;
+  } else if(form.admission[2].checked) {
+    adm = 2;
+  }
   window.opener.setPlage(key,val,adm);
   window.close();
 }
@@ -40,8 +46,13 @@ function setClose(date) {
     <select name="list"  size="14">
       <option value="0" selected="selected">&mdash; Choisir une date &mdash;</option>
     {foreach from=$list item=curr_plage}
+      {if $curr_plage.free_time < 0}
+      <option value="0" ondblclick="setClose('{$curr_plage.date|date_format:"%d/%m/%Y"}')"
+      onclick="document.frmSelector.fmtdate.value='{$curr_plage.date|date_format:"%d/%m/%Y"}'"
+      {else}
       <option value="{$curr_plage.id}" ondblclick="setClose('{$curr_plage.date|date_format:"%d/%m/%Y"}')"
       onclick="document.frmSelector.fmtdate.value='{$curr_plage.date|date_format:"%d/%m/%Y"}'"
+      {/if}
       {if $curr_plage.id_spec }
         style="background:#aae"
       {elseif $curr_plage.free_time < 0}
@@ -62,6 +73,9 @@ function setClose(date) {
     <br />
     <input type="radio" name="admission" value="jour" />
     <label for="frmSelector_admission_jour">Le jour même</label>
+    <br />
+    <input type="radio" name="admission" value="aucune" />
+    <label for="frmSelector_admission_jour">Ne pas modifier</label>
     <br />
     
   </td>
