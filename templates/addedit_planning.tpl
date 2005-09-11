@@ -2,6 +2,48 @@
 
 {literal}
 <script language="javascript">
+
+var http_request = false;
+
+function makeRequest(url) {
+
+  http_request = false;
+
+  if (window.XMLHttpRequest) { // Mozilla, Safari,...
+    http_request = new XMLHttpRequest();
+    if (http_request.overrideMimeType) {
+      http_request.overrideMimeType('text/xml');
+    }
+  } else if (window.ActiveXObject) { // IE
+    try {
+      http_request = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+      try {
+        http_request = new ActiveXObject("Microsoft.XMLHTTP");
+      } catch (e) {}
+    }
+  }
+
+  if (!http_request) {
+    alert('Giving up :( Cannot create an XMLHTTP instance');
+    return false;
+  }
+  http_request.onreadystatechange = alertContents;
+  http_request.open('GET', url, true);
+  http_request.send(null);
+}
+
+function alertContents() {
+  if (http_request.readyState == 4) {
+    if (http_request.status == 200) {
+      myNode = document.getElementById("infoPat");
+      myNode.innerHTML = http_request.responseText;
+    } else {
+      alert('There was a problem with the request.');
+    }
+  }
+}
+
 function checkForm() {
   var form = document.editFrm;
   var field = null;
@@ -54,12 +96,10 @@ function popChir() {
 
 function setChir( key, val ){
   var f = document.editFrm;
-   if (val != '') {
-      f.chir_id.value = key;
-      f._chir_name.value = val;
-      window.chir_id = key;
-      window._chir_name = val;
-    }
+  f.chir_id.value = key;
+  f._chir_name.value = val;
+  window.chir_id = key;
+  window._chir_name = val;
 }
 
 function popPat() {
@@ -67,6 +107,8 @@ function popPat() {
   url += '&a=pat_selector';
   url += '&dialog=1';
   popup(800, 500, url, 'Patient');
+  myNode = document.getElementById("infoPat");
+  myNode.innerHTML = "";
 }
 
 function setPat( key, val ) {
@@ -75,6 +117,9 @@ function setPat( key, val ) {
   if (val != '') {
     f.patient_id.value = key;
     f._pat_name.value = val;
+    myNode = document.getElementById("clickPat");
+    myNode.setAttribute("onclick", "makeRequest('index.php?m=dPpatients&dialog=1&a=httpreq_get_last_refs&patient_id=" + key + "')");
+    myNode.innerHTML = "++ Infos patient (cliquez pour afficher) ++";
   }
 }
 
@@ -83,17 +128,18 @@ function popRDV() {
   url += '&a=plage_selector';
   url += '&dialog=1';
   url += '&chir=' + document.editFrm.chir_id.value;
-  if(checkChir())
-    popup(600, 550, url, 'Plage');
+  popup(600, 700, url, 'Plage');
 }
 
-function setRDV( hour, min, id, date, freq ) {
+function setRDV( hour, min, id, date, freq, chirid, chirname ) {
   var f = document.editFrm;
   f.plageconsult_id.value = id;
   f._date.value = date;
   f._hour.value = hour;
   f._min.value = min;
   f.duree.value = freq;
+  f.chir_id.value = chirid;
+  f._chir_name.value = chirname;
 }
 
 </script>
@@ -132,7 +178,12 @@ function setRDV( hour, min, id, date, freq ) {
             <input type="hidden" name="chir_id" value="{$chir->user_id}" />
             <label for="editFrm_chir_id">Praticien:</label>
           </th>
-            <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$chir->_view}" readonly="readonly" /></td>
+            <td class="readonly">
+              <input type="text" name="_chir_name" size="30" value="{$chir->_view}" readonly="readonly" />
+              <button type="button" onclick="setChir(0, '')">
+                <img src="modules/{$m}/images/cross.png" />
+              </button>
+            </td>
             <td class="button"><input type="button" value="choisir un praticien" onclick="popChir()"></td>
         </tr>
 
@@ -201,6 +252,22 @@ function setRDV( hour, min, id, date, freq ) {
         </tr>
 
       </table>
+      
+      <table class="form">
+        <tr>
+          {if $pat->patient_id}
+          <th id="clickPat" class="category" onclick="makeRequest('index.php?m=dPpatients&dialog=1&a=httpreq_get_last_refs&patient_id={$pat->patient_id}')">
+            ++ Infos patient (cliquez pour afficher) ++
+          {else}
+          <th id="clickPat" class="category">
+            Infos patient (indisponibles)
+          {/if}
+          </th>
+        </tr>
+        <tr>
+          <td id="infoPat"></td>
+        </tr>
+      </table>
     
     </td>
   </tr>
@@ -214,7 +281,7 @@ function setRDV( hour, min, id, date, freq ) {
           {if $consult->consultation_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la consultation de', '{$consult->_ref_patient->_view|escape:javascript}')" />
+            <input type="button" value="Supprimer" style="cursor: pointer;" onclick="confirmDeletion(this.form, 'la consultation de', '{$consult->_ref_patient->_view|escape:javascript}')" />
           {else}
             <input type="submit" value="Créer" />
           {/if}

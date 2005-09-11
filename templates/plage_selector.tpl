@@ -1,6 +1,11 @@
 <script language="javascript">
 function setClose(hour, min) {ldelim}
-  window.opener.setRDV(hour, min, "{$plage->plageconsult_id}", "{$plage->date|date_format:"%d/%m/%Y"}", "{$plage->freq}");
+  window.opener.setRDV(hour, min,
+              "{$plage->plageconsult_id}",
+              "{$plage->date|date_format:"%d/%m/%Y"}",
+              "{$plage->freq}",
+              "{$plage->chir_id}",
+              "{$plage->_ref_chir->_view}");
   window.close();
 {rdelim}
 </script>
@@ -9,9 +14,9 @@ function setClose(hour, min) {ldelim}
 
 <tr>
   <th class="category" colspan="2">
-    <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;month={$pmonth}&amp;year={$pyear}">&lt;&lt;&lt;</a>
-    {$nameMonth} {$year}
-    <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;month={$nmonth}&amp;year={$nyear}">&gt;&gt;&gt;</a>
+    <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;date={$pdate}">&lt;&lt;&lt;</a>
+    {$date|date_format:"%B %Y"}
+    <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;date={$ndate}">&gt;&gt;&gt;</a>
   </th>
 </tr>
 
@@ -20,18 +25,20 @@ function setClose(hour, min) {ldelim}
     <table class="tbl">
       <tr>
         <th>Date</th>
+        <th>Praticien</th>
         <th>Libelle</th>
         <th>Etat</th>
       </tr>
       {foreach from=$listPlage item=curr_plage}
-      <tr style="{if $curr_plage.plageconsult_id == $plageSel}font-weight: bold;{/if}">
+      <tr style="{if $curr_plage->plageconsult_id == $plageSel}font-weight: bold;{/if}">
         <td>
-          <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;plagesel={$curr_plage.plageconsult_id}&amp;chir={$chir}&amp;month={$month}&amp;year={$year}">
-          {$curr_plage.affichage}
+          <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;plagesel={$curr_plage->plageconsult_id}&amp;chir={$chir}&amp;date={$date}">
+          {$curr_plage->date|date_format:"%A %d"}
           </a>
         </td>
-        <td>{$curr_plage.libelle}</td>
-        <td>{$curr_plage.nb} / {$curr_plage.total}</td>
+        <td>{$curr_plage->_ref_chir->_view}</td>
+        <td>{$curr_plage->libelle}</td>
+        <td>{$curr_plage->_ref_consultations|@count} / {$curr_plage->_total}</td>
       </tr>
       {/foreach}
     </table>

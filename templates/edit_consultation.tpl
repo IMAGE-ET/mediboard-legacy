@@ -378,6 +378,13 @@ function pageMain() {
         </tr>
         <tr>
           <td>
+            <form>
+              Examens complémentaires :
+              <select onchange="javascript:popup(700, 700, 'index.php?m={$m}&a=exam_audio&dialog=1', 'audiogramme')">
+                <option value="0">&mdash Selectionnez un examen</option>
+                <option value="exam_audio.php">Audiogramme</option>
+              </select>
+            </form>
             <ul>
               {foreach from=$consult->_ref_files item=curr_file}
               <li>

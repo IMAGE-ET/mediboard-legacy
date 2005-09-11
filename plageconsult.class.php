@@ -33,6 +33,7 @@ class CPlageconsult extends CDpObject {
   var $_hour_fin = null;
   var $_min_fin = null;
   var $_freq = null;
+  var $_total = null;
 
   // Object References
   var $_ref_chir = null;
@@ -150,6 +151,10 @@ class CPlageconsult extends CDpObject {
     $this->_hour_fin = intval(substr($this->fin, 0, 2));
     $this->_min_fin  = intval(substr($this->fin, 3, 2));
     $this->_freq     = substr($this->freq, 3, 2);
+    $tmpfin          = substr($this->fin, 0, 2);
+    $tmpdebut        = substr($this->debut, 0, 2);
+    $tmpfreq         = 60 / substr($this->freq, 3, 2);
+    $this->_total    = ($tmpfin - $tmpdebut) * $tmpfreq;
   }
   
   function updateDBFields() {
