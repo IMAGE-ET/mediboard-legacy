@@ -9,61 +9,128 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
+echo "toto";
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$doc = new DOMDocument('1.0');
-// we want a nice output
-$doc->formatOutput = true;
+require_once($AppUI->getModuleClass($m, "hprimxmldocument"));
+require_once($AppUI->getModuleClass($m, "hprimxmlschema"));
+require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 
-// XML Paths
-$dtd_path = "modules/$m/document.dtd";
-$xml_path = "modules/$m/document.xml";
+function DOMDocumentMerge(DOMDocument &$dom1, DOMDocument $dom2) {
+   // pull all child elements of second XML
+   $xpath = new domXPath($dom2);
+   $xpathQuery = $xpath->query('/*/*');
+   
+   for ($i = 0; $i < $xpathQuery->length; $i++) {
+       // and pump them into first one
+       $dom1->documentElement->appendChild(
+       $dom1->importNode($xpathQuery->item($i), true));
+   }
+}
+
+$pmsipath = "modules/$m/hprim/serveurActe";
+$schemapath = "$pmsipath/schema.xml";
+
+if (!is_file($schemapath)) {
+  $schema = new CHPrimXMLSchema();
+  $schema->importSchemaPackage($pmsipath);
+  $schema->purgeIncludes();
+  $schema->purgeImportedNamespaces();
+  $schema->save($schemapath);
+}
+
+// Une opération: ID=5174
+$mbOp = new COperation();
+$mbOp->load(5174);
+$mbOp->loadRefs();
 
 // DOM extension
-$dom = new DOMDocument('1.0', 'iso-8859-1');
-$dom->format_output = true;
+$documentpath = "$pmsipath/document.xml";
+$doc = new CHPrimXMLDocument();
 
-$evenementsPMSI = $dom->appendChild($dom->createElement("evenementsPMSI"));
+$evenementsServeurActes = $doc->addElement($doc, "evenementsServeurActes", null, "http://www.hprim.org/hprimXML");
+$doc->addAttribute($evenementsServeurActes, "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+$doc->addAttribute($evenementsServeurActes, "xsi:schemaLocation", "http://www.hprim.org/hprimXML schema.xml");
+$doc->addAttribute($evenementsServeurActes, "version", "1.00");
 
-$enteteMessage = $evenementsPMSI->appendChild(new DOMElement("enteteMessage"));
-$enteteMessage->setAttribute("modeTraitement", "test"); // A supprimer pour un utilisation réelle
+$enteteMessage = $doc->addElement($evenementsServeurActes, "enteteMessage");
+$doc->addAttribute($enteteMessage, "modeTraitement", "test"); // A supprimer pour un utilisation réelle
+$doc->addElement($enteteMessage, "identifiantMessage", "OP$mbOp->operation_id");
+$doc->addDateTimeElement($enteteMessage, "dateHeureProduction");
 
-$identifiantMessage = $enteteMessage->appendChild(new DOMElement("identifiantMessage", "PMSI{op.id}"));
-$identifiantMessage = $enteteMessage->appendChild(new DOMElement("datHeureProduction", mbTranformTime(null, null, "%Y-%m-%dT%H:%M:%S")));
+$emetteur = $doc->addElement($enteteMessage, "emetteur");
+$agents = $doc->addElement($emetteur, "agents");
+$doc->addAgent($agents, "application", "MediBoard", "Gestion des Etablissements de Santé");
+$doc->addAgent($agents, "système", "CMCA", "Centre Médico-Chir. de l'Atlantique");
+$doc->addAgent($agents, "acteur", "$AppUI->user_id", "$AppUI->user_first_name $AppUI->user_last_name");
 
-$agents = $enteteMessage->appendChild(new DOMElement("agents"));
+$destinataire = $doc->addElement($enteteMessage, "destinataire");
+$agents = $doc->addElement($destinataire, "agents");
+$doc->addAgent($agents, "application", "SANTEcom", "Siemens Health Services: S@NTE.com");
+$doc->addAgent($agents, "système", "CMCA", "Centre Médico-Chir. de l'Atlantique");
+$doc->addAgent($agents, "acteur", "$AppUI->user_id", "$AppUI->user_first_name $AppUI->user_last_name");
 
-$agent = $agents->appendChild(new DOMElement("agent"));
-$agent->setAttribute("categorie", "application");
-$agent->appendChild(new DOMElement("code", "MediBoard"));
-$agent->appendChild(new DOMElement("libelle", "Gestion des Etablissements de Sante"));
+$evenementServeurActe = $doc->addElement($evenementsServeurActes, "evenementServeurActe");
 
-$agent = $agents->appendChild(new DOMElement("agent"));
-$agent->setAttribute("categorie", "système");
-$agent->appendChild(new DOMElement("code", "CMCA"));
-$agent->appendChild(new DOMElement("libelle", "Centre Médico-Chir. de l'Atlantique"));
+// Ajout du patient
+$mbPatient = $mbOp->_ref_pat;
 
-$agent = $agents->appendChild(new DOMElement("agent"));
-$agent->setAttribute("categorie", "acteur");
-$agent->appendChild(new DOMElement("code", "AppUI.userId"));
-$agent->appendChild(new DOMElement("libelle", "user.firstName user.lastName"));
+$patient = $doc->addElement($evenementServeurActe, "patient");
+$identifiant = $doc->addElement($patient, "identifiant");
+$emetteur = $doc->addElement($identifiant, "emetteur");
+$doc->addElement($emetteur, "valeur", "patient$mbPatient->patient_id");
 
+$personnePhysique = $doc->addElement($patient, "personnePhysique");
+$doc->addAttribute($personnePhysique, "sexe", 
+  $mbPatient->sexe == "m" ? "M" :
+  $mbPatient->sexe == "f" ? "F" : "J");
+$doc->addElement($personnePhysique, "nomUsuel", substr($mbPatient->nom, 0, 35));
+$doc->addElement($personnePhysique, "nomNaissance", substr($mbPatient->_nom_naissance, 0, 35));
 
-$identifiantMessage = $enteteMessage->appendChild(new DOMElement("datHeureProduction", mbTranformTime(null, null, "%Y-%m-%dT%H:%M:%S")));
-$identifiantMessage = $enteteMessage->appendChild(new DOMElement("datHeureProduction", mbTranformTime(null, null, "%Y-%m-%dT%H:%M:%S")));
+$prenoms = $doc->addElement($personnePhysique, "prenoms");
+foreach ($mbPatient->_prenoms as $mbKey => $mbPrenom) {
+  if ($mbKey < 4) {
+    $doc->addElement($prenoms, "prenom", substr($mbPrenom, 0, 35));
+	}
+}
 
-$dom_valid = $dom->schemaValidate("modules/$m/document.xsd");
+$adresses = $doc->addElement($personnePhysique, "adresses");
+$adresse = $doc->addElement($adresses, "adresse");
+$doc->addElement($adresse, "ligne", $mbPatient->adresse);
+$doc->addElement($adresse, "ville", $mbPatient->ville);
+$doc->addElement($adresse, "codePostal", $mbPatient->cp);
 
-$dom_export = $dom->saveXML();
+$telephones = $doc->addElement($personnePhysique, "telephones");
+$doc->addElement($telephones, "telephone", $mbPatient->tel);
+$doc->addElement($telephones, "telephone", $mbPatient->tel2);
+
+$dateNaissance = $doc->addElement($personnePhysique, "dateNaissance");
+$doc->addElement($dateNaissance, "date", $mbPatient->naissance);
+
+// Ajout de la venue: +/- l'hospitalisation
+$venue = $doc->addElement($evenementServeurActe, "venue");
+
+$identifiant = $doc->addElement($venue, "identifiant");
+$emetteur = $doc->addElement($identifiant, "emetteur");
+$doc->addElement($emetteur, "valeur", "op$mbOp->operation_id");
+
+//$entree = $doc->addElement();
+
+// Traitement final
+$doc->purgeEmptyElements();
+$doc->save($documentpath);
+
+$doc_valid = $doc->schemaValidate($schemapath);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign("dom_export", $dom_export);
-$smarty->assign("dom_valid", $dom_valid);
+$smarty->assign("schemapath", $schemapath);
+$smarty->assign("documentpath", $documentpath);
+$smarty->assign("doc_valid", $doc_valid);
 
 $smarty->display('export_hprim.tpl');
 
