@@ -23,7 +23,7 @@
 		<tr><th  class="category"colspan="2"><?php echo $AppUI->_('PoweredBy');?></th></tr>
 		<tr>
 			<td id="poweredBy" colspan="2">
-				<a href="http://www.dotproject.net/"><img src="./style/mediboard/images/dp_icon.gif" alt="dotProject logo" /></a>
+				<a href="http://www.dotproject.net/" target="_blank"><img src="./style/mediboard/images/dp_icon.gif" alt="dotProject logo" /></a>
 				<p>Version <?php echo @$AppUI->getVersion();?></p>
 			</td>
 		</tr>
