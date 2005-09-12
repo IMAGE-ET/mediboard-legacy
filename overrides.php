@@ -12,7 +12,7 @@ class CTitleBlock extends CTitleBlock_core {
     
 		if ($this->icon) {
 			$s .= "\n<td>";
-			$s .= dPshowImage( dPFindImage( $this->icon, $this->module ), '42', '42' );
+			$s .= dPshowImage( dPFindImage( $this->icon, $this->module ), '24', '24' );
 			$s .= "</td>";
 		}
 
