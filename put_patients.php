@@ -15,6 +15,8 @@ if (!$canRead) {
 
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
+set_time_limit( 1800 );
+
 $sql = "SELECT * FROM import_patients";
 $listImport = db_loadlist($sql);
 
@@ -22,9 +24,13 @@ $new = 0;
 $link = 0;
 
 foreach($listImport as $key => $value) {
+  $tmpNom = addslashes(trim($value["nom"]));
+  if($tmpNom == '') $tmpNom = "-";
+  $tmpPrenom = addslashes(trim($value["prenom"]));
+  if($tmpPrenom == '') $tmpPrenom = "-";
   $sql = "SELECT * FROM patients" .
-  		"\nWHERE patients.nom = '".addslashes(trim($value["nom"]))."'" .
-  		"\nAND patients.prenom = '".addslashes(trim($value["prenom"]))."'" .
+  		"\nWHERE patients.nom = '$tmpNom'" .
+  		"\nAND patients.prenom = '$tmpPrenom'" .
   		"\nAND patients.naissance = '".$value["naissance"]."'";
   $match = db_loadlist($sql);
   if(!count($match)) {

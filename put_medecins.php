@@ -15,6 +15,8 @@ if (!$canRead) {
 
 require_once( $AppUI->getModuleClass('dPpatients', 'medecin') );
 
+set_time_limit( 1800 );
+
 $sql = "SELECT * FROM import_medecins";
 $listImport = db_loadlist($sql);
 
@@ -23,9 +25,13 @@ $link = 0;
 $total = 0;
 
 foreach($listImport as $key => $value) {
+  $tmpNom = addslashes(trim($value["nom"]));
+  if($tmpNom == '') $tmpNom = "-";
+  $tmpPrenom = addslashes(trim($value["prenom"]));
+  if($tmpPrenom == '') $tmpPrenom = "-";
   $sql = "SELECT * FROM medecin" .
-  		"\nWHERE medecin.nom = '".addslashes(trim($value["nom"]))."'" .
-  		"\nAND medecin.prenom = '".addslashes(trim($value["prenom"]))."'" .
+  		"\nWHERE medecin.nom = '$tmpNom'" .
+  		"\nAND medecin.prenom = '$tmpPrenom'" .
   		"\nAND medecin.cp = '".$value["cp"]."'";
   $match = db_loadlist($sql);
   //echo "$total : Cas de ".$value["nom"]." ".$value["prenom"]." dans le ".$value["cp"]." :<br>";
