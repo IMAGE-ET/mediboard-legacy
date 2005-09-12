@@ -59,6 +59,13 @@ class CPatient extends CMbObject {
 	var $_tel24 = null;
 	var $_tel25 = null;
 	var $_age = null;
+  
+  // HPRIM Fields
+  var $_prenoms = null; // multiple
+  var $_nom_naissance = null; // +/- = nom_jeune_fille
+  var $_adresse_ligne2 = null;
+  var $_adresse_ligne3 = null;
+  var $_pays = null;
 
   // Object References
   var $_ref_operations = null;
@@ -93,6 +100,9 @@ class CPatient extends CMbObject {
     $this->nom = strtoupper($this->nom);
     $this->prenom = ucwords(strtolower($this->prenom));
     
+    $this->_nom_naissance = $this->nom_jeune_fille ? $this->nom_jeune_fille : $this->nom; 
+    $this->_prenoms = array($this->prenom);
+
     $this->_jour  = substr($this->naissance, 8, 2);
     $this->_mois  = substr($this->naissance, 5, 2);
     $this->_annee = substr($this->naissance, 0, 4);
