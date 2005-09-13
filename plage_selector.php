@@ -126,6 +126,8 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('date', $date);
+$smarty->assign('ndate', $ndate);
+$smarty->assign('pdate', $pdate);
 $smarty->assign('chir', $chir);
 $smarty->assign('plageSel', $plageSel);
 $smarty->assign('plage', $plage);
