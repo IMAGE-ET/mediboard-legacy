@@ -220,6 +220,11 @@ function toggleFunction(function_id) {
     </tr>
     
     <tr>
+      <th><label for="mediuser_adeli" title="Numero Adeli de l'utilisateur">Code Adeli:</label></th>
+      <td><input type="text" name="adeli" value="{$mediuserSel->adeli}" /></td>
+    </tr>
+    
+    <tr>
       <th><label for="mediuser__user_email" title="Email de l'utilisateur">Email:</label></th>
       <td><input type="text" name="_user_email" value="{$mediuserSel->_user_email}" /></td>
     </tr>

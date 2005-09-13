@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'Mediusers';
-$config['mod_version'] = '0.11';
+$config['mod_version'] = '0.12';
 $config['mod_directory'] = 'mediusers';
 $config['mod_setup_class'] = 'CSetupMediusers';
 $config['mod_type'] = 'user';
@@ -19,7 +19,6 @@ $config['mod_ui_icon'] = 'mediusers.png';
 $config['mod_description'] = 'Gestion des utilisateurs';
 $config['mod_config'] = true;
 
-// show module configuration with the dPframework (if requested via http)
 if (@$a == 'setup') {
 	echo dPshowModuleConfig( $config );
 }
@@ -28,14 +27,12 @@ class CSetupMediusers {
 
 	function configure() {
 		global $AppUI;
-		// load module specific configuration page
 		$AppUI->redirect( 'm=mediusers&a=configure' );
 		
   		return true;
 	}
 
 	function remove() {
-		// remove the mediusers table from database
 		db_exec( "DROP TABLE users_mediboard;" );
 		db_exec( "DROP TABLE fonctions_mediboard;" );
 		db_exec( "DROP TABLE groups_mediboard;" );
@@ -48,15 +45,16 @@ class CSetupMediusers {
 
 		switch ( $old_version )
 		{
-			// upgrade from scratch (called from install)
 			case "all":
 			case "0.1":
-				//do some alter table commands
         $sql = "ALTER TABLE `users_mediboard` ADD `remote` TINYINT DEFAULT NULL;";
-    
         db_exec($sql);  db_error();
         
-      case "0.11": 
+      case "0.11":
+        $sql = "ALTER TABLE `users_mediboard` ADD `adeli` int(9) DEFAULT NULL;";
+        db_exec($sql);  db_error();
+        
+      case "0.12": 
         return true;
 		}
 

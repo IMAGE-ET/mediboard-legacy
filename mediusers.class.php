@@ -24,13 +24,14 @@ class CMediusers extends CDpObject {
 	var $user_id = null;
 
   // DB Fields
-    var $remote = null;
+  var $remote = null;
+  var $adeli  = null;
 
   // DB References
 	var $function_id = null;
 
   // dotProject user fields
-    var $_user_type       = null;
+  var $_user_type       = null;
 	var $_user_username   = null;
 	var $_user_password   = null;
 	var $_user_first_name = null;
@@ -154,13 +155,16 @@ class CMediusers extends CDpObject {
     // Can't use parent::store cuz user_id don't auto-increment
     // SQL coded instead
     if ($this->user_id) {
-      $sql = "UPDATE `users_mediboard` 
-        SET `function_id` = '$this->function_id', `remote` = '$this->remote' 
-        WHERE `user_id` = '$this->user_id'";
+      $sql = "UPDATE `users_mediboard`" .
+          "\nSET `function_id` = '$this->function_id'," .
+          "\n`remote` = '$this->remote'," .
+          "\n`adeli` = '$this->adeli'" .
+          "\nWHERE `user_id` = '$this->user_id'";
     } else {
       $this->user_id = $dPuser->user_id;
-      $sql = "INSERT INTO `users_mediboard` ( `user_id` , `function_id` ) 
-        VALUES ('$this->user_id', '$this->function_id')";
+      $sql = "INSERT INTO `users_mediboard`" .
+          "( `user_id` , `function_id`,  `remote`, `adeli`)" .
+          "VALUES ('$this->user_id', '$this->function_id', '$this->remote', '$this->adeli')";
     }
 
     db_exec($sql);
