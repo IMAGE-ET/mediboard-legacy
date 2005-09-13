@@ -38,7 +38,7 @@ function delMed(sElementName) {
   fieldMedecinName.value = "";
 }
 
-function setMed( key, nom, prenom, type ){
+function setMed( key, nom, prenom, sElementName ){
   form = document.editFrm;
   
   fieldMedecin = eval("form.medecin" + sElementName);
