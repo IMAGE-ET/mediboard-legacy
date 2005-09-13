@@ -57,7 +57,7 @@ foreach($listImport as $key => $value) {
     }
     elseif(strpos($file->file_name, ".doc")) {
       $file->file_type = "application/msword";
-      //$file->file_name = strtoupper($file->file_name);
+      $file->file_name = str_replace(".doc", ".DOC", $file->file_name);
     }
     else {
       $file->file_type = "application/octet-stream";
@@ -137,7 +137,7 @@ $totalSizePrint = "$value $unit";
 
 mbTrace($chrono, "Chrono :");
 
-echo '<p>Opération terminée (step '.$current.'/'.ceil(14000/$step).').</p>';
+echo '<p>Opération terminée (step '.$current.'/'.ceil(72500/$step).').</p>';
 echo '<p>'.$total.' ligne lues</p>';
 echo '<p>'.$new.' éléments créés ('.$totalSizePrint.'), ';
 echo $link.' éléments liés, ';
