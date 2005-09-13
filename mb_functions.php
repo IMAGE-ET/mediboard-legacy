@@ -135,7 +135,7 @@ function mbInsertCSV( $fileName, $tableName, $oldid = false )
         $line = str_replace("NULL", "\"NULL\"", fgets( $file, 1024));
         $size = strlen($line)-3;
         $test1 = $line[$size] != "\"";
-        if($fileName != "modules/dPinterop/doc_recus.txt")
+        if(($fileName != "modules/dPinterop/doc_recus.txt") && ($fileName != "modules/dPinterop/chemin_courrier.txt"))
           $test2 = $line[$size-1] == "\\";
         else
           $test2 = 0;

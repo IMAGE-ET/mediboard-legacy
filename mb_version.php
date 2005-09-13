@@ -7,5 +7,5 @@ $mb_version_minor = 3;
 $mb_version_patch = 1;
 
 // Automated numbering (should be incremented at each commit)
-$mb_version_build = 1;
+$mb_version_build = 2;
 ?>
