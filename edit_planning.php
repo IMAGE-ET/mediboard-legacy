@@ -15,6 +15,10 @@ if (!$canEdit) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// Liste des prats
+$listPrat = new CMediusers;
+$listPrat = $listPrat->loadPraticiens(PERM_EDIT);
+
 // Plage selectionnée
 $plage_id = mbGetValueFromGetOrSession("plage_id", null);
 $plage = new CPlageressource;
@@ -57,6 +61,7 @@ $smarty->assign('prec', $prec);
 $smarty->assign('suiv', $suiv);
 $smarty->assign('plage', $plage);
 $smarty->assign('plages', $plages);
+$smarty->assign('listPrat', $listPrat);
 $smarty->assign('listHours', $listHours);
 
 $smarty->display('edit_planning.tpl');

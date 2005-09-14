@@ -105,6 +105,7 @@ $smarty->assign('debut', $debut);
 $smarty->assign('prec', $prec);
 $smarty->assign('suiv', $suiv);
 $smarty->assign('plages', $plages);
+$smarty->assign('prat', $prat);
 $smarty->assign('isprat', $isprat);
 $smarty->assign('compte', $compte);
 $smarty->assign('listHours', $listHours);

@@ -49,7 +49,6 @@ class CPlageressource extends CMbObject {
   function CPlageressource() {
     $this->CMbObject( 'plageressource', 'plageressource_id' );
     
-    $this->_props["prat_id"] = "ref";
     $this->_props["date"] = "date|notNull";
     $this->_props["tarif"] = "currency|notNull";
     $this->_props["libelle"] = "str";

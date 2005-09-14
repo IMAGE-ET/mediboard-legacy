@@ -129,6 +129,18 @@ function pageMain() {
           <td><input type="text" name="_repeat" size="3" value="1" /></td>
         </tr>
         <tr>
+          <th><label for="addPlage_prat_id" title="Praticien. Optionnel">Praticien:</label></th>
+          <td colspan="4">
+            <select name="prat_id">
+              <option value="0">&mdash Choix du praticien</option>
+              {foreach from=$listPrat item=curr_prat}
+                <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $plage->prat_id}selected="selected"{/if}>
+                  {$curr_prat->_view}
+                </option>
+              {/foreach}
+            </select>
+          </td>
+        <tr>
           <td class="button" colspan="4">
             <input type='hidden' name='dosql' value='do_plageressource_aed' />
             <input type='hidden' name='del' value='0' />

@@ -177,7 +177,7 @@ function pageMain() {
           <td class="text">Plage réglée</td>
         </tr>
         <tr>
-          <th style="font-weight: bold; color: #060;">Dr XXX YYY</th>
+          <th style="font-weight: bold; color: #060;">Dr. {$prat->_view}</th>
           <td class="text">Plage vous appartenant</td>
         </tr>
       </table>
