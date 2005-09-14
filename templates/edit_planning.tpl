@@ -130,7 +130,7 @@ function pageMain() {
         </tr>
         <tr>
           <th><label for="addPlage_prat_id" title="Praticien. Optionnel">Praticien:</label></th>
-          <td colspan="4">
+          <td>
             <select name="prat_id">
               <option value="0">&mdash Choix du praticien</option>
               {foreach from=$listPrat item=curr_prat}
@@ -140,6 +140,9 @@ function pageMain() {
               {/foreach}
             </select>
           </td>
+          <th><label for="addPlage__double" title="Cochez pour n'affecter qu'une semaine sur deux">1 sem / 2:</label></th>
+          <td><input type="checkbox" name="_double"></td>
+        </tr>
         <tr>
           <td class="button" colspan="4">
             <input type='hidden' name='dosql' value='do_plageressource_aed' />

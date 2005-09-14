@@ -165,6 +165,10 @@ function pageMain() {
           <td class="text">Plage libre</td>
         </tr>
         <tr>
+          <th style="background:{$smarty.const.PR_FREEB}" />
+          <td class="text">Plage libre non réservable (dans plus d'1 mois)</td>
+        </tr>
+        <tr>
           <th style="background:{$smarty.const.PR_BUSY}" />
           <td class="text">Plage réservée (echéance dans plus de 15 jours)</td>
         </tr>

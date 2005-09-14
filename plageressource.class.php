@@ -13,11 +13,12 @@ require_once( $AppUI->getModuleClass('mediusers') );
 
 // Enum for Plageressource.state
 if(!defined("PR_FREE")) {
-  define("PR_OUT"    , "#aaa");
-  define("PR_FREE"   , "#aae");
-  define("PR_BUSY"   , "#ecc");
-  define("PR_BLOCKED", "#eaa");
-  define("PR_PAYED"  , "#aea");
+  define("PR_OUT"    , "#aaa");  // plage échue
+  define("PR_FREE"   , "#aae");  // plage libre
+  define("PR_FREEB"  , "#88c");  // plage libre à plus d'1 mois
+  define("PR_BUSY"   , "#ecc");  // plage occupée
+  define("PR_BLOCKED", "#eaa");  // plage occupée à moins de 15 jours
+  define("PR_PAYED"  , "#aea");  // plage réglée
 }
 
 class CPlageressource extends CMbObject {
@@ -117,6 +118,8 @@ class CPlageressource extends CMbObject {
         $this->_state = PR_BLOCKED;
       } else
         $this->_state = PR_BUSY;
+    } elseif (mbDate("+ 1 MONTH") < $this->date) {
+      $this->_state = PR_FREEB;
     } else {
       $this->_state = PR_FREE;
     }
@@ -130,7 +133,12 @@ class CPlageressource extends CMbObject {
   }
   
   function becomeNext() {
-    // Store form fields
+    // Store old datas
+    $prat_id = $this->prat_id;
+    $libelle = $this->libelle;
+    $tarif = $this->tarif;
+    
+    // Store old form fields
     $_hour_deb = $this->_hour_deb;
     $_min_deb = $this->_min_deb;
     $_hour_fin = $this->_hour_fin;
@@ -144,7 +152,10 @@ class CPlageressource extends CMbObject {
       $this->plageressource_id = null;
     }
 
-    // Restore form fields
+    // Restore old fields
+    $this->prat_id = $prat_id;
+    $this->libelle = $libelle;
+    $this->tarif = $tarif;
     $this->_hour_deb = $_hour_deb;
     $this->_min_deb = $_min_deb;
     $this->_hour_fin = $_hour_fin;
