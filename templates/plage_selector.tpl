@@ -8,6 +8,11 @@ function setClose(hour, min) {ldelim}
               "{$plage->_ref_chir->_view}");
   window.close();
 {rdelim}
+
+function pageMain() {ldelim}
+  regRedirectPopupCal("{$date}", "index.php?m=dPcabinet&a=plage_selector&dialog=1&chir={$chir}&date=");  
+{rdelim}
+
 </script>
 
 <table class="main">
@@ -16,6 +21,7 @@ function setClose(hour, min) {ldelim}
   <th class="category" colspan="2">
     <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;date={$pdate}">&lt;&lt;&lt;</a>
     {$date|date_format:"%B %Y"}
+    <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
     <a href="index.php?m=dPcabinet&amp;a=plage_selector&amp;dialog=1&amp;chir={$chir}&amp;date={$ndate}">&gt;&gt;&gt;</a>
   </th>
 </tr>
@@ -36,8 +42,8 @@ function setClose(hour, min) {ldelim}
           {$curr_plage->date|date_format:"%A %d"}
           </a>
         </td>
-        <td>{$curr_plage->_ref_chir->_view}</td>
-        <td>{$curr_plage->libelle}</td>
+        <td class="text">{$curr_plage->_ref_chir->_view}</td>
+        <td class="text">{$curr_plage->libelle}</td>
         <td>{$curr_plage->_ref_consultations|@count} / {$curr_plage->_total}</td>
       </tr>
       {/foreach}
@@ -53,7 +59,7 @@ function setClose(hour, min) {ldelim}
       {foreach from=$listPlace item=curr_place}
       <tr>
         <td><input type="button" value="+" onclick="setClose({$curr_place.hour}, {$curr_place.min})" />{$curr_place.hour}h{$curr_place.min}</td>
-        <td>
+        <td class="text">
           {foreach from=$curr_place.patient item=curr_patient}
             {if $curr_patient.patient}
               <div {if $curr_patient.premiere}style="background: #faa;" {/if}>

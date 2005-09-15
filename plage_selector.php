@@ -44,14 +44,20 @@ $where["date"] = "LIKE '".mbTranformTime(null, $date, "%Y-%m-__")."'";
 $order = "date, debut";
 $listPlage = $listPlage->loadList($where, $order);
 foreach($listPlage as $key => $value) {
+  if(!$plageSel && $date == $value->date) {
+    $plageSel = $value->plageconsult_id;
+  }
   $listPlage[$key]->loadRefs(false);
 }
 
 // Récupération des consultations de la plage séléctionnée
+$plage = new CPlageconsult;
+$plage->_ref_chir = new CMediusers;
+$listPlace = NULL;
 if($plageSel) {
-  $plage = new CPlageconsult();
   $plage->load($plageSel);
   $plage->loadRefs(false);
+  $date = $plage->date;
   $currMin = 0;
   $currHour = intval($plage->_hour_deb);
   for($i = 0; $i < (intval($plage->_hour_fin)-intval($plage->_hour_deb))*(60/intval($plage->_freq)); $i++) {
@@ -116,9 +122,6 @@ if($plageSel) {
       $currHour = $nextHour;
     }
   }
-} else {
-  $plage = NULL;
-  $listPlace = NULL;
 }
 
 // Création du template

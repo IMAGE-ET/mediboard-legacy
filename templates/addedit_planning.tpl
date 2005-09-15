@@ -128,7 +128,7 @@ function popRDV() {
   url += '&a=plage_selector';
   url += '&dialog=1';
   url += '&chir=' + document.editFrm.chir_id.value;
-  popup(600, 700, url, 'Plage');
+  popup(800, 600, url, 'Plage');
 }
 
 function setRDV( hour, min, id, date, freq, chirid, chirname ) {
