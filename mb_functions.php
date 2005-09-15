@@ -68,6 +68,8 @@ function mbTrace(&$var, $label = null, $die = false) {
 function mbTranformTime($relative = null, $ref = null, $format) {
   if (!$relative) {
     $relative = "+ 0 days";
+  } elseif ($relative == "last sunday") {
+    $relative .= " 12:00:00";
   }
   
   $timestamp = $ref ? strtotime($ref) : time();
