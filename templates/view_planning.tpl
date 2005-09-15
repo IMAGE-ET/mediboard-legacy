@@ -1,6 +1,13 @@
 {literal}
 <script language="JavaScript" type="text/javascript">
 
+function alertAction() {
+  if(confirm("Voulez confirmer votre action ?")) {
+    return true;
+  }
+  return false;
+}
+
 function pageMain() {
 
   initGroups("impayes");
@@ -68,7 +75,7 @@ function pageMain() {
                   {/if}
                   <br />
                   {if $isprat && (($curr_plage->_state == $smarty.const.PR_FREE) || (($curr_plage->_state == $smarty.const.PR_BUSY) && ($curr_plage->prat_id == $app->user_id)))}
-                  <form name="editPlage{$curr_plage->plageressource_id}" action="?m={$m}" method="post">
+                  <form name="editPlage{$curr_plage->plageressource_id}" action="?m={$m}" method="post" onSubmit=" return alertAction()">
                   <input type='hidden' name='dosql' value='do_plageressource_aed' />
                   <input type='hidden' name='del' value='0' />
                   <input type='hidden' name='plageressource_id' value='{$curr_plage->plageressource_id}' />
