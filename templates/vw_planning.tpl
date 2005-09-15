@@ -34,6 +34,14 @@ function checkPlage() {
   
   return true;
 }
+
+function pageMain() {
+  {/literal}
+  regRedirectPopupCal("{$debut}", "index.php?m={$m}&tab={$tab}&debut=");
+  {literal}
+  
+}
+
 </script>
 {/literal}
 
@@ -42,6 +50,7 @@ function checkPlage() {
     <th>
       <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$prec}">&lt;&lt;&lt;</a>
       Semaine du {$debut|date_format:"%A %d %b %Y"} au {$fin|date_format:"%A %d %b %Y"}
+      <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
       <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$suiv}">&gt;&gt;&gt;</a>
       <br />
       <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$today}">Aujourd'hui</a>
