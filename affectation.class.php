@@ -38,8 +38,6 @@ class CAffectation extends CDpObject {
   var $_ref_operation = null;
   var $_ref_prev = null;
   var $_ref_next = null;
-  var $_ref_first = null; // à implémenter
-  var $_ref_last = null; //à implémenter
 
 	function CAffectation() {
 		$this->CDpObject('affectation', 'affectation_id');
