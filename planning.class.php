@@ -72,6 +72,9 @@ class COperation extends CDpObject {
   var $_min_adm = null;
   var $_entree_adm = null;
   var $_sortie_adm = null;
+  
+  // HPRIM fields
+  var $_modalite_hospitaliation = "libre"; // enum|office|libre|tiers
 
   // DB References
   var $_ref_pat = null;
@@ -79,6 +82,8 @@ class COperation extends CDpObject {
   var $_ref_plageop = null;
   var $_ref_files = null;
   var $_ref_affectations = null;
+  var $_ref_first_affectation = null;
+  var $_ref_last_affectation = null; 
   
   // External references
   var $_ext_code_ccam = null;
@@ -286,6 +291,9 @@ class COperation extends CDpObject {
     $order = "sortie DESC";
     $this->_ref_affectations = new CAffectation();
     $this->_ref_affectations = $this->_ref_affectations->loadList($where, $order);
+
+    $this->_ref_first_affectation =& end($this->_ref_affectations);
+    $this->_ref_last_affectation =& reset($this->_ref_affectations);
   }
   
   function getLastAffectation(){
