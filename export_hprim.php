@@ -148,7 +148,7 @@ $fin = $doc->addElement($intervention, "fin");
 $doc->addElement($fin, "date", $mbOp->_ref_plageop->date);
 $doc->addElement($fin, "heure", $mbOpFin);
 
-$doc->addElement($intervention, "")
+$doc->addElement($intervention, "");
 
 // Traitement final
 $doc->purgeEmptyElements();
