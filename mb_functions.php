@@ -50,7 +50,7 @@ function mbSetValueToSession($valName, $value = NULL) {
  * Traces variable using preformated text et varibale export
  * @return void 
  **/
-function mbTrace(&$var, $label = null, $die = false) {
+function mbTrace($var, $label = null, $die = false) {
   $export = var_export($var, true); 
   $export = htmlspecialchars($export);
   
@@ -99,6 +99,17 @@ function mbDate($relative = null, $ref = null) {
  **/
 function mbTime($relative, $ref = null) {
   return mbTranformTime($relative, $ref, "%H:%M:%S");
+}
+
+/**
+ * Adds a relative time to a reference time
+ * @return string: the resulting time */
+function mbAddTime($relative, $ref = null) {
+  $fragments = explode(":", $relative);
+  $hours = $fragments[0];
+  $minutes = $fragments[1];
+  $seconds = $fragments[2];
+  return mbTime("+$hours hours $minutes minutes $seconds seconds", $ref, "%H:%M:%S");
 }
 
 /**
