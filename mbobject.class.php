@@ -45,6 +45,9 @@ function purgeHtmlText($regexps, &$source) {
  * @abstract Adds Mediboard abstraction layer functionality
  */
 class CMbObject extends CDpObject {
+  /*
+   * Properties  specification
+   */
   var $_props = array();
 
  /**
