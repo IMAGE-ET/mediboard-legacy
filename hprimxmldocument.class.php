@@ -45,8 +45,8 @@ class CHPrimXMLDocument extends CMbXMLDocument {
       }
 			
       // Remove if empty
-      if (!$node->hasChildNodes()) {
-        trigger_error("Removing node: $node->nodeName", E_USER_NOTICE);
+      if (!$node->hasChildNodes() && !$node->hasAttributes()) {
+        trigger_error("Removing child node $node->nodeName in parent node {$node->parentNode->nodeName}", E_USER_NOTICE);
         $node->parentNode->removeChild($node);
       }
 		}
