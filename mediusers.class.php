@@ -9,7 +9,7 @@
 
 global $utypes, $utypes_flip;
 
-require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('mbobject'));
 require_once($AppUI->getModuleClass('admin'));
 require_once($AppUI->getModuleClass('mediusers', "functions"));
 require_once($AppUI->getModuleFunctions('admin'));
@@ -19,7 +19,7 @@ $utypes_flip = array_flip($utypes);
 /**
  * The CMediusers class
  */
-class CMediusers extends CDpObject {
+class CMediusers extends CMbObject {
   // DB Table key
 	var $user_id = null;
 
@@ -47,7 +47,9 @@ class CMediusers extends CDpObject {
   var $_ref_function = null;
 
 	function CMediusers() {
-		$this->CDpObject( 'users_mediboard', 'user_id' );
+		$this->CMbObject( 'users_mediboard', 'user_id' );
+    
+    $this->_props["adeli"] = "num|length|9";
 	}
 
   function createUser() {
@@ -146,6 +148,13 @@ class CMediusers extends CDpObject {
   }
   
 	function store() {
+    global $AppUI;
+    if ($msg = $this->check()) {
+      return $AppUI->_(get_class( $this )) . 
+        $AppUI->_("::store-check failed:") .
+        $AppUI->_($msg);
+    }
+    
     // Store corresponding dP user first
     $dPuser = $this->createUser();
     if ($msg = $dPuser->store()) {
