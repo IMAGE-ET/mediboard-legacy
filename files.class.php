@@ -11,28 +11,30 @@ require_once( $AppUI->getSystemClass ('mbobject') );
 
 class CFile extends CMbObject {
 	// DB Table key
-	var $file_id = NULL;
+	var $file_id = null;
 	
 	// DB Fields
-	var $file_consultation = NULL;
-	var $file_consultation_anesth = NULL;
-	var $file_operation = NULL;
-	var $file_real_filename = NULL;
-	var $file_task = NULL;
-	var $file_name = NULL;
-	var $file_parent = NULL;
-	var $file_description = NULL;
-	var $file_type = NULL;
-	var $file_owner = NULL;
-	var $file_date = NULL;
-	var $file_size = NULL;
-	var $file_version = NULL;
+	var $file_consultation = null;
+	var $file_consultation_anesth = null;
+	var $file_operation = null;
+	var $file_real_filename = null;
+	var $file_task = null;
+	var $file_name = null;
+	var $file_parent = null;
+	var $file_description = null;
+	var $file_type = null;
+	var $file_owner = null;
+	var $file_date = null;
+	var $file_size = null;
+	var $file_version = null;
 
 	// Form fields
   var $_file_size;
 
 	function CFile() {
 		$this->CMbObject( 'files_mediboard', 'file_id' );
+    
+    //@todo : creer les types des propriétés
 	}
 
 	function check() {

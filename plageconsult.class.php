@@ -25,9 +25,9 @@ class CPlageconsult extends CMbObject {
   var $freq = null;
   var $debut = null;
   var $fin = null;
+  var $libelle = null;
 
   // Form fields
-  var $libelle = null;
   var $_hour_deb = null;
   var $_min_deb = null;
   var $_hour_fin = null;
@@ -42,6 +42,13 @@ class CPlageconsult extends CMbObject {
 
   function CPlageconsult() {
     $this->CMbObject( 'plageconsult', 'plageconsult_id' );
+    
+    $this->_props["chir_id"] = "ref|notNull";
+    $this->_props["date"]    = "date|notNull";
+    $this->_props["freq"]    = "time|notNull";
+    $this->_props["debut"]   = "time|notNull";
+    $this->_props["fin"]     = "time|notNull";
+    $this->_props["libelle"] = "str";
   }
   
   function loadRefs($withCanceled = true) {

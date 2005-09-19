@@ -74,6 +74,28 @@ class CConsultation extends CMbObject {
 
   function CConsultation() {
     $this->CMbObject( 'consultation', 'consultation_id' );
+
+    $this->_props["plageconsult_id"] = "ref|notNull";
+    $this->_props["patient_id"]      = "ref|notNull";
+    $this->_props["heure"]           = "time|notNull";
+    $this->_props["duree"]           = "num";
+    $this->_props["secteur1"]        = "currency";
+    $this->_props["secteur2"]        = "currency";
+    $this->_props["chrono"]          = "enum|16|32|48|64|notNull";
+    $this->_props["annule"]          = "enum|0|1";
+    $this->_props["paye"]            = "enum|0|1";
+    $this->_props["date_paiement"]   = "date";
+    $this->_props["motif"]           = "str";
+    $this->_props["rques"]           = "str";
+    $this->_props["examens"]         = "str";
+    $this->_props["traitment"]       = "str";
+    $this->_props["compte_rendu"]    = "html";
+    $this->_props["ordonnance"]      = "html";
+    $this->_props["courrier1"]       = "html";
+    $this->_props["courrier2"]       = "html";
+    $this->_props["premiere"]        = "enum|0|1";
+    $this->_props["tarif"]           = "str";
+    $this->_props["type_tarif"]      = "str"; // En faire un enum
   }
   
   function updateFormFields() {

@@ -34,6 +34,12 @@ class CTarif extends CMbObject {
 
   function CTarif() {
     $this->CMbObject( 'tarifs', 'tarif_id' );
+    
+    $this->_props["chir_id"] = "ref";
+    $this->_props["function_id"] = "ref";
+    $this->_props["description"] = "str|notNull";
+    $this->_props["secteur1"] = "currency";
+    $this->_props["secteur2"] = "currency";
   }
   
   function updateFormFields() {
