@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once($AppUI->getModuleClass('dPpatients', 'patients'));
 require_once($AppUI->getModuleClass('dPcabinet', 'plageconsult'));
@@ -22,7 +22,7 @@ if(!defined("CC_PLANIFIE")) {
   define("CC_TERMINE"       , 64);
 }
 
-class CConsultation extends CDpObject {
+class CConsultation extends CMbObject {
   // DB Table key
   var $consultation_id = null;
 
@@ -73,7 +73,7 @@ class CConsultation extends CDpObject {
   var $_ref_documents = null; // Pseudo backward references to documents
 
   function CConsultation() {
-    $this->CDpObject( 'consultation', 'consultation_id' );
+    $this->CMbObject( 'consultation', 'consultation_id' );
   }
   
   function updateFormFields() {

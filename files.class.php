@@ -7,7 +7,9 @@
 * @author Romain Ollivier
 */
 
-class CFile extends CDpObject {
+require_once( $AppUI->getSystemClass ('mbobject') );
+
+class CFile extends CMbObject {
 	// DB Table key
 	var $file_id = NULL;
 	
@@ -30,7 +32,7 @@ class CFile extends CDpObject {
   var $_file_size;
 
 	function CFile() {
-		$this->CDpObject( 'files_mediboard', 'file_id' );
+		$this->CMbObject( 'files_mediboard', 'file_id' );
 	}
 
 	function check() {

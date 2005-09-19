@@ -7,13 +7,13 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once( $AppUI->getModuleClass('dPanesth', 'consultation') );
 
-class CPlageconsult extends CDpObject {
+class CPlageconsult extends CMbObject {
   // DB Table key
   var $plageconsult_id = null;
 
@@ -41,7 +41,7 @@ class CPlageconsult extends CDpObject {
   var $_ref_consultations_anesth = null;
 
   function CPlageconsult() {
-    $this->CDpObject( 'plageconsult', 'plageconsult_id' );
+    $this->CMbObject( 'plageconsult', 'plageconsult_id' );
   }
   
   function loadRefs($withCanceled = true) {
