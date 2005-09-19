@@ -116,7 +116,33 @@ class CMbObject extends CDpObject {
             }
             
             if (strlen($propValue) != $length) {
-              return "N'a pas la bonne longueur (longueur souhaité : $length)'";
+              return "N'a pas la bonne longueur (longueur souhaitée : $length)'";
+            }
+            
+            break;
+            
+          case "minLength":
+            $length = intval(@$specFragments[2]);
+            
+            if ($length < 1 or $length > 255) {
+              return "Spécification de longueur minimale invalide (longueur = $length)";
+            }
+            
+            if (strlen($propValue) < $length) {
+              return "N'a pas la bonne longueur (longueur minimale souhaitée : $length)'";
+            }
+            
+            break;
+            
+          case "maxLength":
+            $length = intval(@$specFragments[2]);
+            
+            if ($length < 1 or $length > 255) {
+              return "Spécification de longueur minimale invalide (longueur = $length)";
+            }
+            
+            if (strlen($propValue) > $length) {
+              return "N'a pas la bonne longueur (longueur maximale souhaitée : $length)'";
             }
             
             break;
@@ -149,6 +175,32 @@ class CMbObject extends CDpObject {
             }
             
             break;
+            
+          case "minLength":
+            $length = intval(@$specFragments[2]);
+            
+            if ($length < 1 or $length > 255) {
+              return "Spécification de longueur minimale invalide (longueur = $length)";
+            }
+            
+            if (strlen($propValue) < $length) {
+              return "N'a pas la bonne longueur (longueur minimale souhaitée : $length)'";
+            }
+            
+            break;
+            
+          case "maxLength":
+            $length = intval(@$specFragments[2]);
+            
+            if ($length < 1 or $length > 255) {
+              return "Spécification de longueur minimale invalide (longueur = $length)";
+            }
+            
+            if (strlen($propValue) > $length) {
+              return "N'a pas la bonne longueur (longueur maximale souhaitée : $length)'";
+            }
+            
+            break;
         
           default:
             return "Spécification de chaîne numérique invalide";
@@ -169,6 +221,30 @@ class CMbObject extends CDpObject {
       case "date":
         if (!preg_match ("/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/", $propValue)) {
           return "format de date invalide";
+        }
+        
+        break;
+    
+      // Time
+      case "time":
+        if (!preg_match ("/([0-9]{2}):([0-9]{2}):([0-9]{2})/", $propValue)) {
+          return "format de time invalide";
+        }
+        
+        break;
+    
+      // DateTime
+      case "dateTime":
+        if (!preg_match ("/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})/", $propValue)) {
+          return "format de dateTime invalide";
+        }
+        
+        break;
+    
+      // Format monétaire
+      case "currency":
+        if (!preg_match ("/^([0-9]+)(\.[0-9]{0,2}){0,1}$/)", $propValue)) {
+          return "format monétaire invalide";
         }
         
         break;
