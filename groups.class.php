@@ -7,13 +7,13 @@
  *  @author Romain Ollivier
 */
 
-require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('mbobject'));
 require_once( $AppUI->getModuleClass('mediusers', 'functions') );
 
 /**
  * The CGroup class
  */
-class CGroups extends CDpObject {
+class CGroups extends CMbObject {
   // DB Table key
 	var $group_id = NULL;	
 
@@ -24,7 +24,7 @@ class CGroups extends CDpObject {
     var $_ref_functions = null;
 
   function CGroups() {
-    $this->CDpObject( 'groups_mediboard', 'group_id' );
+    $this->CMbObject( 'groups_mediboard', 'group_id' );
   }
 
   function canDelete(&$msg, $oid = null) {

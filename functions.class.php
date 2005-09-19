@@ -7,14 +7,15 @@
  *  @author Romain Ollivier
 */
 
-require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('mbobject'));
+
 require_once($AppUI->getModuleClass('mediusers', 'groups'));
 require_once($AppUI->getModuleClass('mediusers', 'mediusers'));
 
 /**
  * The CFunction Class
  */
-class CFunctions extends CDpObject {
+class CFunctions extends CMbObject {
   // DB Table key
 	var $function_id = NULL;
 
@@ -30,7 +31,7 @@ class CFunctions extends CDpObject {
     var $_ref_users = null;
 
 	function CFunctions() {
-		$this->CDpObject('functions_mediboard', 'function_id');
+		$this->CMbObject('functions_mediboard', 'function_id');
 	}
   
   function updateFormFields () {

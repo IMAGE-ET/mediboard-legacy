@@ -10,6 +10,7 @@
 global $utypes, $utypes_flip;
 
 require_once($AppUI->getSystemClass('mbobject'));
+
 require_once($AppUI->getModuleClass('admin'));
 require_once($AppUI->getModuleClass('mediusers', "functions"));
 require_once($AppUI->getModuleFunctions('admin'));
