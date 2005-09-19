@@ -46,6 +46,16 @@ class CMedecin extends CMbObject {
 
 	function CMedecin() {
 		$this->CMbObject( 'medecin', 'medecin_id' );
+    
+    $this->_props["nom"] = "str|notNull";
+    $this->_props["prenom"] = "str";
+    $this->_props["adresse"] = "str";
+    $this->_props["ville"] = "str";
+    $this->_props["cp"] = "num|length|5";
+    $this->_props["tel"] = "num|length|10";
+    $this->_props["fax"] = "num|length|10";
+    $this->_props["email"] = "str";
+    $this->_props["disciplines"] = "str";
 	}
   
   function updateFormFields() {
