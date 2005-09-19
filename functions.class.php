@@ -34,7 +34,7 @@ class CFunctions extends CMbObject {
 		$this->CMbObject('functions_mediboard', 'function_id');
     
     $this->_props["text"] = "str|notNull";
-    $this->_props["color"] = "str|length|4|notNull";
+    $this->_props["color"] = "str|length|6|notNull";
     $this->_props["goup_id"] = "ref|notNull";
 	}
   
