@@ -9,12 +9,12 @@
 * @author Romain Ollivier
 */
 
-require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('mbobject'));
 
 /**
  * The CFavoriCCAM Class
  */
-class CFavoriCCAM extends CDpObject {
+class CFavoriCCAM extends CMbObject {
   // DB Table key
 	var $favoris_id = NULL;
   
@@ -25,7 +25,7 @@ class CFavoriCCAM extends CDpObject {
   var $favoris_code = NULL;
 
 	function CFavoriCCAM() {
-		$this->CDpObject( 'ccamfavoris', 'favoris_id' );
+		$this->CMbObject( 'ccamfavoris', 'favoris_id' );
 	}
 
   function check() {
