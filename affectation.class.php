@@ -41,6 +41,13 @@ class CAffectation extends CMbObject {
 
 	function CAffectation() {
 		$this->CMbObject('affectation', 'affectation_id');
+    
+    $this->_props["lit_id"]       = "ref|notNull";
+    $this->_props["operation_id"] = "ref|notNull";
+    $this->_props["entree"]       = "dateTime|notNull";
+    $this->_props["sortie"]       = "dateTime|notNull";
+    $this->_props["confirme"]     = "enum|0|1";
+    $this->_props["effectue"]     = "enum|0|1";
 	}
 
   function check() {

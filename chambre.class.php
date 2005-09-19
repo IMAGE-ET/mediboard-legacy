@@ -44,6 +44,10 @@ class CChambre extends CMbObject {
 
 	function CChambre() {
 		$this->CMbObject('chambre', 'chambre_id');
+    
+    $this->_props["service_id"] = "ref|notNull";
+    $this->_props["nom"] = "str|notNull";
+    $this->_props["caracteristiques"] = "str";
 	}
 
   function loadRefsFwd() {

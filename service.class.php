@@ -28,6 +28,9 @@ class CService extends CMbObject {
 
 	function CService() {
 		$this->CMbObject( 'service', 'service_id' );
+    
+    $this->_props["nom"] = "str|notNull";
+    $this->_props["description"] = "str";
 	}
 
   function loadRefsBack() {

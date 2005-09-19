@@ -37,6 +37,9 @@ class CLit extends CMbObject {
 
 	function CLit() {
 		$this->CMbObject('lit', 'lit_id');
+    
+    $this->_props["chambre_id"] = "ref|notNull";
+    $this->_props["nom"]        = "str|notNull";
 	}
 
   function loadAffectations($date) {
