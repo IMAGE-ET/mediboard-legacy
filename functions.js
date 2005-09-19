@@ -122,9 +122,34 @@ function checkElement(oElement, aSpecFragments) {
               return printf("Spécification de longueur invalide (longueur = %s)", iLength);
             }
 
-  
             if (oElement.value.length != iLength) {
               return printf("N'a pas la bonne longueur (longueur souhaité : %s)'", iLength);
+            }
+  
+            break;
+            
+          case "minLength":
+            iLength = parseInt(aSpecFragments[2], 10);
+           
+            if (iLength < 1 || iLength > 255) {
+              return printf("Spécification de longueur minimale invalide (longueur = %s)", iLength);
+            }
+
+            if (oElement.value.length < iLength) {
+              return printf("N'a pas la bonne longueur (longueur minimale souhaité : %s)'", iLength);
+            }
+  
+            break;
+            
+          case "maxLength":
+            iLength = parseInt(aSpecFragments[2], 10);
+           
+            if (iLength < 1 || iLength > 255) {
+              return printf("Spécification de longueur maximale invalide (longueur = %s)", iLength);
+            }
+
+            if (oElement.value.length > iLength) {
+              return printf("N'a pas la bonne longueur (longueur maximale souhaité : %s)'", iLength);
             }
   
             break;
@@ -150,9 +175,34 @@ function checkElement(oElement, aSpecFragments) {
               return printf("Spécification de longueur invalide (longueur = %s)", iLength);
             }
 
-  
             if (oElement.value.length != iLength) {
               return printf("N'a pas la bonne longueur (longueur souhaité : %s)'", iLength);
+            }
+  
+            break;
+            
+          case "minLength":
+            iLength = parseInt(aSpecFragments[2], 10);
+           
+            if (iLength < 1 || iLength > 255) {
+              return printf("Spécification de longueur minimale invalide (longueur = %s)", iLength);
+            }
+
+            if (oElement.value.length < iLength) {
+              return printf("N'a pas la bonne longueur (longueur minimale souhaité : %s)'", iLength);
+            }
+  
+            break;
+            
+          case "maxLength":
+            iLength = parseInt(aSpecFragments[2], 10);
+           
+            if (iLength < 1 || iLength > 255) {
+              return printf("Spécification de longueur maximale invalide (longueur = %s)", iLength);
+            }
+
+            if (oElement.value.length > iLength) {
+              return printf("N'a pas la bonne longueur (longueur maximale souhaité : %s)'", iLength);
             }
   
             break;
@@ -171,8 +221,23 @@ function checkElement(oElement, aSpecFragments) {
       }
 
       break;
+
     case "date":
       if(!oElement.value.match(/(\d{4})-(\d{1,2})-(\d{1,2})/)) {
+        return "N'as pas un format correct";
+      }
+      
+      break;
+
+    case "time":
+      if(!oElement.value.match(/(\d{2}):(\d{2}):(\d{2})/)) {
+        return "N'as pas un format correct";
+      }
+      
+      break;
+
+    case "dateTime":
+      if(!oElement.value.match(/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{2}):(\d{2}):(\d{2})/)) {
         return "N'as pas un format correct";
       }
       
