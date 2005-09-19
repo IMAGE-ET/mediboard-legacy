@@ -27,11 +27,15 @@ class CFunctions extends CMbObject {
 	var $group_id = NULL;
   
   // Object References
-    var $_ref_group = null;
-    var $_ref_users = null;
+  var $_ref_group = null;
+  var $_ref_users = null;
 
 	function CFunctions() {
 		$this->CMbObject('functions_mediboard', 'function_id');
+    
+    $this->_props["text"] = "str|notNull";
+    $this->_props["color"] = "str|length|4|notNull";
+    $this->_props["goup_id"] = "ref|notNull";
 	}
   
   function updateFormFields () {

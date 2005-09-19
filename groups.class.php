@@ -21,10 +21,12 @@ class CGroups extends CMbObject {
 	var $text = NULL;
 
   // Object References
-    var $_ref_functions = null;
+  var $_ref_functions = null;
 
   function CGroups() {
     $this->CMbObject( 'groups_mediboard', 'group_id' );
+
+    $this->_props["text"] = "str|notNull";
   }
 
   function canDelete(&$msg, $oid = null) {

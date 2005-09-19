@@ -49,8 +49,10 @@ class CMediusers extends CMbObject {
 
 	function CMediusers() {
 		$this->CMbObject( 'users_mediboard', 'user_id' );
-    
+
+    $this->_props["remote"] = "enum|0|1";
     $this->_props["adeli"] = "num|length|9";
+    $this->_props["function_id"] = "ref|notNull";
 	}
 
   function createUser() {
