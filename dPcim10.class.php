@@ -7,18 +7,18 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 /**
  * The dPcim10 Class
  */
-class CdPcim10 extends CDpObject {
+class CdPcim10 extends CMbObject {
 	var $favoris_id = NULL;
 	var $favoris_code = NULL;
 	var $favoris_user = NULL;
 
 	function CdPcim10() {
-		$this->CDpObject( 'cim10favoris', 'favoris_id' );
+		$this->CMbObject( 'cim10favoris', 'favoris_id' );
 	}
 
 	function delete() {
