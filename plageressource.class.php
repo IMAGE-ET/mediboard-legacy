@@ -52,8 +52,11 @@ class CPlageressource extends CMbObject {
     
     $this->_props["prat_id"] = "ref";
     $this->_props["date"] = "date|notNull";
+    $this->_props["debut"] = "time|notNull";
+    $this->_props["fin"] = "time|notNull";
     $this->_props["tarif"] = "currency|notNull";
     $this->_props["libelle"] = "str";
+    $this->_props["paye"] = "enum|0|1";
   }
   
   function loadRefsFwd() {
