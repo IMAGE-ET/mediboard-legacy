@@ -24,7 +24,7 @@ function pageMain() {
   {/literal}
   regRedirectFlatCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
   {literal}
-  regFieldCalendar("editFrm", "date");
+  //regFieldCalendar("editFrm", "date");
 }
 
 </script>
