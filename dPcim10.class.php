@@ -19,6 +19,9 @@ class CdPcim10 extends CMbObject {
 
 	function CdPcim10() {
 		$this->CMbObject( 'cim10favoris', 'favoris_id' );
+
+    $this->_props["favoris_code"] = "str|notNull";
+    $this->_props["favoris_user"] = "ref|notNull";
 	}
 
 	function delete() {
