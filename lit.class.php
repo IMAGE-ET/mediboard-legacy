@@ -7,7 +7,8 @@
  *  @author Thomas Despoix
 */
 
-require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('mbobject'));
+
 require_once($AppUI->getModuleClass('dPhospi', 'chambre'));
 require_once($AppUI->getModuleClass('dPhospi', 'affectation'));
 
@@ -15,7 +16,7 @@ require_once($AppUI->getModuleClass('dPhospi', 'affectation'));
  * Classe CLit. 
  * @abstract Gère les lits d'hospitalisation
  */
-class CLit extends CDpObject {
+class CLit extends CMbObject {
   // DB Table key
 	var $lit_id = null;	
   
@@ -35,7 +36,7 @@ class CLit extends CDpObject {
   var $_ref_next_dispo = null;
 
 	function CLit() {
-		$this->CDpObject('lit', 'lit_id');
+		$this->CMbObject('lit', 'lit_id');
 	}
 
   function loadAffectations($date) {

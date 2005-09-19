@@ -7,7 +7,7 @@
  *  @author Thomas Despoix
 */
 
-require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('mbobject'));
 require_once($AppUI->getModuleClass('dPhospi', 'lit'));
 require_once($AppUI->getModuleClass('dPhospi', 'service'));
 require_once($AppUI->getModuleClass('dPplanningOp', 'pathologie'));
@@ -17,7 +17,7 @@ require_once($AppUI->getModuleClass('dPplanningOp', 'pathologie'));
  * @abstract Gère les chambre d'hospitalisation
  * - contient des lits
  */
-class CChambre extends CDpObject {
+class CChambre extends CMbObject {
   // DB Table key
 	var $chambre_id = null;	
   
@@ -43,7 +43,7 @@ class CChambre extends CDpObject {
   var $_ref_lits = null;
 
 	function CChambre() {
-		$this->CDpObject('chambre', 'chambre_id');
+		$this->CMbObject('chambre', 'chambre_id');
 	}
 
   function loadRefsFwd() {

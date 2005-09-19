@@ -7,7 +7,7 @@
  *  @author Thomas Despoix
 */
 
-require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('mbobject'));
 require_once($AppUI->getModuleClass('dPhospi', 'chambre'));
 
 /**
@@ -15,7 +15,7 @@ require_once($AppUI->getModuleClass('dPhospi', 'chambre'));
  * @abstract Gère les services d'hospitalisation
  * - contient de chambres
  */
-class CService extends CDpObject {
+class CService extends CMbObject {
   // DB Table key
 	var $service_id = null;	
 
@@ -27,7 +27,7 @@ class CService extends CDpObject {
   var $_ref_chambres = null;
 
 	function CService() {
-		$this->CDpObject( 'service', 'service_id' );
+		$this->CMbObject( 'service', 'service_id' );
 	}
 
   function loadRefsBack() {

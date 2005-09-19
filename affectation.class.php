@@ -7,7 +7,7 @@
  *  @author Thomas Despoix
 */
 
-require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('mbobject'));
 require_once($AppUI->getModuleClass('dPhospi', 'lit'));
 require_once($AppUI->getModuleClass('dPplanningOp', 'planning'));
 
@@ -15,7 +15,7 @@ require_once($AppUI->getModuleClass('dPplanningOp', 'planning'));
  * Classe CAffectation. 
  * @abstract Gère les affectation en hospitation
  */
-class CAffectation extends CDpObject {
+class CAffectation extends CMbObject {
   // DB Table key
 	var $affectation_id = null;
   
@@ -40,7 +40,7 @@ class CAffectation extends CDpObject {
   var $_ref_next = null;
 
 	function CAffectation() {
-		$this->CDpObject('affectation', 'affectation_id');
+		$this->CMbObject('affectation', 'affectation_id');
 	}
 
   function check() {
