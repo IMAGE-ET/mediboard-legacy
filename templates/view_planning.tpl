@@ -83,7 +83,7 @@ function pageMain() {
                     <input type='hidden' name='prat_id' value='{$app->user_id}' />
                     <button type="submit">Réserver</button>
                     {else}
-                    <input type='hidden' name='prat_id' value='null' />
+                    <input type='hidden' name='prat_id' value='' />
                     <button type="submit">Annuler</button>
                     {/if}
                   </form>
