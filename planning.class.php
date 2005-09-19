@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
@@ -17,7 +17,7 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 require_once( $AppUI->getModuleClass('dPhospi', 'affectation') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'pathologie') );
 
-class COperation extends CDpObject {
+class COperation extends CMbObject {
   // DB Table key
   var $operation_id = null;
 
@@ -90,7 +90,7 @@ class COperation extends CDpObject {
   var $_ext_code_ccam2 = null;
 
   function COperation() {
-    $this->CDpObject( 'operations', 'operation_id' );
+    $this->CMbObject( 'operations', 'operation_id' );
   }
 
   function check() {
