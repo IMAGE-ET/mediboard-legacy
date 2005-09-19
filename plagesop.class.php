@@ -7,7 +7,7 @@
  * @author Romain Ollivier
  */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once($AppUI->getModuleClass("mediusers"));
 require_once($AppUI->getModuleClass("mediusers", "functions"));
@@ -16,7 +16,7 @@ require_once($AppUI->getModuleClass("dPbloc", "salle"));
 /**
  * The plagesop Class
  */
-class CPlageOp extends CDpObject {
+class CPlageOp extends CMbObject {
   // DB Table key
   var $id = null;
   
@@ -49,7 +49,7 @@ class CPlageOp extends CDpObject {
   var $_ref_operations = null;
 
   function CPlageOp() {
-    $this->CDpObject( 'plagesop', 'id' );
+    $this->CMbObject( 'plagesop', 'id' );
   }
   
   function loadRefs($annulee = 1) {

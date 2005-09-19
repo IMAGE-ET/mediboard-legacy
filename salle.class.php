@@ -8,12 +8,12 @@
  */
 
 
-require_once( $AppUI->getSystemClass('dp'));
+require_once( $AppUI->getSystemClass('mbobject'));
 
 /**
  * The CGroups class
  */
-class CSalle extends CDpObject {
+class CSalle extends CMbObject {
   // DB Table key
 	var $id = NULL;
 	
@@ -21,7 +21,7 @@ class CSalle extends CDpObject {
   var $nom = NULL;
 
 	function CSalle() {
-		$this->CDpObject( 'sallesbloc', 'id' );
+		$this->CMbObject( 'sallesbloc', 'id' );
 	}
 
   function canDelete(&$msg, $oid = null) {
