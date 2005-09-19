@@ -7,14 +7,14 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 /**
  * The CMedecin Class
  */
-class CMedecin extends CDpObject {
+class CMedecin extends CMbObject {
   // DB Table key
 	var $medecin_id = null;
 
@@ -27,7 +27,7 @@ class CMedecin extends CDpObject {
 	var $tel = null;
 	var $fax = null;
 	var $email = null;
-    var $disciplines = null;
+  var $disciplines = null;
 
   // Form fields
 	var $_tel1 = null;
@@ -45,7 +45,7 @@ class CMedecin extends CDpObject {
   var $_ref_patients = null;
 
 	function CMedecin() {
-		$this->CDpObject( 'medecin', 'medecin_id' );
+		$this->CMbObject( 'medecin', 'medecin_id' );
 	}
   
   function updateFormFields() {
