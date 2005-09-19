@@ -22,6 +22,8 @@ class CSalle extends CMbObject {
 
 	function CSalle() {
 		$this->CMbObject( 'sallesbloc', 'id' );
+
+    $this->_props["nom"] = "str|notNull";
 	}
 
   function canDelete(&$msg, $oid = null) {

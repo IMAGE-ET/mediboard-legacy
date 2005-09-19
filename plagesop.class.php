@@ -50,6 +50,14 @@ class CPlageOp extends CMbObject {
 
   function CPlageOp() {
     $this->CMbObject( 'plagesop', 'id' );
+
+    $this->_props["id_chir"]   = "ref";
+    $this->_props["id_anesth"] = "ref";
+    $this->_props["id_spec"]   = "ref";
+    $this->_props["id_salle"]  = "ref|notNull";
+    $this->_props["date"] = "date|notNull";
+    $this->_props["debut"] = "time|notNull";
+    $this->_props["fin"] = "time|notNull";
   }
   
   function loadRefs($annulee = 1) {
