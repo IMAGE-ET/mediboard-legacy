@@ -33,6 +33,11 @@ class CAideSaisie extends CMbObject {
 
   function CAideSaisie() {
     $this->CMbObject( 'aide_saisie', 'aide_id' );
+
+    $this->_props["module"] = "str|notNull";
+    $this->_props["class"]  = "str|notNull";
+    $this->_props["field"]  = "str|notNull";
+    $this->_props["name"]   = "str|notNull";
   }
   
   function updateFormFields() {

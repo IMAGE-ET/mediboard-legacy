@@ -46,8 +46,12 @@ class CCompteRendu extends CMbObject {
   function CCompteRendu() {
     $this->CMbObject("compte_rendu", "compte_rendu_id");
 
-    $this->_props["nom"] = "str|notNull";
-    $this->_props["source"] = "html";
+    $this->_props["chir_id"]     = "ref";
+    $this->_props["function_id"] = "ref";
+    $this->_props["object_id"]   = "ref";
+    $this->_props["nom"]         = "str|notNull";
+    $this->_props["source"]      = "html";
+    $this->_props["type"]        = "enum|operation|hospitalisation|consultation|notNull";
   }
   
   function check() {

@@ -38,6 +38,12 @@ class CListeChoix extends CMbObject {
 
   function CListeChoix() {
     $this->CMbObject( 'liste_choix', 'liste_choix_id' );
+
+    $this->_props["chir_id"]         = "ref";
+    $this->_props["function_id"]     = "ref";
+    $this->_props["nom"]             = "str|notNull";
+    $this->_props["valeurs"]         = "str";
+    $this->_props["compte_rendu_id"] = "ref";
   }
   
   function check() {
