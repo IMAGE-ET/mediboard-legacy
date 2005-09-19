@@ -7,12 +7,12 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 
-class CPack extends CDpObject {
+class CPack extends CMbObject {
   // DB Table key
   var $pack_id = null;
 
@@ -33,7 +33,7 @@ class CPack extends CDpObject {
   var $_ref_chir = null;
 
   function CPack() {
-    $this->CDpObject( 'pack', 'pack_id' );
+    $this->CMbObject( 'pack', 'pack_id' );
   }
   
   function loadRefsFwd() {

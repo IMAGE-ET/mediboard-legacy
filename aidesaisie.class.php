@@ -7,11 +7,11 @@
 * @author Thomas Despoix
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once( $AppUI->getModuleClass('mediusers') );
 
-class CAideSaisie extends CDpObject {
+class CAideSaisie extends CMbObject {
   // DB Table key
   var $aide_id = null;
 
@@ -32,7 +32,7 @@ class CAideSaisie extends CDpObject {
   var $_ref_user = null;
 
   function CAideSaisie() {
-    $this->CDpObject( 'aide_saisie', 'aide_id' );
+    $this->CMbObject( 'aide_saisie', 'aide_id' );
   }
   
   function updateFormFields() {

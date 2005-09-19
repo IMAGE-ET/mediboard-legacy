@@ -7,13 +7,13 @@
 * @author Romain Ollivier
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('mediusers', 'functions'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 
-class CListeChoix extends CDpObject {
+class CListeChoix extends CMbObject {
   // DB Table key
   var $liste_choix_id = null;
 
@@ -37,7 +37,7 @@ class CListeChoix extends CDpObject {
   var $_ref_modele = null;
 
   function CListeChoix() {
-    $this->CDpObject( 'liste_choix', 'liste_choix_id' );
+    $this->CMbObject( 'liste_choix', 'liste_choix_id' );
   }
   
   function check() {
