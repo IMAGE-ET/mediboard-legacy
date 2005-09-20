@@ -38,7 +38,7 @@ $documentpath = "$pmsipath/document.xml";
 $doc = new CHPrimXMLDocument();
 
 $evenementsServeurActes = $doc->addElement($doc, "evenementsServeurActes", null, "http://www.hprim.org/hprimXML");
-$doc->addAttribute($evenementsServeurActes, "version", "1.00");
+$doc->addAttribute($evenementsServeurActes, "version", "1.01");
 
 $enteteMessage = $doc->addElement($evenementsServeurActes, "enteteMessage");
 $doc->addAttribute($enteteMessage, "modeTraitement", "test"); // A supprimer pour un utilisation réelle
@@ -49,13 +49,12 @@ $emetteur = $doc->addElement($enteteMessage, "emetteur");
 $agents = $doc->addElement($emetteur, "agents");
 $doc->addAgent($agents, "application", "MediBoard", "Gestion des Etablissements de Santé");
 $doc->addAgent($agents, "système", "CMCA", "Centre Médico-Chir. de l'Atlantique");
-$doc->addAgent($agents, "acteur", "$AppUI->user_id", "$AppUI->user_first_name $AppUI->user_last_name");
+$doc->addAgent($agents, "acteur", "user$AppUI->user_id", "$AppUI->user_first_name $AppUI->user_last_name");
 
 $destinataire = $doc->addElement($enteteMessage, "destinataire");
 $agents = $doc->addElement($destinataire, "agents");
 $doc->addAgent($agents, "application", "SANTEcom", "Siemens Health Services: S@NTE.com");
 $doc->addAgent($agents, "système", "CMCA", "Centre Médico-Chir. de l'Atlantique");
-$doc->addAgent($agents, "acteur", "$AppUI->user_id", "$AppUI->user_first_name $AppUI->user_last_name");
 
 $evenementServeurActe = $doc->addElement($evenementsServeurActes, "evenementServeurActe");
 $doc->addDateTimeElement($evenementServeurActe, "dateAction");
@@ -100,7 +99,11 @@ $venue = $doc->addElement($evenementServeurActe, "venue");
 
 $identifiant = $doc->addElement($venue, "identifiant");
 $emetteur = $doc->addElement($identifiant, "emetteur");
+
 $doc->addElement($emetteur, "valeur", "op$mbOp->operation_id");
+$doc->addAttribute($emetteur, "etat", "permanent");
+$doc->addAttribute($emetteur, "portee", "local");
+$doc->addAttribute($emetteur, "referent", "non");
 
 $entree = $doc->addElement($venue, "entree");
 $dateHeureOptionnelle = $doc->addElement($entree, "dateHeureOptionnelle");
@@ -108,16 +111,16 @@ $doc->addElement($dateHeureOptionnelle, "date", $mbOp->date_adm);
 $doc->addElement($dateHeureOptionnelle, "heure", $mbOp->time_adm);
 
 // Ajout du médecin prescripteur
-$mbPrat =& $mbOp->_ref_chir;
+$mbChir =& $mbOp->_ref_chir;
 
 $medecins = $doc->addElement($venue, "medecins");
 $medecin = $doc->addElement($medecins, "medecin");
-$doc->addElement($medecin, "numeroAdeli", $mbPrat->adeli);
+$doc->addElement($medecin, "numeroAdeli", $mbChir->adeli);
 $doc->addAttribute($medecin, "lien", "exec");
 
 $identification = $doc->addElement($medecin, "identification");
-$doc->addElement($identification, "code", "$mbPrat->user_id");
-$doc->addElement($identification, "libelle", "$mbPrat->_user_username");
+$doc->addElement($identification, "code", "chir$mbChir->user_id");
+$doc->addElement($identification, "libelle", $mbChir->_user_username);
 
 $sortie = $doc->addElement($venue, "sortie");
 $dateHeureOptionnelle = $doc->addElement($sortie, "dateHeureOptionnelle");
@@ -132,8 +135,6 @@ $doc->addElement($datePlacement, "date", $mbOp->date_adm);
 $doc->addElement($datePlacement, "heure", $mbOp->time_adm);
 
 // Ajout de l'intervention
-//mbTrace($mbOp);
-
 $intervention = $doc->addElement($evenementServeurActe, "intervention");
 $identifiant = $doc->addElement($intervention, "identifiant");
 $emetteur = $doc->addElement($identifiant, "emetteur", "op$mbOp->operation_id");
@@ -148,7 +149,27 @@ $fin = $doc->addElement($intervention, "fin");
 $doc->addElement($fin, "date", $mbOp->_ref_plageop->date);
 $doc->addElement($fin, "heure", $mbOpFin);
 
-$doc->addElement($intervention, "");
+$mbChir->loadRefs();
+$doc->addUniteFonctionnelle($intervention, $mbChir->_ref_function);
+
+// Ajout des participants
+$mbPlage = $mbOp->_ref_plageop;
+$mbPlage->loadRefsFwd();
+$mbAnest = $mbPlage->_ref_anesth;
+
+$participants = $doc->addElement($intervention, "participants");
+$participant = $doc->addElement($participants, "participant");
+$doc->addProfessionnelSante($participant, $mbChir);
+$participant = $doc->addElement($participants, "participant");
+$doc->addProfessionnelSante($participant, $mbAnest);
+
+// Libellé de l'opération
+$doc->addElement($intervention, "libelle", substr($mbOp->libelle, 0, 80));
+
+// Ajout des actes CCAM
+$actesCCAM = $doc->addElement($evenementServeurActe, "actesCCAM");
+$doc->addActeCCAM($actesCCAM, $mbOp->_ext_code_ccam, $mbOp);
+$doc->addActeCCAM($actesCCAM, $mbOp->_ext_code_ccam2, $mbOp);
 
 // Traitement final
 $doc->purgeEmptyElements();
