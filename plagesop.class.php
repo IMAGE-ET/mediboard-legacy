@@ -68,13 +68,14 @@ class CPlageOp extends CMbObject {
   function loadRefsFwd() {
     // Forward references
     // Pour le chir et l'anesth, on est obligé de passer le user à cause des id pourris
+
     $user = new CUser;
-    
     $where["user_username"] = "= '$this->id_chir'";
     $user->loadObject($where);
     $this->_ref_chir = new CMediusers;
     $this->_ref_chir->load($user->user_id);
 
+    $user = new CUser;
     $where["user_username"] = "= '$this->id_anesth'";
     $user->loadObject($where);
     $this->_ref_anesth = new CMediusers;
