@@ -35,10 +35,6 @@ $plagesop = new CPlageOp;
 $where = array();
 $where["date"] =  "BETWEEN '$deb' AND '$fin'";
 
-$ljoin = array();
-$ljoin["users"] = "plagesop.id_chir = users.user_username";
-$ljoin["sallesbloc"] = "plagesop.id_salle = sallesbloc.id";
-
 $order = array();
 $order[] = "date";
 $order[] = "id_salle";
@@ -46,24 +42,21 @@ $order[] = "debut";
 
 // En fonction du chirurgien
 if ($chir) {
-  $sql = "SELECT user_username
-           FROM users
-           WHERE user_id = '$chir'";
-  $chir_id = db_loadlist($sql);
-  $where["id_chir"] = "= '".$chir_id[0]["user_username"]."'";
+  $where["chir_id"] = "= '$chir'";
 }
+
+// @todo : rajouter en fonction de l'anesthésiste
 
 // En fonction du cabinet
 if ($spe) {
-  $sql = "SELECT user_username " .
-  		"FROM users, users_mediboard " .
-  		"WHERE users.user_id = users_mediboard.user_id " .
-  		"AND users_mediboard.function_id = '$spe'";
+  $sql = "SELECT user_id" .
+  		"\nFROM users_mediboard" .
+  		"\nWHERE function_id = '$spe'";
   $listChirs = db_loadlist($sql);
   $inSpe = array();
   foreach($listChirs as $key =>$value)
-    $inSpe[] = "'".$value["user_username"]."'";
-  $where["id_chir"] = "IN(".implode(", ", $inSpe).")";
+    $inSpe[] = "'".$value["user_id"]."'";
+  $where["chir_id"] = "IN(".implode(", ", $inSpe).")";
 }
 
 // En fonction de la salle
@@ -71,7 +64,7 @@ if ($salle) {
   $where["id_salle"] = "= '$salle'";
 }
 
-$plagesop = $plagesop->loadList($where, $order, null, null, $ljoin);
+$plagesop = $plagesop->loadList($where, $order);
 
 // Operations de chaque plage
 foreach($plagesop as $key=>$value) {

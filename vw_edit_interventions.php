@@ -13,6 +13,7 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 if(!($id = mbGetValueFromGetOrSession('id'))) {
@@ -23,18 +24,9 @@ if(!($id = mbGetValueFromGetOrSession('id'))) {
 $anesth = dPgetSysVal("AnesthType");
 
 // Infos sur la plage opératoire
-$sql = "SELECT plagesop.debut AS debut, plagesop.fin AS fin,
-        users.user_first_name AS firstname, users.user_last_name AS lastname,
-        plagesop.date AS date, sallesbloc.nom AS salle
-		FROM plagesop
-		LEFT JOIN users
-		ON plagesop.id_chir = users.user_username
-		LEFT JOIN sallesbloc
-		ON plagesop.id_salle = sallesbloc.id
-		WHERE plagesop.id = '$id'";
-$result = db_loadlist($sql);
-$title = $result[0];
-$title["plage"] = substr($title["debut"], 0, 2)."h".substr($title["debut"], 3, 2)." - ".substr($title["fin"], 0, 2)."h".substr($title["fin"], 3, 2);
+$plage = new CPlageOp;
+$plage->load($id);
+$plage->loadRefsFwd();
 
 // Liste de droite
 $list1 = new COperation;
@@ -69,7 +61,7 @@ foreach($list2 as $key => $value) {
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('title', $title);
+$smarty->assign('plage', $plage);
 $smarty->assign('anesth', $anesth);
 $smarty->assign('list1', $list1);
 $smarty->assign('list2', $list2);

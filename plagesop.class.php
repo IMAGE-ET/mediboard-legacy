@@ -21,6 +21,8 @@ class CPlageOp extends CMbObject {
   var $id = null;
   
   // DB References
+  var $chir_id = null;
+  var $anesth_id = null;
   var $id_chir = null;
   var $id_anesth = null;
   var $id_spec = null;
@@ -51,13 +53,15 @@ class CPlageOp extends CMbObject {
   function CPlageOp() {
     $this->CMbObject( 'plagesop', 'id' );
 
+    $this->_props["chir_id"]   = "ref";
+    $this->_props["anesth_id"] = "ref";
     $this->_props["id_chir"]   = "str";
     $this->_props["id_anesth"] = "str";
     $this->_props["id_spec"]   = "ref";
     $this->_props["id_salle"]  = "ref|notNull";
-    $this->_props["date"] = "date|notNull";
-    $this->_props["debut"] = "time|notNull";
-    $this->_props["fin"] = "time|notNull";
+    $this->_props["date"]      = "date|notNull";
+    $this->_props["debut"]     = "time|notNull";
+    $this->_props["fin"]       = "time|notNull";
   }
   
   function loadRefs($annulee = 1) {
@@ -67,19 +71,12 @@ class CPlageOp extends CMbObject {
 
   function loadRefsFwd() {
     // Forward references
-    // Pour le chir et l'anesth, on est obligé de passer le user à cause des id pourris
-
-    $user = new CUser;
-    $where["user_username"] = "= '$this->id_chir'";
-    $user->loadObject($where);
+    
     $this->_ref_chir = new CMediusers;
-    $this->_ref_chir->load($user->user_id);
-
-    $user = new CUser;
-    $where["user_username"] = "= '$this->id_anesth'";
-    $user->loadObject($where);
+    $this->_ref_chir->load($this->chir_id);
+    
     $this->_ref_anesth = new CMediusers;
-    $this->_ref_anesth->load($user->user_id);
+    $this->_ref_anesth->load($this->anesth_id);
 
     $this->_ref_spec = new CFunctions;
     $this->_ref_spec->load($this->id_spec);
@@ -135,8 +132,8 @@ class CPlageOp extends CMbObject {
     $msg = null;
 
     if(!$this->id) {
-      if (!$this->id_chir && !$this->id_spec) {
-        $msg .= "Praticien ou spécialité non valide<br />";
+      if (!$this->chir_id && !$this->id_spec) {
+        $msg .= "Vous devez choisir un praticien ou une spécialité<br />";
       }
     }
 
@@ -148,7 +145,7 @@ class CPlageOp extends CMbObject {
     if ($msg = $this->hasCollisions()) {
       return $msg;
     }    
-	return parent::store();
+  return parent::store();
   }
   
   function updateFormFields() {
@@ -163,7 +160,7 @@ class CPlageOp extends CMbObject {
   }
   
   function updateDBFields() {
-  	if(($this->_heuredeb !== null) && ($this->_minutedeb !== null))
+    if(($this->_heuredeb !== null) && ($this->_minutedeb !== null))
       $this->debut = $this->_heuredeb.":".$this->_minutedeb.":00";
     if(($this->_heurefin !== null) && ($this->_minutefin !== null))
       $this->fin   = $this->_heurefin.":".$this->_minutefin.":00";
@@ -179,7 +176,7 @@ class CPlageOp extends CMbObject {
       "\nFROM plagesop" .
       "\nWHERE date = '{$this->date}'" .
       "\nAND id_salle = '{$this->id_salle}'" .
-      ($this->id_chir ? "\nAND id_chir = '$this->id_chir'" : "\nAND id_spec = '$this->id_spec'");
+      ($this->chir_id ? "\nAND chir_id = '$this->chir_id'" : "\nAND id_spec = '$this->id_spec'");
     $row = db_loadlist($sql);
     $debut = $this->debut;
     $fin = $this->fin;

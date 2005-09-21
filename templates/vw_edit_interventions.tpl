@@ -1,11 +1,11 @@
 <table class="main">
   <tr>
     <th colspan=2>
-	  Dr. {$title.firstname} {$title.lastname}
+	  Dr. {$plage->_ref_chir->_view}
 	  <br />
-	  {$title.date|date_format:"%A %d %B %Y"}
+	  {$plage->date|date_format:"%A %d %B %Y"}
 	  <br />
-	  {$title.salle} : {$title.plage}
+	  {$plage->_ref_salle->nom} : {$plage->debut|date_format:"%Hh%M"} - {$plage->fin|date_format:"%Hh%M"}
 	</th>
   </tr>
   <tr>

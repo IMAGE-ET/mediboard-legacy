@@ -23,7 +23,7 @@ class CSalle extends CMbObject {
 	function CSalle() {
 		$this->CMbObject( 'sallesbloc', 'id' );
 
-    $this->_props["nom"] = "str|notNull";
+    $this->_props["nom"] = "str|notNull|confidential";
 	}
 
   function canDelete(&$msg, $oid = null) {

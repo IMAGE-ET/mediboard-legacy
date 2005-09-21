@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPbloc';
-$config['mod_version'] = '0.11';
+$config['mod_version'] = '0.12';
 $config['mod_directory'] = 'dPbloc';
 $config['mod_setup_class'] = 'CSetupdPbloc';
 $config['mod_type'] = 'user';
@@ -55,6 +55,17 @@ class CSetupdPbloc {
 		  $sql = "ALTER TABLE `plagesop` ADD INDEX ( `date` )";
 		  db_exec( $sql ); db_error();
 		case "0.11":
+      $sql = "ALTER TABLE `plagesop` ADD `chir_id` BIGINT DEFAULT '0' NOT NULL AFTER `id` ;";
+      db_exec( $sql ); db_error();
+      $sql = "ALTER TABLE `plagesop` ADD INDEX ( `chir_id` ) ;";
+      db_exec( $sql ); db_error();
+      $sql = "ALTER TABLE `plagesop` ADD `anesth_id` BIGINT DEFAULT '0' NOT NULL AFTER `chir_id` ;";
+      db_exec( $sql ); db_error();
+      $sql = "ALTER TABLE `plagesop` ADD INDEX ( `anesth_id` ) ;";
+      db_exec( $sql ); db_error();
+      $this->swapPratIds();
+      return true;
+    case "0.12":
 			return true;
 		default:
 			return false;
@@ -84,6 +95,46 @@ class CSetupdPbloc {
 		$this->upgrade("all");
 		return null;
 	}
+  
+  function swapPratIds() {
+    global $AppUI;
+    set_time_limit( 1800 );
+    ignore_user_abort( 1 );
+    require_once( $AppUI->getModuleClass('admin') );
+    $user = new CUser;
+    
+    // Changement des chirurgiens
+    $sql = "SELECT id_chir" .
+        "\nFROM plagesop" .
+        "\nGROUP BY id_chir";
+    $listPlages = db_loadList($sql);
+    foreach($listPlages as $key => $plage) {
+      $where['user_username'] = "= '".$plage['id_chir']."'";
+      $user->loadObject($where);
+      if($user->user_id) {
+        $sql = "UPDATE plagesop" .
+            "\nSET chir_id = '$user->user_id'" .
+            "\nWHERE id_chir = '$user->user_username'";
+        db_exec( $sql ); db_error();
+      }
+    }
+    
+    //Changement des anesthésistes
+    $sql = "SELECT id_anesth" .
+        "\nFROM plagesop" .
+        "\nGROUP BY id_anesth";
+    $listPlages = db_loadList($sql);
+    foreach($listPlages as $key => $plage) {
+      $where['user_username'] = "= '".$plage['id_anesth']."'";
+      $user->loadObject($where);
+      if($user->user_id) {
+        $sql = "UPDATE plagesop" .
+            "\nSET anesth_id = '$user->user_id'" .
+            "\nWHERE id_anesth = '$user->user_username'";
+        db_exec( $sql ); db_error();
+      }
+    }
+  }
 }
 
 ?>

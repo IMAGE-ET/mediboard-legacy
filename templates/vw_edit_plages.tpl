@@ -5,9 +5,9 @@
 function checkPlage() {
   var form = document.editFrm;
     
-  if (form.id_chir.value == 0 && form.id_spec.value == 0) {
+  if (form.chir_id.value == 0 && form.id_spec.value == 0) {
     alert("Merci de choisir un chirurgien ou une spécialité");
-    form.id_chir.focus();
+    form.chir_id.focus();
     return false;
   }
   
@@ -46,20 +46,20 @@ function pageMain() {
   <tr>
     <th class="mandatory">Chirurgien:</th>
     <td>
-      <select name='id_chir'>
+      <select name='chir_id'>
         <option value="0">-- Choisir un praticien</option>
 
         <optgroup label="Chirurgiens">
         {foreach from=$chirs item=chir}
-          <option value="{$chir->user_username}" {if $plagesel->id_chir == $chir->user_username} selected="selected" {/if} >
-            Dr. {$chir->_view}
+          <option value="{$chir->user_id}" {if $plagesel->chir_id == $chir->user_id} selected="selected" {/if} >
+            {$chir->_view}
           </option>
         {/foreach}
         </optgroup>
 
         <optgroup label="Anesthésistes">
         {foreach from=$anesths item=anesth}
-          <option value="{$anesth->user_username}" {if $plagesel->id_chir == $anesth->user_username} selected="selected" {/if} >
+          <option value="{$anesth->user_id}" {if $plagesel->chir_id == $anesth->user_id} selected="selected" {/if} >
             {$anesth->_view}
           </option>
         {/foreach}
@@ -101,10 +101,10 @@ function pageMain() {
   <tr>
     <th>Anesthésiste:</th>
     <td>
-      <select name='id_anesth'>
+      <select name='anesth_id'>
         <option value="0">-- Choisir un anesthésiste</option>
       {foreach from=$anesths item=anesth}
-        <option value="{$anesth->user_username}" {if $plagesel->id_anesth == $anesth->user_username} selected="selected" {/if} >
+        <option value="{$anesth->user_id}" {if $plagesel->anesth_id == $anesth->user_id} selected="selected" {/if} >
           {$anesth->_view}
         </option>
       {/foreach}
