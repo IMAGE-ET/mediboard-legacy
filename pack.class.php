@@ -36,7 +36,7 @@ class CPack extends CMbObject {
     $this->CMbObject( 'pack', 'pack_id' );
     
     $this->_props["chir_id"] = "ref|notNull";
-    $this->_props["nom"]     = "str|notNull";
+    $this->_props["nom"]     = "str|notNull|confidential";
     $this->_props["modeles"] = "str";
   }
   

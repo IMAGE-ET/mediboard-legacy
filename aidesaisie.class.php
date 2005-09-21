@@ -37,7 +37,8 @@ class CAideSaisie extends CMbObject {
     $this->_props["module"] = "str|notNull";
     $this->_props["class"]  = "str|notNull";
     $this->_props["field"]  = "str|notNull";
-    $this->_props["name"]   = "str|notNull";
+    $this->_props["name"]   = "str|notNull|confidential";
+    $this->_props["text"]   = "str|notNull|confidential";
   }
   
   function updateFormFields() {
