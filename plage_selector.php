@@ -58,7 +58,7 @@ $sql = "SELECT plagesop.*, sallesbloc.nom," .
     "\nLEFT JOIN sallesbloc" .
     "\nON plagesop.id_salle = sallesbloc.id" .
 		"\nWHERE plagesop.date LIKE '$year-$month-__'" .
-		"\nAND (plagesop.id_chir = '$mediChir->_user_username' OR plagesop.id_spec = '$mediChir->function_id')" .
+		"\nAND (plagesop.chir_id = '$mediChir->user_id' OR plagesop.id_spec = '$mediChir->function_id')" .
 		"\nGROUP BY plagesop.id" .
 		"\nORDER BY plagesop.date, plagesop.debut, sallesbloc.nom, plagesop.id";
 $list = db_loadlist($sql);

@@ -34,7 +34,7 @@ $selPrat->load($selChir);
 $selChirLogin = null;
 $specialite = null;
 if ($selPrat->isPraticien()) {
-  $selChirLogin = $selPrat->_user_username;
+  $selChirLogin = $selPrat->user_id;
   $specialite = $selPrat->function_id;
 }
 
@@ -56,7 +56,7 @@ $sql = "SELECT plagesop.*," .
 		"\nFROM plagesop" .
 		"\nLEFT JOIN operations" .
 		"\nON plagesop.id = operations.plageop_id" .
-		"\nWHERE (plagesop.id_chir = '$selChirLogin' OR plagesop.id_spec = '$specialite')" .
+		"\nWHERE (plagesop.chir_id = '$selChirLogin' OR plagesop.id_spec = '$specialite')" .
 		"\nAND plagesop.date LIKE '".mbTranformTime("+ 0 day", $date, "%Y-%m")."-__'" .
 		"\nGROUP BY plagesop.id" .
 		"\nORDER BY plagesop.date, plagesop.debut, plagesop.id";
@@ -69,7 +69,7 @@ else
 $listDay = new CPlageOp;
 $where = array();
 $where["date"] = "= '$date'";
-$where["id_chir"] = "= '$selChirLogin'";
+$where["chir_id"] = "= '$selChirLogin'";
 $order = "debut";
 $listDay = $listDay->loadList($where, $order);
 foreach($listDay as $key => $value) {

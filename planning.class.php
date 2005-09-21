@@ -98,15 +98,15 @@ class COperation extends CMbObject {
     $this->_props["CCAM_code"] = "str"; //Spécifier les longueurs
     $this->_props["CCAM_code2"] = "str";
     $this->_props["CIM10_code"] = "str";
-    $this->_props["libelle"] = "str";
+    $this->_props["libelle"] = "str|confidential";
     $this->_props["cote"] = "enum|droit|gauche|bilatéral|total";
     $this->_props["temp_operation"] = "time";
     $this->_props["entree_bloc"] = "time";
     $this->_props["sortie_bloc"] = "time";
     $this->_props["time_operation"] = "time";
-    $this->_props["examen"] = "str";
-    $this->_props["materiel"] = "str";
-    $this->_props["convalescence"] = "str";
+    $this->_props["examen"] = "str|confidential";
+    $this->_props["materiel"] = "str|confidential";
+    $this->_props["convalescence"] = "str|confidential";
     $this->_props["commande_mat"] = "enum|o|n";
     $this->_props["info"] = "enum|o|n";
     $this->_props["date_anesth"] = "date";
@@ -119,14 +119,14 @@ class COperation extends CMbObject {
     $this->_props["type_adm"] = "enum|comp|ambu|exte";
     $this->_props["chambre"] = "enum|o|n";
     $this->_props["ATNC"] = "enum|o|n";
-    $this->_props["rques"] = "str";
+    $this->_props["rques"] = "str|confidential";
     $this->_props["rank"] = "num";
     $this->_props["admis"] = "enum|o|n";
     $this->_props["saisie"] = "enum|o|n";
     $this->_props["modifie"] = "enum|0|1";
-    $this->_props["depassement"] = "currency";
+    $this->_props["depassement"] = "currency|confidential";
     $this->_props["annulee"] = "enum|0|1";
-    $this->_props["compte_rendu"] = "html";
+    $this->_props["compte_rendu"] = "html|confidential";
     $this->_props["cr_valide"] = "enum|0|1";
     $this->_props["pathologie"] = "str|maxLenght|8";
     $this->_props["sceptique"] = "enum|0|1";
@@ -262,7 +262,7 @@ class COperation extends CMbObject {
       $plageTmp->id_spec = 0;
       $chirTmp = new CMediusers;
       $chirTmp->load($this->chir_id);
-      $plageTmp->id_chir = $chirTmp->_user_username;
+      $plageTmp->chir_id = $chirTmp->chir_id;
       $plageTmp->store();
     }
     
