@@ -37,7 +37,7 @@ class CTarif extends CMbObject {
     
     $this->_props["chir_id"] = "ref";
     $this->_props["function_id"] = "ref";
-    $this->_props["description"] = "str|notNull";
+    $this->_props["description"] = "str|notNull|confidential";
     $this->_props["secteur1"] = "currency";
     $this->_props["secteur2"] = "currency";
   }

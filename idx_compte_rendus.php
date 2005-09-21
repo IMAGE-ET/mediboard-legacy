@@ -210,7 +210,7 @@ if(@$inId[0]) {
 else
   $where["id"] = "= -1";
 $listPlageOp = new CPlageOp;
-$listPlageOp = $listPlageOp->loadList($where, "`date`, `id_chir`");
+$listPlageOp = $listPlageOp->loadList($where, "`date`, `chir_id`");
 
 // On charge les rapports non validés de nos plages opératoires
 $total2 = 0;

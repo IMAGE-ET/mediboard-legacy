@@ -85,17 +85,17 @@ class CConsultation extends CMbObject {
     $this->_props["annule"]          = "enum|0|1";
     $this->_props["paye"]            = "enum|0|1";
     $this->_props["date_paiement"]   = "date";
-    $this->_props["motif"]           = "str";
-    $this->_props["rques"]           = "str";
-    $this->_props["examens"]         = "str";
-    $this->_props["traitment"]       = "str";
-    $this->_props["compte_rendu"]    = "html";
-    $this->_props["ordonnance"]      = "html";
-    $this->_props["courrier1"]       = "html";
-    $this->_props["courrier2"]       = "html";
+    $this->_props["motif"]           = "str|confidential";
+    $this->_props["rques"]           = "str|confidential";
+    $this->_props["examens"]         = "str|confidential";
+    $this->_props["traitment"]       = "str|confidential";
+    $this->_props["compte_rendu"]    = "html|confidential";
+    $this->_props["ordonnance"]      = "html|confidential";
+    $this->_props["courrier1"]       = "html|confidential";
+    $this->_props["courrier2"]       = "html|confidential";
     $this->_props["premiere"]        = "enum|0|1";
-    $this->_props["tarif"]           = "str";
-    $this->_props["type_tarif"]      = "str"; // En faire un enum
+    $this->_props["tarif"]           = "str|confidential";
+    $this->_props["type_tarif"]      = "str|confidential"; // En faire un enum
   }
   
   function updateFormFields() {
@@ -144,10 +144,10 @@ class CConsultation extends CMbObject {
     $this->_min  = intval(substr($this->heure, 3, 2));
 
     $etat = array();
-    $etat[CC_PLANIFIE] = "Planifiée";
+    $etat[CC_PLANIFIE]       = "Planifiée";
     $etat[CC_PATIENT_ARRIVE] = "Patient arrivé";
-    $etat[CC_EN_COURS] = "En cours";
-    $etat[CC_TERMINE] = "Terminée";
+    $etat[CC_EN_COURS]       = "En cours";
+    $etat[CC_TERMINE]        = "Terminée";
     
     $this->_etat = $etat[$this->chrono];
     
