@@ -33,7 +33,7 @@ class CFunctions extends CMbObject {
 	function CFunctions() {
 		$this->CMbObject('functions_mediboard', 'function_id');
     
-    $this->_props["text"] = "str|notNull";
+    $this->_props["text"] = "str|notNull|confidential";
     $this->_props["color"] = "str|length|6|notNull";
     $this->_props["goup_id"] = "ref|notNull";
 	}
@@ -42,6 +42,10 @@ class CFunctions extends CMbObject {
 		parent::updateFormFields();
 
     $this->_view = $this->text;
+    if(strlen($this->text) > 25)
+      $this->_shortview = substr($this->text, 0, 23)."...";
+    else
+      $this->_shortview = $this->text;
 	}
   
   function canDelete(&$msg, $oid = null) {

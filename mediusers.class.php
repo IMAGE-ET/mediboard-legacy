@@ -51,8 +51,13 @@ class CMediusers extends CMbObject {
 		$this->CMbObject( 'users_mediboard', 'user_id' );
 
     $this->_props["remote"] = "enum|0|1";
-    $this->_props["adeli"] = "num|length|9";
+    $this->_props["adeli"] = "num|length|9|confidential";
     $this->_props["function_id"] = "ref|notNull";
+    
+    $this->_user_props["_user_first_name"] = "str|confidential";
+    $this->_user_props["_user_last_name"] = "str|confidential";
+    $this->_user_props["_user_email"] = "str|confidential";
+    $this->_user_props["_user_phone"] = "num|length|10|confidential";
 	}
 
   function createUser() {
@@ -77,22 +82,24 @@ class CMediusers extends CMbObject {
       'idfield' => 'operation_id', 
       'joinfield' => 'chir_id'
     );
-
-// @todo changer la clé étrangère CPlageOp::id_chir qui cible le username    
-//    $tables[] = array (
-//      'label' => 'plage(s) opératoire(s) (chirurgien)', 
-//      'name' => 'plagesop', 
-//      'idfield' => 'id', 
-//      'joinfield' => 'id_chir'
-//    );
-
-// @todo changer la clé étrangère CPlageOp::id_anesth qui cible le username    
-//    $tables[] = array (
-//      'label' => 'plage(s) opératoire(s) (anesthésites)', 
-//      'name' => 'plagesop', 
-//      'idfield' => 'id', 
-//      'joinfield' => 'id_anesthchir'
-//    );
+    $tables[] = array (
+      'label' => 'consultation(s) ', 
+      'name' => 'consultation', 
+      'idfield' => 'consultation_id', 
+      'joinfield' => 'chir_id'
+    );
+    $tables[] = array (
+      'label' => 'plage(s) opératoire(s) (chirurgien) ', 
+      'name' => 'plagesop', 
+      'idfield' => 'id', 
+      'joinfield' => 'chir_id'
+    );
+    $tables[] = array (
+      'label' => 'plage(s) opératoire(s) (anesthésiste) ', 
+      'name' => 'plagesop', 
+      'idfield' => 'id', 
+      'joinfield' => 'anesth_id'
+    );
 
     return parent::canDelete($msg, $oid, $tables);
   }
@@ -118,14 +125,16 @@ class CMediusers extends CMbObject {
       $this->_user_type       = $utypes[$user->user_type];
       $this->_user_username   = $user->user_username  ;
       $this->_user_password   = $user->user_password  ;
-      $this->_user_first_name = $user->user_first_name;
-      $this->_user_last_name  = $user->user_last_name ;
+      $this->_user_first_name = ucwords(strtolower($user->user_first_name));
+      $this->_user_last_name  = strtoupper($user->user_last_name) ;
       $this->_user_email      = $user->user_email     ;
       $this->_user_phone      = $user->user_phone     ;
-      $this->_view            = $user->user_last_name." ".$user->user_first_name;
+      // Encrypt this datas
+      $this->checkConfidential($this->_user_props);
+      $this->_view            = $this->_user_last_name." ".$this->_user_first_name;
       $this->_shortview       = "";
-      $arrayLastName = explode(" ", $user->user_last_name);
-      $arrayFirstName = explode("-", $user->user_first_name);
+      $arrayLastName = explode(" ", $this->_user_last_name);
+      $arrayFirstName = explode("-", $this->_user_first_name);
       foreach($arrayFirstName as $key => $value) {
       	if($value != '')
       	  $this->_shortview .=  strtoupper($value[0]);

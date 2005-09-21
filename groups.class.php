@@ -26,7 +26,7 @@ class CGroups extends CMbObject {
   function CGroups() {
     $this->CMbObject( 'groups_mediboard', 'group_id' );
 
-    $this->_props["text"] = "str|notNull";
+    $this->_props["text"] = "str|notNull|confidential";
   }
 
   function canDelete(&$msg, $oid = null) {
