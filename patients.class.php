@@ -82,17 +82,22 @@ class CPatient extends CMbObject {
 	function CPatient() {
 		$this->CMbObject('patients', 'patient_id');
     
-    $this->_props["nom"] = "str|notNull";
-    $this->_props["prenom"] = "str|notNull";
+    $this->_props["nom"] = "str|notNull|confidential";
+    $this->_props["prenom"] = "str|notNull|confidential";
     $this->_props["medecin_traitant"] = "ref";
     $this->_props["medecin1"] = "ref";
     $this->_props["medecin2"] = "ref";
     $this->_props["medecin3"] = "ref";
-    $this->_props["matricule"] = "num|length|15";
+    $this->_props["matricule"] = "num|length|15|confidential";
     $this->_props["sexe"] = "enum|m|f|j";
+    $this->_props["adresse"] = "str|confidential";
+    $this->_props["ville"] = "str|confidential";
+    $this->_props["cp"] = "num|length|5|confidential";
+    $this->_props["tel"] = "num|length|10|confidential";
+    $this->_props["tel2"] = "num|length|10|confidential";
     $this->_props["incapable_majeur"] = "enum|o|n";
     $this->_props["ATNC"] = "enum|o|n";
-    $this->_props["naissance"] = "date";
+    $this->_props["naissance"] = "date|confidential";
 	}
   
   function updateFormFields() {
