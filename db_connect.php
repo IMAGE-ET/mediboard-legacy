@@ -178,6 +178,7 @@ function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
 		$object = new $class();
         $keyname = $object->_tbl_key;
 		$object->bind($row);
+    $object->checkConfidential();
 		$object->updateFormFields();
 		$list[$object->$keyname] = $object;
 		if( $maxrows && $maxrows == $cnt++ ) {
