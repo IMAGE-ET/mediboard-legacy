@@ -170,6 +170,12 @@ class CDpObject {
   }
   
 /**
+ * This function check if there is confidential fields to crypt
+ * Implemented in MbObject
+ */
+  function checkConfidential($props = null){}
+  
+/**
  * This function update the form fields from the db fields
  */
 	function updateFormFields() {
