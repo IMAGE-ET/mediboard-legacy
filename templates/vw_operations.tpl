@@ -35,12 +35,12 @@
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="_repeat" value="1" />
             <input type="hidden" name="id" value="{$curr_plage->id}" />
-            <input type="hidden" name="id_chir" value="{$curr_plage->id_chir}" />
+            <input type="hidden" name="chir_id" value="{$curr_plage->chir_id}" />
             Dr.
-            <select name="id_anesth" onchange="submit()">
+            <select name="anesth_id" onchange="submit()">
               <option value="0">&mdash; Anesthésiste</option>
               {foreach from=$listPratAnesth item=curr_anesth}
-              <option value="{$curr_anesth->user_username}" {if $curr_plage->id_anesth == $curr_anesth->user_username} selected="selected" {/if}>{$curr_anesth->_view}</option>
+              <option value="{$curr_anesth->user_id}" {if $curr_plage->anesth_id == $curr_anesth->user_id} selected="selected" {/if}>{$curr_anesth->_view}</option>
               {/foreach}
             </select>
             </form>
