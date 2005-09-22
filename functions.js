@@ -231,14 +231,14 @@ function checkElement(oElement, aSpecFragments) {
       break;
 
     case "time":
-      if(!oElement.value.match(/(\d{2}):(\d{2}):(\d{2})/)) {
+      if(!oElement.value.match(/(\d{1,2}):(\d{1,2}):(\d{1,2})/)) {
         return "N'as pas un format correct";
       }
       
       break;
 
     case "dateTime":
-      if(!oElement.value.match(/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{2}):(\d{2}):(\d{2})/)) {
+      if(!oElement.value.match(/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})/)) {
         return "N'as pas un format correct";
       }
       
