@@ -248,7 +248,7 @@ class CMbObject extends CDpObject {
     
       // Format monétaire
       case "currency":
-        if (!preg_match ("/^([0-9]+)(\.[0-9]{0,2}){0,1}$/)", $propValue)) {
+        if (!preg_match ("/^([0-9]+)(\.[0-9]{0,2}){0,1}$/", $propValue)) {
           return "N'est pas une valeur monétaire (utilisez le . pour la virgule)";
         }
         
