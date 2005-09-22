@@ -16,6 +16,32 @@ if (!$canEdit) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// Chargement de la liste des praticiens pour l'historique
+
+$listPrats = new CMediusers;
+
+$where = array();
+$where[] = "plageressource.date < '".mbDate()."'";
+$where[] = "plageressource.prat_id IS NOT NULL";
+$where[] = "plageressource.prat_id <> 0";
+$ljoin = array();
+$ljoin["plageressource"] = "plageressource.prat_id = users_mediboard.user_id";
+$ljoin["users"] = "users.user_id = users_mediboard.user_id";
+$group = "plageressource.prat_id";
+$order = "users.user_last_name";
+
+$listPrats = $listPrats->loadList($where, $order, null, $group, $ljoin);
+
+// Chargement de la liste des impayés
+$sql = "SELECT prat_id" .
+    "\nFROM plageressource" .
+    "\nWHERE date < '".mbDate()."'" .
+    "\nAND prat_id IS NOT NULL" .
+    "\nAND prat_id <> 0" .
+    "\nGROUP BY prat_id" .
+    "\nORDER BY prat_id";
+$sqlPrats = db_loadlist($sql);
+
 $total = array();
 $total["total"] = 0;
 $total["somme"] = 0;
@@ -27,6 +53,7 @@ $sql = "SELECT prat_id," .
     "\nFROM plageressource" .
     "\nWHERE date < '".mbDate()."'" .
     "\nAND prat_id IS NOT NULL" .
+    "\nAND prat_id <> 0" .
     "\nAND paye = 0" .
     "\nGROUP BY prat_id" .
     "\nORDER BY somme DESC";
@@ -51,6 +78,7 @@ foreach($list as $key => $value) {
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
+$smarty->assign('listPrats', $listPrats);
 $smarty->assign('list', $list);
 $smarty->assign('total', $total);
 $smarty->assign('today', mbDate());
