@@ -34,17 +34,15 @@ function checkForm() {
   
 {/literal}{/if}{literal}
 
-/* Bug in IE
   field1 = form._hour_op;
   field2 = form._min_op;
   if (field1 && field2) {
     if (field1.value == 0 && field2.value == 0) {
       alert("Temps opératoire invalide");
-      form.hour_op.focus();
+      field1.focus();
       return false;
     }
   }
-*/
 
   if (field = form.plageop_id) {
     if (field.value == 0) {
@@ -53,23 +51,6 @@ function checkForm() {
       return false;
     }
   }
-
-  if (field = form.date_adm) {
-    if (field.value.length == 0) {
-      alert("Admission: date manquante");
-      return false;
-    }
-  }
-    
-/* Bug in IE
-  if (field = form._hour_adm) {
-    if (field.value.length == 0) {
-      alert("Admission: heure manquante");
-      field.focus();
-      return false;
-    }
-  }
-*/
 
   field1 = form.type_adm;
   field2 = form.duree_hospi;
@@ -82,6 +63,34 @@ function checkForm() {
   }
 
   return true;
+}
+
+function checkChir() {
+  var form = document.editFrm;
+  var field = null;
+  
+  if (field = form.chir_id) {
+    if (field.value == 0) {
+      alert("Chirurgien manquant");
+      popChir();
+      return false;
+    }
+  }
+  return true;
+}
+
+function checkDuree() {
+  var form = document.editFrm;
+  field1 = form._hour_op;
+  field2 = form._min_op;
+  if (field1 && field2) {
+    if (field1.value == 0 && field2.value == 0) {
+      alert("Temps opératoire invalide");
+      field1.focus();
+      return false;
+    }
+  }
+  return true
 }
 
 function modifOp() {
@@ -142,21 +151,6 @@ function setCode( key, type ) {
   }
 }
 
-function checkChir() {
-  var form = document.editFrm;
-  var field = null;
-  
-  if (field = form.chir_id) {
-    if (field.value == 0) {
-      alert("Chirurgien manquant");
-      popChir();
-      return false;
-    }
-  }
-
-  return true;
-}
-
 function popPlage() {
   var url = './index.php?m=dPplanningOp';
   url += '&a=plage_selector';
@@ -164,7 +158,7 @@ function popPlage() {
   url += '&chir=' + document.editFrm.chir_id.value;
   url += '&curr_op_hour=' + document.editFrm._hour_op.value;
   url += '&curr_op_min=' + document.editFrm._min_op.value;
-  if (checkChir())
+  if (checkChir() & checkDuree())
     popup(400, 250, url, 'Plage');
 }
 
