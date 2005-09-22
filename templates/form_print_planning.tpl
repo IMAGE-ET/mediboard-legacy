@@ -37,7 +37,7 @@ function pageMain() {
 </script>
 {/literal}
 
-<form name="paramFrm" action="?m=dPbloc" method="post" onsubmit="return checkForm()">
+<form name="paramFrm" action="?m=dPhospi" method="post" onsubmit="return checkForm()">
 
 <table class="main">
   <tr>
