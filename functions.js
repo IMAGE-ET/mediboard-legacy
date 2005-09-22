@@ -89,6 +89,7 @@ function prepareForms() {
 }
 
 function checkElement(oElement, aSpecFragments) {
+  aSpecFragments.removeByValue("confidential");
   bNotNull = aSpecFragments.removeByValue("notNull") > 0;
   if (oElement.value == "") {
     return bNotNull ? "Ne pas peut pas avoir une valeur nulle" : null;
