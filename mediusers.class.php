@@ -54,6 +54,7 @@ class CMediusers extends CMbObject {
     $this->_props["adeli"] = "num|length|9|confidential";
     $this->_props["function_id"] = "ref|notNull";
     
+    $this->_user_props["_user_username"] = "str|confidential";
     $this->_user_props["_user_first_name"] = "str|confidential";
     $this->_user_props["_user_last_name"] = "str|confidential";
     $this->_user_props["_user_email"] = "str|confidential";
