@@ -14,19 +14,19 @@
   <tr><th>Numero d'assuré social: </th><td>{$admission->_ref_pat->matricule}</td>
   <tr><th>Remarques: </th><td>{$admission->_ref_pat->rques|nl2br:php}</td></tr>
 
-  {if $admission->_ref_pat->_ref_medecin_traitant}
+  {if $admission->_ref_pat->_ref_medecin_traitant->medecin_id}
   <tr><th>Medecin traitant: </th><td>{$admission->_ref_pat->_ref_medecin_traitant->_view}</td></tr>
   <tr><th></th><td>{$admission->_ref_pat->_ref_medecin_traitant->adresse|nl2br}<br />{$admission->_ref_pat->_ref_medecin_traitant->cp} {$admission->_ref_pat->_ref_medecin_traitant->ville}</td></tr>
   {/if}
-  {if $admission->_ref_pat->_ref_medecin1}
+  {if $admission->_ref_pat->_ref_medecin1->medecin_id}
   <tr><th>Medecin correspondant 1: </th><td>{$admission->_ref_pat->_ref_medecin1->_view}</td></tr>
   <tr><th></th><td>{$admission->_ref_pat->_ref_medecin1->adresse|nl2br}<br />{$admission->_ref_pat->_ref_medecin1->cp} {$admission->_ref_pat->_ref_medecin1->ville}</td></tr>
   {/if}
-  {if $admission->_ref_pat->_ref_medecin2}
+  {if $admission->_ref_pat->_ref_medecin2->medecin_id}
   <tr><th>Medecin correspondant 2: </th><td>{$admission->_ref_pat->_ref_medecin2->_view}</td></tr>
   <tr><th></th><td>{$admission->_ref_pat->_ref_medecin2->adresse|nl2br}<br />{$admission->_ref_pat->_ref_medecin2->cp} {$admission->_ref_pat->_ref_medecin2->ville}</td></tr>
   {/if}
-  {if $admission->_ref_pat->_ref_medecin3}
+  {if $admission->_ref_pat->_ref_medecin3->medecin_id}
   <tr><th>Medecin correspondant 3: </th><td>{$admission->_ref_pat->_ref_medecin3->_view}</td></tr>
   <tr><th></th><td>{$admission->_ref_pat->_ref_medecin3->adresse|nl2br}<br />{$admission->_ref_pat->_ref_medecin3->cp} {$admission->_ref_pat->_ref_medecin3->ville}</td></tr>
   {/if}
