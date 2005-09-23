@@ -30,6 +30,14 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     
   }
   
+  function addIdentifiantPart($elParent, $partName, $partValue) {
+    $part = $this->addElement($elParent, $partName);
+    $this->addElement($part, "valeur", $partValue);
+    $this->addAttribute($part, "etat", "permanent");
+    $this->addAttribute($part, "portee", "local");
+    $this->addAttribute($part, "referent", "non");
+  }
+    
   function addUniteFonctionnelle($elParent, CFunctions $mbFunction) {
     $this->addCodeLibelle($elParent, "uniteFonctionnelle", "Func$mbFunction->function_id", $mbFunction->_view);
   }
@@ -47,8 +55,8 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     return $medecin;
   }
   
-  function addActeCCAM($elParent, CActeCCAM $mbActeCCAM, COperation $mbOp) {
-    if (!$mbActeCCAM->code) {
+  function addActeCCAM($elParent, CCodeCCAM $mbCodeCCAM, COperation $mbOp) {
+    if (!$mbCodeCCAM->code) {
       return null;
 		}
     
@@ -61,7 +69,7 @@ class CHPrimXMLDocument extends CMbXMLDocument {
 
     $identifiant = $this->addElement($acteCCAM, "identifiant");
     $emetteur = $this->addElement($identifiant, "emetteur", "acte{$mbOp->operation_id}-1");
-    $this->addElement($acteCCAM, "codeActe", $mbActeCCAM->code);
+    $this->addElement($acteCCAM, "codeActe", $mbCodeCCAM->code);
     $this->addElement($acteCCAM, "codeActivite", "1");
     $this->addElement($acteCCAM, "codePhase", "0");
 
@@ -105,7 +113,7 @@ class CHPrimXMLDocument extends CMbXMLDocument {
 			
       // Remove if empty
       if (!$node->hasChildNodes() && !$node->hasAttributes()) {
-        trigger_error("Removing child node $node->nodeName in parent node {$node->parentNode->nodeName}", E_USER_NOTICE);
+//        trigger_error("Removing child node $node->nodeName in parent node {$node->parentNode->nodeName}", E_USER_NOTICE);
         $node->parentNode->removeChild($node);
       }
 		}

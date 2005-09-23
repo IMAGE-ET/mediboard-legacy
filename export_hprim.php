@@ -28,13 +28,23 @@ if (!is_file($schemapath)) {
   $schema->save($schemapath);
 }
 
-// Une opération: ID=5174
+$documentpath = null;
+$doc = null;
+$doc_valid = null;
+$mbOp = null;
+
+$mb_operation_id = dPgetParam($_POST, "mb_operation_id", 5174);
+$sc_patient_id = dPgetParam($_POST, "sc_patient_id", "00000435");
+$sc_venue_id = dPgetParam($_POST, "sc_venue_id", "05000393");
+$cmca_uf_code = dPgetParam($_POST, "cmca_uf_code", "CHI");
+$cmca_uf_libelle = dPgetParam($_POST, "cmca_uf_libelle", "CHIRURGIE");
+
+// Une opération
 $mbOp = new COperation();
-$mbOp->load(5174);
+$mbOp->load($mb_operation_id);
 $mbOp->loadRefs();
 
 // DOM extension
-$documentpath = "$pmsipath/document.xml";
 $doc = new CHPrimXMLDocument();
 
 $evenementsServeurActes = $doc->addElement($doc, "evenementsServeurActes", null, "http://www.hprim.org/hprimXML");
@@ -64,8 +74,8 @@ $mbPatient =& $mbOp->_ref_pat;
 
 $patient = $doc->addElement($evenementServeurActe, "patient");
 $identifiant = $doc->addElement($patient, "identifiant");
-$emetteur = $doc->addElement($identifiant, "emetteur");
-$doc->addElement($emetteur, "valeur", "patient$mbPatient->patient_id");
+$doc->addIdentifiantPart($identifiant, "emetteur", "pat$mbPatient->patient_id");
+$doc->addIdentifiantPart($identifiant, "recepteur", $sc_patient_id);
 
 $personnePhysique = $doc->addElement($patient, "personnePhysique");
 $doc->addAttribute($personnePhysique, "sexe", 
@@ -78,7 +88,7 @@ $prenoms = $doc->addElement($personnePhysique, "prenoms");
 foreach ($mbPatient->_prenoms as $mbKey => $mbPrenom) {
   if ($mbKey < 4) {
     $doc->addElement($prenoms, "prenom", substr($mbPrenom, 0, 35));
-	}
+  }
 }
 
 $adresses = $doc->addElement($personnePhysique, "adresses");
@@ -98,12 +108,8 @@ $doc->addElement($dateNaissance, "date", $mbPatient->naissance);
 $venue = $doc->addElement($evenementServeurActe, "venue");
 
 $identifiant = $doc->addElement($venue, "identifiant");
-$emetteur = $doc->addElement($identifiant, "emetteur");
-
-$doc->addElement($emetteur, "valeur", "op$mbOp->operation_id");
-$doc->addAttribute($emetteur, "etat", "permanent");
-$doc->addAttribute($emetteur, "portee", "local");
-$doc->addAttribute($emetteur, "referent", "non");
+$doc->addIdentifiantPart($identifiant, "emetteur", "op$mbOp->operation_id");
+$doc->addIdentifiantPart($identifiant, "recepteur", $sc_venue_id);
 
 $entree = $doc->addElement($venue, "entree");
 $dateHeureOptionnelle = $doc->addElement($entree, "dateHeureOptionnelle");
@@ -178,6 +184,8 @@ $doc_valid = $doc->schemaValidate($schemapath);
 // Ajout des namespace pour XML Spy
 $doc->addAttribute($evenementsServeurActes, "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 $doc->addAttribute($evenementsServeurActes, "xsi:schemaLocation", "http://www.hprim.org/hprimXML schema.xml");
+
+$documentpath = "$pmsipath/document.xml";
 $doc->save($documentpath);
 
 // Création du template
@@ -187,6 +195,12 @@ $smarty = new CSmartyDP;
 $smarty->assign("schemapath", $schemapath);
 $smarty->assign("documentpath", $documentpath);
 $smarty->assign("doc_valid", $doc_valid);
+$smarty->assign("mbOp", $mbOp);
+$smarty->assign("mb_operation_id", $mb_operation_id);
+$smarty->assign("sc_patient_id", $sc_patient_id);
+$smarty->assign("sc_venue_id", $sc_venue_id);
+$smarty->assign("cmca_uf_code", $cmca_uf_code);
+$smarty->assign("cmca_uf_libelle", $cmca_uf_libelle);
 
 $smarty->display('export_hprim.tpl');
 

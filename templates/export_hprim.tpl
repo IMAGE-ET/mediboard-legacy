@@ -1,17 +1,86 @@
-<h1>Essai de validation d'un document XML</h1>
+<h1>Génération d'un fichier H'XML evenementsServeurActes</h1>
 
-<h2>Utilisation de DOM</h2>
+<table class="main">
 
-<h3>XML Dump</h3>
+<tr>
 
-<p>Click to view the <a href="{$documentpath}">XMI File</a>.</p>
+<td>
+  <form name="form" method="post" onsubmit="return checkForm(this)">
+  
+  <table class="form">
+  
+  <tr>
+    <th class="category" colspan="2">Identifiants Mediboard</th>
+  </tr>
+  
+  <tr>
+    <th><label for="form_mb_operation_id" title="Choisir un identifiant d'opération">Identifiant d'opération</label></th>
+    <td><input type="text" alt="notNull|ref" name="mb_operation_id" value="{$mb_operation_id}" size="5"/></td>
+  </tr>
+  
+  <tr>
+    <th class="category" colspan="2">Identifiants S@anté.com</th>
+  </tr>
+  
+  <tr>
+   <th><label for="form_sc_patient_id" title="Choisir un identifiant de patient correspondant à l'opération">Identifiant de patient</label></th>
+    <td><input type="text" alt="notNull|num|length|8" name="sc_patient_id" value="{$sc_patient_id}" size="8" maxlength="8" /></td>
+  </tr>
+  
+  <tr>
+    <th><label for="form_sc_venue_id" title="Choisir un identifiant pour la venue correspondant à l'opération">Identifiant de venue</label></th>
+    <td><input type="text" alt="notNull|num|length|8" name="sc_venue_id" value="{$sc_venue_id}" size="8" maxlength="8" /></td>
+  </tr>
 
-<h3>XML Schema Validation</h3>
+  <tr>
+    <th class="category" colspan="2">Identifiants CMCA</th>
+  </tr>
 
-<p>Click to view the <a href="{$schemapath}">Schema File</a>.</p>
+  <tr>
+    <th><label for="form_cmca_uf_code" title="Choisir un code pour l'unité fonctionnelle">Code de l'unité fonctionnelle</label></th>
+    <td><input type="text" alt="notNull|str|maxLength|10" name="cmca_uf_code" value="{$cmca_uf_code}" size="10" maxlength="10" /></td>
+  </tr>
 
-{if $doc_valid}
-Le document est valide!
-{else}
-Le document n'est pas valide...
+  <tr>
+    <th><label for="form_cmca_uf_libelle" title="Choisir un libellé pour l'unité fonctionnelle">Libellé de l'unité fonctionnelle</label></th>
+    <td><input type="text" alt="notNull|str|maxLength|35" name="cmca_uf_libelle" value="{$cmca_uf_libelle}" size="35" maxlength="35" /></td>
+  </tr>
+
+  <tr>
+    <td class="button" colspan="2">
+  	  <input type="submit" value="Générer le document"/>
+    </td>
+  </tr>
+
+  </table>
+  </form>
+</td>
+
+<td>
+  <h3>XML: Schema Validation</h3>
+
+  <ul>
+    <li>Consulter <a href="{$schemapath}">le Schema de validation H'XML</a>.</li>
+  </ul>
+
+{if $documentpath}
+  <h3>XML: Document généré</h3>
+
+  <ul>
+    <li>
+      Consulter <a href="{$documentpath}">le Document H'XML</a>: 
+        Le document <strong>{if $doc_valid}est valide!{else}n'est pas valide...{/if}</strong>
+    </li>
+    <li>
+      Visualiser <a href="?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$mb_operation_id}">l'opération correspondante</a>
+    </li>
+  </ul>
+  
+
 {/if}
+</td>
+
+</tr>
+
+</table>
+
