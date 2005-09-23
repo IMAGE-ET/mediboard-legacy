@@ -45,6 +45,16 @@
 </div>
 <div>
 <?php
+  if (!strpos($_SERVER["HTTP_USER_AGENT"], "Firefox")) {
+  ?>
+  <div style="margin: 5px; text-align:center; font-weight:bold;">
+    Pour un meilleur confort d'utilisation et pour plus de sécurité, nous vous recommandons d'utiliser le navigateur firefox<br />
+    <a href="http://www.mozilla-europe.org/fr/products/firefox/" target="_blank" title="Telecharger Firefox">
+      <img src="http://www.spreadfirefox.com/community/images/affiliates/Buttons/80x15/firefox_80x15.png" alt="Telecharger Firefox">
+    </a>
+  </div>
+  <?php
+  }
 	$errorMsg = $AppUI->getMsg();
 	if ($errorMsg)
 	    echo "<div class='error'>Error: $errorMsg</div>";
