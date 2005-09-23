@@ -387,6 +387,14 @@ function flipElementClass(elementId, firstClass, secondClass, cookieName) {
   }
 }
 
+function initElementClass(elementId, cookieName) {
+  var element = document.getElementById(elementId);
+  var cookie = new CJL_CookieUtil(cookieName);
+  value = cookie.getSubValue(elementId);
+  if(value)
+    element.className = value;
+}
+
 function initGroups(groupname) {
   var trs = getElementsByClassName("tr", groupname, false);
   var trsit = 0;
