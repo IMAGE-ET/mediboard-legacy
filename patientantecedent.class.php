@@ -56,7 +56,7 @@ class CPatientAntecedent extends CDpObject {
         break;
       }
       case 'CCAM' : {
-      	$this->_ref_ccam = new CActeCCAM($this->code);
+      	$this->_ref_ccam = new CCodeCCAM($this->code);
       	$this->_ref_ccam->loadLite();
         break;
       }

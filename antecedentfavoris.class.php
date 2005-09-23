@@ -53,7 +53,7 @@ class CAntecedentFavoris extends CDpObject {
         break;
       }
       case 'ccam' : {
-      	$this->_ref_ccam = new CActeCCAM;
+      	$this->_ref_ccam = new CCodeCCAM;
       	$this->_ref_ccam->loadLite($this->code);
         break;
       }
