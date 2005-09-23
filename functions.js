@@ -271,7 +271,7 @@ function checkForm(oForm) {
         }
         
         sMsgFailed = oLabel ? oLabel.getAttribute("title") : printf("%s (val:'%s', spec:'%s')", oElement.name, oElement.value, sPropSpec);
-        sMsgFailed += " (" + sMsg + ")";
+        sMsgFailed += "\n => " + sMsg;
         aMsgFailed.push(sMsgFailed);
         
         if (!bGaveFocus) {
