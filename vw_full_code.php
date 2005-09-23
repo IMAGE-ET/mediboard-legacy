@@ -15,24 +15,24 @@ if (!$canRead) {
 
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 $codeacte = mbGetValueFromGetOrSession("codeacte");
-$acte = new CActeCCAM($codeacte);
-$acte->Load();
+$code = new CCodeCCAM($codeacte);
+$code->Load();
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-// @todo : ne passer que $acte. Adapter le template en conséquence
-$smarty->assign('codeacte', strtoupper($acte->code));
-$smarty->assign('libelle', $acte->libelleLong);
-$smarty->assign('rq', $acte->remarques);
-$smarty->assign('act', $acte->activites);
-$smarty->assign('codeproc', $acte->procedure["code"]);
-$smarty->assign('textproc', $acte->procedure["texte"]);
-$smarty->assign('place', $acte->place);
-$smarty->assign('chap', $acte->chapitres);
-$smarty->assign('asso', $acte->assos);
-$smarty->assign('incomp', $acte->incomps);
+// @todo : ne passer que $code. Adapter le template en conséquence
+$smarty->assign('codeacte', strtoupper($code->code));
+$smarty->assign('libelle', $code->libelleLong);
+$smarty->assign('rq', $code->remarques);
+$smarty->assign('act', $code->activites);
+$smarty->assign('codeproc', $code->procedure["code"]);
+$smarty->assign('textproc', $code->procedure["texte"]);
+$smarty->assign('place', $code->place);
+$smarty->assign('chap', $code->chapitres);
+$smarty->assign('asso', $code->assos);
+$smarty->assign('incomp', $code->incomps);
 
 $smarty->display('vw_full_code.tpl');
 

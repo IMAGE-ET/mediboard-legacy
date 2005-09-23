@@ -27,7 +27,7 @@ $favoris = db_loadList($query);
 $i = 0;
 $codes = array();
 foreach($favoris as $key => $value) {
-  $codes[$i] = new CActeCCAM($value["favoris_code"]);
+  $codes[$i] = new CCodeCCAM($value["favoris_code"]);
   $codes[$i]->loadLite();
   $codes[$i]->favoris_id = $value["favoris_id"];
   $i++;

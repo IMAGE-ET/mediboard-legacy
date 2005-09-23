@@ -7,7 +7,7 @@
  * @author Romain Ollivier
  */
 
-class CActeCCAM
+class CCodeCCAM
 {
   // Variables de structure 
   // Code de l'acte
@@ -36,7 +36,7 @@ class CActeCCAM
   var $_code7 = null;
   
   // Constructeur
-  function CActeCCAM($code)
+  function CCodeCCAM($code)
   {
     $this->code = strtoupper($code);
   }
