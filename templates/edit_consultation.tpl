@@ -122,7 +122,7 @@ function supprimerDocument(prop_name, valid_name) {
 }
 
 function changeList() {
-  flipElementClass("listConsult", "show", "hidden");
+  flipElementClass("listConsult", "show", "hidden", "listConsult");
 }
 
 function pageMain() {
@@ -130,6 +130,13 @@ function pageMain() {
   initGroups("consultations");
   initGroups("operations");
   initGroups("hospitalisations");
+  {/literal}
+  {if $consult->consultation_id}
+  {literal}
+  initElementClass("listConsult", "listConsult")
+  {/literal}
+  {/if}
+  {literal}
 
   {/literal}
   regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
