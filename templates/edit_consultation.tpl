@@ -121,6 +121,10 @@ function supprimerDocument(prop_name, valid_name) {
   }
 }
 
+function changeList() {
+  flipElementClass("listConsult", "show", "hidden");
+}
+
 function pageMain() {
 
   initGroups("consultations");
@@ -136,15 +140,17 @@ function pageMain() {
 </script>
 {/literal}
 
-<table class="main">
+<table class="main" style="border-spacing:0px;">
   <tr>
-    <td rowspan="3">
-      <div style="text-align: center; width: 100%; font-weight: bold;">
-        {$date|date_format:"%A %d %B %Y"}
-        <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
-      </div>
+    <td rowspan="3" id="listConsult" class="show">
       <form name="changeView">
         <table class="form">
+          <tr>
+            <td colspan="6" style="text-align: center; width: 100%; font-weight: bold;">
+              {$date|date_format:"%A %d %B %Y"}
+              <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
+            </td>
+          </tr>
           <tr>
             <th>Type de vue:</th>
             <td colspan="5">
@@ -205,7 +211,10 @@ function pageMain() {
     {if $consult->consultation_id}
       <table class="form">
         <tr>
-          <th class="category" colspan="2">Patient</th>
+          <th class="category" colspan="2">
+            <button type="button" onclick="changeList();" style="float:left">+/-</button>
+            Patient
+          </th>
           <th class="category">Correpondants</th>
           <th class="category">Historique</th>
           <th class="category">Planification</th>
