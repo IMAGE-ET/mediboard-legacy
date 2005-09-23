@@ -1192,6 +1192,14 @@ tr.groupexpand td {
   background: #ddf url(./images/expand.gif) no-repeat center left;
 }
 
+.show {
+  display: normal;
+}
+
+.hidden {
+  display: none;
+}
+
 /* The main calendar widget.  DIV containing a table. */
 
 .calendar {
