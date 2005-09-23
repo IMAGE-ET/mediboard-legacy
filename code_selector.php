@@ -29,7 +29,7 @@ switch($type) {
 		$codes = db_loadlist($sql);
 		$i = 0;
         foreach($codes as $key => $value) {
-          $list[$i] = new CActeCCAM($value["favoris_code"]);
+          $list[$i] = new CCodeCCAM($value["favoris_code"]);
           $list[$i]->loadLite();
           $i++;
         }
@@ -44,7 +44,7 @@ switch($type) {
 		$codes = db_loadlist($sql);
 		$i = 0;
         foreach($codes as $key => $value) {
-          $list[$i] = new CActeCCAM($value["favoris_code"]);
+          $list[$i] = new CCodeCCAM($value["favoris_code"]);
           $list[$i]->loadLite();
           $i++;
         }

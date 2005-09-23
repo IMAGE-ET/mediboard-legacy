@@ -299,7 +299,7 @@ class COperation extends CMbObject {
   }
   
   function loadRefCCAM() {
-    $this->_ext_code_ccam = new CActeCCAM($this->CCAM_code);
+    $this->_ext_code_ccam = new CCodeCCAM($this->CCAM_code);
     $this->_ext_code_ccam->LoadLite();
     if(!$this->plageop_id && $this->pat_id && !$this->CCAM_code) {
       $this->_ext_code_ccam->libelleCourt = "Simple surveillance";
@@ -309,7 +309,7 @@ class COperation extends CMbObject {
       $this->_ext_code_ccam->libelleCourt = "<em>[$this->libelle]</em><br />".$this->_ext_code_ccam->libelleCourt;
       $this->_ext_code_ccam->libelleLong = "<em>[ $this->libelle]</em><br />".$this->_ext_code_ccam->libelleLong;
     }
-    $this->_ext_code_ccam2 = new CActeCCAM($this->CCAM_code2);
+    $this->_ext_code_ccam2 = new CCodeCCAM($this->CCAM_code2);
     if($this->CCAM_code2 != null && $this->CCAM_code2 != "")
       $this->_ext_code_ccam2->LoadLite();
   }

@@ -19,6 +19,7 @@ function setClose(date) {
   } else if(form.admission[2].checked) {
     adm = 2;
   }
+  
   window.opener.setPlage(key,val,adm);
   window.close();
 }

@@ -181,13 +181,15 @@ function setPlage(plage_id, sDate, bAdm) {
         break;
     }
     
-    if(bAdm != 2) {
+    if (bAdm != 2) {
       form._hour_adm.value = dAdm.getHours();
       form._min_adm.value = dAdm.getMinutes();
       form.date_adm.value = makeDATEFromDate(dAdm);
     
+
       var div_rdv_adm = document.getElementById("editFrm_date_adm_da");
       div_rdv_adm.innerHTML = makeLocaleDateFromDate(dAdm);
+      alert("plage ID: " + plage_id);
     }
   }
 }
