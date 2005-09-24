@@ -10,22 +10,9 @@
 require_once($AppUI->getSystemClass('dp'));
 
 function htmlReplace($find, $replace, &$source) {
-
   $matches = array();
   $nbFound = preg_match_all("/$find/", $source, $matches);
-//  $output = preg_replace("/($find)/", "XXXspan style='color: red'YYY$1XXX/spanYYY", $source);
-//  $output = htmlentities($output);
-//  $output = str_replace("XXX", "<", $output);
-//  $output = str_replace("YYY", ">", $output);
-//  echo "<h1>Subject</h1>";
-//  echo "<h2>pattern: <kbd>". htmlentities($find) . "</kbd><h2>";
-//  echo "<h2>found: $nbFound</h2>";
-//  echo "<h2>text: ". strlen($source). " bytes</h2>";
-//  echo "$output";
-
   $source = preg_replace("/$find/", $replace, $source);
-//  echo "<h1>Result</h1>" . htmlentities($source);
-  
   return $nbFound;
 }
 
@@ -224,7 +211,7 @@ class CMbObject extends CDpObject {
     
       // Date
       case "date":
-        if (!preg_match ("/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/", $propValue)) {
+        if (!preg_match ("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})$/", $propValue)) {
           return "format de date invalide";
         }
         
@@ -232,7 +219,7 @@ class CMbObject extends CDpObject {
     
       // Time
       case "time":
-        if (!preg_match ("/([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/", $propValue)) {
+        if (!preg_match ("/^([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})$/", $propValue)) {
           return "format de time invalide";
         }
         
@@ -240,18 +227,22 @@ class CMbObject extends CDpObject {
     
       // DateTime
       case "dateTime":
-        if (!preg_match ("/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/", $propValue)) {
+        if (!preg_match ("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})$/", $propValue)) {
           return "format de dateTime invalide";
         }
         
         break;
     
-      // Format monétaire
+      // Currrency format
       case "currency":
         if (!preg_match ("/^([0-9]+)(\.[0-9]{0,2}){0,1}$/", $propValue)) {
           return "N'est pas une valeur monétaire (utilisez le . pour la virgule)";
         }
         
+        break;
+        
+      // Text free format
+      case "text":
         break;
         
       // HTML Text
@@ -266,6 +257,44 @@ class CMbObject extends CDpObject {
           );
         
         while (purgeHtmlText($regexps, $propValue));
+
+        break;
+        
+      // Special Codes
+      case "code":
+        switch (@$specFragments[1]) {
+          case "ccam":
+            if (!preg_match ("/^([a-z0-9]){0,7}$/i", $propValue)) {
+              return "Code CCAM incorrect, doit contenir 4 lettres et trois chiffres";
+            }
+            
+            break;
+
+          case "cim10":
+            if (!preg_match ("/^([a-z0-9]){0,5}$/i", $propValue)) {
+              return "Code CCAM incorrect, doit contenir 5 lettres maximum";
+            }
+            
+            break;
+
+          case "adeli":
+            if (!preg_match ("/^([0-9]){9}$/i", $propValue)) {
+              return "Code Adeli incorrect, doit contenir exactement 9 chiffres";
+            }
+            
+            break;
+
+          case "insee":
+            if (!preg_match ("/^([1-2][0-9]{2}[0-9]{2}[0-9]{2}[0-9]{3}[0-9]{3})([0-9]{2})$/i", $propValue, $matches)) {
+              return "Matricule incorrect, doit contenir exactement 15 chiffres (commençant par 1 ou 2)";
+            }
+          
+          
+            break;
+
+          default:
+            return "Spécification de chaîne numérique invalide";
+        }
 
         break;
 
@@ -471,6 +500,58 @@ class CMbObject extends CDpObject {
       }
     }
     return null;
+  }
+
+/**
+ *  Generic check for whether dependancies exist for this object in the db schema
+ *
+ *  Can be overloaded/supplemented by the child class
+ *  @param string $msg Error message returned
+ *  @param int Optional key index
+ *  @param array Optional array to compiles standard joins: format [label=>'Label',name=>'table name',idfield=>'field',joinfield=>'field']
+ *  @return true|false
+ */
+  function canDelete( &$msg, $oid=null, $joins=null ) {
+    global $AppUI;
+    $k = $this->_tbl_key;
+    if ($oid) {
+      $this->$k = intval( $oid );
+    } else {
+      $oid = $this->$k;
+    }
+    
+    $msg = array();
+    $select = "SELECT $this->_tbl.$k,";
+    $from = "\nFROM $this->_tbl ";
+    $where  = "\nWHERE $this->_tbl.$k = '$oid' GROUP BY $this->_tbl.$k";
+    
+    if (is_array( $joins )) {
+      foreach( $joins as $table ) {
+        $count = "\nCOUNT(DISTINCT {$table['name']}.{$table['idfield']}) AS number";
+        $join = "\nLEFT JOIN {$table['name']} ON {$table['name']}.{$table['joinfield']} = $this->_tbl.$k";
+
+        $sql = $select . $count . $from . $join . $where;
+        mbTrace($sql, "SQL");
+        
+        $obj = null;
+        if (!db_loadObject( $sql, $obj )) {
+          $msg = db_error();
+          return false;
+        }
+
+        mbTrace($obj, "Obj");
+        if ($obj->number) {
+          $msg[] = $obj->number. " " . $AppUI->_( $table['label'] );
+        }
+      }
+    }
+
+    if (count( $msg )) {
+      $msg = $AppUI->_( "noDeleteRecord" ) . ": " . implode( ', ', $msg );
+      return false;
+    }
+
+     return true;
   }
 }
 ?>
