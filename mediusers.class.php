@@ -83,18 +83,28 @@ class CMediusers extends CMbObject {
       'idfield' => 'operation_id', 
       'joinfield' => 'chir_id'
     );
+
     $tables[] = array (
-      'label' => 'consultation(s) ', 
-      'name' => 'consultation', 
-      'idfield' => 'consultation_id', 
+      'label' => 'acte(s) CCAM', 
+      'name' => 'acte_ccam', 
+      'idfield' => 'acte_id', 
+      'joinfield' => 'executant_id'
+    );
+
+    $tables[] = array (
+      'label' => 'plage(s) de consultation', 
+      'name' => 'plageconsult', 
+      'idfield' => 'plageconsult_id', 
       'joinfield' => 'chir_id'
     );
+
     $tables[] = array (
       'label' => 'plage(s) opératoire(s) (chirurgien) ', 
       'name' => 'plagesop', 
       'idfield' => 'id', 
       'joinfield' => 'chir_id'
     );
+
     $tables[] = array (
       'label' => 'plage(s) opératoire(s) (anesthésiste) ', 
       'name' => 'plagesop', 
