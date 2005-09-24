@@ -183,6 +183,23 @@ class COperation extends CMbObject {
       }
     }
 
+  function canDelete(&$msg, $oid = null) {
+    $tables[] = array (
+      "label" => "acte(s) CCAM", 
+      "name" => "acte_ccam", 
+      "idfield" => "acte_id", 
+      "joinfield" => "operation_id"
+    );
+
+    $tables[] = array (
+      "label" => "affectation(s) d'hospitalisation", 
+      "name" => "affectation", 
+      "idfield" => "affectation_id", 
+      "joinfield" => "operation_id"
+    );
+
+    return parent::canDelete($msg, $oid, $tables);
+  }
   function delete() {
     // Re-numérotation des autres plages de la même plage
     if ($this->rank)
