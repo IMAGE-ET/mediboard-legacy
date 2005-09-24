@@ -17,7 +17,7 @@ require_once($AppUI->getModuleClass("dPccam", "acte"));
  * Classe servant à gérer les enregistrements des actes CCAM pendant les
  * interventions
  */
-class CMediusers extends CMbObject {
+class CCacteCCAM extends CMbObject {
   // DB Table key
 	var $acte_id = null;
 
@@ -25,7 +25,7 @@ class CMediusers extends CMbObject {
   var $code_acte = null;
   var $code_activite  = null;
   var $code_phase = null;
-  var $datetime_execution = null;
+  var $execution = null;
   var $modificateurs = null;
   var $montant_depassement = null;
   var $commentaire = null;  
@@ -38,20 +38,26 @@ class CMediusers extends CMbObject {
   var $_ref_operation = null;
   var $_ref_executant = null;
 
-	function CMediusers() {
-		$this->CMbObject( "users_mediboard", "user_id" );
+	function CCacteCCAM() {
+		$this->CMbObject( "acte_ccam", "acte_id" );
 
     $this->_props["code_acte"] = "notNull|code|ccam";
     $this->_props["code_activite"] = "notNull|num|maxLength|2";
     $this->_props["code_phase"] = "notNull|num|maxLength|2";
-    $this->_props["time_execution"] = "notNull|dateTime";
+    $this->_props["execution"] = "notNull|dateTime";
     $this->_props["modificateurs"] = "str|maxLength|4";
     $this->_props["montant_depassement"] = "currency";
-    $this->_props["commentaire"] = "str";
+    $this->_props["commentaire"] = "text";
 
     $this->_props["operation_id"] = "notNull|ref";
     $this->_props["executant_id"] = "notNull|ref";
 	}
+  
+  function check() {
+    // datetime_execution: attention à rester dans la plage de l'opération
+    
+    return parent::check(); 
+  }
   
   function updateFormFields() {
   }
