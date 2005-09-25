@@ -35,7 +35,7 @@ function modifTarif() {
 
 function putTiers() {
   var form = document.tarifFrm;
-  form.type_tarif.value = form._tiers.checked ? "tiers" : "null";
+  form.type_tarif.value = form._tiers.checked ? "tiers" : "";
 }
 
 function checkTarif() {
@@ -487,7 +487,7 @@ function pageMain() {
                 <th>
                   Choix du tarif :
                   <input type="hidden" name="paye" value="0" />
-                  <input type="hidden" name="date_paiement" value="null" />
+                  <input type="hidden" name="date_paiement" value="" />
                 </th>
                 <td>
                   <select name="choix" onchange="modifTarif()">
@@ -513,7 +513,7 @@ function pageMain() {
                   <input type="text" size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
                   <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
                   <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
-                  <input type="hidden" name="tarif" value="{if $consult->tarif == null}null{else}{$consult->tarif}{/if}" />
+                  <input type="hidden" name="tarif" value="{if $consult->tarif != null}{$consult->tarif}{/if}" />
                 </td>
               </tr>
               {else}
@@ -561,7 +561,7 @@ function pageMain() {
                 <th>Tiers-payant ?</th>
                 <td>
                   <input type="checkbox" name="_tiers" onchange="putTiers()" />
-                  <input type="hidden" name="type_tarif" value="null" />
+                  <input type="hidden" name="type_tarif" value="" />
                 </td>
               </tr>
               <tr>
