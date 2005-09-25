@@ -57,15 +57,15 @@ if ($del) {
 	}
 
   if($obj->plageop_id && $obj->pat_id) {
-    $_SESSION[$m]["operation_id"] = NULL;
+    mbSetValueToSession("operation_id");
     $AppUI->setMsg("Opération supprimée", UI_MSG_OK);
     $AppUI->redirect("m=$m&tab=vw_edit_planning");
   } elseif($obj->pat_id) {
-    $_SESSION[$m]["hospitalisation_id"] = NULL;
+    mbSetValueToSession("hospitalisation_id");
     $AppUI->setMsg("Hospitalisation supprimée", UI_MSG_OK);
     $AppUI->redirect("m=$m&tab=vw_edit_hospi");
   } else {
-    $_SESSION[$m]["protocole_id"] = NULL;
+    mbSetValueToSession("protocole_id");
     $AppUI->setMsg("Protocole supprimé", UI_MSG_OK);
     $AppUI->redirect("m=$m&tab=vw_add_protocole");
   }
@@ -79,9 +79,10 @@ else {
 	else {
       $isNotNew = @$_POST['operation_id'];
       $AppUI->setMsg(
-      $obj->plageop_id ? 
-        ($isNotNew ? 'Opération modifiée' : 'Opération créée') : 
-        ($isNotNew ? 'Protocole modifié'  : 'Protocole créé' ), UI_MSG_OK);
+        ($obj->plageop_id && $obj->pat_id) ? ($isNotNew ? 'Opération modifiée' : 'Opération créée') : 
+        ($obj->pat_id) ? ($isNotNew ? 'Hospitalisation modifiée'  : 'Hospitalisation créée' ) :
+        ($isNotNew ? 'Protocole modifié'  : 'Protocole créé' ),
+        UI_MSG_OK);
 	}
 
   // @todo : Trouver une méthode un peu plus propre :/

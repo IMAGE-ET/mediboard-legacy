@@ -128,7 +128,7 @@ class COperation extends CMbObject {
     $this->_props["annulee"] = "enum|0|1";
     $this->_props["compte_rendu"] = "html|confidential";
     $this->_props["cr_valide"] = "enum|0|1";
-    $this->_props["pathologie"] = "str|maxLenght|8";
+    $this->_props["pathologie"] = "str|length|3";
     $this->_props["sceptique"] = "enum|0|1";
   }
 
