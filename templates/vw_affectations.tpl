@@ -555,7 +555,7 @@ function popPlanning() {
         
         <em>Pathologie:</em>
         <select name="pathologie">
-          <option value="0">&mdash; Choisir &mdash;</option>
+          <option value="">&mdash; Choisir &mdash;</option>
           {foreach from=$pathos->dispo item=curr_patho}
           <option {if $curr_patho == $curr_operation->pathologie}selected="selected"{/if}>
           {$curr_patho}
