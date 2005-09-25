@@ -192,7 +192,7 @@ function printIntervention(id) {
             </a>
           </td>
           <td class="button">
-            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;pat_id={$patient->patient_id}&amp;operation_id=0">
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;pat_id={$patient->patient_id}&amp;hospitalisation_id=0">
               une hospitalisation
             </a>
           </td>
