@@ -189,7 +189,7 @@ function setPlage(plage_id, sDate, bAdm) {
 
       var div_rdv_adm = document.getElementById("editFrm_date_adm_da");
       div_rdv_adm.innerHTML = makeLocaleDateFromDate(dAdm);
-      alert("plage ID: " + plage_id);
+      //alert("plage ID: " + plage_id);
     }
   }
 }
