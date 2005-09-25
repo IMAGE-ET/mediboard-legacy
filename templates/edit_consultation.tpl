@@ -66,7 +66,7 @@ function newHospitalisation() {
   var url = '?m=dPplanningOp&tab=vw_edit_hospi';
   url +='&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}';
   url +='&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}';
-  url +='&operation_id=0';
+  url +='&hospitalisation_id=0';
   window.location.href = url;
 }
 
