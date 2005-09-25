@@ -531,7 +531,6 @@ class CMbObject extends CDpObject {
         $join = "\nLEFT JOIN {$table['name']} ON {$table['name']}.{$table['joinfield']} = $this->_tbl.$k";
 
         $sql = $select . $count . $from . $join . $where;
-        mbTrace($sql, "SQL");
         
         $obj = null;
         if (!db_loadObject( $sql, $obj )) {
@@ -539,7 +538,6 @@ class CMbObject extends CDpObject {
           return false;
         }
 
-        mbTrace($obj, "Obj");
         if ($obj->number) {
           $msg[] = $obj->number. " " . $AppUI->_( $table['label'] );
         }
