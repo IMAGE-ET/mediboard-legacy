@@ -95,9 +95,9 @@ class COperation extends CMbObject {
     $this->_props["pat_id"] = "ref";
     $this->_props["chir_id"] = "ref|notNull";
     $this->_props["plageop_id"] = "ref";
-    $this->_props["CCAM_code"] = "str"; //Spécifier les longueurs
-    $this->_props["CCAM_code2"] = "str";
-    $this->_props["CIM10_code"] = "str";
+    $this->_props["CCAM_code"] = "code|ccam"; //Spécifier les longueurs
+    $this->_props["CCAM_code2"] = "code|ccam";
+    $this->_props["CIM10_code"] = "code|cim10";
     $this->_props["libelle"] = "str|confidential";
     $this->_props["cote"] = "enum|droit|gauche|bilatéral|total";
     $this->_props["temp_operation"] = "time";
@@ -147,7 +147,8 @@ class COperation extends CMbObject {
       $msg.= "Pathologie non disponible<br />";
     }
     
-    return parent::check();      
+    return $msg . parent::check();
+    
   }
   
   function reorder() {
