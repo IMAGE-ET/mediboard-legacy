@@ -53,7 +53,7 @@ foreach($listPlage as $key => $value) {
 // Récupération des consultations de la plage séléctionnée
 $plage = new CPlageconsult;
 $plage->_ref_chir = new CMediusers;
-$listPlace = NULL;
+$listPlace = array();
 if($plageSel) {
   $plage->load($plageSel);
   $plage->loadRefs(false);
@@ -61,8 +61,10 @@ if($plageSel) {
   $currMin = 0;
   $currHour = intval($plage->_hour_deb);
   for($i = 0; $i < (intval($plage->_hour_fin)-intval($plage->_hour_deb))*(60/intval($plage->_freq)); $i++) {
+    $listPlace[$i]["patient"] = array();
+  }
+  for($i = 0; $i < (intval($plage->_hour_fin)-intval($plage->_hour_deb))*(60/intval($plage->_freq)); $i++) {
     $listPlace[$i]["hour"] = $currHour;
-    $listPlace[$i]["patient"] = null;
     if($currMin != 0)
       $listPlace[$i]["min"] = $currMin;
     else
@@ -85,39 +87,20 @@ if($plageSel) {
             $rightPlace = (intval($value->_min) < $nextMin);
         }
         if($rightPlace) {
-          $listPlace[$i]["patient"][$qte]["premiere"] = $plage->_ref_consultations[$key]->premiere;
-          $listPlace[$i]["patient"][$qte]["duree"] = $plage->_ref_consultations[$key]->duree;
+          $tmp = array();
+          $tmp["premiere"] = $plage->_ref_consultations[$key]->premiere;
+          $tmp["duree"] = $plage->_ref_consultations[$key]->duree;
+          $tmpduree = $tmp["duree"];
           $plage->_ref_consultations[$key]->loadRefs();
-          $listPlace[$i]["patient"][$qte]["patient"] = $plage->_ref_consultations[$key]->_ref_patient->_view;
-          $qte++;
-        } else {
-          $listPlace[$i]["patient"][$qte]["patient"] = NULL;
-          $listPlace[$i]["patient"][$qte]["duree"] = NULL;
+          $tmp["patient"] = $plage->_ref_consultations[$key]->_ref_patient->_view;
+          while($tmpduree--) {
+            $listPlace[($i+$tmpduree)]["patient"][] = $tmp;
+          }
         }
       }
       $currMin = $nextMin;
       $currHour = $nextHour;
     } else {
-      foreach($plage->_ref_consultations_anesth as $key => $value) {
-        if($currHour == $nextHour) {
-          $rightPlace = (intval($value->_hour) == $currHour) && (intval($value->_min) >= $currMin) && (intval($value->_min) < $nextMin);
-        } else {
-          if(intval($value->_hour) == $currHour)
-            $rightPlace = (intval($value->_min) >= $currMin);
-          else
-            $rightPlace = (intval($value->_min) < $nextMin);
-        }
-        if($rightPlace) {
-          $listPlace[$i]["patient"][$qte]["premiere"] = $plage->_ref_consultations_anesth[$key]->premiere;
-          $listPlace[$i]["patient"][$qte]["duree"] = $plage->_ref_consultations_anesth[$key]->duree;
-          $plage->_ref_consultations_anesth[$key]->loadRefs();
-          $listPlace[$i]["patient"][$qte]["patient"] = $plage->_ref_consultations_anesth[$key]->_ref_patient->_view;
-          $qte++;
-        } else {
-          $listPlace[$i]["patient"][$qte]["patient"] = NULL;
-          $listPlace[$i]["patient"][$qte]["duree"] = NULL;
-        }
-      }
       $currMin = $nextMin;
       $currHour = $nextHour;
     }
