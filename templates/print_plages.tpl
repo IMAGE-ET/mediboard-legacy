@@ -28,16 +28,27 @@
           <th>Age</th>
           <th>Motif</th>
 		  <th>Remarques</th>
-		  <th>Comptes-rendu</th>
+		  <th>Durée</th>
 		</tr>
 		{foreach from=$curr_plage->_ref_consultations item=curr_consult}
 		<tr>
-		  <td>{$curr_consult->heure}</td>
+		  {if $curr_consult->premiere}
+		  <td style="background-color:#eaa">
+		  {else}
+		  <td>
+		  {/if}
+		    {$curr_consult->heure|date_format:"%Hh%M"}
+		  </td>
 		  <td>{$curr_consult->_ref_patient->_view}</td>
-          <td>{$curr_consult->_ref_patient->_age} ans</td>
+          <td>
+            {$curr_consult->_ref_patient->_age} ans
+            {if $curr_consult->_ref_patient->_age != "??"}
+              ({$curr_consult->_ref_patient->_naissance})
+            {/if}
+          </td>
           <td class="text">{$curr_consult->motif|nl2br}</td>
           <td class="text">{$curr_consult->rques|nl2br}</td>
-          <td>{if $curr_consult->compte_rendu}oui{else}non{/if}</td>
+          <td class="text">{$curr_consult->duree} x {$curr_consult->_ref_plageconsult->freq|date_format:"%M"} min</td>
 		</tr>
 		{/foreach}
 	  </table>
