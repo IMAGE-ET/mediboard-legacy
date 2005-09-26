@@ -2,7 +2,7 @@
 function setClose(hour, min) {ldelim}
   window.opener.setRDV(hour, min,
               "{$plage->plageconsult_id}",
-              "{$plage->date|date_format:"%d/%m/%Y"}",
+              "{$plage->date|date_format:"%A %d/%m/%Y"}",
               "{$plage->freq}",
               "{$plage->chir_id}",
               "{$plage->_ref_chir->_view}");
