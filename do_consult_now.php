@@ -7,29 +7,24 @@
 * @author Romain Ollivier
 */
 
-global $AppUI;
+global $AppUI, $m;
 
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
-// L'utilisateur est-il un praticien
-$mediuser = new CMediusers;
-$mediuser->load($AppUI->user_id);
-if ($mediuser->isPraticien()) {
-  $chir = $mediuser;
-} else {
-  $msg = "Vous n'avez pas les droits suffisants";
-  $AppUI->redirect();
+$canEdit = !getDenyEdit($m);
+if (!$canEdit) {
+  $AppUI->redirect( "m=public&a=access_denied" );
 }
+
+$chir = new CMediusers;
+$chir->load($_POST["prat_id"]);
 
 $day_now = strftime("%Y-%m-%d");
 $hour_now = strftime("%H:%M:00");
 $debut = strftime("%H:00:00");
-
-//$day_now = "2005-06-21";
-//$hour_now = "09:45:00";
 
 $plage = new CPlageConsult();
 $where = array();
@@ -57,6 +52,6 @@ $consult->chrono = CC_PATIENT_ARRIVE;
 $consult->motif = "Consultation immédiate";
 $consult->store();
 
-$AppUI->redirect("m=dPcabinet&tab=edit_consultation&selConsult=$consult->consultation_id");
+$AppUI->redirect("m=dPcabinet&tab=edit_consultation&selConsult=$consult->consultation_id&chirSel=$chir->user_id");
 
 ?>
