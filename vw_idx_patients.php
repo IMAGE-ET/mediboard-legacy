@@ -84,6 +84,8 @@ if ($where) {
 $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_EDIT);
 
+$canEditCabinet = !getDenyEdit("dPcabinet");
+
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
@@ -95,6 +97,7 @@ $smarty->assign('patient', $patient);
 $smarty->assign('chir', $chir);
 $smarty->assign('anesth', $anesth);
 $smarty->assign('listPrat', $listPrat);
+$smarty->assign('canEditCabinet', $canEditCabinet);
 
 $smarty->display('vw_idx_patients.tpl');
 ?>

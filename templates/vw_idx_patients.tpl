@@ -190,7 +190,7 @@ function printIntervention(id) {
             </a>
           </td>
         </tr>
-        {if $listPrat|@count}
+        {if $listPrat|@count && $canEditCabinet}
         <tr><th class="category" colspan="3">Consultation immédiate</th></tr>
         <tr>
           <td class="button" colspan="3">
