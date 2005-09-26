@@ -34,67 +34,79 @@ function setClose(date) {
 
 <table class="form">
 
-<tr>
-  <th class="category" colspan="2">
-    <a href="index.php?m=dPplanningOp&amp;a=plage_selector&amp;dialog=1&amp;curr_op_hour={$curr_op_hour}&amp;curr_op_min={$curr_op_min}&amp;chir={$chir}&amp;month={$pmonth}&amp;year={$pyear}">&lt; &lt;</a>
-    {$nameMonth} {$year}
-    <a href="index.php?m=dPplanningOp&amp;a=plage_selector&amp;dialog=1&amp;curr_op_hour={$curr_op_hour}&amp;curr_op_min={$curr_op_min}&amp;chir={$chir}&amp;month={$nmonth}&amp;year={$nyear}">&gt; &gt;</a>
-  </th>
-</tr>
+  <tr>
+    <th class="category" colspan="2">
+      <a href="index.php?m=dPplanningOp&amp;a=plage_selector&amp;dialog=1&amp;curr_op_hour={$curr_op_hour}&amp;curr_op_min={$curr_op_min}&amp;chir={$chir}&amp;month={$pmonth}&amp;year={$pyear}">&lt; &lt;</a>
+      {$nameMonth} {$year}
+      <a href="index.php?m=dPplanningOp&amp;a=plage_selector&amp;dialog=1&amp;curr_op_hour={$curr_op_hour}&amp;curr_op_min={$curr_op_min}&amp;chir={$chir}&amp;month={$nmonth}&amp;year={$nyear}">&gt; &gt;</a>
+    </th>
+  </tr>
 
-<tr>
-  <td rowspan="2">
-    <select name="list"  size="14">
-      <option value="0" selected="selected">&mdash; Choisir une date &mdash;</option>
-    {foreach from=$list item=curr_plage}
-      {if $curr_plage.free_time < 0}
-      <option value="0" ondblclick="setClose('{$curr_plage.date|date_format:"%d/%m/%Y"}')"
-      onclick="document.frmSelector.fmtdate.value='{$curr_plage.date|date_format:"%d/%m/%Y"}'"
-      {else}
-      <option value="{$curr_plage.id}" ondblclick="setClose('{$curr_plage.date|date_format:"%d/%m/%Y"}')"
-      onclick="document.frmSelector.fmtdate.value='{$curr_plage.date|date_format:"%d/%m/%Y"}'"
-      {/if}
-      {if $curr_plage.id_spec }
-        style="background:#aae"
-      {elseif $curr_plage.free_time < 0}
-        style="background:#eaa"
-      {else}
-        style="background:transparent"
-      {/if}>
+  <tr>
+    <td rowspan="3">
+      <select name="list"  size="14">
+        <option value="0" selected="selected">&mdash; Choisir une date &mdash;</option>
+        {foreach from=$list item=curr_plage}
+        {if $curr_plage.free_time < 0}
+          <option value="0" ondblclick="setClose('{$curr_plage.date|date_format:"%d/%m/%Y"}')"
+          onclick="document.frmSelector.fmtdate.value='{$curr_plage.date|date_format:"%d/%m/%Y"}'"
+        {else}
+          <option value="{$curr_plage.id}" ondblclick="setClose('{$curr_plage.date|date_format:"%d/%m/%Y"}')"
+          onclick="document.frmSelector.fmtdate.value='{$curr_plage.date|date_format:"%d/%m/%Y"}'"
+        {/if}
+        {if $curr_plage.id_spec }
+          style="background:#aae"
+        {elseif $curr_plage.free_time < 0}
+          style="background:#eaa"
+        {else}
+          style="background:transparent"
+        {/if}>
         {$curr_plage.date|date_format:"%a %d %b %Y"} - {$curr_plage.nom}
-      </option>
-    {/foreach}
-    </select>
-  </td>
-  <td>
-    <strong>Admission du patient</strong>
-    <br />
-    <input type="radio" name="admission" value="veille" checked="checked" />
-    <label for="frmSelector_admission_veille">La veille</label>
-    <br />
-    <input type="radio" name="admission" value="jour" />
-    <label for="frmSelector_admission_jour">Le jour même</label>
-    <br />
-    <input type="radio" name="admission" value="aucune" />
-    <label for="frmSelector_admission_jour">Ne pas modifier</label>
-    <br />
-    
-  </td>
-</tr>
-<tr>
-  <td class="text"><i>Remarques :<ul>
-    <li>Les jours notés en rouge représentent des plages pleines</li>
-    <li>Les jours notés en bleu représentent des plages de spécialité</li>
-    <li>Par défaut, une admission la veille se fait à 17h et à 8h pour le jour même</li>
-  </ul></i></td>
-</tr>
+        </option>
+        {/foreach}
+      </select>
+    </td>
+    <td>
+      <strong>Admission du patient</strong>
+      <br />
+      <input type="radio" name="admission" value="veille" checked="checked" />
+      <label for="frmSelector_admission_veille">La veille</label>
+      <br />
+      <input type="radio" name="admission" value="jour" />
+      <label for="frmSelector_admission_jour">Le jour même</label>
+      <br />
+      <input type="radio" name="admission" value="aucune" />
+      <label for="frmSelector_admission_jour">Ne pas modifier</label>
+      <br />
+    </td>
+  </tr>
 
-<tr>
-  <td class="button" colspan="2">
-    <input type="button" class="button" value="annuler" onclick="window.close()" />
-    <input type="button" class="button" value="selectionner" onclick="setClose('')" />
-  </td>
-</tr>
+  <tr>
+    <td class="text"><i>Légende :</i>
+      <table class="form">
+        <tr>
+          <td style="background-color:#eaa; width:10px;"></td>
+          <td>plages pleines</td>
+        </tr>
+        <tr>
+          <td style="background-color:#aae; width:10px;"></td>
+          <td>plages de spécialité</td>
+        </tr>
+        <tr>
+          <td class="text" colspan="2">
+            <i>Par défaut, une admission la veille se fait à 17h et à 8h pour le jour même</i>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="button" colspan="2">
+      <input type="button" class="button" value="annuler" onclick="window.close()" />
+      <input type="button" class="button" value="selectionner" onclick="setClose('')" />
+    </td>
+  </tr>
 
 </table>
 
