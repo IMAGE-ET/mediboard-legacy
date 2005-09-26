@@ -12,12 +12,12 @@ require_once( $AppUI->getSystemClass ('mbobject' ) );
 /**
  * The dPcim10 Class
  */
-class CdPcim10 extends CMbObject {
+class Cfavoricim10 extends CMbObject {
 	var $favoris_id = NULL;
 	var $favoris_code = NULL;
 	var $favoris_user = NULL;
 
-	function CdPcim10() {
+	function CfavoriCim10() {
 		$this->CMbObject( 'cim10favoris', 'favoris_id' );
 
     $this->_props["favoris_code"] = "str|notNull";
@@ -25,23 +25,29 @@ class CdPcim10 extends CMbObject {
 	}
 
 	function delete() {
-		$sql = "DELETE FROM cim10favoris WHERE favoris_id = '$this->favoris_id'";
+		$sql = "DELETE FROM cim10favoris" .
+        "\nWHERE favoris_id = '$this->favoris_id'";
 		if (!db_exec( $sql )) {
 			return db_error();
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 	
 	function store() {
-		$sql = "SELECT * FROM cim10favoris WHERE favoris_code = '$this->favoris_code' and favoris_user = '$this->favoris_user'";
+		$sql = "SELECT *" .
+        "\nFROM cim10favoris" .
+        "\nWHERE favoris_code = '$this->favoris_code'" .
+        "\nAND favoris_user = '$this->favoris_user'";
 		$issingle = db_loadList( $sql );
 		if(sizeof($issingle) == 0) {
-			$sql = "INSERT INTO cim10favoris(favoris_code, favoris_user) values('$this->favoris_code', '$this->favoris_user')";
+			$sql = "INSERT" .
+          "\nINTO cim10favoris(favoris_code, favoris_user)" .
+          "\nVALUES('$this->favoris_code', '$this->favoris_user')";
 			if (!db_exec( $sql )) {
 				return db_error();
 			} else {
-				return NULL;
+				return null;
 			}
 		}
 		else {

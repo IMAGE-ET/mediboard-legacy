@@ -7,17 +7,18 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-require_once ("modules/$m/include.php");
+require_once($AppUI->getModuleClass("dPcim10", "codecim10"));
 
-$keys = mbGetValueFromGetOrSession('keys', "");
+$keys = mbGetValueFromGetOrSession("keys", "");
 
-$master = findCIM10($keys);
+$cim10 = new CCodeCIM10();
+$master = $cim10->findCodes($keys);
 
 $numresults = count($master);
 

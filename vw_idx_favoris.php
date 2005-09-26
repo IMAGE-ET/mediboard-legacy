@@ -7,43 +7,42 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
-if (!$canRead) {			// lock out users that do not have at least readPermission on this module
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 $user = $AppUI->user_id;
 
+require_once($AppUI->getModuleClass("dPcim10", "favoricim10"));
+require_once($AppUI->getModuleClass("dPcim10", "codecim10"));
+
 //Recherche des codes favoris
-$query = "SELECT favoris_id, favoris_code
-		  FROM cim10favoris
-		  WHERE favoris_user = '$AppUI->user_id'
-		  ORDER BY favoris_code";
-$favoris = db_loadList($query);
+
+$favoris = new Cfavoricim10();
+$where = array();
+$where["favoris_user"] = "= '$AppUI->user_id'";
+$order = "favoris_code";
+$favoris = $favoris->loadList($where, $order);
 
 $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
   or die("Could not connect");
 mysql_select_db("cim10")
   or die("Could not select database");
 
+$codes = array();
 $i = 0;
-$codes = "";
-foreach($favoris as $key => $value)
-{
-  $codes[$i]["id"] = $value['favoris_id'];
-  $query = "SELECT * FROM master WHERE abbrev = '".$value['favoris_code']."'";
-  $result = mysql_query($query);
-  $row = mysql_fetch_array($result);
-  $codes[$i]["code"] = $row['abbrev'];
-  $query = "SELECT * FROM libelle WHERE SID = '".$row['SID']."' AND source = 'S'";
-  $result = mysql_query($query);
-  $row = mysql_fetch_array($result);
-  $codes[$i]["text"] = $row['FR_OMS'];
+foreach($favoris as $key => $value) {
+  $codes[$i] = new CCodeCIM10($value->favoris_code);
+  $codes[$i]->loadLite("FR_OMS", 0);
+  $codes[$i]->_favoris_id = $value->favoris_id;
   $i++;
 }
 
-mysql_close();
+mysql_close($mysql);
+// Reconnect to standard data base
+do_connect();
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );

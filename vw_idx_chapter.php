@@ -13,9 +13,10 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-require_once ("modules/$m/include.php");
+require_once($AppUI->getModuleClass("dPcim10", "codecim10"));
 
-$chapter = getSommaireCIM10();
+$cim10 = new CCodeCIM10();
+$chapter = $cim10->getSommaire();
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );

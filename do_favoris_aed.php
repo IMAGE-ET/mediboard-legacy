@@ -8,7 +8,8 @@
 */
 
 // create a new instance of the dPcim10 class
-$obj = new CdPcim10();
+require_once($AppUI->getModuleClass("dPcim10", "favoricim10"));
+$obj = new CFavoriCim10();
 $msg = '';	// reset the message string
 
 // bind the informations (variables) retrieved via post to the dPcim10 object
