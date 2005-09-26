@@ -224,21 +224,22 @@ function checkElement(oElement, aSpecFragments) {
       break;
 
     case "date":
-      if(!oElement.value.match(/(\d{4})-(\d{1,2})-(\d{1,2})/)) {
+      if(!oElement.value.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)) {
+      	debugObject(oElement);
         return "N'as pas un format correct";
       }
       
       break;
 
     case "time":
-      if(!oElement.value.match(/(\d{1,2}):(\d{1,2}):(\d{1,2})/)) {
+      if(!oElement.value.match(/^(\d{1,2}):(\d{1,2}):(\d{1,2})$/)) {
         return "N'as pas un format correct";
       }
       
       break;
 
     case "dateTime":
-      if(!oElement.value.match(/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})/)) {
+      if(!oElement.value.match(/^(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/)) {
         return "N'as pas un format correct";
       }
       
@@ -251,6 +252,49 @@ function checkElement(oElement, aSpecFragments) {
       
       break;
     
+	case "text":
+	  break;
+	  
+	case "html":
+	  break;
+
+    case "code":
+      if (sFragment1 = aSpecFragments[1]) {
+        switch (sFragment1) {
+          case "ccam":
+            if (!oElement.value.match(/^([a-z0-9]){0,7}$/i)) {
+              return "Code CCAM incorrect, doit contenir 4 lettres et trois chiffres";
+            }
+          
+          break;
+
+          case "cim10":
+            if (!oElement.value.match(/^([a-z0-9]){0,5}$/i)) {
+              return "Code CCAM incorrect, doit contenir 5 lettres maximum";
+            }
+            
+            break;
+
+          case "adeli":
+            if (!oElement.value.match("/^([0-9]){9}$/i")) {
+              return "Code Adeli incorrect, doit contenir exactement 9 chiffres";
+            }
+            
+            break;
+
+          case "insee":
+            if (!oElement.value.match(/^([1-2][0-9]{2}[0-9]{2}[0-9]{2}[0-9]{3}[0-9]{3})([0-9]{2})$/i)) {
+              return "Matricule incorrect, doit contenir exactement 15 chiffres (commençant par 1 ou 2)";
+            }
+          
+            break;
+
+          default:
+            return "Spécification de code invalide";
+        }
+      }
+
+      break;
     default:
       return "Spécification invalide";
   }
@@ -259,25 +303,26 @@ function checkElement(oElement, aSpecFragments) {
 }
 
 function checkForm(oForm) {
-  bGaveFocus = false;
+  oElementFocus = null;
   aMsgFailed = new Array;
   iElement = 0;
   while (oElement = oForm.elements[iElement++]) {
     if (sPropSpec = oElement.getAttribute("alt")) {
       aSpecFragments = sPropSpec.split("|");
+      oLabel = getLabelFor(oElement);
       if (sMsg = checkElement(oElement, aSpecFragments)) {
-        if (oLabel = getLabelFor(oElement)) {
-          oLabel.style.color = "#f00";
-        }
-        
-        sMsgFailed = oLabel ? oLabel.getAttribute("title") : printf("%s (val:'%s', spec:'%s')", oElement.name, oElement.value, sPropSpec);
+        sLabelTitle = oLabel ? oLabel.getAttribute("title") : null;
+        sMsgFailed = sLabelTitle ? sLabelTitle : printf("%s (val:'%s', spec:'%s')", oElement.name, oElement.value, sPropSpec);
         sMsgFailed += "\n => " + sMsg;
-        aMsgFailed.push(sMsgFailed);
+        aMsgFailed.push("- " + sMsgFailed);
         
-        if (!bGaveFocus) {
-          oElement.focus();
-          bGaveFocus = true;
+        if (!oElementFocus) {
+          oElementFocus = oElement;
         }
+      }
+
+      if (oLabel) {
+        oLabel.style.color = sMsg ? "#f00" : "#000";
       }
     }
   }
@@ -286,6 +331,13 @@ function checkForm(oForm) {
   	sMsg = "Merci de remplir/corriger les champs suivants : \n";
   	sMsg += aMsgFailed.join("\n")
     alert(sMsg);
+    if (oElementFocus) {
+    oElementFocus.focus();
+      if (sDoubleClickAction = oElementFocus.getAttribute("ondoubleclick")) {
+        eval(sDoubleClickAction);
+      }
+    }
+    
     return false;
   }
   
