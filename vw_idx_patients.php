@@ -59,11 +59,11 @@ if($patient->patient_id) {
     $patient->_ref_operations[$key1]->loadRefs();
   }
   foreach ($patient->_ref_hospitalisations as $key1 => $op) {
-    $patient->_ref_hospitalisations[$key1]->loadRefs();
+    $patient->_ref_hospitalisations[$key1]->loadRefsFwd();
   }
   foreach ($patient->_ref_consultations as $key2 => $consult) {
     $patient->_ref_consultations[$key2]->loadRefs();
-    $patient->_ref_consultations[$key2]->_ref_plageconsult->loadRefs();
+    $patient->_ref_consultations[$key2]->_ref_plageconsult->loadRefsFwd();
   }
 }
 
@@ -81,6 +81,9 @@ if ($where) {
   $patients = $patients->loadList($where, "nom, prenom, naissance", "0, 100");
 }
 
+$listPrat = new CMediusers();
+$listPrat = $listPrat->loadPraticiens(PERM_EDIT);
+
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
@@ -91,6 +94,7 @@ $smarty->assign('patients', $patients);
 $smarty->assign('patient', $patient);
 $smarty->assign('chir', $chir);
 $smarty->assign('anesth', $anesth);
+$smarty->assign('listPrat', $listPrat);
 
 $smarty->display('vw_idx_patients.tpl');
 ?>
