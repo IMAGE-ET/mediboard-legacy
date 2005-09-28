@@ -402,6 +402,24 @@ function pageMain() {
         {if !$hospitalisation}
         <tr>
           <th class="mandatory">
+            <label for="editFrm__hour_op" title="Durée de l'intervention. Obligatoire">Temps opératoire:</label>
+          </th>
+          <td colspan="2">
+            <select name="_hour_op">
+            {foreach from=$hours key=key item=hour}
+              <option value="{$key}" {if (!$op && $key == 1) || $op->_hour_op == $key} selected="selected" {/if}>{$key}</option>
+            {/foreach}
+            </select>
+            :
+            <select name="_min_op">
+            {foreach from=$mins item=min}
+              <option value="{$min}" {if (!$op && $min == 0) || $op->_min_op == $min} selected="selected" {/if}>{$min}</option>
+            {/foreach}
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th class="mandatory">
             <input type="hidden" name="plageop_id" alt="{$op->_props.pat_id}|notNull" ondoubleclick="popPlage()" value="{$plage->id}" />
             <label for="editFrm_plageop_id" title="Date de l'intervention. Obligatoire">Date de l'intervention:</label>
           </th>
@@ -443,27 +461,6 @@ function pageMain() {
               <option value="droit"     {if $op->cote == "droit"        } selected="selected" {/if} >droit    </option>
               <option value="gauche"    {if $op->cote == "gauche"       } selected="selected" {/if} >gauche   </option>
               <option value="bilatéral" {if $op->cote == "bilatéral"    } selected="selected" {/if} >bilatéral</option>
-            </select>
-          </td>
-        </tr>
-        {/if}
-
-        {if !$hospitalisation}
-        <tr>
-          <th class="mandatory">
-            <label for="editFrm__hour_op" title="Durée de l'intervention. Obligatoire">Temps opératoire:</label>
-          </th>
-          <td colspan="2">
-            <select name="_hour_op">
-            {foreach from=$hours key=key item=hour}
-              <option value="{$key}" {if (!$op && $key == 1) || $op->_hour_op == $key} selected="selected" {/if}>{$key}</option>
-            {/foreach}
-            </select>
-            :
-            <select name="_min_op">
-            {foreach from=$mins item=min}
-              <option value="{$min}" {if (!$op && $min == 0) || $op->_min_op == $min} selected="selected" {/if}>{$min}</option>
-            {/foreach}
             </select>
           </td>
         </tr>
