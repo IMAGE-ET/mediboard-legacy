@@ -94,6 +94,8 @@ if($pat_id) {
   }
 }
 
+$canEditCabinet = !getDenyEdit("dPcabinet");
+
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
@@ -102,6 +104,7 @@ $smarty->assign('patSel', $patSel);
 $smarty->assign('patient', $patient);
 $smarty->assign('chirSel', $chirSel);
 $smarty->assign('listPrat', $listPrat);
+$smarty->assign('canEditCabinet', $canEditCabinet);
 
 $smarty->display('vw_dossier.tpl');
 
