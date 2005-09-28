@@ -42,6 +42,7 @@ $where["chir_id"] = "$in";
 $order = array();
 $order[] = "date";
 $order[] = "chir_id";
+$order[] = "debut";
 $listPlage = $listPlage->loadList($where, $order);
 
 // Pour chaque plage on selectionne les consultations
