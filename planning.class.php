@@ -72,6 +72,7 @@ class COperation extends CMbObject {
   var $_min_adm = null;
   var $_entree_adm = null;
   var $_sortie_adm = null;
+  var $_codes_ccam = null;
   
   // HPRIM fields
   var $_modalite_hospitaliation = "libre"; // enum|office|libre|tiers
@@ -218,6 +219,12 @@ class COperation extends CMbObject {
   }
   
   function updateFormFields() {
+    $this->_codes_ccam = array();
+    $this->_codes_ccam[] = $this->CCAM_code;
+    if ($this->CCAM_code2) {
+    	$this->_codes_ccam[] = $this->CCAM_code2;
+    }
+    
     $this->_hour_op = intval(substr($this->temp_operation, 0, 2));
     $this->_min_op  = intval(substr($this->temp_operation, 3, 2));
 
