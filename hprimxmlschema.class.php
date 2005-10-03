@@ -9,7 +9,7 @@
 
 global $AppUI, $m;
 
-require_once($AppUI->getModuleClass($m, "mbxmldocument"));
+require_once($AppUI->getModuleClass("dPinterop", "mbxmldocument"));
 
 class CHPrimXMLSchema extends CMbXMLDocument {
   function __construct() {
