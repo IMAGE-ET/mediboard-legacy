@@ -25,8 +25,10 @@
         <tr>
           <td>
             <strong>
-            Dr. {$curr_plage->_ref_chir->_view}
-            de {$curr_plage->debut|date_format:"%Hh%M"} à {$curr_plage->fin|date_format:"%Hh%M"}
+            <a href="?m=dPbloc&amp;tab=vw_edit_interventions&amp;id={$curr_plage->id}" title="Administrer la plage">
+              Plage du Dr. {$curr_plage->_ref_chir->_view}
+              de {$curr_plage->debut|date_format:"%Hh%M"} à {$curr_plage->fin|date_format:"%Hh%M"}
+            </a>
             <form action="index.php" target="_self" name="anesth{$curr_plage->id}" method="post" encoding="">
             <input type="hidden" name="m" value="dPbloc" />
             <input type="hidden" name="tab" value="{$tab}" />
@@ -66,10 +68,12 @@
                 </td>
                 <td>{$curr_operation->_ref_pat->_view}</td>
                 <td>
+                  <a href="?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_operation->operation_id}">
                   {$curr_operation->_ext_code_ccam->code}
                   {if $curr_operation->CCAM_code2}
                   <br />{$curr_operation->_ext_code_ccam2->code}
                   {/if}
+                  </a>
                 </td>
                 <td>{$curr_operation->cote}</td>
                 <td>{$curr_operation->temp_operation|date_format:"%Hh%M"}</td>
@@ -115,24 +119,26 @@
           <th>
             Intervention
             <br />
-            Coté {$selOp->cote}
+            Côté {$selOp->cote}
             <br />
             ({$selOp->temp_operation|date_format:"%Hh%M"})
           </th>
           <td class="text">
-            <strong>{$selOp->_ext_code_ccam->libelleLong}</strong> <i>({$selOp->_ext_code_ccam->code})</i>
+            <strong>{$selOp->_ext_code_ccam->libelleLong}</strong> 
+            <em>(<a class="action" href="?m=dPccam&amp;tab=vw_full_code&amp;codeacte={$selOp->CCAM_code}">{$selOp->CCAM_code}</a>)</em>
             <ul>
             {foreach from=$selOp->_ext_code_ccam->activites item=curr_act}
-              <li><i>{$curr_act.nom}</i>
+              <li><em>{$curr_act.nom}</em>
               {$curr_act.modificateurs}</li>
             {/foreach}
             </ul>
             {if $selOp->CCAM_code2}
             <br />
-            <strong>{$selOp->_ext_code_ccam2->libelleLong}</strong> <i>({$selOp->_ext_code_ccam2->code})</i>
+            <strong>{$selOp->_ext_code_ccam2->libelleLong}</strong>
+            <em>(<a class="action" href="?m=dPccam&amp,tab=vw_full_code&amp;codeacte={$selOp->CCAM_code2}">{$selOp->CCAM_code2}</a>)</em>
             <ul>
             {foreach from=$selOp->_ext_code_ccam2->activites item=curr_act}
-              <li><i>{$curr_act.nom}</i>
+              <li><em>{$curr_act.nom}</em>
               {$curr_act.modificateurs}</li>
             {/foreach}
             </ul>
