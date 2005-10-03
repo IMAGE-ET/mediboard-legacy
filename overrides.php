@@ -22,13 +22,13 @@ class CTitleBlock extends CTitleBlock_core {
 			$s .= "\n$c[2]<td $c[0]>$c[1]</td>$c[3]";
 		}
 
-		if ($this->showhelp) {
-			$s .= "\n<td>";
-			$s .= "\n\t<a href='#$this->helpref' onclick=\"javascript:window.open('?m=help&amp;dialog=1&amp;hid=$this->helpref', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\" title='".$AppUI->_( 'Help' )."'>";
-			$s .= "\n\t\t" . dPshowImage( './images/icons/stock_help-16.png', '16', '16', $AppUI->_( 'Help' ) );
-			$s .= "\n\t</a>";
-			$s .= "\n</td>";
-		}
+//		if ($this->showhelp) {
+//			$s .= "\n<td>";
+//			$s .= "\n\t<a href='#$this->helpref' onclick=\"javascript:window.open('?m=help&amp;dialog=1&amp;hid=$this->helpref', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\" title='".$AppUI->_( 'Help' )."'>";
+//			$s .= "\n\t\t" . dPshowImage( './images/icons/stock_help-16.png', '16', '16', $AppUI->_( 'Help' ) );
+//			$s .= "\n\t</a>";
+//			$s .= "\n</td>";
+//		}
     
 		$s .= "\n</tr>";
 		$s .= "\n</table>";
@@ -125,7 +125,7 @@ class CTabBox extends CTabBox_core {
         
         $s .= "\n\t\t";
         $s .= "<td class='{$sel}Left' />";
-        $s .= "<td class='$sel'><a href='{$this->baseHRef}tab=$k'>$value</a></td>";
+        $s .= "<td class='$sel'><a href='{$this->baseHRef}tab=$v[0]'>$value</a></td>";
         $s .= "<td class='{$sel}Right' />";
       }
 
