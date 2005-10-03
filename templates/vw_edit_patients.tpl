@@ -193,11 +193,11 @@ function followUp(field, sFollowFieldName) {
       <tr>
         <th>Téléphone:</th>
         <td>
-          <input tabindex="11" type="text" name="_tel1" size="2" maxlength="2" value="{$patient->_tel1}" alt="num|2" onkeyup="followUp(this, '_tel2')" /> - 
-          <input tabindex="12" type="text" name="_tel2" size="2" maxlength="2" value="{$patient->_tel2}" alt="num|2" onkeyup="followUp(this, '_tel3')" /> -
-          <input tabindex="13" type="text" name="_tel3" size="2" maxlength="2" value="{$patient->_tel3}" alt="num|2" onkeyup="followUp(this, '_tel4')" /> -
-          <input tabindex="14" type="text" name="_tel4" size="2" maxlength="2" value="{$patient->_tel4}" alt="num|2" onkeyup="followUp(this, '_tel5')" /> -
-          <input tabindex="15" type="text" name="_tel5" size="2" maxlength="2" value="{$patient->_tel5}" alt="num|2" onkeyup="followUp(this, '_tel21')" />
+          <input tabindex="11" type="text" name="_tel1" size="2" maxlength="2" value="{$patient->_tel1}" alt="num|length|2" onkeyup="followUp(this, '_tel2')" /> - 
+          <input tabindex="12" type="text" name="_tel2" size="2" maxlength="2" value="{$patient->_tel2}" alt="num|length|2" onkeyup="followUp(this, '_tel3')" /> -
+          <input tabindex="13" type="text" name="_tel3" size="2" maxlength="2" value="{$patient->_tel3}" alt="num|length|2" onkeyup="followUp(this, '_tel4')" /> -
+          <input tabindex="14" type="text" name="_tel4" size="2" maxlength="2" value="{$patient->_tel4}" alt="num|length|2" onkeyup="followUp(this, '_tel5')" /> -
+          <input tabindex="15" type="text" name="_tel5" size="2" maxlength="2" value="{$patient->_tel5}" alt="num|length|2" onkeyup="followUp(this, '_tel21')" />
         </td>
         <th>
           <input type="hidden" name="medecin3" value="{$patient->_ref_medecin3->medecin_id}" alt="{$patient->_props.medecin3}" />
@@ -213,11 +213,11 @@ function followUp(field, sFollowFieldName) {
       <tr>
         <th>Portable:</th>
         <td>
-          <input tabindex="16" type="text" name="_tel21" size="2" maxlength="2" value="{$patient->_tel21}" alt="num|2" onkeyup="followUp(this, '_tel22')" /> - 
-          <input tabindex="17" type="text" name="_tel22" size="2" maxlength="2" value="{$patient->_tel22}" alt="num|2" onkeyup="followUp(this, '_tel23')" /> -
-          <input tabindex="18" type="text" name="_tel23" size="2" maxlength="2" value="{$patient->_tel23}" alt="num|2" onkeyup="followUp(this, '_tel24')" /> -
-          <input tabindex="19" type="text" name="_tel24" size="2" maxlength="2" value="{$patient->_tel24}" alt="num|2" onkeyup="followUp(this, '_tel25')" /> -
-          <input tabindex="20" type="text" name="_tel25" size="2" maxlength="2" value="{$patient->_tel25}" alt="num|2" />
+          <input tabindex="16" type="text" name="_tel21" size="2" maxlength="2" value="{$patient->_tel21}" alt="num|length|2" onkeyup="followUp(this, '_tel22')" /> - 
+          <input tabindex="17" type="text" name="_tel22" size="2" maxlength="2" value="{$patient->_tel22}" alt="num|length|2" onkeyup="followUp(this, '_tel23')" /> -
+          <input tabindex="18" type="text" name="_tel23" size="2" maxlength="2" value="{$patient->_tel23}" alt="num|length|2" onkeyup="followUp(this, '_tel24')" /> -
+          <input tabindex="19" type="text" name="_tel24" size="2" maxlength="2" value="{$patient->_tel24}" alt="num|length|2" onkeyup="followUp(this, '_tel25')" /> -
+          <input tabindex="20" type="text" name="_tel25" size="2" maxlength="2" value="{$patient->_tel25}" alt="num|length|2" />
         </td>
         <th colspan="3"></th>
       </tr>
