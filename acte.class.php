@@ -142,57 +142,82 @@ class CCodeCCAM
     }
     $this->place = $this->chapitres[3]["rang"];
     
-    //On rentre les remarques
+    // Extraction des remarques
     $query = "select * from notes where CODEACTE = '" . $this->code . "'";
     $result = mysql_query($query);
-    $i = 0;
-    while($row = mysql_fetch_array($result))
-    {
-      $this->remarques[$i] = str_replace("¶", "\n", $row['TEXTE']);
-      $i++;
+    while($row = mysql_fetch_array($result)) {
+      $this->remarques[] = str_replace("¶", "\n", $row['TEXTE']);
     }
     
-    //On rentre les activites associees
-    $query = "select * from activiteacte where CODEACTE = '$this->code'";
+    // Extraction des activités
+    $query = "select ACTIVITE as numero " .
+        "\nfrom activiteacte " .
+        "\nwhere CODEACTE = '$this->code'";
     $result = mysql_query($query);
-    $i = 0;
-    while($row = mysql_fetch_array($result))
-    {
-      $this->activites[$i]["code"] = $row['ACTIVITE'];
-      $i++;
+    while($obj = mysql_fetch_object($result)) {
+      $obj->libelle = "";
+      $this->activites[$obj->numero] = $obj;
     }
-    foreach($this->activites as $key => $value)
-    {
-      $query = "select * from activite where CODE = '" . $this->activites[$key]["code"] . "'";
+    
+    // Libellés des activités
+    foreach($this->remarques as $remarque) {
+      if (preg_match("/Activité (\d) : (.*)/i", $remarque, $match)) {
+        $this->activites[$match[1]]->libelle = $match[2];
+      }
+    }
+    
+    // Détail des activités
+    foreach($this->activites as $key => $value) {
+      $activite =& $this->activites[$key];
+
+      // Type de l'activité
+      $query = "select LIBELLE as `type`" .
+          "\nfrom activite " .
+          "\nwhere CODE = '$activite->numero'";
       $result = mysql_query($query);
-      $row = mysql_fetch_array($result);
-      $this->activites[$key]["nom"] = $row['LIBELLE'];
-      $query = "select COUNT(*) as TOTAL, SUM(PRIXUNITAIRE) as TARIF from phaseacte where ";
-      $query .= "CODEACTE = '" . $this->code . "' ";
-      $query .= "and ACTIVITE = '" . $this->activites[$key]["code"] . "' ";
-      $query .= "group by ACTIVITE";
+      $obj = mysql_fetch_object($result);
+      $activite->type = $obj->type;
+      
+      // Extraction des phases
+      $activite->phases = array();
+      $phases =& $activite->phases;
+      $query = "select PHASE as phase, PRIXUNITAIRE as tarif" .
+          "\nfrom phaseacte " .
+          "\nwhere CODEACTE = '$this->code'" .
+          "\nand ACTIVITE = '$activite->numero'" .
+          "\norder by PHASE";
       $result = mysql_query($query);
-      $row = mysql_fetch_array($result);
-      $this->activites[$key]["phases"] = $row['TOTAL'];
-      $this->activites[$key]["tarif"] = number_format(floatval($row['TARIF'] / 100), 2, ',', ' ');
-      $query = "select * from modificateuracte where ";
-      $query .= "CODEACTE = '" . $this->code . "' ";
-      $query .= "and CODEACTIVITE = '" . $this->activites[$key]["code"] . "'";
-      $result = mysql_query($query);
-      $this->activites[$key]["modificateurs"] = "";
-      if(mysql_num_rows($result) > 0)
-      {
-        while($row = mysql_fetch_array($result))
-        {
-        $query = "select * from modificateur where CODE = '" . $row['MODIFICATEUR'] . "' order by CODE";
-        $result2 = mysql_query($query);
-        $row2 = mysql_fetch_array($result2);
-          $this->activites[$key]["modificateurs"] .= "<br />".$row2['CODE']." : ".$row2['LIBELLE'];
+      
+      while($obj = mysql_fetch_object($result)) {
+        $phases[$obj->phase] = $obj;
+        $phase =& $phases[$obj->phase];
+        $phase->tarif = floatval($obj->tarif)/100;
+        $phase->libelle = "Phase Principale";
+      }
+      
+      // Libellés des phases
+      foreach($this->remarques as $remarque) {
+        if (preg_match("/Phase (\d) : (.*)/i", $remarque, $match)) {
+          if (isset($phases[$match[1]])) {
+            $phases[$match[1]]->libelle = $match[2];
+          }
         }
       }
-      else
-      {
-        $this->activites[$key]["modificateurs"] = "Aucun";
+    
+      // Extraction des modificateurs
+      $activite->modificateurs = array();
+      $modificateurs =& $activite->modificateurs;
+      $query = "select * from modificateuracte where ";
+      $query .= "CODEACTE = '$this->code' ";
+      $query .= "and CODEACTIVITE = '$activite->numero'";
+      $result = mysql_query($query);
+      
+      while($row = mysql_fetch_array($result)) {
+        $query = "select CODE as code, LIBELLE as libelle" .
+            "\nfrom modificateur " .
+            "\nwhere CODE = '" . $row['MODIFICATEUR'] . "'" .
+            "\norder by CODE";
+        $modificateurs[] = mysql_fetch_object(mysql_query($query));
       }
     }
     
@@ -248,6 +273,8 @@ class CCodeCCAM
     do_connect();
   
   }
+  
+  
 } 
 
 ?>

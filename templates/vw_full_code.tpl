@@ -56,33 +56,48 @@ function pageMain() {
         {/if}
         
         <tr>
-          <td colspan="2"><strong>Description</strong><br />{$libelle}</td>
+          <td><strong>Description</strong><br />{$libelle}</td>
         </tr>
 
         {foreach from=$rq item=curr_rq}
         <tr>
-          <td colspan="2"><em>{$curr_rq}</em></td>
+          <td><em>{$curr_rq}</em></td>
         </tr>
         {/foreach}
  
         <tr>
-          <td colspan="2"><strong>Activités associées</strong></td>
+          <td><strong>Activités associées</strong></td>
         </tr>
  
         {foreach from=$act item=curr_act}
         <tr>
-          <td valign="top"><strong>{$curr_act.code}:</strong></td>
-          <td valign="top" width="100%">{$curr_act.nom}
+          <td style="vertical-align: top; width: 100%">
             <ul>
-              <li>{$curr_act.phases} phase(s) : {$curr_act.tarif} €</li>
-              <li>modificateurs: {$curr_act.modificateurs}</li>
+              <li>Activité {$curr_act->numero} ({$curr_act->type}) : {$curr_act->libelle}
+                <ul>
+                  <li>Phase(s) :
+                    <ul>
+                      {foreach from=$curr_act->phases item=curr_phase}
+                      <li>Phase {$curr_phase->phase} : {$curr_phase->libelle} : {$curr_phase->tarif}€</li>
+                      {/foreach}
+                    </ul>
+                  </li>
+                  <li>Modificateur(s) :
+                    <ul>
+                      {foreach from=$curr_act->modificateurs item=curr_mod}
+                      <li>{$curr_mod->code} : {$curr_mod->libelle}</li>
+                      {/foreach}
+                    </ul>
+                  </li>
+                </ul>
+              </li>
             </ul>
           </td>
         </tr>
         {/foreach}
         
         <tr>
-          <td colspan="2"><strong>Procédure associée:</strong></td>
+          <td><strong>Procédure associée:</strong></td>
         </tr>
         
         <tr>
