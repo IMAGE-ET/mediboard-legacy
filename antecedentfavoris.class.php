@@ -12,8 +12,8 @@ require_once( $AppUI->getSystemClass ('dp' ) );
 require_once( $AppUI->getModuleClass('dPanesth', 'antecedent') );
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 // Inclusion un peu malheureuse due à l'absence d'une classe CIM10
-$root = $AppUI->getConfig( 'root_dir' );
-require_once("$root/modules/dPcim10/include.php");
+//$root = $AppUI->getConfig( 'root_dir' );
+//require_once("$root/modules/dPcim10/include.php");
 
 class CAntecedentFavoris extends CDpObject {
   // DB Table key
