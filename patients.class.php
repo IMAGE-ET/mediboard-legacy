@@ -84,6 +84,7 @@ class CPatient extends CMbObject {
     
     $this->_props["nom"] = "str|notNull|confidential";
     $this->_props["prenom"] = "str|notNull|confidential";
+    $this->_props["nom_jeune_fille"] = "str|confidential";
     $this->_props["medecin_traitant"] = "ref";
     $this->_props["medecin1"] = "ref";
     $this->_props["medecin2"] = "ref";
