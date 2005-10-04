@@ -11,18 +11,25 @@ function makeURLParam(field, sParamName) {
 }
 
 function popup(width, height, url, name) {
-  params = 'left=50, top=50, height=' + height + ', width=' + width
+  params = 'left=50, top=50, height=' + height + ', width=' + width;
   params += ', resizable=yes, scrollbars=yes, menubar=yes';
   neo = window.open(url, name, params);
   neo.focus();
 }
 
 function popunder(width, height, url, name) {
-  params = 'left=50, top=50, height=' + height + ', width=' + width
+  params = 'left=50, top=50, height=' + height + ', width=' + width;
   params += ', resizable=yes, scrollbars=yes, menubar=yes';
   neo = window.open(url, name, params);
   neo.blur();
   window.focus();
+}
+
+function view_log(classe, id) {
+  url = "index.php?m=system&a=view_history&dialog=1";
+  url += "&object_class=" + classe;
+  url += "&object_id=" + id;
+  popup(500, 500, url, 'history');
 }
 
 function main() {
