@@ -7,6 +7,9 @@
  *  @version $Revision$
  */
 
+global $AppUI, $canRead, $canEdit, $m;
+
+require_once( $AppUI->getModuleClass('system', 'user_log') );
 
 class CDoObjectAddEdit {
   var $className = null;
@@ -64,6 +67,7 @@ class CDoObjectAddEdit {
       }
     } else {
       mbSetValueToSession($this->objectKeyGetVarName);
+      $this->doLog("delete");
       if ($this->redirectDelete) {
         $AppUI->setMsg($this->deleteMsg, UI_MSG_ALERT);
         $this->redirect =& $this->redirectDelete;
@@ -81,6 +85,7 @@ class CDoObjectAddEdit {
       }
     } else {
       $isNotNew = @$_POST[$this->objectKeyGetVarName];
+      $this->doLog("store");
       if ($this->redirectStore) {
         $AppUI->setMsg( $isNotNew ? $this->modifyMsg : $this->createMsg, UI_MSG_OK);
         $this->redirect =& $this->redirectStore;
@@ -94,6 +99,18 @@ class CDoObjectAddEdit {
       $AppUI->redirect($this->redirect);;
   }
   
+  function doLog($type) {
+    global $AppUI;
+    $log = new CuserLog;
+    $log->user_id = $AppUI->user_id;
+    $objectKey = $this->_obj->_tbl_key;
+    $log->object_id = $this->_obj->$objectKey;
+    $log->object_class = $this->className;
+    $log->type = $type;
+    $log->date = mbDateTime();
+    $log->store();
+  }
+
   function doIt() {
     $this->doBind();
     
