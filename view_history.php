@@ -45,7 +45,10 @@ foreach($list as $key => $value) {
 }
 $in = implode(", ", $arrayUsers);
 $where = array();
-$where["user_id"] ="IN ($in)";
+if(count($arrayUsers))
+  $where["user_id"] ="IN ($in)";
+else
+  $where["user_id"] = "= 0";
 $listUsers = new CMediusers;
 $listUsers = $listUsers->loadList($where);
 
