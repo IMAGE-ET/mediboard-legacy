@@ -33,12 +33,20 @@
     {/if}
     <th>
       Date
-    </th>
-    <th>
-      Action
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="tab" value="{$tab}" />
       <input type="hidden" name="dialog" value="{$dialog}" />
+    </th>
+    <th>
+      Action
+      <select name="type" onchange="this.form.submit()">
+        <option value="0">&mdash; Tous les types</option>
+        {foreach from=$listTypes item=curr_type}
+        <option value="{$curr_type}" {if $curr_type == $type}selected="selected"{/if}>
+          {$curr_type}
+        </option>
+        {/foreach}
+      </select>
     </th>
   </tr>
   {foreach from=$list item=curr_object}

@@ -19,6 +19,7 @@ $dialog       = mbGetValueFromGet("dialog", 0);
 $user_id      = mbGetValueFromGetOrSession("user_id"     , 0);
 $object_id    = mbGetValueFromGetOrSession("object_id"   , "");
 $object_class = mbGetValueFromGetOrSession("object_class", null);
+$type = mbGetValueFromGetOrSession("type", 0);
 
 // Récupération de la liste des classes disponibles
 $where = array();
@@ -48,6 +49,18 @@ $where["user_id"] ="IN ($in)";
 $listUsers = new CMediusers;
 $listUsers = $listUsers->loadList($where);
 
+// Récupération des types disponibles
+$where = array();
+$where[] = "1";
+$order = "type";
+$group = "type";
+$list = new CUserLog;
+$list = $list->loadList($where, $order, null, $group);
+$listTypes = array();
+foreach($list as $key => $value) {
+  $listTypes[] = $value->type;
+}
+
 // Récupération des logs correspondants
 $where = array();
 if($user_id)
@@ -56,6 +69,8 @@ if($object_id)
   $where["object_id"] = "= '$object_id'";
 if($object_class)
   $where["object_class"] = "= '$object_class'";
+if($type)
+  $where["type"] = "= '$type'";
 $order = "date DESC";
 $list = new CUserLog;
 $list = $list->loadList($where, $order, "0, 100");
@@ -71,8 +86,10 @@ $smarty->assign('dialog'      , $dialog      );
 $smarty->assign('object_class', $object_class);
 $smarty->assign('object_id'   , $object_id   );
 $smarty->assign('user_id'     , $user_id     );
+$smarty->assign('type'        , $type        );
 $smarty->assign('listClasses' , $listClasses );
 $smarty->assign('listUsers'   , $listUsers   );
+$smarty->assign('listTypes'   , $listTypes   );
 $smarty->assign('list'        , $list        );
 
 $smarty->display('view_history.tpl');
