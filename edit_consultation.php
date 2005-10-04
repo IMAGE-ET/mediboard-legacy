@@ -56,7 +56,7 @@ if ($selConsult) {
   $userSel->load($consult->_ref_plageconsult->chir_id);
   $userSel->loadRefs();
   // On vérifie que l'utilisateur a les droits sur la consultation
-  $rigth = false;
+  $right = false;
   foreach($listChir as $key => $value) {
     if($value->user_id == $consult->_ref_plageconsult->chir_id)
       $right = true;
