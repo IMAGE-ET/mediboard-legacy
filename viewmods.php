@@ -109,7 +109,7 @@ foreach ($modules as $row) {
 		// Menu Status term "activate" changed to "Disabled"
 	//$s .= '<a href="'.$query_string . '&cmd=toggleMenu">'.($row['mod_ui_active'] ? $AppUI->_('hide') : $AppUI->_('show')).'</a></td>';
 	if ($canEdit) {
-		$s .= '<a href="'.$query_string . '&cmd=toggleMenu">';
+		$s .= '<a class="action" href="'.$query_string . '&cmd=toggleMenu">';
 	}
 	$s .= ($row['mod_ui_active'] ? $AppUI->_('visible') : $AppUI->_('hidden'));
 	if ($canEdit) {
@@ -131,7 +131,7 @@ foreach ($modFiles as $v) {
 		$s .= '<td>';
 		$s .= '<img src="./images/obj/dotgrey.gif" width="12" height="12" />&nbsp;';
 		if ($canEdit) {
-			$s .= '<a href="?m=' . $m . '&a=domodsql&cmd=install&mod_directory=' . $v . '">';
+			$s .= '<a class="action" href="?m=' . $m . '&a=domodsql&cmd=install&mod_directory=' . $v . '">';
 		}
 		$s .= $AppUI->_('install');
 		if ($canEdit) {
