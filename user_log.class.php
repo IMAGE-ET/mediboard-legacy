@@ -13,7 +13,7 @@ global $AppUI;
 
 // Require all dPmodules class
 foreach (glob("modules/dP*/*.class.php") as $fileName) {
-  require_once($AppUI->getConfig( 'root_dir' )."/".$fileName);
+  include_once($AppUI->getConfig( 'root_dir' )."/".$fileName);
 }
 // Add the mediusers class
 require_once( $AppUI->getModuleClass ('mediusers' ) );
