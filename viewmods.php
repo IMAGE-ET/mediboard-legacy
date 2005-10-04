@@ -88,7 +88,8 @@ foreach ($modules as $row) {
 
 	if ( $ok )
 	{
-		if ( $config[ 'mod_config' ] == true && $canEdit )
+		//if ( $config[ 'mod_config' ] == true && $canEdit )
+    if ( $canEdit )
 		{
 			$s .= ' | <a class="action" href="'.$query_string . '&cmd=configure">'.$AppUI->_('configure').'</a>';
 		}
