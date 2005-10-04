@@ -16,10 +16,10 @@ if (!$canRead) {
 }
 
 $dialog       = mbGetValueFromGet("dialog", 0);
-$user_id      = mbGetValueFromGetOrSession("user_id"     , 0);
-$object_id    = mbGetValueFromGetOrSession("object_id"   , "");
+$user_id      = mbGetValueFromGetOrSession("user_id"     , null);
+$object_id    = mbGetValueFromGetOrSession("object_id"   , null);
 $object_class = mbGetValueFromGetOrSession("object_class", null);
-$type = mbGetValueFromGetOrSession("type", 0);
+$type         = mbGetValueFromGetOrSession("type"        , null);
 
 // Récupération de la liste des classes disponibles
 $where = array();
