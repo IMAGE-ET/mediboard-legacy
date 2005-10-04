@@ -149,7 +149,8 @@ class CConsultation extends CMbObject {
     $etat[CC_EN_COURS]       = "En cours";
     $etat[CC_TERMINE]        = "Terminée";
     
-    $this->_etat = $etat[$this->chrono];
+    if($this->chrono)
+      $this->_etat = $etat[$this->chrono];
     
     $docs_valid = 0;
     foreach ($this->_ref_documents as $curr_doc) {
