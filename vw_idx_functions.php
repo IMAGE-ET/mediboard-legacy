@@ -29,7 +29,7 @@ foreach($listGroups as $key => $value) {
 
 // Récupération de la fonction selectionnée
 $userfunction = new CFunctions;
-$userfunction->load(mbGetValueFromGetOrSession("userfunction", 0));
+$userfunction->load(mbGetValueFromGetOrSession("function_id", 0));
 $userfunction->loadRefsFwd();
 
 // Création du template

@@ -28,6 +28,16 @@ class CGroups extends CMbObject {
 
     $this->_props["text"] = "str|notNull|confidential";
   }
+  
+  function updateFormFields () {
+    parent::updateFormFields();
+
+    $this->_view = $this->text;
+    if(strlen($this->text) > 25)
+      $this->_shortview = substr($this->text, 0, 23)."...";
+    else
+      $this->_shortview = $this->text;
+  }
 
   function canDelete(&$msg, $oid = null) {
     $tables[] = array (

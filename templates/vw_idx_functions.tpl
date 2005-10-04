@@ -15,7 +15,7 @@ function popColor() {
   url += "&a=color_selector";
   url += "&dialog=1";
   url += "&callback=setColor";
-  popup(320, 250, url, "calwin");
+  popup(320, 250, url, "color");
 }
 
 function setColor(color) {
@@ -37,8 +37,8 @@ function setColor(color) {
         <tr><th>Groupe {$curr_group->text} &mdash; {$curr_group->_ref_functions|@count} fonction(s)</th><th>Utilisateurs</th></tr>
         {foreach from=$curr_group->_ref_functions item=curr_function}
         <tr>
-          <td style="background: #fff"><a href="index.php?m={$m}&amp;tab={$tab}&amp;userfunction={$curr_function->function_id}">{$curr_function->text}</a></td>
-          <td style="background: #{$curr_function->color}"><a href="index.php?m={$m}&amp;tab={$tab}&amp;userfunction={$curr_function->function_id}">{$curr_function->_ref_users|@count}</a></td></tr>
+          <td style="background: #fff"><a href="index.php?m={$m}&amp;tab={$tab}&amp;function_id={$curr_function->function_id}">{$curr_function->text}</a></td>
+          <td style="background: #{$curr_function->color}"><a href="index.php?m={$m}&amp;tab={$tab}&amp;function_id={$curr_function->function_id}">{$curr_function->_ref_users|@count}</a></td></tr>
         {/foreach}
       {/foreach}
       </table>

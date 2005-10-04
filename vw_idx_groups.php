@@ -25,7 +25,7 @@ foreach($listGroups as $key => $value) {
 
 // Récupération du groupe selectionné
 $usergroup = new CGroups;
-$usergroup->load(mbGetValueFromGetOrSession("usergroup", 0));
+$usergroup->load(mbGetValueFromGetOrSession("group_id", 0));
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );

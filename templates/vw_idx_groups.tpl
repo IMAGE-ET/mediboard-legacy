@@ -22,8 +22,8 @@ function checkGroup() {
         <tr><th>liste des groupes</th><th>Fonctions associées</th></tr>
         {foreach from=$listGroups item=curr_group}
         <tr>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;usergroup={$curr_group->group_id}">{$curr_group->text}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;usergroup={$curr_group->group_id}">{$curr_group->_ref_functions|@count}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;group_id={$curr_group->group_id}">{$curr_group->text}</a></td>
+          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;group_id={$curr_group->group_id}">{$curr_group->_ref_functions|@count}</a></td>
         </tr>
         {/foreach}
       </table>
