@@ -318,7 +318,10 @@ class CMbObject extends CDpObject {
     $object = db_loadObject( $sql, $this, false, $strip );
     $this->checkConfidential();
     $this->updateFormFields();
-    return $this;
+    if($object)
+      return $this;
+    else
+      return false;
   }
   
   function checkConfidential($props = null) {
