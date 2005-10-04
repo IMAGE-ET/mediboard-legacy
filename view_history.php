@@ -74,8 +74,11 @@ if($type)
 $order = "date DESC";
 $list = new CUserLog;
 $list = $list->loadList($where, $order, "0, 100");
+$item = "";
 foreach($list as $key => $value) {
   $list[$key]->loadRefsFwd();
+  if($item == "")
+    $item = $list[$key]->_ref_object->_view;
 }
 
 // Création du template
@@ -90,6 +93,7 @@ $smarty->assign('type'        , $type        );
 $smarty->assign('listClasses' , $listClasses );
 $smarty->assign('listUsers'   , $listUsers   );
 $smarty->assign('listTypes'   , $listTypes   );
+$smarty->assign('item'        , $item        );
 $smarty->assign('list'        , $list        );
 
 $smarty->display('view_history.tpl');

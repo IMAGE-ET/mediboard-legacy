@@ -1,5 +1,16 @@
 <form name="filterFrm" action="index.php?m={$m}" method="get" onsubmit="return checkForm(this)">
 <table class="tbl">
+  {if $dialog}
+  <tr>
+    <th colspan="3" class="title">
+      {if $list|@count > 0}
+      Historique de {$item}
+      {else}
+      Pas d'historique
+      {/if}
+    </th>
+  </tr>
+  {/if}
   <tr>
     <th>
       Utilisateur
@@ -39,6 +50,7 @@
     </th>
     <th>
       Action
+      {if !$dialog}
       <select name="type" onchange="this.form.submit()">
         <option value="0">&mdash; Tous les types</option>
         {foreach from=$listTypes item=curr_type}
@@ -47,6 +59,7 @@
         </option>
         {/foreach}
       </select>
+      {/if}
     </th>
   </tr>
   {foreach from=$list item=curr_object}
