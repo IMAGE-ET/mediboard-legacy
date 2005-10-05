@@ -386,7 +386,7 @@ function pageMain() {
             <label for="editFrm_chir_id" title="Chirurgien Responsable. Obligatoire">Chirurgien:</label>
           </th>
           <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if $chir->user_id}{$chir->_view}{/if}" readonly="readonly" /></td>
-          <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()"></td>
+          <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()" /></td>
         </tr>
 
         {if !$protocole}

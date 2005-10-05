@@ -46,8 +46,8 @@ function pageMain() {
     <td colspan="2">
       <form action="index.php" name="selection" method="get">
 
-      <input type="hidden" name="m" value="{$m}">
-      <input type="hidden" name="tab" value="{$tab}">
+      <input type="hidden" name="m" value="{$m}" />
+      <input type="hidden" name="tab" value="{$tab}" />
 
       <label for="selection_selChir">Chirurgien:</label>
       <select name="selChir" onchange="this.form.submit()">
