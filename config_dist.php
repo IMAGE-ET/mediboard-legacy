@@ -69,7 +69,7 @@ $dPconfig['host_locale'] = "fr";
  Check http://www.w3.org/TR/html401/sgml/entities.html
  for information about html special characters.
 */
-$dPconfig['currency_symbol'] = "€";
+$dPconfig['currency_symbol'] = "&euro;";
 
 // default user interface style
 $dPconfig['host_style'] = "mediboard";
