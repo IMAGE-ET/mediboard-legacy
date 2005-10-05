@@ -137,9 +137,7 @@ function setClose() {ldelim}
         <tr>
           <th>Adresse:</th>
           <td {if $dialog} class="readonly" {/if}>
-            <textarea {if $dialog} readonly {/if} name="adresse" />
-              {$medecin->adresse}
-            </textarea>
+            <textarea {if $dialog} readonly {/if} name="adresse" />{$medecin->adresse}</textarea>
           </td>
         </tr>
         

@@ -42,16 +42,13 @@ if($dialog) {
   $medecin_dept = mbGetValueFromGetOrSession("medecin_dept", "17");
 }
 
-$where = null;
+$where = array();
 if ($medecin_nom   ) $where[] = "nom LIKE '$medecin_nom%'";
 if ($medecin_prenom) $where[] = "prenom LIKE '$medecin_prenom%'";
 if ($medecin_dept != "00") $where[] = "cp LIKE '".$medecin_dept."___'";
 
-$medecins = null;
-if ($where) {
-  $medecins = new CMedecin();
-  $medecins = $medecins->loadList($where, "nom, prenom", "0, 100");
-}
+$medecins = new CMedecin();
+$medecins = $medecins->loadList($where, "nom, prenom", "0, 100");
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
