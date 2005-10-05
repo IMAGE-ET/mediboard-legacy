@@ -54,7 +54,7 @@ function checkModele() {
   
   <tr>
     <th><label for="editFrm_nom" title="Intitulé du modèle. Obligatoire">Nom:</label></th>
-    <td><input type="text" name="nom" value="{$compte_rendu->nom}" alt="{$compte_rendu->_props.nom}"></td>
+    <td><input type="text" name="nom" value="{$compte_rendu->nom}" alt="{$compte_rendu->_props.nom}" /></td>
   </tr>
   
   <tr>

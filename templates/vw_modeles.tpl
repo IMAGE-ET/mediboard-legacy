@@ -3,7 +3,7 @@
 
     <td colspan="2">
       <form name="selectPrat" action="index.php" method="GET">
-      <input type="hidden" name="m" value="{$m}">
+      <input type="hidden" name="m" value="{$m}" />
         
       <table class="form">
         <tr>

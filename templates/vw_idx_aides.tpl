@@ -128,7 +128,7 @@ function checkForm() {
 
     <form name="filterFrm" action="?" method="get">
     
-    <input type="hidden" name="m" value="{$m}">
+    <input type="hidden" name="m" value="{$m}" />
         
     <table class="form">
       <tr>
