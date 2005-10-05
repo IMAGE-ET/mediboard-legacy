@@ -4,7 +4,7 @@
       <table>
         <tr>
           <th>
-            <form action="index.php" target="_self" name="selection" method="get" encoding="">
+            <form action="index.php" target="_self" name="selection" method="get">
 
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="tab" value="{$tab}" />
@@ -32,7 +32,7 @@
               Plage du Dr. {$curr_plage->_ref_chir->_view}
               de {$curr_plage->debut|date_format:"%Hh%M"} à {$curr_plage->fin|date_format:"%Hh%M"}
             </a>
-            <form action="index.php" target="_self" name="anesth{$curr_plage->id}" method="post" encoding="">
+            <form action="index.php" target="_self" name="anesth{$curr_plage->id}" method="post">
             <input type="hidden" name="m" value="dPbloc" />
             <input type="hidden" name="tab" value="{$tab}" />
             <input type="hidden" name="otherm" value="{$m}" />
