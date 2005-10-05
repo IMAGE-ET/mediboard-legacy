@@ -15,10 +15,11 @@ if (!$canRead) {
 
 require_once($AppUI->getModuleClass("dPcim10", "codecim10"));
 
+$lang = mbGetValueFromGetOrSession("lang", LANG_FR);
 $keys = mbGetValueFromGetOrSession("keys", "");
 
 $cim10 = new CCodeCIM10();
-$master = $cim10->findCodes($keys);
+$master = $cim10->findCodes($keys, $lang);
 
 $numresults = count($master);
 
@@ -26,6 +27,7 @@ $numresults = count($master);
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->assign('lang', $lang);
 $smarty->assign('keys', $keys);
 $smarty->assign('master', $master);
 $smarty->assign('numresults', $numresults);

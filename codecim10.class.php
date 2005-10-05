@@ -7,6 +7,13 @@
  * @author Romain Ollivier
  */
 
+// Enum for langages
+if(!defined("LANG_FR")) {
+  define("LANG_FR", "FR_OMS");
+  define("LANG_EN", "EN_OMS");
+  define("LANG_DE", "GE_DIMDI");
+}
+
 class CCodeCIM10 {
 
   // Lite props
@@ -37,7 +44,7 @@ class CCodeCIM10 {
   }
   
   // Chargement des données Lite
-  function loadLite($lang = "FR_OMS", $connection = 1) {
+  function loadLite($lang = LANG_FR, $connection = 1) {
     $this->_lang = $lang;
     
     if($connection) {
@@ -88,7 +95,7 @@ class CCodeCIM10 {
   }
   
   // Chargement des données
-  function load($lang = "FR_OMS", $connection = 1) {
+  function load($lang = LANG_FR, $connection = 1) {
     if($connection) {
       $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
         or die("Could not connect");
@@ -110,8 +117,7 @@ class CCodeCIM10 {
           "\nFROM libelle" .
           "\nWHERE LID = '".$row['LID']."'";
       $result2 = mysql_query($query);
-      $row2 = mysql_fetch_array($result2);
-      if($row2) {
+      if($row2 = mysql_fetch_array($result2)) {
         $this->descr[$i] = $row2[$this->_lang];
         $i++;
       }
@@ -129,9 +135,10 @@ class CCodeCIM10 {
           "\nFROM memo" .
           "\nWHERE MID = '".$row['MID']."'";
       $result2 = mysql_query($query);
-      $row2 = mysql_fetch_array($result2);
-      $this->glossaire[$i] = $row2[$this->_lang];
-      $i++;
+      if($row2 = mysql_fetch_array($result2)) {
+        $this->glossaire[$i] = $row2[$this->_lang];
+        $i++;
+      }
     }
 
     //include
@@ -146,9 +153,10 @@ class CCodeCIM10 {
           "\nFROM libelle" .
           "\nWHERE LID = '".$row['LID']."'";
       $result2 = mysql_query($query);
-      $row2 = mysql_fetch_array($result2);
-      $this->include[$i] = $row2[$this->_lang];
-      $i++;
+      if($row2 = mysql_fetch_array($result2)) {
+        $this->include[$i] = $row2[$this->_lang];
+        $i++;
+      }
     }
 
     //indir
@@ -163,9 +171,10 @@ class CCodeCIM10 {
           "\nFROM libelle" .
           "\nWHERE LID = '".$row['LID']."'";
       $result2 = mysql_query($query);
-      $row2 = mysql_fetch_array($result2);
-      $this->indir[$i] = $row2[$this->_lang];
-      $i++;
+      if($row2 = mysql_fetch_array($result2)) {
+        $this->indir[$i] = $row2[$this->_lang];
+        $i++;
+      }
     }
   
     //notes
@@ -180,9 +189,10 @@ class CCodeCIM10 {
           "\nFROM memo" .
           "\nWHERE MID = '".$row['MID']."'";
       $result2 = mysql_query($query);
-      $row2 = mysql_fetch_array($result2);
-      $this->notes[$i] = $row2[$this->_lang];
-      $i++;
+      if($row2 = mysql_fetch_array($result2)) {
+        $this->notes[$i] = $row2[$this->_lang];
+        $i++;
+      }
     }
 
     if($connection) {
@@ -214,10 +224,11 @@ class CCodeCIM10 {
           "\nFROM master" .
           "\nWHERE SID = '".$row['excl']."'";
       $result2 = mysql_query($query);
-      $row2 = mysql_fetch_array($result2);
-      $this->_exclude[$i] = new CCodeCIM10($row2['abbrev']);
-      $this->_exclude[$i]->loadLite($this->_lang, 0);
-      $i++;
+      if($row2 = mysql_fetch_array($result2)) {
+        $this->_exclude[$i] = new CCodeCIM10($row2['abbrev']);
+        $this->_exclude[$i]->loadLite($this->_lang, 0);
+        $i++;
+      }
     }
     
     // Arborescence
@@ -315,7 +326,7 @@ class CCodeCIM10 {
 }
   
   // Sommaire
-  function getSommaire($lang = "FR_OMS", $connection = 1) {
+  function getSommaire($lang = LANG_FR, $connection = 1) {
     $this->_lang = $lang;
     if($connection) {
       $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
@@ -350,7 +361,7 @@ class CCodeCIM10 {
   }
   
   // Recherche de codes
-  function findCodes($keys, $lang = "FR_OMS", $connection = 1) {
+  function findCodes($keys, $lang = LANG_FR, $connection = 1) {
     $this->_lang = $lang;
     if($connection) {
       $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
@@ -364,7 +375,7 @@ class CCodeCIM10 {
     if($keys != "") {
       $query .= " OR (1";
       foreach($keywords as $key => $value) {
-        $query .= " AND FR_OMS LIKE '%".addslashes($value)."%'";
+        $query .= " AND $lang LIKE '%".addslashes($value)."%'";
       }
       $query .= ")";
     }
