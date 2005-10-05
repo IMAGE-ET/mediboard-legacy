@@ -7,6 +7,11 @@
 * @author Thomas Despoix
 */
 
+if (!preg_match("/5.\d+.\d+/", phpversion())) {
+	trigger_error("sorry, PHP5 is needed");
+  return;
+}
+
 class CMbXMLDocument extends DOMDocument {
   function __construct() {
     parent::__construct("1.0", "iso-8859-1");

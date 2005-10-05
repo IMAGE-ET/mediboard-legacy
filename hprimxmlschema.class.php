@@ -7,6 +7,11 @@
 * @author Thomas Despoix
 */
 
+if (!preg_match("/5.\d+.\d+/", phpversion())) {
+  trigger_error("sorry, PHP5 is needed");
+  return;
+}
+
 global $AppUI, $m;
 
 require_once($AppUI->getModuleClass("dPinterop", "mbxmldocument"));

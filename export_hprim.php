@@ -9,6 +9,11 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
+if (!preg_match("/5.\d+.\d+/", phpversion())) {
+  $AppUI->setMsg("Désolé, l'export H'XML nécessite", UI_MSG_ERROR);
+  return;
+}
+
 if (!$canRead) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }

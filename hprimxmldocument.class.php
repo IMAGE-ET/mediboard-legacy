@@ -7,6 +7,11 @@
 * @author Thomas Despoix
 */
 
+if (!preg_match("/5.\d+.\d+/", phpversion())) {
+  trigger_error("sorry, PHP5 is needed");
+  return;
+}
+
 global $AppUI, $m;
 
 require_once($AppUI->getModuleClass("dPinterop", "mbxmldocument"));
@@ -38,11 +43,11 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     $this->addAttribute($part, "referent", "non");
   }
     
-  function addUniteFonctionnelle($elParent, CFunctions $mbFunction) {
+  function addUniteFonctionnelle($elParent, $mbFunction) {
     $this->addCodeLibelle($elParent, "uniteFonctionnelle", "Func$mbFunction->function_id", $mbFunction->_view);
   }
   
-  function addProfessionnelSante($elParent, CMediusers $mbMediuser) {
+  function addProfessionnelSante($elParent, $mbMediuser) {
     $medecin = $this->addElement($elParent, "medecin");
     $this->addElement($medecin, "numeroAdeli", $mbMediuser->adeli);
     $identification = $this->addElement($medecin, "identification");
@@ -55,7 +60,7 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     return $medecin;
   }
   
-  function addActeCCAM($elParent, CCodeCCAM $mbCodeCCAM, COperation $mbOp) {
+  function addActeCCAM($elParent, $mbCodeCCAM, $mbOp) {
     if (!$mbCodeCCAM->code) {
       return null;
 		}
@@ -97,7 +102,7 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     $this->purgeEmptyElementsNode($this->documentElement);
   }
   
-  function purgeEmptyElementsNode(DOMNode $node) {
+  function purgeEmptyElementsNode($node) {
     // childNodes undefined for non-element nodes (eg text nodes)
     if ($node->childNodes) {
       // Copy childNodes array
