@@ -5,9 +5,11 @@
         <tr>
           <th>
             <form action="index.php" target="_self" name="selection" method="get" encoding="">
-            <input type="hidden" name="m" value="{$m}">
+
+            <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="tab" value="{$tab}" />
             Choisir une salle :
+
             <select name="salle" onchange="this.form.submit()">
               <option value="0">Aucune salle</option>
               {foreach from=$listSalles item=curr_salle}
@@ -16,6 +18,7 @@
               </option>
               {/foreach}
             </select>
+
             </form>
             <hr />
           </th>
