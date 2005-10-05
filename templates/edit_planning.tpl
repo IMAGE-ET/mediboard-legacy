@@ -141,7 +141,7 @@ function pageMain() {
             </select>
           </td>
           <th><label for="addPlage__double" title="Cochez pour n'affecter qu'une semaine sur deux">1 sem / 2:</label></th>
-          <td><input type="checkbox" name="_double"></td>
+          <td><input type="checkbox" name="_double" /></td>
         </tr>
         <tr>
           <td class="button" colspan="4">
