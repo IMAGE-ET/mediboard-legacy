@@ -6,15 +6,15 @@
   <tr>
     <td class="leftPane">
       <form action="index.php" target="_self" name="selection" method="get" encoding="">
-      <input type="hidden" name="m" value="{$m}">
-      <input type="hidden" name="tab" value="{$tab}">
+      <input type="hidden" name="m" value="{$m}" />
+      <input type="hidden" name="tab" value="{$tab}" />
 
       <table class="form">
         <tr>
           <th class="mandatory">Code de l'acte:</th>
           <td>
-            <input tabindex="1" type="text" name="code" value="{$cim10->code}">
-            <input tabindex="2" type="submit" value="afficher">
+            <input tabindex="1" type="text" name="code" value="{$cim10->code}" />
+            <input tabindex="2" type="submit" value="afficher" />
           </td>
         </tr>
       </table>
@@ -25,11 +25,13 @@
     {if $canEdit}
     <td class="rightPane">
       <form name="addFavoris" action="./index.php?m={$m}" method="post">
-      <input type="hidden" name="dosql" value="do_favoris_aed">
-      <input type="hidden" name="del" value="0">
-      <input type="hidden" name="favoris_code" value="{$cim10->code}">
-      <input type="hidden" name="favoris_user" value="{$user}">
-      <input class="button" type="submit" name="btnFuseAction" value="Ajouter à mes favoris">
+      
+      <input type="hidden" name="dosql" value="do_favoris_aed" />
+      <input type="hidden" name="del" value="0" />
+      <input type="hidden" name="favoris_code" value="{$cim10->code}" />
+      <input type="hidden" name="favoris_user" value="{$user}" />
+      <input class="button" type="submit" name="btnFuseAction" value="Ajouter à mes favoris" />
+      
       </form>
     </td>
     {/if}

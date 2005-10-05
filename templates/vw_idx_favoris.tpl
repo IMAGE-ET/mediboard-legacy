@@ -8,10 +8,10 @@
       {$curr_code->libelle}<br />
 
       <form name="delFavoris" action="./index.php?m={$m}" method="post">
-      <input type="hidden" name="dosql" value="do_favoris_aed">
-      <input type="hidden" name="del" value="1">
-      <input type="hidden" name="favoris_id" value="{$curr_code->_favoris_id}">
-	  <input class="button" type="submit" name="btnFuseAction" value="Retirer de mes favoris">
+      <input type="hidden" name="dosql" value="do_favoris_aed" />
+      <input type="hidden" name="del" value="1" />
+      <input type="hidden" name="favoris_id" value="{$curr_code->_favoris_id}" />
+	  <input class="button" type="submit" name="btnFuseAction" value="Retirer de mes favoris" />
 	  </form>
     </td>
   {if ($curr_key+1) is div by 4}

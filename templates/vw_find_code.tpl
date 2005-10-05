@@ -1,6 +1,7 @@
 <form action="index.php" target="_self" name="selection" method="get" encoding="">
-<input type="hidden" name="m" value="{$m}">
-<input type="hidden" name="tab" value="1">
+
+<input type="hidden" name="m" value="{$m}" />
+<input type="hidden" name="tab" value="1" />
 
 <table class="form">
   <tr>
