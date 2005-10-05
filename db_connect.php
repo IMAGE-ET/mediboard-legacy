@@ -169,6 +169,7 @@ function db_loadColumn( $sql, $maxrows=NULL ) {
 function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
 	$cur = db_exec( $sql );
 	if (!$cur) {
+    mbTrace($sql, 'sql');
 		die( "db_loadObjectList : " . db_error() );
 	}
 	$list = array();

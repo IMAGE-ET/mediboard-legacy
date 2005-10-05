@@ -209,7 +209,7 @@ function mbLoadScript ($filepath) {
  * Only to be called while in the HTML header.  */
 function mbLinkStylesheet ($filepath, $media = "all") {
   global $mb_version_build;
-  echo "<link rel='stylesheet' type='text/css' href='$filepath?build=$mb_version_build' media='$media' />";
+  echo "\n<link rel='stylesheet' type='text/css' href='$filepath?build=$mb_version_build' media='$media' />";
 }
 
 /**
@@ -217,7 +217,7 @@ function mbLinkStylesheet ($filepath, $media = "all") {
  * Only to be called while in the HTML header.  */
 function mbLinkShortcutIcon($filepath) {
   global $mb_version_build;
-  echo "<link rel='shortcut icon' type='image/ico' href='$filepath?build=$mb_version_build' />";
+  echo "\n<link rel='shortcut icon' type='image/ico' href='$filepath?build=$mb_version_build' />";
 }
 
 /**
@@ -225,6 +225,6 @@ function mbLinkShortcutIcon($filepath) {
  * @return string: the link to mediboard.org  */
 function mbPortalLink( $page="Accueil", $title="Portail Mediboard" ) {
   global $AppUI;
-  return "<a href=\"http://www.mediboard.org/public/tiki-index.php?page=$page\" target=\"_blank\">$title</a>";
+  return "\n<a href=\"http://www.mediboard.org/public/tiki-index.php?page=$page\" target=\"_blank\">$title</a>";
 }
 ?>
