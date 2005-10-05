@@ -12,7 +12,7 @@ function setClose(){
 </script>
 {/literal}
 
-<form action="index.php" target="_self" name="frmSelector" method="get" encoding="">
+<form action="index.php" target="_self" name="frmSelector" method="get">
 
 <input type="hidden" name="m" value="mediusers" />
 <input type="hidden" name="a" value="chir_selector" />
