@@ -18,15 +18,15 @@ function pageMain() {
         <tr>
            <td colspan="2">
             <form action="index.php?m={$m}&amp;tab={$tab}" target="_self" name="selection" method="get" encoding="">
-            <input type="hidden" name="m" value="{$m}">
-            <input type="hidden" name="tab" value="{$tab}">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="tab" value="{$tab}" />
 
             <table class="form">
               <tr>
                 <th class="mandatory">Code de l'acte:</th>
                 <td>
-                  <input tabindex="1" type="text" name="codeacte" value="{$codeacte}">
-                  <input tabindex="2" type="submit" value="afficher">
+                  <input tabindex="1" type="text" name="codeacte" value="{$codeacte}" />
+                  <input tabindex="2" type="submit" value="afficher" />
                 </td>
               </tr>
             </table>
@@ -39,14 +39,15 @@ function pageMain() {
         <tr>
           <td colspan="2">
             <form name="addFavoris" action="./index.php?m={$m}" method="post">
-            <input type="hidden" name="dosql" value="do_favoris_aed">
-            <input type="hidden" name="del" value="0">
-            <input type="hidden" name="favoris_code" value="{$codeacte}">
-            <input type="hidden" name="favoris_user" value="{$user}">
+            
+            <input type="hidden" name="dosql" value="do_favoris_aed" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="favoris_code" value="{$codeacte}" />
+            <input type="hidden" name="favoris_user" value="{$user}" />
 
             <table class="form">
               <tr>
-                <td class="button"><input class="button" type="submit" name="btnFuseAction" value="Ajouter à mes favoris"></td>
+                <td class="button"><input class="button" type="submit" name="btnFuseAction" value="Ajouter à mes favoris" /></td>
               </tr>
             </table>
 

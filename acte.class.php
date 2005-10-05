@@ -143,9 +143,10 @@ class CCodeCCAM
     $this->place = $this->chapitres[3]["rang"];
     
     // Extraction des remarques
-    $query = "select * from notes where CODEACTE = '" . $this->code . "'";
+    $this->remarques = array();
+    $query = "select * from notes where CODEACTE = '$this->code'";
     $result = mysql_query($query);
-    while($row = mysql_fetch_array($result)) {
+    while ($row = mysql_fetch_array($result)) {
       $this->remarques[] = str_replace("¶", "\n", $row['TEXTE']);
     }
     
