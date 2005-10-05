@@ -201,7 +201,7 @@ function printPack(op, form) {
           <input type="file" name="formfile" />
         </th>
         <td>
-          <input type="submit" value="ajouter">
+          <input type="submit" value="ajouter" />
           </form>
         </td>
       </tr>
@@ -288,7 +288,7 @@ function printPack(op, form) {
           <input type="file" name="formfile" />
         </th>
         <td>
-          <input type="submit" value="ajouter">
+          <input type="submit" value="ajouter" />
           </form>
         </td>
       </tr>
@@ -351,7 +351,7 @@ function printPack(op, form) {
           <input type="file" name="formfile" />
         </th>
         <td>
-          <input type="submit" value="ajouter">
+          <input type="submit" value="ajouter" />
           </form>
         </td>
       </tr>

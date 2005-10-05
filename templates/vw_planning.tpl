@@ -58,8 +58,8 @@ function pageMain() {
     <td>
       <form action="index.php" name="selection" method="get">
 
-      <input type="hidden" name="m" value="{$m}">
-      <input type="hidden" name="tab" value="{$tab}">
+      <input type="hidden" name="m" value="{$m}" />
+      <input type="hidden" name="tab" value="{$tab}" />
 
       <label for="selection_chirSel">Praticien:</label>
       <select name="chirSel" onchange="this.form.submit()">
@@ -193,7 +193,7 @@ function pageMain() {
                 </select> minutes</td>
                 <th><label>Type de répétition:</label></th>
                 <td>
-                  <input type="checkbox" name="_double">
+                  <input type="checkbox" name="_double" />
                   <label for="editFrm__double">Une semaine sur deux</label>
                 </td>
               <tr>

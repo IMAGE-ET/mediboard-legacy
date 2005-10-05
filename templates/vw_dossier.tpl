@@ -159,7 +159,7 @@ function printIntervention(id) {
             <input type="file" name="formfile" />
           </th>
           <td class="greedyPane">
-            <input type="submit" value="ajouter">
+            <input type="submit" value="ajouter" />
             </form>
           </td>
         </tr>
@@ -246,7 +246,7 @@ function printIntervention(id) {
             <input type="file" name="formfile" />
           </th>
           <td class="greedyPane">
-            <input type="submit" value="ajouter">
+            <input type="submit" value="ajouter" />
             </form>
           </td>
         </tr>
@@ -326,7 +326,7 @@ function printIntervention(id) {
             <input type="file" name="formfile" />
           </th>
           <td>
-            <input type="submit" value="ajouter">
+            <input type="submit" value="ajouter" />
             </form>
           </td>
         </tr>

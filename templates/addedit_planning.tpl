@@ -184,7 +184,7 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
                 <img src="modules/{$m}/images/cross.png" />
               </button>
             </td>
-            <td class="button"><input type="button" value="choisir un praticien" onclick="popChir()"></td>
+            <td class="button"><input type="button" value="choisir un praticien" onclick="popChir()" /></td>
         </tr>
 
         <tr>

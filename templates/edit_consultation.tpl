@@ -378,7 +378,7 @@ function pageMain() {
       	  <td class="text" colspan="2"><textarea name="traitement" rows="5">{$consult->traitement}</textarea></td>
         </tr>
         <tr>
-          <td class="button" colspan="4"><input type="submit" value="sauver"></td>
+          <td class="button" colspan="4"><input type="submit" value="sauver" /></td>
         </tr>
       </table>
       </form>
@@ -422,7 +422,7 @@ function pageMain() {
               <input type="hidden" name="del" value="0" />
               <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />
               <input type="file" name="formfile" size="0" /><br />
-              <input type="submit" value="ajouter">
+              <input type="submit" value="ajouter" />
             </form>
           </td>
           <td>
