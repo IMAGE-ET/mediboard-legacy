@@ -1,7 +1,7 @@
 <table class="fullCode">
   <tr>
     <th colspan="2">
-      <form action="index.php" target="_self" name="selection" method="get" encoding="">
+      <form action="index.php" target="_self" name="selectLang" method="get" >
       <select name="lang" style="float:right;" onchange="this.form.submit()">
         <option value="{$smarty.const.LANG_FR}" {if $lang == $smarty.const.LANG_FR}selected="selected"{/if}>
           Français
@@ -23,7 +23,7 @@
   
   <tr>
     <td class="leftPane">
-      <form action="index.php" target="_self" name="selection" method="get" encoding="">
+      <form action="index.php" target="_self" name="selection" method="get">
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="tab" value="{$tab}" />
 

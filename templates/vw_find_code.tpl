@@ -1,7 +1,7 @@
 <table class="form">
   <tr>
     <th class="category" colspan="2">
-      <form action="index.php" target="_self" name="selection" method="get" encoding="">
+      <form action="index.php" target="_self" name="selectLang" method="get" >
       <select name="lang" style="float:right;" onchange="this.form.submit()">
         <option value="{$smarty.const.LANG_FR}" {if $lang == $smarty.const.LANG_FR}selected="selected"{/if}>
           Français
@@ -20,7 +20,11 @@
       </form>
     </th>
   </tr>
-  <form action="index.php" target="_self" name="selection" method="get" encoding="">
+</table>
+
+<form action="index.php" target="_self" name="selection" method="get">
+
+<table class="form">
   <tr>
     <th>Mots clefs:</th>
     <td><input tabindex="1" type="text" name="keys" value="{$keys}" /></td>
@@ -36,6 +40,8 @@
   </tr>
 </table>
 
+</form>
+
 <table class="findCode">
 
   <tr>
@@ -48,17 +54,19 @@
     </th>
   </tr>
 
-
-  <tr>
   {foreach from=$master item=curr_master key=curr_key}
+  {if $curr_key is div by 4}
+  <tr>
+  {/if}
     <td>
-      <strong><a href="index.php?m={$m}&amp;tab=vw_full_code&amp;code={$curr_master.code}">{$curr_master.code}</a></strong><br />
-			{$curr_master.text}
+      <strong>
+        <a href="index.php?m={$m}&amp;tab=vw_full_code&amp;code={$curr_master.code}">{$curr_master.code}</a>
+      </strong>
+      <br />{$curr_master.text}
     </td>
-  {if ($curr_key+1) is div by 4}
-  </tr><tr>
+  {if ($curr_key+1) is div by 4 or ($curr_key+1) == $master|@count}
+  </tr>
   {/if}
   {/foreach}
-  </tr>
 
 </table>
