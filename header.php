@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
 	<meta name="Description" content="Mediboard: Plateforme Open Source pour les Etablissement de Santé" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
-  <?php mbLinkShortcutIcon("style/$uistyle/images/favicon.icos"); ?>
+  <?php mbLinkShortcutIcon("style/$uistyle/images/favicon.ico"); ?>
   <?php mbLinkStyleSheet("style/$uistyle/main.css"); ?>
   <?php mbLoadScript("style/$uistyle/gosu/array.js"); ?>
   <?php mbLoadScript("style/$uistyle/gosu/cookie.js"); ?>

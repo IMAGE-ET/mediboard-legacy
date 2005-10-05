@@ -67,6 +67,7 @@ function prepareForms() {
     // For each element
     var iElement = 0;
     while (oElement = oForm.elements[iElement++]) {
+
       // Create id for each element if id is null
       if (!oElement.id) {
         oElement.id = sFormName + "_" + oElement.name;
@@ -99,7 +100,7 @@ function checkElement(oElement, aSpecFragments) {
   aSpecFragments.removeByValue("confidential");
   bNotNull = aSpecFragments.removeByValue("notNull") > 0;
   if (oElement.value == "") {
-    return bNotNull ? "Ne pas peut pas avoir une valeur nulle" : null;
+    return bNotNull ? "Ne pas peut pas être vide" : null;
   }
   
   switch (aSpecFragments[0]) {
@@ -290,8 +291,15 @@ function checkElement(oElement, aSpecFragments) {
             break;
 
           case "insee":
-            if (!oElement.value.match(/^([1-2][0-9]{2}[0-9]{2}[0-9]{2}[0-9]{3}[0-9]{3})([0-9]{2})$/i)) {
+            aMatches = oElement.value.match(/^([1-2][0-9]{2}[0-9]{2}[0-9]{2}[0-9]{3}[0-9]{3})([0-9]{2})$/i);
+            if (!aMatches) {
               return "Matricule incorrect, doit contenir exactement 15 chiffres (commençant par 1 ou 2)";
+            }
+
+            nCode = parseInt(aMatches[1], 10);
+            nCle = parseInt(aMatches[2], 10);
+            if (97 - (nCode % 97) != nCle) {
+              return "Matricule incorrect, la clé n'est pas valide";
             }
           
             break;

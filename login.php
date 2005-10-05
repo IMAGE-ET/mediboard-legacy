@@ -9,14 +9,26 @@
 	<meta http-equiv="Pragma" content="no-cache" />
   <meta name="Description" content="Mediboard: Plateforme Open Source pour les Etablissement de Santé" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
-  <?php mbLoadScript("style/$uistyle/functions.js"); ?>
-  <?php mbLinkShortcutIcon("style/$uistyle/images/favicon.icos"); ?>
+  <?php mbLinkShortcutIcon("style/$uistyle/images/favicon.ico"); ?>
   <?php mbLinkStyleSheet("style/$uistyle/main.css"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/array.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/cookie.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/debug.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/ie5.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/keyboard.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/string.js"); ?>
+  <?php mbLoadScript("style/$uistyle/gosu/validate.js"); ?>
+  <?php mbLoadScript("style/$uistyle/functions.js"); ?>
+  <?php mbLoadScript("style/$uistyle/cjl_cookie.js"); ?>
+  <?php mbLoadScript("style/$uistyle/printf.js"); ?>
+  <?php mbLoadScript("lib/jscalendar/calendar.js"); ?>
+  <?php mbLoadScript("lib/jscalendar/lang/calendar-fr.js"); ?>
+  <?php mbLoadScript("lib/jscalendar/calendar-setup.js"); ?>
 </head>
 
 <body onload="main()">
 <div id="login">
-  <form name="login" action="./index.php" method="post">
+  <form name="loginFrm" action="./index.php" method="post" onsubmit="return checkForm(this)">
   
 	<input type="hidden" name="login" value="<?php echo time();?>" />
 	<input type="hidden" name="redirect" value="<?php echo $redirect;?>" />
@@ -45,8 +57,8 @@
     </tr>
 
     <tr>
-      <th class="mandatory"><?php echo $AppUI->_('Username'); ?>:</th>
-      <td><input type="text" size="25" maxlength="20" name="username" class="text" /></td>
+      <th><label for="loginFrm_username" title="Nom de compte utilisateur. Obligatoire"><?php echo $AppUI->_('Username'); ?>:</label></th>
+      <td><input type="text" name="username" alt="notNull|str" size="25" maxlength="20" /></td>
 <?php if ($dPconfig['demo_version']) { ?>
       <td rowspan="3" class="category">
         <strong>Administrateur</strong>: admin/admin<br />
@@ -59,12 +71,12 @@
     </tr>
 
     <tr>
-      <th class="mandatory"><?php echo $AppUI->_('Password'); ?>:</th>
-      <td><input type="password" size="25" maxlength="32" name="password" class="text" /></td>
+      <th><label for="loginFrm_password" title="Mot de passe utilisateur. Obligatoire"><?php echo $AppUI->_('Password'); ?>:</label></th>
+      <td><input type="password" name="password" alt="notNull|str" size="25" maxlength="32" /></td>
     </tr>
     
     <tr>
-      <td colspan="2" class="button"><input type="submit" name="login" value="<?php echo $AppUI->_('login'); ?>" /></td>
+      <td colspan="2" class="button"><input type="submit" value="<?php echo $AppUI->_('login'); ?>" /></td>
     </tr>
 
     <tr>
@@ -105,22 +117,19 @@
   
   </form>
 </div>
-<div>
   
-  <?php
-	$errorMsg = $AppUI->getMsg();
-	if ($errorMsg)
-	    echo "<div class='error'>Error: $errorMsg</div>";
+<?php
 
-	$phpVersion = phpversion();
-	if ($phpVersion < "4.1")
-		echo "<div class='warning'>Warning: dotproject is NOT SUPPORT for this PHP Version ($phpVersion)</div>";
+if ($errorMsg = $AppUI->getMsg())
+    echo "<div class='error'>Error: $errorMsg</div>";
 
-	if (!function_exists("mysql_pconnect"))
-		echo "<div class='warning'>Warning: PHP may not be compiled with MySQL support.  This will prevent proper operation of dotProject.  Please check you system setup.</div>";
+if (phpversion() < "4.1")
+	echo "<div class='warning'>Warning: dotproject is NOT SUPPORT for this PHP Version ($phpVersion)</div>";
+
+if (!function_exists("mysql_pconnect"))
+	echo "<div class='warning'>Warning: PHP may not be compiled with MySQL support.  This will prevent proper operation of dotProject.  Please check you system setup.</div>";
 
 ?>
-</div>
 
 </body>
 </html>
