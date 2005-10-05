@@ -1,4 +1,4 @@
-<form action="index.php" target="_self" name="selection" method="get" encoding="">
+<form action="index.php" target="_self" name="selection" method="get" >
 
 <input type="hidden" name="m" value="{$m}" />
 <input type="hidden" name="tab" value="{$tab}" />

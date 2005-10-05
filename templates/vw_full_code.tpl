@@ -17,7 +17,7 @@ function pageMain() {
   	  <table>
         <tr>
            <td colspan="2">
-            <form action="index.php?m={$m}&amp;tab={$tab}" target="_self" name="selection" method="get" encoding="">
+            <form action="index.php?m={$m}&amp;tab={$tab}" target="_self" name="selection" method="get" >
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="tab" value="{$tab}" />
 
