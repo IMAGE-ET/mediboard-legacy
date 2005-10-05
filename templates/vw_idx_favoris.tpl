@@ -1,5 +1,8 @@
 <table class="bookCode">
-  <tr />
+  <tr>
+    <th colspan="4">
+      Codes favoris
+    </th>
   <tr>
   {foreach from=$codes item=curr_code key=curr_key}
     <td>
