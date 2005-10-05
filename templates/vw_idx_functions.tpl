@@ -45,9 +45,9 @@ function setColor(color) {
     </td>
     <td class="halfPane">
     <form name="editFrm" action="./index.php?m={$m}" method="post" onSubmit="return checkForm()">
-      <input type="hidden" name="dosql" value="do_functions_aed">
-      <input type="hidden" name="function_id" value="{$userfunction->function_id}">
-      <input type="hidden" name="del" value="0">
+      <input type="hidden" name="dosql" value="do_functions_aed" />
+      <input type="hidden" name="function_id" value="{$userfunction->function_id}" />
+      <input type="hidden" name="del" value="0" />
       <table class="form">
         <tr>
           <th class="category" colspan="2">
@@ -90,7 +90,7 @@ function setColor(color) {
             <input type="submit" value="Valider" />
             <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la fonction', '{$userfunction->text|escape:javascript}')"/>
           {else}
-            <input type="submit" name="btnFuseAction" value="Créer">
+            <input type="submit" name="btnFuseAction" value="Créer" />
           {/if}
           </td>
         </tr>
