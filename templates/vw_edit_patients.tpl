@@ -81,10 +81,10 @@ function followUp(field, sFollowFieldName) {
       <tr>
       {if $patient->patient_id}
         <th class="title" colspan="5" style="color: #f00;">
-          Modification du dossier de {$patient->_view}
-          <a class="action" href="javascript:view_log('CPatient', {$patient->patient_id})">
-            <img src="images/history.gif" />
+          <a style="float:right;" href="javascript:view_log('CPatient', {$patient->patient_id})">
+            <img src="images/history.gif" alt="historique" />
           </a>
+          Modification du dossier de {$patient->_view}
         </th>
       {else}
         <th class="title" colspan="5">Création d'un dossier</th>
