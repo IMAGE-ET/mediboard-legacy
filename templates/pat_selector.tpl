@@ -19,9 +19,9 @@ function setClose(key, val){
 
 <form action="index.php" target="_self" name="frmSelector" method="get">
 
-<input type="hidden" name="m" value="dPpatients">
-<input type="hidden" name="a" value="pat_selector">
-<input type="hidden" name="dialog" value="1">
+<input type="hidden" name="m" value="dPpatients" />
+<input type="hidden" name="a" value="pat_selector" />
+<input type="hidden" name="dialog" value="1" />
 
 <table class="form">
 

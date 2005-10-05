@@ -33,12 +33,12 @@ function printIntervention(id) {
         </tr>
   
         <tr>
-          <th>Nom:</th>
+          <th><label for="find_nom" title="Nom du patient à rechercher, au moins les premières lettres">Nom:</label></th>
           <td><input tabindex="1" type="text" name="nom" value="{$nom}" /></td>
         </tr>
         
         <tr>
-          <th>Prénom:</th>
+          <th><label for="for_prenom" title="Prénom du patient à rechercher, au moins les premières lettres">Prénom:</label></th>
           <td><input tabindex="2" type="text" name="prenom" value="{$prenom}" /></td>
         </tr>
         
