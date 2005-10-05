@@ -35,14 +35,16 @@ class CSmartyDP extends Smarty {
    */
   function CSmartyDP() {
     global $AppUI, $dbChrono, $canRead, $canEdit, $m, $a, $tab, $dialog;
+    $root = $AppUI->getConfig( 'root_dir' );
     
     // Directories initialisation
+    $this->template_dir = "$root/modules/$m/templates/";
+    $this->compile_dir  = "$root/modules/$m/templates_c/";
+    $this->config_dir   = "$root/modules/$m/configs/";
+    $this->cache_dir    = "$root/modules/$m/cache/";
     
-    $this->template_dir = $AppUI->getConfig( 'root_dir' ) . "/modules/$m/templates/";
-    $this->compile_dir  = $AppUI->getConfig( 'root_dir' ) . "/modules/$m/templates_c/";
-    $this->config_dir   = $AppUI->getConfig( 'root_dir' ) . "/modules/$m/configs/";
-    $this->cache_dir    = $AppUI->getConfig( 'root_dir' ) . "/modules/$m/cache/";
-    
+    // Debugginf directives
+    $this->debug_tpl = "$root/classes/smarty_debug.tpl";
     $this->debugging = true;
 
     // Standard data assignment
