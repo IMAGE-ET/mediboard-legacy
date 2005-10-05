@@ -245,7 +245,7 @@ function submitConsultWithChrono(chrono) {
               </tr>
               
               <tr>
-                <td class="button" colspan="2"><input type="submit" value="modifier"></td>
+                <td class="button" colspan="2"><input type="submit" value="modifier" /></td>
               </tr>
             </table>
 
@@ -336,7 +336,7 @@ function submitConsultWithChrono(chrono) {
                 </td>
 
                 <td class="button">
-                  <input type="submit" value="ajouter">
+                  <input type="submit" value="ajouter" />
                   
                   </form>
                 </td>

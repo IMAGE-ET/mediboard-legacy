@@ -129,7 +129,7 @@ function setRDV( hour, min, id, date, freq ) {
             <label for="editFrm_chir_id">Anesthésiste:</label>
           </th>
             <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$chir->_view}" readonly="readonly" /></td>
-            <td class="button"><input type="button" value="choisir un anesthésiste" onclick="popChir()"></td>
+            <td class="button"><input type="button" value="choisir un anesthésiste" onclick="popChir()" /></td>
         </tr>
 
         <tr>
