@@ -289,6 +289,12 @@ class CMbObject extends CDpObject {
               return "Matricule incorrect, doit contenir exactement 15 chiffres (commençant par 1 ou 2)";
             }
           
+            $code = $matches[1];
+            $cle = $matches[2];
+            // Use bcmod since standard modulus can't work on number exceedind the 2^32 limit
+            if (97 - bcmod($code, 97) != $cle) {
+              return "Matricule incorrect, la clé n'est pas valide";
+            }
           
             break;
 
