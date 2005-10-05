@@ -73,7 +73,7 @@ function checkSalle() {
         <input type="submit" value="Valider" />
         <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la salle', '{$salleSel->nom|escape:javascript}')""/>
         {else}
-        <input type="submit" name="btnFuseAction" value="Créer">
+        <input type="submit" name="btnFuseAction" value="Créer" />
         {/if}
       </td>
     </tr>
