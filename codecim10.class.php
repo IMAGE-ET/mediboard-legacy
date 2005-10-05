@@ -111,8 +111,10 @@ class CCodeCIM10 {
           "\nWHERE LID = '".$row['LID']."'";
       $result2 = mysql_query($query);
       $row2 = mysql_fetch_array($result2);
-      $this->descr[$i] = $row2[$this->_lang];
-      $i++;
+      if($row2) {
+        $this->descr[$i] = $row2[$this->_lang];
+        $i++;
+      }
     }
     
     // glossaire
