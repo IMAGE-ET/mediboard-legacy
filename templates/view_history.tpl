@@ -1,4 +1,65 @@
+{if !$dialog}
 <form name="filterFrm" action="index.php?m={$m}" method="get" onsubmit="return checkForm(this)">
+<input type="hidden" name="m" value="{$m}" />
+<input type="hidden" name="tab" value="{$tab}" />
+<input type="hidden" name="dialog" value="{$dialog}" />
+<table class="form">
+  <tr>
+    <th class="category" colspan="4">
+      {if $list|@count == 100}
+      Plus de 100 historiques, seuls les 100 premiers sont affichés
+      {else}
+      {$list|@count} historiques trouvés
+      {/if}
+    </th>
+  </tr>
+  <tr>
+    <th><label for="filterFrm_user_id" title="Identifiant de l'utilisateur">Utilisateur:</label></th>
+    <td>
+      <select name="user_id" alt="ref">
+        <option value="0">&mdash; Tous les utilisateurs</option>
+        {foreach from=$listUsers item=curr_user}
+        <option value="{$curr_user->user_id}" {if $curr_user->user_id == $user_id}selected="selected"{/if}>
+          {$curr_user->_view}
+        </option>
+        {/foreach}
+      </select>
+    </td>
+    <th><label for="filterFrm_object_class" title="Classe de l'object">Classe:</label></th>
+    <td>
+      <select name="object_class" alt="str|maxLength|25">
+        <option value="0">&mdash; Toutes les classes</option>
+        {foreach from=$listClasses item=curr_class}
+        <option value="{$curr_class}" {if $curr_class == $object_class}selected="selected"{/if}>
+          {$curr_class}
+        </option>
+        {/foreach}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <th><label for="filterFrm_type" title="Action effectuée">Action:</label></th>
+    <td>
+      <select name="type" alt="enum|0|store|delete">
+        <option value="0">&mdash; Tous les types</option>
+        {foreach from=$listTypes item=curr_type}
+        <option value="{$curr_type}" {if $curr_type == $type}selected="selected"{/if}>
+          {$curr_type}
+        </option>
+        {/foreach}
+      </select>
+    </td>
+    <th><label for="filterFrm_object_id" title="Identifiant de l'object">Objet:</label></th>
+    <td>
+      <input name="object_id" alt="ref" value="{$object_id}" />
+    </td>
+  </tr>
+  <tr>
+    <td class="button" colspan="4"><button>Go</button></td>
+  </tr>
+</table>
+</form>
+{/if}
 <table class="tbl">
   {if $dialog}
   <tr>
@@ -12,55 +73,13 @@
   </tr>
   {/if}
   <tr>
-    <th>
-      Utilisateur
-      {if !$dialog}
-      <select name="user_id" onchange="this.form.submit()">
-        <option value="0">&mdash; Tous les utilisateurs</option>
-        {foreach from=$listUsers item=curr_user}
-        <option value="{$curr_user->user_id}" {if $curr_user->user_id == $user_id}selected="selected"{/if}>
-          {$curr_user->_view}
-        </option>
-        {/foreach}
-      </select>
-      {/if}
-    </th>
+    <th>Utilisateur</th>
     {if !$dialog}
-    <th>
-      Classe
-      <select name="object_class" onchange="this.form.submit()">
-        <option value="0">&mdash; Toutes les classes</option>
-        {foreach from=$listClasses item=curr_class}
-        <option value="{$curr_class}" {if $curr_class == $object_class}selected="selected"{/if}>
-          {$curr_class}
-        </option>
-        {/foreach}
-      </select>
-    </th>
-    <th>
-      Objet
-      <input name="object_id" alt="num" value="{$object_id}" onchange="this.form.submit()" />
-    </th>
+    <th>classe</th>
+    <th>Objet</th>
     {/if}
-    <th>
-      Date
-      <input type="hidden" name="m" value="{$m}" />
-      <input type="hidden" name="tab" value="{$tab}" />
-      <input type="hidden" name="dialog" value="{$dialog}" />
-    </th>
-    <th>
-      Action
-      {if !$dialog}
-      <select name="type" onchange="this.form.submit()">
-        <option value="0">&mdash; Tous les types</option>
-        {foreach from=$listTypes item=curr_type}
-        <option value="{$curr_type}" {if $curr_type == $type}selected="selected"{/if}>
-          {$curr_type}
-        </option>
-        {/foreach}
-      </select>
-      {/if}
-    </th>
+    <th>Date</th>
+    <th>Action</th>
   </tr>
   {foreach from=$list item=curr_object}
   <tr>

@@ -75,7 +75,7 @@ foreach($list as $key => $value) {
 $where = array();
 if($user_id)
   $where["user_id"] = "= '$user_id'";
-if($object_id)
+if($object_id !== "")
   $where["object_id"] = "= '$object_id'";
 if($object_class)
   $where["object_class"] = "= '$object_class'";
