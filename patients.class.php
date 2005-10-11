@@ -12,7 +12,6 @@ require_once($AppUI->getSystemClass('mbobject'));
 require_once($AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once($AppUI->getModuleClass('dPpatients', 'medecin') );
 require_once($AppUI->getModuleClass('dPcabinet', 'consultation') );
-require_once($AppUI->getModuleClass('dPanesth', 'consultation') );
 require_once($AppUI->getModuleClass('dPhospi', 'affectation') );
 
 /**
@@ -71,7 +70,6 @@ class CPatient extends CMbObject {
   var $_ref_operations = null;
   var $_ref_hospitalisations = null;
   var $_ref_consultations = null;
-  var $_ref_consultations_anesth = null;
   var $_ref_curr_affectation = null;
   var $_ref_next_affectation = null;
   var $_ref_medecin_traitant = null;
@@ -223,15 +221,6 @@ class CPatient extends CMbObject {
     $leftjoin = array();
     $leftjoin["plageconsult"] = "consultation.plageconsult_id = plageconsult.plageconsult_id";
     $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order, null, null, $leftjoin);
-
-    // consultations d'anesthésie
-    $this->_ref_consultations_anesth = new CConsultationAnesth();
-    $where = array();
-    $where["patient_id"] = "= '$this->patient_id'";
-    $order = "plageconsult.date DESC";
-    $leftjoin = array();
-    $leftjoin["plageconsult"] = "consultation_anesth.plageconsult_id = plageconsult.plageconsult_id";
-    $this->_ref_consultations_anesth = $this->_ref_consultations_anesth->loadList($where, $order, null, null, $leftjoin);
 
   	// affectation actuelle et prochaine affectation
   	$this->_ref_curr_affectation = new CAffectation();
