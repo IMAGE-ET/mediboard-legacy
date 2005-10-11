@@ -178,7 +178,23 @@ class CCodeCCAM
       $result = mysql_query($query);
       $obj = mysql_fetch_object($result);
       $activite->type = $obj->type;
+
+      // Extraction des modificateurs
+      $activite->modificateurs = array();
+      $modificateurs =& $activite->modificateurs;
+      $query = "select * from modificateuracte " .
+          "\nwhere CODEACTE = '$this->code'" .
+          "\nand CODEACTIVITE = '$activite->numero'";
+      $result = mysql_query($query);
       
+      while($row = mysql_fetch_array($result)) {
+        $query = "select CODE as code, LIBELLE as libelle" .
+            "\nfrom modificateur " .
+            "\nwhere CODE = '" . $row['MODIFICATEUR'] . "'" .
+            "\norder by CODE";
+        $modificateurs[] = mysql_fetch_object(mysql_query($query));
+      }
+
       // Extraction des phases
       $activite->phases = array();
       $phases =& $activite->phases;
@@ -188,12 +204,15 @@ class CCodeCCAM
           "\nand ACTIVITE = '$activite->numero'" .
           "\norder by PHASE";
       $result = mysql_query($query);
-      
+            
       while($obj = mysql_fetch_object($result)) {
         $phases[$obj->phase] = $obj;
         $phase =& $phases[$obj->phase];
         $phase->tarif = floatval($obj->tarif)/100;
         $phase->libelle = "Phase Principale";
+        
+        // Copie des modificateurs pour chaque phase. Utile pour dPsalleOp
+        $phase->_modificateurs = $modificateurs;
       }
       
       // Libellés des phases
@@ -203,22 +222,6 @@ class CCodeCCAM
             $phases[$match[1]]->libelle = $match[2];
           }
         }
-      }
-    
-      // Extraction des modificateurs
-      $activite->modificateurs = array();
-      $modificateurs =& $activite->modificateurs;
-      $query = "select * from modificateuracte where ";
-      $query .= "CODEACTE = '$this->code' ";
-      $query .= "and CODEACTIVITE = '$activite->numero'";
-      $result = mysql_query($query);
-      
-      while($row = mysql_fetch_array($result)) {
-        $query = "select CODE as code, LIBELLE as libelle" .
-            "\nfrom modificateur " .
-            "\nwhere CODE = '" . $row['MODIFICATEUR'] . "'" .
-            "\norder by CODE";
-        $modificateurs[] = mysql_fetch_object(mysql_query($query));
       }
     }
     
