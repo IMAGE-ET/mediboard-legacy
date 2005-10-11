@@ -10,6 +10,7 @@ function makeURLParam(field, sParamName) {
   return "&" + sParamName + "=" + field.value;
 }
 
+
 function popup(width, height, url, name) {
   params = 'left=50, top=50, height=' + height + ', width=' + width;
   params += ', resizable=yes, scrollbars=yes, menubar=yes';
@@ -627,4 +628,32 @@ function regRedirectFlatCal(sInitDate, sRedirectBase, sContainerId, bTime) {
       }
     } 
   );
+}
+
+
+var idInterval = 0;
+
+function doResize(idElement, iTargetWidth) {
+  oElement = document.getElementById(idElement);
+  iWidth = parseInt(oElement.style.width);
+  iLackingWidth = iTargetWidth - iWidth;
+  iLackingWidth *= .85;
+  iLackingWidth = parseInt(iLackingWidth);
+  iWidth = iTargetWidth - iLackingWidth;
+  oElement.style.width = iWidth;
+
+  if (iLackingWidth < 1 && iLackingWidth > -1) {
+  	window.clearInterval(idInterval);
+  }
+}
+
+function smoothToggle(idElement, iExpandedWidth) {
+  oElement = document.getElementById(idElement);
+  iWidth = parseInt(oElement.style.width);
+  iTargetWidth = iWidth == 0 ? iExpandedWidth : 0;
+  
+  // Close previous interval to prevent collisions
+  window.clearInterval(idInterval);
+  sFunc = "doResize('" + idElement + "', " +iTargetWidth + ")";
+  idInterval = window.setInterval(sFunc, 20);
 }
