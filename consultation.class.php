@@ -69,6 +69,7 @@ class CConsultation extends CMbObject {
   // Object References
   var $_ref_patient = null;
   var $_ref_plageconsult = null;
+  var $_ref_chir = null; //pseudo RefFwd, get that in plageConsult
   var $_ref_files = null;
   var $_ref_documents = null; // Pseudo backward references to documents
 
@@ -104,6 +105,7 @@ class CConsultation extends CMbObject {
       $this->date_paiement = null;
     $this->_ref_documents = array();
 
+/*
     $document = new CCompteRendu();
     $document->type = "consultation";
     $document->nom = "Compte-Rendu";
@@ -139,6 +141,16 @@ class CConsultation extends CMbObject {
     $document->source = $this->courrier2;
     $document->valide = $this->c2_valide;
     $this->_ref_documents[] = $document;
+*/
+    
+    $documents = new CCompteRendu();
+    $where = array();
+    $where["type"] = "= 'consultation'";
+    $where["object_id"] = "= '$this->consultation_id'";
+    $order = "nom";
+    $documents = $documents->loadList($where, $order);
+    foreach($documents as $key => $value)
+      $this->_ref_documents[] = $value;
 
     $this->_hour = intval(substr($this->heure, 0, 2));
     $this->_min  = intval(substr($this->heure, 3, 2));
@@ -208,6 +220,8 @@ class CConsultation extends CMbObject {
     $this->_ref_patient->load($this->patient_id);
     $this->_ref_plageconsult = new CPlageconsult;
     $this->_ref_plageconsult->load($this->plageconsult_id);
+    $this->_ref_plageconsult->loadRefsFwd();
+    $this->_ref_chir =& $this->_ref_plageconsult->_ref_chir;
     $this->_date = $this->_ref_plageconsult->date;
   }
   

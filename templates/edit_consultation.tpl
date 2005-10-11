@@ -92,33 +92,17 @@ function submitConsultWithChrono(chrono) {
   form.submit();
 }
 
-function editDocument(consult, modele, prop_name, valid_name) {
-  var url = '?m=dPcabinet&a=edit_compte_rendu&dialog=1';
-  url += '&consult=' + consult;
-  url += '&modele=' + modele;
-  if (prop_name) {
-    url += '&prop_name='  + prop_name ;
-    url += '&valid_name=' + valid_name;
-  }
-  
+function editDocument(compte_rendu_id) {
+  var url = '?m=dPcompteRendu&a=edit_compte_rendu&dialog=1';
+  url += '&compte_rendu_id=' + compte_rendu_id;
   popup(700, 700, url, 'Document');
 }
 
-function validerDocument(prop_name, valid_name) {
-  if (confirm('Veuillez confirmer la validation du document. ' + prop_name + " " + valid_name)) {
-    var form = document.editDocumentFrm;
-    form.elements[valid_name].value = "1";
-    form.submit();
-  }
-}
-
-function supprimerDocument(prop_name, valid_name) {
-  if (confirm('Veuillez confirmer la suppression du document')) {
-    var form = document.editDocumentFrm;
-    form.elements[prop_name].value = "";
-    form.elements[valid_name].value = "0";
-    form.submit();
-  }
+function createDocument(modele_id, consultation_id) {
+  var url = '?m=dPcompteRendu&a=edit_compte_rendu&dialog=1';
+  url += '&modele_id=' + modele_id;
+  url += '&object_id=' + consultation_id;
+  popup(700, 700, url, 'Document');
 }
 
 function changeList() {
@@ -397,7 +381,7 @@ function pageMain() {
             <form>
               Examens complémentaires :
               <select onchange="javascript:popup(700, 700, 'index.php?m={$m}&a=exam_audio&dialog=1', 'audiogramme')">
-                <option value="0">&mdash Selectionnez un examen</option>
+                <option value="0">&mdash Choix</option>
                 <option value="exam_audio.php">Audiogramme</option>
               </select>
             </form>
@@ -426,6 +410,56 @@ function pageMain() {
             </form>
           </td>
           <td>
+          <table class="form">
+            {foreach from=$consult->_ref_documents item=document}
+            <tr>
+              <th>{$document->nom}</th>
+              <td class="button">
+                <form name="editDocumentFrm{$document->compte_rendu_id}" action="?m={$m}" method="POST">
+                <input type="hidden" name="m" value="dPcompteRendu" />
+                <input type="hidden" name="del" value="0" />
+                <input type="hidden" name="dosql" value="do_modele_aed" />
+                <input type="hidden" name="object_id" value="{$consult->consultation_id}" />
+                <input type="hidden" name="compte_rendu_id" value="{$document->compte_rendu_id}" />
+                <input type="hidden" name="valide" value="{$document->valide}" />
+                <button type="button" onclick="editDocument({$document->compte_rendu_id})">
+                  <img src="modules/dPcabinet/images/edit.png" /> 
+                </button>
+                {if !$document->valide}
+                <button type="button" onclick="this.form.valide.value = 1; this.form.submit()">
+                  <img src="modules/dPcabinet/images/check.png" /> 
+                </button>
+                {/if}
+                <button type="button" onclick="this.form.del.value = 1; this.form.submit()">
+                  <img src="modules/dPcabinet/images/trash.png" /> 
+                </button>
+                </form>
+              </td>
+            </tr>
+            {/foreach}
+          <table>
+          <form name="newDocumentFrm" action="?m={$m}" method="POST">
+          <table class="form">
+            <tr>
+              <td>
+                <select name="_choix_modele" onchange="if (this.value) createDocument(this.value, {$consult->consultation_id})">
+                  <option value="">&mdash; Choisir un modèle</option>
+                  <optgroup label="Modèles du praticien">
+                    {foreach from=$listModelePrat item=curr_modele}
+                    <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+                    {/foreach}
+                  </optgroup>
+                  <optgroup label="Modèles du cabinet">
+                    {foreach from=$listModeleFunc item=curr_modele}
+                    <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
+                    {/foreach}
+                  </optgroup>
+                </select>
+              </td>
+            </tr>
+          </table>
+          </form>
+          <!--
             <form name="editDocumentFrm" action="?m={$m}" method="POST">
               <input type="hidden" name="m" value="{$m}" />
               <input type="hidden" name="del" value="0" />
@@ -473,6 +507,7 @@ function pageMain() {
              {/foreach}
             </table>
             </form>
+          -->
           </td>
           <td>
             <form name="tarifFrm" action="?m={$m}" method="POST" onsubmit="return checkTarif()">
