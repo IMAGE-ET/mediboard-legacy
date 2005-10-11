@@ -459,55 +459,6 @@ function pageMain() {
             </tr>
           </table>
           </form>
-          <!--
-            <form name="editDocumentFrm" action="?m={$m}" method="POST">
-              <input type="hidden" name="m" value="{$m}" />
-              <input type="hidden" name="del" value="0" />
-              <input type="hidden" name="dosql" value="do_consultation_aed" />
-              <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-              <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
-            <table class="form">
-            {foreach from=$consult->_ref_documents item=document}
-             <tr>
-                <th>{$document->nom}</th>
-                {if $document->source}
-                <td class="button">
-                  <input type="hidden" name="{$document->_consult_prop_name}" value="{$document->source|escape:html}" />
-                  <input type="hidden" name="{$document->_consult_valid_name}" value="{$document->valide}" />
-                  <button onclick="editDocument({$consult->consultation_id}, 0, '{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
-                    <img src="modules/dPcabinet/images/edit.png" /> 
-                  </button>
-                  {if !$document->valide}
-                  <button onclick="validerDocument('{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
-                    <img src="modules/dPcabinet/images/check.png" /> 
-                  </button>
-                  {/if}
-                  <button onclick="supprimerDocument('{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
-                    <img src="modules/dPcabinet/images/trash.png" /> 
-                  </button>
-                </td>
-                {else}
-                <td>
-                  <select name="_choix_modele" onchange="if (this.value) editDocument({$consult->consultation_id}, this.value, '{$document->_consult_prop_name}', '{$document->_consult_valid_name}')">
-                    <option value="">&mdash; Choisir un modèle</option>
-                    <optgroup label="Modèles du praticien">
-                      {foreach from=$listModelePrat item=curr_modele}
-                      <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
-                      {/foreach}
-                    </optgroup>
-                    <optgroup label="Modèles du cabinet">
-                      {foreach from=$listModeleFunc item=curr_modele}
-                      <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
-                      {/foreach}
-                    </optgroup>
-                  </select>
-                </td>
-                {/if}
-              </tr>
-             {/foreach}
-            </table>
-            </form>
-          -->
           </td>
           <td>
             <form name="tarifFrm" action="?m={$m}" method="POST" onsubmit="return checkTarif()">
