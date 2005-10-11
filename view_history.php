@@ -18,11 +18,12 @@ foreach (glob("modules/dP*/*.class.php") as $fileName) {
 // Add the mediusers class
 require_once( $AppUI->getModuleClass ('mediusers' ) );
 
-if (!$canRead) {
+$dialog = mbGetValueFromGet("dialog", 0);
+
+if (!$canRead && !$dialog) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$dialog       = mbGetValueFromGet("dialog", 0);
 $user_id      = mbGetValueFromGetOrSession("user_id"     , null);
 $object_id    = mbGetValueFromGetOrSession("object_id"   , null);
 $object_class = mbGetValueFromGetOrSession("object_class", null);
