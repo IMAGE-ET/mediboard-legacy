@@ -103,54 +103,6 @@ class CConsultation extends CMbObject {
   	$this->_somme = $this->secteur1 + $this->secteur2;
     if($this->date_paiement == "0000-00-00")
       $this->date_paiement = null;
-    $this->_ref_documents = array();
-
-/*
-    $document = new CCompteRendu();
-    $document->type = "consultation";
-    $document->nom = "Compte-Rendu";
-    $document->_consult_prop_name = "compte_rendu";
-    $document->_consult_valid_name = "cr_valide";
-    $document->source = $this->compte_rendu;
-    $document->valide = $this->cr_valide;
-    $this->_ref_documents[] = $document;
-
-    $document = new CCompteRendu();
-    $document->type = "consultation";
-    $document->nom = "Ordonnance";
-    $document->_consult_prop_name = "ordonnance";
-    $document->_consult_valid_name = "or_valide";
-    $document->source = $this->ordonnance;
-    $document->valide = $this->or_valide;
-    $this->_ref_documents[] = $document;
-
-    $document = new CCompteRendu();
-    $document->type = "consultation";
-    $document->nom = "Courrier 1";
-    $document->_consult_prop_name = "courrier1";
-    $document->_consult_valid_name = "c1_valide";
-    $document->source = $this->courrier1;
-    $document->valide = $this->c1_valide;
-    $this->_ref_documents[] = $document;
-
-    $document = new CCompteRendu();
-    $document->type = "consultation";
-    $document->nom = "Courrier 2";
-    $document->_consult_prop_name = "courrier2";
-    $document->_consult_valid_name = "c2_valide";
-    $document->source = $this->courrier2;
-    $document->valide = $this->c2_valide;
-    $this->_ref_documents[] = $document;
-*/
-    
-    $documents = new CCompteRendu();
-    $where = array();
-    $where["type"] = "= 'consultation'";
-    $where["object_id"] = "= '$this->consultation_id'";
-    $order = "nom";
-    $documents = $documents->loadList($where, $order);
-    foreach($documents as $key => $value)
-      $this->_ref_documents[] = $value;
 
     $this->_hour = intval(substr($this->heure, 0, 2));
     $this->_min  = intval(substr($this->heure, 3, 2));
@@ -163,17 +115,6 @@ class CConsultation extends CMbObject {
     
     if($this->chrono)
       $this->_etat = $etat[$this->chrono];
-    
-    $docs_valid = 0;
-    foreach ($this->_ref_documents as $curr_doc) {
-		  if ($curr_doc->source) {
-        $docs_valid++;
-      }
-		}
-		
-    if ($this->chrono == CC_TERMINE) {
-      $this->_etat = "$docs_valid Doc. créé" . ($docs_valid > 1 ? "s" : "");
-		}
 
     if ($this->annule) {
       $this->_etat = "Annulée";
@@ -230,6 +171,23 @@ class CConsultation extends CMbObject {
     $where["file_consultation"] = "= '$this->consultation_id'";
     $this->_ref_files = new CFile();
     $this->_ref_files = $this->_ref_files->loadList($where);
+    $this->_ref_documents = array();
+    $documents = new CCompteRendu();
+    $where = array();
+    $where["type"] = "= 'consultation'";
+    $where["object_id"] = "= '$this->consultation_id'";
+    $order = "nom";
+    $documents = $documents->loadList($where, $order);
+    foreach($documents as $key => $value)
+      $this->_ref_documents[] = $value;
+    $docs_valid = 0;
+    foreach ($this->_ref_documents as $curr_doc) {
+      if ($curr_doc->source) {
+        $docs_valid++;
+      }
+    }
+    if($docs_valid)
+      $this->_etat .= " ($docs_valid Doc.)";
   }
   
   function fillTemplate(&$template) {
