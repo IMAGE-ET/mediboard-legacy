@@ -172,14 +172,13 @@ class CConsultation extends CMbObject {
     $this->_ref_files = new CFile();
     $this->_ref_files = $this->_ref_files->loadList($where);
     $this->_ref_documents = array();
-    $documents = new CCompteRendu();
+    
+    $this->_ref_documents = new CCompteRendu();
     $where = array();
     $where["type"] = "= 'consultation'";
     $where["object_id"] = "= '$this->consultation_id'";
     $order = "nom";
-    $documents = $documents->loadList($where, $order);
-    foreach($documents as $key => $value)
-      $this->_ref_documents[] = $value;
+    $this->_ref_documents = $this->_ref_documents->loadList($where, $order);
     $docs_valid = 0;
     foreach ($this->_ref_documents as $curr_doc) {
       if ($curr_doc->source) {
