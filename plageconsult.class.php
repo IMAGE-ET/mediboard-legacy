@@ -158,24 +158,26 @@ class CPlageconsult extends CMbObject {
     $this->_hour_fin = intval(substr($this->fin, 0, 2));
     $this->_min_fin  = intval(substr($this->fin, 3, 2));
     $this->_freq     = substr($this->freq, 3, 2);
-    $tmpfin          = substr($this->fin, 0, 2);
-    $tmpdebut        = substr($this->debut, 0, 2);
+    $tmpHfin          = substr($this->fin, 0, 2);
+    $tmpMfin          = substr($this->fin, 3, 2);
+    $tmpHdebut        = substr($this->debut, 0, 2);
+    $tmpMdebut        = substr($this->debut, 3, 2);
     $tmpfreq         = 60 / substr($this->freq, 3, 2);
-    $this->_total    = ($tmpfin - $tmpdebut) * $tmpfreq;
+    $this->_total    = (($tmpHfin + $tmpMfin/60) - ($tmpHdebut + $tmpMdebut/60)) * $tmpfreq;
   }
   
   function updateDBFields() {
-  	if ($this->_hour_deb !== null) {
+  	if($this->_hour_deb !== null) {
       if($this->_min_deb !== null)
-        $this->debut = "$this->_hour_deb:$this->_min_deb:00";
+        $this->debut = $this->_hour_deb.":".$this->_min_deb.":00";
       else
-        $this->debut = "$this->_hour_deb:00:00";
+        $this->debut = $this->_hour_deb.":00:00";
     }
-    if ($this->_hour_fin !== null) {
+    if($this->_hour_fin !== null) {
       if($this->_min_fin !== null)
-        $this->debut = "$this->_hour_fin:$this->_min_fin:00";
+        $this->fin = $this->_hour_fin.":".$this->_min_fin.":00";
       else
-        $this->debut = "$this->_hour_fin:00:00";
+        $this->fin = $this->_hour_fin.":00:00";
     }
     if ($this->_freq !== null)
       $this->freq  = "00:". $this->_freq. ":00";

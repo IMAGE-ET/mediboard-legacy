@@ -58,12 +58,12 @@ if($plageSel) {
   $plage->load($plageSel);
   $plage->loadRefs(false);
   $date = $plage->date;
-  $currMin = 0;
+  $currMin = intval($plage->_min_deb);
   $currHour = intval($plage->_hour_deb);
-  for($i = 0; $i < (intval($plage->_hour_fin)-intval($plage->_hour_deb))*(60/intval($plage->_freq)); $i++) {
+  for($i = 0; $i < $plage->_total; $i++) {
     $listPlace[$i]["patient"] = array();
   }
-  for($i = 0; $i < (intval($plage->_hour_fin)-intval($plage->_hour_deb))*(60/intval($plage->_freq)); $i++) {
+  for($i = 0; $i < $plage->_total; $i++) {
     $listPlace[$i]["hour"] = $currHour;
     if($currMin != 0)
       $listPlace[$i]["min"] = $currMin;

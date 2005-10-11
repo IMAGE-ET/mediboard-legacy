@@ -100,6 +100,7 @@ function pageMain() {
                 <td align="center" bgcolor="#aaaaaa" rowspan="{$curr_plage->_hour_fin-$curr_plage->_hour_deb}">
                   <a href="index.php?m={$m}&amp;tab={$tab}&amp;plageconsult_id={$curr_plage->plageconsult_id}">
                     {if $curr_plage->libelle}{$curr_plage->libelle}<br />{/if}
+                    {$curr_plage->debut|date_format:"%Hh%M"} - {$curr_plage->fin|date_format:"%Hh%M"}<br />
                     {$curr_plage->_ref_consultations|@count} consult(s)
                   </a>
                 </td>
@@ -154,7 +155,14 @@ function pageMain() {
                         {$curr_hour|string_format:"%02d"}
                       </option>
                     {/foreach}
-                    </select>
+                    </select> h
+                  <select name="_min_deb">
+                    {foreach from=$listMins item=curr_min}
+                      <option value="{$curr_min|string_format:"%02d"}" {if $curr_min == $plageSel->_min_deb} selected="selected" {/if}>
+                        {$curr_min|string_format:"%02d"}
+                      </option>
+                    {/foreach}
+                  </select> min
                 </td>
                 <th><label for="editFrm_date">Jour de la semaine:</label></th>
                 <td>
@@ -171,13 +179,22 @@ function pageMain() {
 
               <tr>
                 <th><label for="editFrm__hour_fin">Fin:</label></th>
-                <td><select name="_hour_fin">
+                <td>
+                  <select name="_hour_fin">
                     {foreach from=$listHours item=curr_hour}
                       <option value="{$curr_hour|string_format:"%02d"}" {if $curr_hour == $plageSel->_hour_fin} selected="selected" {/if}>
                         {$curr_hour|string_format:"%02d"}
                       </option>
                     {/foreach}
-                    </select>
+                  </select> h
+                  <select name="_min_fin">
+                    {foreach from=$listMins item=curr_min}
+                      <option value="{$curr_min|string_format:"%02d"}" {if $curr_min == $plageSel->_min_fin} selected="selected" {/if}>
+                        {$curr_min|string_format:"%02d"}
+                      </option>
+                    {/foreach}
+                  </select> min
+                  
                 </td>
                 <th><label for="editFrm__repeat">Nombre de répétitions:</label></th>
                 <td><input type="text" size="2" name="_repeat" value="1" /></td>

@@ -65,7 +65,7 @@ $suiv = mbDate("+1 week", $debut);
 // Sélection des plages
 $plage = new CPlageconsult();
 $where["chir_id"] = "= '$chirSel'";
-for ($i = 0; $i < 7; $i++) {
+for($i = 0; $i < 7; $i++) {
   $date = mbDate("+$i day", $debut);
   $where["date"] = "= '$date'";
   $plagesPerDay = $plage->loadList($where);
@@ -76,9 +76,17 @@ for ($i = 0; $i < 7; $i++) {
 }
 
 // Liste des heures
-for ($i = 8; $i <= 20; $i++) {
+$listHours = array();
+for($i = 8; $i <= 20; $i++) {
   $listHours[$i] = $i;
 }
+
+// Liste des minutes
+$listMins = array();
+$listMins[] = "00";
+$listMins[] = "15";
+$listMins[] = "30";
+$listMins[] = "45";
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
@@ -95,6 +103,7 @@ $smarty->assign('fin', $fin);
 $smarty->assign('prec', $prec);
 $smarty->assign('suiv', $suiv);
 $smarty->assign('listHours', $listHours);
+$smarty->assign('listMins', $listMins);
 
 $smarty->display('vw_planning.tpl');
 
