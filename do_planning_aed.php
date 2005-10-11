@@ -16,25 +16,6 @@ $msg = '';
 if($chir_id = dPgetParam( $_POST, 'chir_id', null))
   mbSetValueToSession('chir_id', $chir_id);
 
-// Pré-traitement du document passé en post (remplacement des listes par le choix)
-if (isset ($_POST["compte_rendu"])) {
-  $fields = array();
-  $values = array();
-  foreach($_POST as $key => $value) {
-    if(preg_match("/_liste([0-9]+)/", $key, $result)) {
-      $temp = new CListeChoix;
-      $temp->load($result[1]);
-    // @todo : passer en regexp
-    //$fields[] = "<span class=\"name\">[Liste - ".htmlentities($temp->nom)."]</span>";
-    //$values[] = "<span class=\"choice\">$value</span>";
-    $fields[] = "[Liste - ".htmlentities($temp->nom)."]";
-    $values[] = "$value";
-    }
-  }
-  
-  $_POST["compte_rendu"] = str_replace($fields, $values, $_POST["compte_rendu"]);
-}
-
 // Object binding
 $obj = new COperation();
 if (!$obj->bind( $_POST )) {
@@ -71,12 +52,9 @@ if ($del) {
   }
 } 
 else {
-  
 	if ($msg = $obj->store()) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-    
-	}
-	else {
+	}	else {
       $isNotNew = @$_POST['operation_id'];
       $AppUI->setMsg(
         ($obj->plageop_id && $obj->pat_id) ? ($isNotNew ? 'Opération modifiée' : 'Opération créée') : 
@@ -84,33 +62,16 @@ else {
         ($isNotNew ? 'Protocole modifié'  : 'Protocole créé' ),
         UI_MSG_OK);
 	}
-
-  // @todo : Trouver une méthode un peu plus propre :/
-  $special = dPgetParam( $_POST, 'special', 0);
-	if($special == 1) {
-?>
-<script language="javascript">
-
-window.opener.location.reload();
-window.close();
-
-</script>
-<?php
-    }
-	elseif($special == 2) {
-    $AppUI->redirect("m=$m&a=".$_POST['_dialog']."&dialog=1&operation=".$obj->operation_id."&modele=0");
-  } else {
-	  if($otherm = dPgetParam( $_POST, 'otherm', 0))
-	    $m = $otherm;
-	  // Petit hack pour mettre à la bonne ligne dans vw_affectation
-	  if($m == "dPhospi")
-	    $AppUI->redirect("m=$m#operation$obj->operation_id");
-	  if($obj->plageop_id && $obj->pat_id)
-        $AppUI->redirect("m=$m&operation_id=$obj->operation_id");
-	  elseif($obj->pat_id)
-	    $AppUI->redirect("m=$m&hospitalisation_id=$obj->operation_id");
-	  else
-	    $AppUI->redirect("m=$m&protocole_id=$obj->operation_id");
-	}
+  if($otherm = dPgetParam( $_POST, 'otherm', 0))
+    $m = $otherm;
+  // Petit hack pour mettre à la bonne ligne dans vw_affectation
+  if($m == "dPhospi")
+  $AppUI->redirect("m=$m#operation$obj->operation_id");
+  if($obj->plageop_id && $obj->pat_id)
+    $AppUI->redirect("m=$m&operation_id=$obj->operation_id");
+  elseif($obj->pat_id)
+   $AppUI->redirect("m=$m&hospitalisation_id=$obj->operation_id");
+  else
+    $AppUI->redirect("m=$m&protocole_id=$obj->operation_id");
 }
 ?>
