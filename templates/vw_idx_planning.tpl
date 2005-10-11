@@ -9,11 +9,17 @@ function selectCR(id, form) {
     editModele(id, modele);
 }
 
-function editModele(operation, modele) {
-  var url = '?m=dPplanningOp&a=edit_compte_rendu&dialog=1';
-  url +='&operation=' + operation;
-  url +='&modele=' + modele;
-  popup(1000, 700, url, 'Compte-rendu');
+function editDocument(compte_rendu_id) {
+  var url = '?m=dPcompteRendu&a=edit_compte_rendu&dialog=1';
+  url += '&compte_rendu_id=' + compte_rendu_id;
+  popup(700, 700, url, 'Document');
+}
+
+function createDocument(modele_id, operation_id) {
+  var url = '?m=dPcompteRendu&a=edit_compte_rendu&dialog=1';
+  url += '&modele_id=' + modele_id;
+  url += '&object_id=' + operation_id;
+  popup(700, 700, url, 'Document');
 }
 
 function validerCompteRendu(form) {
@@ -134,28 +140,49 @@ function pageMain() {
             {/if}
           <td style="text-align: center;"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->temp_operation|date_format:"%Hh%M"}</a></td>
           <td>
-            <form name="editCompteRenduFrm{$curr_op->operation_id}" action="?m={$m}" method="POST">
-            <input type="hidden" name="m" value="{$m}" />
-            <input type="hidden" name="del" value="0" />
-            <input type="hidden" name="dosql" value="do_planning_aed" />
-            <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
-            <input type="hidden" name="compte_rendu" value="{$curr_op->compte_rendu|escape:html}" />
-            <input type="hidden" name="cr_valide" value="{$curr_op->cr_valide}" />
-            {if $curr_op->compte_rendu}
-            <button type="button" onclick="editModele({$curr_op->operation_id}, 0)"><img src="modules/dPplanningOp/images/edit.png" /></button>
-            {if !$curr_op->cr_valide}
-            <button type="button" onclick="validerCompteRendu(this.form)"><img src="modules/dPplanningOp/images/check.png" /></button>
-            {/if}
-            <button type="button" onclick="supprimerCompteRendu(this.form)"><img src="modules/dPplanningOp/images/trash.png" /></button>
-            {else}
-            <select name="modele" onchange="selectCR({$curr_op->operation_id}, this.form)">
-              <option value="0">&mdash; modeles &mdash;</option>
-              {foreach from=$crList item=curr_cr}
-              <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>
-              {/foreach}
-            </select>
-            {/if}
-            </form>
+          <table>
+            {foreach from=$curr_op->_ref_documents item=document}
+            <tr>
+              <th>{$document->nom}</th>
+              <td class="button">
+                <form name="editDocumentFrm{$document->compte_rendu_id}" action="?m={$m}" method="POST">
+                <input type="hidden" name="m" value="dPcompteRendu" />
+                <input type="hidden" name="del" value="0" />
+                <input type="hidden" name="dosql" value="do_modele_aed" />
+                <input type="hidden" name="object_id" value="{$curr_op->operation_id}" />
+                <input type="hidden" name="compte_rendu_id" value="{$document->compte_rendu_id}" />
+                <input type="hidden" name="valide" value="{$document->valide}" />
+                <button type="button" onclick="editDocument({$document->compte_rendu_id})">
+                  <img src="modules/dPplanningOp/images/edit.png" /> 
+                </button>
+                {if !$document->valide}
+                <button type="button" onclick="this.form.valide.value = 1; this.form.submit()">
+                  <img src="modules/dPplanningOp/images/check.png" /> 
+                </button>
+                {/if}
+                <button type="button" onclick="this.form.del.value = 1; this.form.submit()">
+                  <img src="modules/dPplanningOp/images/trash.png" /> 
+                </button>
+                </form>
+              </td>
+            </tr>
+            {/foreach}
+          </table>
+          <table>
+          <form name="newDocumentFrm" action="?m={$m}" method="POST">
+          <table>
+            <tr>
+              <td>
+                <select name="_choix_modele" onchange="if (this.value) createDocument(this.value, {$curr_op->operation_id})">
+                  <option value="">&mdash; Choisir un modèle</option>
+                  {foreach from=$crList item=curr_cr}
+                  <option value="{$curr_cr->compte_rendu_id}">{$curr_cr->nom}</option>
+                  {/foreach}
+                </select>
+              </td>
+            </tr>
+          </table>
+          </form>
           </td>
         </tr>
         {/foreach}

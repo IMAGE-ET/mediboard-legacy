@@ -76,7 +76,7 @@ class COperation extends CMbObject {
   var $_codes_ccam = null;
   
   // HPRIM fields
-  var $_modalite_hospitaliation = "libre"; // enum|office|libre|tiers
+  var $_modalite_hospitalisation = "libre"; // enum|office|libre|tiers
 
   // DB References
   var $_ref_pat = null;
@@ -87,6 +87,7 @@ class COperation extends CMbObject {
   var $_ref_first_affectation = null;
   var $_ref_last_affectation = null; 
   var $_ref_actes_ccam = null; 
+  var $_ref_documents = null;
   
   // External references
   var $_ext_code_ccam = null;
@@ -373,7 +374,14 @@ class COperation extends CMbObject {
     
     $where = array("operation_id" => "= '$this->operation_id'");
     $this->_ref_actes_ccam = new CActeCCAM;
-    $this->_ref_actes_ccam = $this->_ref_affectations->loadList($where);
+    $this->_ref_actes_ccam = $this->_ref_actes_ccam->loadList($where);
+    
+    $this->_ref_documents = new CCompteRendu();
+    $where = array();
+    $where[] = "(type = 'operation' OR type = 'hospitalisation')";
+    $where["object_id"] = "= '$this->operation_id'";
+    $order = "nom";
+    $this->_ref_documents = $this->_ref_documents->loadList($where, $order);
   }
   
   function getLastAffectation(){
