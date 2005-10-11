@@ -13,6 +13,7 @@ require_once( $AppUI->getModuleClass('mediusers'));
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation'));
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'pack'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'listeChoix'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'templatemanager'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie'));
@@ -23,6 +24,7 @@ if (!$canEdit) {
 
 $compte_rendu_id = dPgetParam($_GET, "compte_rendu_id", 0);
 $modele_id       = dPgetParam($_GET, "modele_id"      , 0);
+$pack_id         = dPgetParam($_GET, "pack_id"        , 0);
 $object_id       = dPgetParam($_GET, "object_id"      , 0);
 
 // Faire ici le test des différentes variables dont on a besoin
@@ -36,6 +38,14 @@ if($compte_rendu_id) {
   $compte_rendu->chir_id = null;
   $compte_rendu->function_id = null;
   $compte_rendu->object_id = $object_id;
+  if($pack_id) {
+    $pack = new CPack;
+    $pack->load($pack_id);
+    $compte_rendu->nom = $pack->nom;
+    $compte_rendu->type = $pack->_type;
+    $compte_rendu->source = $pack->_source;
+  }
+  $compte_rendu->updateFormFields();
 }
 $compte_rendu->loadRefsFwd();
 $compte_rendu->_ref_object->loadRefsFwd();
@@ -57,8 +67,7 @@ $object->fillTemplate($templateManager);
 $templateManager->document = $compte_rendu->source;
 $templateManager->loadHelpers($medichir->user_id, $compte_rendu->type);
 $templateManager->loadLists($medichir->user_id);
-if (!$templateManager->document)
-  $templateManager->applyTemplate($compte_rendu);
+$templateManager->applyTemplate($compte_rendu);
 
 $where = array();
 $where[] = "(chir_id = '$medichir->user_id' OR function_id = '$medichir->function_id')";

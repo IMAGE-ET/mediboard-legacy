@@ -35,7 +35,7 @@
   </tr>
   {/if}
   <tr>
-    <td colspan="10" style="height: 600px"> 
+    <td colspan="10" style="height: 500px"> 
       <textarea id="htmlarea" name="source">
         {$templateManager->document}
       </textarea>

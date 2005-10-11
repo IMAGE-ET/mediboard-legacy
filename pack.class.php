@@ -28,6 +28,7 @@ class CPack extends CMbObject {
   var $_new = null;
   var $_del = null;
   var $_source = null;
+  var $_type = null;
   
   // Referenced objects
   var $_ref_chir = null;
@@ -55,8 +56,12 @@ class CPack extends CMbObject {
         $this->_modeles[$value] = new CCompteRendu;
         $this->_modeles[$value]->load($value);
         $this->_source .= $this->_modeles[$value]->source.'<br style="page-break-after:always" />';        
+        if($this->_type == null)
+          $this->_type = $this->_modeles[$value]->type;
       }
     }
+    if($this->_type == null)
+      $this->_type = "autre";
   }
   
   function updateDBFields() {
