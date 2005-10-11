@@ -71,10 +71,6 @@ if ($selConsult) {
     $patient->_ref_consultations[$key]->loadRefs();
     $patient->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
   }
-  foreach ($patient->_ref_consultations_anesth as $key => $value) {
-    $patient->_ref_consultations_anesth[$key]->loadRefs();
-    $patient->_ref_consultations_anesth[$key]->_ref_plageconsult->loadRefs();
-  }
   foreach ($patient->_ref_operations as $key => $value) {
     $patient->_ref_operations[$key]->loadRefs();
   }

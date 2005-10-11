@@ -11,7 +11,6 @@ require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
-require_once( $AppUI->getModuleClass('dPanesth', 'consultation') );
 
 class CPlageconsult extends CMbObject {
   // DB Table key
@@ -38,7 +37,6 @@ class CPlageconsult extends CMbObject {
   // Object References
   var $_ref_chir = null;
   var $_ref_consultations = null;
-  var $_ref_consultations_anesth = null;
 
   function CPlageconsult() {
     $this->CMbObject( 'plageconsult', 'plageconsult_id' );
@@ -53,8 +51,7 @@ class CPlageconsult extends CMbObject {
   
   function loadRefs($withCanceled = true) {
     // Forward references
-    $this->_ref_chir = new CMediusers();
-    $this->_ref_chir->load($this->chir_id);
+    $this->loadRefsFwd();
     
     // Backward references
     if (!$withCanceled) {
@@ -66,9 +63,6 @@ class CPlageconsult extends CMbObject {
 
     $this->_ref_consultations = new CConsultation();
     $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order);
-    
-    $this->_ref_consultations_anesth = new CConsultationAnesth();
-    $this->_ref_consultations_anesth = $this->_ref_consultations_anesth->loadList($where, $order);
   }
   
   function loadRefsFwd() {
