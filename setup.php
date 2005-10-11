@@ -34,7 +34,6 @@ class CSetupdPplanningOp {
 	function remove() {
 		db_exec( "DROP TABLE operations;" );
 		db_exec( "DELETE FROM sysval WHERE  sysval_title = 'AnesthType';" );
-
 		return null;
 	}
 
@@ -114,29 +113,29 @@ class CSetupdPplanningOp {
 			", temp_operation time NOT NULL default '00:00:00'" .
 			", time_operation time NOT NULL default '00:00:00'" .
 			", examen text" .
-			", materiel text" .
-            ", commande_mat enum('o', 'n') NOT NULL default 'n'" .
-			", info enum('o','n') NOT NULL default 'n'" .
-			", date_anesth date NOT NULL default '0000-00-00'" .
-			", time_anesth time NOT NULL default '00:00:00'" .
-            ", type_anesth tinyint(4) default NULL" .
-			", date_adm date NOT NULL default '0000-00-00'" .
-			", time_adm time NOT NULL default '00:00:00'" .
-			", duree_hospi tinyint(4) unsigned NOT NULL default '0'" .
-			", type_adm enum('comp','ambu','exte') default 'comp'" .
-			", chambre enum('o','n') NOT NULL default 'o'" .
-			", ATNC enum('o','n') NOT NULL default 'n'" .
-			", rques text" .
-			", rank tinyint(4) NOT NULL default '0'" .
-			", admis enum('n','o') NOT NULL default 'n'" .
-			", PRIMARY KEY  (operation_id)" .
-			", UNIQUE KEY operation_id (operation_id)" .
-			") TYPE=MyISAM;";
-		db_exec( $sql ); db_error();
+		  ", materiel text" .
+      ", commande_mat enum('o', 'n') NOT NULL default 'n'" .
+      ", info enum('o','n') NOT NULL default 'n'" .
+      ", date_anesth date NOT NULL default '0000-00-00'" .
+      ", time_anesth time NOT NULL default '00:00:00'" .
+      ", type_anesth tinyint(4) default NULL" .
+      ", date_adm date NOT NULL default '0000-00-00'" .
+      ", time_adm time NOT NULL default '00:00:00'" .
+      ", duree_hospi tinyint(4) unsigned NOT NULL default '0'" .
+      ", type_adm enum('comp','ambu','exte') default 'comp'" .
+      ", chambre enum('o','n') NOT NULL default 'o'" .
+      ", ATNC enum('o','n') NOT NULL default 'n'" .
+      ", rques text" .
+      ", rank tinyint(4) NOT NULL default '0'" .
+      ", admis enum('n','o') NOT NULL default 'n'" .
+      ", PRIMARY KEY  (operation_id)" .
+      ", UNIQUE KEY operation_id (operation_id)" .
+      ") TYPE=MyISAM;";
+    db_exec( $sql ); db_error();
     
     $this->upgrade("all");
-		return null;
-	}
+    return null;
+  }
 }
 
 ?>
