@@ -11,7 +11,7 @@
   <tr>
     <th class="category" colspan="10">
       <strong>Nom du document :</strong>
-      <input name="nom" value="{$compte_rendu->nom}">
+      <input name="nom" size="50" value="{$compte_rendu->nom}">
     </th>
   {if $lists|@count}
   <tr>
