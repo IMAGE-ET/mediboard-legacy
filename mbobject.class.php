@@ -61,14 +61,15 @@ class CMbObject extends CDpObject {
     $specFragments = explode("|", $propSpec);
     
     // remove confidential status
-    if($confidential = array_search("confidential", $specFragments)) {
-      array_splice($specFragments, $confidential);
+    $confidential = array_search("confidential", $specFragments);
+    if ($confidential !== false) {
+      array_splice($specFragments, $confidential, 1);
     }
 
     // notNull
     $notNull = array_search("notNull", $specFragments);
     if ($notNull !== false) {
-      array_splice($specFragments, $notNull);
+      array_splice($specFragments, $notNull, 1);
     }
 
     if ($propValue == "") {
@@ -227,7 +228,7 @@ class CMbObject extends CDpObject {
     
       // DateTime
       case "dateTime":
-        if (!preg_match ("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})$/", $propValue)) {
+        if (!preg_match ("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})[ \+]([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})$/", $propValue)) {
           return "format de dateTime invalide";
         }
         
