@@ -30,6 +30,7 @@ class CDoObjectAddEdit {
     $this->objectKeyGetVarName = $objectKeyGetVarName;
     $this->redirect = null;
     $this->redirectStore  = "m={$m}";
+    $this->redirectUpdate = null;
     $this->redirectError  = "m={$m}";
     $this->redirectDelete = "m={$m}";
     $this->createMsg = "Object of type $className created";
@@ -86,9 +87,11 @@ class CDoObjectAddEdit {
     } else {
       $isNotNew = @$_POST[$this->objectKeyGetVarName];
       $this->doLog("store");
+      if(!$this->redirectUpdate)
+        $this->redirectUpdate =& $this->redirectStore;
       if ($this->redirectStore) {
         $AppUI->setMsg( $isNotNew ? $this->modifyMsg : $this->createMsg, UI_MSG_OK);
-        $this->redirect =& $this->redirectStore;
+        $isNotNew ? $this->redirect =& $this->redirectUpdate : $this->redirect =& $this->redirectStore;
       }
     }
   }
