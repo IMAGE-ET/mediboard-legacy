@@ -4,8 +4,10 @@
       Codes favoris
     </th>
   </tr>
-  <tr>
   {foreach from=$codes item=curr_code key=curr_key}
+  {if $curr_key is div by 4}
+  <tr>
+  {/if}
     <td>
       <strong><a href="index.php?m={$m}&amp;tab=vw_full_code&amp;codeacte={$curr_code->code}">{$curr_code->code}</a></strong><br />
       {$curr_code->libelleLong}<br />
@@ -16,9 +18,8 @@
       <input class="button" type="submit" name="btnFuseAction" value="Retirer de mes favoris" />
 	  </form>
     </td>
-  {if ($curr_key+1) is div by 4}
-  </tr><tr>
+  {if ($curr_key+1) is div by 4 or ($curr_key+1) == $codes|@count}
+  </tr>
   {/if}
   {/foreach}
-  </tr>
 </table>

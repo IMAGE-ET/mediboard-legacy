@@ -1,12 +1,12 @@
 <!-- $Id$ -->
 
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 
 function pageMain() {
   initGroups("chap");
 }
-
+  
 </script>
 {/literal}
 
@@ -74,19 +74,19 @@ function pageMain() {
         <tr>
           <td style="vertical-align: top; width: 100%">
             <ul>
-              <li>Activité {$curr_act->numero} ({$curr_act->type}) : {$curr_act->libelle}
+              <li>Activité {$curr_act->numero} ({$curr_act->type|escape}) : {$curr_act->libelle|escape}
                 <ul>
                   <li>Phase(s) :
                     <ul>
                       {foreach from=$curr_act->phases item=curr_phase}
-                      <li>Phase {$curr_phase->phase} : {$curr_phase->libelle} : {$curr_phase->tarif}€</li>
+                      <li>Phase {$curr_phase->phase} : {$curr_phase->libelle|escape} : {$curr_phase->tarif}&euro;</li>
                       {/foreach}
                     </ul>
                   </li>
                   <li>Modificateur(s) :
                     <ul>
                       {foreach from=$curr_act->modificateurs item=curr_mod}
-                      <li>{$curr_mod->code} : {$curr_mod->libelle}</li>
+                      <li>{$curr_mod->code} : {$curr_mod->libelle|escape}</li>
                       {/foreach}
                     </ul>
                   </li>
@@ -112,7 +112,7 @@ function pageMain() {
 
       <table>
         <tr>
-          <th class"category" colspan="2">Place dans la CCAM: {$place}</th>
+          <th class="category" colspan="2">Place dans la CCAM: {$place}</th>
         </tr>
         
         {foreach from=$chap item=curr_chap}
