@@ -206,6 +206,7 @@ class COperation extends CMbObject {
 
     return parent::canDelete($msg, $oid, $tables);
   }
+  
   function delete() {
     // Re-numérotation des autres plages de la même plage
     if ($this->rank)
@@ -360,9 +361,12 @@ class COperation extends CMbObject {
   }
 
   function loadRefsBack() {
-    $where = array("file_operation" => "= '$this->operation_id'");
-    $this->_ref_files = new CFile();
-    $this->_ref_files = $this->_ref_files->loadList($where);
+    $this->_ref_files = array();
+    if ($this->operation_id) {
+      $where = array("file_operation" => "= '$this->operation_id'");
+      $this->_ref_files = new CFile();
+      $this->_ref_files = $this->_ref_files->loadList($where);
+    }
 
     $where = array("operation_id" => "= '$this->operation_id'");
     $order = "sortie DESC";
@@ -382,6 +386,48 @@ class COperation extends CMbObject {
     $where["object_id"] = "= '$this->operation_id'";
     $order = "nom";
     $this->_ref_documents = $this->_ref_documents->loadList($where, $order);
+  }
+  
+  
+  function loadPossibleActes () {
+    foreach ($this->_ext_codes_ccam as $codeKey => $codeValue) {
+      $code =& $this->_ext_codes_ccam[$codeKey];
+      $code->load($code->code);
+      
+      foreach ($code->activites as $activiteKey => $activiteValue) {
+        $activite =& $code->activites[$activiteKey];
+        foreach ($activite->phases as $phaseKey => $phaseValue) {
+          $phase =& $activite->phases[$phaseKey];
+          
+          $possible_acte = new CActeCCAM;
+          $possible_acte->code_acte = $code->code;
+          $possible_acte->code_activite = $activite->numero;
+          $possible_acte->code_phase = $phase->phase;
+          
+          // Affect a loaded acte is exists
+          foreach ($this->_ref_actes_ccam as $curr_acte) {
+            if ($curr_acte->code_acte == $possible_acte->code_acte 
+            and $curr_acte->code_activite == $possible_acte->code_activite 
+            and $curr_acte->code_phase == $possible_acte->code_phase) {
+              $possible_acte = $curr_acte;
+            }
+          }
+          
+          $phase->_connected_acte = $possible_acte;
+          
+          foreach ($phase->_modificateurs as $modificateurKey => $modificateurValue) {
+            $modificateur =& $phase->_modificateurs[$modificateurKey];
+            if (strpos($phase->_connected_acte->modificateurs, $modificateur->code) !== false) {
+              $modificateur->_value = $modificateur->code;
+            } else {
+              $modificateur->_value = "";              
+            }
+          }
+          
+          
+        }
+      }
+    }
   }
   
   function getLastAffectation(){
