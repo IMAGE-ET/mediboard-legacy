@@ -30,6 +30,8 @@ function view_log(classe, id) {
   url = "index.php?m=system&a=view_history&dialog=1";
   url += "&object_class=" + classe;
   url += "&object_id=" + id;
+  url += "&user_id=";
+  url += "&type=";
   popup(500, 500, url, 'history');
 }
 
