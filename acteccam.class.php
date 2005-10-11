@@ -54,14 +54,17 @@ class CActeCCAM extends CMbObject {
 	}
   
   function check() {
-    // datetime_execution: attention à rester dans la plage de l'opération
-    
     return parent::check(); 
-  }
-  
-  function updateFormFields() {
-  }
 
+    // datetime_execution: attention à rester dans la plage de l'opération
+  }
+   
+  function updateFormFields() {
+    parent::updateFormFields();
+    
+    $this->_view = "$this->code_acte-$this->code_activite-$this->code_phase-$this->modificateurs"; 
+  }
+   
   function loadRefsFwd() {
     $this->_ref_operation = new COperation;
     $this->_ref_operation->load($this->operation_id);

@@ -141,6 +141,7 @@
                 <li>Activité {$curr_activite->numero} ({$curr_activite->type|escape}) : {$curr_activite->libelle|escape}
                   <ul>
                     {foreach from=$curr_activite->phases item=curr_phase}
+                    {assign var="acte" value=$curr_phase->_connected_acte}
                     <li>
                       <form name="formActeCCAM" action="?m={$m}" method="post">
 
@@ -148,30 +149,36 @@
                       <input type="hidden" name="tab" value="{$tab}" />
                       <input type="hidden" name="dosql" value="do_acteccam_aed" />
                       <input type="hidden" name="del" value="0" />
-                      <input type="hidden" name="acte_id" value="" />
-                      <input type="hidden" name="code_acte" value="" />
-                      <input type="hidden" name="code_activite" value="" />
-                      <input type="hidden" name="code_phase" value="" />
+                      <input type="hidden" name="acte_id" value="{$acte->acte_id}" />
+                      <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+                      <input type="hidden" name="code_acte" value="{$acte->code_acte}" />
+                      <input type="hidden" name="code_activite" value="{$acte->code_activite}" />
+                      <input type="hidden" name="code_phase" value="{$acte->code_phase}" />
                       
-                      Phase {$curr_phase->phase} : {$curr_phase->libelle|escape} : {$curr_phase->tarif}&euro;
-                      <br />
-                      <label for="execution" title="Date et heure d'éxecution de l'acte">Exécution:</label>
-                      <input type="text" readonly="readonly" name="execution" value="">
-                      <input type="button" value="Définir l'heure d'éxecution" onclick="this.form.execution = 'toto'; alert(makeDATETIMEFromDate(new Date()));">
-                    
-                      <br />
+                      Phase {$curr_phase->phase} : {$curr_phase->libelle|escape} : {$curr_phase->tarif}&euro;<br />
+                      <label for="montant_depassement" title="Montant du dépassement d'honoraires">Dépassement:</label>
+                      <input type="text" name="montant_depassement" alt="{$acte->_props.montant_depassement}" value="{$acte->montant_depassement}"><br />
+
+                      <label for="execution" title="Date et heure d'exécution de l'acte">Exécution:</label>
+                      <input type="text" name="execution" alt="{$acte->_props.execution}" readonly="readonly" value="{$acte->execution}">
+                      <input type="button" value="Définir l'heure d'éxecution" onclick="this.form.execution.value = makeDATETIMEFromDate(new Date());"><br />
+
                       Modificateur(s) :
                       <ul>
-                        {foreach from=$curr_activite->modificateurs item=curr_mod}
+                        {foreach from=$curr_phase->_modificateurs item=curr_mod}
                         <li>
-                          <input type="checkbox" name="modificateur_{$curr_mod->code}" value="{$curr_mod->code}" />
+                          <input type="checkbox" name="modificateur_{$curr_mod->code}" {if $curr_mod->_value}checked="checked"{/if} />
                           {$curr_mod->code} : {$curr_mod->libelle|escape}
                         </li>
                         {/foreach}
                       </ul>
+                      <label for="commentaire" title="Commentaires sur l'acte">Commentaire:</label>
+                      <textarea name="commentaire" alt="{$acte->_props.commentaire}">{$acte->commentaire}</textarea><br />
                       
                       <input type="submit" value="Coder cet acte" />
-                      
+                      {if $acte->acte_id}
+                      <input type="button" value="Supprimer cet acte" onclick="confirmDeletion(this.form, 'l\'acte', '{$acte->_view|escape:javascript}')"  />
+                      {/if}
                       </form>
                     </li>
                     {/foreach}

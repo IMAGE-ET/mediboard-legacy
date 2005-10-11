@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config["mod_name"] = "dPsalleOp";
-$config["mod_version"] = "0.12";
+$config["mod_version"] = "0.13";
 $config["mod_directory"] = "dPsalleOp";
 $config["mod_setup_class"] = "CSetupdPsalleOp";
 $config["mod_type"] = "user";
@@ -66,6 +66,10 @@ class CSetupdPsalleOp {
             "`operation_id`)";
       db_exec($sql); db_error($sql);
       
+    case "0.12":
+      $sql =  "ALTER TABLE `acte_ccam` " .
+          "CHANGE `acte_id` `acte_id` INT( 11 ) NOT NULL AUTO_INCREMENT";
+      db_exec($sql); db_error($sql);
       
 			return true;
 		}
