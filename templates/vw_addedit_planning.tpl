@@ -208,12 +208,12 @@ function setProtocole(
 function printDocument() {
   form = document.editFrm;
   if(checkFormOperation() && (form._choix_modele.value != 0)) {
-    url = './index.php?m=dPplanningOp';
-    url += '&a=print_document';
+    url = './index.php?m=dPcompteRendu';
+    url += '&a=edit_compte_rendu';
     url += '&dialog=1';
-    url += '&operation_id=' + eval('form.operation_id.value');
-    url += '&document_id='  + eval('form._choix_modele.value'     );
-    popup(700, 500, url, 'printAdm');
+    url += '&object_id=' + eval('form.operation_id.value');
+    url += '&modele_id='  + eval('form._choix_modele.value'     );
+    popup(700, 600, url, 'Document');
     return true
   }
   else {
@@ -224,12 +224,12 @@ function printDocument() {
 function printPack() {
   form = document.editFrm;
   if(checkFormOperation() && (form._choix_pack.value != 0)) {
-    url = './index.php?m=dPplanningOp';
-    url += '&a=print_document';
+    url = './index.php?m=dPcompteRendu';
+    url += '&a=edit_compte_rendu';
     url += '&dialog=1';
-    url += '&operation_id=' + eval('form.operation_id.value');
+    url += '&object_id=' + eval('form.operation_id.value');
     url += '&pack_id='  + eval('form._choix_pack.value'     );
-    popup(700, 500, url, 'printAdm');
+    popup(700, 600, url, 'Document');
     return true
   }
   else {
