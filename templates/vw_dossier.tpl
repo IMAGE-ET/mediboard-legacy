@@ -29,16 +29,9 @@ function setPat( key, val ) {
   f.submit();
 }
 
-function imprimerCRO(op) {
-  var url = '?m=dPplanningOp&a=print_cr&dialog=1';
-  url += '&operation_id=' + op;
-  popup(700, 700, url, 'Compte-rendu');
-}
-
-function imprimerCourrier(consult, doc) {
-  var url = '?m=dPcabinet&a=print_cr&dialog=1';
-  url += '&consult_id=' + consult;
-  url += '&prop_name=' + doc;
+function imprimerDocument(doc_id) {
+  var url = '?m=dPcompteRendu&a=print_cr&dialog=1';
+  url += '&compte_rendu_id=' + doc_id;
   popup(700, 700, url, 'Compte-rendu');
 }
 
@@ -119,9 +112,7 @@ function printIntervention(id) {
           <th colspan="2">{$document->nom} :</th>
           {if $document->source}
           <td colspan="2" class="greedyPane">
-            <input type="hidden" name="{$document->_consult_prop_name}" value="{$document->source|escape:html}" />
-            <input type="hidden" name="{$document->_consult_valid_name}" value="{$document->valide}" />
-            <button onclick="imprimerCourrier({$curr_consult->consultation_id}, '{$document->_consult_prop_name}')">
+            <button onclick="imprimerDocument({$document->compte_rendu_id})">
               <img src="modules/dPcabinet/images/print.png" />
             </button>
           </td>
@@ -204,7 +195,8 @@ function printIntervention(id) {
             <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
             <input type="hidden" name="compte_rendu" value="{$curr_op->compte_rendu|escape:html}" />
             <input type="hidden" name="cr_valide" value="{$curr_op->cr_valide}" />
-            <button type="button" onclick="imprimerCRO({$curr_op->operation_id})">
+            Attebtion !!!!!!! Afficher la liste des CRO ici !!!!!!!
+            <button type="button" onclick="imprimerDocument({$curr_op->operation_id})">
               <img src="modules/dPcabinet/images/print.png" />
             </button>
             </form>
