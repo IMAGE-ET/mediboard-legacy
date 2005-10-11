@@ -17,7 +17,7 @@ require_once($AppUI->getModuleClass("dPccam", "acte"));
  * Classe servant à gérer les enregistrements des actes CCAM pendant les
  * interventions
  */
-class CCacteCCAM extends CMbObject {
+class CActeCCAM extends CMbObject {
   // DB Table key
 	var $acte_id = null;
 
@@ -38,7 +38,7 @@ class CCacteCCAM extends CMbObject {
   var $_ref_operation = null;
   var $_ref_executant = null;
 
-	function CCacteCCAM() {
+	function CActeCCAM() {
 		$this->CMbObject( "acte_ccam", "acte_id" );
 
     $this->_props["code_acte"] = "notNull|code|ccam";
