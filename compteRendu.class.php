@@ -11,6 +11,8 @@ require_once($AppUI->getSystemClass('mbobject' ));
 
 require_once($AppUI->getModuleClass('mediusers'));
 require_once($AppUI->getModuleClass('mediusers', 'functions'));
+require_once($AppUI->getModuleClass('dPcabinet', 'consultation'));
+require_once($AppUI->getModuleClass('dPplanningOp', 'planning'));
 
 $ECompteRenduType = array(
   "consultation", 
@@ -24,8 +26,8 @@ class CCompteRendu extends CMbObject {
   var $compte_rendu_id = null;
 
   // DB References
-  var $chir_id = null; // not null when associated to a user
-  var $function_id = null; // not null when associated to a function
+  var $chir_id = null; // not null when is a template associated to a user
+  var $function_id = null; // not null when is a template associated to a function
   var $object_id = null; // null when is a template, not null when a document
 
   // DB fields
@@ -37,6 +39,7 @@ class CCompteRendu extends CMbObject {
   /// Form fields
   var $_is_document = false;
   var $_is_modele = false;
+  var $_object_className = null;
   
   // Referenced objects
   var $_ref_chir = null;
@@ -86,14 +89,55 @@ class CCompteRendu extends CMbObject {
     
     return parent::loadList($where, $order, $limit, $group, $leftjoin);
   }
+  
+  function updateFormFields() {
+    switch($this->type) {
+      case "consultation" :
+        $this->_object_className = "CConsultation";
+        break;
+      case "operation" :
+        $this->_object_className = "COperation";
+        break;
+      case "hospitalisation" :
+        $this->_object_className = "COperation";
+        break;
+    }
+    if($this->object_id == null)
+      $this->_view = "Modèle : ";
+    else
+      $this->_view = "Document : ";
+    $this->_view .= $this->nom;
+  }
 
 
   function loadRefsFwd() {
     // Forward references
+
+    // Objet
+    $this->_ref_object = new $this->_object_className;
+    if($this->object_id)
+      $this->_ref_object->load($this->object_id);
+      $this->_ref_object->loadRefsFwd();
+
+    // Chirurgien
     $this->_ref_chir = new CMediusers;
-    $this->_ref_chir->load($this->chir_id);
+    if($this->chir_id) {
+      $this->_ref_chir->load($this->chir_id);
+    } elseif($this->object_id) {
+      switch($this->_object_className) {
+        case "CConsultation" :
+          $this->_ref_chir->load($this->_ref_object->_ref_plageconsult->chir_id);
+          break;
+        case "COperation" :
+          $this->_ref_chir->load($this->_ref_object->chir_id);
+          break;
+      }
+    }
+
+    // Fonction
     $this->_ref_function = new CFunctions;
-    $this->_ref_function->load($this->function_id);
+    if($this->function_id)
+      $this->_ref_function->load($this->function_id);
   }
 }
 
