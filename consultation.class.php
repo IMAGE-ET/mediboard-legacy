@@ -168,11 +168,15 @@ class CConsultation extends CMbObject {
   
   function loadRefsBack() {
     // Backward references
-    $where["file_consultation"] = "= '$this->consultation_id'";
-    $this->_ref_files = new CFile();
-    $this->_ref_files = $this->_ref_files->loadList($where);
+    $this->_ref_files = array();
+    if($this->consultation_id) {
+      $where = array();
+      $where["file_consultation"] = "= '$this->consultation_id'";
+      $this->_ref_files = new CFile();
+      $this->_ref_files = $this->_ref_files->loadList($where);
+    }
+
     $this->_ref_documents = array();
-    
     $this->_ref_documents = new CCompteRendu();
     $where = array();
     $where["type"] = "= 'consultation'";
