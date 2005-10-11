@@ -16,6 +16,7 @@ require_once( $AppUI->getModuleClass('dPccam', 'acte') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 require_once( $AppUI->getModuleClass('dPhospi', 'affectation') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'pathologie') );
+require_once( $AppUI->getModuleClass('dPsalleOp', 'acteccam') );
 
 class COperation extends CMbObject {
   // DB Table key
@@ -85,10 +86,12 @@ class COperation extends CMbObject {
   var $_ref_affectations = null;
   var $_ref_first_affectation = null;
   var $_ref_last_affectation = null; 
+  var $_ref_actes_ccam = null; 
   
   // External references
   var $_ext_code_ccam = null;
   var $_ext_code_ccam2 = null;
+  var $_ext_codes_ccam = null;
 
   function COperation() {
     $this->CMbObject( 'operations', 'operation_id' );
@@ -326,17 +329,26 @@ class COperation extends CMbObject {
   function loadRefCCAM() {
     $this->_ext_code_ccam = new CCodeCCAM($this->CCAM_code);
     $this->_ext_code_ccam->LoadLite();
-    if(!$this->plageop_id && $this->pat_id && !$this->CCAM_code) {
+    
+    if (!$this->plageop_id && $this->pat_id && !$this->CCAM_code) {
       $this->_ext_code_ccam->libelleCourt = "Simple surveillance";
       $this->_ext_code_ccam->libelleLong = "Simple surveillance";
     }
-    if($this->libelle !== null && $this->libelle != "") {
+
+    if ($this->libelle !== null && $this->libelle != "") {
       $this->_ext_code_ccam->libelleCourt = "<em>[$this->libelle]</em><br />".$this->_ext_code_ccam->libelleCourt;
       $this->_ext_code_ccam->libelleLong = "<em>[ $this->libelle]</em><br />".$this->_ext_code_ccam->libelleLong;
     }
+
     $this->_ext_code_ccam2 = new CCodeCCAM($this->CCAM_code2);
-    if($this->CCAM_code2 != null && $this->CCAM_code2 != "")
+    if ($this->CCAM_code2 != null && $this->CCAM_code2 != "") {
       $this->_ext_code_ccam2->LoadLite();
+    }
+    
+    $this->_ext_codes_ccam[] =& $this->_ext_code_ccam;
+    if ($this->CCAM_code2) {
+      $this->_ext_codes_ccam[] =& $this->_ext_code_ccam2;
+    }
   }
   
   function loadRefsFwd() {
@@ -356,8 +368,12 @@ class COperation extends CMbObject {
     $this->_ref_affectations = new CAffectation();
     $this->_ref_affectations = $this->_ref_affectations->loadList($where, $order);
 
-    $this->_ref_first_affectation =& end($this->_ref_affectations);
-    $this->_ref_last_affectation =& reset($this->_ref_affectations);
+    $this->_ref_first_affectation =& count($this->_ref_affectations) > 0 ? end($this->_ref_affectations) : new CAffectation;
+    $this->_ref_last_affectation =& count($this->_ref_affectations) > 0 ? reset($this->_ref_affectations) : new CAffectation;
+    
+    $where = array("operation_id" => "= '$this->operation_id'");
+    $this->_ref_actes_ccam = new CActeCCAM;
+    $this->_ref_actes_ccam = $this->_ref_affectations->loadList($where);
   }
   
   function getLastAffectation(){
