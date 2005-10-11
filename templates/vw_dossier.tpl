@@ -32,7 +32,7 @@ function setPat( key, val ) {
 function imprimerDocument(doc_id) {
   var url = '?m=dPcompteRendu&a=print_cr&dialog=1';
   url += '&compte_rendu_id=' + doc_id;
-  popup(700, 700, url, 'Compte-rendu');
+  popup(700, 600, url, 'Compte-rendu');
 }
 
 function printPatient(id) {
@@ -274,10 +274,22 @@ function printIntervention(id) {
           </td>
         </tr>
         {/if}
+        {foreach from=$curr_hospi->_ref_documents item=document}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2">Compte-rendu d'anesthésie :</th>
-          <td class="button" colspan="2">modifier imprimer supprimer</td>
+          <th colspan="2">{$document->nom} :</th>
+          {if $document->source}
+          <td colspan="2" class="greedyPane">
+            <button onclick="imprimerDocument({$document->compte_rendu_id})">
+              <img src="modules/dPcabinet/images/print.png" />
+            </button>
+          </td>
+          {else}
+          <td colspan="2">
+            -
+          </td>
+          {/if}
         </tr>
+        {/foreach}
         <tr class="hospi{$curr_hospi->operation_id}">
           <th colspan="2"><i>Fichiers associés :</i></th>
           <td colspan="2" />
