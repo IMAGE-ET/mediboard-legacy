@@ -4,8 +4,8 @@
 <script language="javascript">
 
 function pageMain() {
-  initGroups("op");
   initGroups("hospi");
+  initGroups("op");
 }
 
 function popPat() {
@@ -28,10 +28,10 @@ function setPat( key, val ) {
   f.submit();
 }
 
-function imprimerCRO(op) {
-  var url = '?m=dPplanningOp&a=print_cr&dialog=1';
-  url +='&operation_id=' + op;
-  popup(700, 700, url, 'Compte-rendu');
+function imprimerDocument(doc_id) {
+  var url = '?m=dPcompteRendu&a=print_cr&dialog=1';
+  url += '&compte_rendu_id=' + doc_id;
+  popup(700, 600, url, 'Compte-rendu');
 }
 
 </script>
@@ -97,28 +97,22 @@ function imprimerCRO(op) {
           </td>
         </tr>
         {/if}
+        {foreach from=$curr_op->_ref_documents item=document}
         <tr class="op{$curr_op->operation_id}">
-          <th colspan="2">Compte-rendu opératoire :</th>
+          <th colspan="2">{$document->nom} :</th>
+          {if $document->source}
           <td colspan="2" class="greedyPane">
-            {if $curr_op->compte_rendu}
-            <form name="editCROListFrm{$curr_op->operation_id}" action="?m=dPplanningOp" method="POST">
-            <input type="hidden" name="m" value="dPplanningOp" />
-            <input type="hidden" name="del" value="0" />
-            <input type="hidden" name="dosql" value="do_planning_aed" />
-            <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
-            <input type="hidden" name="compte_rendu" value="{$curr_op->compte_rendu|escape:html}" />
-            <input type="hidden" name="cr_valide" value="{$curr_op->cr_valide}" />
-            <button type="button" onclick="imprimerCRO({$curr_op->operation_id})"><img src="modules/dPcabinet/images/print.png" /></button>
-            </form>
-            {else}
-            Pas de compte Rendu
-            {/if}
+            <button onclick="imprimerDocument({$document->compte_rendu_id})">
+              <img src="modules/dPpmsi/images/print.png" />
+            </button>
           </td>
+          {else}
+          <td colspan="2">
+            -
+          </td>
+          {/if}
         </tr>
-        <tr class="op{$curr_op->operation_id}">
-          <th colspan="2">Compte-rendu d'anesthésie :</th>
-          <td colspan="2">Pas de compte rendu</td>
-        </tr>
+        {/foreach}
         {/foreach}
         <tr>
           <th class="category" colspan="4">Hospitalisations</th>
@@ -152,10 +146,22 @@ function imprimerCRO(op) {
           </td>
         </tr>
         {/if}
+        {foreach from=$curr_hospi->_ref_documents item=document}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2">Compte-rendu d'anesthésie :</th>
-          <td colspan="2" class="greedyPane">Pas de compte rendu</td>
+          <th colspan="2">{$document->nom} :</th>
+          {if $document->source}
+          <td colspan="2" class="greedyPane">
+            <button onclick="imprimerDocument({$document->compte_rendu_id})">
+              <img src="modules/dPpmsi/images/print.png" />
+            </button>
+          </td>
+          {else}
+          <td colspan="2">
+            -
+          </td>
+          {/if}
         </tr>
+        {/foreach}
         {/foreach}
        </table>
       {/if}
