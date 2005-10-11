@@ -21,6 +21,10 @@ class CCacteCCAM extends CMbObject {
   // DB Table key
 	var $acte_id = null;
 
+  // DB References
+  var $operation_id = null;
+  var $executant_id = null;
+
   // DB Fields
   var $code_acte = null;
   var $code_activite  = null;
@@ -29,10 +33,6 @@ class CCacteCCAM extends CMbObject {
   var $modificateurs = null;
   var $montant_depassement = null;
   var $commentaire = null;  
-
-  // DB References
-	var $operation_id = null;
-  var $executant_id = null;
 
   // Object references
   var $_ref_operation = null;

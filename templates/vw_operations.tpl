@@ -32,7 +32,10 @@
               Plage du Dr. {$curr_plage->_ref_chir->_view}
               de {$curr_plage->debut|date_format:"%Hh%M"} à {$curr_plage->fin|date_format:"%Hh%M"}
             </a>
-            <form action="index.php" target="_self" name="anesth{$curr_plage->id}" method="post">
+            </strong>
+
+            <form name="anesth{$curr_plage->id}" method="post">
+
             <input type="hidden" name="m" value="dPbloc" />
             <input type="hidden" name="tab" value="{$tab}" />
             <input type="hidden" name="otherm" value="{$m}" />
@@ -43,13 +46,13 @@
             <input type="hidden" name="chir_id" value="{$curr_plage->chir_id}" />
             Dr.
             <select name="anesth_id" onchange="submit()">
-              <option value="0">&mdash; Anesthésiste</option>
+              <option value="0">&mdash; Choisir un anesthésiste</option>
               {foreach from=$listPratAnesth item=curr_anesth}
               <option value="{$curr_anesth->user_id}" {if $curr_plage->anesth_id == $curr_anesth->user_id} selected="selected" {/if}>{$curr_anesth->_view}</option>
               {/foreach}
             </select>
+            
             </form>
-            </strong>
           </td>
         </tr>
         <tr>
@@ -71,7 +74,7 @@
                 </td>
                 <td>{$curr_operation->_ref_pat->_view}</td>
                 <td>
-                  <a href="?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_operation->operation_id}">
+                  <a href="?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_operation->operation_id}">
                   {$curr_operation->_ext_code_ccam->code}
                   {if $curr_operation->CCAM_code2}
                   <br />{$curr_operation->_ext_code_ccam2->code}
@@ -113,7 +116,7 @@
               <button type="submit"><img src="modules/{$m}/images/cross.png"></button>
               {else}
               <input type="hidden" name="del" value="0" />
-              <input type="submit" value="Entrée" />
+              <input type="submit" value="Définir l'heure d'entrée du patient" />
               {/if}
             </form>
           </td>
@@ -127,25 +130,59 @@
             ({$selOp->temp_operation|date_format:"%Hh%M"})
           </th>
           <td class="text">
-            <strong>{$selOp->_ext_code_ccam->libelleLong}</strong> 
-            <em>(<a class="action" href="?m=dPccam&amp;tab=vw_full_code&amp;codeacte={$selOp->CCAM_code}">{$selOp->CCAM_code}</a>)</em>
             <ul>
-            {foreach from=$selOp->_ext_code_ccam->activites item=curr_act}
-              <li><em>{$curr_act.nom}</em>
-              {$curr_act.modificateurs}</li>
+            {foreach from=$selOp->_ext_codes_ccam item=curr_code}
+            <li>
+              <strong>{$curr_code->libelleLong|escape}</strong> 
+              <em>(<a class="action" href="?m=dPccam&amp;tab=vw_full_code&amp;codeacte={$curr_code->code}">{$curr_code->code}</a>)</em>
+
+              {foreach from=$curr_code->activites item=curr_activite}
+              <ul>
+                <li>Activité {$curr_activite->numero} ({$curr_activite->type|escape}) : {$curr_activite->libelle|escape}
+                  <ul>
+                    {foreach from=$curr_activite->phases item=curr_phase}
+                    <li>
+                      <form name="formActeCCAM" action="?m={$m}" method="post">
+
+                      <input type="hidden" name="m" value="{$m}" />
+                      <input type="hidden" name="tab" value="{$tab}" />
+                      <input type="hidden" name="dosql" value="do_acteccam_aed" />
+                      <input type="hidden" name="del" value="0" />
+                      <input type="hidden" name="acte_id" value="" />
+                      <input type="hidden" name="code_acte" value="" />
+                      <input type="hidden" name="code_activite" value="" />
+                      <input type="hidden" name="code_phase" value="" />
+                      
+                      Phase {$curr_phase->phase} : {$curr_phase->libelle|escape} : {$curr_phase->tarif}&euro;
+                      <br />
+                      <label for="execution" title="Date et heure d'éxecution de l'acte">Exécution:</label>
+                      <input type="text" readonly="readonly" name="execution" value="">
+                      <input type="button" value="Définir l'heure d'éxecution" onclick="this.form.execution = 'toto'; alert(makeDATETIMEFromDate(new Date()));">
+                    
+                      <br />
+                      Modificateur(s) :
+                      <ul>
+                        {foreach from=$curr_activite->modificateurs item=curr_mod}
+                        <li>
+                          <input type="checkbox" name="modificateur_{$curr_mod->code}" value="{$curr_mod->code}" />
+                          {$curr_mod->code} : {$curr_mod->libelle|escape}
+                        </li>
+                        {/foreach}
+                      </ul>
+                      
+                      <input type="submit" value="Coder cet acte" />
+                      
+                      </form>
+                    </li>
+                    {/foreach}
+                  </ul>
+                </li>
+              </ul>
+              {/foreach}
+            </li>
             {/foreach}
             </ul>
-            {if $selOp->CCAM_code2}
-            <br />
-            <strong>{$selOp->_ext_code_ccam2->libelleLong}</strong>
-            <em>(<a class="action" href="?m=dPccam&amp,tab=vw_full_code&amp;codeacte={$selOp->CCAM_code2}">{$selOp->CCAM_code2}</a>)</em>
-            <ul>
-            {foreach from=$selOp->_ext_code_ccam2->activites item=curr_act}
-              <li><em>{$curr_act.nom}</em>
-              {$curr_act.modificateurs}</li>
-            {/foreach}
-            </ul>
-            {/if}
+          </td>
         </tr>
         <tr>
           <th>Anesthésie</th>
@@ -189,7 +226,7 @@
               <button type="submit"><img src="modules/{$m}/images/cross.png"></button>
               {else}
               <input type="hidden" name="del" value="0" />
-              <input type="submit" value="Sortie" />
+              <input type="submit" value="Définir l'heure de sortie du patient" />
               {/if}
             </form>
           </td>

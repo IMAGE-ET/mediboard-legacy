@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config["mod_name"] = "dPsalleOp";
-$config["mod_version"] = "0.11";
+$config["mod_version"] = "0.12";
 $config["mod_directory"] = "dPsalleOp";
 $config["mod_setup_class"] = "CSetupdPsalleOp";
 $config["mod_type"] = "user";
@@ -37,8 +37,7 @@ class CSetupdPsalleOp {
 	}
 
 	function upgrade( $old_version ) {
-		switch ( $old_version )
-		{
+		switch ( $old_version ) {
 		case "all":	
 		case "0.1":
       $sql = "CREATE TABLE `acte_ccam` (" .
@@ -55,6 +54,19 @@ class CSetupdPsalleOp {
       db_exec($sql); db_error($sql);
 
 		case "0.11":
+      $sql = "ALTER TABLE `acte_ccam` " .
+          "ADD `code_acte` CHAR( 7 ) NOT NULL AFTER `acte_id`";
+      db_exec($sql); db_error($sql);
+      
+      $sql = "ALTER TABLE `acte_ccam` " .
+          "ADD UNIQUE (" .
+            "`code_acte` ," .
+            "`code_activite` ," .
+            "`code_phase` ," .
+            "`operation_id`)";
+      db_exec($sql); db_error($sql);
+      
+      
 			return true;
 		}
 
