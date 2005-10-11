@@ -165,12 +165,20 @@ class CPlageconsult extends CMbObject {
   }
   
   function updateDBFields() {
-  	if ($this->_hour_deb !== null)
-      $this->debut = $this->_hour_deb.":00:00";
-    if ($this->_hour_fin !== null)
-      $this->fin   = $this->_hour_fin.":00:00";
+  	if ($this->_hour_deb !== null) {
+      if($this->_min_deb !== null)
+        $this->debut = "$this->_hour_deb:$this->_min_deb:00";
+      else
+        $this->debut = "$this->_hour_deb:00:00";
+    }
+    if ($this->_hour_fin !== null) {
+      if($this->_min_fin !== null)
+        $this->debut = "$this->_hour_fin:$this->_min_fin:00";
+      else
+        $this->debut = "$this->_hour_fin:00:00";
+    }
     if ($this->_freq !== null)
-      $this->freq   = "00:". $this->_freq. ":00";
+      $this->freq  = "00:". $this->_freq. ":00";
   }
   
   function becomeNext() {
