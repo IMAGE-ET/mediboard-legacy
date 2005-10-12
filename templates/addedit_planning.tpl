@@ -126,7 +126,7 @@ function setRDV( hour, min, id, date, freq ) {
         <tr>
           <th class="mandatory">
             <input type="hidden" name="chir_id" value="{$chir->user_id}" />
-            <label for="editFrm_chir_id">Anesthésiste:</label>
+            <label for="chir_id">Anesthésiste:</label>
           </th>
             <td class="readonly"><input type="text" name="_chir_name" size="30" value="{$chir->_view}" readonly="readonly" /></td>
             <td class="button"><input type="button" value="choisir un anesthésiste" onclick="popChir()" /></td>
@@ -135,19 +135,19 @@ function setRDV( hour, min, id, date, freq ) {
         <tr>
           <th class="mandatory">
             <input type="hidden" name="patient_id" value="{$pat->patient_id}" />
-            <label for="editFrm_chir_id">Patient:</label>
+            <label for="chir_id">Patient:</label>
           </th>
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->_view}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
         
         <tr>
-          <th><label for="editFrm_motif">Motif</label></th>
+          <th><label for="motif">Motif</label></th>
           <td colspan="2"><textarea name="motif" rows="3">{$consult->motif}</textarea></td>
         </tr>
 
         <tr>
-          <th><label for="editFrm_rques">Remarques</label></th>
+          <th><label for="rques">Remarques</label></th>
           <td colspan="2"><textarea name="rques" rows="3">{$consult->rques}</textarea></td>
         </tr>
 
@@ -160,10 +160,10 @@ function setRDV( hour, min, id, date, freq ) {
         <tr><th class="category" colspan="3">Rendez-vous</th></tr>
 
         <tr>
-          <th><label for="editFrm_premiere">Consultation:</label></th>
+          <th><label for="premiere">Consultation:</label></th>
           <td>
             <input type="checkbox" name="_check_premiere" value="1" {if $consult->_check_premiere} checked="checked" {/if} />
-            <label for="editFrm__check_premiere">Première consultation</label>
+            <label for="_check_premiere">Première consultation</label>
           </td>
           <td rowspan="4" class="button">
             <input type="button" value="Selectionner" onclick="popRDV()" />
@@ -171,7 +171,7 @@ function setRDV( hour, min, id, date, freq ) {
         </tr>
 
         <tr>
-          <th><label for="editFrm__date">Date:</label></th>
+          <th><label for="_date">Date:</label></th>
           <td class="readonly">
             <input type="text" name="_date" value="{$consult->_ref_plageconsult->date|date_format:"%d/%m/%Y"}" readonly="readonly" />
             <input type="hidden" name="plageconsult_id" value="{$consult->_ref_plageconsult->plageconsult_id}" />
@@ -179,14 +179,14 @@ function setRDV( hour, min, id, date, freq ) {
         </tr>
 
         <tr>
-          <th><label for="editFrm__hour">Heure:</label></th>
+          <th><label for="_hour">Heure:</label></th>
           <td class="readonly">
             <input type="text" name="_hour" value="{$consult->_hour}" size="3" readonly="readonly" /> h
             <input type="text" name="_min" value="{$consult->_min}" size="3" readonly="readonly" />
           </td>
         </tr>
         <tr>
-          <th><label for="editFrm__duree">Durée:</label></th>
+          <th><label for="_duree">Durée:</label></th>
           <td>
             <select name="duree">
               <option value="1" {if $consult->duree == 1} selected="selected" {/if}>simple</option>

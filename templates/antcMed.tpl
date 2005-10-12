@@ -40,9 +40,9 @@ function pageMain() {
 <form name="codeFrm" action="?m={$m}" method="post" onsubmit="return checkForm()">
 <table class="form">
   <tr>
-    <th><label for="codeFrm_CIM10_code">Diagnostic (CIM10):</label></th>
+    <th><label for="CIM10_code">Diagnostic (CIM10):</label></th>
     <td><input type="text" name="CIM10_code" size="10" value="" /><button type="button" onclick="popCode('cim10')">Choisir un code</button></td>
-    <th><label for="codeFrm_deb" title="Date de début de la période">Début:</label></th>
+    <th><label for="deb" title="Date de début de la période">Début:</label></th>
     <td class="date" colspan="2">
       <div id="codeFrm_deb_da">{$deb|date_format:"%d/%m/%Y"}</div>
       <input type="hidden" name="deb" value="{$deb}" />
@@ -52,7 +52,7 @@ function pageMain() {
   <tr>
     <th>Actif:</th>
     <td><input type="checkbox" /></td>
-    <th><label for="codeFrm_fin" title="Date de fin de la période">Fin:</label></th>
+    <th><label for="fin" title="Date de fin de la période">Fin:</label></th>
     <td class="date" colspan="2">
       <div id="codeFrm_fin_da">{$fin|date_format:"%d/%m/%Y"}</div>
       <input type="hidden" name="fin" value="{$fin}" />

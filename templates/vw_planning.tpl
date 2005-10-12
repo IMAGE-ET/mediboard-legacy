@@ -40,7 +40,7 @@ function checkPlage() {
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="tab" value="{$tab}" />
 
-      <label for="selection_chirSel">Anesthésiste:</label>
+      <label for="chirSel">Anesthésiste:</label>
       <select name="chirSel" onchange="this.form.submit()">
         <option value="-1" {if $chirSel == -1} selected="selected" {/if}>&mdash; Choisir un anesthésiste &mdash;</option>
         {foreach from=$listChirs item=curr_chir}
@@ -107,7 +107,7 @@ function checkPlage() {
               </tr>
 
               <tr>
-                <th><label for="editFrm_chir_id">Praticien:</label></th>
+                <th><label for="chir_id">Praticien:</label></th>
                 <td><select name="chir_id">
                     <option value="-1" {if $chirSel == -1} selected="selected" {/if}>-- Choisir un praticien</option>
                     {foreach from=$listChirs item=curr_chir}
@@ -122,7 +122,7 @@ function checkPlage() {
               </tr>
 
               <tr>
-                <th><label for="editFrm__hour_deb">Heure de début:</label></th>
+                <th><label for="_hour_deb">Heure de début:</label></th>
                 <td><select name="_hour_deb">
                     {foreach from=$listHours item=curr_hour}
                       <option value="{$curr_hour}" {if $curr_hour == $plageSel->_hour_deb} selected="selected" {/if}>
@@ -131,7 +131,7 @@ function checkPlage() {
                     {/foreach}
                     </select>
                 </td>
-                <th><label for="editFrm__jour">Jour de la semaine:</label></th>
+                <th><label for="_jour">Jour de la semaine:</label></th>
                 <td><select name="_jour">
                     {foreach from=$daysOfWeek item=curr_day}
                     <option value="{$curr_day.index}" {if $curr_day.index == $plageSel->_jour} selected="selected" {/if}>
@@ -143,7 +143,7 @@ function checkPlage() {
               </tr>
 
               <tr>
-                <th><label for="editFrm__hour_fin">Heure de fin:</label></th>
+                <th><label for="_hour_fin">Heure de fin:</label></th>
                 <td><select name="_hour_fin">
                     {foreach from=$listHours item=curr_hour}
                       <option value="{$curr_hour}" {if $curr_hour == $plageSel->_hour_fin} selected="selected" {/if}>
@@ -152,7 +152,7 @@ function checkPlage() {
                     {/foreach}
                     </select>
                 </td>
-                <th><label for="editFrm__repeat">Nombre de répétitions:</label></th>
+                <th><label for="_repeat">Nombre de répétitions:</label></th>
                 <td><input type="text" size="2" name="_repeat" value="1" /></td>
               </tr>
               
@@ -168,7 +168,7 @@ function checkPlage() {
                 <th><label>Type de répétition:</label></th>
                 <td>
                   <input type="checkbox" name="_double" />
-                  <label for="editFrm__double">Une semaine sur deux</label>
+                  <label for="_double">Une semaine sur deux</label>
                 </td>
               <tr>
                 {if $plageconsult_id == -1}
