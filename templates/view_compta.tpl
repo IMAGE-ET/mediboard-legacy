@@ -83,7 +83,7 @@ function pageMain() {
           <th class="title" colspan="2">Edition des rapports</th>
         </tr>
         <tr>
-          <th><label for="paramFrm_deb">Début:</label></th>
+          <th><label for="deb">Début:</label></th>
           <td class="date" colspan="2">
             <div id="paramFrm_deb_da">{$today|date_format:"%d/%m/%Y"}</div>
             <input type="hidden" name="deb" value="{$today}" />
@@ -91,7 +91,7 @@ function pageMain() {
           </td>
         </tr>
         <tr>
-          <th><label for="paramFrm_fin">Fin:</label></th>
+          <th><label for="fin">Fin:</label></th>
           <td class="date" colspan="2">
             <div id="paramFrm_fin_da">{$today|date_format:"%d/%m/%Y"}</div>
             <input type="hidden" name="fin" value="{$tomorrow}" />
@@ -99,7 +99,7 @@ function pageMain() {
           </td>
         </tr>
         <tr>
-          <th><label for="paramFrm_type">Filtre:</label></th>
+          <th><label for="type">Filtre:</label></th>
           <td>
             <select name="type">
               <option value="0">Plages non payées</option>
@@ -108,7 +108,7 @@ function pageMain() {
         </tr>
         </tr>
         <tr>
-          <th><label for="paramFrm_prat_id">Praticien:</label></th>
+          <th><label for="prat_id">Praticien:</label></th>
           <td>
             <select name="prat_id">
               {foreach from=$listPrats item=curr_prat}
