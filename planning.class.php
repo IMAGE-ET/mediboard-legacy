@@ -403,6 +403,7 @@ class COperation extends CMbObject {
           $possible_acte->code_acte = $code->code;
           $possible_acte->code_activite = $activite->numero;
           $possible_acte->code_phase = $phase->phase;
+          $possible_acte->updateFormFields();
           
           // Affect a loaded acte is exists
           foreach ($this->_ref_actes_ccam as $curr_acte) {

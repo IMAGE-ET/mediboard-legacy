@@ -383,7 +383,7 @@ function pageMain() {
         <tr>
           <th class="mandatory">
             <input type="hidden" name="chir_id" alt="{$op->_props.chir_id}" value="{$chir->user_id}" ondoubleclick="popChir()" />
-            <label for="editFrm_chir_id" title="Chirurgien Responsable. Obligatoire">Chirurgien:</label>
+            <label for="chir_id" title="Chirurgien Responsable. Obligatoire">Chirurgien:</label>
           </th>
           <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if $chir->user_id}{$chir->_view}{/if}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="choisir un chirurgien" onclick="popChir()" /></td>
@@ -393,7 +393,7 @@ function pageMain() {
         <tr>
           <th class="mandatory">
             <input type="hidden" name="pat_id" alt="{$op->_props.pat_id}|notNull" ondoubleclick="popPat()" value="{$pat->patient_id}" />
-            <label for="editFrm_pat_id" title="Patient concerné. Obligatoire">Patient:</label>
+            <label for="pat_id" title="Patient concerné. Obligatoire">Patient:</label>
           </th>
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->_view}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="Rechercher un patient" onclick="popPat()" /></td>
@@ -402,7 +402,7 @@ function pageMain() {
         {if !$hospitalisation}
         <tr>
           <th class="mandatory">
-            <label for="editFrm__hour_op" title="Durée de l'intervention. Obligatoire">Temps opératoire:</label>
+            <label for="_hour_op" title="Durée de l'intervention. Obligatoire">Temps opératoire:</label>
           </th>
           <td colspan="2">
             <select name="_hour_op">
@@ -421,7 +421,7 @@ function pageMain() {
         <tr>
           <th class="mandatory">
             <input type="hidden" name="plageop_id" alt="{$op->_props.pat_id}|notNull" ondoubleclick="popPlage()" value="{$plage->id}" />
-            <label for="editFrm_plageop_id" title="Date de l'intervention. Obligatoire">Date de l'intervention:</label>
+            <label for="plageop_id" title="Date de l'intervention. Obligatoire">Date de l'intervention:</label>
           </th>
           <td class="readonly"><input type="text" name="date" readonly="readonly" size="10" value="{$plage->_date}" /></td>
           <td class="button"><input type="button" value="Choisir une date" onclick="popPlage()" /></td>
@@ -429,32 +429,32 @@ function pageMain() {
         {/if}
         
         <tr>
-          <th><label for="editFrm_CIM10_code" title="Code CIM10 de diagnostic">Diagnostic (CIM10):</label></th>
+          <th><label for="CIM10_code" title="Code CIM10 de diagnostic">Diagnostic (CIM10):</label></th>
           <td><input type="text" name="CIM10_code" alt="{$op->_props.CIM10_code}" size="10" value="{$op->CIM10_code}" /></td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('cim10')" /></td>
         </tr>
         {/if}
 
         <tr>
-          <th><label for="editFrm_CCAM_code" title="Code CCAM principal d'intervention{if !$hospitalisation}. Obligatoire{/if}">Acte Principal (CCAM):</label></th>
+          <th><label for="CCAM_code" title="Code CCAM principal d'intervention{if !$hospitalisation}. Obligatoire{/if}">Acte Principal (CCAM):</label></th>
           <td><input type="text" name="CCAM_code" alt="{$op->_props.CCAM_code}{if !$hospitalisation}|notNull{/if}" ondoubleclick="popCode('ccam')" size="10" value="{$op->CCAM_code}" onchange="modifOp()" /></td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
 
         <tr>
-          <th><label for="editFrm_CCAM_code2" title="Code CCAM secondaire d'intervention">Acte secondaire (CCAM):</label></th>
+          <th><label for="CCAM_code2" title="Code CCAM secondaire d'intervention">Acte secondaire (CCAM):</label></th>
           <td><input type="text" name="CCAM_code2" alt="{$op->_props.CCAM_code2}" size="10" value="{$op->CCAM_code2}" /></td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('ccam2')"/></td>
         </tr>
         
         <tr>
-          <th><label for="editFrm_libelle" title="Libellé facultatif d'intervention">Libellé:</label></th>
+          <th><label for="libelle" title="Libellé facultatif d'intervention">Libellé:</label></th>
           <td colspan="2"><input type="text" name="libelle" alt="{$op->_props.libelle}" size="70" value="{$op->libelle}"/></td>
         </tr>
         
         {if !$protocole}
         <tr>
-          <th class="mandatory"><label for="editFrm_cote" title="Côté concerné par l'intervention">Côté:</label></th>
+          <th class="mandatory"><label for="cote" title="Côté concerné par l'intervention">Côté:</label></th>
           <td colspan="2">
             <select name="cote" alt="{$op->_props.cote}" onchange="modifOp()">
               <option value="total"     {if !$op || $op->cote == "total"} selected="selected" {/if} >total</option>
@@ -468,14 +468,14 @@ function pageMain() {
         
         {if $hospitalisation}
         <tr>
-          <th><label for="editFrm_examen" title="Bilan pré-opératoire">Bilan pré-op</label></th>
+          <th><label for="examen" title="Bilan pré-opératoire">Bilan pré-op</label></th>
           <td colspan="2"><textarea name="examen" alt="{$op->_props.examen}" rows="3">{$op->examen}</textarea></td>
         </tr>
         {else}
         <tr>
-          <td class="text"><label for="editFrm_examen" title="Bilan pré-opératoire">Bilan pré-op</label></td>
-          <td class="text"><label for="editFrm_materiel" title="Matériel à prévoir / examens per-opératoire">Matériel à prévoir / examens per-op</label></td>
-          <td class="text"><label for="editFrm_convalescence" title="Convalescence post-opératoire">Convalescence</label></td>
+          <td class="text"><label for="examen" title="Bilan pré-opératoire">Bilan pré-op</label></td>
+          <td class="text"><label for="materiel" title="Matériel à prévoir / examens per-opératoire">Matériel à prévoir / examens per-op</label></td>
+          <td class="text"><label for="convalescence" title="Convalescence post-opératoire">Convalescence</label></td>
         </tr>
 
         <tr>
@@ -486,18 +486,18 @@ function pageMain() {
         {/if}
         
         <tr>
-          <th><label for="editFrm_depassement"title="Valeur du dépassement d'honoraire éventuel">Dépassement d'honoraire:</label></th>
+          <th><label for="depassement"title="Valeur du dépassement d'honoraire éventuel">Dépassement d'honoraire:</label></th>
           <td colspan="2"><input name="depassement" alt="{$op->_props.depassement}" type="text" size="4" value="{$op->depassement}" /> €</td>
         </tr>
 
         {if !$protocole}
         <tr>
-          <th><label for="editFrm_info_n">Information du patient:</label></th>
+          <th><label for="info_n">Information du patient:</label></th>
           <td colspan="2">
             <input name="info" value="o" type="radio" {if $op->info == "o"} checked="checked" {/if}/>
-            <label for="editFrm_info_o">Oui</label>
+            <label for="info_o">Oui</label>
             <input name="info" value="n" type="radio" {if !$op->operation_id || $op->info == "n"} checked="checked" {/if}/>
-            <label for="editFrm_info_n">Non</label>
+            <label for="info_n">Non</label>
           </td>
         </tr>
         {/if}
@@ -512,7 +512,7 @@ function pageMain() {
         <tr><th class="category" colspan="3">RDV d'anesthésie</th></tr>
 
         <tr>
-          <th><label for="editFrm_date_anesth_trigger" title="Date de rendez-vous d'anesthésie">Date:</label></th>
+          <th><label for="date_anesth_trigger" title="Date de rendez-vous d'anesthésie">Date:</label></th>
           <td class="date">
             <div id="editFrm_date_anesth_da">{$op->date_anesth|date_format:"%d/%m/%Y"}</div>
             <input type="hidden" name="date_anesth" alt="{$op->_props.date_anesth}" value="{$op->date_anesth}" onchange="modifOp()" />
@@ -521,7 +521,7 @@ function pageMain() {
         </tr>
 
         <tr>
-          <th><label for="editFrm__hour_anesth">Heure:</label></th>
+          <th><label for="_hour_anesth">Heure:</label></th>
           <td>
             <select name="_hour_anesth">
             {foreach from=$hours item=hour}
@@ -542,7 +542,7 @@ function pageMain() {
 
         {if !$protocole}
         <tr>
-          <th><label for="editFrm_date_adm" title="Choisir une date d'admission">Date:</label></th>
+          <th><label for="date_adm" title="Choisir une date d'admission">Date:</label></th>
           <td class="date">
             <div id="editFrm_date_adm_da">{$op->date_adm|date_format:"%d/%m/%Y"}</div>
             <input type="hidden" name="date_adm" alt="{$op->_props.date_adm}|notNull" value="{$op->date_adm}" onchange="modifOp()"/>
@@ -551,7 +551,7 @@ function pageMain() {
         </tr>
 
         <tr>
-          <th class="mandatory"><label for="editFrm__hour_adm" title="Heure d'admission">Heure:</label></th>
+          <th class="mandatory"><label for="_hour_adm" title="Heure d'admission">Heure:</label></th>
           <td>
             <select name="_hour_adm">
             {foreach from=$hours item=hour}
@@ -569,44 +569,44 @@ function pageMain() {
         {/if}
 
         <tr>
-          <th class="mandatory"><label for="editFrm_duree_hospi" title="Durée d'hospitalisation en jours">Durée d'hospitalisation:</label></th>
+          <th class="mandatory"><label for="duree_hospi" title="Durée d'hospitalisation en jours">Durée d'hospitalisation:</label></th>
           <td><input type"text" name="duree_hospi" alt="{$op->_props.duree_hospi}" size="2" value="{$op->duree_hospi}"> jours</td>
         </tr>
         <tr>
-          <th><label for="editFrm_type_adm_comp" title="Type d'admission">{tr}type_adm{/tr}:</label></th>
+          <th><label for="type_adm_comp" title="Type d'admission">{tr}type_adm{/tr}:</label></th>
           <td>
             <input name="type_adm" value="comp" type="radio" {if !$op->operation_id || $op->type_adm == "comp"} checked="checked" {/if} onchange="modifOp()" />
-            <label for="editFrm_type_adm_comp">{tr}comp{/tr}</label><br />
+            <label for="type_adm_comp">{tr}comp{/tr}</label><br />
             <input name="type_adm" value="ambu" type="radio" {if $op->type_adm == "ambu"} checked="checked" {/if} onchange="modifOp()" />
-            <label for="editFrm_type_adm_ambu">{tr}ambu{/tr}</label><br />
+            <label for="type_adm_ambu">{tr}ambu{/tr}</label><br />
             <input name="type_adm" value="exte" type="radio" {if $op->type_adm == "exte"} checked="checked" {/if} onchange="modifOp()" />
-            <label for="editFrm_type_adm_exte">{tr}exte{/tr}</label><br />
+            <label for="type_adm_exte">{tr}exte{/tr}</label><br />
           </td>
         </tr>
         
         {if !$protocole}
         <tr>
-          <th><label for="editFrm_chambre_o" title="Patient à placer dans une chambre particulière">Chambre particulière:</label></th>
+          <th><label for="chambre_o" title="Patient à placer dans une chambre particulière">Chambre particulière:</label></th>
           <td>
             <input name="chambre" value="o" type="radio" {if $op->chambre == "o"} checked="checked" {/if} onchange="modifOp()" />
-            <label for="editFrm_chambre_o">Oui</label>
+            <label for="chambre_o">Oui</label>
             <input name="chambre" value="n" type="radio" {if !$op->operation_id || $op->chambre == "n"} checked="checked" {/if} onchange="modifOp()" />
-            <label for="editFrm_chambre_n">Non</label>
+            <label for="chambre_n">Non</label>
           </td>
         </tr>
         <tr><th class="category" colspan="3">Autre</th></tr>
         <tr>
-          <th><label for="editFrm_ATNC_n" title="Intervention présantant un risque ATNC">Risque ATNC:</th>
+          <th><label for="ATNC_n" title="Intervention présantant un risque ATNC">Risque ATNC:</th>
           <td>
             <input name="ATNC" value="o" type="radio" {if $op->ATNC == "o"} checked="checked" {/if} />
-            <label for="editFrm_ATNC_o">Oui</label>
+            <label for="ATNC_o">Oui</label>
             <input name="ATNC" value="n" type="radio" {if !$op || $op->ATNC == "n"} checked="checked" {/if} />
-            <label for="editFrm_ATNC_n">Non</label>
+            <label for="ATNC_n">Non</label>
           </td>
         </tr>
         {/if}
         <tr>
-          <th><label for="editFrm_rques" title="Remarques générales sur l'intervention">Remarques:</label></th>
+          <th><label for="rques" title="Remarques générales sur l'intervention">Remarques:</label></th>
           <td><textarea name="rques" rows="3">{$op->rques}</textarea></td>
         </tr>
 

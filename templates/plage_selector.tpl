@@ -70,13 +70,13 @@ function setClose(date) {
       <strong>Admission du patient</strong>
       <br />
       <input type="radio" name="admission" value="veille" checked="checked" />
-      <label for="frmSelector_admission_veille">La veille</label>
+      <label for="admission_veille">La veille</label>
       <br />
       <input type="radio" name="admission" value="jour" />
-      <label for="frmSelector_admission_jour">Le jour même</label>
+      <label for="admission_jour">Le jour même</label>
       <br />
       <input type="radio" name="admission" value="aucune" />
-      <label for="frmSelector_admission_jour">Ne pas modifier</label>
+      <label for="admission_jour">Ne pas modifier</label>
       <br />
     </td>
   </tr>
