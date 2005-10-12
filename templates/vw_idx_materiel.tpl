@@ -72,7 +72,7 @@ function pageMain() {
 	  <table class="form">
 	    <tr><th colspan="2" class="category">Imprimer l'historique</th></tr>
         <tr>
-          <th><label for="paramFrm_deb" title="Date de début de la recherche">Début:</label></th>
+          <th><label for="deb" title="Date de début de la recherche">Début:</label></th>
           <td class="date" colspan="2">
             <div id="paramFrm_deb_da">{$deb|date_format:"%d/%m/%Y"}</div>
             <input type="hidden" name="deb" value="{$deb}" />
@@ -80,7 +80,7 @@ function pageMain() {
           </td>
         </tr>
         <tr>
-          <th><label for="paramFrm_fin" title="Date de fin de la recherche">Fin:</label></th>
+          <th><label for="fin" title="Date de fin de la recherche">Fin:</label></th>
           <td class="date" colspan="2">
             <div id="paramFrm_fin_da">{$fin|date_format:"%d/%m/%Y"}</div>
             <input type="hidden" name="fin" value="{$fin}" />
