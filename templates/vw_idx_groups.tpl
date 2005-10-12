@@ -44,7 +44,7 @@ function checkGroup() {
           </th>
         </tr>
         <tr>
-          <th class="mandatory"><label for="group_text" title="intitulé du groupe, obligatoire.">Intitulé:</label></th>
+          <th class="mandatory"><label for="text" title="intitulé du groupe, obligatoire.">Intitulé:</label></th>
           <td><input type="text" name="text" size="30" id="group_text" value="{$usergroup->text}" /></td>
         </tr>
         <tr>

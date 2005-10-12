@@ -160,31 +160,31 @@ function toggleFunction(function_id) {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="mediuser__user_username" title="Nom du compte pour se connecter à Mediboard. Obligatoire">Login:</label></th>
+      <th class="mandatory"><label for="_user_username" title="Nom du compte pour se connecter à Mediboard. Obligatoire">Login:</label></th>
       <td><input type="text" name="_user_username" value="{$mediuserSel->_user_username}" /></td>
     </tr>
     
     <tr>
-      <th class="mandatory"><label for="mediuser__user_password" title="Mot de passe pour se connecter à Mediboard. Obligatoire">Mot de passe:</label></th>
+      <th class="mandatory"><label for="_user_password" title="Mot de passe pour se connecter à Mediboard. Obligatoire">Mot de passe:</label></th>
       <td><input type="password" name="_user_password" value="{$mediuserSel->_user_password}" /></td>
     </tr>
     
     <tr>
-      <th class="mandatory"><label for="mediuser__user_password2" title="Re-saisir le mot de passe pour confimer. Obligatoire">Mot de passe (vérif.):</label></th>
+      <th class="mandatory"><label for="_user_password2" title="Re-saisir le mot de passe pour confimer. Obligatoire">Mot de passe (vérif.):</label></th>
       <td><input type="password" name="_user_password2" value="{$mediuserSel->_user_password}" /></td>
     </tr>
     
     <tr>
-      <th><label for="mediuser_remote_0" title="Permet ou non à l'utilisateur de se connecter à distance">Accès distant:</label></th>
+      <th><label for="remote_0" title="Permet ou non à l'utilisateur de se connecter à distance">Accès distant:</label></th>
       <td>
         <input type="radio" name="remote" value="0" {if $mediuserSel->remote == "0"} checked="checked" {/if} />
-        <label for="mediuser_remote_0" title="Accès distant authorisé">oui</label>
+        <label for="remote_0" title="Accès distant authorisé">oui</label>
         <input type="radio" name="remote" value="1" {if $mediuserSel->remote == "1"} checked="checked" {/if} />
-        <label for="mediuser_remote_1" title="Accès distant interdit">non</label>
+        <label for="remote_1" title="Accès distant interdit">non</label>
     </tr>
     
     <tr>
-      <th class="mandatory"><label for="mediuser_function_id" title="Fonction de l'utilisateur au sein de l'établissement. Obligatoire">Fonction:</th>
+      <th class="mandatory"><label for="function_id" title="Fonction de l'utilisateur au sein de l'établissement. Obligatoire">Fonction:</th>
       <td>
         <select name="function_id">
           <option>&mdash; Choisir une fonction &mdash;</option>
@@ -198,7 +198,7 @@ function toggleFunction(function_id) {
     </tr>
 
     <tr>
-      <th><label for="mediuser__profile_id" title="Profil de droits utilisateur. Obligatoire">Profil:</label></th>
+      <th><label for="_profile_id" title="Profil de droits utilisateur. Obligatoire">Profil:</label></th>
       <td>
         <select name="_profile_id">
           <option value="0">&mdash; Choisir un profil</option>	
@@ -210,27 +210,27 @@ function toggleFunction(function_id) {
     </tr>
     
     <tr>
-      <th class="mandatory"><label for="mediuser__user_last_name" title="Nom de famille de l'utilisateur. Obligatoire">Nom:</label></th>
+      <th class="mandatory"><label for="_user_last_name" title="Nom de famille de l'utilisateur. Obligatoire">Nom:</label></th>
       <td><input type="text" name="_user_last_name" value="{$mediuserSel->_user_last_name}" /></td>
     </tr>
     
     <tr>
-      <th><label for="mediuser__user_first_name" title="Prénom de l'utilisateur">Prénom:</label></th>
+      <th><label for="_user_first_name" title="Prénom de l'utilisateur">Prénom:</label></th>
       <td><input type="text" name="_user_first_name" value="{$mediuserSel->_user_first_name}" /></td>
     </tr>
     
     <tr>
-      <th><label for="mediuser_adeli" title="Numero Adeli de l'utilisateur">Code Adeli:</label></th>
+      <th><label for="adeli" title="Numero Adeli de l'utilisateur">Code Adeli:</label></th>
       <td><input type="text" name="adeli" value="{$mediuserSel->adeli}" /></td>
     </tr>
     
     <tr>
-      <th><label for="mediuser__user_email" title="Email de l'utilisateur">Email:</label></th>
+      <th><label for="_user_email" title="Email de l'utilisateur">Email:</label></th>
       <td><input type="text" name="_user_email" value="{$mediuserSel->_user_email}" /></td>
     </tr>
 
     <tr>
-      <th><label for="mediuser__user_phone" title="Numéro de téléphone de l'utilisateur">Tél:</label></th>
+      <th><label for="_user_phone" title="Numéro de téléphone de l'utilisateur">Tél:</label></th>
       <td><input type="text" name="_user_phone" value="{$mediuserSel->_user_phone}" /></td>
     </tr>
     
