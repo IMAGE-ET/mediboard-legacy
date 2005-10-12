@@ -47,7 +47,7 @@ function pageMain() {
         <tr><th class="category" colspan="3">Choix de la période</th></tr>
         
         <tr>
-          <th><label for="paramFrm_deb">Début:</label></th>
+          <th><label for="deb">Début:</label></th>
           <td class="date" colspan="2">
             <div id="paramFrm_deb_da">{$today|date_format:"%d/%m/%Y %H:%M"}</div>
             <input type="hidden" name="deb" value="{$today}" />
@@ -56,7 +56,7 @@ function pageMain() {
         </tr>
 
         <tr>
-          <th><label for="paramFrm_fin">Fin:</label></th>
+          <th><label for="fin">Fin:</label></th>
           <td class="date" colspan="2">
             <div id="paramFrm_fin_da">{$tomorrow|date_format:"%d/%m/%Y %H:%M"}</div>
             <input type="hidden" name="fin" value="{$tomorrow}" />
@@ -65,7 +65,7 @@ function pageMain() {
         </tr>
 
         <tr>
-          <th><label for="paramFrm_ordre">Classement des admissions:</label></th>
+          <th><label for="ordre">Classement des admissions:</label></th>
           <td>
             <select name="ordre">
               <option value="heure">Par heure d'admission</option>
@@ -75,7 +75,7 @@ function pageMain() {
         </tr>
 
         <tr>
-          <th><label for="paramFrm_service">Service:</label></th>
+          <th><label for="service">Service:</label></th>
           <td><select name="service">
             <option value="0">&mdash; Tous les services &mdash;</option>
             {foreach from=$listServ item=curr_serv}
@@ -91,7 +91,7 @@ function pageMain() {
       <table class="form">
         <tr><th class="category" colspan="2">Paramètres de filtrage</th></tr>
         <tr>
-          <th><label for="paramFrm_type">Type d'admission:</label></th>
+          <th><label for="type">Type d'admission:</label></th>
           <td><select name="type">
             <option value="0">&mdash; Tous types d'admission &mdash;</option>
             <option value="ambu">Ambulatoire</option>
@@ -100,7 +100,7 @@ function pageMain() {
           </select></td>
         </tr>
         <tr>
-          <th><label for="paramFrm_chir">Praticien:</label></th>
+          <th><label for="chir">Praticien:</label></th>
           <td><select name="chir">
             <option value="0">&mdash; Tous les praticiens &mdash;</option>
             {foreach from=$listPrat item=curr_prat}
@@ -109,7 +109,7 @@ function pageMain() {
           </select></td>
         </tr>
         <tr>
-          <th><label for="paramFrm_spe">Specialité:</label></th>
+          <th><label for="spe">Specialité:</label></th>
           <td><select name="spe">
             <option value="0">&mdash; Toutes les spécialités &mdash;</option>
             {foreach from=$listSpec item=curr_spec}
@@ -118,7 +118,7 @@ function pageMain() {
           </select></td>
         </tr>
         <tr>
-          <th><label for="paramFrm_conv">Convalescence:</label></th>
+          <th><label for="conv">Convalescence:</label></th>
           <td><select name="conv">
             <option value="0">&mdash; Indifférent &mdash;</option>
 	        <option value="o">avec</option>
