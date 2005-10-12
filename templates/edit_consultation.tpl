@@ -315,7 +315,7 @@ function pageMain() {
         </tr>
         <tr>
       	  <th class="category">
-      	    <label for="editFrm_motif" title="Motif de la consultation">Motif</label>
+      	    <label for="motif" title="Motif de la consultation">Motif</label>
       	  </th>
           <th>
             <select name="_aide_motif" size="1" onchange="pasteText('motif')">
@@ -324,7 +324,7 @@ function pageMain() {
             </select>
           </th>
       	  <th class="category">
-      	    <label for="editFrm_rques" title="Remarques concernant la consultation">Remarques</label>
+      	    <label for="rques" title="Remarques concernant la consultation">Remarques</label>
       	  </th>
           <th>
             <select name="_aide_rques" size="1" onchange="pasteText('rques')">
@@ -339,7 +339,7 @@ function pageMain() {
         </tr>
         <tr>
           <th class="category">
-      	    <label for="editFrm_examen" title="Bilan de l'examen clinique">Examens</label>
+      	    <label for="examen" title="Bilan de l'examen clinique">Examens</label>
       	  </th>
           <th>
             <select name="_aide_examen" size="1" onchange="pasteText('examen')">
@@ -348,7 +348,7 @@ function pageMain() {
             </select>
           </th>
           <th class="category">
-      	    <label for="editFrm_traitement" title="title">Traitements</label>
+      	    <label for="traitement" title="title">Traitements</label>
       	  </th>
           <th>
             <select name="_aide_traitement" size="1" onchange="pasteText('traitement')">

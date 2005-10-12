@@ -61,7 +61,7 @@ function pageMain() {
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="tab" value="{$tab}" />
 
-      <label for="selection_chirSel">Praticien:</label>
+      <label for="chirSel">Praticien:</label>
       <select name="chirSel" onchange="this.form.submit()">
         <option value="-1" {if $chirSel == -1} selected="selected" {/if}>&mdash; Choisir un praticien &mdash;</option>
         {foreach from=$listChirs item=curr_chir}
@@ -71,7 +71,7 @@ function pageMain() {
         {/foreach}
       </select>
   
-      <label for="selection_vue1">Type de vue:</label>
+      <label for="vue1">Type de vue:</label>
       <select name="vue1" onchange="this.form.submit()">
         <option value="0"{if !$vue}selected="selected"{/if}>Tout afficher</option>
         <option value="1"{if $vue}selected="selected"{/if}>Cacher les payés</option>
@@ -133,7 +133,7 @@ function pageMain() {
               </tr>
 
               <tr>
-                <th><label for="editFrm_chir_id">Praticien:</label></th>
+                <th><label for="chir_id">Praticien:</label></th>
                 <td><select name="chir_id">
                     <option value="">&mdash; Choisir un praticien</option>
                     {foreach from=$listChirs item=curr_chir}
@@ -143,12 +143,12 @@ function pageMain() {
                     {/foreach}
                     </select>
                 </td>
-                <th><label for="editFrm_libelle">Libellé:</label></th>
+                <th><label for="libelle">Libellé:</label></th>
                 <td><input type="text" name="libelle" value="{$plageSel->libelle}" />
               </tr>
 
               <tr>
-                <th><label for="editFrm__hour_deb">Début:</label></th>
+                <th><label for="_hour_deb">Début:</label></th>
                 <td><select name="_hour_deb">
                     {foreach from=$listHours item=curr_hour}
                       <option value="{$curr_hour|string_format:"%02d"}" {if $curr_hour == $plageSel->_hour_deb} selected="selected" {/if}>
@@ -164,7 +164,7 @@ function pageMain() {
                     {/foreach}
                   </select> min
                 </td>
-                <th><label for="editFrm_date">Jour de la semaine:</label></th>
+                <th><label for="date">Jour de la semaine:</label></th>
                 <td>
                   <select name="date">
                     <option value="">&mdash; Jour de la semaine</option>
@@ -178,7 +178,7 @@ function pageMain() {
               </tr>
 
               <tr>
-                <th><label for="editFrm__hour_fin">Fin:</label></th>
+                <th><label for="_hour_fin">Fin:</label></th>
                 <td>
                   <select name="_hour_fin">
                     {foreach from=$listHours item=curr_hour}
@@ -196,7 +196,7 @@ function pageMain() {
                   </select> min
                   
                 </td>
-                <th><label for="editFrm__repeat">Nombre de répétitions:</label></th>
+                <th><label for="_repeat">Nombre de répétitions:</label></th>
                 <td><input type="text" size="2" name="_repeat" value="1" /></td>
               </tr>
               
@@ -211,7 +211,7 @@ function pageMain() {
                 <th><label>Type de répétition:</label></th>
                 <td>
                   <input type="checkbox" name="_double" />
-                  <label for="editFrm__double">Une semaine sur deux</label>
+                  <label for="_double">Une semaine sur deux</label>
                 </td>
               <tr>
                 {if !$plageSel->plageconsult_id}
