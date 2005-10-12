@@ -12,6 +12,13 @@
     <td>
       Intervention le {$curr_op->_ref_plageop->date|date_format:"%d/%m/%Y"}
       avec le Dr. {$curr_op->_ref_chir->_view}
+      {if $curr_op->_ext_codes_ccam|@count}
+      <ul>
+        {foreach from=$curr_op->_ext_codes_ccam item=curr_code}
+        <li><i>{$curr_code->libelleLong}</i></li>
+        {/foreach}
+      </ul>
+      {/if}
     </td>
   </tr>
   {/foreach}
