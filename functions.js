@@ -59,6 +59,18 @@ function getLabelFor(oElement) {
   return null; 
 }
 
+function getBoundingForm(oElement) {
+  if (!oElement) {
+    return null;
+  }
+  
+  if (oElement.nodeName.match(/^form$/i)) {
+    return oElement;
+  }
+  
+  return getBoundingForm(oElement.parentNode);
+}
+
 function prepareForms() {
   var bGiveFocus = true;
 
@@ -97,6 +109,15 @@ function prepareForms() {
     }
   }
   
+  // Build label targets
+  aLabels = document.getElementsByTagName("label");
+  iLabel = 0;
+  while (oLabel = aLabels[iLabel++]) {
+  	oForm = getBoundingForm(oLabel);
+  	if (sFor = oLabel.getAttribute("for")) {
+      oLabel.setAttribute("for", oForm.name + "_" + sFor);
+  	} 
+  } 
 }
 
 function checkElement(oElement, aSpecFragments) {
