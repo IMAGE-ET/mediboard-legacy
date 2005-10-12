@@ -14,7 +14,7 @@
     </th>
   </tr>
   <tr>
-    <th><label for="filterFrm_user_id" title="Identifiant de l'utilisateur">Utilisateur:</label></th>
+    <th><label for="user_id" title="Identifiant de l'utilisateur">Utilisateur:</label></th>
     <td>
       <select name="user_id" alt="ref">
         <option value="0">&mdash; Tous les utilisateurs</option>
@@ -25,7 +25,7 @@
         {/foreach}
       </select>
     </td>
-    <th><label for="filterFrm_object_class" title="Classe de l'object">Classe:</label></th>
+    <th><label for="object_class" title="Classe de l'object">Classe:</label></th>
     <td>
       <select name="object_class" alt="str|maxLength|25">
         <option value="0">&mdash; Toutes les classes</option>
@@ -38,7 +38,7 @@
     </td>
   </tr>
   <tr>
-    <th><label for="filterFrm_type" title="Action effectuée">Action:</label></th>
+    <th><label for="type" title="Action effectuée">Action:</label></th>
     <td>
       <select name="type" alt="enum|0|store|delete">
         <option value="0">&mdash; Tous les types</option>
@@ -49,7 +49,7 @@
         {/foreach}
       </select>
     </td>
-    <th><label for="filterFrm_object_id" title="Identifiant de l'object">Objet:</label></th>
+    <th><label for="object_id" title="Identifiant de l'object">Objet:</label></th>
     <td>
       <input name="object_id" alt="ref" value="{$object_id}" />
     </td>
