@@ -136,7 +136,7 @@ function checkForm() {
       </tr>
 
       <tr>
-        <th><label for="filterFrm_filter_user_id" title="Filtrer les aides pour cet utilisateur">Utilisateur:</label></th>
+        <th><label for="filter_user_id" title="Filtrer les aides pour cet utilisateur">Utilisateur:</label></th>
         <td>
           <select name="filter_user_id" onchange="this.form.submit()">
             <option value="0">&mdash; Tous les utilisateurs</option>
@@ -147,7 +147,7 @@ function checkForm() {
             {/foreach}
           </select>
         </td>
-        <th><label for="filterFrm_filter_module" title="Filtrer les aides pour ce module">Module:</label></th>
+        <th><label for="filter_module" title="Filtrer les aides pour ce module">Module:</label></th>
         <td>
           <select name="filter_module" onchange="this.form.submit()">
             <option value="0">&mdash; Tous les modules</option>
@@ -214,7 +214,7 @@ function checkForm() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="editFrm_user_id" title="Utilisateur concerné, obligatoire.">Utilisateur:</label></th>
+      <th class="mandatory"><label for="user_id" title="Utilisateur concerné, obligatoire.">Utilisateur:</label></th>
       <td>
         <select name="user_id">
           <option value="0">&mdash; Choisir un utilisateur</option>
@@ -228,7 +228,7 @@ function checkForm() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="editFrm_module" title="Module concerné, obligatoire.">Module:</label></th>
+      <th class="mandatory"><label for="module" title="Module concerné, obligatoire.">Module:</label></th>
       <td>
         <select name="module" onchange="loadClasses(this.value)">
           <option value="0">&mdash; Choisir un module</option>
@@ -238,7 +238,7 @@ function checkForm() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="editFrm_class" title="Type d'objet concerné, obligatoire.">Objet:</label></th>
+      <th class="mandatory"><label for="class" title="Type d'objet concerné, obligatoire.">Objet:</label></th>
       <td>
         <select name="class" onchange="loadFields()">
           <option value="0">&mdash; Choisir un objet</option>
@@ -247,7 +247,7 @@ function checkForm() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="editFrm_field" title="Champ de l'objet concerné, obligatoire.">Champ:</label></th>
+      <th class="mandatory"><label for="field" title="Champ de l'objet concerné, obligatoire.">Champ:</label></th>
       <td>
         <select name="field">
           <option value="0">&mdash; Choisir un champ</option>
@@ -256,12 +256,12 @@ function checkForm() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="editFrm_name" title="intitulé de l'aide, obligatoire.">Intitulé:</label></th>
+      <th class="mandatory"><label for="name" title="intitulé de l'aide, obligatoire.">Intitulé:</label></th>
       <td><input type="text" name="name" value="{$aide->name}" /></td>
     </tr>
     
     <tr>
-      <th><label for="editFrm_text" title="Texte de remplacement.">Texte:</label></th>
+      <th><label for="text" title="Texte de remplacement.">Texte:</label></th>
       <td>
         <textarea style="width: 200px" rows="4" name="text">{$aide->text}</textarea>
       </td>

@@ -40,7 +40,7 @@ function checkForm() {
     <table class="form">
 
       <tr>
-        <th><label for="filterFrm_filter_user_id" title="Filtrer les listes pour cet utilisateur">Utilisateur:</label></th>
+        <th><label for="filter_user_id" title="Filtrer les listes pour cet utilisateur">Utilisateur:</label></th>
         <td>
           <select name="filter_user_id" onchange="this.form.submit()">
             <option value="0">&mdash; Tous les utilisateurs</option>
@@ -134,7 +134,7 @@ function checkForm() {
     </tr>
   
     <tr>
-      <th><label for="editFrm_function_id" title="Fonction à laquelle le modèle est associé">Fonction:</label></th>
+      <th><label for="function_id" title="Fonction à laquelle le modèle est associé">Fonction:</label></th>
       <td>
         <select name="function_id" onchange="this.form.chir_id.value = 0">
           <option value="0">&mdash; Associer à une fonction &mdash;</options>
@@ -148,7 +148,7 @@ function checkForm() {
     </tr>
   
     <tr>
-      <th><label for="editFrm_chir_id" title="Praticien auquel le modèle est associé">Praticien:</label></th>
+      <th><label for="chir_id" title="Praticien auquel le modèle est associé">Praticien:</label></th>
       <td>
         <select name="chir_id" onchange="this.form.function_id.value = 0">
           <option value="0">&mdash; Associer à un praticien &mdash;</options>
@@ -162,12 +162,12 @@ function checkForm() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="editFrm_name" title="intitulé de la liste, obligatoire.">Intitulé:</label></th>
+      <th class="mandatory"><label for="name" title="intitulé de la liste, obligatoire.">Intitulé:</label></th>
       <td><input type="text" name="nom" value="{$liste->nom}" /></td>
     </tr>
     
     <tr>
-      <th><label for="editFrm_compte_rendu_id" title="Compte-rendu associé.">Compte-rendu</label></th>
+      <th><label for="compte_rendu_id" title="Compte-rendu associé.">Compte-rendu</label></th>
       <td>
         <select name="compte_rendu_id">
           <option value="0">&mdash; Tous &mdash;</option>

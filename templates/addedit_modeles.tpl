@@ -53,12 +53,12 @@ function checkModele() {
   </tr>
   
   <tr>
-    <th><label for="editFrm_nom" title="Intitulé du modèle. Obligatoire">Nom:</label></th>
+    <th><label for="nom" title="Intitulé du modèle. Obligatoire">Nom:</label></th>
     <td><input type="text" name="nom" value="{$compte_rendu->nom}" alt="{$compte_rendu->_props.nom}" /></td>
   </tr>
   
   <tr>
-    <th><label for="editFrm_function_id" title="Fonction à laquelle le modèle est associé">Fonction:</label></th>
+    <th><label for="function_id" title="Fonction à laquelle le modèle est associé">Fonction:</label></th>
     <td>
       <select name="function_id" onchange="this.form.chir_id.value = 0">
         <option value="0">&mdash; Associer à une fonction &mdash;</options>
@@ -72,7 +72,7 @@ function checkModele() {
   </tr>
   
   <tr>
-    <th><label for="editFrm_chir_id" title="Praticien auquel le modèle est associé">Praticien:</label></th>
+    <th><label for="chir_id" title="Praticien auquel le modèle est associé">Praticien:</label></th>
     <td>
       <select name="chir_id" onchange="this.form.function_id.value = 0">
         <option value="0">&mdash; Associer à un praticien &mdash;</options>
@@ -86,7 +86,7 @@ function checkModele() {
   </tr>
   
   <tr>
-    <th><label for="editFrm_type" title="Contexte dans lequel est utilisé le modèle">Type de modèle: </label></th>
+    <th><label for="type" title="Contexte dans lequel est utilisé le modèle">Type de modèle: </label></th>
     <td>
       <select name="type">
         {foreach from=$ECompteRenduType item=curr_type}

@@ -12,7 +12,7 @@
        
         <tr>
           <th>
-            <label for="selectPrat_prat_id" title="Sélectionner l'utilisateur pour afficher ses modèles">Utilisateur: </label>
+            <label for="prat_id" title="Sélectionner l'utilisateur pour afficher ses modèles">Utilisateur: </label>
           </th>
           <td>
             <select name="prat_id" onchange="submit()">
