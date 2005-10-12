@@ -170,15 +170,15 @@ function setPermItem( key, val ) {
 	    <th>{tr}Level{/tr}:</th>
 	    <td>
           <input type="checkbox" name="_module_visible" {if $permSel->_module_visible}checked="checked"{/if} />
-          <label for="frmModulePerms__module_visible">{tr}Visible{/tr}</label>
+          <label for="_module_visible">{tr}Visible{/tr}</label>
         </td>
         <td>
           <input type="checkbox" name="_module_readall" {if $permSel->_module_readall}checked="checked"{/if} />
-          <label for="frmModulePerms__module_readall">{tr}Read All{/tr}</label>
+          <label for="_module_readall">{tr}Read All{/tr}</label>
         </td>
         <td>
           <input type="checkbox" name="_module_editall" {if $permSel->_module_editall}checked="checked"{/if} />
-          <label for="frmModulePerms__module_editall">{tr}Edit All{/tr}</label>
+          <label for="_module_editall">{tr}Edit All{/tr}</label>
         </td>
       </tr>
 
@@ -276,7 +276,7 @@ function setPermItem( key, val ) {
 	  </tr>
 	  
 	  <tr>
-	    <th><label for="cpPerms_temp_user_name">{tr}Copy Permissions from User{/tr}:</label></th>
+	    <th><label for="temp_user_name">{tr}Copy Permissions from User{/tr}:</label></th>
 	    <td>
 	      <select name="temp_user_name">
 			{html_options options=$otherUsers}
@@ -288,7 +288,7 @@ function setPermItem( key, val ) {
 	  <tr>
         <td colspan="2">
           <input type="checkbox" name="delPerms" class="text" value="true" checked="checked" />
-	      <label for="cpPerms_delPerms">{tr}adminDeleteTemplate{/tr}</label>
+	      <label for="delPerms">{tr}adminDeleteTemplate{/tr}</label>
 	    </td>
       </tr>
 
