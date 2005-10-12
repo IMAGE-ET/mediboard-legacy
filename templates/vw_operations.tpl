@@ -143,7 +143,7 @@
                     {foreach from=$curr_activite->phases item=curr_phase}
                     {assign var="acte" value=$curr_phase->_connected_acte}
                     <li>
-                      <form name="formActeCCAM" action="?m={$m}" method="post">
+                      <form name="formActe-{$acte->_view}" action="?m={$m}" method="post">
 
                       <input type="hidden" name="m" value="{$m}" />
                       <input type="hidden" name="tab" value="{$tab}" />
@@ -156,7 +156,7 @@
                       <input type="hidden" name="code_phase" value="{$acte->code_phase}" />
                       
                       Phase {$curr_phase->phase} : {$curr_phase->libelle|escape} : {$curr_phase->tarif}&euro;<br />
-                      <label for="montant_depassement" title="Montant du dépassement d'honoraires">Dépassement:</label>
+                      <label for="depassement" title="Montant du dépassement d'honoraires">Dépassement:</label>
                       <input type="text" name="montant_depassement" alt="{$acte->_props.montant_depassement}" value="{$acte->montant_depassement}"><br />
 
                       <label for="execution" title="Date et heure d'exécution de l'acte">Exécution:</label>
