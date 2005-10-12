@@ -33,12 +33,12 @@ function printIntervention(id) {
         </tr>
   
         <tr>
-          <th><label for="find_nom" title="Nom du patient à rechercher, au moins les premières lettres">Nom:</label></th>
+          <th><label for="nom" title="Nom du patient à rechercher, au moins les premières lettres">Nom:</label></th>
           <td><input tabindex="1" type="text" name="nom" value="{$nom}" /></td>
         </tr>
         
         <tr>
-          <th><label for="for_prenom" title="Prénom du patient à rechercher, au moins les premières lettres">Prénom:</label></th>
+          <th><label for="prenom" title="Prénom du patient à rechercher, au moins les premières lettres">Prénom:</label></th>
           <td><input tabindex="2" type="text" name="prenom" value="{$prenom}" /></td>
         </tr>
         
@@ -199,7 +199,7 @@ function printIntervention(id) {
             <input type="hidden" name="dosql" value="do_consult_now" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="patient_id" alt="notNull|ref" value="{$patient->patient_id}" />
-            <label for="addConsFrm_prat_id" title="Praticien pour la consultation immédiate. Obligatoire">Praticien:</label>
+            <label for="prat_id" title="Praticien pour la consultation immédiate. Obligatoire">Praticien:</label>
             <select name="prat_id" alt="notNull|ref">
               <option value="">&mdash; Choisir un praticien</option>
               {foreach from=$listPrat item=curr_prat}

@@ -97,9 +97,9 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="editFrm_nom" title="Nom du patient. Obligatoire">Nom:</label></th>
+        <th><label for="nom" title="Nom du patient. Obligatoire">Nom:</label></th>
         <td><input tabindex="1" type="text" name="nom" value="{$patient->nom}" alt="{$patient->_props.nom}" /></td>
-        <th><label for="editFrm_incapable_majeur" title="Patient reconnu incapable majeur">Incapable majeur:</label></th>
+        <th><label for="incapable_majeur" title="Patient reconnu incapable majeur">Incapable majeur:</label></th>
         <td colspan="2">
           <input tabindex="21" type="radio" name="incapable_majeur" value="o" {if $patient->incapable_majeur == "o"} checked="checked" {/if} />oui
           <input tabindex="22" type="radio" name="incapable_majeur" value="n" {if $patient->incapable_majeur == "n"} checked="checked" {/if} />non
@@ -107,7 +107,7 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="editFrm_prenom" title="Prénom du patient. Obligatoire">Prénom:</label></th>
+        <th><label for="prenom" title="Prénom du patient. Obligatoire">Prénom:</label></th>
         <td><input tabindex="2" type="text" name="prenom" value="{$patient->prenom}" alt="{$patient->_props.prenom}" /></td>
         <th>ATNC:</th>
         <td colspan="2">
@@ -117,29 +117,29 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="editFrm_nom_jeune_fille" title="Nom de jeune fille d'une femme mariée">Nom de jeune fille:</label></th>
+        <th><label for="nom_jeune_fille" title="Nom de jeune fille d'une femme mariée">Nom de jeune fille:</label></th>
         <td><input tabindex="3" type="text" name="nom_jeune_fille" alt="{$patient->_props.nom_jeune_fille}" value="{$patient->nom_jeune_fille}" /></td>
-        <th><label for="editFrm_matricule" title="Matricule valide d'assuré social (13 chiffres + 2 pour la clé)">Numéro d'assuré social:</label></th>
+        <th><label for="matricule" title="Matricule valide d'assuré social (13 chiffres + 2 pour la clé)">Numéro d'assuré social:</label></th>
         <td colspan="2">
           <input tabindex="25" type="text" size="15" maxlength="15" name="matricule" alt="{$patient->_props.matricule}" value="{$patient->matricule}" />
         </td>
       </tr>
       
       <tr>
-        <th><label for="editFrm__jour" title="Date de naissance du patient, au format JJ-MM-AAAA">Date de naissance:</label></th>
+        <th><label for="_jour" title="Date de naissance du patient, au format JJ-MM-AAAA">Date de naissance:</label></th>
         <td>
           <input tabindex="4" type="text" name="_jour"  size="2" maxlength="2" value="{if $patient->_jour != "00"}{$patient->_jour}{/if}" onkeyup="followUp(this, '_mois')" /> -
           <input tabindex="5" type="text" name="_mois"  size="2" maxlength="2" value="{if $patient->_mois != "00"}{$patient->_mois}{/if}" onkeyup="followUp(this, '_annee')" /> -
           <input tabindex="6" type="text" name="_annee" size="4" maxlength="4" value="{if $patient->_annee != "0000"}{$patient->_annee}{/if}" />
         </td>
-        <th><label for="editFrm_SHS" title="Code Administratif SHS">Code administratif:</label></th>
+        <th><label for="SHS" title="Code Administratif SHS">Code administratif:</label></th>
         <td colspan="2">
           <input tabindex="26" type="text" size="10" maxlength="10" name="SHS" alt="{$patient->_props.SHS}" value="{$patient->SHS}" />
         </td>
       </tr>
       
       <tr>
-        <th><label for="editFrm_sexe" title="Sexe du patient">Sexe:</label></th>
+        <th><label for="sexe" title="Sexe du patient">Sexe:</label></th>
         <td>
           <select tabindex="7" name="sexe" alt="{$patient->_props.sexe}">
             <option value="m" {if $patient->sexe == "m"} selected="selected" {/if}>masculin</option>
@@ -156,10 +156,10 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="editFrm_adresse" title="Adresse du patient">Adresse:</label></th>
+        <th><label for="adresse" title="Adresse du patient">Adresse:</label></th>
         <td><textarea tabindex="8" name="adresse" alt="{$patient->_props.adresse}" rows="1">{$patient->adresse}</textarea></td>
         <th>
-          <label for="editFrm_medecin_traitant" title="Choisir un médecin traitant">Medecin traitant:</label>
+          <label for="medecin_traitant" title="Choisir un médecin traitant">Medecin traitant:</label>
           <input type="hidden" name="medecin_traitant" alt="{$patient->_props.medecin_traitant}" value="{$patient->medecin_traitant}" />
         </th>
         <td class="readonly">
@@ -170,10 +170,10 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="editFrm_cp" title="Code postal">Code Postal:</label></th>
+        <th><label for="cp" title="Code postal">Code Postal:</label></th>
         <td><input tabindex="9" type="text" name="cp" value="{$patient->cp}" alt="{$patient->_props.cp}" /></td>
         <th>
-          <label for="editFrm_medecin1" title="Choisir un médecin correspondant">Médecin correspondant 1:</label>
+          <label for="medecin1" title="Choisir un médecin correspondant">Médecin correspondant 1:</label>
           <input type="hidden" name="medecin1" value="{$patient->_ref_medecin1->medecin_id}" alt="{$patient->_props.medecin1}" />
         </th>
         <td class="readonly">
@@ -184,11 +184,11 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="editFrm_sexe" title="Ville du patient">Ville:</label></th>
+        <th><label for="sexe" title="Ville du patient">Ville:</label></th>
         <td><input tabindex="10" type="text" name="ville" value="{$patient->ville}" alt="{$patient->_props.ville}" /></td>
         <th>
           <input type="hidden" name="medecin2" value="{$patient->_ref_medecin2->medecin_id}" alt="{$patient->_props.medecin2}" />
-          <label for="editFrm_medecin2" title="Choisir un second médecin correspondant">Médecin correspondant 2:</label>
+          <label for="medecin2" title="Choisir un second médecin correspondant">Médecin correspondant 2:</label>
         </th>
         <td class="readonly">
           <input type="text" name="_medecin2_name" size="30" value="{if ($patient->_ref_medecin2)}Dr. {$patient->_ref_medecin2->_view}{/if}" readonly="readonly" />
@@ -198,7 +198,7 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="editFrm__tel1" title="Numéro de téléphone filaire">Téléphone:</label></th>
+        <th><label for="_tel1" title="Numéro de téléphone filaire">Téléphone:</label></th>
         <td>
           <input tabindex="11" type="text" name="_tel1" size="2" maxlength="2" value="{$patient->_tel1}" alt="num|length|2" onkeyup="followUp(this, '_tel2')" /> - 
           <input tabindex="12" type="text" name="_tel2" size="2" maxlength="2" value="{$patient->_tel2}" alt="num|length|2" onkeyup="followUp(this, '_tel3')" /> -
@@ -208,7 +208,7 @@ function followUp(field, sFollowFieldName) {
         </td>
         <th>
           <input type="hidden" name="medecin3" value="{$patient->_ref_medecin3->medecin_id}" alt="{$patient->_props.medecin3}" />
-          <label for="editFrm_medecin3" title="Choisir un troisième médecin correspondant">Médecin correspondant 3:</label>
+          <label for="medecin3" title="Choisir un troisième médecin correspondant">Médecin correspondant 3:</label>
         </th>
         <td class="readonly">
           <input type="text" name="_medecin3_name" size="30" value="{if ($patient->_ref_medecin3)}Dr. {$patient->_ref_medecin3->_view}{/if}" readonly="readonly" />
@@ -218,7 +218,7 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="editFrm__tel21" title="Numéro de téléphone portable">Portable:</label></th>
+        <th><label for="_tel21" title="Numéro de téléphone portable">Portable:</label></th>
         <td>
           <input tabindex="16" type="text" name="_tel21" size="2" maxlength="2" value="{$patient->_tel21}" alt="num|length|2" onkeyup="followUp(this, '_tel22')" /> - 
           <input tabindex="17" type="text" name="_tel22" size="2" maxlength="2" value="{$patient->_tel22}" alt="num|length|2" onkeyup="followUp(this, '_tel23')" /> -
@@ -230,7 +230,7 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="editFrm_rques" title="Remarques générales concernant le patient"></label>Remarques:</th>
+        <th><label for="rques" title="Remarques générales concernant le patient"></label>Remarques:</th>
         <td colspan="4">
           <textarea tabindex="31" alt="{$patient->_props.medecin3}" name="rques">{$patient->rques}</textarea>
         </td>
