@@ -78,6 +78,9 @@ function pageMain() {
         </tr>
         <tr>
           <th colspan="4" class="category">
+	        <a style="float:right;" href="javascript:view_log('CPlageressource', {$plage->plageressource_id})">
+              <img src="images/history.gif" alt="historique" />
+            </a>
             Modifier la plage du {$plage->date|date_format:"%d/%m/%Y"}
             ({$plage->debut|date_format:"%H"}h-{$plage->fin|date_format:"%H"}h)
           </th>
