@@ -40,7 +40,16 @@ function pageMain() {
 
 <table class="form">
   <tr>
-    <th class="category" colspan="6">{if $plagesel->id}Modifier {else}Ajouter {/if} une plage opératoire</th>
+    <th class="category" colspan="6">
+      {if $plagesel->id}
+	    <a style="float:right;" href="javascript:view_log('CPlageOp', {$plagesel->id})">
+          <img src="images/history.gif" alt="historique" />
+        </a>
+        Modifier la plage opératoire
+      {else}
+        Ajouter une plage opératoire
+      {/if}
+      </th>
   </tr>
 
   <tr>

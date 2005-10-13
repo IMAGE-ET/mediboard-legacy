@@ -19,6 +19,9 @@
 		{foreach from=$list1 item=curr_op}
 		<tr>
 		  <td width="50%">
+		    <a style="float:right;" href="javascript:view_log('COperation', {$curr_op->operation_id})">
+              <img src="images/history.gif" alt="historique" />
+            </a>
 		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op->operation_id}">
 		    {$curr_op->_ref_pat->_view} ({$curr_op->_ref_pat->_age} ans)
 		    </a></b>
@@ -70,6 +73,9 @@
 		{foreach from=$list2 item=curr_op}
 		<tr>
 		  <td width="50%">
+		    <a style="float:right;" href="javascript:view_log('COperation', {$curr_op->operation_id})">
+              <img src="images/history.gif" alt="historique" />
+            </a>
 		    <a name="{$curr_op->operation_id}">
 			<form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
