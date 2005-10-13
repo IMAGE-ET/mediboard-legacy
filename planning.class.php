@@ -224,6 +224,7 @@ class COperation extends CMbObject {
   }
   
   function updateFormFields() {
+    parent::updateFormFields();
     $this->_codes_ccam = array();
     $this->_codes_ccam[] = $this->CCAM_code;
     if ($this->CCAM_code2) {
