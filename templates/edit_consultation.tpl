@@ -207,7 +207,12 @@ function pageMain() {
             Patient
           </th>
           <th class="category">Correpondants</th>
-          <th class="category">Historique</th>
+          <th class="category">
+            <a style="float:right;" href="javascript:view_log('CConsultation', {$consult->consultation_id})">
+              <img src="images/history.gif" alt="historique" />
+            </a>
+            Historique
+          </th>
           <th class="category">Planification</th>
         </tr>
         <tr>

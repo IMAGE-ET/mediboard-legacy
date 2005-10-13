@@ -11,7 +11,6 @@ global $AppUI, $canRead, $canEdit, $m;
 
 require_once($AppUI->getSystemClass("doobjectaddedit"));
 require_once($AppUI->getModuleClass("dPcabinet", "consultation"));
-require_once($AppUI->getModuleClass("dPcompteRendu", "listeChoix"));
 
 if ($chir_id = dPgetParam( $_POST, 'chir_id'))
   mbSetValueToSession('chir_id', $chir_id);
@@ -31,4 +30,5 @@ if (intval(dPgetParam($_POST, 'del'))) {
 }
 
 $do->doRedirect();
+
 ?>

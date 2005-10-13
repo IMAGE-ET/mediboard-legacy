@@ -100,6 +100,7 @@ class CConsultation extends CMbObject {
   }
   
   function updateFormFields() {
+    parent::updateFormFields();
   	$this->_somme = $this->secteur1 + $this->secteur2;
     if($this->date_paiement == "0000-00-00")
       $this->date_paiement = null;
