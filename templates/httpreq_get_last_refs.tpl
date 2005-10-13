@@ -10,7 +10,7 @@
   {foreach from=$patient->_ref_operations item=curr_op}
   <tr>
     <td>
-      <input type="radio" name="operation_id" value="$curr_op->operation_id" />
+      <input type="radio" name="operation_id" value="{$curr_op->operation_id}" />
       Intervention le {$curr_op->_ref_plageop->date|date_format:"%d/%m/%Y"}
       avec le Dr. {$curr_op->_ref_chir->_view}
       {if $curr_op->_ext_codes_ccam|@count}
