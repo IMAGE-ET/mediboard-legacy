@@ -128,7 +128,12 @@ function pageMain() {
                 {if !$plageSel->plageconsult_id}
                 <th class="category" colspan="4">Créer une plage</th>
                 {else}
-                <th class="category" colspan="4">Modifier cette plage</th>
+                <th class="category" colspan="4">
+	              <a style="float:right;" href="javascript:view_log('CPlageconsult', {$plageSel->plageconsult_id})">
+                    <img src="images/history.gif" alt="historique" />
+                  </a>
+                  Modifier cette plage
+                </th>
                 {/if}
               </tr>
 
