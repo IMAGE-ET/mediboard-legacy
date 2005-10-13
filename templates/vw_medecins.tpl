@@ -115,13 +115,22 @@ function setClose() {ldelim}
       <input type="hidden" name="dosql" value="do_medecins_aed" />
       <input type="hidden" name="del" value="0" />
       <table class="form">
-        {if !$dialog}
+        {if !$dialog && $medecin->medecin_id}
         <tr>
           <td colspan="2"><a href="index.php?m={$m}&amp;tab={$tab}&amp;new=1"><b>Créer un nouveau médecin</b></a></td>
         </tr>
         {/if}
         <tr>
-          <th class="category" colspan="2">Fiche médecin</th>
+          <th class="category" colspan="2">
+            {if $medecin->medecin_id}
+	         <a style="float:right;" href="javascript:view_log('CMedecin', {$medecin->medecin_id})">
+               <img src="images/history.gif" alt="historique" />
+              </a>
+              Modification du Dr. {$medecin->_view}
+            {else}
+              Création d'une fiche
+            {/if}
+          </th>
         </tr>
 
         <tr>
