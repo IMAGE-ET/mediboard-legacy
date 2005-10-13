@@ -49,7 +49,14 @@ function checkModele() {
   
 <table class="form">
   <tr>
-    <th class="category" colspan="2">Informations sur le modèle</th>
+    <th class="category" colspan="2">
+      {if $compte_rendu->compte_rendu_id}
+      <a style="float:right;" href="javascript:view_log('CCompteRendu', {$compte_rendu->compte_rendu_id})">
+        <img src="images/history.gif" alt="historique" />
+      </a>
+      {/if}
+      Informations sur le modèle
+    </th>
   </tr>
   
   <tr>
