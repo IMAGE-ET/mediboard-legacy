@@ -293,7 +293,7 @@ class COperation extends CMbObject {
       $plageTmp->id_spec = 0;
       $chirTmp = new CMediusers;
       $chirTmp->load($this->chir_id);
-      $plageTmp->chir_id = $chirTmp->chir_id;
+      $plageTmp->chir_id = $chirTmp->user_id;
       $plageTmp->store();
     }
     
