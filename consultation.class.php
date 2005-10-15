@@ -10,6 +10,7 @@
 require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once($AppUI->getModuleClass('dPpatients', 'patients'));
+require_once($AppUI->getModuleClass('dPcabinet', 'consultAnesth'));
 require_once($AppUI->getModuleClass('dPcabinet', 'plageconsult'));
 require_once($AppUI->getModuleClass('dPcabinet', 'files'));
 require_once($AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
@@ -66,12 +67,14 @@ class CConsultation extends CMbObject {
   var $_date = null; // updated at loadRefs()
   
 
-  // Object References
+  // Fwd References
   var $_ref_patient = null;
   var $_ref_plageconsult = null;
   var $_ref_chir = null; //pseudo RefFwd, get that in plageConsult
+  // Back References
   var $_ref_files = null;
   var $_ref_documents = null; // Pseudo backward references to documents
+  var $_ref_consult_anesth = null;
 
   function CConsultation() {
     $this->CMbObject( 'consultation', 'consultation_id' );
@@ -101,10 +104,11 @@ class CConsultation extends CMbObject {
   
   function updateFormFields() {
     parent::updateFormFields();
+
   	$this->_somme = $this->secteur1 + $this->secteur2;
+
     if($this->date_paiement == "0000-00-00")
       $this->date_paiement = null;
-
     $this->_hour = intval(substr($this->heure, 0, 2));
     $this->_min  = intval(substr($this->heure, 3, 2));
 
@@ -113,16 +117,12 @@ class CConsultation extends CMbObject {
     $etat[CC_PATIENT_ARRIVE] = "Patient arrivé";
     $etat[CC_EN_COURS]       = "En cours";
     $etat[CC_TERMINE]        = "Terminée";
-    
     if($this->chrono)
       $this->_etat = $etat[$this->chrono];
-
     if ($this->annule) {
       $this->_etat = "Annulée";
     }
-    
     $this->_check_premiere = $this->premiere;
-    
   }
    
   function updateDBFields() {
@@ -135,7 +135,6 @@ class CConsultation extends CMbObject {
       $this->secteur1 = 0;
       $this->secteur2 = $this->_somme;
     }
-    
     // @todo : verifier si on ne fait ça que si _check_premiere est non null
     $this->premiere = $this->_check_premiere ? 1 : 0;
   }
@@ -143,7 +142,6 @@ class CConsultation extends CMbObject {
   function check() {
     // Data checking
     $msg = null;
-
     if(!$this->consultation_id) {
       if (!$this->plageconsult_id) {
         $msg .= "Plage de consultation non valide<br />";
@@ -152,7 +150,6 @@ class CConsultation extends CMbObject {
         $msg .= "Patient non valide<br />";
       }
     }
-
     return $msg . parent::check();
   }
   
@@ -192,6 +189,11 @@ class CConsultation extends CMbObject {
     }
     if($docs_valid)
       $this->_etat .= " ($docs_valid Doc.)";
+    
+    $this->_ref_consult_anesth = new CConsultAnesth;
+    $where = array();
+    $where["consultation_id"] = "= $this->consultation_id";
+    $this->_ref_consult_anesth->loadObject($where); 
   }
   
   function fillTemplate(&$template) {

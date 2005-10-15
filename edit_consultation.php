@@ -65,6 +65,9 @@ if ($selConsult) {
     $AppUI->setMsg("Vous n'avez pas accès à cette consultation", UI_MSG_ALERT);
     $AppUI->redirect( "m=dPpatients&tab=0&id=$consult->patient_id");
   }
+  if($consult->_ref_consult_anesth->consultation_anesth_id) {
+    $consult->_ref_consult_anesth->loadRefs();
+  }
   $patient =& $consult->_ref_patient;
   $patient->loadRefs();
   foreach ($patient->_ref_consultations as $key => $value) {
@@ -163,12 +166,8 @@ $tarifsCab = $tarifsCab->loadList($where, $order);
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->debugging = false;
-
 $smarty->assign('date' , $date );
-
 $smarty->assign('vue', $vue);
-
 $smarty->assign('today', $today);
 $smarty->assign('listPlage', $listPlage);
 $smarty->assign('listModelePrat', $listModelePrat);
@@ -178,6 +177,9 @@ $smarty->assign('tarifsChir', $tarifsChir);
 $smarty->assign('tarifsCab', $tarifsCab);
 $smarty->assign('consult', $consult);
 
-$smarty->display('edit_consultation.tpl');
+if($consult->_ref_consult_anesth->consultation_anesth_id)
+  $smarty->display('edit_consultation_anesth.tpl');
+else
+  $smarty->display('edit_consultation.tpl');
 
 ?>

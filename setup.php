@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.29';
+$config['mod_version'] = '0.30';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -125,8 +125,33 @@ class CSetupdPcabinet {
                 SET consultation.date_paiement = plageconsult.date
                 WHERE consultation.plageconsult_id = plageconsult.plageconsult_id
                 AND consultation.paye = 1";
-        db_exec( $sql ); db_error();
       case "0.29":
+        $sql = "CREATE TABLE `consultation_anesth` (
+                `consultation_anesth_id` BIGINT NOT NULL AUTO_INCREMENT ,
+                `consultation_id` BIGINT DEFAULT '0' NOT NULL ,
+                `operation_id` BIGINT DEFAULT '0' NOT NULL ,
+                `poid` FLOAT,
+                `taille` FLOAT,
+                `groupe` ENUM( '0', 'A', 'B', 'AB' ) ,
+                `rhesus` ENUM( '+', '-' ) ,
+                `antecedents` TEXT,
+                `traitements` TEXT,
+                `tabac` ENUM( '-', '+', '++' ) ,
+                `oenolisme` ENUM( '-', '+', '++' ) ,
+                `transfusions` ENUM( '-', '+' ) ,
+                `tasys` TINYINT,
+                `tadias` TINYINT,
+                `listCim10` TEXT,
+                `intubation` ENUM( 'dents', 'bouche', 'cou' ) ,
+                `biologie` ENUM( 'NF', 'COAG', 'IONO' ) ,
+                `commande_sang` ENUM( 'clinique', 'CTS', 'autologue' ) ,
+                `ASA` TINYINT,
+                PRIMARY KEY ( `consultation_anesth_id` ) ,
+                INDEX ( `consultation_id`) ,
+                INDEX ( `operation_id` )
+                ) COMMENT = 'Consultations d''anesthésie';";
+        db_exec( $sql ); db_error();
+      case "0.3":
   	    return true;
 		}
 
