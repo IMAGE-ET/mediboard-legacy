@@ -57,7 +57,7 @@
     </tr>
 
     <tr>
-      <th><label for="loginFrm_username" title="Nom de compte utilisateur. Obligatoire"><?php echo $AppUI->_('Username'); ?>:</label></th>
+      <th><label for="username" title="Nom de compte utilisateur. Obligatoire"><?php echo $AppUI->_('Username'); ?>:</label></th>
       <td><input type="text" name="username" alt="notNull|str" size="25" maxlength="20" /></td>
 <?php if ($dPconfig['demo_version']) { ?>
       <td rowspan="3" class="category">
@@ -71,7 +71,7 @@
     </tr>
 
     <tr>
-      <th><label for="loginFrm_password" title="Mot de passe utilisateur. Obligatoire"><?php echo $AppUI->_('Password'); ?>:</label></th>
+      <th><label for="password" title="Mot de passe utilisateur. Obligatoire"><?php echo $AppUI->_('Password'); ?>:</label></th>
       <td><input type="password" name="password" alt="notNull|str" size="25" maxlength="32" /></td>
     </tr>
     

@@ -32,6 +32,7 @@ img {
 
 ul {
   margin: 0;
+  padding-left: 20px;
 }
 
 dl {
@@ -338,12 +339,14 @@ table.form {
 }
 
 table.form th {
+  color: #000;
   white-space: nowrap;
   background: #eee;
   vertical-align: top;
   text-align: right;
   font-weight: normal;
   padding: 2px 4px;
+  border: none;
 }
 
 table.form th.title {
