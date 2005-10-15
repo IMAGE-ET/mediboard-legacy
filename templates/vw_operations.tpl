@@ -1,9 +1,24 @@
+{literal}
+<script type="text/javascript">
+
+function pageMain() {
+  {/literal}
+  regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  {literal}
+}
+
+</script>
+{/literal}
+
 <table class="main">
   <tr>
     <td>
       <table>
         <tr>
           <th>
+            {$date|date_format:"%A %d %B %Y"}
+            <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
+          
             <form action="index.php" target="_self" name="selection" method="get">
 
             <input type="hidden" name="m" value="{$m}" />
@@ -34,7 +49,7 @@
             </a>
             </strong>
 
-            <form name="anesth{$curr_plage->id}" method="post">
+            <form name="anesth{$curr_plage->id}" action="index.php" method="post">
 
             <input type="hidden" name="m" value="dPbloc" />
             <input type="hidden" name="tab" value="{$tab}" />
@@ -139,50 +154,68 @@
               {foreach from=$curr_code->activites item=curr_activite}
               <ul>
                 <li>Activité {$curr_activite->numero} ({$curr_activite->type|escape}) : {$curr_activite->libelle|escape}
-                  <ul>
-                    {foreach from=$curr_activite->phases item=curr_phase}
-                    {assign var="acte" value=$curr_phase->_connected_acte}
-                    <li>
-                      <form name="formActe-{$acte->_view}" action="?m={$m}" method="post">
+                    
+                {foreach from=$curr_activite->phases item=curr_phase}
+                {assign var="acte" value=$curr_phase->_connected_acte}
+                  <form name="formActe-{$acte->_view}" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
 
-                      <input type="hidden" name="m" value="{$m}" />
-                      <input type="hidden" name="tab" value="{$tab}" />
-                      <input type="hidden" name="dosql" value="do_acteccam_aed" />
-                      <input type="hidden" name="del" value="0" />
-                      <input type="hidden" name="acte_id" value="{$acte->acte_id}" />
-                      <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
-                      <input type="hidden" name="code_acte" value="{$acte->code_acte}" />
-                      <input type="hidden" name="code_activite" value="{$acte->code_activite}" />
-                      <input type="hidden" name="code_phase" value="{$acte->code_phase}" />
+                  <input type="hidden" name="m" value="{$m}" />
+                  <input type="hidden" name="dosql" value="do_acteccam_aed" />
+                  <input type="hidden" name="del" value="0" />
+                  <input type="hidden" name="acte_id" value="{$acte->acte_id}" />
+                  <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+                  <input type="hidden" name="code_acte" value="{$acte->code_acte}" />
+                  <input type="hidden" name="code_activite" value="{$acte->code_activite}" />
+                  <input type="hidden" name="code_phase" value="{$acte->code_phase}" />
+                  
+                  <table class="form">
+                  
+                  <tr>
+                    <th class="title" colspan="2">Phase {$curr_phase->phase} : {$curr_phase->libelle|escape} : {$curr_phase->tarif}&euro;</th>
+                  </tr>
+                  
+                  <tr>
+                    <th><label for="execution" title="Date et heure d'exécution de l'acte">Exécution:</label></th>
+                    <td>
+                      <input type="text" name="execution" alt="{$acte->_props.execution}" readonly="readonly" value="{$acte->execution}" />
+                      <input type="button" value="Maintenant" onclick="this.form.execution.value = makeDATETIMEFromDate(new Date());" /><br />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th><label for="modificateurs" title="Modificateurs associés à l'acte">Modificateur(s)</label></th>
+                    <td>
+                      {foreach from=$curr_phase->_modificateurs item=curr_mod}
+                      <input type="checkbox" name="modificateur_{$curr_mod->code}" {if $curr_mod->_value}checked="checked"{/if} />
+                      <label for="modificateur_{$curr_mod->code}" title="{$curr_mod->libelle|escape}">{$curr_mod->code}</label>
+                      {/foreach}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th><label for="montant_depassement" title="Montant du dépassement d'honoraires">Dépassement:</label></th>
+                    <td><input type="text" name="montant_depassement" size="6" alt="{$acte->_props.montant_depassement}" value="{$acte->montant_depassement}" />&euro;</td>
+                  </tr>
+                  
+                  <tr>
+                    <th><label for="commentaire" title="Commentaires sur l'acte">Commentaire:</label></th>
+                    <td><textarea name="commentaire" alt="{$acte->_props.commentaire}">{$acte->commentaire}</textarea></td>
+                  </tr>
+                  
+                  <tr>
+                    <td class="button" colspan="2">
+                    {if $acte->acte_id}
+                    <input type="submit" value="Modifier cet acte" />
+                    <input type="button" value="Supprimer cet acte" onclick="confirmDeletion(this.form, 'l\'acte', '{$acte->_view|escape:javascript}')"  />
+                    {else}
+                    <input type="submit" value="Coder cet acte" />
+                    {/if}
+                  </tr>
+                  
+                  </table>
                       
-                      Phase {$curr_phase->phase} : {$curr_phase->libelle|escape} : {$curr_phase->tarif}&euro;<br />
-                      <label for="depassement" title="Montant du dépassement d'honoraires">Dépassement:</label>
-                      <input type="text" name="montant_depassement" alt="{$acte->_props.montant_depassement}" value="{$acte->montant_depassement}"><br />
-
-                      <label for="execution" title="Date et heure d'exécution de l'acte">Exécution:</label>
-                      <input type="text" name="execution" alt="{$acte->_props.execution}" readonly="readonly" value="{$acte->execution}">
-                      <input type="button" value="Définir l'heure d'éxecution" onclick="this.form.execution.value = makeDATETIMEFromDate(new Date());"><br />
-
-                      Modificateur(s) :
-                      <ul>
-                        {foreach from=$curr_phase->_modificateurs item=curr_mod}
-                        <li>
-                          <input type="checkbox" name="modificateur_{$curr_mod->code}" {if $curr_mod->_value}checked="checked"{/if} />
-                          {$curr_mod->code} : {$curr_mod->libelle|escape}
-                        </li>
-                        {/foreach}
-                      </ul>
-                      <label for="commentaire" title="Commentaires sur l'acte">Commentaire:</label>
-                      <textarea name="commentaire" alt="{$acte->_props.commentaire}">{$acte->commentaire}</textarea><br />
-                      
-                      <input type="submit" value="Coder cet acte" />
-                      {if $acte->acte_id}
-                      <input type="button" value="Supprimer cet acte" onclick="confirmDeletion(this.form, 'l\'acte', '{$acte->_view|escape:javascript}')"  />
-                      {/if}
-                      </form>
-                    </li>
-                    {/foreach}
-                  </ul>
+                  </form>
+                {/foreach}
                 </li>
               </ul>
               {/foreach}

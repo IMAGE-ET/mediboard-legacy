@@ -21,7 +21,7 @@ require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 
 $salle = mbGetValueFromGetOrSession("salle", 0);
 $op = mbGetValueFromGetOrSession("op", 0);
-$today = date("Y-m-d");
+$date = mbGetValueFromGetOrSession("date", mbDate());
 
 // Chargement des anesthésistes
 $listPratAnesth = new CMediusers;
@@ -34,7 +34,7 @@ $listSalles = $listSalles->loadList();
 // Selection des plages opératoires de la journée
 $plages = new CplageOp;
 $where = array();
-$where["date"] = "= '$today'";
+$where["date"] = "= '$date'";
 $where["id_salle"] = "= '$salle'";
 $order = "debut";
 $plages = $plages->loadList($where, $order);
@@ -62,6 +62,7 @@ $smarty->assign('listAnesth', dPgetSysVal("AnesthType"));
 $smarty->assign('listPratAnesth', $listPratAnesth);
 $smarty->assign('plages', $plages);
 $smarty->assign('selOp', $selOp);
+$smarty->assign('date', $date);
 
 $smarty->display('vw_operations.tpl');
 
