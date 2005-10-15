@@ -74,7 +74,7 @@
           Exclusions:
           <ul>
             {foreach from=$cim10->_exclude item=curr_exclude}
-            <li>{$curr_exclude->libelle} (code: <a href="index.php?m={$m}&amp;t{$tab}&amp;code={$curr_exclude->code}"><strong>{$curr_exclude->code}</strong></a>)</li>
+            <li><a href="index.php?m={$m}&amp;t{$tab}&amp;code={$curr_exclude->code}"><strong>{$curr_exclude->code}</strong></a>: {$curr_exclude->libelle}</li>
             {/foreach}
           </ul>
         </li>

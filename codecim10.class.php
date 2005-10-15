@@ -37,10 +37,15 @@ class CCodeCIM10 {
   // Langue
   var $_lang = null;
   
+  // Other
+  var $isInfo = null;
+  
   
   // Constructeur
-  function CCodeCIM10($code = "(A00-B99)") {
+  function CCodeCIM10($code = "(A00-B99)", $loadlite = 0) {
     $this->code = strtoupper($code);
+    if($loadlite)
+      $this->loadLite();
   }
   
   // Chargement des données Lite
@@ -194,6 +199,13 @@ class CCodeCIM10 {
         $i++;
       }
     }
+    
+    // Is info ?
+    $this->_isInfo  = count($this->descr);
+    $this->_isInfo += count($this->glossaire);
+    $this->_isInfo += count($this->include);
+    $this->_isInfo += count($this->indir);
+    $this->_isInfo += count($this->notes);
 
     if($connection) {
       mysql_close($mysql);

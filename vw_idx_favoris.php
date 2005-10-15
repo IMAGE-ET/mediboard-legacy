@@ -22,7 +22,7 @@ $lang = mbGetValueFromGetOrSession("lang", LANG_FR);
 
 //Recherche des codes favoris
 
-$favoris = new Cfavoricim10();
+$favoris = new CFavoricim10();
 $where = array();
 $where["favoris_user"] = "= '$AppUI->user_id'";
 $order = "favoris_code";

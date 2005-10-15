@@ -12,12 +12,12 @@ require_once( $AppUI->getSystemClass ('mbobject' ) );
 /**
  * The dPcim10 Class
  */
-class Cfavoricim10 extends CMbObject {
+class CFavoricim10 extends CMbObject {
 	var $favoris_id = NULL;
 	var $favoris_code = NULL;
 	var $favoris_user = NULL;
 
-	function CfavoriCim10() {
+	function CFavoricim10() {
 		$this->CMbObject( 'cim10favoris', 'favoris_id' );
 
     $this->_props["favoris_code"] = "str|notNull";
