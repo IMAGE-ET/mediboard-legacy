@@ -75,6 +75,9 @@ class COperation extends CMbObject {
   var $_sortie_adm = null;
   var $_codes_ccam = null;
   
+  // Shortcut fields
+  var $_datetime = null;
+  
   // HPRIM fields
   var $_modalite_hospitalisation = "libre"; // enum|office|libre|tiers
 
@@ -100,7 +103,7 @@ class COperation extends CMbObject {
     $this->_props["pat_id"] = "ref";
     $this->_props["chir_id"] = "ref|notNull";
     $this->_props["plageop_id"] = "ref";
-    $this->_props["CCAM_code"] = "code|ccam"; //Spécifier les longueurs
+    $this->_props["CCAM_code"] = "code|ccam";
     $this->_props["CCAM_code2"] = "code|ccam";
     $this->_props["CIM10_code"] = "code|cim10";
     $this->_props["libelle"] = "str|confidential";
@@ -327,6 +330,8 @@ class COperation extends CMbObject {
   function loadRefPlageOp() {
     $this->_ref_plageop = new CPlageOp;
     $this->_ref_plageop->load($this->plageop_id);
+    
+    $this->_datetime = $this->_ref_plageop->date . " " . $this->time_operation;
   }
   
   function loadRefCCAM() {
@@ -391,6 +396,8 @@ class COperation extends CMbObject {
   
   
   function loadPossibleActes () {
+    $depassement_affecte = false;
+    
     foreach ($this->_ext_codes_ccam as $codeKey => $codeValue) {
       $code =& $this->_ext_codes_ccam[$codeKey];
       $code->load($code->code);
@@ -401,10 +408,14 @@ class COperation extends CMbObject {
           $phase =& $activite->phases[$phaseKey];
           
           $possible_acte = new CActeCCAM;
+          $possible_acte->montant_depassement = $depassement_affecte ? $this->depassement : 0;
           $possible_acte->code_acte = $code->code;
           $possible_acte->code_activite = $activite->numero;
           $possible_acte->code_phase = $phase->phase;
+          $possible_acte->execution = $this->_datetime;
           $possible_acte->updateFormFields();
+          
+          $depassement_affecte = true;
           
           // Affect a loaded acte is exists
           foreach ($this->_ref_actes_ccam as $curr_acte) {
