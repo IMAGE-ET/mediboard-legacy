@@ -257,7 +257,7 @@ class CMbObject extends CDpObject {
           "<span class=\"field\">([^\[].*)<\/span>" => "$1"
           );
         
-        while (purgeHtmlText($regexps, $propValue));
+//         while (purgeHtmlText($regexps, $propValue));
 
         break;
         
