@@ -69,7 +69,7 @@ class CActeCCAM extends CMbObject {
     $this->_ref_operation = new COperation;
     $this->_ref_operation->load($this->operation_id);
 
-    $this->_ref_operation = new CMediusers;
+    $this->_ref_executant = new CMediusers;
     $this->_ref_executant->load($this->executant_id);
   }
 }

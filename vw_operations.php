@@ -19,13 +19,17 @@ require_once($AppUI->getModuleClass("dPbloc", "salle"));
 require_once($AppUI->getModuleClass("dPbloc", "plagesop"));
 require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 
-$salle = mbGetValueFromGetOrSession("salle", 0);
-$op = mbGetValueFromGetOrSession("op", 0);
+$salle = mbGetValueFromGetOrSession("salle");
+$op = mbGetValueFromGetOrSession("op");
 $date = mbGetValueFromGetOrSession("date", mbDate());
 
-// Chargement des anesthésistes
-$listPratAnesth = new CMediusers;
-$listPratAnesth = $listPratAnesth->loadAnesthesistes();
+// Chargement des praticiens
+$listAnesths = new CMediusers;
+$listAnesths = $listAnesths->loadAnesthesistes();
+
+$listChirs = new CMediusers;
+$listChirs = $listChirs->loadChirurgiens();
+
 
 // Selection des salles
 $listSalles = new CSalle;
@@ -58,8 +62,9 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('salle', $salle);
 $smarty->assign('listSalles', $listSalles);
-$smarty->assign('listAnesth', dPgetSysVal("AnesthType"));
-$smarty->assign('listPratAnesth', $listPratAnesth);
+$smarty->assign('listAnesthType', dPgetSysVal("AnesthType"));
+$smarty->assign('listAnesths', $listAnesths);
+$smarty->assign('listChirs', $listChirs);
 $smarty->assign('plages', $plages);
 $smarty->assign('selOp', $selOp);
 $smarty->assign('date', $date);
