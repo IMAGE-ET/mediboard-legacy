@@ -153,7 +153,7 @@ class CSetupdPcabinet {
                 PRIMARY KEY ( `consultation_anesth_id` ) ,
                 INDEX ( `consultation_id`) ,
                 INDEX ( `operation_id` )
-                ) COMMENT = 'Consultations d''anesthésie';";
+                ) COMMENT = 'Consultations d\'anesthésie';";
         db_exec( $sql ); db_error();
       case "0.30":
         $document_types = array (
