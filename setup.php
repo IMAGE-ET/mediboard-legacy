@@ -7,10 +7,13 @@
 * @author Romain Ollivier
 */
 
+global $AppUI;
+require_once($AppUI->getModuleClass("dPcompteRendu", "compteRendu"));
+
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.27';
+$config['mod_version'] = '0.28';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -96,6 +99,30 @@ class CSetupdPplanningOp {
           db_exec($sql); db_error();
     
         case "0.27":
+          $document_types = array (
+            array ("name" => "compte_rendu", "valide" => "cr_valide"));
+            
+          foreach ($document_types as $document_type) {
+            $document_name = $document_type["name"];
+            $document_valide = $document_type["valide"];
+    
+            $sql = "SELECT *" .
+                "\nFROM `operations`" .
+                "\nWHERE `$document_name` IS NOT NULL" .
+                "\nAND `$document_name` != ''";
+            $res = db_exec( $sql );
+    
+            while ($obj = db_fetch_object($res)) {
+              $document = new CCompteRendu;
+              $document->type = "operation";
+              $document->nom = $document_name;
+              $document->object_id = $obj->operation_id;
+              $document->source = $obj->$document_name;
+              $document->valide = $obj->$document_valide;
+              $document->store();
+            }
+          }
+        case "0.28":
           return true;
 	  }
       return false;
