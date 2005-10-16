@@ -106,9 +106,9 @@ function mbTime($relative, $ref = null) {
  * @return string: the resulting time */
 function mbAddTime($relative, $ref = null) {
   $fragments = explode(":", $relative);
-  $hours = $fragments[0];
-  $minutes = $fragments[1];
-  $seconds = $fragments[2];
+  $hours = @$fragments[0];
+  $minutes = @$fragments[1];
+  $seconds = @$fragments[2];
   return mbTime("+$hours hours $minutes minutes $seconds seconds", $ref);
 }
 
@@ -117,9 +117,9 @@ function mbAddTime($relative, $ref = null) {
  * @return string: the resulting time */
 function mbAddDateTime($relative, $ref = null) {
   $fragments = explode(":", $relative);
-  $hours = $fragments[0];
-  $minutes = $fragments[1];
-  $seconds = $fragments[2];
+  $hours = @$fragments[0];
+  $minutes = @$fragments[1];
+  $seconds = @$fragments[2];
   return mbDateTime("+$hours hours $minutes minutes $seconds seconds", $ref);
 }
 
