@@ -140,6 +140,12 @@ class CConsultAnesth extends CMbObject {
     $this->_static_cim10["divers"][]           = new CCodeCIM10("(B15-B19)", 1); // Hepatite
     $this->_static_cim10["divers"][]           = new CCodeCIM10("(E10-E14)", 1); // Diabete
     $this->_static_cim10["divers"][]           = new CCodeCIM10("H40", 1)      ; // Glaucome
+    // Sommaire complet
+    $sommaire = new CCodeCIM10();
+    $sommaire = $sommaire->getSommaire();
+    foreach($sommaire as $key => $value) {
+      $this->_static_cim10["sommaire"][] = new CCodeCIM10($value["code"], 1);
+    }
   }
   
   function loadRefsBack() {

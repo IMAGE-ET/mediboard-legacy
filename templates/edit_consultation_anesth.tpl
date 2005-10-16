@@ -54,30 +54,6 @@ function editPat() {
   window.location.href = url;
 }
 
-function newOperation() {
-  var url = '?m=dPplanningOp&tab=vw_edit_planning';
-  url +='&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}';
-  url +='&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}';
-  url +='&operation_id=0';
-  window.location.href = url;
-}
-
-function newHospitalisation() {
-  var url = '?m=dPplanningOp&tab=vw_edit_hospi';
-  url +='&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}';
-  url +='&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}';
-  url +='&hospitalisation_id=0';
-  window.location.href = url;
-}
-
-function newConsultation() {
-  var url = '?m=dPcabinet&tab=edit_planning';
-  url +='&chir_id={/literal}{$consult->_ref_plageconsult->_ref_chir->user_id}{literal}';
-  url +='&pat_id={/literal}{$consult->_ref_patient->patient_id}{literal}';
-  url +='&consultation_id=0';
-  window.location.href = url;
-}
-
 function pasteText(formName) {
   var form = document.editFrm;
   var aide = eval("form._aide_" + formName);
@@ -137,16 +113,19 @@ function pageMain() {
   initGroups("consultations");
   initGroups("operations");
   initGroups("hospitalisations");
+  
   {/literal}
+  
+  {foreach from=$consult->_ref_consult_anesth->_static_cim10 key=cat item=curr_cat}
+  initGroups("{$cat}");
+  {/foreach}
+  
   {if $consult->consultation_id}
-  {literal}
   initElementClass("listConsult", "listConsult")
-  {/literal}
   {/if}
-  {literal}
 
-  {/literal}
   regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  
   {literal}
   
 }
@@ -253,7 +232,7 @@ function pageMain() {
               <img src="modules/dPcabinet/images/edit.png" />
             </button>
           </td>
-          <td>
+          <td class="text">
             Poid, taille, groupe / rhésus, tabac, oenolisme, transfusion, tension
           </td>
           <td class="text">
@@ -328,28 +307,29 @@ function pageMain() {
       <input type="hidden" name="dosql" value="do_consult_anesth_aed" />
       <input type="hidden" name="consultation_anesth_id" value="{$consult->_ref_consult_anesth->consultation_anesth_id}" />
       <table class="form">
+        <tr><th class="category" colspan="2">Examen Préanesthésique</th></tr>
         <tr>
-          <td>
+          <td class="text">
             <strong>Liste des diagnostics:</strong>
-            <ul>
+            <table>
             {foreach from=$consult->_ref_consult_anesth->_static_cim10 key=cat item=curr_cat}
-              <li>
-                {$cat}
-                <ul>
-                  {foreach from=$curr_cat item=curr_code}
-                    <li>
-                      <button type="button" onclick="selectCim10('{$curr_code->code}')">
-                        <img src="modules/dPcabinet/images/tick.png" />
-                      </button>
-                      {$curr_code->libelle}
-                    </li>
-                  {/foreach}
-                </ul>
-              </li>
+              <tr class="groupcollapse" id="{$cat}" onclick="flipGroup('', '{$cat}')">
+                <td>{$cat}</td>
+              </tr>
+              {foreach from=$curr_cat item=curr_code}
+              <tr class="{$cat}">
+                <td>
+                  <button type="button" onclick="selectCim10('{$curr_code->code}')">
+                    <img src="modules/dPcabinet/images/tick.png" />
+                  </button>
+                  {$curr_code->code}: {$curr_code->libelle}
+                 </td>
+               </tr>
+               {/foreach}
             {/foreach}
-            </ul>
+            </table>
           </td>
-          <td>
+          <td class="text">
             <strong>Diagnostics du patient:</strong>
             <input type="hidden" name="listCim10" value="{$consult->_ref_consult_anesth->listCim10}"
             <ul>
