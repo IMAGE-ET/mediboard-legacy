@@ -162,7 +162,8 @@ class CSetupdPcabinet {
           array ("name" => "courrier1", "valide" => "c1_valide"),
           array ("name" => "courrier2", "valide" => "c2_valide"));
           
-        $count = 0;
+        set_time_limit( 1800 );
+
         foreach ($document_types as $document_type) {
           $document_name = $document_type["name"];
           $document_valide = $document_type["valide"];
@@ -174,7 +175,6 @@ class CSetupdPcabinet {
           $res = db_exec( $sql );
   
           while ($obj = db_fetch_object($res)) {
-            $count++;
             $document = new CCompteRendu;
             $document->type = "consultation";
             $document->nom = $document_name;
