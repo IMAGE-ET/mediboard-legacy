@@ -408,14 +408,24 @@ class COperation extends CMbObject {
           $phase =& $activite->phases[$phaseKey];
           
           $possible_acte = new CActeCCAM;
-          $possible_acte->montant_depassement = $depassement_affecte ? $this->depassement : 0;
+          $possible_acte->montant_depassement = 0;
           $possible_acte->code_acte = $code->code;
           $possible_acte->code_activite = $activite->numero;
           $possible_acte->code_phase = $phase->phase;
-          $possible_acte->execution = $this->_datetime;
-          $possible_acte->updateFormFields();
+          $possible_acte->execution = mbAddDateTime($this->temp_operation, $this->_datetime);
           
-          $depassement_affecte = true;
+          
+          $possible_acte->executant_id = $possible_acte->code_activite == 4 ?
+            $this->_ref_plageop->anesth_id : 
+            $this->chir_id;
+          
+          if (!$depassement_affecte and $possible_acte->code_activite == 1) {
+            $depassement_affecte = true;
+            $possible_acte->montant_depassement = $this->depassement;        	
+          }
+          
+          $possible_acte->updateFormFields();
+          $possible_acte->loadRefs();
           
           // Affect a loaded acte is exists
           foreach ($this->_ref_actes_ccam as $curr_acte) {
