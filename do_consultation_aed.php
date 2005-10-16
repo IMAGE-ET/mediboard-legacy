@@ -22,6 +22,12 @@ $do->modifyMsg = "Consultation modifiée";
 $do->deleteMsg = "Consultation supprimée";
 $do->doBind();
 if (intval(dPgetParam($_POST, 'del'))) {
+  $consultAnesth = new CConsultAnesth;
+  $where = array();
+  $where["consultation_id"] = "= '".$do->_obj->consultation_id."'";
+  $consultAnesth->loadObject($where);
+  if($consultAnesth->consultation_anesth_id)
+    $consultAnesth->delete();
   $do->doDelete();
   $curr_consult = mbGetValueFromGetOrSession("consult_id", null);
   if($curr_consult == $do->_obj->consultation_id)
@@ -32,7 +38,6 @@ if (intval(dPgetParam($_POST, 'del'))) {
     $consultAnesth = new CConsultAnesth;
     $where = array();
     $where["consultation_id"] = "= '".$do->_obj->consultation_id."'";
-    $where["operation_id"] = "= '".$_POST["_operation_id"]."'";
     $consultAnesth->loadObject($where);
     $consultAnesth->consultation_id = $do->_obj->consultation_id;
     $consultAnesth->operation_id = $_POST["_operation_id"];
