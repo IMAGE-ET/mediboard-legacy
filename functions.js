@@ -72,6 +72,16 @@ function getBoundingForm(oElement) {
 }
 
 function prepareForms() {
+  // Build label targets
+  aLabels = document.getElementsByTagName("label");
+  iLabel = 0;
+  while (oLabel = aLabels[iLabel++]) {
+  	oForm = getBoundingForm(oLabel);
+  	if (sFor = oLabel.getAttribute("for")) {
+      oLabel.setAttribute("for", oForm.name + "_" + sFor);
+  	} 
+  } 
+
   var bGiveFocus = true;
 
   // For each form
@@ -108,16 +118,6 @@ function prepareForms() {
       }
     }
   }
-  
-  // Build label targets
-  aLabels = document.getElementsByTagName("label");
-  iLabel = 0;
-  while (oLabel = aLabels[iLabel++]) {
-  	oForm = getBoundingForm(oLabel);
-  	if (sFor = oLabel.getAttribute("for")) {
-      oLabel.setAttribute("for", oForm.name + "_" + sFor);
-  	} 
-  } 
 }
 
 function checkElement(oElement, aSpecFragments) {
@@ -463,7 +463,7 @@ function flipElementClass(elementId, firstClass, secondClass, cookieName) {
   var element = document.getElementById(elementId);
   
   if (!element) {
-    throwError("The element '" + elementId + "' doesn't exist");
+    return;
   }
 
   if (element.className != firstClass && element.className != secondClass) {
