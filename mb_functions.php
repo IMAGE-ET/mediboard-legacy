@@ -109,7 +109,18 @@ function mbAddTime($relative, $ref = null) {
   $hours = $fragments[0];
   $minutes = $fragments[1];
   $seconds = $fragments[2];
-  return mbTime("+$hours hours $minutes minutes $seconds seconds", $ref, "%H:%M:%S");
+  return mbTime("+$hours hours $minutes minutes $seconds seconds", $ref);
+}
+
+/**
+ * Adds a relative time to a reference datetime
+ * @return string: the resulting time */
+function mbAddDateTime($relative, $ref = null) {
+  $fragments = explode(":", $relative);
+  $hours = $fragments[0];
+  $minutes = $fragments[1];
+  $seconds = $fragments[2];
+  return mbDateTime("+$hours hours $minutes minutes $seconds seconds", $ref);
 }
 
 /**
