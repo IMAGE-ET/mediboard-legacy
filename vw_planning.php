@@ -84,9 +84,7 @@ for($i = 8; $i <= 20; $i++) {
 // Liste des minutes
 $listMins = array();
 $listMins[] = "00";
-$listMins[] = "15";
 $listMins[] = "30";
-$listMins[] = "45";
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
