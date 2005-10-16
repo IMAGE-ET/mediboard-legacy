@@ -35,11 +35,11 @@ function doAction(sAction) {
   <li>
     Voici les scripts à lancer :
     <ul>
-      <li><a href="javascript:doAction('put_praticiens')">Envoie des praticiens vers Mediboard</a></li>
-      <li><a href="javascript:doAction('put_medecins')">Envoie des medecins vers Mediboard</a></li>
-      <li><a href="javascript:doAction('put_patients')">Envoie des patients vers Mediboard</a></li>
-      <li><a href="javascript:doAction('put_consult')">Envoie des consultations vers Mediboard</a></li>
-      <li><a href="javascript:doAction('put_rdv')">Envoie des rdv à venir vers Mediboard</a></li>
+      <li><a href="javascript:doAction('orl_put_praticiens')">Envoie des praticiens vers Mediboard</a></li>
+      <li><a href="javascript:doAction('orl_put_medecins')">Envoie des medecins vers Mediboard</a></li>
+      <li><a href="javascript:doAction('orl_put_patients')">Envoie des patients vers Mediboard</a></li>
+      <li><a href="javascript:doAction('orl_put_consult')">Envoie des consultations vers Mediboard</a></li>
+      <li><a href="javascript:doAction('orl_put_rdv')">Envoie des rdv à venir vers Mediboard</a></li>
     </ul>
   </li>
 
@@ -49,12 +49,12 @@ function doAction(sAction) {
     <ul>
       <li>Placer le dossier doc_recus et le fichier doc_recus.txt dans le module dPinterop</li>
       <li><a href="javascript:doAction('orl_files')">Import des fichiers</a></li>
-      <li><a href="javascript:doAction('put_files')">Envoie des fichiers vers Mediboard</a></li>
+      <li><a href="javascript:doAction('orl_put_files')">Envoie des fichiers vers Mediboard</a></li>
       <li>Les fichiers ainsi envoyés iront se placer (le cas échéant) dans la dernière consultation du patient lié</li>
-      <li><a href="javascript:doAction('put_correct_files')">Petite correction</a> (les fichiers allaient dans n'importe quelle consultation et pas eulement chez les ORL)</li>
+      <li><a href="javascript:doAction('orl_put_correct_files')">Petite correction</a> (les fichiers allaient dans n'importe quelle consultation et pas eulement chez les ORL)</li>
       <li>Placer le dossier courriers et le fichier chemin_courrier.txt dans le module dPinterop</li>
       <li><a href="javascript:doAction('orl_courriers')">Import des courriers</a></li>
-      <li><a href="javascript:doAction('put_courriers')">Envoie des courriers vers Mediboard</a></li>
+      <li><a href="javascript:doAction('orl_put_courriers')">Envoie des courriers vers Mediboard</a></li>
     </ul>
   </li>
   
