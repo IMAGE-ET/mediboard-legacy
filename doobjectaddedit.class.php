@@ -22,6 +22,7 @@ class CDoObjectAddEdit {
   var $redirectError  = null;
   var $redirectDelete = null;
   var $_obj = null;
+  var $_logIt = null;
     
   function CDoObjectAddEdit($className, $objectKeyGetVarName) {
     global $m;
@@ -36,6 +37,7 @@ class CDoObjectAddEdit {
     $this->createMsg = "Object of type $className created";
     $this->modifyMsg = "Object of type $className modified";
     $this->deleteMsg = "Object of type $className deleted";
+    $this->_logIt = true;
   }
   
   function doBind() {
@@ -104,14 +106,16 @@ class CDoObjectAddEdit {
   
   function doLog($type) {
     global $AppUI;
-    $log = new CuserLog;
-    $log->user_id = $AppUI->user_id;
-    $objectKey = $this->_obj->_tbl_key;
-    $log->object_id = $this->_obj->$objectKey;
-    $log->object_class = $this->className;
-    $log->type = $type;
-    $log->date = mbDateTime();
-    $log->store();
+    if($this->_logIt) {
+      $log = new CuserLog;
+      $log->user_id = $AppUI->user_id;
+      $objectKey = $this->_obj->_tbl_key;
+      $log->object_id = $this->_obj->$objectKey;
+      $log->object_class = $this->className;
+      $log->type = $type;
+      $log->date = mbDateTime();
+      $log->store();
+    }
   }
 
   function doIt() {
