@@ -33,6 +33,7 @@ class CSetupdPcabinet {
 
 	function remove() {
       db_exec( "DROP TABLE consultation;" );
+      db_exec( "DROP TABLE consultation_anesth;" );
       db_exec( "DROP TABLE plageconsult;" );
       db_exec( "DROP TABLE files_mediboard;" );
       db_exec( "DROP TABLE files_index_mediboard;" );
