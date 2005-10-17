@@ -24,7 +24,7 @@ function pageMain() {
         <tr>
           <th class="category" colspan="2">
             {$date|date_format:"%A %d %B %Y"}
-            <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
+            <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" title="calendar" />
           </th>
         </tr>
         
@@ -169,10 +169,10 @@ function pageMain() {
                 <input type="hidden" name="dosql" value="do_acteccam_aed" />
                 <input type="hidden" name="del" value="0" />
                 <input type="hidden" name="acte_id" value="{$acte->acte_id}" />
-                <input type="hidden" name="operation_id" alt="{$acte->_props.operation_id}" value="{$selOp->operation_id}" />
-                <input type="hidden" name="code_acte" alt="{$acte->_props.code_acte}" value="{$acte->code_acte}" />
-                <input type="hidden" name="code_activite" alt="{$acte->_props.code_activite}" value="{$acte->code_activite}" />
-                <input type="hidden" name="code_phase" alt="{$acte->_props.code_phase}" value="{$acte->code_phase}" />
+                <input type="hidden" name="operation_id" title="{$acte->_props.operation_id}" value="{$selOp->operation_id}" />
+                <input type="hidden" name="code_acte" title="{$acte->_props.code_acte}" value="{$acte->code_acte}" />
+                <input type="hidden" name="code_activite" title="{$acte->_props.code_activite}" value="{$acte->code_activite}" />
+                <input type="hidden" name="code_phase" title="{$acte->_props.code_phase}" value="{$acte->code_phase}" />
                 
                 <table class="form">
                 
@@ -186,7 +186,7 @@ function pageMain() {
                 <tr class="acte{$acte->_view}">
                   <th><label for="execution" title="Date et heure d'exécution de l'acte">Exécution :</label></th>
                   <td>
-                    <input type="text" name="execution" alt="{$acte->_props.execution}" readonly="readonly" value="{$acte->execution}" />
+                    <input type="text" name="execution" title="{$acte->_props.execution}" readonly="readonly" value="{$acte->execution}" />
                     <input type="button" value="Maintenant" onclick="this.form.execution.value = makeDATETIMEFromDate(new Date());" /><br />
                   </td>
                 </tr>
@@ -200,7 +200,7 @@ function pageMain() {
                       {assign var="listExecutants" value=$listChirs}
                     {/if}
 
-                    <select name="executant_id" alt="{$acte->_props.code_phase}">
+                    <select name="executant_id" title="{$acte->_props.executant_id}">
                       <option value="">&mdash; Choisir un professionnel de santé</option>
                       {foreach from=$listExecutants item=curr_executant}
                       <option value="{$curr_executant->user_id}" {if $acte->executant_id == $curr_executant->user_id} selected="selected" {/if}>{$curr_executant->_view}</option>
@@ -222,12 +222,12 @@ function pageMain() {
 
                 <tr class="acte{$acte->_view}">
                   <th><label for="montant_depassement" title="Montant du dépassement d'honoraires">Dépassement :</label></th>
-                  <td><input type="text" name="montant_depassement" size="6" alt="{$acte->_props.montant_depassement}" value="{$acte->montant_depassement}" />&euro;</td>
+                  <td><input type="text" name="montant_depassement" size="6" title="{$acte->_props.montant_depassement}" value="{$acte->montant_depassement}" />&euro;</td>
                 </tr>
                 
                 <tr class="acte{$acte->_view}">
                   <th><label for="commentaire" title="Commentaires sur l'acte">Commentaire :</label></th>
-                  <td><textarea name="commentaire" alt="{$acte->_props.commentaire}">{$acte->commentaire}</textarea></td>
+                  <td><textarea name="commentaire" title="{$acte->_props.commentaire}">{$acte->commentaire}</textarea></td>
                 </tr>
                 
                 <tr>
