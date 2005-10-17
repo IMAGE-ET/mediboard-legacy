@@ -98,7 +98,7 @@ function followUp(field, sFollowFieldName) {
       
       <tr>
         <th><label for="nom" title="Nom du patient. Obligatoire">Nom:</label></th>
-        <td><input tabindex="1" type="text" name="nom" value="{$patient->nom}" alt="{$patient->_props.nom}" /></td>
+        <td><input tabindex="1" type="text" name="nom" value="{$patient->nom}" title"{$patient->_props.nom}" /></td>
         <th><label for="incapable_majeur" title="Patient reconnu incapable majeur">Incapable majeur:</label></th>
         <td colspan="2">
           <input tabindex="21" type="radio" name="incapable_majeur" value="o" {if $patient->incapable_majeur == "o"} checked="checked" {/if} />oui
@@ -108,7 +108,7 @@ function followUp(field, sFollowFieldName) {
       
       <tr>
         <th><label for="prenom" title="Prénom du patient. Obligatoire">Prénom:</label></th>
-        <td><input tabindex="2" type="text" name="prenom" value="{$patient->prenom}" alt="{$patient->_props.prenom}" /></td>
+        <td><input tabindex="2" type="text" name="prenom" value="{$patient->prenom}" title"{$patient->_props.prenom}" /></td>
         <th>ATNC:</th>
         <td colspan="2">
           <input tabindex="23" type="radio" name="ATNC" value="o" {if $patient->ATNC == "o"} checked="checked" {/if} />oui
@@ -118,10 +118,10 @@ function followUp(field, sFollowFieldName) {
       
       <tr>
         <th><label for="nom_jeune_fille" title="Nom de jeune fille d'une femme mariée">Nom de jeune fille:</label></th>
-        <td><input tabindex="3" type="text" name="nom_jeune_fille" alt="{$patient->_props.nom_jeune_fille}" value="{$patient->nom_jeune_fille}" /></td>
+        <td><input tabindex="3" type="text" name="nom_jeune_fille" title="{$patient->_props.nom_jeune_fille}" value="{$patient->nom_jeune_fille}" /></td>
         <th><label for="matricule" title="Matricule valide d'assuré social (13 chiffres + 2 pour la clé)">Numéro d'assuré social:</label></th>
         <td colspan="2">
-          <input tabindex="25" type="text" size="15" maxlength="15" name="matricule" alt="{$patient->_props.matricule}" value="{$patient->matricule}" />
+          <input tabindex="25" type="text" size="15" maxlength="15" name="matricule" title="{$patient->_props.matricule}" value="{$patient->matricule}" />
         </td>
       </tr>
       
@@ -134,14 +134,14 @@ function followUp(field, sFollowFieldName) {
         </td>
         <th><label for="SHS" title="Code Administratif SHS">Code administratif:</label></th>
         <td colspan="2">
-          <input tabindex="26" type="text" size="10" maxlength="10" name="SHS" alt="{$patient->_props.SHS}" value="{$patient->SHS}" />
+          <input tabindex="26" type="text" size="10" maxlength="10" name="SHS" title="{$patient->_props.SHS}" value="{$patient->SHS}" />
         </td>
       </tr>
       
       <tr>
         <th><label for="sexe" title="Sexe du patient">Sexe:</label></th>
         <td>
-          <select tabindex="7" name="sexe" alt="{$patient->_props.sexe}">
+          <select tabindex="7" name="sexe" title="{$patient->_props.sexe}">
             <option value="m" {if $patient->sexe == "m"} selected="selected" {/if}>masculin</option>
             <option value="f" {if $patient->sexe == "f"} selected="selected" {/if}>féminin</option>
             <option value="j" {if $patient->sexe == "j"} selected="selected" {/if}>femme célibataire</option>
@@ -157,10 +157,10 @@ function followUp(field, sFollowFieldName) {
       
       <tr>
         <th><label for="adresse" title="Adresse du patient">Adresse:</label></th>
-        <td><textarea tabindex="8" name="adresse" alt="{$patient->_props.adresse}" rows="1">{$patient->adresse}</textarea></td>
+        <td><textarea tabindex="8" name="adresse" title="{$patient->_props.adresse}" rows="1">{$patient->adresse}</textarea></td>
         <th>
           <label for="medecin_traitant" title="Choisir un médecin traitant">Medecin traitant:</label>
-          <input type="hidden" name="medecin_traitant" alt="{$patient->_props.medecin_traitant}" value="{$patient->medecin_traitant}" />
+          <input type="hidden" name="medecin_traitant" title="{$patient->_props.medecin_traitant}" value="{$patient->medecin_traitant}" />
         </th>
         <td class="readonly">
           <input type="text" name="_medecin_traitant_name" size="30" value="Dr. {$patient->_ref_medecin_traitant->_view}" readonly="readonly" />
@@ -171,10 +171,10 @@ function followUp(field, sFollowFieldName) {
       
       <tr>
         <th><label for="cp" title="Code postal">Code Postal:</label></th>
-        <td><input tabindex="9" type="text" name="cp" value="{$patient->cp}" alt="{$patient->_props.cp}" /></td>
+        <td><input tabindex="9" type="text" name="cp" value="{$patient->cp}" title="{$patient->_props.cp}" /></td>
         <th>
           <label for="medecin1" title="Choisir un médecin correspondant">Médecin correspondant 1:</label>
-          <input type="hidden" name="medecin1" value="{$patient->_ref_medecin1->medecin_id}" alt="{$patient->_props.medecin1}" />
+          <input type="hidden" name="medecin1" value="{$patient->_ref_medecin1->medecin_id}" title="{$patient->_props.medecin1}" />
         </th>
         <td class="readonly">
           <input type="text" name="_medecin1_name" size="30" value="Dr. {$patient->_ref_medecin1->_view}" readonly="readonly" />
@@ -185,9 +185,9 @@ function followUp(field, sFollowFieldName) {
       
       <tr>
         <th><label for="sexe" title="Ville du patient">Ville:</label></th>
-        <td><input tabindex="10" type="text" name="ville" value="{$patient->ville}" alt="{$patient->_props.ville}" /></td>
+        <td><input tabindex="10" type="text" name="ville" value="{$patient->ville}" title="{$patient->_props.ville}" /></td>
         <th>
-          <input type="hidden" name="medecin2" value="{$patient->_ref_medecin2->medecin_id}" alt="{$patient->_props.medecin2}" />
+          <input type="hidden" name="medecin2" value="{$patient->_ref_medecin2->medecin_id}" title="{$patient->_props.medecin2}" />
           <label for="medecin2" title="Choisir un second médecin correspondant">Médecin correspondant 2:</label>
         </th>
         <td class="readonly">
@@ -200,14 +200,14 @@ function followUp(field, sFollowFieldName) {
       <tr>
         <th><label for="_tel1" title="Numéro de téléphone filaire">Téléphone:</label></th>
         <td>
-          <input tabindex="11" type="text" name="_tel1" size="2" maxlength="2" value="{$patient->_tel1}" alt="num|length|2" onkeyup="followUp(this, '_tel2')" /> - 
-          <input tabindex="12" type="text" name="_tel2" size="2" maxlength="2" value="{$patient->_tel2}" alt="num|length|2" onkeyup="followUp(this, '_tel3')" /> -
-          <input tabindex="13" type="text" name="_tel3" size="2" maxlength="2" value="{$patient->_tel3}" alt="num|length|2" onkeyup="followUp(this, '_tel4')" /> -
-          <input tabindex="14" type="text" name="_tel4" size="2" maxlength="2" value="{$patient->_tel4}" alt="num|length|2" onkeyup="followUp(this, '_tel5')" /> -
-          <input tabindex="15" type="text" name="_tel5" size="2" maxlength="2" value="{$patient->_tel5}" alt="num|length|2" onkeyup="followUp(this, '_tel21')" />
+          <input tabindex="11" type="text" name="_tel1" size="2" maxlength="2" value="{$patient->_tel1}" title="num|length|2" onkeyup="followUp(this, '_tel2')" /> - 
+          <input tabindex="12" type="text" name="_tel2" size="2" maxlength="2" value="{$patient->_tel2}" title="num|length|2" onkeyup="followUp(this, '_tel3')" /> -
+          <input tabindex="13" type="text" name="_tel3" size="2" maxlength="2" value="{$patient->_tel3}" title="num|length|2" onkeyup="followUp(this, '_tel4')" /> -
+          <input tabindex="14" type="text" name="_tel4" size="2" maxlength="2" value="{$patient->_tel4}" title="num|length|2" onkeyup="followUp(this, '_tel5')" /> -
+          <input tabindex="15" type="text" name="_tel5" size="2" maxlength="2" value="{$patient->_tel5}" title="num|length|2" onkeyup="followUp(this, '_tel21')" />
         </td>
         <th>
-          <input type="hidden" name="medecin3" value="{$patient->_ref_medecin3->medecin_id}" alt="{$patient->_props.medecin3}" />
+          <input type="hidden" name="medecin3" value="{$patient->_ref_medecin3->medecin_id}" title="{$patient->_props.medecin3}" />
           <label for="medecin3" title="Choisir un troisième médecin correspondant">Médecin correspondant 3:</label>
         </th>
         <td class="readonly">
@@ -220,11 +220,11 @@ function followUp(field, sFollowFieldName) {
       <tr>
         <th><label for="_tel21" title="Numéro de téléphone portable">Portable:</label></th>
         <td>
-          <input tabindex="16" type="text" name="_tel21" size="2" maxlength="2" value="{$patient->_tel21}" alt="num|length|2" onkeyup="followUp(this, '_tel22')" /> - 
-          <input tabindex="17" type="text" name="_tel22" size="2" maxlength="2" value="{$patient->_tel22}" alt="num|length|2" onkeyup="followUp(this, '_tel23')" /> -
-          <input tabindex="18" type="text" name="_tel23" size="2" maxlength="2" value="{$patient->_tel23}" alt="num|length|2" onkeyup="followUp(this, '_tel24')" /> -
-          <input tabindex="19" type="text" name="_tel24" size="2" maxlength="2" value="{$patient->_tel24}" alt="num|length|2" onkeyup="followUp(this, '_tel25')" /> -
-          <input tabindex="20" type="text" name="_tel25" size="2" maxlength="2" value="{$patient->_tel25}" alt="num|length|2" />
+          <input tabindex="16" type="text" name="_tel21" size="2" maxlength="2" value="{$patient->_tel21}" title="num|length|2" onkeyup="followUp(this, '_tel22')" /> - 
+          <input tabindex="17" type="text" name="_tel22" size="2" maxlength="2" value="{$patient->_tel22}" title="num|length|2" onkeyup="followUp(this, '_tel23')" /> -
+          <input tabindex="18" type="text" name="_tel23" size="2" maxlength="2" value="{$patient->_tel23}" title="num|length|2" onkeyup="followUp(this, '_tel24')" /> -
+          <input tabindex="19" type="text" name="_tel24" size="2" maxlength="2" value="{$patient->_tel24}" title="num|length|2" onkeyup="followUp(this, '_tel25')" /> -
+          <input tabindex="20" type="text" name="_tel25" size="2" maxlength="2" value="{$patient->_tel25}" title="num|length|2" />
         </td>
         <th colspan="3"></th>
       </tr>
@@ -232,7 +232,7 @@ function followUp(field, sFollowFieldName) {
       <tr>
         <th><label for="rques" title="Remarques générales concernant le patient"></label>Remarques:</th>
         <td colspan="4">
-          <textarea tabindex="31" alt="{$patient->_props.medecin3}" name="rques">{$patient->rques}</textarea>
+          <textarea tabindex="31" title="{$patient->_props.rques}" name="rques">{$patient->rques}</textarea>
         </td>
       </tr>
       

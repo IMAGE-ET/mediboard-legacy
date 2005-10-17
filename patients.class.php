@@ -100,6 +100,7 @@ class CPatient extends CMbObject {
     $this->_props["incapable_majeur"] = "enum|o|n";
     $this->_props["ATNC"] = "enum|o|n";
     $this->_props["naissance"] = "date|confidential";
+    $this->_props["rques"] = "text";
 	}
   
   function updateFormFields() {
