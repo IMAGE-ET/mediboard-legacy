@@ -385,7 +385,7 @@ function pageMain() {
         
         <tr>
           <th class="mandatory">
-            <input type="hidden" name="chir_id" alt="{$op->_props.chir_id}" value="{$chir->user_id}" ondoubleclick="popChir()" />
+            <input type="hidden" name="chir_id" title="{$op->_props.chir_id}" value="{$chir->user_id}" ondoubleclick="popChir()" />
             <label for="chir_id" title="Chirurgien Responsable. Obligatoire">Chirurgien:</label>
           </th>
           <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if $chir->user_id}{$chir->_view}{/if}" readonly="readonly" /></td>
@@ -395,7 +395,7 @@ function pageMain() {
         {if !$protocole}
         <tr>
           <th class="mandatory">
-            <input type="hidden" name="pat_id" alt="{$op->_props.pat_id}|notNull" ondoubleclick="popPat()" value="{$pat->patient_id}" />
+            <input type="hidden" name="pat_id" title="{$op->_props.pat_id}|notNull" ondoubleclick="popPat()" value="{$pat->patient_id}" />
             <label for="pat_id" title="Patient concerné. Obligatoire">Patient:</label>
           </th>
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->_view}" readonly="readonly" /></td>
@@ -423,7 +423,7 @@ function pageMain() {
         </tr>
         <tr>
           <th class="mandatory">
-            <input type="hidden" name="plageop_id" alt="{$op->_props.pat_id}|notNull" ondoubleclick="popPlage()" value="{$plage->id}" />
+            <input type="hidden" name="plageop_id" title="{$op->_props.pat_id}|notNull" ondoubleclick="popPlage()" value="{$plage->id}" />
             <label for="plageop_id" title="Date de l'intervention. Obligatoire">Date de l'intervention:</label>
           </th>
           <td class="readonly"><input type="text" name="date" readonly="readonly" size="10" value="{$plage->_date}" /></td>
@@ -433,33 +433,33 @@ function pageMain() {
         
         <tr>
           <th><label for="CIM10_code" title="Code CIM10 de diagnostic">Diagnostic (CIM10):</label></th>
-          <td><input type="text" name="CIM10_code" alt="{$op->_props.CIM10_code}" size="10" value="{$op->CIM10_code}" /></td>
+          <td><input type="text" name="CIM10_code" title="{$op->_props.CIM10_code}" size="10" value="{$op->CIM10_code}" /></td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('cim10')" /></td>
         </tr>
         {/if}
 
         <tr>
           <th><label for="CCAM_code" title="Code CCAM principal d'intervention{if !$hospitalisation}. Obligatoire{/if}">Acte Principal (CCAM):</label></th>
-          <td><input type="text" name="CCAM_code" alt="{$op->_props.CCAM_code}{if !$hospitalisation}|notNull{/if}" ondoubleclick="popCode('ccam')" size="10" value="{$op->CCAM_code}" onchange="modifOp()" /></td>
+          <td><input type="text" name="CCAM_code" title="{$op->_props.CCAM_code}{if !$hospitalisation}|notNull{/if}" ondoubleclick="popCode('ccam')" size="10" value="{$op->CCAM_code}" onchange="modifOp()" /></td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
 
         <tr>
           <th><label for="CCAM_code2" title="Code CCAM secondaire d'intervention">Acte secondaire (CCAM):</label></th>
-          <td><input type="text" name="CCAM_code2" alt="{$op->_props.CCAM_code2}" size="10" value="{$op->CCAM_code2}" /></td>
+          <td><input type="text" name="CCAM_code2" title="{$op->_props.CCAM_code2}" size="10" value="{$op->CCAM_code2}" /></td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('ccam2')"/></td>
         </tr>
         
         <tr>
           <th><label for="libelle" title="Libellé facultatif d'intervention">Libellé:</label></th>
-          <td colspan="2"><input type="text" name="libelle" alt="{$op->_props.libelle}" size="70" value="{$op->libelle}"/></td>
+          <td colspan="2"><input type="text" name="libelle" title="{$op->_props.libelle}" size="70" value="{$op->libelle}"/></td>
         </tr>
         
         {if !$protocole}
         <tr>
           <th class="mandatory"><label for="cote" title="Côté concerné par l'intervention">Côté:</label></th>
           <td colspan="2">
-            <select name="cote" alt="{$op->_props.cote}" onchange="modifOp()">
+            <select name="cote" title="{$op->_props.cote}" onchange="modifOp()">
               <option value="total"     {if !$op || $op->cote == "total"} selected="selected" {/if} >total</option>
               <option value="droit"     {if $op->cote == "droit"        } selected="selected" {/if} >droit    </option>
               <option value="gauche"    {if $op->cote == "gauche"       } selected="selected" {/if} >gauche   </option>
@@ -472,7 +472,7 @@ function pageMain() {
         {if $hospitalisation}
         <tr>
           <th><label for="examen" title="Bilan pré-opératoire">Bilan pré-op</label></th>
-          <td colspan="2"><textarea name="examen" alt="{$op->_props.examen}" rows="3">{$op->examen}</textarea></td>
+          <td colspan="2"><textarea name="examen" title="{$op->_props.examen}" rows="3">{$op->examen}</textarea></td>
         </tr>
         {else}
         <tr>
@@ -482,15 +482,15 @@ function pageMain() {
         </tr>
 
         <tr>
-          <td><textarea name="examen" alt="{$op->_props.examen}" rows="3">{$op->examen}</textarea></td>
-          <td><textarea name="materiel" alt="{$op->_props.materiel}" rows="3">{$op->materiel}</textarea></td>
-          <td><textarea name="convalescence" alt="{$op->_props.convalescence}" rows="3">{$op->convalescence}</textarea></td>
+          <td><textarea name="examen" title="{$op->_props.examen}" rows="3">{$op->examen}</textarea></td>
+          <td><textarea name="materiel" title="{$op->_props.materiel}" rows="3">{$op->materiel}</textarea></td>
+          <td><textarea name="convalescence" title="{$op->_props.convalescence}" rows="3">{$op->convalescence}</textarea></td>
         </tr>
         {/if}
         
         <tr>
           <th><label for="depassement"title="Valeur du dépassement d'honoraire éventuel">Dépassement d'honoraire:</label></th>
-          <td colspan="2"><input name="depassement" alt="{$op->_props.depassement}" type="text" size="4" value="{$op->depassement}" /> €</td>
+          <td colspan="2"><input name="depassement" title="{$op->_props.depassement}" type="text" size="4" value="{$op->depassement}" /> €</td>
         </tr>
 
         {if !$protocole}
@@ -518,7 +518,7 @@ function pageMain() {
           <th><label for="date_anesth_trigger" title="Date de rendez-vous d'anesthésie">Date:</label></th>
           <td class="date">
             <div id="editFrm_date_anesth_da">{$op->date_anesth|date_format:"%d/%m/%Y"}</div>
-            <input type="hidden" name="date_anesth" alt="{$op->_props.date_anesth}" value="{$op->date_anesth}" onchange="modifOp()" />
+            <input type="hidden" name="date_anesth" title="{$op->_props.date_anesth}" value="{$op->date_anesth}" onchange="modifOp()" />
             <img id="editFrm_date_anesth_trigger" src="./images/calendar.gif" alt="calendar"/>
           </td>
         </tr>
@@ -548,7 +548,7 @@ function pageMain() {
           <th><label for="date_adm" title="Choisir une date d'admission">Date:</label></th>
           <td class="date">
             <div id="editFrm_date_adm_da">{$op->date_adm|date_format:"%d/%m/%Y"}</div>
-            <input type="hidden" name="date_adm" alt="{$op->_props.date_adm}|notNull" value="{$op->date_adm}" onchange="modifOp()"/>
+            <input type="hidden" name="date_adm" title="{$op->_props.date_adm}|notNull" value="{$op->date_adm}" onchange="modifOp()"/>
             <img id="editFrm_date_adm_trigger" src="./images/calendar.gif" alt="calendar"/>
           </td>
         </tr>
@@ -573,7 +573,7 @@ function pageMain() {
 
         <tr>
           <th class="mandatory"><label for="duree_hospi" title="Durée d'hospitalisation en jours">Durée d'hospitalisation:</label></th>
-          <td><input type"text" name="duree_hospi" alt="{$op->_props.duree_hospi}" size="2" value="{$op->duree_hospi}"> jours</td>
+          <td><input type"text" name="duree_hospi" title="{$op->_props.duree_hospi}" size="2" value="{$op->duree_hospi}"> jours</td>
         </tr>
         <tr>
           <th><label for="type_adm_comp" title="Type d'admission">{tr}type_adm{/tr}:</label></th>
