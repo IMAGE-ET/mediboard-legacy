@@ -292,9 +292,12 @@ class CMbObject extends CDpObject {
           
             $code = $matches[1];
             $cle = $matches[2];
-            // Use bcmod since standard modulus can't work on number exceedind the 2^32 limit
-            if (97 - bcmod($code, 97) != $cle) {
-              return "Matricule incorrect, la clé n'est pas valide";
+            
+            // Use bcmod since standard modulus can't work on numbers exceedind the 2^32 limit
+            if (function_exists("bcmod")) {
+              if (97 - bcmod($code, 97) != $cle) {
+                return "Matricule incorrect, la clé n'est pas valide";
+              }
             }
           
             break;
