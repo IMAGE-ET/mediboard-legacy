@@ -102,7 +102,7 @@ function prepareForms() {
       }
 
       // Label emphasized for notNull elements
-      if (sPropSpec = oElement.getAttribute("alt")) {
+      if (sPropSpec = oElement.getAttribute("title")) {
         aSpecFragments = sPropSpec.split("|");
         if (aSpecFragments.contains("notNull")) {
           if (oLabel = getLabelFor(oElement)) {
@@ -346,7 +346,7 @@ function checkForm(oForm) {
   aMsgFailed = new Array;
   iElement = 0;
   while (oElement = oForm.elements[iElement++]) {
-    if (sPropSpec = oElement.getAttribute("alt")) {
+    if (sPropSpec = oElement.getAttribute("title")) {
       aSpecFragments = sPropSpec.split("|");
       oLabel = getLabelFor(oElement);
       if (sMsg = checkElement(oElement, aSpecFragments)) {
