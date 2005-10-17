@@ -15,7 +15,7 @@
   
   <tr>
     <th><label for="mb_operation_id" title="Choisir un identifiant d'opération">Identifiant d'opération</label></th>
-    <td><input type="text" alt="notNull|ref" name="mb_operation_id" value="{$mb_operation_id}" size="5"/></td>
+    <td><input type="text" title="notNull|ref" name="mb_operation_id" value="{$mb_operation_id}" size="5"/></td>
   </tr>
   
   <tr>
@@ -24,12 +24,12 @@
   
   <tr>
    <th><label for="sc_patient_id" title="Choisir un identifiant de patient correspondant à l'opération">Identifiant de patient</label></th>
-    <td><input type="text" alt="notNull|num|length|8" name="sc_patient_id" value="{$sc_patient_id}" size="8" maxlength="8" /></td>
+    <td><input type="text" title="notNull|num|length|8" name="sc_patient_id" value="{$sc_patient_id}" size="8" maxlength="8" /></td>
   </tr>
   
   <tr>
     <th><label for="sc_venue_id" title="Choisir un identifiant pour la venue correspondant à l'opération">Identifiant de venue</label></th>
-    <td><input type="text" alt="notNull|num|length|8" name="sc_venue_id" value="{$sc_venue_id}" size="8" maxlength="8" /></td>
+    <td><input type="text" title="notNull|num|length|8" name="sc_venue_id" value="{$sc_venue_id}" size="8" maxlength="8" /></td>
   </tr>
 
   <tr>
@@ -38,12 +38,12 @@
 
   <tr>
     <th><label for="cmca_uf_code" title="Choisir un code pour l'unité fonctionnelle">Code de l'unité fonctionnelle</label></th>
-    <td><input type="text" alt="notNull|str|maxLength|10" name="cmca_uf_code" value="{$cmca_uf_code}" size="10" maxlength="10" /></td>
+    <td><input type="text" title="notNull|str|maxLength|10" name="cmca_uf_code" value="{$cmca_uf_code}" size="10" maxlength="10" /></td>
   </tr>
 
   <tr>
     <th><label for="cmca_uf_libelle" title="Choisir un libellé pour l'unité fonctionnelle">Libellé de l'unité fonctionnelle</label></th>
-    <td><input type="text" alt="notNull|str|maxLength|35" name="cmca_uf_libelle" value="{$cmca_uf_libelle}" size="35" maxlength="35" /></td>
+    <td><input type="text" title="notNull|str|maxLength|35" name="cmca_uf_libelle" value="{$cmca_uf_libelle}" size="35" maxlength="35" /></td>
   </tr>
 
   <tr>
