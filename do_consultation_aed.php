@@ -29,11 +29,12 @@ if (intval(dPgetParam($_POST, 'del'))) {
   if($consultAnesth->consultation_anesth_id)
     $consultAnesth->delete();
   $do->doDelete();
-  $curr_consult = mbGetValueFromGetOrSession("consult_id", null);
+  $curr_consult = mbGetValueFromGetOrSession("consultation_id", null);
   if($curr_consult == $do->_obj->consultation_id)
-    mbSetValueToSession("consult_id");
+    mbSetValueToSession("consultation_id");
 } else {
   $do->doStore();
+  $do->redirectStore = "m=dPcabinet&consultation_id=".$do->_obj->consultation_id;
   if(@$_POST["_operation_id"]) {
     $consultAnesth = new CConsultAnesth;
     $where = array();
