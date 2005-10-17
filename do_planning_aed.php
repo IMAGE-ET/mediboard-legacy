@@ -43,6 +43,7 @@ if (intval(dPgetParam($_POST, 'del'))) {
     $do->modifyMsg = "Protocole modifié";
     $do->createMsg = "Protocole créé";
   }
+  $do->doStore();
   if($otherm = dPgetParam( $_POST, 'otherm', 0))
     $m = $otherm;
   if($m == "dPhospi")
@@ -53,7 +54,6 @@ if (intval(dPgetParam($_POST, 'del'))) {
     $do->redirectStore = "m=$m&hospitalisation_id=".$do->_obj->operation_id;
   else
     $do->redirectStore = "m=$m&protocole_id=".$do->_obj->operation_id;
-  $do->doStore();
 }
 
 $do->doRedirect();
