@@ -14,6 +14,7 @@ $runningEnabled = $Config['Enabled'];
 $correctEnabled = true;
 
 $configAlert = null;
+/*
 if (($runningUserFilePath != $correctUserFilePath1
      and $runningUserFilePath != $correctUserFilePath2)
     or $runningEnabled != $correctEnabled) {
@@ -23,7 +24,7 @@ if (($runningUserFilePath != $correctUserFilePath1
       "\n\$Config['UserFilesPath'] = '$correctUserFilePath';" .
       "\n\$Config['Enabled'] = 'true';";
 }
-
+*/
 class CTemplateManager {
   var $editor = "FCKeditor";
   
