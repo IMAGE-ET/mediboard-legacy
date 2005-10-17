@@ -184,6 +184,7 @@ class CPlageconsult extends CMbObject {
     $_hour_fin = $this->_hour_fin;
     $_min_fin = $this->_min_fin;
     $_freq = $this->_freq;
+    $libelle = $this->libelle;
 
     $this->date = mbDate("+7 DAYS", $this->date);
     $where["date"] = "= '$this->date'";
@@ -199,6 +200,7 @@ class CPlageconsult extends CMbObject {
     $this->_hour_fin = $_hour_fin;
     $this->_min_fin = $_min_fin;
     $this->_freq = $_freq;
+    $this->libelle = $libelle;
     $this->updateDBFields();
   }    
 }
