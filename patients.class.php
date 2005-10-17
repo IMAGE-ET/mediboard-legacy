@@ -11,6 +11,7 @@ require_once($AppUI->getSystemClass('mbobject'));
 
 require_once($AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once($AppUI->getModuleClass('dPpatients', 'medecin') );
+//require_once($AppUI->getModuleClass('dPpatients', 'antecedent') );
 require_once($AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once($AppUI->getModuleClass('dPhospi', 'affectation') );
 
@@ -70,6 +71,7 @@ class CPatient extends CMbObject {
   var $_ref_operations = null;
   var $_ref_hospitalisations = null;
   var $_ref_consultations = null;
+  var $_ref_antecedents = null;
   var $_ref_curr_affectation = null;
   var $_ref_next_affectation = null;
   var $_ref_medecin_traitant = null;
@@ -222,7 +224,14 @@ class CPatient extends CMbObject {
     $leftjoin["plageconsult"] = "consultation.plageconsult_id = plageconsult.plageconsult_id";
     $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order, null, null, $leftjoin);
 
-  	// affectation actuelle et prochaine affectation
+  	// antecedents
+//    $this->_ref_antecedents = new CAntecedent;
+//    $where = array();
+//    $where["patient_id"] = "= '$this->patient_id'";
+//    $orde = "type, date desc";
+//    $this->_ref_antecedents = $this->_ref_antecedents->loadList($where, $order);
+    
+    // affectation actuelle et prochaine affectation
   	$this->_ref_curr_affectation = new CAffectation();
     $this->_ref_next_affectation = new CAffectation();
   	$date = date("Y-m-d");

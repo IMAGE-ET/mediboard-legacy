@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPpatients';
-$config['mod_version'] = '0.26';
+$config['mod_version'] = '0.27';
 $config['mod_directory'] = 'dPpatients';
 $config['mod_setup_class'] = 'CSetupdPpatients';
 $config['mod_type'] = 'user';
@@ -104,6 +104,18 @@ class CSetupdPpatients {
         db_exec( $sql ); db_error();
         
         case "0.26":
+          $sql = "CREATE TABLE `antecedent` (
+                  `antecedent_id` BIGINT NOT NULL AUTO_INCREMENT ,
+                  `patient_id` BIGINT NOT NULL ,
+                  `type` ENUM( 'trans', 'obst', 'chir', 'med' ) DEFAULT 'med' NOT NULL ,
+                  `date` DATE,
+                  `rques` TEXT,
+                  PRIMARY KEY ( `antecedent_id` ) ,
+                  INDEX ( `patient_id` )
+                  ) COMMENT = 'antecedents des patients';";
+        db_exec( $sql ); db_error();
+        
+        case "0.27":
 			return true;
 		}
 
