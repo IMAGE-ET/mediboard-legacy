@@ -23,15 +23,15 @@
   
   <tr>
     <td class="leftPane">
-      <form action="index.php" target="_self" name="selection" method="get">
+      <form action="index.php" target="_self" name="selection" method="get" onsubmit="return checkForm(this)">
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="tab" value="{$tab}" />
 
       <table class="form">
         <tr>
-          <th class="mandatory">Code de l'acte:</th>
+          <th><label for="code" title="Code total ou partiel de l'acte">Code de l'acte :</label></th>
           <td>
-            <input tabindex="1" type="text" name="code" value="{$cim10->code}" />
+            <input tabindex="1" type="text" title="notNull|code|cim10" name="code" value="{$cim10->code}" />
             <input tabindex="2" type="submit" value="afficher" />
           </td>
         </tr>
@@ -42,7 +42,7 @@
      
     {if $canEdit}
     <td class="rightPane">
-      <form name="addFavoris" action="./index.php?m={$m}" method="post">
+      <form name="addFavoris" action="?m={$m}" method="post">
       
       <input type="hidden" name="dosql" value="do_favoris_aed" />
       <input type="hidden" name="del" value="0" />
@@ -55,6 +55,7 @@
     {/if}
   </tr>
 
+  {if $cim10->_isInfo}
   <tr>
     <td class="pane" colspan="2">
       <strong>Informations sur ce code:</strong>
@@ -122,6 +123,7 @@
       </ul>
     </td>
   </tr>
+  {/if}
 
   <tr>
     {if $cim10->_levelsSup|@count}

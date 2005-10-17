@@ -111,92 +111,99 @@ class CCodeCIM10 {
     $this->loadLite($lang, 0);
 
     //descr
+    $this->descr = array();
     $query = "SELECT LID" .
         "\nFROM descr" .
         "\nWHERE SID = '$this->sid'";
     $result = mysql_query($query);
-    $this->descr = array();
-    $i = 0;
     while($row = mysql_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM libelle" .
           "\nWHERE LID = '".$row['LID']."'";
       $result2 = mysql_query($query);
-      if($row2 = mysql_fetch_array($result2)) {
-        $this->descr[$i] = $row2[$this->_lang];
-        $i++;
+      if ($row2 = mysql_fetch_array($result2)) {
+        $found = $row2[$this->_lang];
+        if ($found != "" and array_search($found, $this->descr) === false) {
+          $this->descr[] = $found;
+        }
       }
     }
     
     // glossaire
+    $this->glossaire = array();
     $query = "SELECT MID" .
         "\nFROM glossaire" .
         "\nWHERE SID = '$this->sid'";
     $result = mysql_query($query);
-    $this->glossaire = array();
     $i = 0;
     while($row = mysql_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM memo" .
           "\nWHERE MID = '".$row['MID']."'";
       $result2 = mysql_query($query);
-      if($row2 = mysql_fetch_array($result2)) {
-        $this->glossaire[$i] = $row2[$this->_lang];
-        $i++;
+      if ($row2 = mysql_fetch_array($result2)) {
+        $found = $row2[$this->_lang];
+        if ($found != "" and array_search($found, $this->glossaire) === false) {
+          $this->glossaire[] = $found;
+        }
       }
     }
 
     //include
+    $this->include = array();
     $query = "SELECT LID" .
         "\nFROM include" .
         "\nWHERE SID = '$this->sid'";
     $result = mysql_query($query);
-    $info['include'] = array();
-    $i = 0;
     while($row = mysql_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM libelle" .
           "\nWHERE LID = '".$row['LID']."'";
       $result2 = mysql_query($query);
-      if($row2 = mysql_fetch_array($result2)) {
-        $this->include[$i] = $row2[$this->_lang];
-        $i++;
+      if ($row2 = mysql_fetch_array($result2)) {
+        $found = $row2[$this->_lang];
+        if ($found != "" and array_search($found, $this->include) === false) {
+          $this->include[] = $found;
+        }
       }
     }
 
     //indir
+    $this->indir = array();
     $query = "SELECT LID" .
         "\nFROM indir" .
         "\nWHERE SID = '$this->sid'";
     $result = mysql_query($query);
-    $info['indir'] = array();
-    $i = 0;
     while($row = mysql_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM libelle" .
           "\nWHERE LID = '".$row['LID']."'";
       $result2 = mysql_query($query);
-      if($row2 = mysql_fetch_array($result2)) {
-        $this->indir[$i] = $row2[$this->_lang];
-        $i++;
+      if ($row2 = mysql_fetch_array($result2)) {
+        $found = $row2[$this->_lang];
+        if ($found != "" and array_search($found, $this->indir) === false) {
+          $this->indir[] = $found;
+        }
       }
     }
   
     //notes
+    $this->notes = array();
     $query = "SELECT MID" .
         "\nFROM note" .
         "\nWHERE SID = '$this->sid'";
     $result = mysql_query($query);
-    $this->notes = array();
     $i = 0;
     while($row = mysql_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM memo" .
           "\nWHERE MID = '".$row['MID']."'";
       $result2 = mysql_query($query);
-      if($row2 = mysql_fetch_array($result2)) {
-        $this->notes[$i] = $row2[$this->_lang];
-        $i++;
+      if ($row2 = mysql_fetch_array($result2)) {
+        $found = $row2[$this->_lang];
+        if ($found != "" and array_search($found, $this->notes) === false) {
+          $this->notes[] = $found;
+        }
       }
     }
     
@@ -225,23 +232,26 @@ class CCodeCIM10 {
     }
 
     // Exclusions
+    $this->_exclude = array();
     $query = "SELECT LID, excl" .
         "\nFROM exclude" .
         "\nWHERE SID = '$this->sid'";
     $result = mysql_query($query);
-    $this->_exclude = array();
-    $i = 0;
-    while($row = mysql_fetch_array($result)) {
+    while ($row = mysql_fetch_array($result)) {
       $query = "SELECT abbrev" .
           "\nFROM master" .
           "\nWHERE SID = '".$row['excl']."'";
       $result2 = mysql_query($query);
-      if($row2 = mysql_fetch_array($result2)) {
-        $this->_exclude[$i] = new CCodeCIM10($row2['abbrev']);
-        $this->_exclude[$i]->loadLite($this->_lang, 0);
-        $i++;
+      if ($row2 = mysql_fetch_array($result2)) {
+        $code_cim10 = $row2['abbrev'];
+        if (array_key_exists($code_cim10, $this->_exclude) === false) {
+          $code = new CCodeCIM10($code_cim10);
+          $code->loadLite($this->_lang, 0);
+          $this->_exclude[$code_cim10] = $code;
+        }
       }
     }
+    ksort($this->_exclude);
     
     // Arborescence
     $query = "SELECT *" .
@@ -249,86 +259,44 @@ class CCodeCIM10 {
         "\nWHERE SID = '$this->sid'";
     $result = mysql_query($query);
     $row = mysql_fetch_array($result);
-    $this->_levelsup = array();
+
     // Niveaux superieurs
-    if($row['id1'] != 0) {
-      $query = "SELECT abbrev" .
-          "\nFROM master" .
-          "\nWHERE SID = '".$row['id1']."'";
-      $result = mysql_query($query);
-      $row2 = mysql_fetch_array($result);
-      $this->_levelsSup[0] = new CCodeCIM10($row2['abbrev']);
-      $this->_levelsSup[0]->loadLite($this->_lang, 0);
+    $this->_levelsup = array();
+    for ($index = 1; $index <= 7; $index++) {
+    	$code_cim10_id = $row["id$index"];
+      if ($code_cim10_id) {
+        $query = "SELECT abbrev" .
+            "\nFROM master" .
+            "\nWHERE SID = '$code_cim10_id'";
+        $result = mysql_query($query);
+        $row2 = mysql_fetch_array($result);
+        $code_cim10 = $row2['abbrev'];
+        $code = new CCodeCIM10($code_cim10);
+        $code->loadLite($this->_lang, 0);
+        $this->_levelsSup[$index] = $code;
+      }
     }
-    if($row['id2'] != 0) {
-      $query = "SELECT abbrev" .
-          "\nFROM master" .
-          "\nWHERE SID = '".$row['id2']."'";
-      $result = mysql_query($query);
-      $row2 = mysql_fetch_array($result);
-      $this->_levelsSup[1] = new CCodeCIM10($row2['abbrev']);
-      $this->_levelsSup[1]->loadLite($this->_lang, 0);
-    }
-    if($row['id3'] != 0) {
-      $query = "SELECT abbrev" .
-          "\nFROM master" .
-          "\nWHERE SID = '".$row['id3']."'";
-      $result = mysql_query($query);
-      $row2 = mysql_fetch_array($result);
-      $this->_levelsSup[2] = new CCodeCIM10($row2['abbrev']);
-      $this->_levelsSup[2]->loadLite($this->_lang, 0);
-    }
-    if($row['id4'] != 0) {
-      $query = "SELECT abbrev" .
-          "\nFROM master" .
-          "\nWHERE SID = '".$row['id4']."'";
-      $result = mysql_query($query);
-      $row2 = mysql_fetch_array($result);
-      $this->_levelsSup[3] = new CCodeCIM10($row2['abbrev']);
-      $this->_levelsSup[3]->loadLite($this->_lang, 0);
-    }
-    if($row['id5'] != 0) {
-      $query = "SELECT abbrev" .
-          "\nFROM master" .
-          "\nWHERE SID = '".$row['id5']."'";
-      $result = mysql_query($query);
-      $row2 = mysql_fetch_array($result);
-      $this->_levelsSup[4] = new CCodeCIM10($row2['abbrev']);
-      $this->_levelsSup[4]->loadLite($this->_lang, 0);
-    }
-    if($row['id6'] != 0) {
-      $query = "SELECT abbrev" .
-          "\nFROM master" .
-          "\nWHERE SID = '".$row['id6']."'";
-      $result = mysql_query($query);
-      $row2 = mysql_fetch_array($result);
-      $this->_levelsSup[5] = new CCodeCIM10($row2['abbrev']);
-      $this->_levelsSup[5]->loadLite($this->_lang, 0);
-    }
-    if($row['id7'] != 0) {
-      $query = "SELECT abbrev" .
-          "\nFROM master" .
-          "\nWHERE SID = '".$row['id7']."'";
-      $result = mysql_query($query);
-      $row2 = mysql_fetch_array($result);
-      $this->_levelsSup[6] = new CCodeCIM10($row2['abbrev']);
-      $this->_levelsSup[6]->loadLite($this->_lang, 0);
-    }
+
     // Niveaux inferieurs
+    $this->_levelsInf = array();
     $query = "SELECT *" .
         "\nFROM master" .
         "\nWHERE id$this->level = '$this->sid'" .
         "\nAND id".($this->level+1)." != '0'";
-    if($this->level < 6)
+    if ($this->level < 6) {
       $query .= "\nAND id".($this->level+2)." = '0'";
-    $result = mysql_query($query);
-    $i = 0;
-    $this->_levelsInf = array();
-    while($row = mysql_fetch_array($result)) {
-      $this->_levelsInf[$i] = new CCodeCIM10($row['abbrev']);
-      $this->_levelsInf[$i]->loadLite($this->_lang, 0);
-      $i++;
     }
+    
+    $result = mysql_query($query);
+    while ($row = mysql_fetch_array($result)) {
+      $code_cim10 = $row['abbrev'];
+      $code = new CCodeCIM10($code_cim10);
+      $code->loadLite($this->_lang, 0);
+      $this->_levelsInf[$code_cim10] = $code;
+    }
+    
+    ksort($this->_levelsInf);
+    
 
     if($connection) {
       mysql_close($mysql);

@@ -1,7 +1,12 @@
+<form action="index.php" target="_self" name="selectLang" method="get" >
+
+<input type="hidden" name="m" value="dPcim10" />
+<input type="hidden" name="tab" value="vw_find_code" />
+<input type="hidden" name="keys" value="{$keys}" />
+
 <table class="form">
   <tr>
     <th class="category" colspan="2">
-      <form action="index.php" target="_self" name="selectLang" method="get" >
       <select name="lang" style="float:right;" onchange="this.form.submit()">
         <option value="{$smarty.const.LANG_FR}" {if $lang == $smarty.const.LANG_FR}selected="selected"{/if}>
           Français
@@ -13,29 +18,27 @@
           Deutsch
         </option>
       </select>
-      <input type="hidden" name="m" value="dPcim10" />
-      <input type="hidden" name="tab" value="vw_find_code" />
-      <input type="hidden" name="keys" value="{$keys}" />
       Critères de recherche
-      </form>
     </th>
   </tr>
 </table>
 
-<form action="index.php" target="_self" name="selection" method="get">
+</form>
+
+<form action="index.php" name="selection" method="get" onsubmit="return checkForm(this)">
+
+<input type="hidden" name="m" value="{$m}" />
+<input type="hidden" name="tab" value="vw_find_code" />
 
 <table class="form">
   <tr>
-    <th>Mots clefs:</th>
-    <td><input tabindex="1" type="text" name="keys" value="{$keys}" /></td>
+    <th><label for="keys" title="Un ou plusieurs mots clés, séparés par des espaces. Obligatoire">Mots clefs:</label></th>
+    <td><input type="text" title="notNull|str" name="keys" value="{$keys}" /></td>
   </tr>
-  
   <tr>
     <td class="button" colspan="2">
-      <input type="hidden" name="m" value="{$m}" />
-      <input type="hidden" name="tab" value="1" />
-      <input tabindex="2" type="reset" value="réinitialiser" />
-      <input tabindex="3" type="submit" value="rechercher" />
+      <input type="reset" value="réinitialiser" />
+      <input type="submit" value="rechercher" />
     </td>
   </tr>
 </table>
