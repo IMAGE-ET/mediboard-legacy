@@ -242,12 +242,12 @@ function pageMain() {
               <tr>
                 <th><label for="poid" title="Poid du patient">Poid:</label></th>
                 <td>
-                  <input type="text" size="4" name="poid" alt="{$consult->_ref_consult_anesth->_props.poid}" value="{$consult->_ref_consult_anesth->poid}" />
+                  <input type="text" size="4" name="poid" title="{$consult->_ref_consult_anesth->_props.poid}" value="{$consult->_ref_consult_anesth->poid}" />
                   kg
                 </td>
                 <th><label for="tabac" title="Comportement tabagique">Tabac:</label></th>
                 <td>
-                  <select name="tabac" alt="{$consult->_ref_consult_anesth->_props.tabac}">
+                  <select name="tabac" title="{$consult->_ref_consult_anesth->_props.tabac}">
                     <option value="-" {if $consult->_ref_consult_anesth->tabac == "-"}selected="selected"{/if}>
                       -
                     </option>
@@ -263,12 +263,12 @@ function pageMain() {
               <tr>
                 <th><label for="taille" title="Taille du patient">Taille:</label></th>
                 <td>
-                  <input type="text" size="4" name="taille" alt="{$consult->_ref_consult_anesth->_props.taille}" value="{$consult->_ref_consult_anesth->taille}" />
+                  <input type="text" size="4" name="taille" title="{$consult->_ref_consult_anesth->_props.taille}" value="{$consult->_ref_consult_anesth->taille}" />
                   m
                 </td>
                 <th><label for="oenolisme" title="Comportement alcoolique">Oenolisme:</label></th>
                 <td>
-                  <select name="oenolisme" alt="{$consult->_ref_consult_anesth->_props.oenolisme}">
+                  <select name="oenolisme" title="{$consult->_ref_consult_anesth->_props.oenolisme}">
                     <option value="-" {if $consult->_ref_consult_anesth->oenolisme == "-"}selected="selected"{/if}>
                       -
                     </option>
@@ -284,7 +284,7 @@ function pageMain() {
               <tr>
                 <th><label for="groupe" title="Groupe sanguin">Groupe:</label></th>
                 <td>
-                  <select name="groupe" alt="{$consult->_ref_consult_anesth->_props.groupe}">
+                  <select name="groupe" title="{$consult->_ref_consult_anesth->_props.groupe}">
                     <option value="A" {if $consult->_ref_consult_anesth->groupe == "A"}selected="selected"{/if}>
                       A
                     </option>
@@ -299,7 +299,7 @@ function pageMain() {
                     </option>
                   </select>
                   /
-                  <select name="rhesus" alt="{$consult->_ref_consult_anesth->_props.rhesus}">
+                  <select name="rhesus" title="{$consult->_ref_consult_anesth->_props.rhesus}">
                     <option value="-" {if $consult->_ref_consult_anesth->rhesus == "-"}selected="selected"{/if}>
                       -
                     </option>
@@ -310,7 +310,7 @@ function pageMain() {
                 </td>
                 <th><label for="transfusions" title="Antécédents de transfusions">Transfusion:</label></th>
                 <td>
-                  <select name="transfusions" alt="{$consult->_ref_consult_anesth->_props.transfusions}">
+                  <select name="transfusions" title="{$consult->_ref_consult_anesth->_props.transfusions}">
                     <option value="-" {if $consult->_ref_consult_anesth->transfusions == "-"}selected="selected"{/if}>
                       -
                     </option>
@@ -323,9 +323,9 @@ function pageMain() {
               <tr>
                 <th><label for="tasys" title="Pression arterielle">TA:</label></th>
                 <td>
-                  <input type="text" size="2" name="tasys" alt="{$consult->_ref_consult_anesth->_props.tasys}" value="{$consult->_ref_consult_anesth->tasys}" />
+                  <input type="text" size="2" name="tasys" title="{$consult->_ref_consult_anesth->_props.tasys}" value="{$consult->_ref_consult_anesth->tasys}" />
                   -
-                  <input type="text" size="2" name="tadias" alt="{$consult->_ref_consult_anesth->_props.tadias}" value="{$consult->_ref_consult_anesth->tadias}" />
+                  <input type="text" size="2" name="tadias" title="{$consult->_ref_consult_anesth->_props.tadias}" value="{$consult->_ref_consult_anesth->tadias}" />
                 </td>
                 <td class="button" colspan="2">
                   <button type="submit">Valider</button>
