@@ -279,7 +279,7 @@ function checkElement(oElement, aSpecFragments) {
     
     case "currency":
       if (!oElement.value.match(/^(\d+)(\.\d{1,2})?$/)) {
-        return "N'est pas une valeur monétaire (utilisez le . pour la virgule)";
+        return "N'est pas une valeur décimale (utilisez le . pour la virgule)";
       }
       
       break;
