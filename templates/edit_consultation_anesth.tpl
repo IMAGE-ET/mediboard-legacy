@@ -232,10 +232,109 @@ function pageMain() {
               <img src="modules/dPcabinet/images/edit.png" />
             </button>
           </td>
-          <td class="text">
-            Poid, taille, groupe / rhésus, tabac, oenolisme, transfusion, tension
+          <td class="text" rowspan="2">
+            <form name="editAnesthPatFrm" action="?m={$m}" method="POST" onsubmit="return checkForm(this)">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="dosql" value="do_consult_anesth_aed" />
+            <input type="hidden" name="consultation_anesth_id" value="{$consult->_ref_consult_anesth->consultation_anesth_id}" />
+            <table class="form">
+              <tr>
+                <th><label for="poid" title="Poid du patient">Poid:</label></th>
+                <td>
+                  <input type="text" size="4" name="poid" alt="{$consult->_ref_consult_anesth->_props.poid}" value="{$consult->_ref_consult_anesth->poid}" />
+                  kg
+                </td>
+                <th><label for="tabac" title="Comportement tabagique">Tabac:</label></th>
+                <td>
+                  <select name="tabac" alt="{$consult->_ref_consult_anesth->_props.tabac}">
+                    <option value="-" {if $consult->_ref_consult_anesth->tabac == "-"}selected="selected"{/if}>
+                      -
+                    </option>
+                    <option value="+" {if $consult->_ref_consult_anesth->tabac == "+"}selected="selected"{/if}>
+                      +
+                    </option>
+                    <option value="++" {if $consult->_ref_consult_anesth->tabac == "++"}selected="selected"{/if}>
+                      ++
+                    </option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th><label for="taille" title="Taille du patient">Taille:</label></th>
+                <td>
+                  <input type="text" size="4" name="taille" alt="{$consult->_ref_consult_anesth->_props.taille}" value="{$consult->_ref_consult_anesth->taille}" />
+                  m
+                </td>
+                <th><label for="oenolisme" title="Comportement alcoolique">Oenolisme:</label></th>
+                <td>
+                  <select name="oenolisme" alt="{$consult->_ref_consult_anesth->_props.oenolisme}">
+                    <option value="-" {if $consult->_ref_consult_anesth->oenolisme == "-"}selected="selected"{/if}>
+                      -
+                    </option>
+                    <option value="+" {if $consult->_ref_consult_anesth->oenolisme == "+"}selected="selected"{/if}>
+                      +
+                    </option>
+                    <option value="++" {if $consult->_ref_consult_anesth->oenolisme == "++"}selected="selected"{/if}>
+                      ++
+                    </option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th><label for="groupe" title="Groupe sanguin">Groupe:</label></th>
+                <td>
+                  <select name="groupe" alt="{$consult->_ref_consult_anesth->_props.groupe}">
+                    <option value="A" {if $consult->_ref_consult_anesth->groupe == "A"}selected="selected"{/if}>
+                      A
+                    </option>
+                    <option value="B" {if $consult->_ref_consult_anesth->groupe == "B"}selected="selected"{/if}>
+                      B
+                    </option>
+                    <option value="AB" {if $consult->_ref_consult_anesth->groupe == "AB"}selected="selected"{/if}>
+                      AB
+                    </option>
+                    <option value="O" {if $consult->_ref_consult_anesth->groupe == "O"}selected="selected"{/if}>
+                      O
+                    </option>
+                  </select>
+                  /
+                  <select name="rhesus" alt="{$consult->_ref_consult_anesth->_props.rhesus}">
+                    <option value="-" {if $consult->_ref_consult_anesth->rhesus == "-"}selected="selected"{/if}>
+                      -
+                    </option>
+                    <option value="+" {if $consult->_ref_consult_anesth->rhesus == "+"}selected="selected"{/if}>
+                      +
+                    </option>
+                  </select>
+                </td>
+                <th><label for="transfusions" title="Antécédents de transfusions">Transfusion:</label></th>
+                <td>
+                  <select name="transfusions" alt="{$consult->_ref_consult_anesth->_props.transfusions}">
+                    <option value="-" {if $consult->_ref_consult_anesth->transfusions == "-"}selected="selected"{/if}>
+                      -
+                    </option>
+                    <option value="+" {if $consult->_ref_consult_anesth->transfusions == "+"}selected="selected"{/if}>
+                      +
+                    </option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th><label for="tasys" title="Pression arterielle">TA:</label></th>
+                <td>
+                  <input type="text" size="2" name="tasys" alt="{$consult->_ref_consult_anesth->_props.tasys}" value="{$consult->_ref_consult_anesth->tasys}" />
+                  -
+                  <input type="text" size="2" name="tadias" alt="{$consult->_ref_consult_anesth->_props.tadias}" value="{$consult->_ref_consult_anesth->tadias}" />
+                </td>
+                <td class="button" colspan="2">
+                  <button type="submit">Valider</button>
+                </td>
+              </tr>
+            </table>
+            </form>
           </td>
-          <td class="text">
+          <td class="text" rowspan="2">
             {if $consult->_ref_patient->medecin_traitant}
             Dr. {$consult->_ref_patient->_ref_medecin_traitant->_view}
             {/if}
@@ -252,7 +351,7 @@ function pageMain() {
             Dr. {$consult->_ref_patient->_ref_medecin3->_view}
             {/if}
           </td>
-          <td class="text">
+          <td class="text" rowspan="2">
             <table class="form">
               <tr class="groupcollapse" id="operations" onclick="flipGroup('', 'operations')">
                 <td colspan="2">Interventions ({$consult->_ref_patient->_ref_operations|@count})</td>
@@ -294,6 +393,16 @@ function pageMain() {
               </tr>
               {/foreach}
             </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="text">
+            Intervention le <strong>{$consult->_ref_consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}</strong><br />
+            Par le <strong>Dr. {$consult->_ref_consult_anesth->_ref_operation->_ref_chir->_view}</strong><br />
+            <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}</i>
+            {if $consult->_ref_consult_anesth->_ref_operation->CCAM_code2}
+            <br />+ <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}</i>
+            {/if}
           </td>
         </tr>
       </table>
