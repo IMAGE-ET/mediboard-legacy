@@ -16,7 +16,7 @@
   <tr>
     <th><label for="user_id" title="Identifiant de l'utilisateur">Utilisateur:</label></th>
     <td>
-      <select name="user_id" alt="ref">
+      <select name="user_id" title="ref">
         <option value="0">&mdash; Tous les utilisateurs</option>
         {foreach from=$listUsers item=curr_user}
         <option value="{$curr_user->user_id}" {if $curr_user->user_id == $user_id}selected="selected"{/if}>
@@ -27,7 +27,7 @@
     </td>
     <th><label for="object_class" title="Classe de l'object">Classe:</label></th>
     <td>
-      <select name="object_class" alt="str|maxLength|25">
+      <select name="object_class" title="str|maxLength|25">
         <option value="0">&mdash; Toutes les classes</option>
         {foreach from=$listClasses item=curr_class}
         <option value="{$curr_class}" {if $curr_class == $object_class}selected="selected"{/if}>
@@ -40,7 +40,7 @@
   <tr>
     <th><label for="type" title="Action effectuée">Action:</label></th>
     <td>
-      <select name="type" alt="enum|0|store|delete">
+      <select name="type" title="enum|0|store|delete">
         <option value="0">&mdash; Tous les types</option>
         {foreach from=$listTypes item=curr_type}
         <option value="{$curr_type}" {if $curr_type == $type}selected="selected"{/if}>
@@ -51,7 +51,7 @@
     </td>
     <th><label for="object_id" title="Identifiant de l'object">Objet:</label></th>
     <td>
-      <input name="object_id" alt="ref" value="{$object_id}" />
+      <input name="object_id" title="ref" value="{$object_id}" />
     </td>
   </tr>
   <tr>
