@@ -486,7 +486,7 @@ function pageMain() {
     </td>
   </tr>
   <tr>
-    <td height="0px">
+    <td height="1px">
       <table class="form">
         <tr>
           <th class="category" colspan="2">Antécédents</th>
@@ -537,8 +537,17 @@ function pageMain() {
             <ul>
               {foreach from=$consult->_ref_patient->_ref_antecedents item=curr_ant}
               <li>
+                <form name="editAntFrm" action="?m=dPcabinet" method="POST">
+                <input type="hidden" name="m" value="dPpatients" />
+                <input type="hidden" name="del" value="1" />
+                <input type="hidden" name="dosql" value="do_antecedent_aed" />
+                <input type="hidden" name="antecedent_id" value="{$curr_ant->antecedent_id}" />
+                <button type="submit">
+                  <img src="modules/dPcabinet/images/cross.png" />
+                </button>
                 {$curr_ant->type} le {$curr_ant->date|date_format:"%d/%m/%Y"} :
                 <i>{$curr_ant->rques}</i>
+                </form>
               </li>
               {foreachelse}
               <li>Pas d'antécédents</li>
@@ -550,7 +559,7 @@ function pageMain() {
     </td>
   </tr>
   <tr>
-    <td>
+    <td height="1px">
       <table class="form">
         <tr>
           <th class="category">Fichiers liés</th>
