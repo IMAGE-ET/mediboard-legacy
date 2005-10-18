@@ -78,7 +78,7 @@ class CConsultAnesth extends CMbObject {
     $this->_props["intubation"]      = "enum|dents|bouche|cou";
     $this->_props["biologie"]        = "enum|NF|COAG|IONO";
     $this->_props["commande_sang"]   = "enum|clinique|CTS|autologue";
-    $this->_props["ASA"]             = "enum|1|2|3|4";
+    $this->_props["ASA"]             = "enum|1|2|3|4|5";
   }
   
   function updateFormFields() {

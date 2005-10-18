@@ -124,7 +124,8 @@ function pageMain() {
   initElementClass("listConsult", "listConsult")
   {/if}
 
-  regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=", "changeDate");
+  regFieldCalendar("editAntFrm", "date");
   
   {literal}
   
@@ -135,7 +136,7 @@ function pageMain() {
 
 <table class="main" style="border-spacing:0px;">
   <tr>
-    <td rowspan="3" id="listConsult" class="show">
+    <td rowspan="4" id="listConsult" class="show">
       <form name="changeView">
         <table class="form">
           <tr>
@@ -327,7 +328,29 @@ function pageMain() {
                   -
                   <input type="text" size="2" name="tadias" title="{$consult->_ref_consult_anesth->_props.tadias}" value="{$consult->_ref_consult_anesth->tadias}" />
                 </td>
-                <td class="button" colspan="2">
+                <th><label for="ASA" title="Score ASA">ASA:</label></th>
+                <td>
+                  <select name="ASA">
+                    <option value="1" {if $consult->_ref_consult_anesth->ASA == "1"}selected="selected"{/if}>
+                      1
+                    </option>
+                    <option value="2" {if $consult->_ref_consult_anesth->ASA == "2"}selected="selected"{/if}>
+                      2
+                    </option>
+                    <option value="3" {if $consult->_ref_consult_anesth->ASA == "3"}selected="selected"{/if}>
+                      3
+                    </option>
+                    <option value="4" {if $consult->_ref_consult_anesth->ASA == "4"}selected="selected"{/if}>
+                      4
+                    </option>
+                    <option value="5" {if $consult->_ref_consult_anesth->ASA == "5"}selected="selected"{/if}>
+                      5
+                    </option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="button" colspan="4">
                   <button type="submit">Valider</button>
                 </td>
               </tr>
@@ -409,7 +432,7 @@ function pageMain() {
     </td>
   </tr>
   <tr>
-    <td>
+    <td height="1px">
       <form name="editAnesthFrm" action="?m={$m}" method="POST">
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="del" value="0" />
@@ -419,7 +442,7 @@ function pageMain() {
         <tr><th class="category" colspan="2">Examen Préanesthésique</th></tr>
         <tr>
           <td class="text">
-            <strong>Liste des diagnostics:</strong>
+            <strong>Selection de diagnostics</strong>
             <table>
             {foreach from=$consult->_ref_consult_anesth->_static_cim10 key=cat item=curr_cat}
               <tr class="groupcollapse" id="{$cat}" onclick="flipGroup('', '{$cat}')">
@@ -439,7 +462,7 @@ function pageMain() {
             </table>
           </td>
           <td class="text">
-            <strong>Diagnostics du patient:</strong>
+            <strong>Diagnostics du patient</strong>
             <input type="hidden" name="listCim10" value="{$consult->_ref_consult_anesth->listCim10}"
             <ul>
               {foreach from=$consult->_ref_consult_anesth->_codes_cim10 item=curr_code}
@@ -460,6 +483,69 @@ function pageMain() {
         </tr>
       </table>
       </form>
+    </td>
+  </tr>
+  <tr>
+    <td height="0px">
+      <table class="form">
+        <tr>
+          <th class="category" colspan="2">Antécédents</th>
+        <tr>
+          <td>
+            <form name="editAntFrm" action="?m=dPcabinet" method="POST">
+            <input type="hidden" name="m" value="dPpatients" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="dosql" value="do_antecedent_aed" />
+            <input type="hidden" name="patient_id" value="{$consult->_ref_patient->patient_id}" />
+            <table class="form">
+              <tr>
+                <td colspan="3"><strong>Ajouter un antécédent</strong></td>
+              </tr>
+              <tr>
+                <th>Date:</th>
+                <td class="date">
+                  <div id="editAntFrm_date_da">{$today|date_format:"%d/%m/%Y"}</div>
+                  <input type="hidden" name="date" value="{$today}" />
+                  <img id="editAntFrm_date_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de début"/>
+                </td>
+                <td>Remarques</td>
+              </tr>
+              <tr>
+                <th>Type:</th>
+                <td>
+                  <select name="type">
+                    <option value="trans">Transfusion</option>
+                    <option value="obst">Obstétrique</option>
+                    <option value="chir">Chirurgical</option>
+                    <option value="med">Medical</option>
+                  </select>
+                </td>
+                <td rowspan="2">
+                  <textarea name="rques"></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td class="button" colspan="2">
+                  <button type="submit">Ajouter</button>
+              </tr>
+            </table>
+            </form>
+          </td>
+          <td class="text">
+            <strong>Antécédents du patient</strong>
+            <ul>
+              {foreach from=$consult->_ref_patient->_ref_antecedents item=curr_ant}
+              <li>
+                {$curr_ant->type} le {$curr_ant->date|date_format:"%d/%m/%Y"} :
+                <i>{$curr_ant->rques}</i>
+              </li>
+              {foreachelse}
+              <li>Pas d'antécédents</li>
+              {/foreach}
+            </ul>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
   <tr>
