@@ -11,7 +11,7 @@ require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once($AppUI->getModuleClass('dPpatients', 'patients'));
 
-class CConsultAnesth extends CMbObject {
+class CAntecedent extends CMbObject {
   // DB Table key
   var $antecedent_id = null;
 
@@ -26,8 +26,8 @@ class CConsultAnesth extends CMbObject {
   // Object References
   var $_ref_patient = null;
 
-  function CConsultAnesth() {
-    $this->CMbObject( 'consultation_anesth', 'consultation_anesth_id' );
+  function CAntecedent() {
+    $this->CMbObject( 'antecedent', 'antecedent_id' );
 
     $this->_props["patient_id"] = "ref|notNull";
     $this->_props["type"]       = "enum|trans|obst|chir|med|notNull";
