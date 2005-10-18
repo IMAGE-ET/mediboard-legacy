@@ -270,7 +270,7 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
           </th>
         </tr>
         <tr>
-          <td id="infoPat"></td>
+          <td id="infoPat" class="text"></td>
         </tr>
       </table>
     
