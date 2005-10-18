@@ -527,6 +527,7 @@ function pageMain() {
               <tr>
                 <td class="button" colspan="2">
                   <button type="submit">Ajouter</button>
+                <td>
               </tr>
             </table>
             </form>
