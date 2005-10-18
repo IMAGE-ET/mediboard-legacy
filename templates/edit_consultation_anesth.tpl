@@ -136,7 +136,7 @@ function pageMain() {
 
 <table class="main" style="border-spacing:0px;">
   <tr>
-    <td rowspan="4" id="listConsult" class="show">
+    <td id="listConsult" class="show">
       <form name="changeView">
         <table class="form">
           <tr>
@@ -201,7 +201,7 @@ function pageMain() {
       {/if}
       </table>
     </td>
-    <td width="100%" height="1px">
+    <td width="100%">
     {if $consult->consultation_id}
       <table class="form">
         <tr>
@@ -429,10 +429,6 @@ function pageMain() {
           </td>
         </tr>
       </table>
-    </td>
-  </tr>
-  <tr>
-    <td height="1px">
       <form name="editAnesthFrm" action="?m={$m}" method="POST">
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="del" value="0" />
@@ -483,10 +479,6 @@ function pageMain() {
         </tr>
       </table>
       </form>
-    </td>
-  </tr>
-  <tr>
-    <td height="1px">
       <table class="form">
         <tr>
           <th class="category" colspan="2">Antécédents</th>
@@ -556,10 +548,6 @@ function pageMain() {
           </td>
         </tr>
       </table>
-    </td>
-  </tr>
-  <tr>
-    <td height="1px">
       <table class="form">
         <tr>
           <th class="category">Fichiers liés</th>
