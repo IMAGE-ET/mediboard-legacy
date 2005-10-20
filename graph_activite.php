@@ -15,12 +15,12 @@ require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_bar'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_pie'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_pie3D'));
 
-$debut = mbGetValueFromGet("debut", "2005-01-01");
+$debut = mbGetValueFromGet("debut", mbDate("-1 YEAR"));
 $fin = mbGetValueFromGet("fin", mbDate());
 
 $sql = "SELECT COUNT(operations.operation_id) AS total," .
-    "\nDATE_FORMAT(plagesop.date, '%M %Y') AS mois," .
-    "\nDATE_FORMAT(plagesop.date, '%Y %m') AS orderitem" .
+    "\nDATE_FORMAT(plagesop.date, '%m/%Y') AS mois," .
+    "\nDATE_FORMAT(plagesop.date, '%Y%m') AS orderitem" .
     "\nFROM plagesop" .
     "\nLEFT join operations" .
     "\nON operations.plageop_id = plagesop.id" .
@@ -61,19 +61,19 @@ foreach($salles as $salle) {
 
 // Setup the graph.
 $graph = new Graph(500,300,"auto");    
-$graph->img->SetMargin(60,120,30,100);
+$graph->img->SetMargin(40,120,30,70);
 $graph->SetScale("textlin");
 $graph->SetMarginColor("lightblue");
 //$graph->SetShadow();
 
 // Set up the title for the graph
 $graph->title->Set("Interventions par mois");
-$graph->title->SetFont(FF_VERDANA,FS_NORMAL,12);
+$graph->title->SetFont(FF_VERDANA,FS_NORMAL,10);
 $graph->title->SetColor("darkred");
 
 // Setup font for axis
-$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,10);
-$graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,10);
+$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
+$graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
 
 // Show 0 label on Y-axis (default is not to show)
 $graph->yscale->ticks->SupressZeroLabel(false);
