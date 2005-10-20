@@ -314,15 +314,15 @@ function pageMain() {
             </form>
             
             <a class="action" href="{$href_planning}">
-              <img title="Modifier le rendez-vous" />
+              <img src="modules/{$m}/images/planning.png" title="Modifier le rendez-vous" />
             </a>
 
 			{if $curr_consult->chrono == $smarty.const.CC_PLANIFIE}
             <a class="action" href="javascript:document.etatFrm{$curr_consult->consultation_id}.submit()">
-              <img title="Notifier l'arrivée du patient" />
+              <img src="modules/{$m}/images/check.png" title="Notifier l'arrivée du patient" />
             </a>
             <a class="action" href="javascript:document.cancelFrm{$curr_consult->consultation_id}.submit()">
-              <img title="Annuler ce rendez-vous" />
+              <img src="modules/{$m}/images/cancel.png" title="Annuler ce rendez-vous" />
             </a>
             {/if}
           </td>
