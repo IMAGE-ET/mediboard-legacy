@@ -21,8 +21,8 @@ function printIntervention(id) {
 <table class="main">
   <tr>
     <td class="greedyPane">
-    
       <form name="find" action="./index.php" method="get">
+
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="tab" value="{$tab}" />
       <input type="hidden" name="new" value="1" />
@@ -257,7 +257,7 @@ function printIntervention(id) {
           </td>
           <td>{if $curr_op->annulee}[ANNULE]{else}
             <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-            <img title="modifier" /></a>{/if}
+            <img src="modules/dPpatients/images/planning.png" title="modifier" /></a>{/if}
           </td>
         </tr>
         {/foreach}
@@ -282,7 +282,7 @@ function printIntervention(id) {
           </td>
           <td>{if $curr_op->annulee}[ANNULE]{else}
             <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
-            <img title="modifier" /></a>{/if}
+            <img src="modules/dPpatients/images/planning.png" title="modifier" /></a>{/if}
           </td>
         </tr>
         {/foreach}
@@ -297,7 +297,7 @@ function printIntervention(id) {
             Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}</a></td>
           <td>{if $curr_consult->annule}[ANNULE]{else}
           <a href="index.php?m=dPcabinet&amp;tab=edit_planning&amp;consultation_id={$curr_consult->consultation_id}">
-          <img title="modifier" /></a>{/if}</td>
+          <img src="modules/dPpatients/images/planning.png" title="modifier" /></a>{/if}</td>
         </tr>
         {/foreach}
         {/if}
