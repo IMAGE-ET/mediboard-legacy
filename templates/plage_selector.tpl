@@ -1,5 +1,5 @@
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 function setClose(date) {
   var form = document.frmSelector;
   var list = form.list;

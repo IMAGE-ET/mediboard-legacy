@@ -1,5 +1,5 @@
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 function setClose(code, type) {
   window.opener.setCode(code, type);
   window.close();

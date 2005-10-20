@@ -1,7 +1,7 @@
 <!-- $Id$ -->
 
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 
 function selectCR(id, form) {
   var modele = form.modele.value;

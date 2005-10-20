@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<script language="javascript">
+<script type="text/javascript">
 function setClose(user_id,
                   user_last_name,
                   user_first_name,
