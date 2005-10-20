@@ -17,4 +17,4 @@ if (!$canEdit) {
 
 ?>
 
-<img src='?m=dPstats&a=graph_activite&suppressHeaders=1' width='400' height='300' />
+<img src='?m=dPstats&a=graph_activite&suppressHeaders=1' />

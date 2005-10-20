@@ -11,55 +11,94 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph'));
+require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_bar'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_pie'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_pie3D'));
 
-/*
-$sql = "SELECT COUNT(user_log.user_log_id) AS total," .
-    "\nusers.user_last_name," .
-    "\nusers.user_first_name" .
-    "\nFROM user_log, users" .
-    "\nWHERE users.user_id = user_log.user_id" .
-    "\nGROUP BY users.user_id";
-$result = db_loadlist($sql);
-$data = array();
-$leg = array();
-foreach($result as $value) {
-  $data[] = $value["total"];
-  $leg[] = $value["user_last_name"]." ".$value["user_first_name"];
-}
-*/
+$debut = mbGetValueFromGet("debut", "2005-01-01");
+$fin = mbGetValueFromGet("fin", mbDate());
+
 $sql = "SELECT COUNT(operations.operation_id) AS total," .
-    "\nsallesbloc.nom" .
-    "\nFROM operations, plagesop, sallesbloc" .
-    "\nWHERE operations.plageop_id = plagesop.id" .
-    "\nAND plagesop.id_salle = sallesbloc.id" .
-    "\nGROUP BY sallesbloc.id";
-$result = db_loadlist($sql);
-$data = array();
-$leg = array();
-foreach($result as $value) {
-  $data[] = $value["total"];
-  $leg[] = $value["nom"];
+    "\nDATE_FORMAT(plagesop.date, '%M %Y') AS mois," .
+    "\nDATE_FORMAT(plagesop.date, '%Y %m') AS orderitem" .
+    "\nFROM plagesop" .
+    "\nLEFT join operations" .
+    "\nON operations.plageop_id = plagesop.id" .
+    "\nWHERE plagesop.date BETWEEN '$debut' AND '$fin'" .
+    "\nGROUP BY mois" .
+    "\nORDER BY orderitem";
+$operations = db_loadlist($sql);
+$datax = array();
+$datay = array();
+foreach($operations as $value) {
+  $datay[] = $value["total"];
+  $datax[] = $value["mois"];
 }
 
-$graph = new PieGraph(400,300,"auto");
-$graph->SetShadow();
-$graph->title->Set("Graph des salles");
+$sql = "SELECT * FROM sallesbloc";
+$salles = db_loadlist($sql);
+$opbysalle = array();
+foreach($salles as $salle) {
+  $id = $salle["id"];
+  $sql = "SELECT COUNT(operations.operation_id) AS total," .
+    "\nDATE_FORMAT(plagesop.date, '%M %Y') AS mois," .
+    "\nDATE_FORMAT(plagesop.date, '%Y %m') AS orderitem," .
+    "\nsallesbloc.nom AS nom" .
+    "\nFROM plagesop, sallesbloc" .
+    "\nLEFT join operations" .
+    "\nON operations.plageop_id = plagesop.id" .
+    "\nWHERE plagesop.date BETWEEN '$debut' AND '$fin'" .
+    "\nAND sallesbloc.id = '$id'" .
+    "\nGROUP BY mois" .
+    "\nORDER BY orderitem";
+  $result = db_loadlist($sql);
+  foreach($result as $value) {
+    $opbysalle[$id]["op"][] = $value["total"];
+    $opbysalle[$id]["nom"] = $value["nom"];
+  }
+}
 
-$p1 = new PiePlot3D($data);
-$p1->SetSize(.3);
-$p1->SetCenter(0.45);
-$p1->SetStartAngle(20);
-$p1->SetAngle(45);
+// Setup the graph.
+$graph = new Graph(500,300,"auto");    
+$graph->img->SetMargin(60,120,30,100);
+$graph->SetScale("textlin");
+$graph->SetMarginColor("lightblue");
+//$graph->SetShadow();
 
-$p1->SetLegends($leg);
+// Set up the title for the graph
+$graph->title->Set("Interventions par mois");
+$graph->title->SetFont(FF_VERDANA,FS_NORMAL,12);
+$graph->title->SetColor("darkred");
 
-$p1->value->SetColor("darkred");
-$p1->SetLabelType(PIE_VALUE_PER);
+// Setup font for axis
+$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,10);
+$graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,10);
 
-$a = array_search(max($data),$data);
-$p1->ExplodeSlice($a);
+// Show 0 label on Y-axis (default is not to show)
+$graph->yscale->ticks->SupressZeroLabel(false);
 
-$graph->Add($p1);
+// Setup X-axis labels
+$graph->xaxis->SetTickLabels($datax);
+$graph->xaxis->SetLabelAngle(50);
+
+// Create the bar pot
+$colors = array("#aa5500", "#55aa00", "#0055aa", "#aa0055", "#5500aa", "#00aa55");
+$listPlots = array();
+foreach($opbysalle as $key => $value) {
+  $bplot = new BarPlot($value["op"]);
+  $bplot->SetWidth(0.6);
+  $from = $colors[$key];
+  $to = "#EEEEEE";
+  $bplot->SetFillGradient($from,$to,GRAD_LEFT_REFLECTION);
+  $bplot->SetColor("white");
+  $bplot->setLegend($value["nom"]);
+  $listPlots[] = $bplot;
+}
+
+$gbplot = new AccBarPlot($listPlots);
+
+// Set color for the frame of each bar
+$graph->Add($gbplot);
+
+// Finally send the graph to the browser
 $graph->Stroke();
