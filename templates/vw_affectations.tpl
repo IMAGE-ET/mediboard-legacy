@@ -179,31 +179,31 @@ function popPlanning() {
                 {/foreach}
                 {/foreach}">
               {if $curr_chambre->_overbooking}
-              <img src="modules/{$m}/images/surb.png" alt="warning" title="Over-booking: {$curr_chambre->_overbooking} collisions">
+              <img title="Over-booking: {$curr_chambre->_overbooking} collisions" />
               {/if}
 
               {if $curr_chambre->_ecart_age > 15}
-              <img src="modules/{$m}/images/age.png" alt="warning" title="Ecart d'âge important: {$curr_chambre->_ecart_age} ans">
+              <img title="Ecart d'âge important: {$curr_chambre->_ecart_age} ans" />
               {/if}
 
               {if $curr_chambre->_genres_melanges}
-              <img src="modules/{$m}/images/sexe.png" alt="warning" title="Sexes opposés">
+              <img title="Sexes opposés" />
               {/if}
 
               {if $curr_chambre->_chambre_seule}
-              <img src="modules/{$m}/images/seul.png" alt="warning" title="Chambre seule obligatoire">
+              <img title="Chambre seule obligatoire" />
               {/if}
               
               {if $curr_chambre->_chambre_double}
-              <img src="modules/{$m}/images/double.png" alt="warning" title="Chambre double possible">
+              <img title="Chambre double possible" />
               {/if}
 
               {if $curr_chambre->_conflits_chirurgiens}
-              <img src="modules/{$m}/images/prat.png" alt="warning" title="{$curr_chambre->_conflits_chirurgiens} Conflit(s) de praticiens">
+              <img title="{$curr_chambre->_conflits_chirurgiens} Conflit(s) de praticiens" />
               {/if}
 
               {if $curr_chambre->_conflits_pathologies}
-              <img src="modules/{$m}/images/path.png" alt="warning" title="{$curr_chambre->_conflits_pathologies} Conflit(s) de pathologies">
+              <img title="{$curr_chambre->_conflits_pathologies} Conflit(s) de pathologies" />
               {/if}
 
               <strong><a name="chambre{$curr_chambre->chambre_id}">{$curr_chambre->nom}</a></strong>
@@ -213,7 +213,7 @@ function popPlanning() {
           <tr class="lit" >
             <td colspan="1">
               {if $curr_lit->_overbooking}
-              <img src="modules/{$m}/images/warning.png" alt="warning" title="Over-booking: {$curr_lit->_overbooking} collisions">
+              <img title="Over-booking: {$curr_lit->_overbooking} collisions" />
               {/if}
               {$curr_lit->nom}
             </td>
@@ -239,18 +239,18 @@ function popPlanning() {
               {/if}
               
               {if $curr_affectation->_ref_operation->type_adm == "ambu"}
-              <img src="modules/{$m}/images/X.png" alt="X" title="Sortant ce soir">
+              <img title="Sortant ce soir" />
               {elseif $curr_affectation->sortie|date_format:"%Y-%m-%d" == $demain}
                 {if $curr_affectation->_ref_next->affectation_id}
-                <img src="modules/{$m}/images/OC.png" alt="OC" title="Sortant demain">
+                <img title="Sortant demain" />
                 {else}
-                <img src="modules/{$m}/images/O.png" alt="O" title="Sortant demain">
+                <img title="Sortant demain" />
                 {/if}
               {elseif $curr_affectation->sortie|date_format:"%Y-%m-%d" == $date}
                 {if $curr_affectation->_ref_next->affectation_id}
-                <img src="modules/{$m}/images/OoC.png" alt="OoC" title="Sortant aujourd'hui">
+                <img title="Sortant aujourd'hui" />
                 {else}
-                <img src="modules/{$m}/images/Oo.png" alt="Oo" title="Sortant aujourd'hui">
+                <img title="Sortant aujourd'hui" />
                 {/if}
               {/if}
               {if $curr_affectation->_ref_operation->type_adm == "ambu"}
@@ -285,7 +285,7 @@ function popPlanning() {
               </form>
               
               <a style="float: right;" href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view|addslashes}')">
-                <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
+                <img title="Supprimer l'affectation" />
               </a>
             {else}
             <td class="text">
@@ -300,7 +300,7 @@ function popPlanning() {
               </form>
               
               <a style="float: right;" href="javascript:confirmDeletion(document.rmvAffectation{$curr_affectation->affectation_id}, 'l\'affectation', '{$pat_view|addslashes}')">
-                <img src="modules/{$m}/images/trash.png" alt="trash" title="Supprimer l'affectation">
+                <img title="Supprimer l'affectation" />
               </a>
               <em>Entrée</em>:
               {$curr_affectation->entree|date_format:"%A %d %B %H:%M"}
@@ -428,12 +428,12 @@ function popPlanning() {
               {if $curr_affectation->_ref_operation->chambre == 'o'}
               <input type="hidden" name="value" value="n" />
               <button type="submit" style="background-color: #f55;">
-                <img src="modules/{$m}/images/refresh.png" alt="changer"> chambre simple
+                <img alt="changer" /> chambre simple
               </button>
               {else}
               <input type="hidden" name="value" value="o" />
               <button type="submit">
-                <img src="modules/{$m}/images/refresh.png" alt="changer"> chambre double
+                <img alt="changer" /> chambre double
               </button>
               {/if}
               </form>
