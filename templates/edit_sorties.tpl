@@ -1,5 +1,5 @@
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 function pageMain() {
   {/literal}
   regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
