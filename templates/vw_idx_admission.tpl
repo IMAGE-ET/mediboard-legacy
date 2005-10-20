@@ -91,7 +91,7 @@ function pageMain() {
             <input type="hidden" name="value" value="o" />
             Saisis
             <button type="submit">
-              <img alt="Admis" />
+              <img src="modules/{$m}/images/tick.png" alt="Admis" />
             </button>
             </form>
           </th>
@@ -130,12 +130,12 @@ function pageMain() {
               {if $curr_adm->chambre == 'o'}
               <input type="hidden" name="value" value="n" />
               <button type="submit" style="background-color: #f55;">
-                <img alt="changer" /> simple
+                <img src="modules/{$m}/images/refresh.png" alt="changer" /> simple
               </button>
               {else}
               <input type="hidden" name="value" value="o" />
               <button type="submit">
-                <img alt="changer" /> double
+                <img src="modules/{$m}/images/refresh.png" alt="changer" /> double
               </button>
               {/if}
               </form>
@@ -153,12 +153,12 @@ function pageMain() {
             {if $curr_adm->admis == "n"}
             <input type="hidden" name="value" value="o" />
             <button type="submit">
-              <img alt="Admis" /> Admis
+              <img src="modules/{$m}/images/tick.png" alt="Admis" /> Admis
             </button>
             {else}
             <input type="hidden" name="value" value="n" />
             <button type="submit">
-              <img alt="Annuler" /> Annuler
+              <img src="modules/{$m}/images/cross.png" alt="Annuler" /> Annuler
             </button>
             {/if}
             </form>
@@ -172,16 +172,16 @@ function pageMain() {
             {if $curr_adm->saisie == "n"}
             <input type="hidden" name="value" value="o" />
             <button type="submit">
-              <img alt="Saisie" /> Saisie
+              <img src="modules/{$m}/images/tick.png" alt="Saisie" /> Saisie
             </button>
             {else}
             <input type="hidden" name="value" value="n" />
             <button type="submit">
-              <img alt="Annuler" /> Annuler
+              <img src="modules/{$m}/images/cross.png" alt="Annuler" /> Annuler
             </button>
             {/if}
             {if $curr_adm->modifiee == 1}
-            <img alt="modifié" />
+            <img src="images/icons/rc-gui-status-downgr.png" alt="modifié" />
             {/if}
             </form>
           </td>

@@ -54,13 +54,13 @@ function pageMain() {
                   {if $curr_sortie->effectue}
                   <input type="hidden" name="effectue" value="0" />
                   <button type="submit">
-                    <img title="Annuler la sortie" />
+                    <img src="modules/{$m}/images/cross.png" alt="Annuler" title="Annuler la sortie" />
                     Annuler la sortie
                   </button>
                   {else}
                   <input type="hidden" name="effectue" value="1" />
                   <button type="submit">
-                    <img title="Effectuer la sortie" />
+                    <img src="modules/{$m}/images/tick.png" alt="Confirmer" title="Effectuer la sortie" />
                     Effectuer la sortie
                   </button>
                   {/if}
@@ -99,13 +99,13 @@ function pageMain() {
                   {if $curr_sortie->effectue}
                   <input type="hidden" name="effectue" value="0" />
                   <button type="submit">
-                    <img title="Annuler la sortie" />
+                    <img src="modules/{$m}/images/cross.png" alt="Annuler" title="Annuler la sortie" />
                     Annuler la sortie
                   </button>
                   {else}
                   <input type="hidden" name="effectue" value="1" />
                   <button type="submit">
-                    <img title="Effectuer la sortie" />
+                    <img src="modules/{$m}/images/tick.png" alt="Confirmer" title="Effectuer la sortie" />
                     Effectuer la sortie
                   </button>
                   {/if}
