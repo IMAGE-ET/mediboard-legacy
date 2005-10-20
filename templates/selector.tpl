@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<script language="javascript">
+<script type="text/javascript">
   function setClose(){ldelim}
     var list = document.frmSelector.list;
     var value = list.options[list.selectedIndex].value;
