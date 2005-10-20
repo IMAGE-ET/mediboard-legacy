@@ -137,7 +137,7 @@ function pageMain() {
               {if $selOp->entree_bloc}
               <input type="hidden" name="del" value="1" />
               {$selOp->entree_bloc|date_format:"%Hh%M"}
-              <button type="submit"><img src="modules/{$m}/images/cross.png"></button>
+              <button type="submit"><img src="modules/{$m}/images/cross.png" /></button>
               {else}
               <input type="hidden" name="del" value="0" />
               <input type="submit" value="Définir l'heure d'entrée du patient" />
@@ -289,7 +289,7 @@ function pageMain() {
               {if $selOp->sortie_bloc}
               <input type="hidden" name="del" value="1" />
               {$selOp->sortie_bloc|date_format:"%Hh%M"}
-              <button type="submit"><img src="modules/{$m}/images/cross.png"></button>
+              <button type="submit"><img src="modules/{$m}/images/cross.png" /></button>
               {else}
               <input type="hidden" name="del" value="0" />
               <input type="submit" value="Définir l'heure de sortie du patient" />
