@@ -1,4 +1,4 @@
-<script language="javascript">
+<script type="text/javascript">
 function setClose(hour, min) {ldelim}
   window.opener.setRDV(hour, min,
               "{$plage->plageconsult_id}",

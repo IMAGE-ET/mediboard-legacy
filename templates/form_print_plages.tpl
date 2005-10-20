@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<script language="javascript">
+<script type="text/javascript">
 {literal}
 function checkForm() {
   var form = document.paramFrm;
