@@ -21,7 +21,7 @@ function setClose(code) {
     <th class="category" colspan="2">
       {if !$cim10->_levelsInf|@count}
         <button type="button" onclick="setClose('{$cim10->code}')">
-          <img src="modules/dPcim10/images/tick.png">
+          <img src="modules/dPcim10/images/tick.png" />
         </button>
       {/if}
       <strong>{$cim10->code}: {$cim10->libelle}</strong>
@@ -99,11 +99,11 @@ function setClose(code) {
           <li>
             {if !$curr_code->_levelsInf|@count}
               <button type="button" onclick="setClose('{$curr_code->code}')">
-                <img src="modules/dPcim10/images/tick.png">
+                <img src="modules/dPcim10/images/tick.png" />
               </button>
             {else}
               <button type="button">
-                <img src="modules/dPcim10/images/cross.png">
+                <img src="modules/dPcim10/images/cross.png" />
               </button>
             {/if}
             <a class="action" href="index.php?m=dPcim10&a=code_finder&dialog=1&code={$curr_code->code}">
@@ -121,11 +121,11 @@ function setClose(code) {
           <li>
             {if !$curr_code->_levelsInf|@count}
               <button type="button" onclick="setClose('{$curr_code->code}')">
-                <img src="modules/dPcim10/images/tick.png">
+                <img src="modules/dPcim10/images/tick.png" />
               </button>
             {else}
               <button type="button">
-                <img src="modules/dPcim10/images/cross.png">
+                <img src="modules/dPcim10/images/cross.png" />
               </button>
             {/if}
             <a class="action" href="index.php?m=dPcim10&a=code_finder&dialog=1&code={$curr_code->code}">
