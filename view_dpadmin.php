@@ -18,8 +18,8 @@ global $AppUI, $canRead, $canEdit, $m;
   <td width="42">
     <?php echo dPshowImage( dPfindImage( 'rdf2.png', $m ), 42, 42, '' ); ?>
   </td>
-  <td align="left" class="subtitle">
-    <?php echo $AppUI->_( 'Language Support' );?>
+  <td>
+    <h2><?php echo $AppUI->_( 'Language Support' );?></h2>
   </td>
 </tr>
 
@@ -34,8 +34,8 @@ global $AppUI, $canRead, $canEdit, $m;
   <td>
     <?php echo dPshowImage( dPfindImage( 'myevo-weather.png', $m ), 42, 42, '' ); ?>
   </td>
-  <td align="left" class="subtitle">
-    <?php echo $AppUI->_('Preferences');?>
+  <td>
+    <h2><?php echo $AppUI->_( 'Preferences' );?></h2>
   </td>
 </tr>
 
@@ -52,8 +52,8 @@ global $AppUI, $canRead, $canEdit, $m;
   <td>
     <?php echo dPshowImage( dPfindImage( 'power-management.png', $m ), 42, 42, '' ); ?>
   </td>
-  <td align="left" class="subtitle">
-    <?php echo $AppUI->_('Modules');?>
+  <td>
+    <h2><?php echo $AppUI->_( 'Modules' );?></h2>
   </td>
 </tr>
 
@@ -68,8 +68,8 @@ global $AppUI, $canRead, $canEdit, $m;
   <td>
     <?php echo dPshowImage( dPfindImage( 'main-settings.png', $m ), 42, 42, '' ); ?>
   </td>
-  <td align="left" class="subtitle">
-    <?php echo $AppUI->_('Administration');?>
+  <td>
+    <h2><?php echo $AppUI->_( 'Administration' );?></h2>
   </td>
 </tr>
 
