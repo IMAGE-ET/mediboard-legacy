@@ -9,7 +9,7 @@
 <script src="./lib/HTMLArea/htmlarea.js" type="text/javascript"></script>
 <!-- End HTML Area Integration -->
 
-<script language="javascript">
+<script type="text/javascript">
 
 function initHTMLArea () {
   HTMLArea.init(); 
