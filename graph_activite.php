@@ -48,6 +48,7 @@ foreach($salles as $salle) {
     "\nLEFT join operations" .
     "\nON operations.plageop_id = plagesop.id" .
     "\nWHERE plagesop.date BETWEEN '$debut' AND '$fin'" .
+    "\nAND plagesop.id_salle = sallesbloc.id" .
     "\nAND sallesbloc.id = '$id'" .
     "\nGROUP BY mois" .
     "\nORDER BY orderitem";
