@@ -1,5 +1,5 @@
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 </script>
 {/literal}
 <table class="main">

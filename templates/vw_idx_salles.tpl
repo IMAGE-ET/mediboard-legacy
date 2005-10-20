@@ -1,7 +1,7 @@
 <!-- $Id$ -->
 
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 function checkSalle() {
   var form = document.salle;
   var field = null;
