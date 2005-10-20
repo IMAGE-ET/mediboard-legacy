@@ -1,5 +1,5 @@
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 function checkGroup() {
   var form = document.group;
     

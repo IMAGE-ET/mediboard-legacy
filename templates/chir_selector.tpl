@@ -1,7 +1,7 @@
 <!-- $Id$ -->
 
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 function setClose(){
   var list = document.frmSelector.list;
   var key = list.options[list.selectedIndex].value;

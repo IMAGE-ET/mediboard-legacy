@@ -1,5 +1,5 @@
 {literal}
-<script language="javascript">
+<script type="text/javascript">
 function checkForm() {
   var form = document.editFrm;
   if (form.text.value.length == 0) {
