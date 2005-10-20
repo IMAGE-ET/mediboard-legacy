@@ -9,11 +9,12 @@
   </tr>
 
   <tr>
-    <th>Code Partiel:</th>
+    <th><label for="code" title="Code CCAM partiel ou complet">Code Partiel :</label></th>
     <td><input tabindex="1" type="text" name="code" value="{$code}" maxlength="7" /></td>
-    <th>Voie d'accès:</th>
+    <th><label for="selacces" title="Voie d'accès concerné par le code CCAM">Voie d'accès :</label></th>
     <td>
       <select tabindex="3" name="selacces" onchange="this.form.submit()">
+        <option value="">&mdash; Choisir une voie d'accès</option>
         {foreach from=$acces item=curr_acces}
         <option value="{$curr_acces.code}" {if $curr_acces.code == $selacces} selected="selected" {/if}>{$curr_acces.texte|escape}</option>
         {/foreach}
@@ -22,11 +23,12 @@
   </tr>
 
   <tr>
-    <th>Mots clefs:</th>
+    <th><label for="clefs" title="mots clés séparés par des espaces">Mots clefs :</label></th>
     <td><input tabindex="2" type="text" name="clefs" value="{$clefs}" /></td>
-    <th>Appareil:</th>
+    <th><label for="seltopo1" title="Appareil concerné par le code CCAM">Appareil :</label></th>
     <td>
       <select tabindex="4" name="seltopo1" onchange="this.form.submit()">
+        <option value="">&mdash; Choisir un appareil</option>
         {foreach from=$topo1 item=curr_topo1}
         <option value="{$curr_topo1.code}" {if $curr_topo1.code == $seltopo1} selected="selected" {/if}>{$curr_topo1.texte|escape}</option>
         {/foreach}
@@ -39,9 +41,10 @@
       <input tabindex="6" type="reset" value="réinitialiser" />
       <input tabindex="7" type="submit" value="rechercher" />
     </td>
-    <th>Système:</th>
+    <th><label for="seltopo2" title="Système concerné par le code CCAM">Système :</label></th>
     <td>
       <select tabindex="5" name="seltopo2" onchange="this.form.submit()">
+        <option value="">&mdash; Choisir un système</option>
         {foreach from=$topo2 item=curr_topo2}
         <option value="{$curr_topo2.code}" {if $curr_topo2.code == $seltopo2} selected="selected" {/if}>{$curr_topo2.texte|escape}</option>
         {/foreach}

@@ -7,7 +7,7 @@
 * @author Romain Ollivier
 */
 
-GLOBAL $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -15,44 +15,47 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 
 $clefs = mbGetValueFromGetOrSession("clefs");
 $code  = mbGetValueFromGetOrSession("code" );
-$selacces = mbGetValueFromGetOrSession("selacces", "0");
-$seltopo1 = mbGetValueFromGetOrSession("seltopo1", "0");
-$seltopo2 = mbGetValueFromGetOrSession("seltopo2", "0");
+$selacces = mbGetValueFromGetOrSession("selacces");
+$seltopo1 = mbGetValueFromGetOrSession("seltopo1");
+$seltopo2 = mbGetValueFromGetOrSession("seltopo2");
 
-//Connection a la base de donnees pour la recherche
+// Connexion a la base de donnees pour la recherche
 $mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
   or die("Could not connect");
 mysql_select_db("ccamV2")
   or die("Could not select database");
 
-//Création de la requête
+// Création de la requête
 $query = "SELECT CODE, LIBELLELONG FROM actes WHERE 0";
 
-//Si un autre élément est remplis
-if($code != "" || $clefs != "" || $selacces != "0" || $seltopo1 != "0") {
+// Si un autre élément est rempli
+if ($code || $clefs || $selacces || $seltopo1) {
   $query .= " or (1";
-  //On fait la recherche sur le code
-  if($code != "") {
+  // On fait la recherche sur le code
+  if ($code != "") {
 	$query .= " AND CODE LIKE '" . addslashes($code) . "%'";
   }
-  //On explode les mots clefs
-  if($clefs != "") {
+  // On explode les mots clefs
+  if ($clefs != "") {
     $listeClefs = explode(" ", $clefs);
-    foreach($listeClefs as $key => $value)
+    foreach ($listeClefs as $key => $value)
       $query .= " AND (LIBELLELONG LIKE '%" .  addslashes($value) . "%')";
   }
-  //On tris selon les voies d'accès
-  if($selacces != "0")
+  
+  // On trie selon les voies d'accès
+  if ($selacces)
     $query .= " AND CODE LIKE '___" . $selacces . "___'";
-  //On tris selon les topologies de niveau 1 ou 2
-  if($seltopo1 != "0") {
-    if($seltopo2 != "0")
+  // On tris selon les topologies de niveau 1 ou 2
+  if ($seltopo1) {
+    if ($seltopo2)
       $query .= " AND CODE LIKE '" . $seltopo2 . "_____'";
     else
       $query .= " AND CODE LIKE '" . $seltopo1 . "______'";
   }
+  
   $query .= ")";
 }
+
 $query .= " ORDER BY CODE LIMIT 0 , 100";
 
 //Codes correspondants à la requete
@@ -69,8 +72,6 @@ $numcodes = $i;
 //On récupère les voies d'accès
 $query = "select * from acces1";
 $result = mysql_query($query);
-$acces[0]["code"] = "0";
-$acces[0]["texte"] = "Selection d'une voie d'accès";
 $i = 1;
 while($row = mysql_fetch_array($result)) {
   $acces[$i]["code"] = $row['CODE'];
@@ -82,8 +83,6 @@ while($row = mysql_fetch_array($result)) {
 $query = "select * from topographie1";
 $result = mysql_query($query);
 
-$topo1[0]["code"] = "0";
-$topo1[0]["texte"] = "Selection de l'appareil concerné";
 $i = 1;
 while($row = mysql_fetch_array($result)) {
   $topo1[$i]["code"] = $row['CODE'];
@@ -91,12 +90,10 @@ while($row = mysql_fetch_array($result)) {
   $i++;
 }
 
-//On récupère les systèmes correspondants à l'appareil : topographie2
-$query = "SELECT * FROM topographie2 WHERE PERE = '" . $seltopo1 . "'";
+// On récupère les systèmes correspondants à l'appareil : topographie2
+$query = "SELECT * FROM topographie2 WHERE PERE = '$seltopo1'";
 $result = mysql_query($query);
-
-$topo2[0]["code"] = "0";
-$topo2[0]["texte"] = "Selection du système concerné";
+$topo2 = array();
 $i = 1;
 while($row = mysql_fetch_array($result)) {
   $topo2[$i]["code"] = $row['CODE'];
