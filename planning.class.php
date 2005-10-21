@@ -495,11 +495,13 @@ class COperation extends CMbObject {
     $template->addProperty("Hospitalisation - Durée", $this->duree_hospi);
     $template->addProperty("Opération - Anesthésiste - nom", $this->_ref_plageop->_ref_anesth->_user_last_name);
     $template->addProperty("Opération - Anesthésiste - prénom", $this->_ref_plageop->_ref_anesth->_user_first_name);
+    $template->addProperty("Opération - Anesthésie", $this->_lu_type_anesth);
     $template->addProperty("Opération - libellé", $this->libelle);
     $template->addProperty("Opération - CCAM - code", $this->_ext_code_ccam->code);
     $template->addProperty("Opération - CCAM - description", $this->_ext_code_ccam->libelleLong);
     $template->addProperty("Opération - CCAM2 - code", $this->_ext_code_ccam2->code);
     $template->addProperty("Opération - CCAM2 - description", $this->_ext_code_ccam2->libelleLong);
+    $template->addProperty("Opération - salle", $this->_ref_plageop->_ref_salle->nom);
     $template->addProperty("Opération - côté", $this->cote);
     $template->addProperty("Opération - date", mbTranformTime(null, $this->_ref_plageop->date, $dateFormat));
     $template->addProperty("Opération - heure", mbTranformTime(null, $this->time_operation, $timeFormat));
