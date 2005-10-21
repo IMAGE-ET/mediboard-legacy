@@ -203,6 +203,62 @@ function pageMain() {
     </td>
     <td width="100%">
     {if $consult->consultation_id}
+      <form name="editFrm" action="?m={$m}" method="POST">
+      <input type="hidden" name="m" value="{$m}" />
+      <input type="hidden" name="del" value="0" />
+      <input type="hidden" name="dosql" value="do_consultation_aed" />
+      <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
+      <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
+      <table class="form">
+        <tr>
+      	  <th class="category" colspan="4">
+      	    <input type="hidden" name="chrono" value="{$consult->chrono}" />
+      	    Consultation
+      	    (Etat : {$consult->_etat}
+      	    {if $consult->chrono <= $smarty.const.CC_EN_COURS}
+            / <input type="button" value="Terminer" onclick="submitConsultWithChrono({$smarty.const.CC_TERMINE})" />
+            {/if})
+          </th>
+        </tr>
+        <!--
+        <tr>
+      	  <th class="category">
+      	    <label for="motif" title="Motif de la consultation">Motif</label>
+      	  </th>
+          <th>
+            <select name="_aide_motif" size="1" onchange="pasteText('motif')">
+              <option value="0">&mdash; Choisir une aide</option>
+              {html_options options=$aides.motif}
+            </select>
+          </th>
+          <th class="category">
+      	    <label for="traitement" title="title">Traitements</label>
+      	  </th>
+          <th>
+            <select name="_aide_traitement" size="1" onchange="pasteText('traitement')">
+              <option value="0">&mdash; Choisir une aide</option>
+              {html_options options=$aides.traitement}
+            </select>
+          </th>
+        </tr>
+        <tr>
+      	  <td class="text" colspan="2">
+      	    {if $consult->motif}
+      	    <textarea name="motif" rows="5">{$consult->motif}</textarea>
+      	    {else}
+      	    <textarea name="motif" rows="5">Intervention le {$consult->_ref_consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}
+            Par le Dr. {$consult->_ref_consult_anesth->_ref_operation->_ref_chir->_view}
+            {$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}
+            {if $consult->_ref_consult_anesth->_ref_operation->CCAM_code2}
+            + <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}{/if}</textarea>
+      	    {/if}
+      	  </td>
+      	  <td class="text" colspan="2">
+      	    <textarea name="traitement" rows="5">{$consult->traitement}</textarea>
+      	  </td>
+        </tr>
+        -->
+      </table>
       <table class="form">
         <tr>
           <th class="category" colspan="2">
@@ -357,7 +413,7 @@ function pageMain() {
             </table>
             </form>
           </td>
-          <td class="text" rowspan="2">
+          <td class="text">
             {if $consult->_ref_patient->medecin_traitant}
             Dr. {$consult->_ref_patient->_ref_medecin_traitant->_view}
             {/if}
@@ -374,7 +430,7 @@ function pageMain() {
             Dr. {$consult->_ref_patient->_ref_medecin3->_view}
             {/if}
           </td>
-          <td class="text" rowspan="2">
+          <td class="text">
             <table class="form">
               <tr class="groupcollapse" id="operations" onclick="flipGroup('', 'operations')">
                 <td colspan="2">Interventions ({$consult->_ref_patient->_ref_operations|@count})</td>
@@ -418,71 +474,39 @@ function pageMain() {
             </table>
           </td>
         </tr>
+      </table>
+      <table class="form">
         <tr>
-          <td colspan="2" class="text">
-            Intervention le <strong>{$consult->_ref_consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}</strong><br />
-            Par le <strong>Dr. {$consult->_ref_consult_anesth->_ref_operation->_ref_chir->_view}</strong><br />
+          <th class="category">Intervention</th>
+        </tr>
+        </tr>
+        <tr>
+          <td class="text">
+            Intervention le <strong>{$consult->_ref_consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}</strong>
+            par le <strong>Dr. {$consult->_ref_consult_anesth->_ref_operation->_ref_chir->_view}</strong><br />
             <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}</i>
             {if $consult->_ref_consult_anesth->_ref_operation->CCAM_code2}
             <br />+ <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}</i>
             {/if}
+            <form name="editOpFrm" action="?m=dPcabinet" method="post">
+            <input type="hidden" name="m" value="dPplanningOp" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="dosql" value="do_planning_aed" />
+            <input type="hidden" name="operation_id" value="{$consult->_ref_consult_anesth->_ref_operation->operation_id}" />
+            <select name="type_anesth">
+              <option value="">&mdash; Anesthésie &mdash;</option>
+              {foreach from=$anesth key=curr_key item=curr_anesth}
+              <option value="{$curr_key}" {if $consult->_ref_consult_anesth->_ref_operation->_lu_type_anesth == $curr_anesth} selected="selected" {/if}>
+                {$curr_anesth}
+              </option>
+              {/foreach}
+            </select>
+            <input type="submit" value="changer" />
+            </form>
           </td>
         </tr>
       </table>
-      <form name="editFrm" action="?m={$m}" method="POST">
-      <input type="hidden" name="m" value="{$m}" />
-      <input type="hidden" name="del" value="0" />
-      <input type="hidden" name="dosql" value="do_consultation_aed" />
-      <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-      <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
-      <table class="form">
-        <tr>
-      	  <th class="category" colspan="4">
-      	    <input type="hidden" name="chrono" value="{$consult->chrono}" />
-      	    Consultation
-      	    (Etat : {$consult->_etat}
-      	    {if $consult->chrono <= $smarty.const.CC_EN_COURS}
-            / <input type="button" value="Terminer" onclick="submitConsultWithChrono({$smarty.const.CC_TERMINE})" />
-            {/if})
-          </th>
-        </tr>
-        <tr>
-      	  <th class="category">
-      	    <label for="motif" title="Motif de la consultation">Motif</label>
-      	  </th>
-          <th>
-            <select name="_aide_motif" size="1" onchange="pasteText('motif')">
-              <option value="0">&mdash; Choisir une aide</option>
-              {html_options options=$aides.motif}
-            </select>
-          </th>
-          <th class="category">
-      	    <label for="traitement" title="title">Traitements</label>
-      	  </th>
-          <th>
-            <select name="_aide_traitement" size="1" onchange="pasteText('traitement')">
-              <option value="0">&mdash; Choisir une aide</option>
-              {html_options options=$aides.traitement}
-            </select>
-          </th>
-        </tr>
-        <tr>
-      	  <td class="text" colspan="2">
-      	    {if $consult->motif}
-      	    <textarea name="motif" rows="5">{$consult->motif}</textarea>
-      	    {else}
-      	    <textarea name="motif" rows="5">Intervention le {$consult->_ref_consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}
-            Par le Dr. {$consult->_ref_consult_anesth->_ref_operation->_ref_chir->_view}
-            {$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}
-            {if $consult->_ref_consult_anesth->_ref_operation->CCAM_code2}
-            + <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}{/if}</textarea>
-      	    {/if}
-      	  </td>
-      	  <td class="text" colspan="2">
-      	    <textarea name="traitement" rows="5">{$consult->traitement}</textarea>
-      	  </td>
-        </tr>
-      </table>
+      </form>
       <form name="editAnesthFrm" action="?m={$m}" method="POST">
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="del" value="0" />

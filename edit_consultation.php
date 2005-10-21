@@ -49,6 +49,10 @@ if (isset($_GET["date"])) {
   mbSetValueToSession("selConsult");
 }
 
+//Liste des types d'anesthésie
+$anesth = dPgetSysVal("AnesthType");
+
+// Consultation courante
 $consult = new CConsultation();
 if ($selConsult) {
   $consult->load($selConsult);
@@ -175,6 +179,7 @@ $smarty->assign('listModeleFunc', $listModeleFunc);
 $smarty->assign('aides', $aides);
 $smarty->assign('tarifsChir', $tarifsChir);
 $smarty->assign('tarifsCab', $tarifsCab);
+$smarty->assign('anesth', $anesth);
 $smarty->assign('consult', $consult);
 
 if($consult->_ref_consult_anesth->consultation_anesth_id)
