@@ -55,7 +55,6 @@ if (intval(dPgetParam($_POST, 'del'))) {
   else
     $do->redirectStore = "m=$m&protocole_id=".$do->_obj->operation_id;
 }
-
 $do->doRedirect();
 
 ?>
