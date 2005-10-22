@@ -11,7 +11,7 @@ function setClose(code) {
   {if $up}
   <tr>
     <th class="category" colspan="2">
-      <a href="index.php?m=dPcim10&a=code_finder&dialog=1&code={$up->code}">
+      <a href="index.php?m=dPcim10&amp;a=code_finder&amp;dialog=1&amp;code={$up->code}">
         ^{$up->code}: {$up->libelle}^
       </a>
     </th>
@@ -106,7 +106,7 @@ function setClose(code) {
                 <img src="modules/dPcim10/images/cross.png" />
               </button>
             {/if}
-            <a class="action" href="index.php?m=dPcim10&a=code_finder&dialog=1&code={$curr_code->code}">
+            <a class="action" href="index.php?m=dPcim10&amp;a=code_finder&amp;dialog=1&amp;code={$curr_code->code}">
               {$curr_code->code}: {$curr_code->libelle}
             </a>
           </li>
@@ -128,7 +128,7 @@ function setClose(code) {
                 <img src="modules/dPcim10/images/cross.png" />
               </button>
             {/if}
-            <a class="action" href="index.php?m=dPcim10&a=code_finder&dialog=1&code={$curr_code->code}">
+            <a class="action" href="index.php?m=dPcim10&amp;a=code_finder&amp;dialog=1&amp;code={$curr_code->code}">
               {$curr_code->code}: {$curr_code->libelle}
             </a>
           </li>
