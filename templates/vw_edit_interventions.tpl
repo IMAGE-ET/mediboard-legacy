@@ -19,7 +19,7 @@
 		{foreach from=$list1 item=curr_op}
 		<tr>
 		  <td width="50%">
-		    <a style="float:right;" href="javascript:view_log('COperation', {$curr_op->operation_id})">
+		    <a style="float:right;" href="javascript:view_log('COperation',{$curr_op->operation_id})">
               <img src="images/history.gif" alt="historique" />
             </a>
 		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op->operation_id}">
@@ -73,7 +73,7 @@
 		{foreach from=$list2 item=curr_op}
 		<tr>
 		  <td width="50%">
-		    <a style="float:right;" href="javascript:view_log('COperation', {$curr_op->operation_id})">
+		    <a style="float:right;" href="javascript:view_log('COperation',{$curr_op->operation_id})">
               <img src="images/history.gif" alt="historique" />
             </a>
 		    <a name="{$curr_op->operation_id}">

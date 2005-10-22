@@ -42,7 +42,7 @@ function pageMain() {
   <tr>
     <th class="category" colspan="6">
       {if $plagesel->id}
-	    <a style="float:right;" href="javascript:view_log('CPlageOp', {$plagesel->id})">
+	    <a style="float:right;" href="javascript:view_log('CPlageOp',{$plagesel->id})">
           <img src="images/history.gif" alt="historique" />
         </a>
         Modifier la plage opératoire
