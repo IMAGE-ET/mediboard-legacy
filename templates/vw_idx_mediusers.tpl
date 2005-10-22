@@ -152,7 +152,7 @@ function toggleFunction(function_id) {
     <tr>
       <th class="category" colspan="2">
         {if $mediuserSel->user_id}
-        <a style="float:right;" href="javascript:view_log('CMediusers', {$mediuserSel->user_id})">
+        <a style="float:right;" href="javascript:view_log('CMediusers',{$mediuserSel->user_id})">
           <img src="images/history.gif" alt="historique" />
         </a>
         Modification de l'utilisateur &lsquo;{$mediuserSel->_user_username}&rsquo;
