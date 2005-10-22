@@ -1,53 +1,6 @@
 {literal}
 <script language="JavaScript" type="text/javascript">
 
-function cancelTarif() {
-  var form = document.tarifFrm;
-  form.secteur1.value = 0;
-  form.secteur2.value =0;
-  form.tarif.value = "";
-  form.paye.value = 0;
-  form.date_paiement.value = null;
-  form.submit();
-}
-
-function modifTarif() {
-  var form = document.tarifFrm;
-  var secteurs = form.choix.value;
-  if(secteurs != '') {
-    var pos = secteurs.indexOf("/");
-    var size = secteurs.length;
-    var secteur1 = eval(secteurs.substring(0, pos));
-    var secteur2 = eval(secteurs.substring(pos+1, size));
-    form.secteur1.value = secteur1;
-    form.secteur2.value = secteur2;
-    form._somme.value = secteur1 + secteur2;
-    for (i = 0;i < form.choix.length;++i)
-    if(form.choix.options[i].selected == true)
-     form.tarif.value = form.choix.options[i].text;
-   } else {
-     form.secteur1.value = 0;
-     form.secteur2.value = 0;
-     form._somme.value = '';
-     form.tarif.value = '';
-   }  
-}
-
-function putTiers() {
-  var form = document.tarifFrm;
-  form.type_tarif.value = form._tiers.checked ? "tiers" : "";
-}
-
-function checkTarif() {
-  var form = document.tarifFrm;
-  if(form.tarif.value == '') {
-    alert('Vous devez choisir un tarif');
-    form.tarif.focus();
-    return false;
-  }
-  return true
-}
-
 function editPat() {
   var url = '?m=dPpatients&tab=vw_edit_patients';
   url += '&patient_id={/literal}{$consult->_ref_patient->patient_id}{literal}';
@@ -75,34 +28,22 @@ function selectCim10(code) {
 }
 
 function putCim10(code) {
-  var form = document.editAnesthFrm;
-  if(form.listCim10.value == '')
-    form.listCim10.value = code;
-  else
-    form.listCim10.value += "|" + code;
-  form.submit();
+  oForm = document.editAnesthFrm;
+  aCim10 = oForm.listCim10.value.split("|");
+  aCim10.push(code);
+  aCim10.removeDuplicates();
+  oForm.listCim10.value = aCim10.join("|");
+  oForm.submit();
 }
 
 function delCim10(code) {
-  var form = document.editAnesthFrm;
-  arrayCim10 = form.listCim10.value.split("|");
-  arrayCim10.removeByValue(code);
-  form.listCim10.value = arrayCim10.join("|");
-  form.submit();
+  oForm = document.editAnesthFrm;
+  aCim10 = oForm.listCim10.value.split("|");
+  aCim10.removeByValue(code);
+  oForm.listCim10.value = aCim10.join("|");
+  oForm.submit();
 }
 
-function editDocument(compte_rendu_id) {
-  var url = '?m=dPcompteRendu&a=edit_compte_rendu&dialog=1';
-  url += '&compte_rendu_id=' + compte_rendu_id;
-  popup(700, 700, url, 'Document');
-}
-
-function createDocument(modele_id, consultation_id) {
-  var url = '?m=dPcompteRendu&a=edit_compte_rendu&dialog=1';
-  url += '&modele_id=' + modele_id;
-  url += '&object_id=' + consultation_id;
-  popup(700, 700, url, 'Document');
-}
 
 function changeList() {
   flipElementClass("listConsult", "show", "hidden", "listConsult");
@@ -134,10 +75,13 @@ function pageMain() {
 </script>
 {/literal}
 
-<table class="main" style="border-spacing:0px;">
+<table class="main">
   <tr>
     <td id="listConsult" class="show">
-      <form name="changeView">
+      <form name="changeView" action="index.php" method="get">
+        <input type="hidden" name="m" value="{$m}" />
+        <input type="hidden" name="tab" value="{$tab}" />
+      
         <table class="form">
           <tr>
             <td colspan="6" style="text-align: center; width: 100%; font-weight: bold;">
@@ -146,19 +90,16 @@ function pageMain() {
             </td>
           </tr>
           <tr>
-            <th>Type de vue:</th>
+            <th><label for="vue2" title="Type de vue du planning">Type de vue:</label></th>
             <td colspan="5">
-              <form action="index.php" name="type" method="get">
-                <input type="hidden" name="m" value="{$m}" />
-                <input type="hidden" name="tab" value="{$tab}" />
                 <select name="vue2" onchange="this.form.submit()">
-                  <option value="0"{if !$vue}selected="selected"{/if}>Tout afficher</option>
-                  <option value="1"{if $vue}selected="selected"{/if}>Cacher les Terminées</option>
+                  <option value="0"{if $vue == "0"}selected="selected"{/if}>Tout afficher</option>
+                  <option value="1"{if $vue == "1"}selected="selected"{/if}>Cacher les Terminées</option>
                 </select>
-              </form>
             </td>
           </tr>
         </table>
+
       </form>
       <table class="tbl">
       {if $listPlage}
@@ -203,12 +144,14 @@ function pageMain() {
     </td>
     <td width="100%">
     {if $consult->consultation_id}
-      <form name="editFrm" action="?m={$m}" method="POST">
+      <form name="editFrm" action="?m={$m}" method="post">
+
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="del" value="0" />
       <input type="hidden" name="dosql" value="do_consultation_aed" />
       <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
       <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
+
       <table class="form">
         <tr>
       	  <th class="category" colspan="4">
@@ -259,6 +202,9 @@ function pageMain() {
         </tr>
         -->
       </table>
+      
+      </form>
+      
       <table class="form">
         <tr>
           <th class="category" colspan="2">
@@ -268,7 +214,7 @@ function pageMain() {
           <th class="category">Informations</th>
           <th class="category">Correpondants</th>
           <th class="category">
-            <a style="float:right;" href="javascript:view_log('CConsultation', {$consult->consultation_id})">
+            <a style="float:right;" href="javascript:view_log('CConsultation',{$consult->consultation_id})">
               <img src="images/history.gif" alt="historique" />
             </a>
             Historique
@@ -278,7 +224,7 @@ function pageMain() {
           <td class="readonly">
             {$consult->_ref_patient->_view}
             <br />
-            <form><input type="text" readonly size="3" name="titre" value="{$consult->_ref_patient->_age}" /> ans</form>
+            Age: {$consult->_ref_patient->_age} ans
             <br />
             <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$consult->_ref_patient->patient_id}">
               Consulter le dossier
@@ -290,7 +236,7 @@ function pageMain() {
             </button>
           </td>
           <td class="text" rowspan="2">
-            <form name="editAnesthPatFrm" action="?m={$m}" method="POST" onsubmit="return checkForm(this)">
+            <form name="editAnesthPatFrm" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="dosql" value="do_consult_anesth_aed" />
@@ -479,7 +425,6 @@ function pageMain() {
         <tr>
           <th class="category">Intervention</th>
         </tr>
-        </tr>
         <tr>
           <td class="text">
             Intervention le <strong>{$consult->_ref_consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}</strong>
@@ -489,29 +434,30 @@ function pageMain() {
             <br />+ <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}</i>
             {/if}
             <form name="editOpFrm" action="?m=dPcabinet" method="post">
+            
             <input type="hidden" name="m" value="dPplanningOp" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="dosql" value="do_planning_aed" />
             <input type="hidden" name="operation_id" value="{$consult->_ref_consult_anesth->_ref_operation->operation_id}" />
+            <label for="type_anesth" title="Type d'anesthésie pour l'intervention">Type d'anesthésie :</label>
             <select name="type_anesth">
-              <option value="">&mdash; Anesthésie &mdash;</option>
-              {foreach from=$anesth key=curr_key item=curr_anesth}
-              <option value="{$curr_key}" {if $consult->_ref_consult_anesth->_ref_operation->_lu_type_anesth == $curr_anesth} selected="selected" {/if}>
-                {$curr_anesth}
-              </option>
-              {/foreach}
+              <option value="">&mdash; Chosir un type d'anesthésie</option>
+              {html_options options=$anesth selected=$consult->_ref_consult_anesth->_ref_operation->type_anesth}
             </select>
             <input type="submit" value="changer" />
+            
             </form>
           </td>
         </tr>
       </table>
-      </form>
-      <form name="editAnesthFrm" action="?m={$m}" method="POST">
+
+      <form name="editAnesthFrm" action="?m={$m}" method="post">
+
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="del" value="0" />
       <input type="hidden" name="dosql" value="do_consult_anesth_aed" />
       <input type="hidden" name="consultation_anesth_id" value="{$consult->_ref_consult_anesth->consultation_anesth_id}" />
+
       <table class="form">
         <tr><th class="category" colspan="2">Examen Préanesthésique</th></tr>
         <tr>
@@ -537,7 +483,7 @@ function pageMain() {
           </td>
           <td class="text">
             <strong>Diagnostics du patient</strong>
-            <input type="hidden" name="listCim10" value="{$consult->_ref_consult_anesth->listCim10}"
+            <input type="hidden" name="listCim10" value="{$consult->_ref_consult_anesth->listCim10}" />
             <ul>
               {foreach from=$consult->_ref_consult_anesth->_codes_cim10 item=curr_code}
               <li>
@@ -559,7 +505,7 @@ function pageMain() {
           <th class="category" colspan="2">Antécédents</th>
         <tr>
           <td>
-            <form name="editAntFrm" action="?m=dPcabinet" method="POST">
+            <form name="editAntFrm" action="?m=dPcabinet" method="post">
             <input type="hidden" name="m" value="dPpatients" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="dosql" value="do_antecedent_aed" />
@@ -604,7 +550,7 @@ function pageMain() {
             <ul>
               {foreach from=$consult->_ref_patient->_ref_antecedents item=curr_ant}
               <li>
-                <form name="editAntFrm" action="?m=dPcabinet" method="POST">
+                <form name="editAntFrm" action="?m=dPcabinet" method="post">
                 <input type="hidden" name="m" value="dPpatients" />
                 <input type="hidden" name="del" value="1" />
                 <input type="hidden" name="dosql" value="do_antecedent_aed" />
@@ -623,199 +569,11 @@ function pageMain() {
           </td>
         </tr>
       </table>
-      <table class="form">
-        <tr>
-          <th class="category">Fichiers liés</th>
-          <th class="category">Documents</th>
-          <th colspan="2" class="category">Règlement</th>
-        </tr>
-        <tr>
-          <td>
-            <form>
-              Examens complémentaires :
-              <select onchange="javascript:popup(700, 700, 'index.php?m={$m}&a=exam_audio&dialog=1', 'audiogramme')">
-                <option value="0">&mdash Choix</option>
-                <option value="exam_audio.php">Audiogramme</option>
-              </select>
-            </form>
-            <ul>
-              {foreach from=$consult->_ref_files item=curr_file}
-              <li>
-                <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-                  <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
-                  ({$curr_file->_file_size})
-                  <input type="hidden" name="dosql" value="do_file_aed" />
-                  <input type="hidden" name="del" value="1" />
-                  <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
-                  <button type="button" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
-                    <img src="modules/dPcabinet/images/cross.png" />
-                  </button>
-                </form>
-              </li>
-              {/foreach}
-            </ul>
-            <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-              <input type="hidden" name="dosql" value="do_file_aed" />
-              <input type="hidden" name="del" value="0" />
-              <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />
-              <input type="file" name="formfile" size="0" /><br />
-              <input type="submit" value="ajouter" />
-            </form>
-          </td>
-          <td>
-          <table class="form">
-            {foreach from=$consult->_ref_documents item=document}
-            <tr>
-              <th>{$document->nom}</th>
-              <td class="button">
-                <form name="editDocumentFrm{$document->compte_rendu_id}" action="?m={$m}" method="POST">
-                <input type="hidden" name="m" value="dPcompteRendu" />
-                <input type="hidden" name="del" value="0" />
-                <input type="hidden" name="dosql" value="do_modele_aed" />
-                <input type="hidden" name="object_id" value="{$consult->consultation_id}" />
-                <input type="hidden" name="compte_rendu_id" value="{$document->compte_rendu_id}" />
-                <input type="hidden" name="valide" value="{$document->valide}" />
-                <button type="button" onclick="editDocument({$document->compte_rendu_id})">
-                  <img src="modules/dPcabinet/images/edit.png" /> 
-                </button>
-                {if !$document->valide}
-                <button type="button" onclick="this.form.valide.value = 1; this.form.submit()">
-                  <img src="modules/dPcabinet/images/check.png" /> 
-                </button>
-                {/if}
-                <button type="button" onclick="this.form.del.value = 1; this.form.submit()">
-                  <img src="modules/dPcabinet/images/trash.png" /> 
-                </button>
-                </form>
-              </td>
-            </tr>
-            {/foreach}
-          <table>
-          <form name="newDocumentFrm" action="?m={$m}" method="POST">
-          <table class="form">
-            <tr>
-              <td>
-                <select name="_choix_modele" onchange="if (this.value) createDocument(this.value, {$consult->consultation_id})">
-                  <option value="">&mdash; Choisir un modèle</option>
-                  <optgroup label="Modèles du praticien">
-                    {foreach from=$listModelePrat item=curr_modele}
-                    <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
-                    {/foreach}
-                  </optgroup>
-                  <optgroup label="Modèles du cabinet">
-                    {foreach from=$listModeleFunc item=curr_modele}
-                    <option value="{$curr_modele->compte_rendu_id}">{$curr_modele->nom}</option>
-                    {/foreach}
-                  </optgroup>
-                </select>
-              </td>
-            </tr>
-          </table>
-          </form>
-          </td>
-          <td>
-            <form name="tarifFrm" action="?m={$m}" method="POST" onsubmit="return checkTarif()">
-              <input type="hidden" name="m" value="{$m}" />
-              <input type="hidden" name="del" value="0" />
-              <input type="hidden" name="dosql" value="do_consultation_aed" />
-              <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-              <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
-            <table width="100%">
-              <tr>
-                {if !$consult->tarif}
-                <th>
-                  Choix du tarif :
-                  <input type="hidden" name="paye" value="0" />
-                  <input type="hidden" name="date_paiement" value="" />
-                </th>
-                <td>
-                  <select name="choix" onchange="modifTarif()">
-                    <option value="" selected="selected">&mdash; Choix du tarif &mdash;</option>
-                    <optgroup label="Tarifs praticien">
-                    {foreach from=$tarifsChir item=curr_tarif}
-                      <option value="{$curr_tarif->secteur1}/{$curr_tarif->secteur2}">{$curr_tarif->description}</option>
-                    {/foreach}
-                    </optgroup>
-                    <optgroup label="Tarifs cabinet">
-                    {foreach from=$tarifsCab item=curr_tarif}
-                      <option value="{$curr_tarif->secteur1}/{$curr_tarif->secteur2}">{$curr_tarif->description}</option>
-                    {/foreach}
-                    </optgroup>
-                  </select>
-                </td>
-              </tr>
-              {/if}
-              {if !$consult->paye}
-              <tr>
-                <th>Somme à régler :</th>
-                <td>
-                  <input type="text" size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
-                  <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
-                  <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
-                  <input type="hidden" name="tarif" value="{if $consult->tarif != null}{$consult->tarif}{/if}" />
-                </td>
-              </tr>
-              {else}
-              <tr>
-                <td colspan="2" class="button">
-                  <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
-                  <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
-                  <input type="hidden" name="tarif" value="{$consult->tarif}" />
-                  <input type="hidden" name="paye" value="{$consult->paye}" />
-                  <input type="hidden" name="date_paiement" value="{$consult->date_paiement}" />
-                  <strong>{$consult->secteur1+$consult->secteur2} € ont été réglés : {$consult->type_tarif}</strong>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="button">
-                  <input type="button" value="Annuler" onclick="cancelTarif()" />
-                </td>
-              </tr>
-              {/if}
-              {if $consult->tarif && !$consult->paye}
-              <tr>
-                <th>
-                  Moyen de paiement :
-                  <input type="hidden" name="paye" value="1" />
-                  <input type="hidden" name="date_paiement" value="{$today}" />
-                </th>
-                <td>
-                  <select name="type_tarif">
-                    <option value="cheque"  {if $consult->type_tarif == "cheque" }selected="selected"{/if}>Chèques     </option>
-                    <option value="CB"      {if $consult->type_tarif == "CB"     }selected="selected"{/if}>CB          </option>
-                    <option value="especes" {if $consult->type_tarif == "especes"}selected="selected"{/if}>Espèces     </option>
-                    <option value="tiers"   {if $consult->type_tarif == "tiers"  }selected="selected"{/if}>Tiers-payant</option>
-                    <option value="autre"   {if $consult->type_tarif == "autre"  }selected="selected"{/if}>Autre       </option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="button">
-                  <input type="submit" value="Reglement effectué" />
-                  <input type="button" value="Annuler" onclick="cancelTarif()"/>
-                </td>
-              </tr>
-              {elseif !$consult->paye}
-              <tr>
-                <th>Tiers-payant ?</th>
-                <td>
-                  <input type="checkbox" name="_tiers" onchange="putTiers()" />
-                  <input type="hidden" name="type_tarif" value="" />
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="button">
-                  <input type="submit" value="Valider ce tarif" />
-                  <input type="button" value="Annuler" onclick="cancelTarif()"/>
-                </td>
-              </tr>
-              {/if}
-            </table>
-            </form>
-          </td>
-          {/if}
-        </td>
-      </tr>
-    </table>
+      
+    {include file="inc_fdr_consult.tpl"}
+    {/if}
+    
+    </td>
   </tr>
 </table>
+

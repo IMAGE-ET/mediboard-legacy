@@ -17,6 +17,31 @@ require_once($AppUI->getModuleClass('dPcabinet', 'plageconsult'));
 require_once($AppUI->getModuleClass('dPcabinet', 'files'));
 require_once($AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
 
+$EConsultAnesthTabac = array(
+  "-", 
+  "+", 
+  "++", 
+);
+
+$EConsultAnesthOenolisme = array(
+  "-", 
+  "+", 
+  "++", 
+);
+
+$EConsultAnesthGroupe = array(
+  "O", 
+  "A", 
+  "B", 
+  "AB", 
+);
+
+$EConsultAnesthOenolisme = array(
+  "-", 
+  "+", 
+  "++", 
+);
+
 class CConsultAnesth extends CMbObject {
   // DB Table key
   var $consultation_anesth_id = null;

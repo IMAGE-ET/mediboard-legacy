@@ -163,7 +163,7 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
   <tr>
     {if $consult->consultation_id}
       <th colspan="2" class="title" colspan="5" style="color: #f00;">
-        <a style="float:right;" href="javascript:view_log('CConsultation', {$consult->consultation_id})">
+        <a style="float:right;" href="javascript:view_log('CConsultation',{$consult->consultation_id})">
           <img src="images/history.gif" alt="historique" />
         </a>
         Modification de la consultation de {$pat->_view} pour le Dr. {$chir->_view}

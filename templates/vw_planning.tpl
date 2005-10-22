@@ -61,7 +61,7 @@ function pageMain() {
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="tab" value="{$tab}" />
 
-      <label for="chirSel">Praticien:</label>
+      <label for="chirSel" title="Praticien dont on observe le planning de consultation">Praticien :</label>
       <select name="chirSel" onchange="this.form.submit()">
         <option value="-1" {if $chirSel == -1} selected="selected" {/if}>&mdash; Choisir un praticien &mdash;</option>
         {foreach from=$listChirs item=curr_chir}
@@ -71,7 +71,7 @@ function pageMain() {
         {/foreach}
       </select>
   
-      <label for="vue1">Type de vue:</label>
+      <label for="vue1" title="Type de vue du planning de consultation">Type de vue :</label>
       <select name="vue1" onchange="this.form.submit()">
         <option value="0"{if !$vue}selected="selected"{/if}>Tout afficher</option>
         <option value="1"{if $vue}selected="selected"{/if}>Cacher les payés</option>
@@ -83,7 +83,7 @@ function pageMain() {
   </tr>
   <tr>
     <td>
-      <table width="100%">
+      <table style="width: 100%">
         <tr>
           <th></th>
           {foreach from=$plages key=curr_day item=plagesPerDay}
@@ -97,8 +97,8 @@ function pageMain() {
             {assign var="isNotIn" value=1}
             {foreach from=$plagesPerDay item=curr_plage}
               {if $curr_plage->_hour_deb == $curr_hour}
-                <td align="center" bgcolor="#aaaaaa" rowspan="{$curr_plage->_hour_fin-$curr_plage->_hour_deb}">
-                  <a href="index.php?m={$m}&amp;tab={$tab}&amp;plageconsult_id={$curr_plage->plageconsult_id}">
+                <td style="background: #aaa; text-align: center; vertical-align: middle;" rowspan="{$curr_plage->_hour_fin-$curr_plage->_hour_deb}">
+                  <a style="whitespace: nowrap" href="?m={$m}&amp;tab={$tab}&amp;plageconsult_id={$curr_plage->plageconsult_id}">
                     {if $curr_plage->libelle}{$curr_plage->libelle}<br />{/if}
                     {$curr_plage->debut|date_format:"%Hh%M"} - {$curr_plage->fin|date_format:"%Hh%M"}<br />
                     {$curr_plage->_ref_consultations|@count} consult(s)
@@ -110,7 +110,7 @@ function pageMain() {
               {/if}
             {/foreach}
             {if $isNotIn}
-              <td bgcolor="#ffffff"></td>
+              <td style="background: #fff;"></td>
             {/if}
           {/foreach}
         </tr>
@@ -129,7 +129,7 @@ function pageMain() {
                 <th class="category" colspan="4">Créer une plage</th>
                 {else}
                 <th class="category" colspan="4">
-	              <a style="float:right;" href="javascript:view_log('CPlageconsult', {$plageSel->plageconsult_id})">
+	              <a style="float:right;" href="javascript:view_log('CPlageconsult',{$plageSel->plageconsult_id})">
                     <img src="images/history.gif" alt="historique" />
                   </a>
                   Modifier cette plage
@@ -138,7 +138,7 @@ function pageMain() {
               </tr>
 
               <tr>
-                <th><label for="chir_id">Praticien:</label></th>
+                <th><label for="chir_id" title="Praticien concerné par la plage de consultation">Praticien :</label></th>
                 <td><select name="chir_id">
                     <option value="">&mdash; Choisir un praticien</option>
                     {foreach from=$listChirs item=curr_chir}
@@ -148,12 +148,12 @@ function pageMain() {
                     {/foreach}
                     </select>
                 </td>
-                <th><label for="libelle">Libellé:</label></th>
+                <th><label for="libelle" title="Libellé de la plage de consultation">Libellé :</label></th>
                 <td><input type="text" name="libelle" value="{$plageSel->libelle}" />
               </tr>
 
               <tr>
-                <th><label for="_hour_deb">Début:</label></th>
+                <th><label for="_hour_deb" title="Début de la plage de consultation">Début :</label></th>
                 <td><select name="_hour_deb">
                     {foreach from=$listHours item=curr_hour}
                       <option value="{$curr_hour|string_format:"%02d"}" {if $curr_hour == $plageSel->_hour_deb} selected="selected" {/if}>
@@ -169,10 +169,10 @@ function pageMain() {
                     {/foreach}
                   </select> min
                 </td>
-                <th><label for="date">Jour de la semaine:</label></th>
+                <th><label for="date" title="Jour de la semaine pour la plage de consultation">Jour de la semaine :</label></th>
                 <td>
                   <select name="date">
-                    <option value="">&mdash; Jour de la semaine</option>
+                    <option value="">&mdash; Choisir le jour de la semaine</option>
                     {foreach from=$plages key=curr_day item=plagesPerDay}
                     <option value="{$curr_day}" {if $curr_day == $plageSel->date} selected="selected" {/if}>
                       {$curr_day|date_format:"%A"}
@@ -183,7 +183,7 @@ function pageMain() {
               </tr>
 
               <tr>
-                <th><label for="_hour_fin">Fin:</label></th>
+                <th><label for="_hour_fin" title="Fin de la plage de consultation">Fin :</label></th>
                 <td>
                   <select name="_hour_fin">
                     {foreach from=$listHours item=curr_hour}
@@ -201,23 +201,27 @@ function pageMain() {
                   </select> min
                   
                 </td>
-                <th><label for="_repeat">Nombre de répétitions:</label></th>
+                <th><label for="_repeat" title="Nombre de répétitions hébdomadaires">Nombre de répétitions :</label></th>
                 <td><input type="text" size="2" name="_repeat" value="1" /></td>
               </tr>
               
               <tr>
-                <th><label>Fréquence:</label></th>
-                <td><select name="_freq">
-                  <option value="05" {if ($plageSel->_freq == "05")} selected="selected" {/if}>05</option>
-                  <option value="10" {if ($plageSel->_freq == "10")} selected="selected" {/if}>10</option>
-                  <option value="15" {if ($plageSel->_freq == "15") || (!$plageSel->plageconsult_id)} selected="selected" {/if}>15</option>
-                  <option value="30" {if ($plageSel->_freq == "30")} selected="selected" {/if}>30</option>
-                </select> minutes</td>
-                <th><label>Type de répétition:</label></th>
+                <th><label for="_freq" title="Fréquence de la plage de consultation, en minutes">Fréquence :</label></th>
+                <td>
+                  <select name="_freq">
+                    <option value="05" {if ($plageSel->_freq == "05")} selected="selected" {/if}>05</option>
+                    <option value="10" {if ($plageSel->_freq == "10")} selected="selected" {/if}>10</option>
+                    <option value="15" {if ($plageSel->_freq == "15") || (!$plageSel->plageconsult_id)} selected="selected" {/if}>15</option>
+                    <option value="30" {if ($plageSel->_freq == "30")} selected="selected" {/if}>30</option>
+                 </select> minutes</td>
+                <th>
+                  <label for="_double" title="Type de répétition hébdomadaire pour la plage">Type de répétition :</label>
+                </th>
                 <td>
                   <input type="checkbox" name="_double" />
-                  <label for="_double">Une semaine sur deux</label>
+                  <label for="_double" title="Répéter une semaine sur deux">Une semaine sur deux</label>
                 </td>
+              </tr>
               <tr>
                 {if !$plageSel->plageconsult_id}
                 <td class="button" colspan="4"><input type="submit" value="Créer" /></td>
