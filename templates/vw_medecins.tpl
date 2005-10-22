@@ -46,25 +46,25 @@ function setClose() {ldelim}
       {else}
       <input type="hidden" name="tab" value="{$tab}" />
       {/if}
+      <input type="hidden" name="new" value="1" />
       
       <table class="form">
-      <input type="hidden" name="new" value="1" />
         <tr>
           <th class="category" colspan="2">Recherche d'un médecin</th>
         </tr>
   
         <tr>
-          <th>Nom:</th>
+          <th><label for="medecin_nom" title="Nom complet ou partiel du médecin recherché">Nom:</label></th>
           <td><input tabindex="1" type="text" name="medecin_nom" value="{$nom}" /></td>
         </tr>
         
         <tr>
-          <th>Prénom:</th>
+          <th><label for="medecin_prenom" title="Prénom complet ou partiel du médecin recherché">Prénom:</label></th>
           <td><input tabindex="2" type="text" name="medecin_prenom" value="{$prenom}" /></td>
         </tr>
         
         <tr>
-          <th>Département (00 pour tous):</th>
+          <th><label for="medecin_dept" title="Département du médecin recherché">Département (00 pour tous) :</label></th>
           <td><input tabindex="3" type="text" name="medecin_dept" value="{$departement}" /></td>
         </tr>
         
@@ -90,18 +90,21 @@ function setClose() {ldelim}
         </tr>
 
         {foreach from=$medecins item=curr_medecin}
+        {assign var="medecin_id" value=$curr_medecin->medecin_id"}
         <tr>
           {if $dialog}
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->_view}</a></td>
-          <td class="text"><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
-          <td><a href="index.php?m={$m}&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->cp}</a></td>
+          {assign var="href" value="?m=$m&amp;a=vw_medecins&amp;dialog=1&amp;medecin_id=$medecin_id"}
+          <td><a href="{$href}">{$curr_medecin->_view}</a></td>
+          <td class="text"><a href="{$href}">{$curr_medecin->ville}</a></td>
+          <td><a href="{$href}">{$curr_medecin->cp}</a></td>
           {else}
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->_view}</a></td>
-          <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->adresse}</a></td>
-          <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->ville}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->cp}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->tel}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;medecin_id={$curr_medecin->medecin_id}">{$curr_medecin->fax}</a></td>
+          {assign var="href" value="?m=$m&amp;tab=$tab&amp;medecin_id=$medecin_id"}
+          <td><a href="{$href}">{$curr_medecin->_view}</a></td>
+          <td class="text"><a href="{$href}">{$curr_medecin->adresse}</a></td>
+          <td class="text"><a href="{$href}">{$curr_medecin->ville}</a></td>
+          <td><a href="{$href}">{$curr_medecin->cp}</a></td>
+          <td><a href="{$href}">{$curr_medecin->tel}</a></td>
+          <td><a href="{$href}">{$curr_medecin->fax}</a></td>
           {/if}
         </tr>
         {/foreach}
@@ -123,7 +126,7 @@ function setClose() {ldelim}
         <tr>
           <th class="category" colspan="2">
             {if $medecin->medecin_id}
-	         <a style="float:right;" href="javascript:view_log('CMedecin', {$medecin->medecin_id})">
+	         <a style="float:right;" href="javascript:view_log('CMedecin',{$medecin->medecin_id})">
                <img src="images/history.gif" alt="historique" />
               </a>
               Modification du Dr. {$medecin->_view}
@@ -134,34 +137,34 @@ function setClose() {ldelim}
         </tr>
 
         <tr>
-          <th>Nom:</th>
+          <th><label for="nom" title="Nom du médecin">Nom :</label></th>
           <td {if $dialog} class="readonly" {/if}><input type="text" {if $dialog} readonly {/if} name="nom" value="{$medecin->nom}" /></td>
         </tr>
         
         <tr>
-          <th>Prénom:</th>
+          <th><label for="prenom" title="Prénom du médecin">Prénom :</label></th>
           <td {if $dialog} class="readonly" {/if}><input type="text" {if $dialog} readonly {/if} name="prenom" value="{$medecin->prenom}" /></td>
         </tr>
         
         <tr>
-          <th>Adresse:</th>
+          <th><label for="adresse" title="Adresse du cabinet du médecin">Adresse :</label></th>
           <td {if $dialog} class="readonly" {/if}>
-            <textarea {if $dialog} readonly {/if} name="adresse" />{$medecin->adresse}</textarea>
+            <textarea {if $dialog} readonly {/if} name="adresse">{$medecin->adresse}</textarea>
           </td>
         </tr>
         
         <tr>
-          <th>Code Postal:</th>
+          <th><label for="cp" title="Code Postal du cabinet du médecin">Code Postal :</label></th>
           <td {if $dialog} class="readonly" {/if}><input type="text" {if $dialog} readonly {/if} name="cp" value="{$medecin->cp}" /></td>
         </tr>
         
         <tr>
-          <th>Ville:</th>
+          <th><label for="ville" title="Ville du cabinet du médecin">Ville :</label></th>
           <td {if $dialog} class="readonly" {/if}><input type="text" {if $dialog} readonly {/if} name="ville" value="{$medecin->ville}" /></td>
         </tr>
         
         <tr>
-          <th>Tel:</th>
+          <th><label for="_tel1" title="Téléphone du médecin">Tél :</label></th>
           <td {if $dialog} class="readonly" {/if}>
             <input type="text" {if $dialog} readonly {/if} size="2" maxlength="2" name="_tel1" value="{$medecin->_tel1}" /> -
             <input type="text" {if $dialog} readonly {/if} size="2" maxlength="2" name="_tel2" value="{$medecin->_tel2}" /> -
@@ -172,7 +175,7 @@ function setClose() {ldelim}
         </tr>
         
         <tr>
-          <th>Fax:</th>
+          <th><label for="_fax1" title="Fax du médecin">Fax :</label></th>
           <td {if $dialog} class="readonly" {/if}>
             <input type="text" {if $dialog} readonly {/if} size="2" maxlength="2" name="_fax1" value="{$medecin->_fax1}" /> -
             <input type="text" {if $dialog} readonly {/if} size="2" maxlength="2" name="_fax2" value="{$medecin->_fax2}" /> -
@@ -183,7 +186,7 @@ function setClose() {ldelim}
         </tr>
         
         <tr>
-          <th>Email:</th>
+          <th><label for="email" title="Email du médecin">Email :</label></th>
           <td {if $dialog} class="readonly" {/if}><input type="text" {if $dialog} readonly {/if} name="email" value="{$medecin->email}" /></td>
         </tr>
 

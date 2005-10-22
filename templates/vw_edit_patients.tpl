@@ -81,7 +81,7 @@ function followUp(field, sFollowFieldName) {
       <tr>
       {if $patient->patient_id}
         <th class="title" colspan="5" style="color: #f00;">
-          <a style="float:right;" href="javascript:view_log('CPatient', {$patient->patient_id})">
+          <a style="float:right;" href="javascript:view_log('CPatient',{$patient->patient_id})">
             <img src="images/history.gif" alt="historique" />
           </a>
           Modification du dossier de {$patient->_view}
@@ -98,7 +98,7 @@ function followUp(field, sFollowFieldName) {
       
       <tr>
         <th><label for="nom" title="Nom du patient. Obligatoire">Nom:</label></th>
-        <td><input tabindex="1" type="text" name="nom" value="{$patient->nom}" title"{$patient->_props.nom}" /></td>
+        <td><input tabindex="1" type="text" name="nom" value="{$patient->nom}" title="{$patient->_props.nom}" /></td>
         <th><label for="incapable_majeur" title="Patient reconnu incapable majeur">Incapable majeur:</label></th>
         <td colspan="2">
           <input tabindex="21" type="radio" name="incapable_majeur" value="o" {if $patient->incapable_majeur == "o"} checked="checked" {/if} />oui
@@ -108,8 +108,8 @@ function followUp(field, sFollowFieldName) {
       
       <tr>
         <th><label for="prenom" title="Prénom du patient. Obligatoire">Prénom:</label></th>
-        <td><input tabindex="2" type="text" name="prenom" value="{$patient->prenom}" title"{$patient->_props.prenom}" /></td>
-        <th>ATNC:</th>
+        <td><input tabindex="2" type="text" name="prenom" value="{$patient->prenom}" title="{$patient->_props.prenom}" /></td>
+        <th><label for="ATNC" title="Patient présentant un risque ATNC">ATNC:</label></th>
         <td colspan="2">
           <input tabindex="23" type="radio" name="ATNC" value="o" {if $patient->ATNC == "o"} checked="checked" {/if} />oui
           <input tabindex="24" type="radio" name="ATNC" value="n" {if $patient->ATNC == "n"} checked="checked" {/if} />non
@@ -178,7 +178,7 @@ function followUp(field, sFollowFieldName) {
         </th>
         <td class="readonly">
           <input type="text" name="_medecin1_name" size="30" value="Dr. {$patient->_ref_medecin1->_view}" readonly="readonly" />
-          <button type="button" onclick="delMed('1')"><img src="modules/{$m}/images/cross.png" title="supprimer" alt="supprimer" />
+          <button type="button" onclick="delMed('1')"><img src="modules/{$m}/images/cross.png" title="supprimer" alt="supprimer" /></button>
         </td>
         <td class="button"><input tabindex="28" type="button" value="choisir un médecin" onclick="popMed('1')" /></td>
       </tr>
@@ -230,7 +230,7 @@ function followUp(field, sFollowFieldName) {
       </tr>
       
       <tr>
-        <th><label for="rques" title="Remarques générales concernant le patient"></label>Remarques:</th>
+        <th><label for="rques" title="Remarques générales concernant le patient">Remarques:</label></th>
         <td colspan="4">
           <textarea tabindex="31" title="{$patient->_props.rques}" name="rques">{$patient->rques}</textarea>
         </td>
