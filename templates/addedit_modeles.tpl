@@ -51,7 +51,7 @@ function checkModele() {
   <tr>
     <th class="category" colspan="2">
       {if $compte_rendu->compte_rendu_id}
-      <a style="float:right;" href="javascript:view_log('CCompteRendu', {$compte_rendu->compte_rendu_id})">
+      <a style="float:right;" href="javascript:view_log('CCompteRendu',{$compte_rendu->compte_rendu_id})">
         <img src="images/history.gif" alt="historique" />
       </a>
       {/if}
