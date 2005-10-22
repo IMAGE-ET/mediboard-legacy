@@ -335,7 +335,7 @@ function pageMain() {
   <tr>
     {if $op->operation_id}
       <th colspan="2" class="title" colspan="5" style="color: #f00;">
-      <a style="float:right;" href="javascript:view_log('COperation', {$op->operation_id})">
+      <a style="float:right;" href="javascript:view_log('COperation',{$op->operation_id})">
         <img src="images/history.gif" alt="historique" />
       </a>
       {if $protocole}
