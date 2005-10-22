@@ -19,6 +19,7 @@
   <?php mbLoadScript("style/$uistyle/gosu/string.js"); ?>
   <?php mbLoadScript("style/$uistyle/gosu/validate.js"); ?>
   <?php mbLoadScript("style/$uistyle/functions.js"); ?>
+  <?php mbLoadScript("style/$uistyle/url.js"); ?>
   <?php mbLoadScript("style/$uistyle/cjl_cookie.js"); ?>
   <?php mbLoadScript("style/$uistyle/printf.js"); ?>
   <?php mbLoadScript("lib/jscalendar/calendar.js"); ?>
