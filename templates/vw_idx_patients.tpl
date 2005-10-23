@@ -129,7 +129,7 @@ function printIntervention(id) {
         
         <tr>
           <th>Adresse:</th>
-          <td>{$patient->adresse|nl2br:php}</td>
+          <td class="text">{$patient->adresse|nl2br:php}</td>
           <td rowspan="5" colspan="2" class="text">{$patient->rques|nl2br:php}</td>
         </tr>
         
