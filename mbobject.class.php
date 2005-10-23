@@ -36,13 +36,14 @@ class CMbObject extends CDpObject {
    * Properties  specification
    */
   var $_props = array();
+  var $_enums = array();
 
- /**
- *  Generic check method
- *
- *  Can be overloaded/supplemented by the child class
- *  @return null if the object is ok a message if not
- */
+  /**
+   *  Generic check method
+   *
+   *  Can be overloaded/supplemented by the child class
+   *  @return null if the object is ok a message if not
+   */
   function check() {
     $msg = null;
     
@@ -55,6 +56,27 @@ class CMbObject extends CDpObject {
     }
     
     return $msg;
+  }
+  
+  function buildEnums() {
+    foreach ($this->_props as $propName => $propSpec) {
+      $specFragments = explode("|", $propSpec);
+      if ($this->lookupSpec("enum", $specFragments)) {
+        $this->lookupSpec("confidential", $specFragments);
+        $this->lookupSpec("notNull", $specFragments);
+        $this->_enums[$propName] = $specFragments;
+      }
+    }
+  }
+  
+  function lookupSpec($specFragment, &$specFragments) {
+    $fragmentPosition = array_search($specFragment, $specFragments);
+
+    if ($fragmentPosition !== false) {
+      array_splice($specFragments, $fragmentPosition, 1);
+    }
+    
+    return $fragmentPosition !== false;
   }
   
   function checkProperty(&$propValue, &$propSpec) {
@@ -327,6 +349,7 @@ class CMbObject extends CDpObject {
     $sql = "SELECT * FROM $this->_tbl WHERE $this->_tbl_key=$oid";
     $object = db_loadObject( $sql, $this, false, $strip );
     $this->checkConfidential();
+    
     $this->updateFormFields();
     if($object)
       return $this;
