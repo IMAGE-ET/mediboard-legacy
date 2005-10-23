@@ -28,6 +28,8 @@ $titleBlock->show();
 
 $tabBox = new CTabBox( "?m=dPstats", "{$AppUI->cfg['root_dir']}/modules/dPstats/", $tab );
 $tabBox->add( 'vw_activite', 'Activite' );
+$tabBox->add( 'vw_hospitalisation', 'Hospitalisation');
+$tabBox->add( 'vw_bloc', 'Bloc opératoire');
 $tabBox->show();
 
 ?>
