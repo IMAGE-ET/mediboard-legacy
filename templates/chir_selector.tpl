@@ -25,12 +25,12 @@ function setClose(){
 </tr>
 
 <tr>
-  <th>Spécialité:</th>
+  <th><label for="spe" title="Spécialité du chirurgien">Spécialité :</label></th>
   <td>
     <select name="spe" onChange="this.form.submit()">
-      <option value="0">&mdash; Trier par spécialité</option>
+      <option value="">&mdash; Trier par spécialité</option>
       {foreach from=$specs item=curr_spec}
-      <option value="{$curr_spec->function_id}" {if $curr_spec->function_id == $spe} selected="selected"{/if} />
+      <option value="{$curr_spec->function_id}" {if $curr_spec->function_id == $spe} selected="selected"{/if}>
         {$curr_spec->text}
       </option>
       {/foreach}
@@ -39,7 +39,7 @@ function setClose(){
 </tr>
 
 <tr>
-  <th>Nom:</th>
+  <th><label for="name" title="Nom partiel ou complet du chirurgien">Nom :</label></th>
   <td><input name="name" value="{$name}" size="30" /> <input type="submit" value="rechercher" /></td>
 </tr>
 
