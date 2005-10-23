@@ -372,7 +372,7 @@ function checkForm(oForm) {
     alert(sMsg);
     if (oElementFocus) {
     oElementFocus.focus();
-      if (sDoubleClickAction = oElementFocus.getAttribute("ondoubleclick")) {
+      if (sDoubleClickAction = oElementFocus.getAttribute("ondblclick")) {
         eval(sDoubleClickAction);
       }
     }
