@@ -321,7 +321,7 @@ function pageMain() {
             <br />+ <em>{$consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}</em>
             {/if}
           </td>
-          <td>
+          <td class="text">
             <form name="editOpFrm" action="?m=dPcabinet" method="post">
             
             <input type="hidden" name="m" value="dPplanningOp" />

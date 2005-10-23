@@ -82,14 +82,15 @@ function newExamen(sAction) {
     <th colspan="2" class="category">Règlement</th>
   </tr>
   <tr>
-    <td>
+    <td class="text">
       <form name="newExamen" action="?m=dPcabinet">
-        <label for="type_examen" title="Type d'examen complémentaire à effectuer">Examens complémentaires :</label>
+        <label for="type_examen" title="Type d'examen complémentaire à effectuer"><strong>Examens complémentaires :</strong></label>
         <select name="type_examen" onchange="javascript:newExamen(this.value)">
           <option value="">&mdash; Choisir un type d'examen</option>
           <option value="exam_audio">Audiogramme</option>
         </select>
       </form>
+      <strong>Fichiers</strong>
       <ul>
         {foreach from=$consult->_ref_files item=curr_file}
         <li>
