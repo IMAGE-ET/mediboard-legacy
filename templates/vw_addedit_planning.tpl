@@ -385,7 +385,7 @@ function pageMain() {
         
         <tr>
           <th class="mandatory">
-            <input type="hidden" name="chir_id" title="{$op->_props.chir_id}" value="{$chir->user_id}" ondoubleclick="popChir()" />
+            <input type="hidden" name="chir_id" title="{$op->_props.chir_id}" value="{$chir->user_id}" ondblclick="popChir()" />
             <label for="chir_id" title="Chirurgien Responsable. Obligatoire">Chirurgien:</label>
           </th>
           <td class="readonly"><input type="text" name="_chir_name" size="30" value="{if $chir->user_id}{$chir->_view}{/if}" readonly="readonly" /></td>
@@ -395,7 +395,7 @@ function pageMain() {
         {if !$protocole}
         <tr>
           <th class="mandatory">
-            <input type="hidden" name="pat_id" title="{$op->_props.pat_id}|notNull" ondoubleclick="popPat()" value="{$pat->patient_id}" />
+            <input type="hidden" name="pat_id" title="{$op->_props.pat_id}|notNull" ondblclick="popPat()" value="{$pat->patient_id}" />
             <label for="pat_id" title="Patient concerné. Obligatoire">Patient:</label>
           </th>
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->_view}" readonly="readonly" /></td>
@@ -423,7 +423,7 @@ function pageMain() {
         </tr>
         <tr>
           <th class="mandatory">
-            <input type="hidden" name="plageop_id" title="{$op->_props.pat_id}|notNull" ondoubleclick="popPlage()" value="{$plage->id}" />
+            <input type="hidden" name="plageop_id" title="{$op->_props.pat_id}|notNull" ondblclick="popPlage()" value="{$plage->id}" />
             <label for="plageop_id" title="Date de l'intervention. Obligatoire">Date de l'intervention:</label>
           </th>
           <td class="readonly"><input type="text" name="date" readonly="readonly" size="10" value="{$plage->_date}" /></td>
@@ -440,7 +440,7 @@ function pageMain() {
 
         <tr>
           <th><label for="CCAM_code" title="Code CCAM principal d'intervention{if !$hospitalisation}. Obligatoire{/if}">Acte Principal (CCAM):</label></th>
-          <td><input type="text" name="CCAM_code" title="{$op->_props.CCAM_code}{if !$hospitalisation}|notNull{/if}" ondoubleclick="popCode('ccam')" size="10" value="{$op->CCAM_code}" onchange="modifOp()" /></td>
+          <td><input type="text" name="CCAM_code" title="{$op->_props.CCAM_code}{if !$hospitalisation}|notNull{/if}" ondblclick="popCode('ccam')" size="10" value="{$op->CCAM_code}" onchange="modifOp()" /></td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
 
