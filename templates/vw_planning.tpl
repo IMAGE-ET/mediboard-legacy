@@ -300,7 +300,7 @@ function pageMain() {
           <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->motif|nl2br|truncate:35:"...":false}</a></td>
           <td class="text" {$style}><a href="{$href_consult}">{$curr_consult->rques|nl2br|truncate:35:"...":false}</a></td>
           <td {$style}>
-            <form name="etatFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
+            <form name="etatFrm{$curr_consult->consultation_id}" action="?m={$m}" method="post">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="dosql" value="do_consultation_aed" />
             <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
@@ -308,7 +308,7 @@ function pageMain() {
             <input type="hidden" name="chrono" value="{$smarty.const.CC_PATIENT_ARRIVE}" />
             </form>
             
-            <form name="cancelFrm{$curr_consult->consultation_id}" action="?m={$m}" method="POST">
+            <form name="cancelFrm{$curr_consult->consultation_id}" action="?m={$m}" method="post">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="dosql" value="do_consultation_aed" />
             <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />

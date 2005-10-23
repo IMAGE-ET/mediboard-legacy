@@ -84,5 +84,3 @@ function pageMain() {ldelim}
 </tr>
 
 </table>
-
-</form>

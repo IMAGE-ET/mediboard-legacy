@@ -182,9 +182,10 @@ $smarty->assign('tarifsCab', $tarifsCab);
 $smarty->assign('anesth', $anesth);
 $smarty->assign('consult', $consult);
 
-if($consult->_ref_consult_anesth->consultation_anesth_id)
+if($consult->_ref_consult_anesth->consultation_anesth_id) {
+  $smarty->assign('consult_anesth', $consult->_ref_consult_anesth);
   $smarty->display('edit_consultation_anesth.tpl');
-else
+} else {
   $smarty->display('edit_consultation.tpl');
-
+}
 ?>

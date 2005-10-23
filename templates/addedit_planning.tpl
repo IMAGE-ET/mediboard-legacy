@@ -5,32 +5,11 @@
 
 var http_request = false;
 
-function makeRequest(url) {
-
-  http_request = false;
-
-  if (window.XMLHttpRequest) { // Mozilla, Safari,...
-    http_request = new XMLHttpRequest();
-    if (http_request.overrideMimeType) {
-      http_request.overrideMimeType('text/xml');
-    }
-  } else if (window.ActiveXObject) { // IE
-    try {
-      http_request = new ActiveXObject("Msxml2.XMLHTTP");
-    } catch (e) {
-      try {
-        http_request = new ActiveXObject("Microsoft.XMLHTTP");
-      } catch (e) {}
-    }
-  }
-
-  if (!http_request) {
-    alert('Giving up :( Cannot create an XMLHTTP instance');
-    return false;
-  }
-  http_request.onreadystatechange = alertContents;
-  http_request.open('GET', url, true);
-  http_request.send(null);
+function requestInfoPat() {
+  var url = new Url;
+  url.setModuleAction("dPpatients", "httpreq_get_last_refs");
+  url.addElement(document.editFrm.patient_id);
+  http_request = url.request(alertContents);
 }
 
 function alertContents() {
@@ -44,69 +23,22 @@ function alertContents() {
   }
 }
 
-function checkForm() {
-  var form = document.editFrm;
-  var field = null;
-  
-  if (field = form.chir_id)
-    if (field.value == 0) {
-      alert("Praticien manquant");
-      popChir();
-      return false;
-    }
-
-  if (field = form.patient_id)
-    if (field.value == 0) {
-      alert("Patient manquant");
-      popPat();
-      return false;
-    }
-
-  if (field = form.plageconsult_id)
-    if (field.value == 0) {
-      alert("Jour de consultation non selectionné");
-      popRDV();
-      return false;
-    }
-
-  return true;
-}
-
-function checkChir() {
-  var form = document.editFrm;
-  var field = null;
-  
-  if (field = form.chir_id) {
-    if (field.value == 0) {
-      alert("Praticien manquant");
-      popChir();
-      return false;
-    }
-  }
-
-  return true;
-}
-
 function popChir() {
-  var url = './index.php?m=mediusers';
-  url += '&a=chir_selector';
-  url += '&dialog=1';
-  popup(400, 250, url, 'Praticien');
+  var url = new Url;
+  url.setModuleAction("mediusers", "chir_selector");
+  url.popup(400, 250, "Praticien");
 }
 
 function setChir( key, val ){
   var f = document.editFrm;
   f.chir_id.value = key;
   f._chir_name.value = val;
-  window.chir_id = key;
-  window._chir_name = val;
 }
 
 function popPat() {
-  var url = './index.php?m=dPpatients';
-  url += '&a=pat_selector';
-  url += '&dialog=1';
-  popup(800, 500, url, 'Patient');
+  var url = new Url;
+  url.setModuleAction("dPpatients", "pat_selector");
+  url.popup(800, 500, "Patient");
   myNode = document.getElementById("infoPat");
   myNode.innerHTML = "";
 }
@@ -118,17 +50,15 @@ function setPat( key, val ) {
     f.patient_id.value = key;
     f._pat_name.value = val;
     myNode = document.getElementById("clickPat");
-    myNode.setAttribute("onclick", "makeRequest('index.php?m=dPpatients&dialog=1&a=httpreq_get_last_refs&patient_id=" + key + "')");
     myNode.innerHTML = "++ Infos patient (cliquez pour afficher) ++";
   }
 }
 
 function popRDV() {
-  var url = './index.php?m=dPcabinet';
-  url += '&a=plage_selector';
-  url += '&dialog=1';
-  url += '&chir=' + document.editFrm.chir_id.value;
-  popup(800, 600, url, 'Plage');
+  var url = new Url;
+  url.setModuleAction("dPcabinet", "plage_selector");
+  url.addElement(document.editFrm.chir_id, "chir");
+  url.popup(800, 600, "Plage");
 }
 
 function setRDV( hour, min, id, date, freq, chirid, chirname ) {
@@ -145,7 +75,7 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
 </script>
 {/literal}
 
-<form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkForm()">
+<form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
 
 <input type="hidden" name="dosql" value="do_consultation_aed" />
 <input type="hidden" name="del" value="0" />
@@ -157,19 +87,19 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
 <table class="main" style="margin: 4px; border-spacing: 0px;">
   {if $consult->consultation_id}
   <tr>
-    <td coslpan="2"><strong><a href="index.php?m={$m}&amp;consultation_id=0">Créer une nouvelle consultation</a></strong></td>
+    <td><strong><a href="index.php?m={$m}&amp;consultation_id=0">Créer une nouvelle consultation</a></strong></td>
   </tr>
   {/if}
   <tr>
     {if $consult->consultation_id}
-      <th colspan="2" class="title" colspan="5" style="color: #f00;">
+      <th class="title" colspan="5" style="color: #f00;">
         <a style="float:right;" href="javascript:view_log('CConsultation',{$consult->consultation_id})">
           <img src="images/history.gif" alt="historique" />
         </a>
         Modification de la consultation de {$pat->_view} pour le Dr. {$chir->_view}
       </th>
     {else}
-      <th colspan="2" class="title" colspan="5">Création d'une consultation</th>
+      <th class="title" colspan="5">Création d'une consultation</th>
     {/if}
   </tr>
   <tr>
@@ -179,9 +109,9 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
         <tr><th class="category" colspan="3">Informations sur la consultation</th></tr>
         
         <tr>
-          <th class="mandatory">
-            <input type="hidden" name="chir_id" value="{$chir->user_id}" />
-            <label for="chir_id">Praticien:</label>
+          <th>
+            <label for="chir_id" title="Praticien pour la consultation">Praticien :</label>
+            <input type="hidden" name="chir_id" title="notNull|ref" value="{$chir->user_id}" ondblclick="popChir()" />
           </th>
             <td class="readonly">
               <input type="text" name="_chir_name" size="30" value="{$chir->_view}" readonly="readonly" />
@@ -195,20 +125,20 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
         <tr>
           <th class="mandatory">
             <input type="hidden" name="patient_id" value="{$pat->patient_id}" />
-            <label for="chir_id">Patient:</label>
+            <label for="chir_id" title="Patient pour la consultation">Patient :</label>
           </th>
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->_view}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="rechercher un patient" onclick="popPat()" /></td>
         </tr>
         
         <tr>
-          <th><label for="motif">Motif</label></th>
-          <td colspan="2"><textarea name="motif" rows="3">{$consult->motif}</textarea></td>
+          <th><label for="motif" title="Motif de la consultation">Motif</label></th>
+          <td colspan="2"><textarea name="motif" title="{$consult->_props.motif}" rows="3">{$consult->motif}</textarea></td>
         </tr>
 
         <tr>
-          <th><label for="rques">Remarques</label></th>
-          <td colspan="2"><textarea name="rques" rows="3">{$consult->rques}</textarea></td>
+          <th><label for="rques" title="Remartques de la consultation" >Remarques</label></th>
+          <td colspan="2"><textarea name="rques" title="{$consult->_props.rques}" rows="3">{$consult->rques}</textarea></td>
         </tr>
 
       </table>
@@ -220,10 +150,10 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
         <tr><th class="category" colspan="3">Rendez-vous</th></tr>
 
         <tr>
-          <th><label for="premiere">Consultation:</label></th>
+          <th><label for="premiere" title="Première consultation de ce patient avec le praticien?">Consultation:</label></th>
           <td>
             <input type="checkbox" name="_check_premiere" value="1" {if $consult->_check_premiere} checked="checked" {/if} />
-            <label for="_check_premiere">Première consultation</label>
+            <label for="_check_premiere" title="Première consultation de ce patient avec le praticien">Première consultation</label>
           </td>
           <td rowspan="4" class="button">
             <input type="button" value="Selectionner" onclick="popRDV()" />
@@ -231,22 +161,22 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
         </tr>
 
         <tr>
-          <th><label for="_date">Date:</label></th>
+          <th><label for="plageconsult_id" title="Date du rendez-vous de consultation">Date :</label></th>
           <td class="readonly">
             <input type="text" name="_date" value="{$consult->_date|date_format:"%A %d/%m/%Y"}" readonly="readonly" />
-            <input type="hidden" name="plageconsult_id" value="{$consult->plageconsult_id}" />
+            <input type="hidden" name="plageconsult_id" title="{$consult->_props.plageconsult_id}" value="{$consult->plageconsult_id}" ondblclick="popRDV()" />
           </td>
         </tr>
 
         <tr>
-          <th><label for="_hour">Heure:</label></th>
+          <th><label for="_hour" title="Heure du rendez-vous de consultation">Heure :</label></th>
           <td class="readonly">
             <input type="text" name="_hour" value="{$consult->_hour}" size="3" readonly="readonly" /> h
             <input type="text" name="_min" value="{$consult->_min}" size="3" readonly="readonly" />
           </td>
         </tr>
         <tr>
-          <th><label for="_duree">Durée:</label></th>
+          <th><label for="_duree" title="Durée prévue de la consultation">Durée :</label></th>
           <td>
             <select name="duree">
               <option value="1" {if $consult->duree == 1} selected="selected" {/if}>simple</option>
@@ -261,7 +191,7 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
       <table class="form">
         <tr>
           {if $pat->patient_id}
-          <th id="clickPat" class="category" onclick="makeRequest('index.php?m=dPpatients&dialog=1&a=httpreq_get_last_refs&patient_id={$pat->patient_id}')">
+          <th id="clickPat" class="category" onclick="requestInfoPat()">
             ++ Infos patient (cliquez pour afficher) ++
           {else}
           <th id="clickPat" class="category">

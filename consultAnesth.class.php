@@ -17,31 +17,6 @@ require_once($AppUI->getModuleClass('dPcabinet', 'plageconsult'));
 require_once($AppUI->getModuleClass('dPcabinet', 'files'));
 require_once($AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
 
-$EConsultAnesthTabac = array(
-  "-", 
-  "+", 
-  "++", 
-);
-
-$EConsultAnesthOenolisme = array(
-  "-", 
-  "+", 
-  "++", 
-);
-
-$EConsultAnesthGroupe = array(
-  "O", 
-  "A", 
-  "B", 
-  "AB", 
-);
-
-$EConsultAnesthOenolisme = array(
-  "-", 
-  "+", 
-  "++", 
-);
-
 class CConsultAnesth extends CMbObject {
   // DB Table key
   var $consultation_anesth_id = null;
@@ -104,6 +79,8 @@ class CConsultAnesth extends CMbObject {
     $this->_props["biologie"]        = "enum|NF|COAG|IONO";
     $this->_props["commande_sang"]   = "enum|clinique|CTS|autologue";
     $this->_props["ASA"]             = "enum|1|2|3|4|5";
+
+    $this->buildEnums();
   }
   
   function updateFormFields() {

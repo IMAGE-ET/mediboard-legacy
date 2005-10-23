@@ -10,10 +10,9 @@ function pageMain() {
 }
 
 function popPat() {
-  var url = './index.php?m=dPpatients';
-  url += '&a=pat_selector';
-  url += '&dialog=1';
-  popup(500, 500, url, 'Patient');
+  var url = new Url;
+  url.setModuleAction("dPpatients", "pat_selector");
+  url.popup(500, 500, 'Patient');
 }
 
 function setPat( key, val ) {
@@ -22,29 +21,30 @@ function setPat( key, val ) {
   if (val != '') {
     f.patSel.value = key;
     f.patNom.value = val;
-    window.patSel = key;
-    window.patName = val;
   }
   
   f.submit();
 }
 
-function imprimerDocument(doc_id) {
-  var url = '?m=dPcompteRendu&a=print_cr&dialog=1';
-  url += '&compte_rendu_id=' + doc_id;
-  popup(700, 600, url, 'Compte-rendu');
+function printDocument(doc_id) {
+  var url = new Url;
+  url.setModuleAction("dPcompteRendu", "print_cr");
+  url.addParam("compte_rendu_id", doc_id);
+  url.popup(700, 600, 'Compte-rendu');
 }
 
 function printPatient(id) {
-  var url = './index.php?m=dPpatients&a=print_patient&dialog=1';
-  url = url + '&patient_id=' + id;
-  popup(700, 550, url, 'Patient');
+  var url = new Url;
+  url.setModuleAction("dPpatients", "print_patient");
+  url.addParam("patient_id", id);
+  url.popup(700, 550, 'Imprimer Dossier Patient');
 }
 
 function printIntervention(id) {
-  var url = './index.php?m=dPplanningOp&a=view_planning&dialog=1';
-  url = url + '&operation_id=' + id;
-  popup(700, 550, url, 'Admission');
+  var url = new Url;
+  url.setModuleAction("dPplanningOp", "view_planning");
+  url.addParam("operation_id", id);
+  url.popup(700, 550, 'Imprimer Admission');
 }
 
 </script>
@@ -73,10 +73,10 @@ function printIntervention(id) {
   <tr>
     <td>
       <table class="form">
-        <tr><th class="category" colspan="4">Consultations</th></tr>
+        <tr><th class="category" colspan="2">Consultations</th></tr>
         {foreach from=$patSel->_ref_consultations item=curr_consult}
         <tr class="groupcollapse" id="consult{$curr_consult->consultation_id}" onclick="flipGroup({$curr_consult->consultation_id}, 'consult')">
-          <td colspan="4">
+          <td colspan="2">
             <strong>
             Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view} &mdash;
             {$curr_consult->_ref_plageconsult->date|date_format:"%A %d %B %Y"} &mdash;
@@ -86,79 +86,81 @@ function printIntervention(id) {
           </td>
         </tr>
         <tr class="consult{$curr_consult->consultation_id}">
-          <th colspan="2">Motif :</th>
-          <td class="text" colspan="2">{$curr_consult->motif}</td>
+          <th>Motif :</th>
+          <td class="text">{$curr_consult->motif}</td>
         </tr>
         {if $curr_consult->rques}
         <tr class="consult{$curr_consult->consultation_id}">
-          <th colspan="2">Remarques :</th>
-          <td class="text" colspan="2">{$curr_consult->rques}</td>
+          <th>Remarques :</th>
+          <td class="text">{$curr_consult->rques}</td>
         </tr>
         {/if}
         {if $curr_consult->examen}
         <tr class="consult{$curr_consult->consultation_id}">
-          <th colspan="2">Examen :</th>
-          <td class="text" colspan="2">{$curr_consult->examen}</td>
+          <th>Examen :</th>
+          <td class="text">{$curr_consult->examen}</td>
         </tr>
         {/if}
         {if $curr_consult->traitement}
         <tr class="consult{$curr_consult->consultation_id}">
-          <th colspan="2">Traitement :</th>
-          <td class="text" colspan="2">{$curr_consult->traitement}</td>
+          <th>Traitement :</th>
+          <td class="text">{$curr_consult->traitement}</td>
         </tr>
         {/if}
-        {foreach from=$curr_consult->_ref_documents item=document}
         <tr class="consult{$curr_consult->consultation_id}">
-          <th colspan="2">{$document->nom} :</th>
-          {if $document->source}
-          <td colspan="2" class="greedyPane">
-            <button onclick="imprimerDocument({$document->compte_rendu_id})">
-              <img src="modules/dPcabinet/images/print.png" />
-            </button>
-          </td>
-          {else}
-          <td colspan="2">
-            -
-          </td>
-          {/if}
-        </tr>
-        {/foreach}
-        <tr class="consult{$curr_consult->consultation_id}">
-          <th colspan="2"><i>Fichiers associés :</i></th>
-          <td colspan="2" />
-        </tr>
-        {foreach from=$curr_consult->_ref_files item=curr_file}
-        <tr class="consult{$curr_consult->consultation_id}">
-          <th colspan="2"><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
-          <td>{$curr_file->_file_size}</td>
+          <th>Documents créés :</th>
           <td>
-            <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-            <input type="hidden" name="dosql" value="do_file_aed" />
-	        <input type="hidden" name="del" value="1" />
-	        <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
-	        <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
-            </form>
-          </td>
-	    </tr>
-        {/foreach}
+          <ul>
+            {foreach from=$curr_consult->_ref_documents item=document}
+            <li>
+              {$document->nom}
+              <button onclick="printDocument({$document->compte_rendu_id})">
+                <img src="modules/dPcabinet/images/print.png" />
+              </button>
+            </li>
+            {foreachelse}
+            <li>Aucun document créé</li>
+            {/foreach}
+          </ul>
+        </tr>
         <tr class="consult{$curr_consult->consultation_id}">
-          <th colspan="3">
+          <th>Fichiers attachés :</th>
+          <td>
+            <ul>
+              {foreach from=$curr_consult->_ref_files item=curr_file}
+              <li>
+                <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+      
+                <input type="hidden" name="dosql" value="do_file_aed" />
+                <input type="hidden" name="del" value="1" />
+                <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
+                <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
+                ({$curr_file->_file_size}) 
+                <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
+      
+                </form>
+              </li>
+              {foreachelse}
+              <li>Aucun fichier attaché</li>
+              {/foreach}
+            </ul>
             <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
             <input type="hidden" name="dosql" value="do_file_aed" />
             <input type="hidden" name="del" value="0" />
-	        <input type="hidden" name="file_consultation" value="{$curr_consult->consultation_id}" />
+            <input type="hidden" name="file_consultation" value="{$curr_consult->consultation_id}" />
             <input type="file" name="formfile" />
-          </th>
-          <td class="greedyPane">
             <input type="submit" value="ajouter" />
+
             </form>
           </td>
         </tr>
         {/foreach}
-        <tr><th class="category" colspan="4">Interventions</th></tr>
+        <tr>
+          <th class="category" colspan="2">Interventions</th>
+        </tr>
         {foreach from=$patSel->_ref_operations item=curr_op}
         <tr class="groupcollapse" id="op{$curr_op->operation_id}" onclick="flipGroup({$curr_op->operation_id}, 'op')">
-          <td colspan="4">
+          <td colspan="2">
             <strong>
             Dr. {$curr_op->_ref_chir->_view} &mdash;
             {$curr_op->_ref_plageop->date|date_format:"%A %d %B %Y"} &mdash;
@@ -167,75 +169,73 @@ function printIntervention(id) {
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
-          <th colspan="2">
-            CCAM 1 :
-          </th>
-          <td class="text" colspan="2">
+          <th>CCAM 1 :</th>
+          <td class="text">
             {$curr_op->_ext_code_ccam->code} : {$curr_op->_ext_code_ccam->libelleLong}
           </td>
         </tr>
         {if $curr_op->CCAM_code2}
         <tr class="op{$curr_op->operation_id}">
-          <th colspan="2">
-            CCAM 2 :
-          </th>
-          <td class="text" colspan="2">
+          <th>CCAM 2 :</th>
+          <td class="text">
             {$curr_op->_ext_code_ccam2->code} : {$curr_op->_ext_code_ccam2->libelleLong}
           </td>
         </tr>
         {/if}
-        {foreach from=$curr_op->_ref_documents item=document}
         <tr class="op{$curr_op->operation_id}">
-          <th colspan="2">{$document->nom} :</th>
-          {if $document->source}
-          <td colspan="2" class="greedyPane">
-            <button onclick="imprimerDocument({$document->compte_rendu_id})">
-              <img src="modules/dPcabinet/images/print.png" />
-            </button>
-          </td>
-          {else}
-          <td colspan="2">
-            -
-          </td>
-          {/if}
-        </tr>
-        {/foreach}
-        {foreach from=$curr_op->_ref_files item=curr_file}
-        <tr class="op{$curr_op->operation_id}">
-          <th colspan="2">
-            <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
-          </th>
-          <td>{$curr_file->_file_size}</td>
+          <th>Documents créés :</th>
           <td>
-            <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-            <input type="hidden" name="dosql" value="do_file_aed" />
-	        <input type="hidden" name="del" value="1" />
-	        <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
-	        <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
-            </form>
-          </td>
-	    </tr>
-        {/foreach}
+          <ul>
+            {foreach from=$curr_op->_ref_documents item=document}
+            <li>
+              {$document->nom}
+              <button onclick="printDocument({$document->compte_rendu_id})">
+                <img src="modules/dPcabinet/images/print.png" />
+              </button>
+            </li>
+            {foreachelse}
+            <li>Aucun document créé</li>
+            {/foreach}
+          </ul>
+        </tr>
         <tr class="op{$curr_op->operation_id}">
-          <th colspan="3">
+          <th>Fichiers attachés :</th>
+          <td>
+            <ul>
+              {foreach from=$curr_op->_ref_files item=curr_file}
+              <li>
+                <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+      
+                <input type="hidden" name="dosql" value="do_file_aed" />
+                <input type="hidden" name="del" value="1" />
+                <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
+                <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
+                ({$curr_file->_file_size}) 
+                <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
+      
+                </form>
+              </li>
+              {foreachelse}
+              <li>Aucun fichier attaché</li>
+              {/foreach}
+            </ul>
             <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
             <input type="hidden" name="dosql" value="do_file_aed" />
             <input type="hidden" name="del" value="0" />
-	        <input type="hidden" name="file_operation" value="{$curr_op->operation_id}" />
+            <input type="hidden" name="file_operation" value="{$curr_op->operation_id}" />
             <input type="file" name="formfile" />
-          </th>
-          <td class="greedyPane">
             <input type="submit" value="ajouter" />
+
             </form>
           </td>
-        </tr>
         {/foreach}
+        </tr>
         <tr>
-          <th class="category" colspan="4">Hospitalisations</th>
+          <th class="category" colspan="2">Hospitalisations</th>
         </tr>
         {foreach from=$patSel->_ref_hospitalisations item=curr_hospi}
         <tr class="groupcollapse" id="hospi{$curr_hospi->operation_id}" onclick="flipGroup({$curr_hospi->operation_id}, 'hospi')">
-          <td colspan="4">
+          <td colspan="2">
             <strong>
             Dr. {$curr_hospi->_ref_chir->_view} &mdash;
             {$curr_hospi->date_adm|date_format:"%A %d %B %Y"}
@@ -244,26 +244,28 @@ function printIntervention(id) {
         </tr>
         {if $curr_hospi->CCAM_code}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <td class="text" colspan="4">
+          <th>CCAM 1 :</th>
+          <td class="text">
             {$curr_hospi->_ext_code_ccam->code} : {$curr_hospi->_ext_code_ccam->libelleLong}
           </td>
         </tr>
         {else}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <td class="text" colspan="4">Simple observation</td>
+          <td class="text" colspan="2">Simple observation</td>
         </tr>
         {/if}
         {if $curr_hospi->CCAM_code2}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <td class="text" colspan="4">
+          <th>CCAM 1 :</th>
+          <td class="text">
             {$curr_hospi->_ext_code_ccam2->code} : {$curr_hospi->_ext_code_ccam2->libelleLong}
           </td>
         </tr>
-        {/if}
+        {/if} 
         {if $chirSel}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2">Pack de sortie :</th>
-          <td colspan="2">
+          <th>Pack de sortie :</th>
+          <td>
             <form name="printPackFrm{$curr_hospi->operation_id}" action="?m=dPhospi" method="POST">
             <select name="pack" onchange="printPack({$curr_hospi->operation_id}, this.form)">
               <option value="0">&mdash; packs &mdash;</option>
@@ -274,50 +276,50 @@ function printIntervention(id) {
           </td>
         </tr>
         {/if}
-        {foreach from=$curr_hospi->_ref_documents item=document}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2">{$document->nom} :</th>
-          {if $document->source}
-          <td colspan="2" class="greedyPane">
-            <button onclick="imprimerDocument({$document->compte_rendu_id})">
-              <img src="modules/dPcabinet/images/print.png" />
-            </button>
-          </td>
-          {else}
-          <td colspan="2">
-            -
-          </td>
-          {/if}
-        </tr>
-        {/foreach}
-        <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2"><i>Fichiers associés :</i></th>
-          <td colspan="2" />
-        </tr>
-        {foreach from=$curr_hospi->_ref_files item=curr_file}
-        <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2"><a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a></th>
-          <td>{$curr_file->_file_size}</td>
+          <th>Documents créés :</th>
           <td>
-            <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
-            <input type="hidden" name="dosql" value="do_file_aed" />
-	        <input type="hidden" name="del" value="1" />
-	        <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
-	        <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
-            </form>
-          </td>
-	    </tr>
-        {/foreach}
+          <ul>
+            {foreach from=$curr_hospi->_ref_documents item=document}
+            <li>
+              {$document->nom}
+              <button onclick="printDocument({$document->compte_rendu_id})">
+                <img src="modules/dPcabinet/images/print.png" />
+              </button>
+            </li>
+            {foreachelse}
+            <li>Aucun document créé</li>
+            {/foreach}
+          </ul>
+        </tr>
         <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="3">
+          <th>Fichiers attachés :</th>
+          <td>
+            <ul>
+              {foreach from=$curr_hospi->_ref_files item=curr_file}
+              <li>
+                <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+      
+                <input type="hidden" name="dosql" value="do_file_aed" />
+                <input type="hidden" name="del" value="1" />
+                <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
+                <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
+                ({$curr_file->_file_size}) 
+                <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
+      
+                </form>
+              </li>
+              {foreachelse}
+              <li>Aucun fichier attaché</li>
+              {/foreach}
+            </ul>
             <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
             <input type="hidden" name="dosql" value="do_file_aed" />
             <input type="hidden" name="del" value="0" />
-	        <input type="hidden" name="file_operation" value="{$curr_hospi->operation_id}" />
+            <input type="hidden" name="file_operation" value="{$curr_hospi->operation_id}" />
             <input type="file" name="formfile" />
-          </th>
-          <td>
             <input type="submit" value="ajouter" />
+
             </form>
           </td>
         </tr>

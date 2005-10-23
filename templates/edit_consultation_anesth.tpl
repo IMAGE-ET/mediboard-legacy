@@ -1,10 +1,11 @@
 {literal}
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 
-function editPat() {
-  var url = '?m=dPpatients&tab=vw_edit_patients';
-  url += '&patient_id={/literal}{$consult->_ref_patient->patient_id}{literal}';
-  window.location.href = url;
+function editPat(patient_id) {
+  var url = new Url;
+  url.setModuleAction("dPpatients", "vw_edit_patients");
+  url.addParam("patient_id", patient_id);
+  url.redirect();
 }
 
 function pasteText(formName) {
@@ -22,14 +23,15 @@ function submitConsultWithChrono(chrono) {
 }
 
 function selectCim10(code) {
-  var url = '?m=dPcim10&a=code_finder&dialog=1';
-  url += '&code=' + code;
-  popup(800, 500, url, 'CIM10');
+  var url = new Url;
+  url.setModuleAction("dPcim10", "code_finder");
+  url.addParam("code", code);
+  url.popup(800, 500, "CIM10");
 }
 
 function putCim10(code) {
-  oForm = document.editAnesthFrm;
-  aCim10 = oForm.listCim10.value.split("|");
+  var oForm = document.editAnesthFrm;
+  var aCim10 = oForm.listCim10.value.split("|");
   aCim10.push(code);
   aCim10.removeDuplicates();
   oForm.listCim10.value = aCim10.join("|");
@@ -37,8 +39,8 @@ function putCim10(code) {
 }
 
 function delCim10(code) {
-  oForm = document.editAnesthFrm;
-  aCim10 = oForm.listCim10.value.split("|");
+  var oForm = document.editAnesthFrm;
+  var aCim10 = oForm.listCim10.value.split("|");
   aCim10.removeByValue(code);
   oForm.listCim10.value = aCim10.join("|");
   oForm.submit();
@@ -57,7 +59,7 @@ function pageMain() {
   
   {/literal}
   
-  {foreach from=$consult->_ref_consult_anesth->_static_cim10 key=cat item=curr_cat}
+  {foreach from=$consult_anesth->_static_cim10 key=cat item=curr_cat}
   initGroups("{$cat}");
   {/foreach}
   
@@ -77,72 +79,8 @@ function pageMain() {
 
 <table class="main">
   <tr>
-    <td id="listConsult" class="show">
-      <form name="changeView" action="index.php" method="get">
-        <input type="hidden" name="m" value="{$m}" />
-        <input type="hidden" name="tab" value="{$tab}" />
-      
-        <table class="form">
-          <tr>
-            <td colspan="6" style="text-align: center; width: 100%; font-weight: bold;">
-              {$date|date_format:"%A %d %B %Y"}
-              <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
-            </td>
-          </tr>
-          <tr>
-            <th><label for="vue2" title="Type de vue du planning">Type de vue:</label></th>
-            <td colspan="5">
-                <select name="vue2" onchange="this.form.submit()">
-                  <option value="0"{if $vue == "0"}selected="selected"{/if}>Tout afficher</option>
-                  <option value="1"{if $vue == "1"}selected="selected"{/if}>Cacher les Terminées</option>
-                </select>
-            </td>
-          </tr>
-        </table>
-
-      </form>
-      <table class="tbl">
-      {if $listPlage}
-      {foreach from=$listPlage item=curr_plage}
-        <tr>
-          <th colspan="4" style="font-weight: bold;">Consultations de {$curr_plage->_hour_deb}h à {$curr_plage->_hour_fin}h</th>
-        </tr>
-        <tr>
-          <th>Heure</th>
-          <th>Patient</th>
-          <th>RDV</th>
-          <th>Etat</th>
-        </tr>
-        {foreach from=$curr_plage->_ref_consultations item=curr_consult}
-          {if $curr_consult->premiere} 
-            {assign var="style" value="style='background: #faa;'"}
-          {else} 
-            {assign var="style" value=""}
-          {/if}
-        <tr {if $curr_consult->consultation_id == $consult->consultation_id} style="font-weight: bold;" {/if}>
-          <td {$style}>
-            <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">{$curr_consult->heure|truncate:5:"":true}</a>
-          </td>
-          <td {$style}>
-            <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">{$curr_consult->_ref_patient->_view}</a>
-          </td>
-          <td {$style}>
-            <a href="index.php?m={$m}&amp;tab=edit_planning&amp;consultation_id={$curr_consult->consultation_id}" title="Modifier le RDV">
-              <img src="modules/dPcabinet/images/planning.png" />
-            </a>
-          </td>
-          <td {$style}>{$curr_consult->_etat}</td>
-        </tr>
-        {/foreach}
-      {/foreach}
-      {else}
-        <tr>
-          <th colspan="2" style="font-weight: bold;">Pas de consultations</th>
-        </tr>
-      {/if}
-      </table>
-    </td>
-    <td width="100%">
+    {include file="inc_list_consult.tpl"}
+    <td>
     {if $consult->consultation_id}
       <form name="editFrm" action="?m={$m}" method="post">
 
@@ -189,11 +127,11 @@ function pageMain() {
       	    {if $consult->motif}
       	    <textarea name="motif" rows="5">{$consult->motif}</textarea>
       	    {else}
-      	    <textarea name="motif" rows="5">Intervention le {$consult->_ref_consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}
-            Par le Dr. {$consult->_ref_consult_anesth->_ref_operation->_ref_chir->_view}
-            {$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}
-            {if $consult->_ref_consult_anesth->_ref_operation->CCAM_code2}
-            + <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}{/if}</textarea>
+      	    <textarea name="motif" rows="5">Intervention le {$consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}
+            Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
+            {$consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}
+            {if $consult_anesth->_ref_operation->CCAM_code2}
+            + <i>{$consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}{/if}</textarea>
       	    {/if}
       	  </td>
       	  <td class="text" colspan="2">
@@ -231,7 +169,7 @@ function pageMain() {
             </a>
           </td>
           <td class="button">
-            <button onclick="editPat()">
+            <button onclick="editPat({$consult->_ref_patient->patient_id})">
               <img src="modules/dPcabinet/images/edit.png" />
             </button>
           </td>
@@ -240,114 +178,63 @@ function pageMain() {
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="dosql" value="do_consult_anesth_aed" />
-            <input type="hidden" name="consultation_anesth_id" value="{$consult->_ref_consult_anesth->consultation_anesth_id}" />
+            <input type="hidden" name="consultation_anesth_id" value="{$consult_anesth->consultation_anesth_id}" />
             <table class="form">
               <tr>
                 <th><label for="poid" title="Poid du patient">Poid:</label></th>
                 <td>
-                  <input type="text" size="4" name="poid" title="{$consult->_ref_consult_anesth->_props.poid}" value="{$consult->_ref_consult_anesth->poid}" />
+                  <input type="text" size="4" name="poid" title="{$consult_anesth->_props.poid}" value="{$consult_anesth->poid}" />
                   kg
                 </td>
                 <th><label for="tabac" title="Comportement tabagique">Tabac:</label></th>
                 <td>
-                  <select name="tabac" title="{$consult->_ref_consult_anesth->_props.tabac}">
-                    <option value="-" {if $consult->_ref_consult_anesth->tabac == "-"}selected="selected"{/if}>
-                      -
-                    </option>
-                    <option value="+" {if $consult->_ref_consult_anesth->tabac == "+"}selected="selected"{/if}>
-                      +
-                    </option>
-                    <option value="++" {if $consult->_ref_consult_anesth->tabac == "++"}selected="selected"{/if}>
-                      ++
-                    </option>
+                  <select name="tabac" title="{$consult_anesth->_props.tabac}">
+                    {html_options values=$consult_anesth->_enums.tabac output=$consult_anesth->_enums.tabac selected=$consult_anesth->tabac}
                   </select>
                 </td>
               </tr>
               <tr>
                 <th><label for="taille" title="Taille du patient">Taille:</label></th>
                 <td>
-                  <input type="text" size="4" name="taille" title="{$consult->_ref_consult_anesth->_props.taille}" value="{$consult->_ref_consult_anesth->taille}" />
+                  <input type="text" size="4" name="taille" title="{$consult_anesth->_props.taille}" value="{$consult_anesth->taille}" />
                   m
                 </td>
                 <th><label for="oenolisme" title="Comportement alcoolique">Oenolisme:</label></th>
                 <td>
-                  <select name="oenolisme" title="{$consult->_ref_consult_anesth->_props.oenolisme}">
-                    <option value="-" {if $consult->_ref_consult_anesth->oenolisme == "-"}selected="selected"{/if}>
-                      -
-                    </option>
-                    <option value="+" {if $consult->_ref_consult_anesth->oenolisme == "+"}selected="selected"{/if}>
-                      +
-                    </option>
-                    <option value="++" {if $consult->_ref_consult_anesth->oenolisme == "++"}selected="selected"{/if}>
-                      ++
-                    </option>
+                  <select name="oenolisme" title="{$consult_anesth->_props.oenolisme}">
+                    {html_options values=$consult_anesth->_enums.oenolisme output=$consult_anesth->_enums.oenolisme selected=$consult_anesth->oenolisme}
                   </select>
                 </td>
               </tr>
               <tr>
                 <th><label for="groupe" title="Groupe sanguin">Groupe:</label></th>
                 <td>
-                  <select name="groupe" title="{$consult->_ref_consult_anesth->_props.groupe}">
-                    <option value="A" {if $consult->_ref_consult_anesth->groupe == "A"}selected="selected"{/if}>
-                      A
-                    </option>
-                    <option value="B" {if $consult->_ref_consult_anesth->groupe == "B"}selected="selected"{/if}>
-                      B
-                    </option>
-                    <option value="AB" {if $consult->_ref_consult_anesth->groupe == "AB"}selected="selected"{/if}>
-                      AB
-                    </option>
-                    <option value="O" {if $consult->_ref_consult_anesth->groupe == "O"}selected="selected"{/if}>
-                      O
-                    </option>
+                  <select name="groupe" title="{$consult_anesth->_props.groupe}">
+                    {html_options values=$consult_anesth->_enums.groupe output=$consult_anesth->_enums.groupe selected=$consult_anesth->groupe}
                   </select>
                   /
-                  <select name="rhesus" title="{$consult->_ref_consult_anesth->_props.rhesus}">
-                    <option value="-" {if $consult->_ref_consult_anesth->rhesus == "-"}selected="selected"{/if}>
-                      -
-                    </option>
-                    <option value="+" {if $consult->_ref_consult_anesth->rhesus == "+"}selected="selected"{/if}>
-                      +
-                    </option>
+                  <select name="rhesus" title="{$consult_anesth->_props.rhesus}">
+                    {html_options values=$consult_anesth->_enums.rhesus output=$consult_anesth->_enums.rhesus selected=$consult_anesth->rhesus}
                   </select>
                 </td>
                 <th><label for="transfusions" title="Antécédents de transfusions">Transfusion:</label></th>
                 <td>
-                  <select name="transfusions" title="{$consult->_ref_consult_anesth->_props.transfusions}">
-                    <option value="-" {if $consult->_ref_consult_anesth->transfusions == "-"}selected="selected"{/if}>
-                      -
-                    </option>
-                    <option value="+" {if $consult->_ref_consult_anesth->transfusions == "+"}selected="selected"{/if}>
-                      +
-                    </option>
+                  <select name="transfusions" title="{$consult_anesth->_props.transfusions}">
+                    {html_options values=$consult_anesth->_enums.transfusions output=$consult_anesth->_enums.transfusions selected=$consult_anesth->transfusions}
                   </select>
                 </td>
               </tr>
               <tr>
                 <th><label for="tasys" title="Pression arterielle">TA:</label></th>
                 <td>
-                  <input type="text" size="2" name="tasys" title="{$consult->_ref_consult_anesth->_props.tasys}" value="{$consult->_ref_consult_anesth->tasys}" />
+                  <input type="text" size="2" name="tasys" title="{$consult_anesth->_props.tasys}" value="{$consult_anesth->tasys}" />
                   -
-                  <input type="text" size="2" name="tadias" title="{$consult->_ref_consult_anesth->_props.tadias}" value="{$consult->_ref_consult_anesth->tadias}" />
+                  <input type="text" size="2" name="tadias" title="{$consult_anesth->_props.tadias}" value="{$consult_anesth->tadias}" />
                 </td>
                 <th><label for="ASA" title="Score ASA">ASA:</label></th>
                 <td>
                   <select name="ASA">
-                    <option value="1" {if $consult->_ref_consult_anesth->ASA == "1"}selected="selected"{/if}>
-                      1
-                    </option>
-                    <option value="2" {if $consult->_ref_consult_anesth->ASA == "2"}selected="selected"{/if}>
-                      2
-                    </option>
-                    <option value="3" {if $consult->_ref_consult_anesth->ASA == "3"}selected="selected"{/if}>
-                      3
-                    </option>
-                    <option value="4" {if $consult->_ref_consult_anesth->ASA == "4"}selected="selected"{/if}>
-                      4
-                    </option>
-                    <option value="5" {if $consult->_ref_consult_anesth->ASA == "5"}selected="selected"{/if}>
-                      5
-                    </option>
+                    {html_options values=$consult_anesth->_enums.ASA output=$consult_anesth->_enums.ASA selected=$consult_anesth->ASA}
                   </select>
                 </td>
               </tr>
@@ -423,26 +310,28 @@ function pageMain() {
       </table>
       <table class="form">
         <tr>
-          <th class="category">Intervention</th>
+          <th class="category" colspan="2">Intervention</th>
         </tr>
         <tr>
           <td class="text">
-            Intervention le <strong>{$consult->_ref_consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}</strong>
-            par le <strong>Dr. {$consult->_ref_consult_anesth->_ref_operation->_ref_chir->_view}</strong><br />
-            <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}</i>
-            {if $consult->_ref_consult_anesth->_ref_operation->CCAM_code2}
-            <br />+ <i>{$consult->_ref_consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}</i>
+            Intervention le <strong>{$consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}</strong>
+            par le <strong>Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}</strong><br />
+            <em>{$consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}</em>
+            {if $consult_anesth->_ref_operation->CCAM_code2}
+            <br />+ <em>{$consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}</em>
             {/if}
+          </td>
+          <td>
             <form name="editOpFrm" action="?m=dPcabinet" method="post">
             
             <input type="hidden" name="m" value="dPplanningOp" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="dosql" value="do_planning_aed" />
-            <input type="hidden" name="operation_id" value="{$consult->_ref_consult_anesth->_ref_operation->operation_id}" />
+            <input type="hidden" name="operation_id" value="{$consult_anesth->_ref_operation->operation_id}" />
             <label for="type_anesth" title="Type d'anesthésie pour l'intervention">Type d'anesthésie :</label>
             <select name="type_anesth">
               <option value="">&mdash; Chosir un type d'anesthésie</option>
-              {html_options options=$anesth selected=$consult->_ref_consult_anesth->_ref_operation->type_anesth}
+              {html_options options=$anesth selected=$consult_anesth->_ref_operation->type_anesth}
             </select>
             <input type="submit" value="changer" />
             
@@ -456,7 +345,7 @@ function pageMain() {
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="del" value="0" />
       <input type="hidden" name="dosql" value="do_consult_anesth_aed" />
-      <input type="hidden" name="consultation_anesth_id" value="{$consult->_ref_consult_anesth->consultation_anesth_id}" />
+      <input type="hidden" name="consultation_anesth_id" value="{$consult_anesth->consultation_anesth_id}" />
 
       <table class="form">
         <tr><th class="category" colspan="2">Examen Préanesthésique</th></tr>
@@ -464,7 +353,7 @@ function pageMain() {
           <td class="text">
             <strong>Selection de diagnostics</strong>
             <table>
-            {foreach from=$consult->_ref_consult_anesth->_static_cim10 key=cat item=curr_cat}
+            {foreach from=$consult_anesth->_static_cim10 key=cat item=curr_cat}
               <tr class="groupcollapse" id="{$cat}" onclick="flipGroup('', '{$cat}')">
                 <td>{$cat}</td>
               </tr>
@@ -483,9 +372,9 @@ function pageMain() {
           </td>
           <td class="text">
             <strong>Diagnostics du patient</strong>
-            <input type="hidden" name="listCim10" value="{$consult->_ref_consult_anesth->listCim10}" />
+            <input type="hidden" name="listCim10" value="{$consult_anesth->listCim10}" />
             <ul>
-              {foreach from=$consult->_ref_consult_anesth->_codes_cim10 item=curr_code}
+              {foreach from=$consult_anesth->_codes_cim10 item=curr_code}
               <li>
                 <button type="button" onclick="delCim10('{$curr_code->code}')">
                   <img src="modules/dPcabinet/images/cross.png" />
@@ -512,19 +401,22 @@ function pageMain() {
             <input type="hidden" name="patient_id" value="{$consult->_ref_patient->patient_id}" />
             <table class="form">
               <tr>
-                <td colspan="3"><strong>Ajouter un antécédent</strong></td>
+                <td colspan="2"><strong>Ajouter un antécédent</strong></td>
+                <td><label for="rques" title="Remarques sur l'antécédents">Remarques :</label></td>
               </tr>
               <tr>
-                <th>Date:</th>
+                <th><label for="date" title="Date de l'antécédent">Date :</label></th>
                 <td class="date">
                   <div id="editAntFrm_date_da">{$today|date_format:"%d/%m/%Y"}</div>
                   <input type="hidden" name="date" value="{$today}" />
                   <img id="editAntFrm_date_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de début"/>
                 </td>
-                <td>Remarques</td>
+                <td rowspan="2">
+                  <textarea name="rques"></textarea>
+                </td>
               </tr>
               <tr>
-                <th>Type:</th>
+                <th><label for="type" title="Type d'antécédent">Type :</label></th>
                 <td>
                   <select name="type">
                     <option value="trans">Transfusion</option>
@@ -533,14 +425,11 @@ function pageMain() {
                     <option value="med">Medical</option>
                   </select>
                 </td>
-                <td rowspan="2">
-                  <textarea name="rques"></textarea>
-                </td>
               </tr>
               <tr>
-                <td class="button" colspan="2">
+                <td class="button" colspan="3">
                   <button type="submit">Ajouter</button>
-                <td>
+                </td>
               </tr>
             </table>
             </form>

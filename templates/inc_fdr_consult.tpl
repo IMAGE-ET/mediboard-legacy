@@ -83,11 +83,13 @@ function newExamen(sAction) {
   </tr>
   <tr>
     <td>
-      Examens complémentaires :
-      <select onchange="javascript:newExamen(this.value)">
-        <option value="">&mdash; Choix</option>
-        <option value="exam_audio">Audiogramme</option>
-      </select>
+      <form name="newExamen" action="?m=dPcabinet">
+        <label for="type_examen" title="Type d'examen complémentaire à effectuer">Examens complémentaires :</label>
+        <select name="type_examen" onchange="javascript:newExamen(this.value)">
+          <option value="">&mdash; Choisir un type d'examen</option>
+          <option value="exam_audio">Audiogramme</option>
+        </select>
+      </form>
       <ul>
         {foreach from=$consult->_ref_files item=curr_file}
         <li>
@@ -175,19 +177,19 @@ function newExamen(sAction) {
     </td>
     <td>
       <form name="tarifFrm" action="?m={$m}" method="post" onsubmit="return checkTarif()">
-        <input type="hidden" name="m" value="{$m}" />
-        <input type="hidden" name="del" value="0" />
-        <input type="hidden" name="dosql" value="do_consultation_aed" />
-        <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-        <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
+
+      <input type="hidden" name="m" value="{$m}" />
+      <input type="hidden" name="del" value="0" />
+      <input type="hidden" name="dosql" value="do_consultation_aed" />
+      <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
+      <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
+      <input type="hidden" name="paye" value="0" />
+      <input type="hidden" name="date_paiement" value="" />
+
       <table class="form">
+        {if !$consult->tarif}
         <tr>
-          {if !$consult->tarif}
-          <th>
-            Choix du tarif :
-            <input type="hidden" name="paye" value="0" />
-            <input type="hidden" name="date_paiement" value="" />
-          </th>
+          <th><label for="choix" title="Type de tarif pour la consultation">Choix du tarif :</label></th>
           <td>
             <select name="choix" onchange="modifTarif()">
               <option value="" selected="selected">&mdash; Choix du tarif &mdash;</option>
@@ -211,7 +213,7 @@ function newExamen(sAction) {
         {/if}
         {if !$consult->paye}
         <tr>
-          <th>Somme à régler :</th>
+          <th><label for="_somme" title="Somme à régler">Somme à régler :</label></th>
           <td>
             <input type="text" size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
             <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
@@ -261,7 +263,7 @@ function newExamen(sAction) {
         </tr>
         {elseif !$consult->paye}
         <tr>
-          <th>Tiers-payant ?</th>
+          <th><label for="_tiers" title="Le règlement s'effectue par tiers-payant">Tiers-payant ?</label></th>
           <td>
             <input type="checkbox" name="_tiers" onchange="putTiers()" />
             <input type="hidden" name="type_tarif" value="" />
