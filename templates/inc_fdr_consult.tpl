@@ -4,10 +4,10 @@
 function cancelTarif() {
   var form = document.tarifFrm;
   form.secteur1.value = 0;
-  form.secteur2.value =0;
+  form.secteur2.value = 0;
   form.tarif.value = "";
-  form.paye.value = 0;
-  form.date_paiement.value = null;
+  form.paye.value = "0";
+  form.date_paiement.value = "";
   form.submit();
 }
 
@@ -33,21 +33,17 @@ function modifTarif() {
    }  
 }
 
+function effectuerReglement() {
+  var form = document.tarifFrm;
+  form.paye.value = "1";
+  form.date_paiement.value = makeDATEFromDate(new Date());
+  form.submit();
+}
+
 function putTiers() {
   var form = document.tarifFrm;
   form.type_tarif.value = form._tiers.checked ? "tiers" : "";
 }
-
-function checkTarif() {
-  var form = document.tarifFrm;
-  if(form.tarif.value == '') {
-    alert('Vous devez choisir un tarif');
-    form.tarif.focus();
-    return false;
-  }
-  return true
-}
-
 
 function editDocument(compte_rendu_id) {
   var url = new Url;
@@ -177,23 +173,21 @@ function newExamen(sAction) {
     
     </td>
     <td>
-      <form name="tarifFrm" action="?m={$m}" method="post" onsubmit="return checkTarif()">
+      <form name="tarifFrm" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
 
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="del" value="0" />
       <input type="hidden" name="dosql" value="do_consultation_aed" />
       <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
       <input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
-      <input type="hidden" name="paye" value="0" />
-      <input type="hidden" name="date_paiement" value="" />
-
+ 
       <table class="form">
         {if !$consult->tarif}
         <tr>
-          <th><label for="choix" title="Type de tarif pour la consultation">Choix du tarif :</label></th>
+          <th><label for="choix" title="Type de tarif pour la consultation. Obligatoire.">Choix du tarif :</label></th>
           <td>
-            <select name="choix" onchange="modifTarif()">
-              <option value="" selected="selected">&mdash; Choix du tarif &mdash;</option>
+            <select name="choix"  title="notNull|str" onchange="modifTarif()">
+              <option value="" selected="selected">&mdash; Choix du tarif</option>
               {if $tarifsChir|@count}
               <optgroup label="Tarifs praticien">
               {foreach from=$tarifsChir item=curr_tarif}
@@ -212,14 +206,16 @@ function newExamen(sAction) {
           </td>
         </tr>
         {/if}
-        {if !$consult->paye}
+        {if $consult->paye == "0"}
         <tr>
-          <th><label for="_somme" title="Somme à régler">Somme à régler :</label></th>
+          <th><label for="_somme" title="Somme à régler. Obligatoire.">Somme à régler :</label></th>
           <td>
-            <input type="text" size="4" name="_somme" value="{$consult->secteur1+$consult->secteur2}" /> €
+            <input type="text" size="4" name="_somme" title="notNull|currency" value="{$consult->secteur1+$consult->secteur2}" /> €
             <input type="hidden" name="secteur1" value="{$consult->secteur1}" />
             <input type="hidden" name="secteur2" value="{$consult->secteur2}" />
             <input type="hidden" name="tarif" value="{if $consult->tarif != null}{$consult->tarif}{/if}" />
+            <input type="hidden" name="paye" value="0" />
+            <input type="hidden" name="date_paiement" value="" />
           </td>
         </tr>
         {else}
@@ -239,12 +235,10 @@ function newExamen(sAction) {
           </td>
         </tr>
         {/if}
-        {if $consult->tarif && !$consult->paye}
+        {if $consult->tarif && $consult->paye == "0"}
         <tr>
           <th>
-            Moyen de paiement :
-            <input type="hidden" name="paye" value="1" />
-            <input type="hidden" name="date_paiement" value="{$today}" />
+            <label for="type_tarif" title="Moyen de paiement">Moyen de paiement :</label>
           </th>
           <td>
             <select name="type_tarif">
@@ -258,11 +252,11 @@ function newExamen(sAction) {
         </tr>
         <tr>
           <td colspan="2" class="button">
-            <input type="submit" value="Reglement effectué" />
+            <input type="button" value="Règlement effectué" onclick="effectuerReglement()" />
             <input type="button" value="Annuler" onclick="cancelTarif()"/>
           </td>
         </tr>
-        {elseif !$consult->paye}
+        {elseif $consult->paye == "0"}
         <tr>
           <th><label for="_tiers" title="Le règlement s'effectue par tiers-payant">Tiers-payant ?</label></th>
           <td>
