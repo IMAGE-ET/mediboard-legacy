@@ -1,7 +1,5 @@
 <!-- $Id$ -->
 
-{$today}
-
 <table class="main">
   <tr>
     <td class="halfPane">
@@ -81,7 +79,7 @@
           <td>{$curr_consult->secteur2} €</td>
           <td>{if $etat == -1 && !$curr_consult->paye}0{else}{$curr_consult->secteur1+$curr_consult->secteur2}{/if} €</td>
           <td>
-            <form name="tarifFrm" action="?m={$m}" method="POST" onsubmit="return checkTarif()">
+            <form name="tarifFrm" action="?m={$m}" method="POST">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="_dialog" value="print_rapport" />
@@ -90,7 +88,7 @@
             <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
             {if $curr_consult->paye}
               <input type="hidden" name="paye" value="0" />
-              <input type="hidden" name="date_paiement" value="null" />
+              <input type="hidden" name="date_paiement" value="" />
               <button type="submit">Annuler</button>
             {else}
               <input type="hidden" name="paye" value="1" />
