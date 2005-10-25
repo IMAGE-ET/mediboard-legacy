@@ -128,11 +128,11 @@ function pageMain() {
       	    <textarea name="motif" rows="5">{$consult->motif}</textarea>
       	    {else}
       	    <textarea name="motif" rows="5">Intervention le {$consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}
-            Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
-            {$consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}
-            {if $consult_anesth->_ref_operation->CCAM_code2}
-            + <i>{$consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}{/if}</textarea>
-      	    {/if}
+Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
+{foreach from=$consult_anesth->_ref_operation->_ext_codes_ccam item=curr_code}
+- {$curr_code->libelleLong} ({$curr_code->code})
+{/foreach}</textarea>
+          {/if}
       	  </td>
       	  <td class="text" colspan="2">
       	    <textarea name="traitement" rows="5">{$consult->traitement}</textarea>
@@ -316,10 +316,11 @@ function pageMain() {
           <td class="text">
             Intervention le <strong>{$consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}</strong>
             par le <strong>Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}</strong><br />
-            <em>{$consult_anesth->_ref_operation->_ext_code_ccam->libelleLong}</em>
-            {if $consult_anesth->_ref_operation->CCAM_code2}
-            <br />+ <em>{$consult_anesth->_ref_operation->_ext_code_ccam2->libelleLong}</em>
-            {/if}
+            <ul>
+              {foreach from=$consult_anesth->_ref_operation->_ext_codes_ccam item=curr_code}
+              <li><em>{$curr_code->libelleLong}</em> ({$curr_code->code})</li>
+              {/foreach}
+            </ul>
           </td>
           <td class="text">
             <form name="editOpFrm" action="?m=dPcabinet" method="post">

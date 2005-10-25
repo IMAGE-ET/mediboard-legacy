@@ -155,19 +155,15 @@ function printDocument(doc_id) {
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
-          <th>CCAM 1 :</th>
+          <th>Actes Médicaux :</th>
           <td class="text">
-            {$curr_op->_ext_code_ccam->code} : {$curr_op->_ext_code_ccam->libelleLong}
+            <ul>
+              {foreach from=$curr_op->_ext_codes_ccam item=curr_code}
+              <li><strong>{$curr_code->code}</strong> : {$curr_code->libelleLong}</li>
+              {/foreach}
+            </ul>
           </td>
         </tr>
-        {if $curr_op->CCAM_code2}
-        <tr class="op{$curr_op->operation_id}">
-          <th>CCAM 2 :</th>
-          <td class="text">
-            {$curr_op->_ext_code_ccam2->code} : {$curr_op->_ext_code_ccam2->libelleLong}
-          </td>
-        </tr>
-        {/if}
         <tr class="op{$curr_op->operation_id}">
           <th>Documents créés :</th>
           <td>
@@ -228,26 +224,19 @@ function printDocument(doc_id) {
             </strong>
           </td>
         </tr>
-        {if $curr_hospi->CCAM_code}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <th>CCAM 1 :</th>
+          <th>Actes Médicaux :</th>
           <td class="text">
-            {$curr_hospi->_ext_code_ccam->code} : {$curr_hospi->_ext_code_ccam->libelleLong}
+            <ul>
+              {foreach from=$curr_hospi->_ext_codes_ccam item=curr_code}
+              <li><strong>{$curr_code->code}</strong> : {$curr_code->libelleLong}</li>
+              {foreachelse}
+              <li>Simple observation</li>
+              {/foreach}
+            </ul>
           </td>
         </tr>
-        {else}
-        <tr class="hospi{$curr_hospi->operation_id}">
-          <td class="text" colspan="2">Simple observation</td>
-        </tr>
-        {/if}
-        {if $curr_hospi->CCAM_code2}
-        <tr class="hospi{$curr_hospi->operation_id}">
-          <th>CCAM 1 :</th>
-          <td class="text">
-            {$curr_hospi->_ext_code_ccam2->code} : {$curr_hospi->_ext_code_ccam2->libelleLong}
-          </td>
-        </tr>
-        {/if} 
+        
         {if $chirSel}
         <tr class="hospi{$curr_hospi->operation_id}">
           <th>Pack de sortie :</th>
