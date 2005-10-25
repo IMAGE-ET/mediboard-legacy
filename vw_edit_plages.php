@@ -26,10 +26,11 @@ $planning = new Cplanning($day, $month, $year);
 
 <script language="javascript">
 function popPlanning(debut) {
-  var url = "index.php?m=dPbloc&a=view_planning&dialog=1";
-  url += "&deb=" + debut;
-  url += "&fin=" + debut;
-  popup(700, 550, url, "Planning");
+  var url = new Url;
+  url.setModuleAction("dPbloc", "view_planning");
+  url.addParam("deb", debut);
+  url.addParam("fin", debut);
+  url.popup(700, 550, "Planning");
 }
 </script>
 

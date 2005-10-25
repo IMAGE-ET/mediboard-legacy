@@ -61,25 +61,14 @@ function printAdmission(id) {
 		  <td>{$curr_op->time_operation|date_format:"%Hh%M"}</td>
 		  {/if}
 		  <td class="text">
-		    {if !$curr_op->_ext_code_ccam->_code7}
-		    <strong>
-		    {/if}
-		    {$curr_op->_ext_code_ccam->libelleLong|truncate:80:"...":false}
-		    <i>({$curr_op->CCAM_code})</i>
-		    {if !$curr_op->_ext_code_ccam->_code7}
-		    </strong>
-		    {/if}
-		    {if $curr_op->CCAM_code2}
-		    {if !$curr_op->_ext_code_ccam2->_code7}
-		    <b>
-		    {/if}
-		    <br />{$curr_op->_ext_code_ccam2->libelleLong|truncate:80:"...":false}
-		    <i>({$curr_op->CCAM_code2})</i>
-		    {if !$curr_op->_ext_code_ccam2->_code7}
-		    </b>
-		    {/if}
-		    {/if}
-		  </td>
+        {foreach from=$curr_op->_ext_codes_ccam item=curr_code}
+        {if !$curr_code->_code7}<strong>{/if}
+        {$curr_code->libelleLong|truncate:80:"...":false}
+        <em>({$curr_code->code})</em>
+        {if !$curr_code->_code7}</strong>{/if}
+        <br/>
+        {/foreach}
+      </td>
 		  <td>{$curr_op->cote|truncate:1:""|capitalize}</td>
           <td>{if $curr_op->_lu_type_anesth != ''}{$curr_op->_lu_type_anesth}{else}Non Définie{/if}</td>
           <td>{$curr_op->type_adm|truncate:1:""|capitalize}</td>
@@ -89,12 +78,12 @@ function printAdmission(id) {
 		    {$curr_op->materiel|nl2br}
 		  </td>
 		  <td>
-		    <a href="#" onclick="printAdmission({$curr_op->operation_id})">
+		    <a href="javascript:printAdmission({$curr_op->operation_id})">
 		      {$curr_op->_ref_pat->_view}
 		    </a>
 		  </td>
 		  <td>
-		    <a href="#" onclick="printAdmission({$curr_op->operation_id})">
+		    <a href="javascript:printAdmission({$curr_op->operation_id})">
 		      {$curr_op->_ref_pat->_age} ans
 		    </a>
 		  </td>
