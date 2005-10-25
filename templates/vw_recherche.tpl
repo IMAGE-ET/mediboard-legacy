@@ -90,10 +90,10 @@ function pageMain() {
         <tr>
           <td>{$curr_aff->_ref_operation->_ref_pat->_view}</td>
           <td class="text">
-          <strong>{$curr_aff->_ref_operation->_ext_code_ccam->code}</strong> :
-          {$curr_aff->_ref_operation->_ext_code_ccam->libelleLong}
-          {if $curr_aff->_ref_operation->CCAM_code2}
+          {foreach from=$toto->_ext_codes_ccam item=curr_code}
+          <strong>{$curr_code->code}</strong> : {$curr_code->libelleLong}
           <br />
+          {/foreach}    
           <strong>{$curr_aff->_ref_operation->_ext_code_ccam2->code}</strong> :
           {$curr_aff->_ref_operation->_ext_code_ccam2->libelleLong}
           {/if}

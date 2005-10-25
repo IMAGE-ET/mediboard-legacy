@@ -376,13 +376,10 @@ function popPlanning() {
           </tr>
           <tr class="dates">
             <td class="text" colspan="2">
-              <em>{$curr_affectation->_ref_operation->_ext_code_ccam->code}</em>:
-              {$curr_affectation->_ref_operation->_ext_code_ccam->libelleLong}
-              {if $curr_affectation->_ref_operation->CCAM_code2}
+              {foreach from=$curr_affectation->_ref_operation->_ext_codes_ccam item=curr_code}
+              <em>{$curr_code->code}</em> : {$curr_code->libelleLong}
               <br />
-              <em>{$curr_affectation->_ref_operation->_ext_code_ccam2->code}</em>:
-              {$curr_affectation->_ref_operation->_ext_code_ccam2->libelleLong}
-              {/if}         
+              {/foreach}
             </td>
           </tr>
           <tr class="dates">
@@ -534,13 +531,9 @@ function popPlanning() {
       </tr>
       <tr>
         <td class="date" colspan="2">
-          <em>{$curr_operation->_ext_code_ccam->code}</em>:
-          {$curr_operation->_ext_code_ccam->libelleLong}
-          {if $curr_operation->CCAM_code2}
-          <br />
-          <em>{$curr_operation->_ext_code_ccam2->code}</em>:
-          {$curr_operation->_ext_code_ccam2->libelleLong}
-          {/if}         
+          {foreach from=$curr_operation->_ext_codes_ccam item=curr_code}
+          <em>{$curr_code->code}</em> : {$curr_code->libelleLong}<br />
+          {/foreach}
         </td>
       </tr>
       <tr>
