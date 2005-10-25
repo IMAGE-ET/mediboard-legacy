@@ -51,6 +51,7 @@ function setPat( key, val ) {
     f._pat_name.value = val;
     myNode = document.getElementById("clickPat");
     myNode.innerHTML = "++ Infos patient (cliquez pour afficher) ++";
+    myNode.setAttribute("onclick", "requestInfoPat()");
   }
 }
 
