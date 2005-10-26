@@ -13,6 +13,7 @@ require_once($AppUI->getSystemClass('mbobject'));
 
 require_once($AppUI->getModuleClass('admin'));
 require_once($AppUI->getModuleClass('mediusers', "functions"));
+require_once($AppUI->getModuleClass('dPcompteRendu', "pack"));
 require_once($AppUI->getModuleFunctions('admin'));
 
 $utypes_flip = array_flip($utypes);
@@ -46,6 +47,7 @@ class CMediusers extends CMbObject {
 
   // Object references
   var $_ref_function = null;
+  var $_ref_packs = null;
 
 	function CMediusers() {
 		$this->CMbObject( 'users_mediboard', 'user_id' );
@@ -112,6 +114,13 @@ class CMediusers extends CMbObject {
       'joinfield' => 'anesth_id'
     );
 
+    $tables[] = array (
+      'label' => 'Pack(s) de documents', 
+      'name' => 'pack', 
+      'idfield' => 'pack_id', 
+      'joinfield' => 'chir_id'
+    );
+
     return parent::canDelete($msg, $oid, $tables);
   }
   
@@ -162,6 +171,14 @@ class CMediusers extends CMbObject {
     $this->_ref_function = new CFunctions;
     $this->_ref_function->load($this->function_id);
   }
+
+  function loadRefsBack() {
+    $where = array(
+      "chir_id" => "= '$this->user_id'");
+    $this->_ref_packs = new CPack;
+    $this->_ref_packs = $this->_ref_packs->loadList($where);
+  }
+  
   
   function fillTemplate(&$template) {
   	$this->loadRefsFwd();
