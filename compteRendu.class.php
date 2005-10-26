@@ -101,6 +101,8 @@ class CCompteRendu extends CMbObject {
       case "hospitalisation" :
         $this->_object_className = "COperation";
         break;
+      case "autre" :
+        $this->_object_className = "COperation";
     }
     if($this->object_id == null)
       $this->_view = "Modèle : ";
