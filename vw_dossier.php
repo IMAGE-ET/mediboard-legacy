@@ -37,7 +37,7 @@ $listPrat = $listPrat->loadPraticiens(PERM_READ);
 // Chargement des références du patient
 if($pat_id) {
   
-  // Infos patient complètes (tableau de gauche)
+  // Infos patient complètes (tableau de droite)
   $patient->loadRefs();
   if($patient->_ref_curr_affectation->affectation_id) {
     $patient->_ref_curr_affectation->loadRefsFwd();
@@ -59,38 +59,31 @@ if($pat_id) {
     $patient->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
   }
   
-  // Infos patient du cabinet (tableau de droite)
+  // Infos patient du cabinet (tableau de gauche)
   $patSel->loadRefs();
   foreach($patSel->_ref_consultations as $key => $value) {
-    $patSel->_ref_consultations[$key]->loadRefs();
-    $patSel->_ref_consultations[$key]->_ref_plageconsult->loadRefsFwd();
-    $toDel = true;
-    foreach($listPrat as $key2 => $value2) {
-      if($patSel->_ref_consultations[$key]->_ref_plageconsult->chir_id == $listPrat[$key2]->user_id)
-        $toDel = false;
+    $consultation =& $patSel->_ref_consultations[$key];
+    $consultation->loadRefs();
+    $plageconsult =& $consultation->_ref_plageconsult;
+    $plageconsult->loadRefsFwd();
+    if (!array_key_exists($plageconsult->chir_id, $listPrat)) {
+    	unset($patSel->_ref_consultations[$key]);
     }
-    if($toDel)
-      unset($patSel->_ref_consultations[$key]);
   }
   foreach($patSel->_ref_operations as $key => $value) {
-    $patSel->_ref_operations[$key]->loadRefs();
-    $toDel = true;
-    foreach($listPrat as $key2 => $value2) {
-      if($patSel->_ref_operations[$key]->chir_id == $listPrat[$key2]->user_id)
-        $toDel = false;
-    }
-    if($toDel)
+    $operation =& $patSel->_ref_operations[$key];
+    $operation->loadRefs();
+    if (!array_key_exists($operation->chir_id, $listPrat)) {
       unset($patSel->_ref_operations[$key]);
+    }
   }
   foreach($patSel->_ref_hospitalisations as $key => $value) {
-    $patSel->_ref_hospitalisations[$key]->loadRefs();
-    $toDel = true;
-    foreach($listPrat as $key2 => $value2) {
-      if($patSel->_ref_hospitalisations[$key]->chir_id == $listPrat[$key2]->user_id)
-        $toDel = false;
-    }
-    if($toDel)
+    $hospitalisation =& $patSel->_ref_hospitalisations[$key];
+    $hospitalisation->loadRefs();
+    $hospitalisation->_ref_chir->loadRefs();
+    if (!array_key_exists($hospitalisation->chir_id, $listPrat)) {
       unset($patSel->_ref_hospitalisations[$key]);
+    }
   }
 }
 

@@ -135,7 +135,7 @@ class CFile extends CMbObject {
 			       return false;
 			   }
 		  }
-		  $this->_filepath = "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operations/$this->file_real_filename";
+		  $this->_filepath = "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation/$this->file_real_filename";
 		}
 	// move it
 		$res = move_uploaded_file( $upload['tmp_name'], $this->_filepath );

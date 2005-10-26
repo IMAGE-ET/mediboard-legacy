@@ -15,6 +15,16 @@ function popPat() {
   url.popup(500, 500, 'Patient');
 }
 
+function printPack(hospi_id, pack_id) {
+  if (pack_id) {
+    var url = new Url;
+    url.setModuleAction("dPcompteRendu", "edit_compte_rendu");
+    url.addParam("object_id", hospi_id);
+    url.addParam("pack_id", pack_id);
+    url.popup(700, 600, "Impression de pack");
+  }
+}
+
 function setPat( key, val ) {
   var f = document.patFrm;
 
@@ -32,6 +42,8 @@ function printDocument(doc_id) {
   url.addParam("compte_rendu_id", doc_id);
   url.popup(700, 600, 'Compte-rendu');
 }
+
+
 
 </script>
 {/literal}
@@ -239,12 +251,11 @@ function printDocument(doc_id) {
         
         {if $chirSel}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <th>Pack de sortie :</th>
+          <th>Ajouter un pack :</th>
           <td>
-            <form name="printPackFrm{$curr_hospi->operation_id}" action="?m=dPhospi" method="POST">
-            <select name="pack" onchange="printPack({$curr_hospi->operation_id}, this.form)">
-              <option value="0">&mdash; packs &mdash;</option>
-              {foreach from=$packs item=curr_pack}
+            <select name="pack" onchange="printPack({$curr_hospi->operation_id}, this.value)">
+              <option value="">&mdash; chosir un pack</option>
+              {foreach from=$curr_hospi->_ref_chir->_ref_packs item=curr_pack}
               <option value="{$curr_pack->pack_id}">{$curr_pack->nom}</option>
               {/foreach}
             </select>
