@@ -18,9 +18,10 @@
 		  <td class="text">Dr. {$curr_op->_ref_chir->_view}</td>
 		  <td class="text">{$curr_op->_ref_pat->_view}</td>
 		  <td class="text">
-		    {$curr_op->_ext_code_ccam->code}
-		    (Côté : {$curr_op->cote}) :
-		    <em>{$curr_op->_ext_code_ccam->libelleLong}</em> 
+        {foreach from=$curr_op->_ext_codes_ccam item=curr_code}
+        {$curr_code->code} : <em>{$curr_code->libelleLong}</em><br />
+        {/foreach}
+        (Côté : {$curr_op->cote})
 		  <td class="text">{$curr_op->materiel|nl2br}</td>
 		</tr>
 		{/foreach}
@@ -44,9 +45,10 @@
 		  <td class="text">Dr. {$curr_op->_ref_chir->_view}</td>
 		  <td class="text">{$curr_op->_ref_pat->_view}</td>
 		  <td class="text">
-		    {$curr_op->_ext_code_ccam->code}
-		    (Côté : {$curr_op->cote}) :
-		    <em>{$curr_op->_ext_code_ccam->libelleLong}</em> 
+        {foreach from=$curr_op->_ext_codes_ccam item=curr_code}
+        {$curr_code->code} : <em>{$curr_code->libelleLong}</em><br />
+        {/foreach}
+        (Côté : {$curr_op->cote})
 		  </td>
 		  <td class="text">{$curr_op->materiel|nl2br}</td>
 		</tr>
