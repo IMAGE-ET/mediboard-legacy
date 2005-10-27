@@ -387,8 +387,13 @@ class COperation extends CMbObject {
     $this->_ref_affectations = new CAffectation();
     $this->_ref_affectations = $this->_ref_affectations->loadList($where, $order);
 
-    $this->_ref_first_affectation =& count($this->_ref_affectations) > 0 ? end($this->_ref_affectations) : new CAffectation;
-    $this->_ref_last_affectation =& count($this->_ref_affectations) > 0 ? reset($this->_ref_affectations) : new CAffectation;
+    if(count($this->_ref_affectations) > 0) {
+      $this->_ref_first_affectation =& end($this->_ref_affectations);
+      $this->_ref_last_affectation =& reset($this->_ref_affectations);
+    } else {
+      $this->_ref_first_affectation =& new CAffectation;
+      $this->_ref_last_affectation =& new CAffectation;
+    }
     
     $where = array("operation_id" => "= '$this->operation_id'");
     $this->_ref_actes_ccam = new CActeCCAM;
