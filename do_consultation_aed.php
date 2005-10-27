@@ -34,7 +34,10 @@ if (intval(dPgetParam($_POST, 'del'))) {
     mbSetValueToSession("consultation_id");
 } else {
   $do->doStore();
-  $do->redirectStore = "m=dPcabinet&consultation_id=".$do->_obj->consultation_id;
+  if(isset($_POST["_dialog"]))
+    $do->redirect = "m=dPcabinet&dialog=1&a=".$_POST["_dialog"];
+  else
+    $do->redirectStore = "m=dPcabinet&consultation_id=".$do->_obj->consultation_id;
   if(@$_POST["_operation_id"]) {
     $consultAnesth = new CConsultAnesth;
     $where = array();
