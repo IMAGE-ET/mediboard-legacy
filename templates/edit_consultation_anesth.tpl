@@ -31,7 +31,9 @@ function selectCim10(code) {
 
 function putCim10(code) {
   var oForm = document.editAnesthFrm;
-  var aCim10 = oForm.listCim10.value.split("|");
+  aCim10 = oForm.listCim10.value.split("|");
+  // Si la chaine est vide, il crée un tableau à un élément vide donc :
+  aCim10.removeByValue("");
   aCim10.push(code);
   aCim10.removeDuplicates();
   oForm.listCim10.value = aCim10.join("|");
@@ -360,7 +362,7 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
               </tr>
               {foreach from=$curr_cat item=curr_code}
               <tr class="{$cat}">
-                <td>
+                <td class="text">
                   <button type="button" onclick="selectCim10('{$curr_code->code}')">
                     <img src="modules/dPcabinet/images/tick.png" />
                   </button>
