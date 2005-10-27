@@ -81,7 +81,7 @@ function setColor(color) {
           <th><label for="color" title="Couleur de visualisation des fonctions dans les plannings">Couleur:</label></th>
           <td>
             <span id="test" title="test" style="background: #{$userfunction->color};">
-            <a href="#" onClick="popColor()">cliquez ici</a>
+            <a href="javascript:popColor()">cliquez ici</a>
             </span>
             <input type="hidden" name="color" value="{$userfunction->color}" />
           </td>
