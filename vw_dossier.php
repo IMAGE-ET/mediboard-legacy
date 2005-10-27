@@ -18,43 +18,41 @@ require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
-// L'utilisateur est-il praticien?
-$chir = new CMediusers();
-$mediuser = new CMediusers();
-$mediuser->load($AppUI->user_id);
-if ($mediuser->isPraticien()) {
-  $chir = $mediuser;
-}
 
-$chirSel = mbGetValueFromGetOrSession("chirSel", $chir->user_id);
-$pat_id = mbGetValueFromGetOrSession("patSel", 0);
-$patSel = new CPatient;
-$patSel->load($pat_id);
+$pat_id = mbGetValueFromGetOrSession("pat_id", 0);
+$patient = new CPatient;
+$patient->load($pat_id);
 $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_READ);
 
 // Chargement des références du patient
-if($pat_id) {
-  $patSel->loadRefs();
-  foreach($patSel->_ref_consultations as $key => $value) {
-    $patSel->_ref_consultations[$key]->loadRefs();
-    $patSel->_ref_consultations[$key]->_ref_plageconsult->loadRefsFwd();
+if($patient->patient_id) {
+  $patient->loadRefs();
+  foreach($patient->_ref_consultations as $key => $value) {
+    $patient->_ref_consultations[$key]->loadRefs();
   }
-  foreach($patSel->_ref_operations as $key => $value) {
-    $patSel->_ref_operations[$key]->loadRefs();
+  foreach($patient->_ref_operations as $key => $value) {
+    $patient->_ref_operations[$key]->loadRefs();
+    $patient->_ref_operations[$key]->_ref_plageop->loadRefsFwd();
+    if($patient->_ref_operations[$key]->_ref_consult_anesth->consultation_anesth_id) {
+      $patient->_ref_operations[$key]->_ref_consult_anesth->loadRefsFwd();
+      $patient->_ref_operations[$key]->_ref_consult_anesth->_ref_plageconsult->loadRefsFwd();
+    }
   }
-  foreach($patSel->_ref_hospitalisations as $key => $value) {
-    $patSel->_ref_hospitalisations[$key]->loadRefs();
+  foreach($patient->_ref_hospitalisations as $key => $value) {
+    $patient->_ref_hospitalisations[$key]->loadRefs();
   }
 }
+
+$canEditCabinet = !getDenyEdit("dPcabinet");
 
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
-$smarty->assign('patSel', $patSel);
-$smarty->assign('chirSel', $chirSel);
+$smarty->assign('patient', $patient);
 $smarty->assign('listPrat', $listPrat);
+$smarty->assign('canEditCabinet', $canEditCabinet);
 
 $smarty->display('vw_dossier.tpl');
 
