@@ -116,8 +116,7 @@ function pageMain() {
       <table class="tbl">
         <tr>
           <th>Patient</th>
-          <th>code CCAM</th>
-          <th>Description</th>
+          <th>Actes médicaux</th>
           <th>Heure prévue</th>
           <th>Durée</th>
           <th>Compte-rendu</th>
@@ -129,9 +128,18 @@ function pageMain() {
         </tr>
         {foreach from=$curr_plage->_ref_operations item=curr_op}
         <tr>
-          <td class="text"><a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$curr_op->_ref_pat->patient_id}">{$curr_op->_ref_pat->_view}</a></td>
-          <td><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->_ext_code_ccam->code}{if $curr_op->CCAM_code2}<br />+ {$curr_op->_ext_code_ccam2->code}{/if}</a></td>
-          <td class="text"><a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">{$curr_op->_ext_code_ccam->libelleLong}{if $curr_op->CCAM_code2}<br />+ {$curr_op->_ext_code_ccam2->libelleLong}{/if}</a></td>
+          <td class="text">
+            <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$curr_op->_ref_pat->patient_id}">
+              {$curr_op->_ref_pat->_view}
+            </a>
+          </td>
+          <td class="text">
+            <a href="index.php?m={$m}&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+              {foreach from=$curr_op->_ext_codes_ccam item=curr_code}
+              <strong>{$curr_code->code}</strong> : {$curr_code->libelleLong}<br />
+              {/foreach}
+            </a>
+          </td>
           <td style="text-align: center;">
             {if $curr_op->annulee}
             [ANNULEE]

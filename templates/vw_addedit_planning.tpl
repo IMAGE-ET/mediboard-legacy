@@ -179,6 +179,7 @@ function setProtocole(
     chir_last_name,
     chir_first_name,
     prot_CCAM_code,
+    prot_libelle,
     prot_hour_op,
     prot_min_op,
     prot_examen,
@@ -194,11 +195,17 @@ function setProtocole(
   form.chir_id.value       = chir_id;
   form._chir_name.value    = chir_last_name + " " + chir_first_name;
   form.CCAM_code.value     = prot_CCAM_code;
-  form._hour_op.value      = prot_hour_op;
-  form._min_op.value       = prot_min_op;
+  form.libelle.value       = prot_libelle;
+
+  // Hospitalisation ?
+  if (form._hour_op && form._min_op) {
+    form._hour_op.value      = prot_hour_op;
+    form._min_op.value       = prot_min_op;
+    form.materiel.value      = prot_materiel;
+    form.convalescence.value = prot_convalescence;
+  }
+  
   form.examen.value        = prot_examen;
-  form.materiel.value      = prot_materiel;
-  form.convalescence.value = prot_convalescence;
   form.depassement.value   = prot_depassement;
   form.type_adm.value      = prot_type_adm;
   form.duree_hospi.value   = prot_duree_hospi;

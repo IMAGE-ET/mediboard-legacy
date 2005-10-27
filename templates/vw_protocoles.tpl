@@ -5,6 +5,7 @@ function setClose(user_id,
                   user_last_name,
                   user_first_name,
                   CCAM_code,
+                  libelle,
                   _hour_op,
                   _min_op,
                   examen,
@@ -18,6 +19,7 @@ function setClose(user_id,
                              user_last_name,
                              user_first_name,
                              CCAM_code,
+                             libelle,
                              _hour_op,
                              _min_op,
                              examen,
@@ -57,7 +59,7 @@ function setClose(user_id,
           <th>Code CCAM:</th>
           <td>
             <select name="CCAM_code" onchange="this.form.submit()">
-              <option value="" >&mdash; Tous les codes &mdash;</option>
+              <option value="" >&mdash; Tous les codes</option>
               {foreach item=curr_code from=$codes}
               <option value="{$curr_code.CCAM_code}" {if $CCAM_code == $curr_code.CCAM_code} selected="selected" {/if}>
                 {$curr_code.CCAM_code} ({$curr_code.nb_protocoles})
@@ -88,20 +90,7 @@ function setClose(user_id,
         <tr>    
           <td class="text">
             {if $dialog}
-            <a href="#" onclick="setClose('{$curr_protocole->_ref_chir->user_id}',
-                                '{$curr_protocole->_ref_chir->_user_last_name|escape:javascript}',
-                                '{$curr_protocole->_ref_chir->_user_first_name|escape:javascript}',
-                                '{$curr_protocole->CCAM_code}',
-                                '{$curr_protocole->_hour_op}',
-                                '{$curr_protocole->_min_op}',
-                                '{$curr_protocole->examen|escape:javascript}',
-                                '{$curr_protocole->materiel|escape:javascript}',
-                                '{$curr_protocole->convalescence|escape:javascript}',
-                                '{$curr_protocole->depassement}',
-                                '{$curr_protocole->type_adm}',
-                                '{$curr_protocole->duree_hospi}',
-                                '{$curr_protocole->rques|escape:javascript}')">
-            {else}
+            <a href="javascript:setClose('{$curr_protocole->_ref_chir->user_id}','{$curr_protocole->_ref_chir->_user_last_name|escape:javascript}','{$curr_protocole->_ref_chir->_user_first_name|escape:javascript}','{$curr_protocole->CCAM_code}','{$curr_protocole->libelle}','{$curr_protocole->_hour_op}','{$curr_protocole->_min_op}','{$curr_protocole->examen|escape:javascript}','{$curr_protocole->materiel|escape:javascript}','{$curr_protocole->convalescence|escape:javascript}','{$curr_protocole->depassement}','{$curr_protocole->type_adm}','{$curr_protocole->duree_hospi}','{$curr_protocole->rques|escape:javascript}')">            {else}
             <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab={$tab}{/if}&amp;protocole_id={$curr_protocole->operation_id}">
             {/if}
               <strong>{$curr_protocole->_ref_chir->_view} &mdash; {$curr_protocole->_ext_code_ccam->code}</strong>

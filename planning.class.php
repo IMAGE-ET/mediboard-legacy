@@ -73,7 +73,7 @@ class COperation extends CMbObject {
   var $_min_adm = null;
   var $_entree_adm = null;
   var $_sortie_adm = null;
-  var $_codes_ccam = null;
+  var $_codes_ccam = array();
   
   // Shortcut fields
   var $_datetime = null;
@@ -85,12 +85,12 @@ class COperation extends CMbObject {
   var $_ref_pat = null;
   var $_ref_chir = null;
   var $_ref_plageop = null;
-  var $_ref_files = null;
-  var $_ref_affectations = null;
+  var $_ref_files = array();
+  var $_ref_affectations = array();
   var $_ref_first_affectation = null;
   var $_ref_last_affectation = null; 
-  var $_ref_actes_ccam = null; 
-  var $_ref_documents = null;
+  var $_ref_actes_ccam = array(); 
+  var $_ref_documents = array();
   
   // External references
   var $_ext_code_ccam = null;
@@ -228,10 +228,10 @@ class COperation extends CMbObject {
   
   function updateFormFields() {
     parent::updateFormFields();
-    $this->_codes_ccam = array();
-    $this->_codes_ccam[] = $this->CCAM_code;
+    
+    $this->_codes_ccam[0] = $this->CCAM_code;
     if ($this->CCAM_code2) {
-    	$this->_codes_ccam[] = $this->CCAM_code2;
+    	$this->_codes_ccam[1] = $this->CCAM_code2;
     }
     
     $this->_hour_op = intval(substr($this->temp_operation, 0, 2));
@@ -337,7 +337,7 @@ class COperation extends CMbObject {
   function loadRefCCAM() {
     $this->_ext_code_ccam = new CCodeCCAM($this->CCAM_code);
     $this->_ext_code_ccam->LoadLite();
-    
+
     if (!$this->plageop_id && $this->pat_id && !$this->CCAM_code) {
       $this->_ext_code_ccam->libelleCourt = "Simple surveillance";
       $this->_ext_code_ccam->libelleLong = "Simple surveillance";
@@ -345,17 +345,17 @@ class COperation extends CMbObject {
 
     if ($this->libelle !== null && $this->libelle != "") {
       $this->_ext_code_ccam->libelleCourt = "<em>[$this->libelle]</em><br />".$this->_ext_code_ccam->libelleCourt;
-      $this->_ext_code_ccam->libelleLong = "<em>[ $this->libelle]</em><br />".$this->_ext_code_ccam->libelleLong;
+      $this->_ext_code_ccam->libelleLong = "<em>[$this->libelle]</em><br />".$this->_ext_code_ccam->libelleLong;
     }
-
+    
     $this->_ext_code_ccam2 = new CCodeCCAM($this->CCAM_code2);
     if ($this->CCAM_code2 != null && $this->CCAM_code2 != "") {
       $this->_ext_code_ccam2->LoadLite();
     }
     
-    $this->_ext_codes_ccam[] =& $this->_ext_code_ccam;
+    $this->_ext_codes_ccam[0] =& $this->_ext_code_ccam;
     if ($this->CCAM_code2) {
-      $this->_ext_codes_ccam[] =& $this->_ext_code_ccam2;
+      $this->_ext_codes_ccam[1] =& $this->_ext_code_ccam2;
     }
   }
   
@@ -497,10 +497,11 @@ class COperation extends CMbObject {
     $template->addProperty("Opération - Anesthésiste - prénom", $this->_ref_plageop->_ref_anesth->_user_first_name);
     $template->addProperty("Opération - Anesthésie", $this->_lu_type_anesth);
     $template->addProperty("Opération - libellé", $this->libelle);
-    $template->addProperty("Opération - CCAM - code", $this->_ext_code_ccam->code);
-    $template->addProperty("Opération - CCAM - description", $this->_ext_code_ccam->libelleLong);
-    $template->addProperty("Opération - CCAM2 - code", $this->_ext_code_ccam2->code);
-    $template->addProperty("Opération - CCAM2 - description", $this->_ext_code_ccam2->libelleLong);
+    $template->addProperty("Opération - CCAM - code"        , @$this->_ext_codes_ccam[0]->code);
+    $template->addProperty("Opération - CCAM - description" , @$this->_ext_codes_ccam[0]->libelleLong);
+    $template->addProperty("Opération - CCAM2 - code"       , @$this->_ext_codes_ccam[1]->code);
+    $template->addProperty("Opération - CCAM2 - description", @$this->_ext_codes_ccam[1]->libelleLong);
+    $template->addProperty("Opération - CCAM complet", implode(" - ", $this->_codes_ccam));
     $template->addProperty("Opération - salle", $this->_ref_plageop->_ref_salle->nom);
     $template->addProperty("Opération - côté", $this->cote);
     $template->addProperty("Opération - date", mbTranformTime(null, $this->_ref_plageop->date, $dateFormat));
