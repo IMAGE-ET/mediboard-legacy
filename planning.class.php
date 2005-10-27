@@ -95,8 +95,6 @@ class COperation extends CMbObject {
   var $_ref_documents = array();
   
   // External references
-  var $_ext_code_ccam = null;
-  var $_ext_code_ccam2 = null;
   var $_ext_codes_ccam = null;
 
   function COperation() {
@@ -316,7 +314,6 @@ class COperation extends CMbObject {
       $this->delAff();
     
     return $msg;
-    
   }
   
   function loadRefChir() {
@@ -336,38 +333,37 @@ class COperation extends CMbObject {
   }
   
   function loadRefCCAM() {
-    $this->_ext_code_ccam = new CCodeCCAM($this->CCAM_code);
-    $this->_ext_code_ccam->LoadLite();
+    $ext_code_ccam = new CCodeCCAM($this->CCAM_code);
+    $ext_code_ccam->LoadLite();
 
     if (!$this->plageop_id && $this->pat_id && !$this->CCAM_code) {
-      $this->_ext_code_ccam->libelleCourt = "Simple surveillance";
-      $this->_ext_code_ccam->libelleLong = "Simple surveillance";
+      $ext_code_ccam->libelleCourt = "Simple surveillance";
+      $ext_code_ccam->libelleLong = "Simple surveillance";
     }
 
     if ($this->libelle !== null && $this->libelle != "") {
-      $this->_ext_code_ccam->libelleCourt = "<em>[$this->libelle]</em><br />".$this->_ext_code_ccam->libelleCourt;
-      $this->_ext_code_ccam->libelleLong = "<em>[$this->libelle]</em><br />".$this->_ext_code_ccam->libelleLong;
+      $ext_code_ccam->libelleCourt = "<em>[$this->libelle]</em><br />".$ext_code_ccam->libelleCourt;
+      $ext_code_ccam ->libelleLong = "<em>[$this->libelle]</em><br />".$ext_code_ccam->libelleLong;
     }
     
-    $this->_ext_code_ccam2 = new CCodeCCAM($this->CCAM_code2);
+    $this->_ext_codes_ccam[0] =& $ext_code_ccam;
+
     if ($this->CCAM_code2 != null && $this->CCAM_code2 != "") {
-      $this->_ext_code_ccam2->LoadLite();
-    }
-    
-    $this->_ext_codes_ccam[0] =& $this->_ext_code_ccam;
-    if ($this->CCAM_code2) {
-      $this->_ext_codes_ccam[1] =& $this->_ext_code_ccam2;
+      $ext_code_ccam2 = new CCodeCCAM($this->CCAM_code2);
+      $ext_code_ccam2->LoadLite();
+      $this->_ext_codes_ccam[1] =& $ext_code_ccam2;
     }
   }
   
   function loadRefsConsultAnesth() {
     $this->_ref_consult_anesth = new CConsultAnesth();
     $where = array();
-    $where["operation_id"] = $this->operation_id;
+    $where["operation_id"] = "= '$this->operation_id'";
     $this->_ref_consult_anesth->loadObject($where);
   }
   
   function loadRefsFwd() {
+    $this->loadRefsConsultAnesth();
     $this->loadRefChir();
     $this->loadRefPat();
     $this->loadRefPlageOp();

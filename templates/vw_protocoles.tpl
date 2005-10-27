@@ -93,9 +93,16 @@ function setClose(user_id,
             <a href="javascript:setClose('{$curr_protocole->_ref_chir->user_id}','{$curr_protocole->_ref_chir->_user_last_name|escape:javascript}','{$curr_protocole->_ref_chir->_user_first_name|escape:javascript}','{$curr_protocole->CCAM_code}','{$curr_protocole->libelle}','{$curr_protocole->_hour_op}','{$curr_protocole->_min_op}','{$curr_protocole->examen|escape:javascript}','{$curr_protocole->materiel|escape:javascript}','{$curr_protocole->convalescence|escape:javascript}','{$curr_protocole->depassement}','{$curr_protocole->type_adm}','{$curr_protocole->duree_hospi}','{$curr_protocole->rques|escape:javascript}')">            {else}
             <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab={$tab}{/if}&amp;protocole_id={$curr_protocole->operation_id}">
             {/if}
-              <strong>{$curr_protocole->_ref_chir->_view} &mdash; {$curr_protocole->_ext_code_ccam->code}</strong>
+              <strong>
+                {$curr_protocole->_ref_chir->_view} 
+                {foreach from=$curr_protocole->_ext_codes_ccam item=curr_code}
+                &mdash; {$curr_code->code}
+                {/foreach}
+              </strong>
             </a>
-            {$curr_protocole->_ext_code_ccam->libelleLong}
+            {foreach from=$curr_protocole->_ext_codes_ccam item=curr_code}
+            {$curr_code->libelleLong} <br />
+            {/foreach}
           </td>
         </tr>
         {/foreach}
@@ -112,26 +119,28 @@ function setClose(user_id,
         </tr>
 
         <tr>
-          <th>Chirurgien:</th>
+          <th>Chirurgien :</th>
           <td colspan="3"><strong>{$protSel->_ref_chir->_view}</strong></td>
         </tr>
         
+        {foreach from=$protSel->_ext_codes_ccam item=curr_code}
         <tr>
-          <th>Code CCAM:</th>
-          <td class="text"><strong>{$protSel->_ext_code_ccam->code}</strong><br />{$protSel->_ext_code_ccam->libelleLong}</td>
+          <th>Acte Médical :</th>
+          <td class="text"><strong>{$curr_code->code}</strong><br />{$curr_code->libelleLong}</td>
         </tr>
+        {/foreach}
         
         <tr>
-          <th>Temps opératoire</th>
+          <th>Temps opératoire :</th>
           <td>{$protSel->_hour_op}h{if $protSel->_min_op}{$protSel->_min_op}{/if}</td>
         </tr>
         
-		{if $protSel->depassement}
+		    {if $protSel->depassement}
         <tr>	
           <th>Dépassement d'honoraire:</th>
           <td>{$protSel->depassement}€</td>
-		<tr>
-		{/if}
+		    <tr>
+		    {/if}
 
         {if $protSel->examen}
         <tr>
