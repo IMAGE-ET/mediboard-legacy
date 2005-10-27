@@ -10,13 +10,14 @@
 require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
-require_once( $AppUI->getModuleClass('dPbloc', 'plagesop') );
-require_once( $AppUI->getModuleClass('dPccam', 'acte') );
-require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
-require_once( $AppUI->getModuleClass('dPhospi', 'affectation') );
-require_once( $AppUI->getModuleClass('dPplanningOp', 'pathologie') );
-require_once( $AppUI->getModuleClass('dPsalleOp', 'acteccam') );
+require_once( $AppUI->getModuleClass('dPpatients'  , 'patients'     ) );
+require_once( $AppUI->getModuleClass('dPbloc'      , 'plagesop'     ) );
+require_once( $AppUI->getModuleClass('dPccam'      , 'acte'         ) );
+require_once( $AppUI->getModuleClass('dPcabinet'   , 'consultAnesth') );
+require_once( $AppUI->getModuleClass('dPcabinet'   , 'files'        ) );
+require_once( $AppUI->getModuleClass('dPhospi'     , 'affectation'  ) );
+require_once( $AppUI->getModuleClass('dPplanningOp', 'pathologie'   ) );
+require_once( $AppUI->getModuleClass('dPsalleOp'   , 'acteccam'     ) );
 
 class COperation extends CMbObject {
   // DB Table key
@@ -85,6 +86,7 @@ class COperation extends CMbObject {
   var $_ref_pat = null;
   var $_ref_chir = null;
   var $_ref_plageop = null;
+  var $_ref_consult_anesth = null;
   var $_ref_files = array();
   var $_ref_affectations = array();
   var $_ref_first_affectation = null;
@@ -330,7 +332,6 @@ class COperation extends CMbObject {
   function loadRefPlageOp() {
     $this->_ref_plageop = new CPlageOp;
     $this->_ref_plageop->load($this->plageop_id);
-    
     $this->_datetime = $this->_ref_plageop->date . " " . $this->time_operation;
   }
   
@@ -357,6 +358,13 @@ class COperation extends CMbObject {
     if ($this->CCAM_code2) {
       $this->_ext_codes_ccam[1] =& $this->_ext_code_ccam2;
     }
+  }
+  
+  function loadRefsConsultAnesth() {
+    $this->_ref_consult_anesth = new CConsultAnesth();
+    $where = array();
+    $where["operation_id"] = $this->operation_id;
+    $this->_ref_consult_anesth->loadObject($where);
   }
   
   function loadRefsFwd() {
@@ -446,8 +454,6 @@ class COperation extends CMbObject {
               $modificateur->_value = "";              
             }
           }
-          
-          
         }
       }
     }
