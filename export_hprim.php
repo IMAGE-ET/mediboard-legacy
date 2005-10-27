@@ -179,8 +179,10 @@ $doc->addElement($intervention, "libelle", substr($mbOp->libelle, 0, 80));
 
 // Ajout des actes CCAM
 $actesCCAM = $doc->addElement($evenementServeurActe, "actesCCAM");
-$doc->addActeCCAM($actesCCAM, $mbOp->_ext_code_ccam, $mbOp);
-$doc->addActeCCAM($actesCCAM, $mbOp->_ext_code_ccam2, $mbOp);
+
+foreach ($mbOp->_ext_codes_ccam as $mbCode) {
+  $doc->addActeCCAM($actesCCAM, $mbCode, $mbOp);
+}
 
 // Traitement final
 $doc->purgeEmptyElements();
