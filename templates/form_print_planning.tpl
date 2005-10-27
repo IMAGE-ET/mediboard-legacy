@@ -14,19 +14,22 @@ function checkForm() {
 }
 
 function popPlanning() {
+  
+  
   var form = document.paramFrm;
 
-  var url = '?m=dPhospi&a=print_planning&dialog=1';
-  url += '&deb=' + form.deb.value;
-  url += '&fin=' + form.fin.value;
-  url += '&ordre=' + form.ordre.value;
-  url += '&service=' + form.service.value;
-  url += '&type=' + form.type.value;
-  url += '&chir=' + form.chir.value;
-  url += '&spe=' + form.spe.value;
-  url += '&conv=' + form.conv.value;
-  
-  popup(700, 550, url, 'Planning');
+  var url = new Url;
+  url.setModuleAction("dPhospi", "print_planning");
+  url.addElement(form.deb);
+  url.addElement(form.fin);
+  url.addElement(form.ordre);
+  url.addElement(form.service);
+  url.addElement(form.type);
+  url.addElement(form.chir);
+  url.addElement(form.spe);
+  url.addElement(form.conv);
+  url.popup(700, 500, "Planning");
+  return;
 }
 
 function pageMain() {
@@ -132,8 +135,10 @@ function pageMain() {
   <tr>
     <td colspan="2">
 
-      <table class="form"><tr><td class="button"><input type="button" value="Afficher" onclick="checkForm()"</td></tr></table>
+      <table class="form"><tr><td class="button"><input type="button" value="Afficher" onclick="checkForm()" /></td></tr></table>
 
     </td>
   </tr>
 </table>
+
+</form>

@@ -1,10 +1,11 @@
 <script language="JavaScript" type="text/javascript">
 {literal}
 
-function popPlanning() {
-  var url = "?m=dPhospi&a=vw_affectations&dialog=1";
-  url += "&date={/literal}{$date_recherche}{literal}";  
-  popup(700, 550, url, 'Planning');
+function popPlanning(date) {
+  var url = new Url;
+  url.setModuleAction("dPhospi", "vw_affectations");
+  url.addParam("date", date);
+  url.popup(700, 550, 'Planning');
 }
 
 function pageMain() {
@@ -34,7 +35,7 @@ function pageMain() {
     </td>
     {else}
     <td class="Pane">
-      <strong><a href="javascript:popPlanning()">Etat des services</a></strong>
+      <strong><a href="javascript:popPlanning('{$date_recherche}')">Etat des services</a></strong>
     </td>
     {/if}
     <td style="text-align: right;">
@@ -90,13 +91,10 @@ function pageMain() {
         <tr>
           <td>{$curr_aff->_ref_operation->_ref_pat->_view}</td>
           <td class="text">
-          {foreach from=$toto->_ext_codes_ccam item=curr_code}
-          <strong>{$curr_code->code}</strong> : {$curr_code->libelleLong}
-          <br />
-          {/foreach}    
-          <strong>{$curr_aff->_ref_operation->_ext_code_ccam2->code}</strong> :
-          {$curr_aff->_ref_operation->_ext_code_ccam2->libelleLong}
-          {/if}
+            {foreach from=$curr_aff->_ref_operation->_ext_codes_ccam item=curr_code}
+            <strong>{$curr_code->code}</strong> : {$curr_code->libelleLong}
+            <br />
+            {/foreach}    
           </td>
           <td>{$curr_aff->_ref_lit->_ref_chambre->_ref_service->nom}</td>
           <td>{$curr_aff->_ref_lit->_ref_chambre->nom}</td>
