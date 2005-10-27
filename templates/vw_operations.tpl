@@ -24,7 +24,7 @@ function pageMain() {
         <tr>
           <th class="category" colspan="2">
             {$date|date_format:"%A %d %B %Y"}
-            <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" title="calendar" />
+            <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
           </th>
         </tr>
         
@@ -95,17 +95,16 @@ function pageMain() {
         {foreach from=$curr_plage->_ref_operations item=curr_operation}
         <tr>
           <td>
-            <a href="index.php?m={$m}&amp;op={$curr_operation->operation_id}">
+            <a href="index.php?m={$m}&amp;op={$curr_operation->operation_id}" title="Coder l'intervention">
             {$curr_operation->time_operation|date_format:"%Hh%M"}
             </a>
           </td>
           <td>{$curr_operation->_ref_pat->_view}</td>
           <td>
-            <a href="?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_operation->operation_id}">
-            {$curr_operation->_ext_code_ccam->code}
-            {if $curr_operation->CCAM_code2}
-            <br />{$curr_operation->_ext_code_ccam2->code}
-            {/if}
+            <a href="?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_operation->operation_id}" title="Modifier l'intervention">
+              {foreach from=$curr_operation->_ext_codes_ccam item=curr_code}
+              {$curr_code->code}<br />
+              {/foreach}
             </a>
           </td>
           <td>{$curr_operation->cote}</td>
