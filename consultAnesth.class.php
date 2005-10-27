@@ -56,6 +56,7 @@ class CConsultAnesth extends CMbObject {
   // Object References
   var $_ref_consult = null;
   var $_ref_operation = null;
+  var $_ref_plageconsult = null;
 
   function CConsultAnesth() {
     $this->CMbObject( 'consultation_anesth', 'consultation_anesth_id' );
@@ -109,11 +110,12 @@ class CConsultAnesth extends CMbObject {
     $this->_ref_consultation = new CConsultation;
     $this->_ref_consultation->load($this->consultation_id);
     $this->_ref_consultation->loadRefsFwd();
+    $this->_ref_plageconsult =& $this->_ref_consultation->_ref_plageconsult;
     $this->_ref_operation = new COperation;
     $this->_ref_operation->load($this->operation_id);
     $this->_ref_operation->loadRefsFwd();
-    $this->_date_consult = $this->_ref_consultation->_date;
-    $this->_date_op = $this->_ref_operation->_ref_plageop->date;
+    $this->_date_consult =& $this->_ref_consultation->_date;
+    $this->_date_op =& $this->_ref_operation->_ref_plageop->date;
     
     // Liste statique des codes CIM10 initiaux
     $favoris = new CFavoricim10;

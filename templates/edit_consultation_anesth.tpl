@@ -183,7 +183,7 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
             <input type="hidden" name="consultation_anesth_id" value="{$consult_anesth->consultation_anesth_id}" />
             <table class="form">
               <tr>
-                <th><label for="poid" title="Poid du patient">Poid:</label></th>
+                <th><label for="poid" title="Poids du patient">Poids:</label></th>
                 <td>
                   <input type="text" size="4" name="poid" title="{$consult_anesth->_props.poid}" value="{$consult_anesth->poid}" />
                   kg
