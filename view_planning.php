@@ -78,7 +78,7 @@ foreach($plagesop as $key=>$value) {
   }
   
   if ($CCAM) {
-    $where["CCAM_code"] = "LIKE '$CCAM%'";
+    $where["codes_ccam"] = "LIKE '%$CCAM%'";
   }
   
   $order = "operations.rank";

@@ -14,31 +14,32 @@ function checkForm() {
 }
 
 function popCode(type) {
-  var chir = document.paramFrm.chir.value;
-  var url = './index.php?m=dPplanningOp&a=code_selector&dialog=1';
-  url += '&type='+type;
-  url += '&chir='+chir;
-  popup(600, 500, url, type);
+  var url = new Url;
+  url.setModuleAction("dPplanningOp", "code_selector");
+  url.addElement(document.paramFrm.chir);
+  url.addParam("type", type);
+  url.popup(600, 500, type);
 }
 
-function setCode( key, type ) {
-  var form = document.paramFrm;
-  var field = type == 'ccam' ? form.CCAM_code : form.CIM10_code;
-  field.value = key;
+function setCode(code, type) {
+  var oForm = document.paramFrm;
+  var oField = oForm.code_ccam;
+  oField.value = code;
 }
 
 function popPlanning() {
   form = document.paramFrm;
-  var url = './index.php?m=dPbloc&a=view_planning&dialog=1';
-  url += '&deb='   + form.deb.value;
-  url += '&fin='   + form.fin.value;
-  url += '&vide='  + form.vide.checked;
-  url += '&CCAM='  + form.CCAM_code.value;
-  url += '&type='  + form.type.value;
-  url += '&chir='  + form.chir.value;
-  url += '&spe='   + form.spe.value;
-  url += '&salle=' + form.salle.value;
-  popup(700, 550, url, 'Planning');
+  var url = new Url;
+  url.setModuleAction("dPbloc", "view_planning");
+  url.addElement(form.deb);
+  url.addElement(form.fin);
+  url.addElement(form.vide);
+  url.addElement(form.code_ccam, "CCAM");
+  url.addElement(form.type);
+  url.addElement(form.chir);
+  url.addElement(form.spe);
+  url.addElement(form.salle);
+  url.popup(700, 550, 'Planning');
 }
 
 function pageMain() {
@@ -78,8 +79,8 @@ function pageMain() {
           <td colspan="2"><input type="checkbox" name="vide" /></td>
         </tr>
         <tr>
-          <th><label for="CCAM_code" title="Rechercher en fonction d'un code CCAM">Code CCAM:</label></th>
-          <td><input type="text" name="CCAM_code" size="10" value="" /></td>
+          <th><label for="code_ccam" title="Rechercher en fonction d'un code CCAM">Code CCAM:</label></th>
+          <td><input type="text" name="code_ccam" size="10" value="" /></td>
           <td class="button"><input type="button" value="sélectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
       </table>
@@ -131,8 +132,10 @@ function pageMain() {
   <tr>
     <td colspan="2">
 
-      <table class="form"><tr><td class="button"><input type="button" value="Afficher" onclick="checkForm()"</td></tr></table>
+      <table class="form"><tr><td class="button"><input type="button" value="Afficher" onclick="checkForm()" /></td></tr></table>
 
     </td>
   </tr>
 </table>
+
+</form>
