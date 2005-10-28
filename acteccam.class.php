@@ -37,6 +37,7 @@ class CActeCCAM extends CMbObject {
   // Object references
   var $_ref_operation = null;
   var $_ref_executant = null;
+  var $_ref_code_ccam = null;
 
 	function CActeCCAM() {
 		$this->CMbObject( "acte_ccam", "acte_id" );
@@ -71,6 +72,9 @@ class CActeCCAM extends CMbObject {
 
     $this->_ref_executant = new CMediusers;
     $this->_ref_executant->load($this->executant_id);
+    
+    $this->_ref_code_ccam = new CCodeCCAM($this->code_acte);
+    $this->_ref_code_ccam->load();
   }
 }
 
