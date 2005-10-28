@@ -93,7 +93,6 @@ function imprimerDocument(doc_id) {
           <td class="text" colspan="3">{$curr_code->libelleLong}</td>
         </tr>
         {/foreach}
-        </tr>
         {if $curr_op->_ref_consult_anesth->consultation_anesth_id}
         <tr class="op{$curr_op->operation_id}">
           <th colspan="4" class="category">Consultation pré-anesthésique</th>
@@ -166,10 +165,19 @@ function imprimerDocument(doc_id) {
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
-          <td colspan="4">
-            Il reste à ajouter les actes CCAM codés
-          </td>
+          <td class="button">Code</td>
+          <td class="button">Activité</td>
+          <td class="button">Phase</td>
+          <td class="button">Modificateurs</td>
         </tr>
+        {foreach from=$curr_op->_ref_actes_ccam item=curr_acte}
+        <tr class="op{$curr_op->operation_id}">
+          <td class="button">{$curr_acte->code_acte}</td>
+          <td class="button">{$curr_acte->code_activite}</td>
+          <td class="button">{$curr_acte->code_phase}</td>
+          <td class="button">{$curr_acte->modificateurs}</td>
+        </tr>
+        {/foreach}
         {foreach from=$curr_op->_ref_documents item=document}
         <tr class="op{$curr_op->operation_id}">
           <th>{$document->nom}</th>
@@ -199,37 +207,40 @@ function imprimerDocument(doc_id) {
             </strong>
           </td>
         </tr>
-        {if $curr_hospi->CCAM_code}
-        <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2">CCAM 1 :</th>
-          <td class="text" colspan="2">
-            {$curr_hospi->_ext_code_ccam->code} : {$curr_hospi->_ext_code_ccam->libelleLong}
+        {if $curr_op->_ref_affectations|@count}
+        <tr class="hospi{$curr_op->operation_id}">
+          <th>Séjour</th>
+          <td class="text" colspan="3">
+            Du {$curr_hospi->_ref_first_affectation->entree|date_format:"%A %d/%m/%Y (%Hh%M)"}
+            au {$curr_hospi->_ref_last_affectation->sortie|date_format:"%A %d/%m/%Y (%Hh%M)"}
           </td>
         </tr>
         {else}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <td class="text" colspan="4">Simple observation</td>
-        </tr>
-        {/if}
-        {if $curr_hospi->CCAM_code2}
-        <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2">CCAM 2 :</th>
-          <td class="text" colspan="2">
-            {$curr_hospi->_ext_code_ccam2->code} : {$curr_hospi->_ext_code_ccam2->libelleLong}
+          <th>Admission prévue</th>
+          <td class="text" colspan="3">
+            Le {$curr_hospi->date_adm|date_format:"%A %d/%m/%Y"} {$curr_hospi->time_adm|date_format:"(%Hh%M)"}
+            pour {$curr_hospi->duree_hospi} jour(s)
           </td>
         </tr>
         {/if}
+        {foreach from=$curr_hospi->_ext_codes_ccam item=curr_code}
+        <tr class="hospi{$curr_hospi->operation_id}">
+          <th>{$curr_code->code}</th>
+          <td class="text" colspan="3">{$curr_code->libelleLong}</td>
+        </tr>
+        {/foreach}
         {foreach from=$curr_hospi->_ref_documents item=document}
         <tr class="hospi{$curr_hospi->operation_id}">
-          <th colspan="2">{$document->nom} :</th>
+          <th>{$document->nom}</th>
           {if $document->source}
-          <td colspan="2" class="greedyPane">
+          <td colspan="3">
             <button onclick="imprimerDocument({$document->compte_rendu_id})">
               <img src="modules/dPpmsi/images/print.png" />
             </button>
           </td>
           {else}
-          <td colspan="2">
+          <td colspan="3">
             -
           </td>
           {/if}
