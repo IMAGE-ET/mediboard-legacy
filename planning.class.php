@@ -29,6 +29,7 @@ class COperation extends CMbObject {
   var $plageop_id = null;
 
   // DB fields
+  var $codes_ccam = null;
   var $CCAM_code = null;
   var $CCAM_code2 = null;
   var $CIM10_code = null;
@@ -229,10 +230,8 @@ class COperation extends CMbObject {
   function updateFormFields() {
     parent::updateFormFields();
     
-    $this->_codes_ccam[0] = $this->CCAM_code;
-    if ($this->CCAM_code2) {
-    	$this->_codes_ccam[1] = $this->CCAM_code2;
-    }
+    $this->codes_ccam = strtoupper($this->codes_ccam);
+    $this->_codes_ccam = explode("|", $this->codes_ccam);
     
     $this->_hour_op = intval(substr($this->temp_operation, 0, 2));
     $this->_min_op  = intval(substr($this->temp_operation, 3, 2));
@@ -253,6 +252,13 @@ class COperation extends CMbObject {
   }
   
   function updateDBFields() {
+    $this->codes_ccam = $this->CCAM_code;
+    if ($this->CCAM_code2) {
+      $this->codes_ccam .= "|$this->CCAM_code2";
+    }
+    
+    $this->codes_ccam = strtoupper($this->codes_ccam);
+    
   	if ($this->_hour_anesth !== null and $this->_min_anesth !== null) {
       $this->time_anesth = 
         $this->_hour_anesth.":".
@@ -333,10 +339,16 @@ class COperation extends CMbObject {
   }
   
   function loadRefCCAM() {
-    $ext_code_ccam = new CCodeCCAM($this->CCAM_code);
-    $ext_code_ccam->LoadLite();
-
-    if (!$this->plageop_id && $this->pat_id && !$this->CCAM_code) {
+    foreach ($this->_codes_ccam as $code) {
+      $ext_code_ccam = new CCodeCCAM($code);
+      $ext_code_ccam->LoadLite();
+      $this->_ext_codes_ccam[] = $ext_code_ccam;
+    }
+    
+    $ext_code_ccam =& $this->_ext_codes_ccam[0];
+    $code_ccam = $this->_codes_ccam[0];
+    
+    if (!$this->plageop_id && $this->pat_id && !$this->code_ccam) {
       $ext_code_ccam->libelleCourt = "Simple surveillance";
       $ext_code_ccam->libelleLong = "Simple surveillance";
     }
@@ -346,13 +358,6 @@ class COperation extends CMbObject {
       $ext_code_ccam ->libelleLong = "<em>[$this->libelle]</em><br />".$ext_code_ccam->libelleLong;
     }
     
-    $this->_ext_codes_ccam[0] =& $ext_code_ccam;
-
-    if ($this->CCAM_code2 != null && $this->CCAM_code2 != "") {
-      $ext_code_ccam2 = new CCodeCCAM($this->CCAM_code2);
-      $ext_code_ccam2->LoadLite();
-      $this->_ext_codes_ccam[1] =& $ext_code_ccam2;
-    }
   }
   
   function loadRefsConsultAnesth() {

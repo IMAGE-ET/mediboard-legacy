@@ -21,7 +21,8 @@ $type = dPgetParam( $_GET, 'type', 0 );
 $chir = dPgetParam( $_GET, 'chir', 0 );
 
 switch($type) {
-	case 'ccam' : {
+	case 'ccam' :
+  case 'ccam2':
 		$sql = "select favoris_code
 				from ccamfavoris
 				where favoris_user = '$chir' or favoris_user = $AppUI->user_id
@@ -35,22 +36,8 @@ switch($type) {
       $i++;
     }
 		break;
-	}
-	case 'ccam2' : {
-		$sql = "select favoris_code
-				from ccamfavoris
-				where favoris_user = '$chir' or favoris_user = '$AppUI->user_id'
-				group by favoris_code
-				order by favoris_code";
-		$codes = db_loadlist($sql);
-		$i = 0;
-    foreach($codes as $key => $value) {
-      $list[$i] = new CCodeCCAM($value["favoris_code"]);
-      $list[$i]->loadLite();
-      $i++;
-    }
-		break;
-	}
+
+
 	default : {
 		$sql = "select favoris_code
 				from cim10favoris

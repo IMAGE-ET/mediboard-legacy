@@ -1,37 +1,13 @@
 <!-- $Id$ -->
 
+{literal}
 <script type="text/javascript">
-function setClose(user_id,
-                  user_last_name,
-                  user_first_name,
-                  CCAM_code,
-                  libelle,
-                  _hour_op,
-                  _min_op,
-                  examen,
-                  materiel,
-                  convalescence,
-                  depassement,
-                  type_adm,
-                  duree_hospi,
-                  rques) {ldelim}
-  window.opener.setProtocole(user_id,
-                             user_last_name,
-                             user_first_name,
-                             CCAM_code,
-                             libelle,
-                             _hour_op,
-                             _min_op,
-                             examen,
-                             materiel,
-                             convalescence,
-                             depassement,
-                             type_adm,
-                             duree_hospi,
-                             rques)
+function setClose(user_id, user_last_name, user_first_name, code_ccam, libelle, _hour_op, _min_op, examen, materiel, convalescence, depassement, type_adm, duree_hospi, rques) {
+  window.opener.setProtocole(user_id, user_last_name, user_first_name, code_ccam, libelle, _hour_op, _min_op, examen, materiel, convalescence, depassement, type_adm, duree_hospi, rques);
   window.close();
-{rdelim}
+}
 </script>
+{/literal}
 
 <table class="main">
   <tr>
@@ -45,24 +21,26 @@ function setClose(user_id,
 
       <table class="form">
         <tr>
-          <th>Chirurgien:</th>
+          <th><label for="chir_id" title="Filtrer les protocoles d'un praticien">Praticien :</label></th>
           <td>
             <select name="chir_id" onchange="this.form.submit()">
-              <option value="" >Tous les chirurgiens</option>
-              {foreach item=curr_chir from=$chirs}
-              <option value="{$curr_chir.chir_id}" {if $chir_id == $curr_chir.chir_id} selected="selected" {/if}>
-                {$curr_chir.lastname} {$curr_chir.firstname} ({$curr_chir.nb_protocoles})
+              <option value="" >&mdash; Tous les chirurgiens</option>
+              {foreach from=$listPrat item=curr_prat}
+              {if $curr_prat->_ref_protocoles|@count}
+              <option value="{$curr_prat->user_id}" {if $chir_id == $curr_prat->user_id} selected="selected" {/if}>
+                {$curr_prat->_view} ({$curr_prat->_ref_protocoles|@count})
               </option>
+              {/if}
               {/foreach}
             </select>
           </td>
-          <th>Code CCAM:</th>
+          <th><label for="code_ccam" title="Filtrer avec un code CCAM">Code CCAM :</label></th>
           <td>
-            <select name="CCAM_code" onchange="this.form.submit()">
+            <select name="code_ccam" onchange="this.form.submit()">
               <option value="" >&mdash; Tous les codes</option>
-              {foreach item=curr_code from=$codes}
-              <option value="{$curr_code.CCAM_code}" {if $CCAM_code == $curr_code.CCAM_code} selected="selected" {/if}>
-                {$curr_code.CCAM_code} ({$curr_code.nb_protocoles})
+              {foreach from=$listCodes key=curr_code item=code_nomber}
+              <option value="{$curr_code}" {if $code_ccam == $curr_code} selected="selected" {/if}>
+                {$curr_code} ({$code_nomber})
               </option>
               {/foreach}
             </select>
@@ -86,11 +64,11 @@ function setClose(user_id,
           <th>Chirurgien &mdash; Acte CCAM</th>
         </tr>
         
-        {foreach item=curr_protocole from=$protocoles}
+        {foreach from=$protocoles item=curr_protocole}
         <tr>    
           <td class="text">
             {if $dialog}
-            <a href="javascript:setClose('{$curr_protocole->_ref_chir->user_id}','{$curr_protocole->_ref_chir->_user_last_name|escape:javascript}','{$curr_protocole->_ref_chir->_user_first_name|escape:javascript}','{$curr_protocole->CCAM_code}','{$curr_protocole->libelle}','{$curr_protocole->_hour_op}','{$curr_protocole->_min_op}','{$curr_protocole->examen|escape:javascript}','{$curr_protocole->materiel|escape:javascript}','{$curr_protocole->convalescence|escape:javascript}','{$curr_protocole->depassement}','{$curr_protocole->type_adm}','{$curr_protocole->duree_hospi}','{$curr_protocole->rques|escape:javascript}')">            {else}
+            <a href="javascript:setClose('{$curr_protocole->_ref_chir->user_id}','{$curr_protocole->_ref_chir->_user_last_name|escape:javascript}','{$curr_protocole->_ref_chir->_user_first_name|escape:javascript}','{$curr_protocole->_codes_ccam.0}','{$curr_protocole->libelle}','{$curr_protocole->_hour_op}','{$curr_protocole->_min_op}','{$curr_protocole->examen|escape:javascript}','{$curr_protocole->materiel|escape:javascript}','{$curr_protocole->convalescence|escape:javascript}','{$curr_protocole->depassement}','{$curr_protocole->type_adm}','{$curr_protocole->duree_hospi}','{$curr_protocole->rques|escape:javascript}')">            {else}
             <a href="?m={$m}&amp;{if $dialog}a=vw_protocoles&amp;dialog=1{else}tab={$tab}{/if}&amp;protocole_id={$curr_protocole->operation_id}">
             {/if}
               <strong>
