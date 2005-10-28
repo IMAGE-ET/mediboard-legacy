@@ -1,12 +1,17 @@
 <table class="form" id="admission">
-  <tr><th class="title" colspan="2"><a href="javascript:window.print()">Fiche d'admission</a></th></tr>
-  <tr><td class="info" colspan="2">(Prière de vous munir pour la consultation d'anesthésie de la photocopie
-                       de vos cartes de sécurité sociale, de mutuelle et du résultat de votre
-                       bilan sanguin et la liste des médicaments que vous prennez)<br />
-                       Pour tout renseignement, téléphonez au 05 46 00 40 40</td></tr>
+  <tr><th class="title" colspan="2">
+  <a href="javascript:window.print()">Fiche d'admission</a></th></tr>
+  <tr>
+    <td class="info" colspan="2">
+    (Prière de vous munir pour la consultation d'anesthésie de la photocopie
+     de vos cartes de sécurité sociale, de mutuelle et du résultat de votre
+     bilan sanguin et la liste des médicaments que vous prennez)<br />
+     Pour tout renseignement, téléphonez au 05 46 00 40 40
+    </td>
+  </tr>
   
-  <tr><th>Date: </th><td>{$adm.today}</td></tr>
-  <tr><th>Chirurgien: </th><td>Dr. {$adm.chirName}</td></tr>
+  <tr><th>Date :</th><td>{$today|date_format:"%A %d/%m/%Y"}</td></tr>
+  <tr><th>Chirurgien :</th><td>Dr. {$adm.chirName}</td></tr>
   
   <tr><th class="category" colspan="2">Renseignements concernant le patient</th></tr>
   
@@ -37,14 +42,14 @@
   </td><tr>
   
   <tr><td class="info" colspan="2"><b>Pour votre hospitalisation, prière de vous munir de :</b>
-                                   <ul>
-                                     <li>Carte Vitale ou, à défaut, attestation de sécurité
-                                         sociale, carte de mutuelle accompagnée de la prise
-                                         en charge le cas échéant.</li>
-                                     <li>Tous examens en votre possession (analyse, radio,
-                                         carte de groupe sanguin...).</li>
-                                      <li>Prévoir linge et nécessaire de toilette.</li>
-                                      <li>Vos médicaments éventuellement</li>
-                                    </ul>
+  <ul>
+    <li>
+      Carte Vitale ou, à défaut, attestation de sécurité sociale, 
+      carte de mutuelle accompagnée de la prise en charge le cas échéant.
+    </li>
+    <li>Tous examens en votre possession (analyse, radio, carte de groupe sanguin...).</li>
+    <li>Prévoir linge et nécessaire de toilette.</li>
+    <li>Vos médicaments éventuellement</li>
+  </ul>
   </td></tr>
 </table>

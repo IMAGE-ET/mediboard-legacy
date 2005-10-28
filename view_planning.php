@@ -24,6 +24,8 @@ $operation = new COperation;
 $operation->load($operation_id);
 $operation->loadRefsFwd();
 
+$today = mbDate();
+
 $chir_id = dPgetParam($_GET, "chir_id", $operation->chir_id);
 $pat_id = dPgetParam($_GET, "pat_id", $operation->pat_id);
 $CCAM_code = dPgetParam($_GET, "CCAM_code", $operation->CCAM_code);
@@ -112,6 +114,8 @@ if($CCAM_code2) {
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
+$smarty->assign('operation', $operation);
+$smarty->assign('today', $today);
 $smarty->assign('adm', $adm);
 $smarty->display('view_planning.tpl');
 
