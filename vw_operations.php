@@ -51,14 +51,18 @@ foreach($plages as $key => $value) {
 
 // Opération selectionnée
 $selOp = new COperation;
-$selOp->load($op);
-$selOp->loadRefs();
-$selOp->loadPossibleActes();
-$selOp->_ref_plageop->loadRefsFwd();
+if($op) {
+  $selOp->load($op);
+  $selOp->loadRefs();
+  $selOp->loadPossibleActes();
+  $selOp->_ref_plageop->loadRefsFwd();
+}
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
+
+$smarty->debugging = false;
 
 $smarty->assign('salle', $salle);
 $smarty->assign('listSalles', $listSalles);

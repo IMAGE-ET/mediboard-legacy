@@ -1,6 +1,73 @@
 {literal}
 <script type="text/javascript">
 
+function showCode(form) {
+  {/literal}
+  {if $selOp->operation_id}
+  
+  var code = form._selCode.value;
+  var aItemsList = new Array();
+  aItemsList["0"] = "Sélectionnez un code";
+  {foreach from=$selOp->_ext_codes_ccam item=curr_code}
+    aItemsList["{$curr_code->code}"] = "{$curr_code->libelleLong|escape:javascript}";
+  {/foreach}
+  myNode = document.getElementById("codename");
+  myNode.innerHTML = aItemsList[code];
+  
+  {/if}
+  {literal}
+}
+
+function popCode() {
+  var url = './index.php?m=dPplanningOp';
+  url += '&a=code_selector';
+  url += '&dialog=1';
+  {/literal}
+  {if $selOp->operation_id}
+  url += '&chir='+ {$selOp->chir_id};
+  {/if}
+  {literal}
+  url += '&type=ccam';
+  popup(600, 500, url, 'ccam');
+}
+
+function setCode( key, type ) {
+  if (key) {
+    var oForm = document.manageCodes;
+    oForm._newCode.value = key;
+  }
+}
+
+function addCode() {
+  var oForm = document.manageCodes;
+  var aCCAM = oForm.codes_ccam.value.split("|");
+  // Si la chaine est vide, il crée un tableau à un élément vide donc :
+  aCCAM.removeByValue("");
+  //alert(oForm._newCode.value);
+  if(oForm._newCode.value != '')
+    aCCAM.push(oForm._newCode.value);
+  aCCAM.removeDuplicates();
+  aCCAM.sort();
+  oForm.codes_ccam.value = aCCAM.join("|");
+  //alert(oForm.codes_ccam.value);
+  oForm.submit();
+}
+
+function delCode() {
+  var oForm = document.manageCodes;
+  var aCCAM = oForm.codes_ccam.value.split("|");
+  // Si la chaine est vide, il crée un tableau à un élément vide donc :
+  aCCAM.removeByValue("");
+  //alert(oForm._selCode.value);
+  if(oForm._selCode.value != '')
+    aCCAM.removeByValue(oForm._selCode.value);
+  aCCAM.removeDuplicates();
+  aCCAM.sort();
+  oForm.codes_ccam.value = aCCAM.join("|");
+  //alert(oForm.codes_ccam.value);
+  oForm.submit();
+}
+
 function pageMain() {
   {/literal}
   regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
@@ -145,6 +212,48 @@ function pageMain() {
           </td>
         </tr>
         <tr>
+          <th>Actes</th>
+          <td class="text">
+            <form name="manageCodes" action="?m=dPsalleOp" method="post">
+              <input type="hidden" name="m" value="dPplanningOp" />
+              <input type="hidden" name="dosql" value="do_planning_aed" />
+              <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+              <input type="hidden" name="del" value="0" />
+              <input type="hidden" name="codes_ccam" value="{$selOp->codes_ccam}" />
+              <table width="100%">
+                <tr>
+                  <td>
+                    <select name="_selCode" onchange="showCode(this.form)">
+                      <option value="0">&mdash Codes</option>
+                      {foreach from=$selOp->_codes_ccam item=curr_code}
+                      <option value="{$curr_code}">{$curr_code}</option>
+                      {/foreach}
+                    </select>
+                  </td>
+                  <td style="text-align:right">
+                    Ajouter un code
+                    <input type="text" size="7" name="_newCode" />
+                    <button type="button" onclick="addCode()">
+                      <img src="modules/dPcabinet/images/tick.png">
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button type="button" onclick="delCode()">
+                      <img src="modules/dPcabinet/images/cross.png">
+                    </button>
+                    <div id="codename" style="display:inline; white-space:normal">Selectionnez un code</div>
+                  </td>
+                  <td style="text-align:right">
+                    <button type="button" onclick="popCode()">Rechercher...</button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </td>
+        </tr>
+        <tr>
           <th>
             Intervention
             <br />
@@ -172,7 +281,8 @@ function pageMain() {
                 <input type="hidden" name="code_acte" title="{$acte->_props.code_acte}" value="{$acte->code_acte}" />
                 <input type="hidden" name="code_activite" title="{$acte->_props.code_activite}" value="{$acte->code_activite}" />
                 <input type="hidden" name="code_phase" title="{$acte->_props.code_phase}" value="{$acte->code_phase}" />
-                
+                <input type="hidden" name="montant_depassement" title="{$acte->_props.montant_depassement}" value="{$acte->montant_depassement}" />
+
                 <table class="form">
                 
                 <tr class="groupcollapse" id="acte{$acte->_view}" onclick="flipGroup('{$acte->_view}', 'acte')">
@@ -210,18 +320,13 @@ function pageMain() {
 
                 <tr class="acte{$acte->_view}">
                   <th><label for="modificateurs" title="Modificateurs associés à l'acte">Modificateur(s) :</label></th>
-                  <td>
+                  <td class="text">
                     {foreach from=$curr_phase->_modificateurs item=curr_mod}
                     <input type="checkbox" name="modificateur_{$curr_mod->code}" {if $curr_mod->_value}checked="checked"{/if} />
                     <label for="modificateur_{$curr_mod->code}" title="{$curr_mod->libelle|escape}">{$curr_mod->code} : {$curr_mod->libelle|escape}</label>
                     <br />
                     {/foreach}
                   </td>
-                </tr>
-
-                <tr class="acte{$acte->_view}">
-                  <th><label for="montant_depassement" title="Montant du dépassement d'honoraires">Dépassement :</label></th>
-                  <td><input type="text" name="montant_depassement" size="6" title="{$acte->_props.montant_depassement}" value="{$acte->montant_depassement}" />&euro;</td>
                 </tr>
                 
                 <tr class="acte{$acte->_view}">
