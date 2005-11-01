@@ -45,7 +45,10 @@ $plages = $plages->loadList($where, $order);
 foreach($plages as $key => $value) {
   $plages[$key]->loadRefs(0);
   foreach($plages[$key]->_ref_operations as $key2 => $value) {
-    $plages[$key]->_ref_operations[$key2]->loadRefsFwd();
+    if($plages[$key]->_ref_operations[$key2]->rank == 0)
+      unset($plages[$key]->_ref_operations[$key2]);
+    else
+      $plages[$key]->_ref_operations[$key2]->loadRefsFwd();
   }
 }
 
