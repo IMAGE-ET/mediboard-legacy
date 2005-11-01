@@ -21,15 +21,15 @@ if (intval(dPgetParam($_POST, 'del'))) {
   if($do->_obj->plageop_id && $do->_obj->pat_id) {
     mbSetValueToSession("operation_id");
     $do->deleteMsg = "Opération supprimée";
-    $do->redirectDelete("m=$m&tab=vw_edit_planning");
+    $do->redirectDelete = "m=$m&tab=vw_edit_planning";
   } elseif($do->_obj->pat_id) {
     mbSetValueToSession("hospitalisation_id");
     $do->deleteMsg = "Hospitalisation supprimée";
-    $do->redirectDelete("m=$m&tab=vw_edit_hospi");
+    $do->redirectDelete = "m=$m&tab=vw_edit_hospi";
   } else {
     mbSetValueToSession("protocole_id");
     $do->deleteMsg = "Protocole supprimé";
-    $do->redirectDelete("m=$m&tab=vw_add_protocole");
+    $do->redirectDelete = "m=$m&tab=vw_add_protocole";
   }
   $do->doDelete();
 } else {
