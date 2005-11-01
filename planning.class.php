@@ -252,9 +252,11 @@ class COperation extends CMbObject {
   }
   
   function updateDBFields() {
-    $this->codes_ccam = $this->CCAM_code;
-    if ($this->CCAM_code2) {
-      $this->codes_ccam .= "|$this->CCAM_code2";
+    if(!$this->codes_ccam && $this->CCAM_code) {
+      $this->codes_ccam = $this->CCAM_code;
+      if ($this->CCAM_code2) {
+        $this->codes_ccam .= "|$this->CCAM_code2";
+      }
     }
     
     $this->codes_ccam = strtoupper($this->codes_ccam);
