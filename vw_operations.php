@@ -57,6 +57,9 @@ $selOp = new COperation;
 if($op) {
   $selOp->load($op);
   $selOp->loadRefs();
+  foreach($selOp->_ext_codes_ccam as $key => $value) {
+    $selOp->_ext_codes_ccam[$key]->Load();
+  }
   $selOp->loadPossibleActes();
   $selOp->_ref_plageop->loadRefsFwd();
 }

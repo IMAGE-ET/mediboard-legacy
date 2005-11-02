@@ -43,13 +43,11 @@ function addCode() {
   var aCCAM = oForm.codes_ccam.value.split("|");
   // Si la chaine est vide, il crée un tableau à un élément vide donc :
   aCCAM.removeByValue("");
-  //alert(oForm._newCode.value);
   if(oForm._newCode.value != '')
     aCCAM.push(oForm._newCode.value);
   aCCAM.removeDuplicates();
   aCCAM.sort();
   oForm.codes_ccam.value = aCCAM.join("|");
-  //alert(oForm.codes_ccam.value);
   oForm.submit();
 }
 
@@ -58,13 +56,11 @@ function delCode() {
   var aCCAM = oForm.codes_ccam.value.split("|");
   // Si la chaine est vide, il crée un tableau à un élément vide donc :
   aCCAM.removeByValue("");
-  //alert(oForm._selCode.value);
   if(oForm._selCode.value != '')
     aCCAM.removeByValue(oForm._selCode.value);
   aCCAM.removeDuplicates();
   aCCAM.sort();
   oForm.codes_ccam.value = aCCAM.join("|");
-  //alert(oForm.codes_ccam.value);
   oForm.submit();
 }
 
@@ -267,6 +263,13 @@ function pageMain() {
             <li>
               <strong>{$curr_code->libelleLong|escape}</strong> 
               <em>(<a class="action" href="?m=dPccam&amp;tab=vw_full_code&amp;codeacte={$curr_code->code}">{$curr_code->code}</a>)</em>
+              <br />Codes associés :
+              <select name="asso" onchange="setCode(this.value, 'ccam')">
+                <option value="">&mdash choix</option>
+                {foreach from=$curr_code->assos item=curr_asso}
+                <option value="{$curr_asso.code}">{$curr_asso.code}</option>
+                {/foreach}
+              </select>
 
               {foreach from=$curr_code->activites item=curr_activite}
               {foreach from=$curr_activite->phases item=curr_phase}
