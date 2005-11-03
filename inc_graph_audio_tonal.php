@@ -61,7 +61,7 @@ foreach ($sans as $key => $value) {
 
 // Setup the graph.
 $graph = new Graph(500,300,"auto");    
-$graph->SetScale("textlin", -120, 0);
+$graph->SetScale("textlin", -120, 10);
 $graph->SetMarginColor("lightblue");
 $graph->img->SetAntiAliasing();
 
@@ -80,9 +80,10 @@ $graph->title->SetFont(FF_VERDANA,FS_NORMAL,10);
 $graph->title->SetColor("darkred");
 
 // Setup font for axis
+$graph->xaxis->scale->ticks->SupressTickMarks();
 $graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
 $graph->xaxis->labelPos = 1;
-$graph->xaxis->SetLabelMargin(10);
+$graph->xaxis->SetLabelMargin(25);
 $graph->xaxis->SetTickLabels($frequences);
 
 // Setup Y-axis labels 
