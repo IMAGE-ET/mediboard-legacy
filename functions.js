@@ -120,6 +120,42 @@ function prepareForms() {
   }
 }
 
+function checkMoreThan(oElement, aSpecFragments) {
+  if (sFragment1 = aSpecFragments[1]) {
+    switch (sFragment1) {
+      case "moreThan":
+        var sTargetElement = aSpecFragments[2];
+        var oTargetElement = this.form.getElement(sTargetElement);
+
+		if (!oTargetElement) {
+          return printf("Elément cible invalide ou inexistant (nom = %s)", sTargetElement);
+		}
+		        
+		if (oElement.value <= oTargetElement.value) {
+		  return 
+		}
+
+        break;
+           
+      case "moreEquals":
+        var sTargetElement = aSpecFragments[2];
+        var oTargetElement = this.form.getElement(sTargetElement);
+
+		if (!oTargetElement) {
+          return printf("Elément cible invalide ou inexistant (nom = %s)", sTargetElement);
+		}
+		        
+		if (oElement.value < oTargetElement.value) {
+		  return 
+		}
+
+        break;
+    }
+  };
+
+  return null;
+}
+
 function checkElement(oElement, aSpecFragments) {
   aSpecFragments.removeByValue("confidential");
   bNotNull = aSpecFragments.removeByValue("notNull") > 0;
