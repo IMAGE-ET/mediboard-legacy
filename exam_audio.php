@@ -15,19 +15,17 @@ if (!$canEdit) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// Afficher les deux diagrammes (essayer de trouver une échelle multiple de pixels)
-// Créer un formulaire Droit/Gauche + Abscisse + Ordonnée (listes déroulantes)
-// Afficher les points ainsi rentrer + les stocker dans un tableau javascript
-// Sauvegarder le tout (?? Bdd, image, ... ??)
+require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_tonal"));
 
-$test = "";
-
+global $graph;
+$graph->Stroke("graph.png");
+$map = $graph->GetHTMLImageMap("mymap");
 
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->assign('test', $test);
+$smarty->assign("map", $map);
 
 $smarty->display('exam_audio.tpl');

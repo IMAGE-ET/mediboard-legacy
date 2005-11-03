@@ -60,7 +60,7 @@ function createDocument(modele_id, consultation_id) {
   url.popup(700, 700, "Document");
 }
 
-function newExamen(sAction) {
+function newExam(sAction) {
   if (sAction) {
     var url = new Url;
     url.setModuleAction("dPcabinet", sAction);
@@ -81,7 +81,7 @@ function newExamen(sAction) {
     <td class="text">
       <form name="newExamen" action="?m=dPcabinet">
         <label for="type_examen" title="Type d'examen complémentaire à effectuer"><strong>Examens complémentaires :</strong></label>
-        <select name="type_examen" onchange="javascript:newExamen(this.value)">
+        <select name="type_examen" onchange="newExam(this.value)">
           <option value="">&mdash; Choisir un type d'examen</option>
           <option value="exam_audio">Audiogramme</option>
         </select>
