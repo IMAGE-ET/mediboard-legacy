@@ -341,6 +341,7 @@ class COperation extends CMbObject {
   }
   
   function loadRefCCAM() {
+    $this->_ext_codes_ccam = array();
     foreach ($this->_codes_ccam as $code) {
       $ext_code_ccam = new CCodeCCAM($code);
       $ext_code_ccam->LoadLite();
