@@ -64,7 +64,7 @@ function newExam(sAction) {
   if (sAction) {
     var url = new Url;
     url.setModuleAction("dPcabinet", sAction);
-    url.popup(600, 600, "Examen");  
+    url.popup(800, 600, "Examen");  
   }
 }
 

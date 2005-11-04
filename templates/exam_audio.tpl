@@ -49,7 +49,7 @@ table#weber td {
         <td>
           {$pertes.aerienne.left}dB / {$pertes.aerienne.right}dB<br />
           {assign var="delta" value=$pertes.aerienne.delta}
-          delta: {$delta}dB<br />
+          &Delta; : {$delta}dB<br />
           {if $delta lt -20}&lt;&lt;
           {elseif $delta lt 0}&lt;=
           {elseif $delta eq 0}==
@@ -68,7 +68,7 @@ table#weber td {
         <td>
           {$pertes.osseuse.left}dB / {$pertes.osseuse.right}dB<br />
           {assign var="delta" value=$pertes.osseuse.delta}
-          delta: {$delta}dB<br />
+          &Delta; : {$delta}dB<br />
           {if $delta lt -20}&lt;&lt;
           {elseif $delta lt 0}&lt;=
           {elseif $delta eq 0}==
