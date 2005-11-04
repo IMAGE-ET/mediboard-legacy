@@ -25,24 +25,76 @@ $frequences = array(
   "16000",
 );
 
-$pertes = array(
-  10,
-  0,
-  -10,
-  -20,
-  -30,
-  -40,
-  -50,
-  -60,
-  -70,
-  -80,
-  -90,
-  -100,
-  -110,
-  -120,
-);
+class AudiogrammeTonal extends Graph {
+  function setTitle($title) {
+    $this->title->Set($title);
+  }
+  
+  function AudiogrammeTonal() {
+    global $frequences;
+    
+    // Setup the graph.
+    $this->Graph(360,280,"auto"); 
+       
+    $this->SetScale("textlin", -120, 10);
+    $this->SetMarginColor("lightblue");
+    
+    // Image setup
+    $this->img->SetAntiAliasing();
+    $this->img->SetMargin(40,20,40,20);
+    
+    // Legend setup
+    $this->legend->Pos(0.02, 0.98, "right","bottom");
+    $this->legend->SetShadow("darkgray@0.5", 3);
+    $this->legend->SetFillColor('gray@0.3');
 
-$sans = array (
+  
+    // Title setup
+    $this->title->Set("Audiogramme tonal");
+    $this->title->SetFont(FF_VERDANA,FS_NORMAL,10);
+    $this->title->SetColor("darkred");
+    
+    // Setup font for axis
+    $this->xgrid->Show();
+    
+    $this->xaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
+    $this->xaxis->scale->ticks->SupressTickMarks();
+    $this->xaxis->labelPos = 1;
+    $this->xaxis->SetLabelMargin(25);
+    $this->xaxis->SetTickLabels($frequences);
+    
+    // Setup Y-axis labels 
+    $this->yaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
+    
+    $this->yaxis->scale->ticks->Set(10, 5);
+    $this->yaxis->scale->ticks->SupressZeroLabel(false);
+    $this->yaxis->scale->ticks->SupressMinorTickMarks(false);
+  }
+  
+  function addAudiogramme($values, $title, $mark_color) {
+    $csim = array();
+    foreach ($values as $key => $value) {
+      $csim["$value dB @ $key Hz"] = "javascript:alert('$value dB @ $key Hz')";
+    }
+
+    $p1 = new LinePlot(array_values($values)); //, array_keys($sans));
+
+    // Create the first line
+    $p1->SetColor($mark_color);
+    $p1->SetCenter();
+    $p1->SetLegend($title);
+    $p1->SetCSIMTargets(array_values($csim), array_keys($csim));
+
+    // Marks
+    $p1->mark->SetType(MARK_FILLEDCIRCLE);
+    $p1->mark->SetColor($mark_color);
+    $p1->mark->SetFillColor("$mark_color@0.6");
+    $p1->mark->SetWidth(4);
+    $this->Add($p1);
+  }
+}
+
+$left_osseuse = array (
   "125" => -12,
   "250" => -40,
   "500" => -30,
@@ -53,54 +105,45 @@ $sans = array (
   "16000" => -81,
 );
 
-$csim = array();
-foreach ($sans as $key => $value) {
-  $csim["$value dB @ $key Hz"] = "javascript:alert('$value dB @ $key Hz')";
-}
+$left_aerienne = array (
+  "125" => -61,
+  "250" => -8,
+  "500" => -34,
+  "1000" => -40,
+  "2000" => -47,
+  "4000" => -38,
+  "8000" => -98,
+  "16000" => -110,
+);
 
+$right_osseuse = array (
+  "125" => 9,
+  "250" => -40,
+  "500" => -30,
+  "1000" => -39,
+  "2000" => -47,
+  "4000" => -81,
+  "8000" => -38,
+  "16000" => -90,
+);
 
-// Setup the graph.
-$graph = new Graph(500,300,"auto");    
-$graph->SetScale("textlin", -120, 10);
-$graph->SetMarginColor("lightblue");
-$graph->img->SetAntiAliasing();
+$right_aerienne = array (
+  "125" => -61,
+  "250" => -8,
+  "500" => -39,
+  "1000" => -40,
+  "2000" => -47,
+  "4000" => -38,
+  "8000" => -98,
+  "16000" => -110,
+);
 
-// Enable X and Y Grid
-$graph->xgrid->Show();
+$graph_left = new AudiogrammeTonal();
+$graph_left->setTitle("Oreille gauche");
+$graph_left->addAudiogramme($left_osseuse, "Conduction osseuse", "blue");
+$graph_left->addAudiogramme($left_aerienne, "Conduction aérienne", "red");
 
-// Image setup
-$graph->img->SetMargin(40,80,40,40);
-
-// Legend setup
-$graph->legend->Pos(0.05,0.5, "right","bottom");
-
-// Title setup
-$graph->title->Set("Audiogramme tonal");
-$graph->title->SetFont(FF_VERDANA,FS_NORMAL,10);
-$graph->title->SetColor("darkred");
-
-// Setup font for axis
-$graph->xaxis->scale->ticks->SupressTickMarks();
-$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
-$graph->xaxis->labelPos = 1;
-$graph->xaxis->SetLabelMargin(25);
-$graph->xaxis->SetTickLabels($frequences);
-
-// Setup Y-axis labels 
-$graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
-$graph->yaxis->scale->ticks->Set(10, 2);
-$graph->yaxis->scale->ticks->SupressZeroLabel(false);
-$graph->yaxis->scale->ticks->SupressMinorTickMarks();
-
-
-// Create the first line
-$p1 = new LinePlot(array_values($sans)); //, array_keys($sans));
-$p1->mark->SetType(MARK_FILLEDCIRCLE);
-$p1->mark->SetFillColor("red");
-$p1->mark->SetWidth(4);
-$p1->SetColor("blue");
-$p1->SetCenter();
-$p1->SetLegend("Sans appareil");
-$p1->SetCSIMTargets(array_values($csim), array_keys($sans)); 
-$graph->Add($p1);
-
+$graph_right = new AudiogrammeTonal();
+$graph_right->setTitle("Oreille droite");
+$graph_right->addAudiogramme($right_osseuse, "Conduction osseuse","blue");
+$graph_right->addAudiogramme($right_aerienne, "Conduction aérienne", "red");
