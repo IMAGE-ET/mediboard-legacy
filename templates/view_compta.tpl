@@ -94,7 +94,7 @@ function pageMain() {
           <th><label for="fin">Fin:</label></th>
           <td class="date" colspan="2">
             <div id="paramFrm_fin_da">{$today|date_format:"%d/%m/%Y"}</div>
-            <input type="hidden" name="fin" value="{$tomorrow}" />
+            <input type="hidden" name="fin" value="{$today}" />
             <img id="paramFrm_fin_trigger" src="./images/calendar.gif" alt="calendar" title="Choisir une date de fin"/>
           </td>
         </tr>
