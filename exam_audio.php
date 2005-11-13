@@ -9,7 +9,7 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
-require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
+require_once($AppUI->getModuleClass("dPcabinet", "consultation"));
 
 if (!$canEdit) {
   $AppUI->redirect( "m=public&a=access_denied" );
@@ -25,23 +25,20 @@ global $graph_right;
 $graph_right->Stroke("graphtmp.png");
 $map_right = $graph_right->GetHTMLImageMap("graph_right");
 
-global $left_osseuse;
-global $left_aerienne;
-global $right_osseuse;
-global $right_aerienne;
+global $exam_audio, $frequences;
 
 $bilan = array();
-foreach ($left_osseuse as $frequence => $perte) {
-  $bilan[$frequence]["osseuse"]["left"] = $perte;
+foreach ($exam_audio->_gauche_osseux as $index => $perte) {
+  $bilan[$frequences[$index]]["osseuse"]["left"] = $perte;
 }
-foreach ($left_aerienne as $frequence => $perte) {
-  $bilan[$frequence]["aerienne"]["left"] = $perte;
+foreach ($exam_audio->_gauche_aerien as $index => $perte) {
+  $bilan[$frequences[$index]]["aerienne"]["left"] = $perte;
 }
-foreach ($right_osseuse as $frequence => $perte) {
-  $bilan[$frequence]["osseuse"]["right"] = $perte;
+foreach ($exam_audio->_droite_osseux as $index => $perte) {
+  $bilan[$frequences[$index]]["osseuse"]["right"] = $perte;
 }
-foreach ($right_aerienne as $frequence => $perte) {
-  $bilan[$frequence]["aerienne"]["right"] = $perte;
+foreach ($exam_audio->_droite_aerien as $index => $perte) {
+  $bilan[$frequences[$index]]["aerienne"]["right"] = $perte;
 }
 
 foreach ($bilan as $frequence => $value) {
@@ -56,6 +53,8 @@ foreach ($bilan as $frequence => $value) {
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->assign("frequences", $frequences);
+$smarty->assign("exam_audio", $exam_audio);
 $smarty->assign("bilan", $bilan);
 $smarty->assign("map_left", $map_left);
 $smarty->assign("map_right", $map_right);

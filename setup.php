@@ -13,7 +13,7 @@ require_once($AppUI->getModuleClass("dPcompteRendu", "compteRendu"));
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.31';
+$config['mod_version'] = '0.33';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -186,6 +186,22 @@ class CSetupdPcabinet {
         }
 
       case "0.31":
+        $sql = "CREATE TABLE `examaudio` (" .
+          "\n`examaudio_id` INT NOT NULL AUTO_INCREMENT ," .
+          "\n`consultation_id` INT NOT NULL ," .
+          "\n`gauche_aerien` VARCHAR( 64 ) ," .
+          "\n`gauche_osseux` VARCHAR( 64 ) ," .
+          "\n`droite_aerien` VARCHAR( 64 ) ," .
+          "\n`droite_osseux` VARCHAR( 64 ) ," .
+          "\nPRIMARY KEY ( `examaudio_id` ) ," .
+          "\nINDEX ( `consultation_id` ))";
+          
+        db_exec( $sql ); db_error();
+      case "0.32":
+        $sql = "ALTER TABLE `examaudio` " .
+            "\nADD UNIQUE (`consultation_id`)";
+
+      case "0.33":
   	    return true;
 		}
 
