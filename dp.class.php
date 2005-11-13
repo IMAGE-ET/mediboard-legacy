@@ -236,7 +236,6 @@ class CDpObject {
     global $AppUI;
     
         $this->updateDBFields();
-
 		$msg = $this->check();
 		if( $msg ) {
 			return $AppUI->_(get_class( $this )) . 
