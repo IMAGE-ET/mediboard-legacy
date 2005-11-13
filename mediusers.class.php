@@ -185,8 +185,9 @@ class CMediusers extends CMbObject {
     $where["chir_id"] = "= '$this->user_id'";
     $where["pat_id"] = "= 0";
     $where["plageop_id"] = "iS NULL";
+    $order = "codes_ccam";
     $protocoles = new COperation;
-    $this->_ref_protocoles = $protocoles->loadList($where);
+    $this->_ref_protocoles = $protocoles->loadList($where, $order);
   }
   
   
