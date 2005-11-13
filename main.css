@@ -341,7 +341,7 @@ table.form {
 table.form th {
   color: #000;
   white-space: nowrap;
-  background: #eee;
+  background-color: #eee;
   vertical-align: top;
   text-align: right;
   font-weight: normal;
@@ -353,14 +353,14 @@ table.form th.title {
   font-size: 14px;
   font-weight: bold;  
   text-align: center;
-  background: #bbb;
+  background-color: #bbb;
   border: #aaa 1px outset;
 }
 
 table.form th.category {
   font-weight: bold;  
   text-align: center;
-  background: #aaa;
+  background-color: #aaa;
   border: #aaa 1px outset;
 }
 
@@ -1180,17 +1180,27 @@ table.operationcollapse td.date {
 
 tr.groupexpand td,
 tr.groupcollapse td {
+  background-color: #ddf;
+}
+
+tr.groupexpand td,
+tr.groupcollapse td,
+tr.groupexpand th,
+tr.groupcollapse th {
+  padding-left: 25px;
   font-weight: bold;
+  background-repeat: no-repeat;
+  background-position: center left;
 }
 
-tr.groupcollapse td {
-  padding-left: 25px;
-  background: #ddf url(./images/collapse.gif) no-repeat center left;
+tr.groupcollapse td,
+tr.groupcollapse th {
+  background-image: url(./images/collapse.gif);
 }
 
-tr.groupexpand td {
-  padding-left: 25px;
-  background: #ddf url(./images/expand.gif) no-repeat center left;
+tr.groupexpand td,
+tr.groupexpand th {
+  background-image: url(./images/expand.gif);
 }
 
 .show {
