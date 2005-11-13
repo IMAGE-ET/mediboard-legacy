@@ -330,8 +330,8 @@ function checkElement(oElement, aSpecFragments) {
       if (sFragment1 = aSpecFragments[1]) {
         switch (sFragment1) {
           case "ccam":
-            if (!oElement.value.match(/^([a-z0-9]){0,7}$/i)) {
-              return "Code CCAM incorrect, doit contenir 4 lettres et trois chiffres";
+            if (!oElement.value.match(/^([a-z]){4}([0-9]){3}$/i)) {
+              return "Code CCAM incorrect, doit contenir 4 lettres et 3 chiffres";
             }
           
           break;
