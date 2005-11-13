@@ -2,11 +2,61 @@
 
 <script type="text/javascript">
 {literal}
+
+function putCCAM(code) {
+  aSpec = new Array();
+  aSpec[0] = "code";
+  aSpec[1] = "ccam";
+  aSpec[2] = "notNull";
+  oCode = new Object();
+  oCode.value = code
+  if(sAlert = checkElement(oCode, aSpec)) {
+    alert(sAlert);
+    return false;
+  }
+  else {
+    var oForm = document.editFrm;
+    aCcam = oForm.codes_ccam.value.split("|");
+    // Si la chaine est vide, il crée un tableau à un élément vide donc :
+    aCcam.removeByValue("");
+    aCcam.push(code);
+    aCcam.removeDuplicates();
+    oForm.codes_ccam.value = aCcam.join("|");
+    refreshListCCAM(aCcam);
+    modifOp();
+    return true;
+  }
+}
+
+function delCCAM(code) {
+  var oForm = document.editFrm;
+  var aCcam = oForm.codes_ccam.value.split("|");
+  // Si la chaine est vide, il crée un tableau à un élément vide donc :
+  aCcam.removeByValue("");
+  aCcam.removeByValue(code);
+  oForm.codes_ccam.value = aCcam.join("|");
+  refreshListCCAM(aCcam);
+  modifOp();
+}
+
+function refreshListCCAM(aCcam) {
+  oCcamNode = document.getElementById("listCodesCcam");
+  var sCodes = "";
+  var iCode = 0;
+  while (sCode = aCcam[iCode++]) {
+    sCodes += sCode;
+    sCodes += "<button type='button' onclick='delCCAM(\"" + sCode + "\")'>";
+    sCodes += "<img src='modules/dPplanningOp/images/cross.png' />";
+    sCodes += "</button>";
+  }
+  oCcamNode.innerHTML = sCodes;
+}
+
+
 function checkFormOperation() {
-  var form = document.editFrm;
-  var field = null;
+  var oForm = document.editFrm;
   
-  if (!checkForm(form)) {
+  if (!checkForm(oForm)) {
     return false;
   }
 
@@ -16,6 +66,13 @@ function checkFormOperation() {
 
   if (!checkDureeHospi()) {
     return false;
+  }
+  
+  var sCcam = oForm._codeCCAM.value;
+  if(sCcam != "") {
+    if(!putCCAM(sCcam)) {
+      return false;
+    }
   }
 
   return true;
@@ -117,8 +174,7 @@ function setCode( key, type ) {
   if (key) {
     var form = document.editFrm;
     var field = form.CIM10_code;
-    if (type == 'ccam')  field = form.CCAM_code;
-    if (type == 'ccam2') field = form.CCAM_code2;
+    if (type == 'ccam')  field = form._codeCCAM;
     field.value = key;
   }
 }
@@ -161,7 +217,6 @@ function setPlage(plage_id, sDate, bAdm) {
 
       var div_rdv_adm = document.getElementById("editFrm_date_adm_da");
       div_rdv_adm.innerHTML = makeLocaleDateFromDate(dAdm);
-      //alert("plage ID: " + plage_id);
     }
   }
 }
@@ -178,7 +233,7 @@ function setProtocole(
     chir_id,
     chir_last_name,
     chir_first_name,
-    prot_CCAM_code,
+    prot_codes_ccam,
     prot_libelle,
     prot_hour_op,
     prot_min_op,
@@ -194,7 +249,13 @@ function setProtocole(
   
   form.chir_id.value       = chir_id;
   form._chir_name.value    = chir_last_name + " " + chir_first_name;
-  form.CCAM_code.value     = prot_CCAM_code;
+  form.codes_ccam.value    = prot_codes_ccam;
+  // Actualisation de l'affichage
+  aCcam = prot_codes_ccam.split("|");
+  // Si la chaine est vide, il crée un tableau à un élément vide donc :
+  aCcam.removeByValue("");
+  aCcam.removeDuplicates();
+  refreshListCCAM(aCcam);
   form.libelle.value       = prot_libelle;
 
   // Hospitalisation ?
@@ -281,8 +342,8 @@ function printForm() {
       url += makeURLParam(form._hour_adm, "hour_adm");
       url += makeURLParam(form._min_adm , "min_adm" );
       url += makeURLParam(form.duree_hospi);
-      url += '&type_adm='    + type_adm;
-      url += '&chambre='     + chambre;
+      url += '&type_adm=' + type_adm;
+      url += '&chambre='  + chambre;
     }
 
     popup(700, 500, url, 'printAdm');
@@ -446,15 +507,33 @@ function pageMain() {
         {/if}
 
         <tr>
-          <th><label for="CCAM_code" title="Code CCAM principal d'intervention{if !$hospitalisation}. Obligatoire{/if}">Acte Principal (CCAM):</label></th>
-          <td><input type="text" name="CCAM_code" title="{$op->_props.CCAM_code}{if !$hospitalisation}|notNull{/if}" ondblclick="popCode('ccam')" size="10" value="{$op->CCAM_code}" onchange="modifOp()" /></td>
+          <th>
+            <label for="_codeCCAM" title="Codes CCAM d'intervention">Ajout de codes CCAM:</label>
+          </th>
+          <td>
+            <input type="text" name="_codeCCAM" ondblclick="popCode('ccam')" size="10" value="" />
+            <button type="button" onclick="putCCAM(this.form._codeCCAM.value)">
+              <img src="modules/dPplanningOp/images/tick.png" />
+            </button>
+          </td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('ccam')"/></td>
         </tr>
 
         <tr>
-          <th><label for="CCAM_code2" title="Code CCAM secondaire d'intervention">Acte secondaire (CCAM):</label></th>
-          <td><input type="text" name="CCAM_code2" title="{$op->_props.CCAM_code2}" size="10" value="{$op->CCAM_code2}" /></td>
-          <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('ccam2')"/></td>
+          <th>
+            Liste des codes CCAM:
+            <input name="codes_ccam" type="hidden" value="{$op->codes_ccam}" />
+          </th>
+          <td colspan="2" class="text" id="listCodesCcam">
+            {foreach from=$op->_codes_ccam item=curr_code}
+              {$curr_code}
+              <button type="button" onclick="delCCAM('{$curr_code}')">
+                <img src="modules/dPplanningOp/images/cross.png" />
+              </button>;
+            {foreachelse}
+            Pas de codes CCAM
+            {/foreach}
+          </td>
         </tr>
         
         <tr>

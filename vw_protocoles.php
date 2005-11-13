@@ -33,6 +33,7 @@ foreach($listPrat as $keyPrat => $valuePrat) {
   foreach ($prat->_ref_protocoles as $keyProt => $valueProt) {
     $protocole =& $prat->_ref_protocoles[$keyProt];
 
+    if(!$chir_id || ($prat->user_id == $chir_id))
     foreach ($protocole->_codes_ccam as $code) {
       @$listCodes[$code]++;
     }
@@ -46,6 +47,7 @@ foreach($listPrat as $keyPrat => $valuePrat) {
 }
 
 ksort($listCodes);
+array_unique($listCodes);
 
 // Protocole selectionné
 $protSel = new COperation;

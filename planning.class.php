@@ -231,7 +231,8 @@ class COperation extends CMbObject {
     parent::updateFormFields();
     
     $this->codes_ccam = strtoupper($this->codes_ccam);
-    $this->_codes_ccam = explode("|", $this->codes_ccam);
+    if($this->codes_ccam)
+      $this->_codes_ccam = explode("|", $this->codes_ccam);
     
     $this->_hour_op = intval(substr($this->temp_operation, 0, 2));
     $this->_min_op  = intval(substr($this->temp_operation, 3, 2));
@@ -349,7 +350,7 @@ class COperation extends CMbObject {
     }
     
     $ext_code_ccam =& $this->_ext_codes_ccam[0];
-    $code_ccam = $this->_codes_ccam[0];
+    $code_ccam = @$this->_codes_ccam[0];
     
     if (!$this->plageop_id && $this->pat_id && !$code_ccam) {
       $ext_code_ccam->libelleCourt = "Simple surveillance";

@@ -9,8 +9,9 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
+// @ todo : pourquoi on arrive pas à y accéder dès que le module n'est pas visible ???
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=public&a=access_denied" );
 }
 
 require_once( $AppUI->getModuleClass('dPccam', 'acte') );
