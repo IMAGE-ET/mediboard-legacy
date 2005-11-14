@@ -258,6 +258,9 @@ function pageMain() {
             ({$selOp->temp_operation|date_format:"%Hh%M"})
           </th>
           <td class="text">
+          {if $selOp->libelle}
+            <em>[{$selOp->libelle}]</em>
+          {/if}
             <ul>
             {foreach from=$selOp->_ext_codes_ccam item=curr_code}
             <li>
