@@ -36,8 +36,16 @@
         <tr>
           <th>Début:</th>
           <td><input type="text" name="debutlog" value="{$debutlog}" /></td>
-          <th>user:</th>
-          <td><input type="text" name="user_id" value="{$user_id}" /></td>
+          <th>utilisateur:</th>
+          <td>
+            <select name="user_id">
+            {foreach from=$listUsers item=curr_user}
+              <option value={$curr_user->user_id} {if $curr_user->user_id == $user_id}selected="selected"{/if}>
+                {$curr_user->_view}
+              </option>
+            {/foreach}
+            </select>
+          </td>
         </tr>
         <tr>
           <th>Fin:</th>
@@ -49,7 +57,7 @@
         </tr>
         <tr>
           <td colspan="4" class="button">
-            <img src='?m=dPstats&amp;a=graph_users&amp;suppressHeaders=1&amp;debut={$debutact}&amp;fin={$finact}&amp;user_id={$user_id}' />
+            <img src='?m=dPstats&amp;a=graph_users&amp;suppressHeaders=1&amp;debut={$debutlog}&amp;fin={$finlog}&amp;user_id={$user_id}' />
           </td>
         </tr>
       </table>

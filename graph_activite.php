@@ -12,8 +12,6 @@ require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_bar'));
-require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_pie'));
-require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_pie3D'));
 
 $debut = mbGetValueFromGet("debut", mbDate("-1 YEAR"));
 $fin = mbGetValueFromGet("fin", mbDate());
@@ -68,12 +66,12 @@ $graph->SetMarginColor("lightblue");
 
 // Set up the title for the graph
 $graph->title->Set("Interventions par mois");
-$graph->title->SetFont(FF_VERDANA,FS_NORMAL,10);
+$graph->title->SetFont(FF_ARIAL,FS_NORMAL,10);
 $graph->title->SetColor("darkred");
 
 // Setup font for axis
-$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
-$graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
+$graph->xaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
+$graph->yaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
 
 // Show 0 label on Y-axis (default is not to show)
 $graph->yscale->ticks->SupressZeroLabel(false);
