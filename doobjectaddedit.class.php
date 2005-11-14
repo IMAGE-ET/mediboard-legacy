@@ -127,7 +127,7 @@ class CDoObjectAddEdit {
       $this->doStore();
     }
     
-//    $this->doRedirect();
+    $this->doRedirect();
   }
   
 }
