@@ -18,11 +18,11 @@ if (!$canEdit) {
 require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_tonal"));
 
 global $graph_left;
-$graph_left->Stroke("graphtmp.png");
+$graph_left->Stroke("tmp/graphtmp.png");
 $map_left = $graph_left->GetHTMLImageMap("graph_left");
 
 global $graph_right;
-$graph_right->Stroke("graphtmp.png");
+$graph_right->Stroke("tmp/graphtmp.png");
 $map_right = $graph_right->GetHTMLImageMap("graph_right");
 
 global $exam_audio, $frequences;
