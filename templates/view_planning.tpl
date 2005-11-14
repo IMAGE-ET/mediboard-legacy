@@ -10,27 +10,107 @@
     </td>
   </tr>
   
-  <tr><th>Date :</th><td>{$today|date_format:"%A %d/%m/%Y"}</td></tr>
-  <tr><th>Chirurgien :</th><td>Dr. {$adm.chirName}</td></tr>
+  <tr>
+    <th>Date :</th>
+    <td>{$today|date_format:"%A %d/%m/%Y"}</td>
+  </tr>
   
-  <tr><th class="category" colspan="2">Renseignements concernant le patient</th></tr>
+  <tr>
+    <th>Chirurgien :</th>
+    <td>Dr. {$operation->_ref_chir->_view}</td>
+  </tr>
   
-  <tr><th>Nom / Prenom: </th><td>{$adm.patName} {$adm.patFirst}</td></tr>
-  <tr><th>Date de naissance / Sexe: </th><td>né(e) le {$adm.naissance} de sexe {$adm.sexe}</td></tr>
-  <tr><th>Incapable majeur: </th><td>{$adm.inc}</td></tr>
-  <tr><th>Telephone: </th><td>{$adm.tel}</td></tr>
-  <tr><th>Medecin traitant: </th><td>{$adm.medTrait}</td></tr>
-  <tr><th>Adresse: </th><td>{$adm.adresse} - {$adm.CP} {$adm.ville}</td></tr>
+  <tr>
+    <th class="category" colspan="2">Renseignements concernant le patient</th>
+  </tr>
   
-  <tr><th class="category" colspan="2">Renseignements relatifs à l'hospitalisation</th></tr>
+  {assign var="patient" value=$operation->_ref_pat}
+  <tr>
+    <th>Nom / Prénom :</th>
+    <td>{$patient->_view}</td>
+  </tr>
   
-  <tr><th>Admission: </th><td>le {$adm.dateAdm} à {$adm.hourAdm}</td></tr>
-  <tr><th>Hospitalisation: </th><td>{$adm.hospi}</td></tr>
-  <tr><th>Chambre seule: </th><td>{$adm.chambre}</td></tr>
-  <tr><th>Date d'intervention: </th><td>{$adm.dateOp}</td></tr>
-  <tr><th>Diagnostic: </th><td class="text">{$adm.CCAM}{if $adm.CCAM2 != ""}<br />+ {$adm.CCAM2}{/if}</td></tr>
-  <tr><th>Coté: </th><td>{$adm.cote}</td></tr>
-  <tr><th>Durée prévue d'hospitalisation: </th><td>{$adm.dureeHospi} jours</td></tr>
+  <tr>
+    <th>Date de naissance / Sexe :</th>
+    <td>
+      né(e) le {$patient->_naissance}
+      de sexe 
+      {if $patient->sexe == "m"}masculin{else}féminin{/if}
+    </td>
+  </tr>
+  
+  <tr>
+    <th>Incapable majeur :</th>
+    <td>{if $patient->incapable_majeur == "o"}oui{else}non{/if}</td>
+  </tr>
+
+  <tr>
+    <th>Téléphone :</th>
+    <td>{$patient->_tel1} {$patient->_tel2} {$patient->_tel3} {$patient->_tel4} {$patient->_tel5}</td>
+  </tr>
+
+  <tr>
+    <th>Medecin traitant :</th>
+    <td>{$patient->_ref_medecin_traitant->_view}</td>
+  </tr>
+  
+  <tr>
+    <th>Adresse :</th>
+    <td>
+      {$patient->adresse} &mdash;
+      {$patient->cp} {$patient->ville}
+    </td>
+  </tr>
+  
+  <tr>
+    <th class="category" colspan="2">Renseignements relatifs à l'hospitalisation</th>
+  </tr>
+  
+  <tr>
+    <th>Admission :</th>
+    <td>
+      le {$operation->date_adm|date_format:"%A %d/%m/%Y"} 
+      à {$operation->time_adm|date_format:"%Hh%M"}
+    </td>
+  </tr>
+  
+  <tr>
+    <th>Hospitalisation :</th>
+    <td>
+      {if $operation->type_adm == "comp"}Complète{/if}
+      {if $operation->type_adm == "ambu"}Ambulatoire{/if}
+      {if $operation->type_adm == "exte"}Externe{/if}
+    </td>
+  </tr>
+  
+  <tr>
+    <th>Chambre seule :</th>
+    <td>{if $operation.chambre == "o"}oui{else}non{/if}</td>
+  </tr>
+ 
+  <tr>
+    <th>Date d'intervention :</th>
+    <td>le {$operation->_ref_plageop->date|date_format:"%A %d/%m/%Y"}</td>
+  </tr>
+
+  <tr>
+    <th>Actes médicaux: </th>
+    <td class="text">
+      {foreach from=$operation->_ext_codes_ccam item=ext_code_ccam}
+      {$ext_code_ccam->libelleLong}<br />
+      {/foreach}
+    </td>
+  </tr>
+  
+  <tr>
+    <th>Côté :</th>
+    <td>{$operation->cote}</td>
+  </tr>
+
+  <tr>
+    <th>Durée prévue d'hospitalisation :</th>
+    <td>{$operation->duree_hospi} jours</td>
+  </tr>
   
   <tr><th class="category" colspan="2">Rendez vous d'anesthésie</th></tr>
   

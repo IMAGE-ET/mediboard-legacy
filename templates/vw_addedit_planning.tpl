@@ -131,10 +131,9 @@ function modifOp() {
 }
 
 function popChir() {
-  var url = './index.php?m=mediusers';
-  url += '&a=chir_selector';
-  url += '&dialog=1';
-  popup(400, 250, url, 'Chirurgien');
+  var url = new Url();
+  url.setModuleAction("mediusers", "chir_selector");
+  url.popup(400, 250, 'Chirurgien');
 }
 
 function setChir( key, val ){
@@ -146,10 +145,9 @@ function setChir( key, val ){
 }
 
 function popPat() {
-  var url = './index.php?m=dPpatients';
-  url += '&a=pat_selector';
-  url += '&dialog=1';
-  popup(800, 500, url, 'Patient');
+  var url = new Url();
+  url.setModuleAction("dPpatients", "pat_selector");
+  url.popup(800, 500, "Patient");
 }
 
 function setPat( key, val ) {
@@ -162,12 +160,11 @@ function setPat( key, val ) {
 }
 
 function popCode(type) {
-  var url = './index.php?m=dPplanningOp';
-  url += '&a=code_selector';
-  url += '&dialog=1';
-  url += '&chir='+ document.editFrm.chir_id.value;
-  url += '&type='+ type;
-  popup(600, 500, url, type);
+  var url = new Url();
+  url.setModuleAction("dPplanningOp", "code_selector");
+  url.addElement(document.editFrm.chir_id, "chir");
+  url.addParam("type", type)
+  url.popup(600, 500, type);
 }
 
 function setCode( key, type ) {
@@ -180,14 +177,15 @@ function setCode( key, type ) {
 }
 
 function popPlage() {
-  var url = './index.php?m=dPplanningOp';
-  url += '&a=plage_selector';
-  url += '&dialog=1';
-  url += '&chir=' + document.editFrm.chir_id.value;
-  url += '&curr_op_hour=' + document.editFrm._hour_op.value;
-  url += '&curr_op_min=' + document.editFrm._min_op.value;
-  if (checkChir() & checkDuree())
-    popup(400, 250, url, 'Plage');
+  if (checkChir() & checkDuree()) {
+    var oForm = document.editFrm;
+    var url = new Url();
+    url.setModuleAction("dPplanningOp", "plage_selector");
+    url.addElement(oForm.chir_id, "chir");
+    url.addElement(oForm._hour_op, "curr_op_hour");
+    url.addElement(oForm._min_op, "curr_op_min");
+    url.popup(400, 250, 'Plage');
+  }
 }
 
 function setPlage(plage_id, sDate, bAdm) {
@@ -222,11 +220,9 @@ function setPlage(plage_id, sDate, bAdm) {
 }
 
 function popProtocole() {
-  var url = './index.php?m=dPplanningOp';
-  url += '&a=vw_protocoles';
-  url += '&dialog=1';
-  url += '&chir_id='   + document.editFrm.chir_id.value;
-  popup(700, 500, url, 'Protocole');
+  var url = new Url("dPplanningOp", "vw_protocoles");
+  url.addElement(document.editFrm.chir_id);
+  url.popup(700, 500, "Protocole");
 }
 
 function setProtocole(
@@ -275,82 +271,40 @@ function setProtocole(
 
 function printDocument() {
   form = document.editFrm;
-  if(checkFormOperation() && (form._choix_modele.value != 0)) {
-    url = './index.php?m=dPcompteRendu';
-    url += '&a=edit_compte_rendu';
-    url += '&dialog=1';
-    url += '&object_id=' + eval('form.operation_id.value');
-    url += '&modele_id='  + eval('form._choix_modele.value'     );
-    popup(700, 600, url, 'Document');
-    return true
-  }
-  else {
-    return false;
-  }
-}
-
-function printPack() {
-  form = document.editFrm;
-  if(checkFormOperation() && (form._choix_pack.value != 0)) {
-    url = './index.php?m=dPcompteRendu';
-    url += '&a=edit_compte_rendu';
-    url += '&dialog=1';
-    url += '&object_id=' + eval('form.operation_id.value');
-    url += '&pack_id='  + eval('form._choix_pack.value'     );
-    popup(700, 600, url, 'Document');
-    return true
-  }
-  else {
-    return false;
-  }
-}
-
-function printForm() {
-  // @todo Pourquoi ne pas seulement passer le operation_id? ca parait bcp moins régressif
-  // Rque : il est maintenant possible de passer l'operation_id, mais l'ancienne possibilité
-  //        est gardée pour éviter la régréssion et surtout imprimer avant de créer...
-  if (checkFormOperation()) {
-    form = document.editFrm;
-    
-    chambre = form.chambre[0].checked ? 'o' : 'n';
-    if (form.type_adm[0].checked) type_adm = 'comp';
-    if (form.type_adm[1].checked) type_adm = 'ambu';
-    if (form.type_adm[2].checked) type_adm = 'exte';
-    
-    url = './index.php?m=dPplanningOp';
-    url += '&a=view_planning';
-    url += '&dialog=1';
-    
-    url += makeURLParam(form.chir_id);
-    url += makeURLParam(form.pat_id);
-    url += makeURLParam(form.CCAM_code);
-    url += makeURLParam(form.CCAM_code2);
-    url += makeURLParam(form.cote , "cote" );
-    url += makeURLParam(form._hour_op, "hour_op");
-    url += makeURLParam(form._min_op , "min_op" );
-    url += makeURLParam(form.date);
-    url += makeURLParam(form.info);
-    
-    if (element = document.getElementById("editFrm_date_anesth_da")) {
-      url += '&rdv_anesth='  + element.innerHTML;
-      url += makeURLParam(form._hour_anesth, "hour_anesth");
-      url += makeURLParam(form._min_anesth , "min_anesth" );
-    }
-    
-    if (element = document.getElementById("editFrm_date_adm_da")) {
-      url += '&rdv_adm='  + element.innerHTML;
-      url += makeURLParam(form._hour_adm, "hour_adm");
-      url += makeURLParam(form._min_adm , "min_adm" );
-      url += makeURLParam(form.duree_hospi);
-      url += '&type_adm=' + type_adm;
-      url += '&chambre='  + chambre;
-    }
-
-    popup(700, 500, url, 'printAdm');
+  
+  if (checkFormOperation() && (form._choix_modele.value != 0)) {
+    var url = new Url;
+    url.setModuleAction("dPcompteRendu", "edit_compte_rendu");
+    url.addElement(form.operation_id, "object_id");
+    url.addElement(form._choix_modele, "modele_id");
+    url.popup(700, 600, "Document");
     return true;
   }
   
   return false;
+}
+
+function printPack() {
+  form = document.editFrm;
+
+  if (checkFormOperation() && (form._choix_modele.value != 0)) {
+    var url = new Url;
+    url.setModuleAction("dPcompteRendu", "edit_compte_rendu");
+    url.addElement(form.operation_id, "object_id");
+    url.addElement(form._choix_pack, "pack_id");
+    url.popup(700, 600, "Document");
+    return true;
+  }
+  
+  return false;
+}
+
+function printForm() {
+  var url = new Url;
+  url.setModuleAction("dPplanningOp", "view_planning"); 
+  url.addElement(document.editFrm.operation_id);
+  url.popup(700, 500, url, "printPlanning");
+  return;
 }
 
 function pageMain() {
@@ -407,7 +361,7 @@ function pageMain() {
         <img src="images/history.gif" alt="historique" />
       </a>
       {if $protocole}
-      Modification du protocole {$op->CCAM_code} du Dr. {$chir->_view}
+      Modification du protocole {$op->_codes_ccam} du Dr. {$chir->_view}
       {elseif $hospitalisation}
       Modification de l'hospitalisation de {$pat->_view} par le Dr. {$chir->_view}
       {else}
@@ -740,8 +694,6 @@ function pageMain() {
                 <option value="{$curr_pack->pack_id}">{$curr_pack->nom}</option>
               {/foreach}
             </select>
-            {else}
-            <input type="button" value="Imprimer et créer" onClick="if (printForm()) this.form.submit()" />
             {/if}
           {/if}
           </td>
