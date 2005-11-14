@@ -231,8 +231,11 @@ class COperation extends CMbObject {
     parent::updateFormFields();
     
     $this->codes_ccam = strtoupper($this->codes_ccam);
+    $this->_codes_ccam = array();
     if($this->codes_ccam)
       $this->_codes_ccam = explode("|", $this->codes_ccam);
+    else
+      $this->_codes_ccam[0] = "XXXXXX";
     
     $this->_hour_op = intval(substr($this->temp_operation, 0, 2));
     $this->_min_op  = intval(substr($this->temp_operation, 3, 2));
@@ -253,14 +256,23 @@ class COperation extends CMbObject {
   }
   
   function updateDBFields() {
-    if(!$this->codes_ccam && $this->CCAM_code) {
-      $this->codes_ccam = $this->CCAM_code;
-      if ($this->CCAM_code2) {
-        $this->codes_ccam .= "|$this->CCAM_code2";
-      }
-    }
+    //if(!$this->codes_ccam && $this->CCAM_code) {
+    //  $this->codes_ccam = $this->CCAM_code;
+    //  if ($this->CCAM_code2) {
+    //    $this->codes_ccam .= "|$this->CCAM_code2";
+    //  }
+    //}
     
     $this->codes_ccam = strtoupper($this->codes_ccam);
+    $codes_ccam = explode("|", $this->codes_ccam);
+    $XPosition = true;
+    while($XPosition !== false) {
+      $XPosition = array_search("XXXXXXX", $codes_ccam);
+      if ($XPosition !== false) {
+        array_splice($codes_ccam, $XPosition, 1);
+      }
+    }
+    $this->codes_ccam = implode("|", $codes_ccam);
     
   	if ($this->_hour_anesth !== null and $this->_min_anesth !== null) {
       $this->time_anesth = 
@@ -352,7 +364,7 @@ class COperation extends CMbObject {
     $ext_code_ccam =& $this->_ext_codes_ccam[0];
     $code_ccam = @$this->_codes_ccam[0];
     
-    if (!$this->plageop_id && $this->pat_id && !$code_ccam) {
+    if (!$this->plageop_id && $this->pat_id && !$this->_codes_ccam) {
       $ext_code_ccam->libelleCourt = "Simple surveillance";
       $ext_code_ccam->libelleLong = "Simple surveillance";
     }
