@@ -256,17 +256,18 @@ class COperation extends CMbObject {
   }
   
   function updateDBFields() {
-    if($this->codes_ccam)
+    if($this->codes_ccam) {
       $this->codes_ccam = strtoupper($this->codes_ccam);
-    $codes_ccam = explode("|", $this->codes_ccam);
-    $XPosition = true;
-    while($XPosition !== false) {
-      $XPosition = array_search("XXXXXXX", $codes_ccam);
-      if ($XPosition !== false) {
-        array_splice($codes_ccam, $XPosition, 1);
+      $codes_ccam = explode("|", $this->codes_ccam);
+      $XPosition = true;
+      while($XPosition !== false) {
+        $XPosition = array_search("XXXXXXX", $codes_ccam);
+        if ($XPosition !== false) {
+          array_splice($codes_ccam, $XPosition, 1);
+        }
       }
+      $this->codes_ccam = implode("|", $codes_ccam);
     }
-    $this->codes_ccam = implode("|", $codes_ccam);
     
   	if ($this->_hour_anesth !== null and $this->_min_anesth !== null) {
       $this->time_anesth = 
