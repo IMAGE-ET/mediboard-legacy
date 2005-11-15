@@ -275,6 +275,17 @@ function checkElement(oElement, aSpecFragments) {
             }
   
             break;
+
+          case "minMax":
+            var iMin = parseInt(aSpecFragments[2], 10);
+            var iMax = parseInt(aSpecFragments[3], 10);
+            
+            if (oElement.value > iMax || oElement.value < iMin) {
+              return printf("N'est pas compris entre %i et %i", iMin, iMax);
+            }
+            
+            break;
+            
   
           default:
             return "Spécification de chaîne de caractères invalide";
