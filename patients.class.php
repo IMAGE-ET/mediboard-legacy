@@ -153,8 +153,10 @@ class CPatient extends CMbObject {
   }
   
   function updateDBFields() {
-  	$this->nom = strtoupper($this->nom);
-    $this->prenom = ucwords(strtolower($this->prenom));
+    if($this->nom)
+  	  $this->nom = strtoupper($this->nom);
+    if($this->prenom)
+      $this->prenom = ucwords(strtolower($this->prenom));
   	if(($this->_tel1 != null) && ($this->_tel2 != null) && ($this->_tel3 != null) && ($this->_tel4 !== null) && ($this->_tel5 !== null)) {
       $this->tel = 
         $this->_tel1 .
