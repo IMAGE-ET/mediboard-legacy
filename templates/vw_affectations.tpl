@@ -393,9 +393,9 @@ function popPlanning() {
               <em>Pathologie</em>:
               {$curr_affectation->_ref_operation->pathologie}
               <input type="radio" name="septique" value="0" {if $curr_affectation->_ref_operation->septique == 0} checked="checked" {/if} onclick="this.form.submit()" />
-              <label for="SeptieOperation{$curr_affectation->_ref_operation->operation_id}_septique_0" title="Opération propre">Propre</label>
+              <label for="septique_0" title="Opération propre">Propre</label>
               <input type="radio" name="septique" value="1" {if $curr_affectation->_ref_operation->septique == 1} checked="checked" {/if} onclick="this.form.submit()" />
-              <label for="SeptieOperation{$curr_affectation->_ref_operation->operation_id}_septique_1" title="Opération septique">Septique</label>
+              <label for="septique_1" title="Opération septique">Septique</label>
       
               </form>
                             
@@ -556,9 +556,9 @@ function popPlanning() {
         </select>
         <br />
         <input type="radio" name="septique" value="0" {if $curr_operation->septique == 0} checked="checked" {/if} />
-        <label for="EditOperation{$curr_operation->operation_id}_septique_0" title="Opération propre">Propre</label>
+        <label for="septique_0" title="Opération propre">Propre</label>
         <input type="radio" name="septique" value="1" {if $curr_operation->septique == 1} checked="checked" {/if} />
-        <label for="EditOperation{$curr_operation->operation_id}_septique_1" title="Opération septique">Septique</label>
+        <label for="septique_1" title="Opération septique">Septique</label>
 
         <input type="submit" value="valider" />
         
