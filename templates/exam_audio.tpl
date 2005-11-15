@@ -35,8 +35,9 @@ function pageMain() {
 </tr>
 <tr>
   <td colspan="2">
-    <form name="editGauche" action="?m={$m}&amp;a=exam_audio&amp;dialog=1" method="post" onsubmit="return checkForm(this)">
+    <form name="edit" action="?m=dPcabinet&amp;a=exam_audio&amp;dialog=1" method="post" onsubmit="return checkForm(this)">
     
+    <input type="hidden" name="m" value="dPcabinet" />
     <input type="hidden" name="dosql" value="do_exam_audio_aed" />
     <input type="hidden" name="del" value="0" />
     <input type="hidden" name="examaudio_id" value="{$exam_audio->examaudio_id}" />
