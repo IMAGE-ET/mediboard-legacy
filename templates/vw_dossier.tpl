@@ -165,17 +165,36 @@ function imprimerDocument(doc_id) {
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
-          <td class="button">Code</td>
-          <td class="button">Activité</td>
-          <td class="button">Phase</td>
-          <td class="button">Modificateurs</td>
+          <td class="button">
+            <a href="?m=dPpmsi&amp;tab=edit_actes&amp;operation_id={$curr_op->operation_id}">
+              <strong>Modifier</strong>
+            </a>
+          </td>
+          <td class="button"><strong>Code</strong></td>
+          <td class="button"><strong>Activité</strong></td>
+          <td class="button"><strong>Phase &mdash Modificateurs</strong></td>
         </tr>
         {foreach from=$curr_op->_ref_actes_ccam item=curr_acte}
         <tr class="op{$curr_op->operation_id}">
+          <td class="button">
+            <form name="formActe-{$curr_acte->_view}" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
+            <input type="hidden" name="m" value="dPsalleOp" />
+            <input type="hidden" name="dosql" value="do_acteccam_aed" />
+            <input type="hidden" name="del" value="1" />
+            <input type="hidden" name="acte_id" value="{$curr_acte->acte_id}" />
+            <button type="submit">
+              <img src="modules/dPpmsi/images/cross.png" />
+            </button>
+            </form>
+          </td>
           <td class="button">{$curr_acte->code_acte}</td>
           <td class="button">{$curr_acte->code_activite}</td>
-          <td class="button">{$curr_acte->code_phase}</td>
-          <td class="button">{$curr_acte->modificateurs}</td>
+          <td class="button">
+            {$curr_acte->code_phase}
+            {if $curr_acte->modificateurs}
+              &mdash {$curr_acte->modificateurs}
+            {/if}
+          </td>
         </tr>
         {/foreach}
         {foreach from=$curr_op->_ref_documents item=document}

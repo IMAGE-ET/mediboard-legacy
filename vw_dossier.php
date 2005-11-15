@@ -22,7 +22,9 @@ if (!$canEdit) {
 $pat_id = mbGetValueFromGetOrSession("pat_id", 0);
 $patient = new CPatient;
 $patient->load($pat_id);
-$listPrat = new CMediusers();
+
+// Chargement des praticiens
+$listPrat = new CMediusers;
 $listPrat = $listPrat->loadPraticiens(PERM_READ);
 
 // Chargement des références du patient
