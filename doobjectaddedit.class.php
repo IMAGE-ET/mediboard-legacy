@@ -47,7 +47,7 @@ class CDoObjectAddEdit {
     if (!$this->_obj->bind( $_POST )) {
       $AppUI->setMsg( $this->_obj->getError(), UI_MSG_ERROR );
       if ($this->redirectError) {
-        $this->redirect = $this->redirectError;
+        $this->redirect =& $this->redirectError;
       }
       $this->doRedirect();
     }
@@ -59,14 +59,14 @@ class CDoObjectAddEdit {
     if ($msg = $this->_obj->delete()) {
       $AppUI->setMsg($msg, UI_MSG_ERROR );
       if ($this->redirectError) {
-        $this->redirect = $this->redirectError;
+        $this->redirect =& $this->redirectError;
       }
     } else {
       mbSetValueToSession($this->objectKeyGetVarName);
       $this->doLog("delete");
       $AppUI->setMsg($this->deleteMsg, UI_MSG_ALERT);
       if ($this->redirectDelete) {
-        $this->redirect = $this->redirectDelete;
+        $this->redirect =& $this->redirectDelete;
       }
     }
   }
@@ -77,13 +77,13 @@ class CDoObjectAddEdit {
     if ($msg = $this->_obj->store()) {
       $AppUI->setMsg($msg, UI_MSG_ERROR );
       if ($this->redirectError) {
-        $this->redirect = $this->redirectError;
+        $this->redirect =& $this->redirectError;
       }
     } else {
       $isNotNew = @$_POST[$this->objectKeyGetVarName];
       $this->doLog("store");
       $AppUI->setMsg( $isNotNew ? $this->modifyMsg : $this->createMsg, UI_MSG_OK);
-      $this->redirect = $this->redirectStore;
+      $this->redirect =& $this->redirectStore;
     }
   }
   
