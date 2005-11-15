@@ -24,9 +24,10 @@ $sql = "SELECT `operation_id` , `codes_ccam`, `CCAM_code` , `CCAM_code2`" .
   "\nAND (`CCAM_code` != '' OR `CCAM_code` IS NOT NULL)";
 
 $res = db_exec( $sql );
-$num = sizeof($res);
+$i = 0;
 
 while ($obj = db_fetch_object($res)) {
+  $i++;
   $obj->codes_ccam = $obj->CCAM_code;
   if ($obj->CCAM_code2) {
     $obj->codes_ccam .= "|$obj->CCAM_code2";
@@ -38,4 +39,4 @@ while ($obj = db_fetch_object($res)) {
   db_exec($sql2); db_error();
 };
 
-echo "$num interventions mises à jour";
+echo "$i interventions mises à jour";
