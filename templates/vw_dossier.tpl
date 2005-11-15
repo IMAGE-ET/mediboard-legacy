@@ -158,6 +158,12 @@ function imprimerDocument(doc_id) {
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
+          <th>Anesthésiste</th>
+          <td colspan="3">
+            Dr. {$curr_op->_ref_plageop->_ref_anesth->_view}
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
           <th>Heures</th>
           <td class="text" colspan="3">
             Entrée en salle à {$curr_op->entree_bloc|date_format:"%Hh%M"},
