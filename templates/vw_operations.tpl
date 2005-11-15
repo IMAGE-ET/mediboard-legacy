@@ -1,69 +1,6 @@
 {literal}
 <script type="text/javascript">
 
-function showCode(form) {
-  {/literal}
-  {if $selOp->operation_id}
-  
-  var code = form._selCode.value;
-  var aItemsList = new Array();
-  aItemsList["0"] = "Sélectionnez un code";
-  {foreach from=$selOp->_ext_codes_ccam item=curr_code}
-    aItemsList["{$curr_code->code}"] = "{$curr_code->libelleLong|escape:javascript}";
-  {/foreach}
-  myNode = document.getElementById("codename");
-  myNode.innerHTML = aItemsList[code];
-  
-  {/if}
-  {literal}
-}
-
-function popCode() {
-  var url = './index.php?m=dPplanningOp';
-  url += '&a=code_selector';
-  url += '&dialog=1';
-  {/literal}
-  {if $selOp->operation_id}
-  url += '&chir='+ {$selOp->chir_id};
-  {/if}
-  {literal}
-  url += '&type=ccam';
-  popup(600, 500, url, 'ccam');
-}
-
-function setCode( key, type ) {
-  if (key) {
-    var oForm = document.manageCodes;
-    oForm._newCode.value = key;
-  }
-}
-
-function addCode() {
-  var oForm = document.manageCodes;
-  var aCCAM = oForm.codes_ccam.value.split("|");
-  // Si la chaine est vide, il crée un tableau à un élément vide donc :
-  aCCAM.removeByValue("");
-  if(oForm._newCode.value != '')
-    aCCAM.push(oForm._newCode.value);
-  aCCAM.removeDuplicates();
-  aCCAM.sort();
-  oForm.codes_ccam.value = aCCAM.join("|");
-  oForm.submit();
-}
-
-function delCode() {
-  var oForm = document.manageCodes;
-  var aCCAM = oForm.codes_ccam.value.split("|");
-  // Si la chaine est vide, il crée un tableau à un élément vide donc :
-  aCCAM.removeByValue("");
-  if(oForm._selCode.value != '')
-    aCCAM.removeByValue(oForm._selCode.value);
-  aCCAM.removeDuplicates();
-  aCCAM.sort();
-  oForm.codes_ccam.value = aCCAM.join("|");
-  oForm.submit();
-}
-
 function pageMain() {
   {/literal}
   regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
@@ -210,43 +147,7 @@ function pageMain() {
         <tr>
           <th>Actes</th>
           <td class="text">
-            <form name="manageCodes" action="?m=dPsalleOp" method="post">
-              <input type="hidden" name="m" value="dPplanningOp" />
-              <input type="hidden" name="dosql" value="do_planning_aed" />
-              <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
-              <input type="hidden" name="del" value="0" />
-              <input type="hidden" name="codes_ccam" value="{$selOp->codes_ccam}" />
-              <table width="100%">
-                <tr>
-                  <td>
-                    <select name="_selCode" onchange="showCode(this.form)">
-                      <option value="0">&mdash Codes</option>
-                      {foreach from=$selOp->_codes_ccam item=curr_code}
-                      <option value="{$curr_code}">{$curr_code}</option>
-                      {/foreach}
-                    </select>
-                  </td>
-                  <td style="text-align:right">
-                    Ajouter un code
-                    <input type="text" size="7" name="_newCode" />
-                    <button type="button" onclick="addCode()">
-                      <img src="modules/dPcabinet/images/tick.png">
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <button type="button" onclick="delCode()">
-                      <img src="modules/dPcabinet/images/cross.png">
-                    </button>
-                    <div id="codename" style="display:inline; white-space:normal">Selectionnez un code</div>
-                  </td>
-                  <td style="text-align:right">
-                    <button type="button" onclick="popCode()">Rechercher...</button>
-                  </td>
-                </tr>
-              </table>
-            </form>
+          {include file="inc_manage_codes.tpl"}
           </td>
         </tr>
         <tr>
@@ -258,106 +159,7 @@ function pageMain() {
             ({$selOp->temp_operation|date_format:"%Hh%M"})
           </th>
           <td class="text">
-          {if $selOp->libelle}
-            <em>[{$selOp->libelle}]</em>
-          {/if}
-            <ul>
-            {foreach from=$selOp->_ext_codes_ccam item=curr_code}
-            <li>
-              <strong>{$curr_code->libelleLong|escape}</strong> 
-              <em>(<a class="action" href="?m=dPccam&amp;tab=vw_full_code&amp;codeacte={$curr_code->code}">{$curr_code->code}</a>)</em>
-              <br />Codes associés :
-              <select name="asso" onchange="setCode(this.value, 'ccam')">
-                <option value="">&mdash choix</option>
-                {foreach from=$curr_code->assos item=curr_asso}
-                <option value="{$curr_asso.code}">{$curr_asso.code}</option>
-                {/foreach}
-              </select>
-
-              {foreach from=$curr_code->activites item=curr_activite}
-              {foreach from=$curr_activite->phases item=curr_phase}
-              {assign var="acte" value=$curr_phase->_connected_acte}
-                <form name="formActe-{$acte->_view}" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
-
-                <input type="hidden" name="m" value="{$m}" />
-                <input type="hidden" name="dosql" value="do_acteccam_aed" />
-                <input type="hidden" name="del" value="0" />
-                <input type="hidden" name="acte_id" value="{$acte->acte_id}" />
-                <input type="hidden" name="operation_id" title="{$acte->_props.operation_id}" value="{$selOp->operation_id}" />
-                <input type="hidden" name="code_acte" title="{$acte->_props.code_acte}" value="{$acte->code_acte}" />
-                <input type="hidden" name="code_activite" title="{$acte->_props.code_activite}" value="{$acte->code_activite}" />
-                <input type="hidden" name="code_phase" title="{$acte->_props.code_phase}" value="{$acte->code_phase}" />
-                <input type="hidden" name="montant_depassement" title="{$acte->_props.montant_depassement}" value="{$acte->montant_depassement}" />
-
-                <table class="form">
-                
-                <tr class="groupcollapse" id="acte{$acte->_view}" onclick="flipGroup('{$acte->_view}', 'acte')">
-                  <td colspan="2">
-                    Activité {$curr_activite->numero} ({$curr_activite->type|escape}) &mdash; 
-                    Phase {$curr_phase->phase} : {$curr_phase->libelle|escape}
-                  </td>
-                </tr>
-                
-                <tr class="acte{$acte->_view}">
-                  <th><label for="execution" title="Date et heure d'exécution de l'acte">Exécution :</label></th>
-                  <td>
-                    <input type="text" name="execution" title="{$acte->_props.execution}" readonly="readonly" value="{$acte->execution}" />
-                    <input type="button" value="Maintenant" onclick="this.form.execution.value = makeDATETIMEFromDate(new Date());" /><br />
-                  </td>
-                </tr>
-
-                <tr class="acte{$acte->_view}">
-                  <th><label for="executant_id" title="Professionnel de santé exécutant l'acte">Exécutant :</label></th>
-                  <td>
-                    {if $curr_activite->numero == 4}
-                      {assign var="listExecutants" value=$listAnesths}
-                    {else}
-                      {assign var="listExecutants" value=$listChirs}
-                    {/if}
-
-                    <select name="executant_id" title="{$acte->_props.executant_id}">
-                      <option value="">&mdash; Choisir un professionnel de santé</option>
-                      {foreach from=$listExecutants item=curr_executant}
-                      <option value="{$curr_executant->user_id}" {if $acte->executant_id == $curr_executant->user_id} selected="selected" {/if}>{$curr_executant->_view}</option>
-                      {/foreach}
-                    </select>
-                  </td>
-                </tr>
-
-                <tr class="acte{$acte->_view}">
-                  <th><label for="modificateurs" title="Modificateurs associés à l'acte">Modificateur(s) :</label></th>
-                  <td class="text">
-                    {foreach from=$curr_phase->_modificateurs item=curr_mod}
-                    <input type="checkbox" name="modificateur_{$curr_mod->code}" {if $curr_mod->_value}checked="checked"{/if} />
-                    <label for="modificateur_{$curr_mod->code}" title="{$curr_mod->libelle|escape}">{$curr_mod->code} : {$curr_mod->libelle|escape}</label>
-                    <br />
-                    {/foreach}
-                  </td>
-                </tr>
-                
-                <tr class="acte{$acte->_view}">
-                  <th><label for="commentaire" title="Commentaires sur l'acte">Commentaire :</label></th>
-                  <td><textarea name="commentaire" title="{$acte->_props.commentaire}">{$acte->commentaire}</textarea></td>
-                </tr>
-                
-                <tr>
-                  <td class="button" colspan="2">
-                  {if $acte->acte_id}
-                  <input type="submit" value="Modifier cet acte" />
-                  <input type="button" value="Supprimer cet acte" onclick="confirmDeletion(this.form, 'l\'acte', '{$acte->_view|escape:javascript}')"  />
-                  {else}
-                  <input type="submit" value="Coder cet acte" />
-                  {/if}
-                </tr>
-                
-                </table>
-                    
-                </form>
-              {/foreach}
-              {/foreach}
-            </li>
-            {/foreach}
-            </ul>
+          {include file="inc_codage_actes.tpl"}
           </td>
         </tr>
         <tr>
