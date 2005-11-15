@@ -44,6 +44,9 @@ if (intval(dPgetParam($_POST, 'del'))) {
     $do->createMsg = "Protocole créé";
   }
   $do->doStore();
+  // Pour que la redirection prenne vraiment l'objet en compte et pas que les valeurs du POST
+  // -> on reload l'objet
+  $do->_obj->load($do->_obj->operation_id);
   if($otherm = dPgetParam( $_POST, 'otherm', 0))
     $m = $otherm;
   if($m == "dPhospi")
