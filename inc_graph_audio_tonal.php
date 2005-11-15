@@ -80,7 +80,7 @@ class AudiogrammeTonal extends Graph {
       $labels[] = $label;
       $jscalls[] = "javascript:alert('$label')";
       
-      if ($value == "") {
+      if (!is_numeric($value)) {
       	$values[$key] = 11;
       }
     }

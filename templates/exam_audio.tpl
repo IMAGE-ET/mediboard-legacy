@@ -35,7 +35,7 @@ function pageMain() {
 </tr>
 <tr>
   <td colspan="2">
-    <form name="editGauche" action="?m={$m}&amp;a=exam_audio&amp;dialog=1" method="post">
+    <form name="editGauche" action="?m={$m}&amp;a=exam_audio&amp;dialog=1" method="post" onsubmit="return checkForm(this)">
     
     <input type="hidden" name="dosql" value="do_exam_audio_aed" />
     <input type="hidden" name="del" value="0" />
@@ -59,13 +59,13 @@ function pageMain() {
       {foreach from=$frequences key=index item=frequence}
       <tr class="values">
         <th><label for="_gauche_aerien[{$index}]" title="Perte de l'oreille gauche pour la fréquence {$frequence} en conduction aérienne">{$frequence} :</label></th>
-        <td><input type="text" name="_gauche_aerien[{$index}]" title="numeric" value="{$exam_audio->_gauche_aerien.$index}" size="4" maxlength="4" /></td>
+        <td><input type="text" name="_gauche_aerien[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_gauche_aerien.$index}" tabindex="{$index+0}" size="4" maxlength="4" /></td>
         <th><label for="_gauche_osseux[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction osseuse">{$frequence} :</label></th>
-        <td><input type="text" name="_gauche_osseux[{$index}]" title="numeric" value="{$exam_audio->_gauche_osseux.$index}" size="4" maxlength="4" /></td>
+        <td><input type="text" name="_gauche_osseux[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_gauche_osseux.$index}" tabindex="{$index+10}" size="4" maxlength="4" /></td>
         <th><label for="_droite_aerien[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction aérienne">{$frequence} :</label></th>
-        <td><input type="text" name="_droite_aerien[{$index}]" title="numeric" value="{$exam_audio->_droite_aerien.$index}" size="4" maxlength="4" /></td>
+        <td><input type="text" name="_droite_aerien[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_droite_aerien.$index}" tabindex="{$index+20}" size="4" maxlength="4" /></td>
         <th><label for="_droite_osseux[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction osseuse">{$frequence} :</label></th>
-        <td><input type="text" name="_droite_osseux[{$index}]" title="numeric" value="{$exam_audio->_droite_osseux.$index}" size="4" maxlength="4" /></td>
+        <td><input type="text" name="_droite_osseux[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_droite_osseux.$index}" tabindex="{$index+30}" size="4" maxlength="4" /></td>
       </tr>
       {/foreach}
       <tr class="values">
