@@ -75,7 +75,7 @@ class COperation extends CMbObject {
   var $_min_adm = null;
   var $_entree_adm = null;
   var $_sortie_adm = null;
-  var $_codes_ccam = array();
+  var $_codes_ccam = null;
   
   // Shortcut fields
   var $_datetime = null;
@@ -256,14 +256,8 @@ class COperation extends CMbObject {
   }
   
   function updateDBFields() {
-    //if(!$this->codes_ccam && $this->CCAM_code) {
-    //  $this->codes_ccam = $this->CCAM_code;
-    //  if ($this->CCAM_code2) {
-    //    $this->codes_ccam .= "|$this->CCAM_code2";
-    //  }
-    //}
-    
-    $this->codes_ccam = strtoupper($this->codes_ccam);
+    if($this->codes_ccam)
+      $this->codes_ccam = strtoupper($this->codes_ccam);
     $codes_ccam = explode("|", $this->codes_ccam);
     $XPosition = true;
     while($XPosition !== false) {
