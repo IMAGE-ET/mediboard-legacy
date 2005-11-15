@@ -68,13 +68,29 @@ function checkFormOperation() {
     return false;
   }
   
+  if(!checkCCAM()) {
+    return false
+  }
+
+  return true;
+}
+
+function checkCCAM() {
+  var oForm = document.editFrm;
   var sCcam = oForm._codeCCAM.value;
   if(sCcam != "") {
     if(!putCCAM(sCcam)) {
       return false;
     }
   }
-
+  delCCAM("XXXXXX");
+  var sCodesCcam = oForm.codes_ccam.value;
+  var sLibelle = oForm.libelle.value;
+  if(sCodesCcam == "" && sLibelle == "") {
+    alert("Vous indiquez un acte ou remplir le libellé")
+    oForm.libelle.focus();
+    return false
+  }
   return true;
 }
 
@@ -220,7 +236,8 @@ function setPlage(plage_id, sDate, bAdm) {
 }
 
 function popProtocole() {
-  var url = new Url("dPplanningOp", "vw_protocoles");
+  var url = new Url;
+  url.setModuleAction("dPplanningOp", "vw_protocoles");
   url.addElement(document.editFrm.chir_id);
   url.popup(700, 500, "Protocole");
 }
