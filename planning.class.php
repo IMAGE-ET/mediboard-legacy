@@ -294,6 +294,7 @@ class COperation extends CMbObject {
         $this->_hour_op.":".
         $this->_min_op.":00";
     }
+    
   }
   
   function store() {
@@ -318,11 +319,13 @@ class COperation extends CMbObject {
     
     // Cas ou on a une premiere affectation d'entrée différente
     // à l'heure d'admission
-    $affTmp = new CAffectation;
-    $affTmp = $this->getFirstAffectation();
-    if ($affTmp->affectation_id && ($affTmp->entree != $this->date_adm." ".$this->time_adm)) {
-      $affTmp->entree = $this->date_adm." ".$this->time_adm;
-      $affTmp->store();
+    if ($this->date_adm && $this->time_adm) {
+      $affTmp = new CAffectation;
+      $affTmp = $this->getFirstAffectation();
+      if ($affTmp->affectation_id && ($affTmp->entree != $this->date_adm." ".$this->time_adm)) {
+        $affTmp->entree = $this->date_adm." ".$this->time_adm;
+        $affTmp->store();
+      }
     }
     
     // Cas d'une annulation

@@ -17,6 +17,7 @@ if($chir_id = dPgetParam( $_POST, 'chir_id', null))
   
 $do = new CDoObjectAddEdit("COperation", "operation_id");
 $do->doBind();
+
 if (intval(dPgetParam($_POST, 'del'))) {
   if($do->_obj->plageop_id && $do->_obj->pat_id) {
     mbSetValueToSession("operation_id");

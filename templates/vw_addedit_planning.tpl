@@ -305,7 +305,7 @@ function printDocument() {
 function printPack() {
   form = document.editFrm;
 
-  if (checkFormOperation() && (form._choix_modele.value != 0)) {
+  if (checkFormOperation() && (form._choix_pack.value != 0)) {
     var url = new Url;
     url.setModuleAction("dPcompteRendu", "edit_compte_rendu");
     url.addElement(form.operation_id, "object_id");
