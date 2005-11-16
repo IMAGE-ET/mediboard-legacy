@@ -22,6 +22,7 @@ function putCCAM(code) {
     aCcam.push(code);
     aCcam.removeDuplicates();
     oForm.codes_ccam.value = aCcam.join("|");
+    oForm._codeCCAM.value = "";
     refreshListCCAM(aCcam);
     modifOp();
     return true;
