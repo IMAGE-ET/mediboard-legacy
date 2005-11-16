@@ -1,16 +1,98 @@
 {literal}
-<style type="text/css">
+<script type="text/javascript">
 
-table#weber td {
-  text-align: center;
+function getCheckedValue(radioObj) {
+  if(!radioObj)
+    return "";
+  var radioLength = radioObj.length;
+  if(radioLength == undefined)
+    if(radioObj.checked)
+      return radioObj.value;
+    else
+      return "";
+  for(var i = 0; i < radioLength; i++) {
+    if(radioObj[i].checked) {
+      return radioObj[i].value;
+    }
+  }
+  return "";
 }
 
-</style>
+var iMinPerte = -120;
+var iMaxPerte = 10;
+var iMaxIndexFrequence = 7;
+  
+function changeValue(sCote, sConduction, iFrequence, iNewValue) {
+  if (sConduction == "osseuse" ) sConductionElement = "osseux";
+  if (sConduction == "aerienne") sConductionElement = "aerien";
+   
+  var oForm = document.edit;
+  var sElementName = printf("_%s_%s[%i]", sCote, sConductionElement, iFrequence);
+  var oElement = oForm.elements[sElementName];
+  var oLabel = getLabelFor(oElement);
+  var sFrequence = oLabel.innerHTML;
+  
+  if (!iNewValue) {
+    sInvite = printf("Modifier la perte pour l'oreille %s en conduction %s à %s'", sCote, sConduction, sFrequence);
+    sAdvice = printf("Merci de fournir une valeur comprise (en dB) entre %i et %i", iMinPerte, iMinPerte);
+  
+    if (iNewValue = prompt(sInvite + "\n" + sAdvice, oElement.value)) {
+      if (isNaN(iNewValue) || iNewValue < iMinPerte || iNewValue > iMaxPerte) {
+        alert("Valeur incorrecte : " + iNewValue + "\n" + sAdvice);
+        return;
+      }
+    }
+  }
 
-<script type="text/javascript">
+  oElement.value = iNewValue;
+  oForm.submit();
+}
+
+function changeValueMouse(event, sCote) {
+  var oImg = document.getElementById("image_" + sCote);
+
+  var oGraphMargins = {
+    left  : 45,
+    top   : 40,
+    right : 20,
+    bottom: 20
+  }
+  
+  var oGraphRect = {
+    x : oImg.x + oGraphMargins.left,
+    y : oImg.y + oGraphMargins.top ,
+    w : oImg.width  - oGraphMargins.left - oGraphMargins.right ,
+    h : oImg.height - oGraphMargins.top  - oGraphMargins.bottom
+  }
+
+  var iStep = oGraphRect.w / (iMaxIndexFrequence+1);
+  var iRelatX = event.pageX - oGraphRect.x; 
+  var iRelatY = event.pageY - oGraphRect.y;
+
+  var iSelectedIndex = parseInt(iRelatX / iStep);
+  var iSelectedDb = parseInt(iMaxPerte - (iRelatY / oGraphRect.h * (iMaxPerte - iMinPerte)));
+      
+  if (iRelatX < 0 || iRelatX > oGraphRect.w || iSelectedDb < iMinPerte || iSelectedDb > iMaxPerte) {
+    alert("Merci de cliquer à l'intérieur de l'audiogramme");
+    return;
+  }
+  
+  oForm = document.conductionFrm;
+  oElement = oForm.conduction;
+  changeValue(sCote, getCheckedValue(oElement), iSelectedIndex, iSelectedDb);
+}
+
+function changeValueMouseGauche(event) {
+  changeValueMouse(event, "gauche");
+}
+
+function changeValueMouseDroite(event) {
+  changeValueMouse(event, "droite");
+}
+
 function pageMain() {
-
-  initGroups("values");
+  
+  initGroups("values");  
 }
 </script>
   
@@ -26,11 +108,23 @@ function pageMain() {
 <tr>
   <td>
     {$map_left}
-    <img src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=left" usemap="#graph_left" />
+    <img id="image_gauche" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=left" usemap="#graph_left" onclick="changeValueMouseGauche(event)" />
   </td>
   <td>
     {$map_right}
-    <img src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=right" usemap="#graph_right" />
+    <img id="image_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=right" usemap="#graph_right" onclick="changeValueMouseDroite(event)" />
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <form name="conductionFrm">
+
+    <input type="radio" name="conduction" value="osseuse" checked="checked" />
+    <label for="conduction_osseuse" title="Conduction osseuse pour la saisie intéractive">Conduction osseuse</label>
+    <input type="radio" name="conduction" value="aerienne" />
+    <label for="conduction_aerienne" title="Conduction aérienne pour la saisie intéractive">Conduction aérienne</label>
+
+    </form>
   </td>
 </tr>
 <tr>

@@ -72,13 +72,18 @@ class AudiogrammeTonal extends Graph {
   function addAudiogramme($values, $title, $mark_color) {
     global $frequences;
     
+    $words = explode(" ", $this->title->t);
+    $cote = $words[1];
+    $words = explode(" ", $title);
+    $conduction = mbRemoveAccents($words[1]);
+
     $labels = array();
     $jscalls = array();
     foreach ($values as $key => $value) {
       $frequence = $frequences[$key];
       $label = "Modifier la valeur pour $title à $frequence";
       $labels[] = $label;
-      $jscalls[] = "javascript:alert('$label')";
+      $jscalls[] = "javascript:changeValue('$cote','$conduction',$key)";
       
       if (!is_numeric($value)) {
       	$values[$key] = 11;
