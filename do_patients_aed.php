@@ -21,8 +21,9 @@ class CDoPatientAddEdit extends CDoObjectAddEdit {
     $this->deleteMsg = "Patient supprimé";
 	  
     if ($dialog = dPgetParam($_POST, 'dialog')) {
-      $this->redirectDelete .= "&a=vw_edit_patients&dialog=1&patient_id=0";
-      $this->redirectStore  .= "&a=vw_edit_patients&dialog=1";
+      //$this->redirectDelete .= $this->redirect."&a=vw_edit_patients&dialog=1&patient_id=0";
+      $this->redirectDelete .= $this->redirect."&a=pat_selector&dialog=1";
+      $this->redirectStore  .= $this->redirect."&a=vw_edit_patients&dialog=1";
     }
   }
   
@@ -33,9 +34,20 @@ class CDoPatientAddEdit extends CDoObjectAddEdit {
     $isNew = !dPgetParam($_POST, 'patient_id');
     $patient_id = $this->_obj->patient_id;
     
-    if ($dialog or ($isNew and $patient_id)) {
+    if ($dialog and ($isNew and $patient_id)) {
       $this->redirectStore .= "&patient_id=$patient_id&created=$patient_id";
-		}
+		} elseif($dialog) {
+      $this->redirectStore .= "&name=".$this->_obj->nom."&firstname=".$this->_obj->prenom;
+    }
+  }
+  
+  function doDelete() {
+    parent::doDelete();
+    
+    $dialog = dPgetParam($_POST, 'dialog');
+    if($dialog) {
+      $this->redirectDelete .= "&name=".$this->_obj->nom."&firstName=".$this->_obj->prenom."&id=0";
+    }
   }
 }
 

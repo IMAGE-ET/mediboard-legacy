@@ -14,8 +14,6 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-//$name = mbGetValueFromGetOrSession("name", "");
-//$firstName = mbGetValueFromGetOrSession("firstName", "");
 $name = dPgetParam( $_GET, 'name', '' );
 $firstName = dPgetParam( $_GET, 'firstName', '' );
 
