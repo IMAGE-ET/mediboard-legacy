@@ -1211,6 +1211,12 @@ tr.groupexpand th {
   display: none;
 }
 
+  /* @import "./consultation.css"; */
+
+table#weber td {
+  text-align: center;
+}
+
 /* The main calendar widget.  DIV containing a table. */
 
 .calendar {
