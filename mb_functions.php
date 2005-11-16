@@ -238,4 +238,14 @@ function mbPortalLink( $page="Accueil", $title="Portail Mediboard" ) {
   global $AppUI;
   return "\n<a href=\"http://www.mediboard.org/public/tiki-index.php?page=$page\" target=\"_blank\">$title</a>";
 }
+
+/**
+ * Reomve accents and some strange characters
+ * @return string: string w/o accents  */
+function mbRemoveAccents( $str ) {
+  return strtr($str,
+    "()!$'?: ,&+-/.ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ",
+    "--------------SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy");
+}
+
 ?>
