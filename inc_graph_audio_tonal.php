@@ -88,6 +88,8 @@ class AudiogrammeTonal extends Graph {
       
       if (!is_numeric($value)) {
       	$values[$key] = 11;
+      } else {
+        $values[$key] = - intval($value);
       }
     }
 
@@ -119,10 +121,10 @@ $exam_audio->loadRefs();
 
 $graph_left = new AudiogrammeTonal();
 $graph_left->setTitle("Oreille gauche");
-$graph_left->addAudiogramme($exam_audio->_gauche_osseux, "Conduction osseuse", "blue");
-$graph_left->addAudiogramme($exam_audio->_gauche_aerien, "Conduction aérienne", "red");
+$graph_left->addAudiogramme($exam_audio->_gauche_aerien, "Conduction aérienne", "blue");
+$graph_left->addAudiogramme($exam_audio->_gauche_osseux, "Conduction osseuse", "red");
 
 $graph_right = new AudiogrammeTonal();
 $graph_right->setTitle("Oreille droite");
-$graph_right->addAudiogramme($exam_audio->_droite_osseux, "Conduction osseuse","blue");
-$graph_right->addAudiogramme($exam_audio->_droite_aerien, "Conduction aérienne", "red");
+$graph_right->addAudiogramme($exam_audio->_droite_aerien, "Conduction aérienne", "blue");
+$graph_right->addAudiogramme($exam_audio->_droite_osseux, "Conduction osseuse","red");

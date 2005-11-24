@@ -18,8 +18,8 @@ function getCheckedValue(radioObj) {
   return "";
 }
 
-var iMinPerte = -120;
-var iMaxPerte = 10;
+var iMinPerte = -10;
+var iMaxPerte = 120;
 var iMaxIndexFrequence = 7;
   
 function changeValue(sCote, sConduction, iFrequence, iNewValue) {
@@ -75,15 +75,15 @@ function changeValueMouse(event, sCote) {
   var iRelatY = event.pageY - oGraphRect.y;
 
   var iSelectedIndex = parseInt(iRelatX / iStep);
-  var iSelectedDb = parseInt(iMaxPerte - (iRelatY / oGraphRect.h * (iMaxPerte - iMinPerte)));
+  var iSelectedDb = parseInt(iMinPerte - (iRelatY / oGraphRect.h * (iMinPerte - iMaxPerte)));
       
   if (iRelatX < 0 || iRelatX > oGraphRect.w || iSelectedDb < iMinPerte || iSelectedDb > iMaxPerte) {
     alert("Merci de cliquer à l'intérieur de l'audiogramme");
     return;
   }
   
-  oForm = document.editFrm;
-  oElement = oForm._conduction;
+  var oForm = document.editFrm;
+  var oElement = oForm._conduction;
   changeValue(sCote, getCheckedValue(oElement), iSelectedIndex, iSelectedDb);
 }
 
@@ -96,7 +96,6 @@ function changeValueMouseDroite(event) {
 }
 
 function pageMain() {
-  
   initGroups("values");  
 }
 </script>
@@ -123,10 +122,10 @@ function pageMain() {
 </tr>
 <tr>
   <td colspan="2">
-    <input type="radio" name="_conduction" value="osseuse" {if $_conduction == "osseuse"}checked="checked"{/if} />
-    <label for="_conduction_osseuse" title="Conduction osseuse pour la saisie intéractive">Conduction osseuse</label>
     <input type="radio" name="_conduction" value="aerienne" {if $_conduction == "aerienne"}checked="checked"{/if} />
     <label for="_conduction_aerienne" title="Conduction aérienne pour la saisie intéractive">Conduction aérienne</label>
+    <input type="radio" name="_conduction" value="osseuse" {if $_conduction == "osseuse"}checked="checked"{/if} />
+    <label for="_conduction_osseuse" title="Conduction osseuse pour la saisie intéractive">Conduction osseuse</label>
   </td>
 </tr>
 <tr>
@@ -154,13 +153,13 @@ function pageMain() {
       {foreach from=$frequences key=index item=frequence}
       <tr class="values" style="display: none">
         <th><label for="_gauche_aerien[{$index}]" title="Perte de l'oreille gauche pour la fréquence {$frequence} en conduction aérienne">{$frequence} :</label></th>
-        <td><input type="text" name="_gauche_aerien[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_gauche_aerien.$index}" tabindex="{$index+0}" size="4" maxlength="4" /></td>
+        <td><input type="text" name="_gauche_aerien[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_aerien.$index}" tabindex="{$index+0}" size="4" maxlength="4" /></td>
         <th><label for="_gauche_osseux[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction osseuse">{$frequence} :</label></th>
-        <td><input type="text" name="_gauche_osseux[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_gauche_osseux.$index}" tabindex="{$index+10}" size="4" maxlength="4" /></td>
+        <td><input type="text" name="_gauche_osseux[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_osseux.$index}" tabindex="{$index+10}" size="4" maxlength="4" /></td>
         <th><label for="_droite_aerien[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction aérienne">{$frequence} :</label></th>
-        <td><input type="text" name="_droite_aerien[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_droite_aerien.$index}" tabindex="{$index+20}" size="4" maxlength="4" /></td>
+        <td><input type="text" name="_droite_aerien[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_aerien.$index}" tabindex="{$index+20}" size="4" maxlength="4" /></td>
         <th><label for="_droite_osseux[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction osseuse">{$frequence} :</label></th>
-        <td><input type="text" name="_droite_osseux[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_droite_osseux.$index}" tabindex="{$index+30}" size="4" maxlength="4" /></td>
+        <td><input type="text" name="_droite_osseux[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_osseux.$index}" tabindex="{$index+30}" size="4" maxlength="4" /></td>
       </tr>
       {/foreach}
       <tr class="values" style="display: none">
@@ -187,15 +186,19 @@ function pageMain() {
         {/foreach}
       </tr>
       <tr>
+        <th />
+        <th colspan="8">Conduction aérienne</th>
+      </tr>
+      <tr>
         <th class="text">
-          Conduction aérienne<br />
+          Comparaison<br />
           (gauche / droite)
         </th>
         {foreach from=$bilan item=pertes}
         <td>
           {$pertes.aerienne.left}dB / {$pertes.aerienne.right}dB<br />
           {assign var="delta" value=$pertes.aerienne.delta}
-          &Delta; : {$delta}dB<br />
+          &Delta; : {$delta}dB
           {if $delta lt -20}&lt;&lt;
           {elseif $delta lt 0}&lt;=
           {elseif $delta eq 0}==
@@ -205,16 +208,36 @@ function pageMain() {
         </td>
         {/foreach}
       </tr>
+      <tr class="moyenne">
+        <th class="text">
+          Moyenne gauche
+        </th>
+        <td colspan="2" />
+        <td class="valeur" colspan="4">{$exam_audio->_moyenne_gauche_aerien}dB</td>
+        <td colspan="2" />
+      </tr>
+      <tr class="moyenne">
+        <th class="text">
+          Moyenne droite
+        </th>
+        <td colspan="2" />
+        <td class="valeur" colspan="4">{$exam_audio->_moyenne_droite_aerien}dB</td>
+        <td colspan="2" />
+      </tr>
+      <tr>
+        <th />
+        <th colspan="8">Conduction osseuse</th>
+      </tr>
       <tr>
         <th class="text">
-          Conduction aérienne<br />
+          Comparaison<br />
           (gauche / droite)
         </th>
         {foreach from=$bilan item=pertes}
         <td>
           {$pertes.osseuse.left}dB / {$pertes.osseuse.right}dB<br />
           {assign var="delta" value=$pertes.osseuse.delta}
-          &Delta; : {$delta}dB<br />
+          &Delta; : {$delta}dB
           {if $delta lt -20}&lt;&lt;
           {elseif $delta lt 0}&lt;=
           {elseif $delta eq 0}==
@@ -223,6 +246,22 @@ function pageMain() {
           {/if}
         </td>
         {/foreach}
+      </tr>
+      <tr class="moyenne">
+        <th class="text">
+          Moyenne gauche
+        </th>
+        <td colspan="2" />
+        <td class="valeur" colspan="4">{$exam_audio->_moyenne_gauche_osseux}dB</td>
+        <td colspan="2" />
+      </tr>
+      <tr class="moyenne">
+        <th class="text">
+          Moyenne droite
+        </th>
+        <td colspan="2" />
+        <td class="valeur" colspan="4">{$exam_audio->_moyenne_droite_osseux}dB</td>
+        <td colspan="2" />
       </tr>
     </table>
 

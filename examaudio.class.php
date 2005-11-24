@@ -40,6 +40,11 @@ class CExamAudio extends CMbObject {
   var $_droite_aerien = array();
   var $_droite_osseux = array();
 
+  var $_moyenne_gauche_aerien = null;
+  var $_moyenne_gauche_osseux = null;
+  var $_moyenne_droite_aerien = null;
+  var $_moyenne_droite_osseux = null;
+
   // Fwd References
   var $_ref_consultation = null;
 
@@ -65,6 +70,12 @@ class CExamAudio extends CMbObject {
     $this->_gauche_osseux = explode("|", $this->gauche_osseux);
     $this->_droite_aerien = explode("|", $this->droite_aerien);
     $this->_droite_osseux = explode("|", $this->droite_osseux);
+
+    $this->_moyenne_gauche_aerien = ($this->_gauche_aerien[2] + $this->_gauche_aerien[3] + $this->_gauche_aerien[4] + $this->_gauche_aerien[5]) / 4;
+    $this->_moyenne_gauche_osseux = ($this->_gauche_osseux[2] + $this->_gauche_osseux[3] + $this->_gauche_osseux[4] + $this->_gauche_osseux[5]) / 4;
+    $this->_moyenne_droite_aerien = ($this->_droite_aerien[2] + $this->_droite_aerien[3] + $this->_droite_aerien[4] + $this->_droite_aerien[5]) / 4;
+    $this->_moyenne_droite_osseux = ($this->_droite_osseux[2] + $this->_droite_osseux[3] + $this->_droite_osseux[4] + $this->_droite_osseux[5]) / 4;
+
   }
    
   function updateDBFields() {
