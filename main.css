@@ -1227,10 +1227,30 @@ tr.groupexpand th {
 
   /* @import "./consultation.css"; */
 
+
 table#weber td {
   text-align: center;
 }
 
+table#weber tr.moyenne td {
+  background-color: #ddd;
+}
+
+table#weber tr.moyenne td.aerien {
+  background-color: #aaf;
+  font-weight: bold;
+}
+
+table#weber tr.moyenne td.osseux {
+  background-color: #faa;
+  font-weight: bold;
+}
+
+table#weber td {
+  text-align: center;
+}
+
+>>>>>>> 1.47
 /* The main calendar widget.  DIV containing a table. */
 
 .calendar {
