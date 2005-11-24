@@ -182,6 +182,7 @@ label.notNull {
 }
   /* @import "./common.css";  */
 
+
 /* Title block */
 
 table.titleblock td {
@@ -262,6 +263,7 @@ table.tabmenu td.selectedRight {
   width: 17px;
   background: url(./images/tabSelectedRight.png) no-repeat bottom left;
 }
+
 /* Standard table */
 
 table.tbl {
@@ -313,6 +315,18 @@ table.tbl th.text {
 
 table.tbl td.text {
   white-space: normal;
+}
+
+table.tbl tr.clear,
+table.tbl tr.clear a {
+  background-color: #ddf;
+  color: #000;
+}
+
+table.tbl tr.clear td,
+table.tbl tr.clear th {
+  background-color: transparent;
+  border: none;
 }
 
 /* a 'standard' table */
