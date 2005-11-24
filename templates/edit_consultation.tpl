@@ -189,7 +189,7 @@ function pageMain() {
           </td>
         </tr>
       </table>
-      <form name="editFrm" action="?m={$m}" method="post">
+      <form class="watch" name="editFrm" action="?m={$m}" method="post">
         <input type="hidden" name="m" value="{$m}" />
         <input type="hidden" name="del" value="0" />
         <input type="hidden" name="dosql" value="do_consultation_aed" />
@@ -211,6 +211,7 @@ function pageMain() {
       	    <label for="motif" title="Motif de la consultation">Motif</label>
       	  </th>
           <th>
+            <input name="test" value="" />
             <select name="_aide_motif" size="1" onchange="pasteText('motif')">
               <option value="0">&mdash; Choisir une aide</option>
               {html_options options=$aides.motif}
