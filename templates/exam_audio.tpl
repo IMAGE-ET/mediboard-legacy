@@ -34,16 +34,19 @@ function changeValue(sCote, sConduction, iFrequence, iNewValue) {
   
   if (!iNewValue) {
     sInvite = printf("Modifier la perte pour l'oreille %s en conduction %s à %s'", sCote, sConduction, sFrequence);
-    sAdvice = printf("Merci de fournir une valeur comprise (en dB) entre %i et %i", iMinPerte, iMinPerte);
-  
-    if (iNewValue = prompt(sInvite + "\n" + sAdvice, oElement.value)) {
-      if (isNaN(iNewValue) || iNewValue < iMinPerte || iNewValue > iMaxPerte) {
-        alert("Valeur incorrecte : " + iNewValue + "\n" + sAdvice);
-        return;
-      }
+    sAdvice = printf("Merci de fournir une valeur comprise (en dB) entre %i et %i", iMinPerte, iMaxPerte);
+
+    iNewValue = prompt(sInvite + "\n" + sAdvice, oElement.value);
+
+    // Do not user !iNewValue which is also true for empty string    
+    if (iNewValue == null) {
+      return;
     }
     
-    return;
+    if (isNaN(iNewValue) || iNewValue < iMinPerte || iNewValue > iMaxPerte) {
+      alert("Valeur incorrecte : " + iNewValue + "\n" + sAdvice);
+      return;
+    }
   }
 
   oElement.value = iNewValue;
@@ -138,18 +141,18 @@ function pageMain() {
       <tr class="groupcollapse" id="values" onclick="flipGroup('', 'values');">
         <th class="category" colspan="8">Toutes les valeurs</th>
       </tr>
-      <tr class="values">
+      <tr class="values" style="display: none">
         <th class="category" colspan="4">Oreille gauche</th>
         <th class="category" colspan="4">Oreille Droite</th>
       </tr>
-      <tr class="values">
+      <tr class="values" style="display: none">
         <th class="category" colspan="2">Conduction aérienne</th>
         <th class="category" colspan="2">Conduction osseuse</th>
         <th class="category" colspan="2">Conduction aérienne</th>
         <th class="category" colspan="2">Conduction osseuse</th>
       </tr>
       {foreach from=$frequences key=index item=frequence}
-      <tr class="values">
+      <tr class="values" style="display: none">
         <th><label for="_gauche_aerien[{$index}]" title="Perte de l'oreille gauche pour la fréquence {$frequence} en conduction aérienne">{$frequence} :</label></th>
         <td><input type="text" name="_gauche_aerien[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_gauche_aerien.$index}" tabindex="{$index+0}" size="4" maxlength="4" /></td>
         <th><label for="_gauche_osseux[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction osseuse">{$frequence} :</label></th>
@@ -160,7 +163,7 @@ function pageMain() {
         <td><input type="text" name="_droite_osseux[{$index}]" title="num|minMax|-120|10" value="{$exam_audio->_droite_osseux.$index}" tabindex="{$index+30}" size="4" maxlength="4" /></td>
       </tr>
       {/foreach}
-      <tr class="values">
+      <tr class="values" style="display: none">
         <td class="button" colspan="8">
           <input type="submit" value="Valider" />
         </td>

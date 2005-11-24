@@ -81,7 +81,8 @@ class AudiogrammeTonal extends Graph {
     $jscalls = array();
     foreach ($values as $key => $value) {
       $frequence = $frequences[$key];
-      $label = "Modifier la valeur pour $title à $frequence";
+      $label = !is_numeric($value) ? "Ajouter la valeur" : "Modifier la valeur {$value}dB";
+      $label .= " pour $title à $frequence";
       $labels[] = $label;
       $jscalls[] = "javascript:changeValue('$cote','$conduction',$key)";
       
