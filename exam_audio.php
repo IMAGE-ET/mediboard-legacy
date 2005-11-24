@@ -15,6 +15,8 @@ if (!$canEdit) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$_conduction = mbGetValueFromGetOrSession("_conduction", "osseuse");
+
 require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_tonal"));
 
 global $graph_left;
@@ -53,6 +55,7 @@ foreach ($bilan as $frequence => $value) {
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->assign("_conduction", $_conduction);
 $smarty->assign("frequences", $frequences);
 $smarty->assign("exam_audio", $exam_audio);
 $smarty->assign("bilan", $bilan);

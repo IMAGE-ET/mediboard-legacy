@@ -26,7 +26,7 @@ function changeValue(sCote, sConduction, iFrequence, iNewValue) {
   if (sConduction == "osseuse" ) sConductionElement = "osseux";
   if (sConduction == "aerienne") sConductionElement = "aerien";
    
-  var oForm = document.edit;
+  var oForm = document.editFrm;
   var sElementName = printf("_%s_%s[%i]", sCote, sConductionElement, iFrequence);
   var oElement = oForm.elements[sElementName];
   var oLabel = getLabelFor(oElement);
@@ -42,6 +42,8 @@ function changeValue(sCote, sConduction, iFrequence, iNewValue) {
         return;
       }
     }
+    
+    return;
   }
 
   oElement.value = iNewValue;
@@ -77,8 +79,8 @@ function changeValueMouse(event, sCote) {
     return;
   }
   
-  oForm = document.conductionFrm;
-  oElement = oForm.conduction;
+  oForm = document.editFrm;
+  oElement = oForm._conduction;
   changeValue(sCote, getCheckedValue(oElement), iSelectedIndex, iSelectedDb);
 }
 
@@ -98,6 +100,7 @@ function pageMain() {
   
 {/literal}
 
+<form name="editFrm" action="?m=dPcabinet&amp;a=exam_audio&amp;dialog=1" method="post" onsubmit="return checkForm(this)">
 
 <table class="main" id="weber">
   
@@ -117,20 +120,14 @@ function pageMain() {
 </tr>
 <tr>
   <td colspan="2">
-    <form name="conductionFrm">
-
-    <input type="radio" name="conduction" value="osseuse" checked="checked" />
-    <label for="conduction_osseuse" title="Conduction osseuse pour la saisie intéractive">Conduction osseuse</label>
-    <input type="radio" name="conduction" value="aerienne" />
-    <label for="conduction_aerienne" title="Conduction aérienne pour la saisie intéractive">Conduction aérienne</label>
-
-    </form>
+    <input type="radio" name="_conduction" value="osseuse" {if $_conduction == "osseuse"}checked="checked"{/if} />
+    <label for="_conduction_osseuse" title="Conduction osseuse pour la saisie intéractive">Conduction osseuse</label>
+    <input type="radio" name="_conduction" value="aerienne" {if $_conduction == "aerienne"}checked="checked"{/if} />
+    <label for="_conduction_aerienne" title="Conduction aérienne pour la saisie intéractive">Conduction aérienne</label>
   </td>
 </tr>
 <tr>
   <td colspan="2">
-    <form name="edit" action="?m=dPcabinet&amp;a=exam_audio&amp;dialog=1" method="post" onsubmit="return checkForm(this)">
-    
     <input type="hidden" name="m" value="dPcabinet" />
     <input type="hidden" name="dosql" value="do_exam_audio_aed" />
     <input type="hidden" name="del" value="0" />
@@ -169,8 +166,6 @@ function pageMain() {
         </td>
       </tr>
     </table>
-    
-    </form>
   </td>
 </tr>
 
@@ -240,3 +235,7 @@ function pageMain() {
 </tr>
 
 </table>
+
+    
+</form>
+
