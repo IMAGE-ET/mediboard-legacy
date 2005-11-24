@@ -48,8 +48,8 @@ function initHTMLArea () {}
 function initFCKEditor() {}
 
 function getLabelFor(oElement) {
-  aLabels = document.getElementsByTagName("label");
-  iLabel = 0;
+  var aLabels = document.getElementsByTagName("label");
+  var iLabel = 0;
   while (oLabel = aLabels[iLabel++]) {
     if (oElement.id == oLabel.getAttribute("for")) {
       return oLabel;
@@ -92,7 +92,6 @@ function prepareForms() {
     // For each element
     var iElement = 0;
     while (oElement = oForm.elements[iElement++]) {
-
       // Create id for each element if id is null
       if (!oElement.id) {
         oElement.id = sFormName + "_" + oElement.name;
@@ -113,8 +112,11 @@ function prepareForms() {
       
       // Focus on first text input
       if (bGiveFocus && oElement.type == "text" && !oElement.getAttribute("readonly")) {
-        oElement.focus();
-        bGiveFocus = false;
+        // Internet Explorer will not give focus to a not visible element but will raise an error
+        if (oElement.clientWidth > 0) {
+          oElement.focus();
+          bGiveFocus = false;
+        } 
       }
     }
   }
