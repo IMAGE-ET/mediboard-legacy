@@ -1,8 +1,8 @@
 <!-- $Id$ -->
 
 <table class="tbl">
-  <tr>
-    <th class="clear" colspan="6">
+  <tr class="clear">
+    <th colspan="6">
       <a href="javascript:window.print()">
         Rapport du {$deb|date_format:"%d/%m/%Y"}
         {if $deb != $fin}
@@ -12,8 +12,8 @@
     </th>
   </tr>
   {foreach from=$listPlage item=curr_plage}
-  <tr>
-    <td class="clear" colspan="6">
+  <tr class="clear">
+    <td colspan="6">
       <b>{$curr_plage->date|date_format:"%d/%m/%Y"} - Dr. {$curr_plage->_ref_chir->_view}</b>
     </td>
   </tr>
