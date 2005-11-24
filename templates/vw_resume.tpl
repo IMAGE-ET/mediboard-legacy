@@ -23,14 +23,36 @@ function printDocument(doc_id) {
     <th>Fichiers</th>
   </tr>
   <tr>
-    <td class="text">
-    {foreach from=$consultations item=curr_consult}
-      Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}
-      &mdash; {$curr_consult->_ref_plageconsult->date|date_format:"%d/%m/%Y"}
-      <br />
+    <td class="text" valign="top">
+      <ul>
+        {foreach from=$consultations item=curr_consult}
+        <li>
+          Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}
+          &mdash; {$curr_consult->_ref_plageconsult->date|date_format:"%d/%m/%Y"}
+          {if $curr_consult->motif}
+            <br />
+            <strong>Motif:</strong>
+            <i>{$curr_consult->motif}</i>
+          {/if}
+          {if $curr_consult->rques}
+            <br />
+            <strong>Remarques:</strong>
+            <i>{$curr_consult->rques}</i>
+          {/if}
+          {if $curr_consult->examen}
+            <br />
+            <strong>Examens:</strong>
+            <i>{$curr_consult->examen}</i>
+          {/if}
+          {if $curr_consult->traitement}
+            <br />
+            <strong>Traitement:</strong>
+            <i>{$curr_consult->traitement}</i>
+          {/if}
+        </li>
     {/foreach}
     </td>
-    <td class="text">
+    <td class="text" valign="top">
       <ul>
       {foreach from=$docsCons item=curr_doc}
         <li>
@@ -42,7 +64,7 @@ function printDocument(doc_id) {
       {/foreach}
       </ul>
     </td>
-    <td class="text">
+    <td class="text" valign="top">
       <ul>
       {foreach from=$filesCons item=curr_file}
         <li>
@@ -62,14 +84,21 @@ function printDocument(doc_id) {
     <th>Fichiers</th>
   </tr>
   <tr>
-    <td class="text">
-    {foreach from=$operations item=curr_op}
-      Dr. {$curr_op->_ref_chir->_view}
-      &mdash; {$curr_op->_ref_plageop->date|date_format:"%d/%m/%Y"}
-      <br />
-    {/foreach}
+    <td class="text" valign="top">
+      <ul>
+        {foreach from=$operations item=curr_op}
+        <li>
+          Dr. {$curr_op->_ref_chir->_view}
+          &mdash; {$curr_op->_ref_plageop->date|date_format:"%d/%m/%Y"}
+          {foreach from=$curr_op->_codes_ccam item=curr_code}
+            <br />
+            {$curr_code}
+          {/foreach}
+        </li>
+        {/foreach}
+      </ul>
     </td>
-    <td class="text">
+    <td class="text" valign="top">
       <ul>
       {foreach from=$docsOp item=curr_doc}
         <li>
@@ -81,7 +110,7 @@ function printDocument(doc_id) {
       {/foreach}
       </ul>
     </td>
-    <td class="text">
+    <td class="text" valign="top">
       <ul>
       {foreach from=$filesOp item=curr_file}
         <li>
