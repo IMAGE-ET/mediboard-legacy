@@ -452,7 +452,7 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
             <input type="hidden" name="operation_id" value="{$consult_anesth->_ref_operation->operation_id}" />
             <label for="type_anesth" title="Type d'anesthésie pour l'intervention">Type d'anesthésie :</label>
             <select name="type_anesth" onchange="this.form.submit()">
-              <option value="">&mdash; Chosir un type d'anesthésie</option>
+              <option value="">&mdash; Choisir un type d'anesthésie</option>
               {html_options options=$anesth selected=$consult_anesth->_ref_operation->type_anesth}
             </select>
             
