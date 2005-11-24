@@ -20,6 +20,7 @@
   <?php mbLoadScript("style/$uistyle/functions.js"); ?>
   <?php mbLoadScript("style/$uistyle/cjl_cookie.js"); ?>
   <?php mbLoadScript("style/$uistyle/url.js"); ?>
+  <?php mbLoadScript("style/$uistyle/forms.js"); ?>
   <?php mbLoadScript("style/$uistyle/printf.js"); ?>
   <?php mbLoadScript("lib/jscalendar/calendar.js"); ?>
   <?php mbLoadScript("lib/jscalendar/lang/calendar-fr.js"); ?>

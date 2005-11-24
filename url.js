@@ -84,3 +84,40 @@ Url.prototype.request = function(fOnReadyStateChange) {
   
   return http_request;
 }
+
+// Other functions linked with Url object
+
+function makeURLParam(field, sParamName) {
+  if (!field) return null;
+
+  if (!sParamName) {
+    sParamName = field.name;
+  }
+
+  return "&" + sParamName + "=" + field.value;
+}
+
+
+function popup(width, height, url, name) {
+  params = 'left=50, top=50, height=' + height + ', width=' + width;
+  params += ', resizable=yes, scrollbars=yes, menubar=yes';
+  neo = window.open(url, name, params);
+  neo.focus();
+}
+
+function popunder(width, height, url, name) {
+  params = 'left=50, top=50, height=' + height + ', width=' + width;
+  params += ', resizable=yes, scrollbars=yes, menubar=yes';
+  neo = window.open(url, name, params);
+  neo.blur();
+  window.focus();
+}
+
+function view_log(classe, id) {
+  url = "index.php?m=system&a=view_history&dialog=1";
+  url += "&object_class=" + classe;
+  url += "&object_id=" + id;
+  url += "&user_id=";
+  url += "&type=";
+  popup(500, 500, url, 'history');
+}
