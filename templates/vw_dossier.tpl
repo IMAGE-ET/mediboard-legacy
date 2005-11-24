@@ -43,8 +43,6 @@ function printDocument(doc_id) {
   url.popup(700, 600, 'Compte-rendu');
 }
 
-
-
 </script>
 {/literal}
 

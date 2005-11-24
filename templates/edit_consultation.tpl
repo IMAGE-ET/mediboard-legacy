@@ -3,9 +3,17 @@
 
 function editPat(patient_id) {
   var url = new Url;
-  url.setModuleAction("dPpatients", "vw_edit_patients");
+  url.setModuleTab("dPpatients", "vw_edit_patients");
   url.addParam("patient_id", patient_id);
   url.redirect();
+}
+
+function showAll(patient_id) {
+  var url = new Url;
+  url.setModuleAction("dPcabinet", "vw_resume");
+  url.addParam("dialog", 1);
+  url.addParam("patient_id", patient_id);
+  url.popup(800, 500, "Resume");
 }
 
 function newOperation(chir_id, pat_id) {
@@ -101,8 +109,12 @@ function pageMain() {
             <br />
             Age: {$consult->_ref_patient->_age} ans
             <br />
+            <a href="javascript:showAll({$consult->_ref_patient->patient_id})">
+              Résumé
+            </a>
+            <br />
             <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$consult->_ref_patient->patient_id}">
-              Consulter le dossier
+              Consulter le dossier complet
             </a>
           </td>
           <td class="button">
