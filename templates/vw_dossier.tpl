@@ -84,6 +84,13 @@ function printDocument(doc_id) {
           </td>
         </tr>
         <tr class="consult{$curr_consult->consultation_id}">
+          <td colspan="2">
+            <a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+              Voir la consultation
+            </a>
+          </td>
+        </tr>
+        <tr class="consult{$curr_consult->consultation_id}">
           <th>Motif :</th>
           <td class="text">{$curr_consult->motif}</td>
         </tr>
@@ -164,6 +171,13 @@ function printDocument(doc_id) {
             {$curr_op->_ref_plageop->date|date_format:"%A %d %B %Y"} &mdash;
             {$curr_op->_ref_files|@count} fichier(s)
             </strong>
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <td colspan="2">
+            <a href="index.php?m=dPplanningOp&amp;tab=vw_idx_planning&amp;selChir={$curr_op->_ref_plageop->chir_id}&amp;date={$curr_op->_ref_plageop->date}">
+              Voir l'intervention
+            </a>
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
