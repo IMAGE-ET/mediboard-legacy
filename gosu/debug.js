@@ -16,9 +16,7 @@ function debug(s, name) {
 function debugObject(obj, name) {
     var s = typeof obj;
     for (var i in obj) {
-    	debug(i, "Key");
     	var prop = obj[i];
-    	debug(prop, "Property");
     	if (prop) {
 	        if ((typeof prop == "object" || typeof prop == "function") && prop.toString) {
 	            s += "Property." + i + "=" + prop.toString().replace(/\n/g, "") + "\n";
