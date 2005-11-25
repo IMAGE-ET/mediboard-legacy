@@ -379,6 +379,12 @@ function db_dateTime2locale( $dateTime, $format ) {
 	}
 }
 
+function stripslashes_deep($value) {
+  return is_array($value) ?
+    array_map('stripslashes_deep', $value) :
+    stripslashes($value);
+}
+
 /*
 * copy the hash array content into the object as properties
 * only existing properties of object are filled. when undefined in hash, properties wont be deleted
@@ -394,18 +400,18 @@ function bindHashToObject( $hash, &$obj, $prefix=NULL, $checkSlashes=true, $bind
 
 	if ($bindAll) {
 		foreach ($hash as $k => $v) {
-			$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
+			$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes_deep( $hash[$k] ) : $hash[$k];
 		}
 	} else if ($prefix) {
 		foreach (get_object_vars($obj) as $k => $v) {
 			if (isset($hash[$prefix . $k ])) {
-				$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
+				$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes_deep( $hash[$k] ) : $hash[$k];
 			}
 		}
 	} else {
 		foreach (get_object_vars($obj) as $k => $v) {
 			if (isset($hash[$k])) {
-				$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
+				$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes_deep( $hash[$k] ) : $hash[$k];
 			}
 		}
 	}
