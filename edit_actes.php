@@ -29,6 +29,19 @@ foreach($selOp->_ext_codes_ccam as $key => $value) {
 $selOp->loadPossibleActes();
 $selOp->_ref_plageop->loadRefsFwd();
 
+// Tableau des timings
+$timing["entree_bloc"]    = array();
+$timing["pose_garrot"]    = array();
+$timing["debut_op"]       = array();
+$timing["fin_op"]         = array();
+$timing["retrait_garrot"] = array();
+$timing["sortie_bloc"]    = array();
+foreach($timing as $key => $value) {
+  for($i = -10; $i < 10 && $selOp->$key !== null; $i++) {
+    $timing[$key][] = mbTime("+ $i minutes", $selOp->$key);
+  }
+}
+
 // Chargement des praticiens
 
 $listAnesths = new CMediusers;
@@ -42,6 +55,7 @@ require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
 
 $smarty->assign('selOp', $selOp);
+$smarty->assign('timing', $timing);
 $smarty->assign('listAnesths', $listAnesths);
 $smarty->assign('listChirs', $listChirs);
 
