@@ -10,18 +10,18 @@
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
   <?php mbLinkShortcutIcon("style/$uistyle/images/favicon.ico"); ?>
   <?php mbLinkStyleSheet("style/$uistyle/main.css"); ?>
-  <?php mbLoadScript("include/javascript/gosu/array.js"); ?>
-  <?php mbLoadScript("include/javascript/gosu/cookie.js"); ?>
-  <?php mbLoadScript("include/javascript/gosu/debug.js"); ?>
-  <?php mbLoadScript("include/javascript/gosu/ie5.js"); ?>
-  <?php mbLoadScript("include/javascript/gosu/keyboard.js"); ?>
-  <?php mbLoadScript("include/javascript/gosu/string.js"); ?>
-  <?php mbLoadScript("include/javascript/gosu/validate.js"); ?>
-  <?php mbLoadScript("include/javascript/functions.js"); ?>
-  <?php mbLoadScript("include/javascript/cjl_cookie.js"); ?>
-  <?php mbLoadScript("include/javascript/url.js"); ?>
-  <?php mbLoadScript("include/javascript/forms.js"); ?>
-  <?php mbLoadScript("include/javascript/printf.js"); ?>
+  <?php mbLoadScript("includes/javascript/gosu/array.js"); ?>
+  <?php mbLoadScript("includes/javascript/gosu/cookie.js"); ?>
+  <?php mbLoadScript("includes/javascript/gosu/debug.js"); ?>
+  <?php mbLoadScript("includes/javascript/gosu/ie5.js"); ?>
+  <?php mbLoadScript("includes/javascript/gosu/keyboard.js"); ?>
+  <?php mbLoadScript("includes/javascript/gosu/string.js"); ?>
+  <?php mbLoadScript("includes/javascript/gosu/validate.js"); ?>
+  <?php mbLoadScript("includes/javascript/functions.js"); ?>
+  <?php mbLoadScript("includes/javascript/cjl_cookie.js"); ?>
+  <?php mbLoadScript("includes/javascript/url.js"); ?>
+  <?php mbLoadScript("includes/javascript/forms.js"); ?>
+  <?php mbLoadScript("includes/javascript/printf.js"); ?>
   <?php mbLoadScript("lib/jscalendar/calendar.js"); ?>
   <?php mbLoadScript("lib/jscalendar/lang/calendar-fr.js"); ?>
   <?php mbLoadScript("lib/jscalendar/calendar-setup.js"); ?>
