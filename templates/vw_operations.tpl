@@ -119,29 +119,82 @@ function pageMain() {
         {if $selOp->operation_id}
         <tr>
           <th class="title" colspan="2">
-            {$selOp->_ref_pat->_view} &mdash; Dr. {$selOp->_ref_chir->_view}
+            {$selOp->_ref_pat->_view} ({$selOp->_ref_pat->_age} ans) &mdash; Dr. {$selOp->_ref_chir->_view}
           </th>
         </tr>
         <tr>
-          <th>Patient</th>
-          <td>{$selOp->_ref_pat->_view} &mdash; {$selOp->_ref_pat->_age} ans</td>
-        </tr>
-        <tr>
-          <th>Entrée en salle</th>
+          <th>Horaires début</th>
           <td>
-            <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
-              <input type="hidden" name="m" value="dPsalleOp" />
-              <input type="hidden" name="a" value="do_set_hours" />
-              <input type="hidden" name="entree" value="{$selOp->operation_id}" />
-              {if $selOp->entree_bloc}
-              <input type="hidden" name="del" value="1" />
-              {$selOp->entree_bloc|date_format:"%Hh%M"}
-              <button type="submit"><img src="modules/{$m}/images/cross.png" /></button>
-              {else}
-              <input type="hidden" name="del" value="0" />
-              <input type="submit" value="Définir l'heure d'entrée du patient" />
-              {/if}
-            </form>
+            <table class="form">
+              <tr>
+                <td>
+	              <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
+	                <input type="hidden" name="m" value="dPsalleOp" />
+	                <input type="hidden" name="a" value="do_set_hours" />
+	                <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+	                <input type="hidden" name="type" value="entree_bloc" />
+	                <input type="hidden" name="del" value="0" />
+	                {if $selOp->entree_bloc}
+	                Entrée du patient:
+	                <select name="hour" onchange="this.form.submit()">
+	                  {foreach from=$timing.entree_bloc item=curr_time}
+	                  <option value="{$curr_time}" {if $curr_time == $selOp->entree_bloc}selected="selected"{/if}>
+	                    {$curr_time|date_format:"%Hh%M"}
+	                  </option>
+	                  {/foreach}
+	                </select>
+	                <button type="submit" onclick="this.form.del.value = 1"><img src="modules/{$m}/images/cross.png" /></button>
+	                {else}
+	                <input type="submit" value="entrée du patient" />
+	                {/if}
+	              </form>
+	            </td>
+	            <td>
+	              <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
+	                <input type="hidden" name="m" value="dPsalleOp" />
+	                <input type="hidden" name="a" value="do_set_hours" />
+	                <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+	                <input type="hidden" name="type" value="pose_garrot" />
+	                <input type="hidden" name="del" value="0" />
+	                {if $selOp->pose_garrot}
+	                Pose du garrot:
+	                <select name="hour" onchange="this.form.submit()">
+	                  {foreach from=$timing.pose_garrot item=curr_time}
+	                  <option value="{$curr_time}" {if $curr_time == $selOp->pose_garrot}selected="selected"{/if}>
+	                    {$curr_time|date_format:"%Hh%M"}
+	                  </option>
+	                  {/foreach}
+	                </select>
+	                <button type="submit" onclick="this.form.del.value = 1"><img src="modules/{$m}/images/cross.png" /></button>
+	                {else}
+	                <input type="submit" value="pose du garrot" />
+	                {/if}
+	              </form>
+	            </td>
+	            <td>
+	              <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
+	                <input type="hidden" name="m" value="dPsalleOp" />
+	                <input type="hidden" name="a" value="do_set_hours" />
+	                <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+	                <input type="hidden" name="type" value="debut_op" />
+	                <input type="hidden" name="del" value="0" />
+	                {if $selOp->debut_op}
+	                Début d'intervention:
+	                <select name="hour" onchange="this.form.submit()">
+	                  {foreach from=$timing.debut_op item=curr_time}
+	                  <option value="{$curr_time}" {if $curr_time == $selOp->debut_op}selected="selected"{/if}>
+	                    {$curr_time|date_format:"%Hh%M"}
+	                  </option>
+	                  {/foreach}
+	                </select>
+	                <button type="submit" onclick="this.form.del.value = 1"><img src="modules/{$m}/images/cross.png" /></button>
+	                {else}
+	                <input type="submit" value="début d'intervention" />
+	                {/if}
+	              </form>
+	            </td>
+	          </tr>
+	        </table>
           </td>
         </tr>
         <tr>
@@ -168,14 +221,13 @@ function pageMain() {
             <form name="editAnesth" action="index.php" method="get">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="a" value="do_set_hours" />
-            <input type="hidden" name="id" value="{$selOp->operation_id}" />
-            <select name="anesth">
+            <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+            <select name="anesth" onchange="this.form.submit()">
               <option value="null">&mdash; Type d'anesthésie</option>
               {foreach from=$listAnesthType item=curr_type}
               <option {if $selOp->_lu_type_anesth == $curr_type} selected="selected" {/if}>{$curr_type}</option>
               {/foreach}
             </select>
-            <input type="submit" value="changer" />
             </form>
           </td>
         </tr>
@@ -192,21 +244,78 @@ function pageMain() {
         </tr>
         {/if}
         <tr>
-          <th>Sortie de salle</th>
+          <th>Horaires fin</th>
           <td>
-            <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
-              <input type="hidden" name="m" value="dPsalleOp" />
-              <input type="hidden" name="a" value="do_set_hours" />
-              <input type="hidden" name="sortie" value="{$selOp->operation_id}" />
-              {if $selOp->sortie_bloc}
-              <input type="hidden" name="del" value="1" />
-              {$selOp->sortie_bloc|date_format:"%Hh%M"}
-              <button type="submit"><img src="modules/{$m}/images/cross.png" /></button>
-              {else}
-              <input type="hidden" name="del" value="0" />
-              <input type="submit" value="Définir l'heure de sortie du patient" />
-              {/if}
-            </form>
+            <table class="form">
+              <tr>
+                <td>
+	              <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
+	                <input type="hidden" name="m" value="dPsalleOp" />
+	                <input type="hidden" name="a" value="do_set_hours" />
+	                <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+	                <input type="hidden" name="type" value="fin_op" />
+	                <input type="hidden" name="del" value="0" />
+	                {if $selOp->fin_op}
+	                Fin d'intervention:
+	                <select name="hour" onchange="this.form.submit()">
+	                  {foreach from=$timing.fin_op item=curr_time}
+	                  <option value="{$curr_time}" {if $curr_time == $selOp->fin_op}selected="selected"{/if}>
+	                    {$curr_time|date_format:"%Hh%M"}
+	                  </option>
+	                  {/foreach}
+	                </select>
+	                <button type="submit" onclick="this.form.del.value = 1"><img src="modules/{$m}/images/cross.png" /></button>
+	                {else}
+	                <input type="submit" value="fin d'intervention" />
+	                {/if}
+	              </form>
+	            </td>
+	            <td>
+                  <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
+	                <input type="hidden" name="m" value="dPsalleOp" />
+	                <input type="hidden" name="a" value="do_set_hours" />
+	                <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+	                <input type="hidden" name="type" value="retrait_garrot" />
+	                <input type="hidden" name="del" value="0" />
+	                {if $selOp->retrait_garrot}
+	                Retrait du garrot:
+	                <select name="hour" onchange="this.form.submit()">
+	                  {foreach from=$timing.retrait_garrot item=curr_time}
+	                  <option value="{$curr_time}" {if $curr_time == $selOp->retrait_garrot}selected="selected"{/if}>
+	                    {$curr_time|date_format:"%Hh%M"}
+	                  </option>
+	                  {/foreach}
+	                </select>
+	                <button type="submit" onclick="this.form.del.value = 1"><img src="modules/{$m}/images/cross.png" /></button>
+	                {else}
+	                <input type="submit" value="retrait du garrot" />
+	                {/if}
+	              </form>
+	            </td>
+	            <td>
+                  <form name="editFrm{$selOp->operation_id}" action="index.php" method="get">
+                    <input type="hidden" name="m" value="dPsalleOp" />
+	                <input type="hidden" name="a" value="do_set_hours" />
+	                <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
+	                <input type="hidden" name="type" value="sortie_bloc" />
+	                <input type="hidden" name="del" value="0" />
+	                {if $selOp->sortie_bloc}
+	                Sortie du patient:
+	                <select name="hour" onchange="this.form.submit()">
+	                  {foreach from=$timing.sortie_bloc item=curr_time}
+	                  <option value="{$curr_time}" {if $curr_time == $selOp->sortie_bloc}selected="selected"{/if}>
+	                    {$curr_time|date_format:"%Hh%M"}
+	                  </option>
+	                  {/foreach}
+	                </select>
+	                <button type="submit" onclick="this.form.del.value = 1"><img src="modules/{$m}/images/cross.png" /></button>
+	                {else}
+	                <input type="submit" value="sortie du patient" />
+	                {/if}
+	              </form>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
         {else}

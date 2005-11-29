@@ -37,7 +37,7 @@
         </td>
       </tr>
     
-      <tr class="acte{$acte->_view}">
+      <tr style="display: none;">
         <th><label for="execution" title="Date et heure d'exécution de l'acte">Exécution :</label></th>
         <td>
           <input type="text" name="execution" title="{$acte->_props.execution}" readonly="readonly" value="{$acte->execution}" />
@@ -79,12 +79,13 @@
     
       <tr>
         <td class="button" colspan="2">
-        {if $acte->acte_id}
-        <input type="submit" value="Modifier cet acte" />
-        <input type="button" value="Supprimer cet acte" onclick="confirmDeletion(this.form, 'l\'acte', '{$acte->_view|escape:javascript}')"  />
-        {else}
-        <input type="submit" value="Coder cet acte" />
-        {/if}
+          {if $acte->acte_id}
+          <input type="submit" value="Modifier cet acte" />
+          <input type="button" value="Supprimer cet acte" onclick="confirmDeletion(this.form, 'l\'acte', '{$acte->_view|escape:javascript}')"  />
+          {else}
+          <input type="submit" value="Coder cet acte" />
+          {/if}
+        </td>
       </tr>
       
     </table>

@@ -54,6 +54,7 @@ foreach($plages as $key => $value) {
 
 // Opération selectionnée
 $selOp = new COperation;
+$timings = array();
 if($op) {
   $selOp->load($op);
   $selOp->loadRefs();
@@ -62,6 +63,18 @@ if($op) {
   }
   $selOp->loadPossibleActes();
   $selOp->_ref_plageop->loadRefsFwd();
+  // Tableau des timings
+  $timing["entree_bloc"]    = array();
+  $timing["pose_garrot"]    = array();
+  $timing["debut_op"]       = array();
+  $timing["fin_op"]         = array();
+  $timing["retrait_garrot"] = array();
+  $timing["sortie_bloc"]    = array();
+  foreach($timing as $key => $value) {
+    for($i = -10; $i < 10 && $selOp->$key !== null; $i++) {
+      $timing[$key][] = mbTime("+ $i minutes", $selOp->$key);
+    }
+  }
 }
 
 // Création du template
@@ -77,6 +90,7 @@ $smarty->assign('listAnesths', $listAnesths);
 $smarty->assign('listChirs', $listChirs);
 $smarty->assign('plages', $plages);
 $smarty->assign('selOp', $selOp);
+$smarty->assign('timing', $timing);
 $smarty->assign('date', $date);
 
 $smarty->display('vw_operations.tpl');
