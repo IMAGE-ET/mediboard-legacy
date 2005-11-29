@@ -1280,7 +1280,8 @@ table#weber td {
 }
 
 @media print {
-  table#weber allvalues {
+  table#weber table#allvalues,
+  table#weber tr#radiointeractive {
     display: none;
   }
 }
