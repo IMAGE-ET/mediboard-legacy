@@ -718,6 +718,17 @@ span.hilite {
 }
 
 /* Module specific CSS*/
+  /* @import "./modules.css";   */
+
+table.dPsalleOp select,
+table.dPsalleOp option,
+table.dPsalleOp input,
+table.dPsalleOp button  {
+  height: 20px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
   /* @import "./contacts.css";  */
 
 /* contacts table */
