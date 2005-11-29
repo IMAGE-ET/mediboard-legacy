@@ -1232,6 +1232,10 @@ table#weber td {
   text-align: center;
 }
 
+table#weber tr.values {
+  display: normal;
+}
+
 table#weber tr.moyenne td {
   background-color: #ddd;
 }
