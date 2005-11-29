@@ -211,7 +211,6 @@ function pageMain() {
       	    <label for="motif" title="Motif de la consultation">Motif</label>
       	  </th>
           <th>
-            <input name="test" value="" />
             <select name="_aide_motif" size="1" onchange="pasteText('motif')">
               <option value="0">&mdash; Choisir une aide</option>
               {html_options options=$aides.motif}
