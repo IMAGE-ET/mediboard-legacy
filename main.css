@@ -10,6 +10,12 @@ body {
   margin: 0px;
 }
 
+@media print {
+  body { 
+    background: transparent;
+  }
+}
+
 table {
   font-family: arial, sans-serif;
   font-size: 11px;
@@ -505,16 +511,24 @@ td.tabox {
 
 /* Message styles */
 
-.warning {
+div.warning {
   color: #f00;
 }
 
-.error {
+div.error {
   color: #f00;
 }
 
-.message {
+div.message {
   color: #888;
+}
+
+@media print {
+  div.warning,
+  div.error,
+  div.message {
+    display: none;
+  }
 }
 
   /* @import "./login.css";   */
@@ -1263,6 +1277,12 @@ table#weber tr.moyenne td.osseux {
 
 table#weber td {
   text-align: center;
+}
+
+@media print {
+  table#weber allvalues {
+    display: none;
+  }
 }
 
 /* The main calendar widget.  DIV containing a table. */
