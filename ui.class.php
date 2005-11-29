@@ -150,6 +150,20 @@ class CAppUI {
   }
   
 /**
+* Used to load a image file from the module directory
+* @param string $name The class root file name (excluding .class.php)
+* @return string The path to the include file
+ */
+  function getModuleImage($name = null, $file = null) {
+    if ($name) {
+      if ($root = $this->getConfig( 'root_dir' )) {
+        $filename = $file ? $file : $name;
+        return "$root/modules/$name/images/$filename";
+      }
+    }
+  }
+  
+/**
 * Used to load a php module function file from the funciton directory
 * @param string $name module (excluding _func.php)
 * @return string The path to the include file
@@ -473,11 +487,7 @@ class CAppUI {
 			$this->msg = '';
 			$this->msgNo = 0;
 		}
-		return $msg ? '<table cellspacing="0" cellpadding="1" border="0"><tr>'
-			. "<td>$img</td>"
-			. "<td class=\"$class\">$msg</td>"
-			. '</tr></table>'
-			: '';
+		return $msg ? "<div class='$class'>$img $msg</div>" : "";
 	}
 /**
 * Set the value of a temporary state variable.
