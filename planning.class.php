@@ -37,6 +37,10 @@ class COperation extends CMbObject {
   var $cote = null;
   var $temp_operation = null;
   var $entree_bloc = null;
+  var $pose_garrot = null;
+  var $debut_op = null;
+  var $fin_op = null;
+  var $retrait_garrot = null;
   var $sortie_bloc = null;
   var $time_operation = null;
   var $examen = null;

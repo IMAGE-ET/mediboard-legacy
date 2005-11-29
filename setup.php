@@ -153,6 +153,14 @@ class CSetupdPplanningOp {
           };
           
         case "0.30":
+          $sql = "ALTER TABLE `operations`
+                  ADD `pose_garrot` TIME AFTER `entree_bloc` ,
+                  ADD `debut_op` TIME AFTER `pose_garrot` ,
+                  ADD `fin_op` TIME AFTER `debut_op` ,
+                  ADD `retrait_garrot` TIME AFTER `fin_op` ;";
+          db_exec($sql2); db_error();
+        
+        case "0.31":
           return true;
 	  }
       return false;
