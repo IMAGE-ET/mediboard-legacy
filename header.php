@@ -122,7 +122,7 @@ foreach ($nav as $module) {
 </tr>
 </table>
 <?php } // (!$dialog) ?>
-<table id="main">
+<table id="main" class="<?php echo $m ?>">
 <tr>
   <td>
 <?php
