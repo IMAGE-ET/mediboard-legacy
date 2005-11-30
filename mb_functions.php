@@ -50,10 +50,12 @@ function mbSetValueToSession($valName, $value = NULL) {
  * Traces variable using preformated text et varibale export
  * @return void 
  **/
-function mbTrace($var, $label = null, $die = false) {
+function mbTrace($var, $label = null, $die = false, $error = false) {
   $export = var_export($var, true); 
   $export = htmlspecialchars($export);
-  
+  if($error)
+    trigger_error (html_entity_decode("\n$label: $export\n"));
+  else
   echo "<pre>$label: $export</pre>";
 
   if ($die) {
