@@ -84,8 +84,8 @@
   </tr>
   
   <tr>
-    <th>Chambre seule :</th>
-    <td>{if $operation.chambre == "o"}oui{else}non{/if}</td>
+    <th>Chambre particulière :</th>
+    <td>{if $operation->chambre == "o"}oui{else}non{/if}</td>
   </tr>
  
   <tr>
