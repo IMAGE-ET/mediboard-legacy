@@ -13,28 +13,33 @@ require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_bar'));
 
-$user_id = mbGetValueFromGet("user_id", 1);
+$user_id = mbGetValueFromGet("user_id", $AppUI->user_id);
+$user = new CMediusers;
+$user->load($user_id);
 $debut = mbGetValueFromGet("debut", mbDate("-1 WEEK"));
 $fin = mbGetValueFromGet("fin", mbDate());
 
 $sql = "SELECT COUNT(user_log.user_log_id) AS total," .
-    "\nusers.user_last_name," .
-    "\nusers.user_first_name," .
-    "\nDATE_FORMAT(user_log.date, '%d/%m/%Y') AS days," .
-    "\nDATE_FORMAT(user_log.date, '%Y%m%d') AS orderitem" .
-    "\nFROM user_log, users" .
+    "\nDATE_FORMAT(user_log.date, '%Y-%m-%d') AS day" .
+    "\nFROM user_log" .
     "\nWHERE user_log.date BETWEEN '$debut' AND '$fin'" .
     "\nAND user_log.user_id = '$user_id'" .
-    "\nAND user_log.user_id = users.user_id" .
-    "\nGROUP BY days" .
-    "\nORDER BY orderitem";
+    "\nGROUP BY day" .
+    "\nORDER BY day";
 $logs = db_loadlist($sql);
 $datax = array();
 $datay = array();
-foreach($logs as $value) {
-  $utilisateur = $value["user_last_name"]." ".$value["user_first_name"];
-  $datay[] = $value["total"];
-  $datax[] = $value["days"];
+for($i = $debut; $i <= $fin; $i = mbDate("+1 DAY", $i)) {
+  $datax[] = mbTranformTime("+0 DAY", $i, "%a %d/%m/%Y");
+  $f = true;
+  foreach($logs as $value) {
+    if($value["day"] == $i) {
+      $datay[] = $value["total"];
+      $f = false;
+    }
+  }
+  if($f)
+    $datay[] = 0;
 }
 
 // Setup the graph.
@@ -45,7 +50,7 @@ $graph->SetMarginColor("lightblue");
 //$graph->SetShadow();
 
 // Set up the title for the graph
-$graph->title->Set($utilisateur);
+$graph->title->Set($user->_view);
 $graph->title->SetFont(FF_ARIAL,FS_NORMAL,10);
 $graph->title->SetColor("darkred");
 
