@@ -664,7 +664,7 @@ div.message {
 #new {
   white-space: nowrap;
   text-align: right;
-  vertical-align: center;  
+  vertical-align: middle;  
 }
 
 /* User */
@@ -1242,8 +1242,12 @@ tr.groupexpand th {
   background-image: url(./images/expand.gif);
 }
 
-.show {
-  display: normal;
+tr.show {
+  display: table-row;
+}
+
+td.show {
+  display: table-cell;
 }
 
 .hidden {
@@ -1258,7 +1262,7 @@ table#weber td {
 }
 
 table#weber tr.values {
-  display: normal;
+  display: table-row;
 }
 
 table#weber tr.moyenne td {
