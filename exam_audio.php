@@ -15,7 +15,7 @@ if (!$canEdit) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$_conduction = mbGetValueFromGetOrSession("_conduction", "osseuse");
+$_conduction = mbGetValueFromGetOrSession("_conduction", "aerien");
 
 require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_tonal"));
 

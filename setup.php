@@ -13,7 +13,7 @@ require_once($AppUI->getModuleClass("dPcompteRendu", "compteRendu"));
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcabinet';
-$config['mod_version'] = '0.33';
+$config['mod_version'] = '0.34';
 $config['mod_directory'] = 'dPcabinet';
 $config['mod_setup_class'] = 'CSetupdPcabinet';
 $config['mod_type'] = 'user';
@@ -202,6 +202,21 @@ class CSetupdPcabinet {
             "\nADD UNIQUE (`consultation_id`)";
 
       case "0.33":
+        $sql = "ALTER TABLE `examaudio` " .
+          "\nADD `remarques` TEXT AFTER `consultation_id`," .
+          "\nADD `gauche_conlat` VARCHAR( 64 ) ," .
+          "\nADD `gauche_ipslat` VARCHAR( 64 ) ," .
+          "\nADD `gauche_pasrep` VARCHAR( 64 ) ," .
+          "\nADD `gauche_vocale` VARCHAR( 64 ) ," .
+          "\nADD `gauche_tympan` VARCHAR( 64 ) ," .
+          "\nADD `droite_conlat` VARCHAR( 64 ) ," .
+          "\nADD `droite_ipslat` VARCHAR( 64 ) ," .
+          "\nADD `droite_pasrep` VARCHAR( 64 ) ," .
+          "\nADD `droite_vocale` VARCHAR( 64 ) ," .
+          "\nADD `droite_tympan` VARCHAR( 64 )";
+        db_exec( $sql ); db_error();
+
+      case "0.34":
   	    return true;
 		}
 

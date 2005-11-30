@@ -23,17 +23,13 @@ var iMaxPerte = 120;
 var iMaxIndexFrequence = 7;
   
 function changeValue(sCote, sConduction, iFrequence, iNewValue) {
-  if (sConduction == "osseuse" ) sConductionElement = "osseux";
-  if (sConduction == "aerienne") sConductionElement = "aerien";
-   
   var oForm = document.editFrm;
-  var sElementName = printf("_%s_%s[%i]", sCote, sConductionElement, iFrequence);
+  var sElementName = printf("_%s_%s[%i]", sCote, sConduction, iFrequence);
   var oElement = oForm.elements[sElementName];
-  var oLabel = getLabelFor(oElement);
-  var sFrequence = oLabel.innerHTML;
+  var nFrequence = 125 * Math.pow(2, iFrequence);
   
   if (!iNewValue) {
-    sInvite = printf("Modifier la perte pour l'oreille %s en conduction %s à %s'", sCote, sConduction, sFrequence);
+    sInvite = printf("Modifier la perte pour l'oreille %s en conduction %s à %iHz'", sCote, sConduction, nFrequence);
     sAdvice = printf("Merci de fournir une valeur comprise (en dB) entre %i et %i", iMinPerte, iMaxPerte);
 
     iNewValue = prompt(sInvite + "\n" + sAdvice, oElement.value);
@@ -59,7 +55,7 @@ function changeValueMouse(event, sCote) {
   var oGraphMargins = {
     left  : 45,
     top   : 40,
-    right : 20,
+    right : 20 + (sCote == "droite" ? 75 : 0),
     bottom: 20
   }
   
@@ -100,11 +96,19 @@ function pageMain() {
 }
 </script>
   
-{/literal}
+{/literal}  
 
 <form name="editFrm" action="?m=dPcabinet&amp;a=exam_audio&amp;dialog=1" method="post" onsubmit="return checkForm(this)">
 
 <table class="main" id="weber">
+
+<tr>
+  <th class="title" colspan="2">
+    consultation de {$exam_audio->_ref_consult->_ref_patient->_view}
+    le {$exam_audio->_ref_consult->_date|date_format:"%A %d/%m/%Y"}
+    par le Dr. {$exam_audio->_ref_consult->_ref_chir->_view}
+  </th>
+</tr>
   
 <tr>
   <th class="title" colspan="2">Audiométrie tonale (Test de Weber)</th>
@@ -120,12 +124,18 @@ function pageMain() {
     <img id="image_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=right" usemap="#graph_right" onclick="changeValueMouseDroite(event)" />
   </td>
 </tr>
-<tr>
+<tr id="radiointeractive">
   <td colspan="2">
-    <input type="radio" name="_conduction" value="aerienne" {if $_conduction == "aerienne"}checked="checked"{/if} />
-    <label for="_conduction_aerienne" title="Conduction aérienne pour la saisie intéractive">Conduction aérienne</label>
-    <input type="radio" name="_conduction" value="osseuse" {if $_conduction == "osseuse"}checked="checked"{/if} />
-    <label for="_conduction_osseuse" title="Conduction osseuse pour la saisie intéractive">Conduction osseuse</label>
+    <input type="radio" name="_conduction" value="aerien" {if $_conduction == "aerien"}checked="checked"{/if} />
+    <label for="_conduction_aerien" title="Conduction aérienne pour la saisie intéractive">Conduction aérienne</label>
+    <input type="radio" name="_conduction" value="osseux" {if $_conduction == "osseux"}checked="checked"{/if} />
+    <label for="_conduction_osseux" title="Conduction osseuse pour la saisie intéractive">Conduction osseuse</label>
+    <input type="radio" name="_conduction" value="ipslat" {if $_conduction == "ipslat"}checked="checked"{/if} />
+    <label for="_conduction_ipslat" title="Conduction aérienne pour la saisie intéractive">Stapédien ipsilatéral</label>
+    <input type="radio" name="_conduction" value="conlat" {if $_conduction == "conlat"}checked="checked"{/if} />
+    <label for="_conduction_conlat" title="Conduction osseuse pour la saisie intéractive">Stapédien controlatéral</label>
+    <input type="radio" name="_conduction" value="pasrep" {if $_conduction == "pasrep"}checked="checked"{/if} />
+    <label for="_conduction_pasrep" title="Conduction osseuse pour la saisie intéractive">Pas de réponse</label>
   </td>
 </tr>
 <tr>
@@ -136,34 +146,96 @@ function pageMain() {
     <input type="hidden" name="examaudio_id" value="{$exam_audio->examaudio_id}" />
     <input type="hidden" name="consultation_id" value="{$exam_audio->consultation_id}" />
 
-    <table class="form">
+    <table class="form" id="allvalues">
       <tr class="groupcollapse" id="values" onclick="flipGroup('', 'values');">
-        <th class="category" colspan="8">Toutes les valeurs</th>
+        <th class="category" colspan="9">Toutes les valeurs</th>
       </tr>
-      <tr class="values" style="display: none">
-        <th class="category" colspan="4">Oreille gauche</th>
-        <th class="category" colspan="4">Oreille Droite</th>
+      <tr class="values">
+        <th class="category">Fréquences</th>
+        {foreach from=$frequences key=index item=frequence}
+        <th class="category">
+          {$frequence}
+        </th>
+        {/foreach}
       </tr>
-      <tr class="values" style="display: none">
-        <th class="category" colspan="2">Conduction aérienne</th>
-        <th class="category" colspan="2">Conduction osseuse</th>
-        <th class="category" colspan="2">Conduction aérienne</th>
-        <th class="category" colspan="2">Conduction osseuse</th>
+      <tr class="values">
+        <th class="category" colspan="9">Oreille gauche</th>
       </tr>
-      {foreach from=$frequences key=index item=frequence}
-      <tr class="values" style="display: none">
-        <th><label for="_gauche_aerien[{$index}]" title="Perte de l'oreille gauche pour la fréquence {$frequence} en conduction aérienne">{$frequence} :</label></th>
-        <td><input type="text" name="_gauche_aerien[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_aerien.$index}" tabindex="{$index+0}" size="4" maxlength="4" /></td>
-        <th><label for="_gauche_osseux[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction osseuse">{$frequence} :</label></th>
-        <td><input type="text" name="_gauche_osseux[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_osseux.$index}" tabindex="{$index+10}" size="4" maxlength="4" /></td>
-        <th><label for="_droite_aerien[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction aérienne">{$frequence} :</label></th>
-        <td><input type="text" name="_droite_aerien[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_aerien.$index}" tabindex="{$index+20}" size="4" maxlength="4" /></td>
-        <th><label for="_droite_osseux[{$index}]" title="Perte de l'oreille droite pour la fréquence {$frequence} en conduction osseuse">{$frequence} :</label></th>
-        <td><input type="text" name="_droite_osseux[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_osseux.$index}" tabindex="{$index+30}" size="4" maxlength="4" /></td>
+      <tr class="values">
+        <th>Conduction aérienne</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_gauche_aerien[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_aerien.$index}" tabindex="{$index+10}" size="4" maxlength="4" /></td>
+        {/foreach}
       </tr>
-      {/foreach}
-      <tr class="values" style="display: none">
-        <td class="button" colspan="8">
+      
+      <tr class="values">
+        <th>Conduction osseuse</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_gauche_osseux[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_osseux.$index}" tabindex="{$index+20}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th>Stapédien ipsilatéral</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_gauche_ipslat[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_ipslat.$index}" tabindex="{$index+30}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th>Stapédien controlatéral</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_gauche_conlat[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_conlat.$index}" tabindex="{$index+40}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th>pas de réponse</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_gauche_pasrep[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_pasrep.$index}" tabindex="{$index+50}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th class="category" colspan="9">Oreille droite</th>
+      </tr>
+      <tr class="values">
+        <th>Conduction aérienne</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_aerien[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_aerien.$index}" tabindex="{$index+110}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+      
+      <tr class="values">
+        <th>Conduction osseuse</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_osseux[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_osseux.$index}" tabindex="{$index+120}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th>stapédien ipsilatéral</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_ipslat[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_ipslat.$index}" tabindex="{$index+130}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th>stapédien controlatéral</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_conlat[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_conlat.$index}" tabindex="{$index+140}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th>pas de réponse</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_pasrep[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_pasrep.$index}" tabindex="{$index+150}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <td class="button" colspan="9">
           <input type="submit" value="Valider" />
         </td>
       </tr>
@@ -274,6 +346,28 @@ function pageMain() {
   <td colspan="2"><img src="?m=dPcabinet&amp;a=graph_audio_vocal&amp;suppressHeaders=1&amp;"/></td>
 </tr>
 
+<table class="form" id="allvocales">
+  <tr class="groupcollapse" id="vocales" onclick="flipGroup('', 'vocales');">
+    <th class="category" colspan="9">Toutes les valeurs</th>
+  </tr>
+  <tr class="vocales">
+    <th class="category">Fréquences</th>
+    {foreach from=$frequences key=index item=frequence}
+    <th class="category">
+      Point #{$index}<br />dB / %
+    </th>
+    {/foreach}
+  </tr>
+  <tr class="vocales">
+    <th>Oreille gauche :</th>
+    {foreach from=$frequences key=index item=frequence}
+    <td>
+      <input type="text" name="_gauche_vocale[{$index}][0]" title="num|minMax|0|120" value="{$exam_audio->_gauche_vocale.$index.0}" tabindex="{$index*2+200}" size="3" maxlength="3" />
+      <input type="text" name="_gauche_vocale[{$index}][1]" title="num|minMax|0|100" value="{$exam_audio->_gauche_vocale.$index.1}" tabindex="{$index*2+201}" size="3" maxlength="3" />
+    </td>
+    {/foreach}
+  </tr>
+      
 </table>
 
     
