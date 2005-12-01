@@ -64,6 +64,75 @@ function mbTrace($var, $label = null, $die = false, $error = false) {
 }
 
 /**
+ * Calculate the bank holidays in France
+ * @return array: List of bank holidays
+ **/
+
+function mbBankHolidays($date = null) {
+  if(!$date)
+    $date = mbDate();
+  $year = mbTranformTime("+0 DAY", $date, "%Y");
+
+  // Calculdu dimanche de paques : http://fr.wikipedia.org/wiki/Computus
+  $n = $year - 1900;
+  $a = $n % 19;
+  $b = intval((7 * $a + 1) / 19);
+  $c = ((11 * $a) - $b + 4) % 29;
+  $d = intval($n / 4);
+  $e = ($n - $c + $d + 31) % 7;
+  $P = 25 - $c - $e;
+  if($P > 0) {
+    $P = "+".$P;
+  }
+  $paques = mbDate("$P DAYS", "$year-03-31");
+
+  $freeDays = array(
+    "$year-01-01",               // Jour de l'an
+    mbDate("+1 DAY", $paques),   // Lundi de paques
+    "$year-05-01",               // Fête du travail
+    "$year-05-08",               // Victoire de 1945
+    mbDate("+40 DAYS", $paques), // Jeudi de l'ascension
+    mbDate("+50 DAYS", $paques), // Lundi de pentecôte
+    "$year-07-14",               // Fête nationnale
+    "$year-08-15",               // Assomption
+    "$year-11-01",               // Toussaint
+    "$year-11-11",               // Armistice 1918
+    "$year-12-25"                // Noël
+  );
+  
+  return $freeDays;
+}
+
+/**
+ * Calculate the number of work days in the given month date
+ * @return int: number of work days 
+ **/
+
+function mbWorkDaysInMonth($date = null) {
+  $result = 0;
+  if(!$date)
+    $date = mbDate();
+  $year = mbTranformTime("+0 DAY", $date, "%Y");
+  $debut = $date;
+  $rectif = mbTranformTime("+0 DAY", $debut, "%d")-1;
+  $debut = mbDate("-$rectif DAYS", $debut);
+  $fin   = $date;
+  $rectif = mbTranformTime("+0 DAY", $fin, "%d")-1;
+  $fin = mbDate("-$rectif DAYS", $fin);
+  $fin = mbDate("+ 1 MONTH", $fin);
+  $fin = mbDate("-1 DAY", $fin);
+  $freeDays = mbBankHolidays($date);
+  for($i = $debut; $i <= $fin; $i = mbDate("+1 DAY", $i)) {
+    $day = mbTranformTime("+0 DAY", $i, "%u");
+    if($day == 6 and !in_array($i, $freeDays))
+      $result += 0.5;
+    elseif($day != 7 and !in_array($i, $freeDays))
+      $result += 1;
+  }
+  return $result;
+}
+
+/**
  * Transforms absolute or relative time into a given format
  * @return string: the transformed time 
  **/
