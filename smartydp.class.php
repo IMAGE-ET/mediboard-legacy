@@ -18,6 +18,31 @@ function do_translation($params, $content, &$smarty, &$repeat) {
   }
 }
 
+function include_script($params, &$smarty) {
+    global $m;  
+
+    require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');
+    
+
+    $module = $m;
+    $source = null;
+
+    foreach($params as $_key => $_val) {
+        switch($_key) {
+            case 'module':
+                $$_key = $_val;
+                break;
+            case 'soure':
+                $$_key = $_val;
+                break;
+        }
+    }
+
+    $_html_result = '';
+
+    return $_html_result;
+}
+
 
 /**
  * dotProject integration of Smarty engine main class
@@ -34,7 +59,7 @@ class CSmartyDP extends Smarty {
    * Standard data assignment
    */
   function CSmartyDP() {
-    global $AppUI, $dbChrono, $dPconfig, $canRead, $canEdit, $m, $a, $tab, $dialog;
+    global $AppUI, $dbChrono, $dPconfig, $canRead, $canEdit, $m, $a, $tab, $dialog, $mb_version_build;
     $root = $AppUI->getConfig( 'root_dir' );
     
     // Directories initialisation
@@ -57,6 +82,7 @@ class CSmartyDP extends Smarty {
     $this->assign("a", $a);
     $this->assign("tab", $tab);
     $this->assign("dialog", $dialog);
+    $this->assign("mb_version_build", $mb_version_build);
     
     // Configure dotProject localisation framework
     $this->register_block("tr", "do_translation"); 
