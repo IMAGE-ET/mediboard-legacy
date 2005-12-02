@@ -84,7 +84,7 @@ $graph->SetScale("textlin", 0, $maxDuree);
 $graph->SetMarginColor("lightblue");
 
 // Set up the title for the graph
-$title = "Occupation des lits";
+$title = "Occupation moyenne des lits par mois (en heures par jour)";
 $subtitle = "";
 if($prat_id) {
   $subtitle .= "- Dr. $pratSel->_view ";
@@ -124,14 +124,12 @@ $graph->legend->Pos(0.02,0.02, "right", "top");
 // Create the bar plot
 $colors = array("#aa5500", "#55aa00", "#0055aa", "#aa0055", "#5500aa", "#00aa55");
 $listPlots = array();
-//mbTrace($hoursByService, "result", true, true);
 foreach($hoursByService as $key => $value) {
-  //mbTrace($value, "value", false, true);
   $bplot = new BarPlot($value["total"]);
   $from = $colors[$key];
   $to = "#EEEEEE";
   //$bplot->SetFillGradient($from,$to,GRAD_LEFT_REFLECTION);
-  $bplot->SetColor($colors[$key]);
+  $bplot->SetFillColor($colors[$key]);
   $bplot->setLegend($value["nom"]);
   $bplot->value->SetFormat('%01.0f');
   $bplot->value->SetColor($colors[$key]);
