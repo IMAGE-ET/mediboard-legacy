@@ -1262,7 +1262,11 @@ table#weber td {
 }
 
 table#weber tr.values {
-  display: table-row;
+  display: none;
+}
+
+table#weber tr.vocales {
+  display: none;
 }
 
 table#weber tr.moyenne td {
