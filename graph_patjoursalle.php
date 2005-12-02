@@ -12,7 +12,8 @@ require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPbloc', 'salle') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph'));
-require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_bar'));
+require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_line'));
+require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_regstat'));
 
 $debut    = mbGetValueFromGet("debut"   , mbDate("-1 YEAR"));
 $fin      = mbGetValueFromGet("fin"     , mbDate());
@@ -35,39 +36,35 @@ if($salle_id)
   $sql .= "\nWHERE id = '$salle_id'";
 $salles = db_loadlist($sql);
 
-$opbysalle = array();
-foreach($salles as $salle) {
-  $id = $salle["id"];
-  $opbysalle[$id]["nom"] = $salle["nom"];
-  $sql = "SELECT COUNT(operations.operation_id) AS total," .
-    "\nDATE_FORMAT(plagesop.date, '%m/%Y') AS mois," .
-    "\nDATE_FORMAT(plagesop.date, '%Y%m') AS orderitem," .
-    "\nsallesbloc.nom AS nom" .
-    "\nFROM plagesop, sallesbloc" .
-    "\nLEFT join operations" .
-    "\nON operations.plageop_id = plagesop.id" .
-    "\nAND operations.annulee = 0" .
-    "\nWHERE plagesop.date BETWEEN '$debut' AND '$fin'";
+$op = array();
+$sql = "SELECT COUNT(operations.operation_id) AS total," .
+  "\nDATE_FORMAT(plagesop.date, '%m/%Y') AS mois," .
+  "\nDATE_FORMAT(plagesop.date, '%Y-%m-01') AS orderitem" .
+  "\nFROM plagesop" .
+  "\nLEFT JOIN operations" .
+  "\nON operations.plageop_id = plagesop.id" .
+  "\nAND operations.annulee = 0" .
+  "\nWHERE plagesop.date BETWEEN '$debut' AND '$fin'";
   if($prat_id)
     $sql .= "\nAND operations.chir_id = '$prat_id'";
   if($codeCCAM)
     $sql .= "\nAND operations.codes_ccam LIKE '%$codeCCAM%'";
-  $sql .= "\nAND plagesop.id_salle = sallesbloc.id" .
-    "\nAND sallesbloc.id = '$id'" .
-    "\nGROUP BY mois" .
+  if($salle_id)
+    $sql .= "\nAND plagesop.id_salle = '$salle_id'";
+$sql .= "\nGROUP BY mois" .
     "\nORDER BY orderitem";
-  $result = db_loadlist($sql);
-  foreach($datax as $x) {
-    $f = true;
-    foreach($result as $totaux) {
-      if($x == $totaux["mois"]) {
-        $opbysalle[$id]["op"][] = $totaux["total"];
-        $f = false;
-      }
+$result = db_loadlist($sql);
+foreach($datax as $x) {
+  $f = true;
+  foreach($result as $total) {
+    if($x == $total["mois"]) {
+      $nbjours = mbWorkDaysInMonth($total["orderitem"]);
+      $op[] = $total["total"]/($nbjours*count($salles));
+      $f = false;
     }
-    if($f) {
-      $opbysalle[$id]["op"][] = 0;
-    }
+  }
+  if($f) {
+    $op[] = 0;
   }
 }
 
@@ -78,7 +75,7 @@ $graph->SetScale("textlin");
 $graph->SetMarginColor("lightblue");
 
 // Set up the title for the graph
-$title = "Interventions par mois";
+$title = "Patients / jour / salle";
 $subtitle = "";
 if($prat_id) {
   $subtitle .= "- Dr. $pratSel->_view ";
@@ -99,7 +96,9 @@ $graph->title->SetColor("darkred");
 $graph->subtitle->SetFont(FF_ARIAL,FS_NORMAL,7);
 $graph->subtitle->SetColor("black");
 //$graph->img->SetAntiAliasing();
-$graph->SetScale("textint");
+$opSorted = $op;
+rsort($opSorted);
+$graph->SetScale("intint", 0, intval($opSorted[0])+1);
 
 // Setup font for axis
 $graph->xaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
@@ -111,38 +110,32 @@ $graph->yscale->ticks->SupressZeroLabel(false);
 // Setup X-axis labels
 $graph->xaxis->SetTickLabels($datax);
 $graph->xaxis->SetPosAbsDelta(15);
-$graph->yaxis->SetPosAbsDelta(-15);
+$graph->xgrid->Show();
 $graph->xaxis->SetLabelAngle(50);
+$graph->yaxis->SetPosAbsDelta(-15);
 
-// Legend
-$graph->legend->SetMarkAbsSize(5);
-$graph->legend->SetFont(FF_ARIAL,FS_NORMAL, 7);
-$graph->legend->Pos(0.02,0.02, "right", "top");
+// Create the plot
+$lplot = new LinePlot($op);
+$lplot->SetColor("blue");
+$lplot->SetWeight(0);
+$lplot->value->SetFormat("%01.2f");
+$lplot->value->SetFont(FF_ARIAL,FS_NORMAL, 7);
+$lplot->value->SetMargin(10);
+$lplot->mark->SetType(MARK_FILLEDCIRCLE);
+$lplot->mark->SetColor("blue");
+$lplot->mark->SetFillColor("blue:1.5");
+$lplot->value->show();
 
-// Create the bar pot
-$colors = array("#aa5500", "#55aa00", "#0055aa", "#aa0055", "#5500aa", "#00aa55");
-$listPlots = array();
-foreach($opbysalle as $key => $value) {
-  $bplot = new BarPlot($value["op"]);
-  $from = $colors[$key];
-  $to = "#EEEEEE";
-  $bplot->SetFillGradient($from,$to,GRAD_LEFT_REFLECTION);
-  $bplot->SetColor("white");
-  $bplot->setLegend($value["nom"]);
-  $bplot->value->SetFormat('%01.0f');
-  $bplot->value->SetColor($colors[$key]);
-  $bplot->value->SetFont(FF_ARIAL,FS_NORMAL, 8); 
-  //$bplot->value->show();
-  $listPlots[] = $bplot;
-}
+// Create the spline plot
+$spline = new Spline(array_keys($datax), array_values($op));
+list($sdatax,$sdatay) = $spline->Get(50);
+$lplot2 = new LinePlot($sdatay, $sdatax);
+$lplot2->SetFillGradient("white", "darkgray");
+$lplot2->SetColor("black");
 
-$gbplot = new AccBarPlot($listPlots);
-$gbplot->SetWidth(0.6);
-$gbplot->value->SetFormat('%01.0f'); 
-$gbplot->value->show();
-
-// Set color for the frame of each bar
-$graph->Add($gbplot);
+// Add the plots to the graph
+$graph->Add($lplot2);
+$graph->Add($lplot);
 
 // Finally send the graph to the browser
 $graph->Stroke();

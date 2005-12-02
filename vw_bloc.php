@@ -17,7 +17,13 @@ if (!$canEdit) {
 }
 
 $debutact = mbGetValueFromGetOrSession("debutact", mbDate("-1 YEAR"));
+$rectif = mbTranformTime("+0 DAY", $debutact, "%d")-1;
+$debutact = mbDate("-$rectif DAYS", $debutact);
 $finact   = mbGetValueFromGetOrSession("finact", mbDate());
+$rectif = mbTranformTime("+0 DAY", $finact, "%d")-1;
+$finact = mbDate("-$rectif DAYS", $finact);
+$finact = mbDate("+ 1 MONTH", $finact);
+$finact = mbDate("-1 DAY", $finact);
 $prat_id  = mbGetValueFromGetOrSession("prat_id", 0);
 $salle_id = mbGetValueFromGetOrSession("salle_id", 0);
 $codeCCAM = strtoupper(mbGetValueFromGetOrSession("codeCCAM", ""));
