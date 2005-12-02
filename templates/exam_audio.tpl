@@ -1,110 +1,18 @@
-{literal}
-<script type="text/javascript">
-
-function getCheckedValue(radioObj) {
-  if(!radioObj)
-    return "";
-  var radioLength = radioObj.length;
-  if(radioLength == undefined)
-    if(radioObj.checked)
-      return radioObj.value;
-    else
-      return "";
-  for(var i = 0; i < radioLength; i++) {
-    if(radioObj[i].checked) {
-      return radioObj[i].value;
-    }
-  }
-  return "";
-}
-
-var iMinPerte = -10;
-var iMaxPerte = 120;
-var iMaxIndexFrequence = 7;
-  
-function changeValue(sCote, sConduction, iFrequence, iNewValue) {
-  var oForm = document.editFrm;
-  var sElementName = printf("_%s_%s[%i]", sCote, sConduction, iFrequence);
-  var oElement = oForm.elements[sElementName];
-  var nFrequence = 125 * Math.pow(2, iFrequence);
-  
-  if (!iNewValue) {
-    sInvite = printf("Modifier la perte pour l'oreille %s en conduction %s à %iHz'", sCote, sConduction, nFrequence);
-    sAdvice = printf("Merci de fournir une valeur comprise (en dB) entre %i et %i", iMinPerte, iMaxPerte);
-
-    iNewValue = prompt(sInvite + "\n" + sAdvice, oElement.value);
-
-    // Do not user !iNewValue which is also true for empty string    
-    if (iNewValue == null) {
-      return;
-    }
-    
-    if (isNaN(iNewValue) || iNewValue < iMinPerte || iNewValue > iMaxPerte) {
-      alert("Valeur incorrecte : " + iNewValue + "\n" + sAdvice);
-      return;
-    }
-  }
-
-  oElement.value = iNewValue;
-  oForm.submit();
-}
-
-function changeValueMouse(event, sCote) {
-  var oImg = document.getElementById("image_" + sCote);
-
-  var oGraphMargins = {
-    left  : 45,
-    top   : 40,
-    right : 20 + (sCote == "droite" ? 75 : 0),
-    bottom: 20
-  }
-  
-  var oGraphRect = {
-    x : oImg.x + oGraphMargins.left,
-    y : oImg.y + oGraphMargins.top ,
-    w : oImg.width  - oGraphMargins.left - oGraphMargins.right ,
-    h : oImg.height - oGraphMargins.top  - oGraphMargins.bottom
-  }
-
-  var iStep = oGraphRect.w / (iMaxIndexFrequence+1);
-  var iRelatX = event.pageX - oGraphRect.x; 
-  var iRelatY = event.pageY - oGraphRect.y;
-
-  var iSelectedIndex = parseInt(iRelatX / iStep);
-  var iSelectedDb = parseInt(iMinPerte - (iRelatY / oGraphRect.h * (iMinPerte - iMaxPerte)));
-      
-  if (iRelatX < 0 || iRelatX > oGraphRect.w || iSelectedDb < iMinPerte || iSelectedDb > iMaxPerte) {
-    alert("Merci de cliquer à l'intérieur de l'audiogramme");
-    return;
-  }
-  
-  var oForm = document.editFrm;
-  var oElement = oForm._conduction;
-  changeValue(sCote, getCheckedValue(oElement), iSelectedIndex, iSelectedDb);
-}
-
-function changeValueMouseGauche(event) {
-  changeValueMouse(event, "gauche");
-}
-
-function changeValueMouseDroite(event) {
-  changeValueMouse(event, "droite");
-}
-
-function pageMain() {
-  initGroups("values");  
-}
-</script>
-  
-{/literal}  
+<script type="text/javascript" src="modules/{$m}/javascript/exam_audio.js?build={$mb_version_build}"></script>
 
 <form name="editFrm" action="?m=dPcabinet&amp;a=exam_audio&amp;dialog=1" method="post" onsubmit="return checkForm(this)">
+
+<input type="hidden" name="m" value="dPcabinet" />
+<input type="hidden" name="dosql" value="do_exam_audio_aed" />
+<input type="hidden" name="del" value="0" />
+<input type="hidden" name="examaudio_id" value="{$exam_audio->examaudio_id}" />
+<input type="hidden" name="consultation_id" value="{$exam_audio->consultation_id}" />
 
 <table class="main" id="weber">
 
 <tr>
   <th class="title" colspan="2">
-    consultation de {$exam_audio->_ref_consult->_ref_patient->_view}
+    Consultation de {$exam_audio->_ref_consult->_ref_patient->_view}
     le {$exam_audio->_ref_consult->_date|date_format:"%A %d/%m/%Y"}
     par le Dr. {$exam_audio->_ref_consult->_ref_chir->_view}
   </th>
@@ -117,11 +25,11 @@ function pageMain() {
 <tr>
   <td>
     {$map_tonal_gauche}
-    <img id="image_gauche" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=gauche" usemap="#graph_tonal_gauche" onclick="changeValueMouseGauche(event)" />
+    <img id="image_gauche" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=gauche" usemap="#graph_tonal_gauche" onclick="changeTonalValueMouseGauche(event)" />
   </td>
   <td>
     {$map_tonal_droite}
-    <img id="image_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=droite" usemap="#graph_tonal_droite" onclick="changeValueMouseDroite(event)" />
+    <img id="image_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=droite" usemap="#graph_tonal_droite" onclick="changeTonalValueMouseDroite(event)" />
   </td>
 </tr>
 <tr id="radiointeractive">
@@ -140,11 +48,6 @@ function pageMain() {
 </tr>
 <tr>
   <td colspan="2">
-    <input type="hidden" name="m" value="dPcabinet" />
-    <input type="hidden" name="dosql" value="do_exam_audio_aed" />
-    <input type="hidden" name="del" value="0" />
-    <input type="hidden" name="examaudio_id" value="{$exam_audio->examaudio_id}" />
-    <input type="hidden" name="consultation_id" value="{$exam_audio->consultation_id}" />
 
     <table class="form" id="allvalues">
       <tr class="groupcollapse" id="values" onclick="flipGroup('', 'values');">
@@ -339,46 +242,65 @@ function pageMain() {
 </tr>
 
 <tr>
-  <th class="title" colspan="2">Audiométrie vocale</th>
+
+  <th class="title" colspan="2"><a name="vocal"></a>Audiométrie vocale</th>
 </tr>
 
 <tr>
   <td colspan="2">
     {$map_vocal}
-    <img src="?m=dPcabinet&amp;a=graph_audio_vocal&amp;suppressHeaders=1&amp;" usemap="#graph_vocal"/></td>
+    <img id="image_vocal" src="?m=dPcabinet&amp;a=graph_audio_vocal&amp;suppressHeaders=1&amp;" usemap="#graph_vocal" onclick="changeVocalValueMouse(event)" /></td>
 </tr>
 
-<table class="form" id="allvocales">
-  <tr class="groupcollapse" id="vocales" onclick="flipGroup('', 'vocales');">
-    <th class="category" colspan="9">Toutes les valeurs</th>
-  </tr>
-  <tr class="vocales">
-    <th class="category">Fréquences</th>
-    {foreach from=$frequences key=index item=frequence}
-    <th class="category">
-      Point #{$index}<br />dB / %
-    </th>
-    {/foreach}
-  </tr>
-  <tr class="vocales">
-    <th>Oreille gauche :</th>
-    {foreach from=$frequences key=index item=frequence}
-    <td>
-      <input type="text" name="_gauche_vocale[{$index}][0]" title="num|minMax|0|120" value="{$exam_audio->_gauche_vocale.$index.0}" tabindex="{$index*2+200}" size="1" maxlength="3" />
-      <input type="text" name="_gauche_vocale[{$index}][1]" title="num|minMax|0|100" value="{$exam_audio->_gauche_vocale.$index.1}" tabindex="{$index*2+201}" size="1" maxlength="3" />
-    </td>
-    {/foreach}
-  </tr>
-  <tr class="vocales">
-    <th>Oreille droite :</th>
-    {foreach from=$frequences key=index item=frequence}
-    <td>
-      <input type="text" name="_droite_vocale[{$index}][0]" title="num|minMax|0|120" value="{$exam_audio->_droite_vocale.$index.0}" tabindex="{$index*2+200}" size="1" maxlength="3" />
-      <input type="text" name="_droite_vocale[{$index}][1]" title="num|minMax|0|100" value="{$exam_audio->_droite_vocale.$index.1}" tabindex="{$index*2+201}" size="1" maxlength="3" />
-    </td>
-    {/foreach}
-  </tr>
-      
+<tr id="radiointeractive">
+  <td colspan="2">
+    <input type="radio" name="_oreille" value="gauche" {if $_oreille == "gauche"}checked="checked"{/if} />
+    <label for="_oreille_gauche" title="Oreille gauche pour la saisie intéractive">Oreille gauche</label>
+    <input type="radio" name="_oreille" value="droite" {if $_oreille == "droite"}checked="checked"{/if} />
+    <label for="_oreille_droite" title="Oreille gauche pour la saisie intéractive">Oreille droite</label>
+
+    <table class="form" id="allvocales">
+      <tr class="groupcollapse" id="vocales" onclick="flipGroup('', 'vocales');">
+        <th class="category" colspan="9">Toutes les valeurs</th>
+      </tr>
+      <tr class="vocales">
+        <th class="category">Fréquences</th>
+        {foreach from=$frequences key=index item=frequence}
+        <th class="category">
+          Point #{$index}<br />dB / %
+        </th>
+        {/foreach}
+      </tr>
+      <tr class="vocales">
+        <th>Oreille gauche :</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td>
+          <input type="text" name="_gauche_vocale[{$index}][0]" title="num|minMax|0|120" value="{$exam_audio->_gauche_vocale.$index.0}" tabindex="{$index*2+200}" size="1" maxlength="3" />
+          <input type="text" name="_gauche_vocale[{$index}][1]" title="num|minMax|0|100" value="{$exam_audio->_gauche_vocale.$index.1}" tabindex="{$index*2+201}" size="1" maxlength="3" />
+        </td>
+        {/foreach}
+      </tr>
+      <tr class="vocales">
+        <th>Oreille droite :</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td>
+          <input type="text" name="_droite_vocale[{$index}][0]" title="num|minMax|0|120" value="{$exam_audio->_droite_vocale.$index.0}" tabindex="{$index*2+220}" size="1" maxlength="3" />
+          <input type="text" name="_droite_vocale[{$index}][1]" title="num|minMax|0|100" value="{$exam_audio->_droite_vocale.$index.1}" tabindex="{$index*2+221}" size="1" maxlength="3" />
+        </td>
+        {/foreach}
+      </tr>
+      <tr class="vocales">
+        <td class="button" colspan="9">
+          <input type="submit" value="Valider" />
+        </td>
+      </tr>
+          
+    </table>
+
+    
+  </td>
+</tr>
+
 </table>
 
     

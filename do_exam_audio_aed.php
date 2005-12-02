@@ -13,7 +13,7 @@ require_once($AppUI->getSystemClass("doobjectaddedit"));
 require_once($AppUI->getModuleClass("dPcabinet", "examaudio"));
 
 mbSetValueToSession("_conduction", $_POST["_conduction"]);
-
+mbSetValueToSession("_oreille", $_POST["_oreille"]);
 
 $do = new CDoObjectAddEdit("CExamAudio", "examaudio_id");
 $do->createMsg = "Examen audio créé";

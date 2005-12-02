@@ -12,6 +12,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_line'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_log'));
+require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_regstat'));
 
 class AudiogrammeVocal extends Graph {  
   function AudiogrammeVocal() {
@@ -22,7 +23,7 @@ class AudiogrammeVocal extends Graph {
     $this->SetMarginColor("lightblue");
     
     // Image setup
-    $this->img->SetAntiAliasing();
+//    $this->img->SetAntiAliasing();
     $this->img->SetMargin(40,20,20,20);
     
     // Legend setup
@@ -39,7 +40,7 @@ class AudiogrammeVocal extends Graph {
     
     // Setup font for axis
     $this->xgrid->Show(true, true);
-    $this->xgrid->SetColor("lightgray", "lightgray@0.8");
+    $this->xgrid->SetColor("lightgray", "lightgray:1.7");
     $this->xaxis->SetFont(FF_ARIAL, FS_NORMAL,8);
     $this->xaxis->SetLabelFormatString("%ddB");
     $this->xaxis->scale->ticks->Set(10, 5);
@@ -48,7 +49,7 @@ class AudiogrammeVocal extends Graph {
 
     // Setup Y-axis labels 
     $this->ygrid->Show(true, true);
-    $this->ygrid->SetColor("lightgray", "lightgray@0.8");
+    $this->xgrid->SetColor("lightgray", "lightgray:1.7");
     $this->yaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
     $this->yaxis->SetLabelFormatString("%d%%");
     $this->yaxis->scale->ticks->Set(10, 5);
@@ -59,6 +60,8 @@ class AudiogrammeVocal extends Graph {
   function addAudiogramme($points, $title, $mark_color) {
     global $frequences;
     
+    mbRemoveValuesInArray(array("", ""), $points);
+
     $words = explode(" ", $title);
     $cote = $words[1];
 
@@ -72,7 +75,7 @@ class AudiogrammeVocal extends Graph {
       $dBs[] = $dB;
       $pcs[] = $pc;
       $labels[] = "Modifier le valeur {$pc}%% à {$dB}dB pour l'oreille $cote";
-      $jscalls[] = "javascript:changeValueVocal('$cote',$key)";
+      $jscalls[] = "javascript:changeVocalValue('$cote',$key)";
     }
 
     $p1 = new LinePlot($pcs, $dBs);
@@ -81,6 +84,7 @@ class AudiogrammeVocal extends Graph {
     $p1->SetColor($mark_color);
     $p1->SetLegend($title);
     $p1->SetCSIMTargets($jscalls, $labels);
+    $p1->SetWeight(0);
 
     // Marks
     $p1->mark->SetType(MARK_SQUARE);
@@ -88,6 +92,14 @@ class AudiogrammeVocal extends Graph {
     $p1->mark->SetFillColor("$mark_color@0.6");
     $p1->mark->SetWidth(5);
 
+    // Create the splined line
+    $spline = new Spline($dBs, $pcs);
+    list($dBs, $pcs) = $spline->Get(80);
+
+    $p2 = new LinePlot($pcs, $dBs);
+    $p2->SetColor($mark_color);
+
+    $this->Add($p2);
     $this->Add($p1);
   }
 }

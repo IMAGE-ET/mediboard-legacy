@@ -98,7 +98,7 @@ function pageMain() {
             {foreach from=$plagesPerDay item=curr_plage}
               {if $curr_plage->_hour_deb == $curr_hour}
                 <td style="background: #aaa; text-align: center; vertical-align: middle;" rowspan="{$curr_plage->_hour_fin-$curr_plage->_hour_deb}">
-                  <a style="whitespace: nowrap" href="?m={$m}&amp;tab={$tab}&amp;plageconsult_id={$curr_plage->plageconsult_id}">
+                  <a href="?m={$m}&amp;tab={$tab}&amp;plageconsult_id={$curr_plage->plageconsult_id}">
                     {if $curr_plage->libelle}{$curr_plage->libelle}<br />{/if}
                     {$curr_plage->debut|date_format:"%Hh%M"} - {$curr_plage->fin|date_format:"%Hh%M"}<br />
                     {$curr_plage->_ref_consultations|@count} consult(s)

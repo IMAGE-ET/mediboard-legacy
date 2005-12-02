@@ -51,7 +51,7 @@ class AudiogrammeTonal extends Graph {
     
     // Setup font for axis
     $this->xgrid->Show(true, true);
-    $this->xgrid->SetColor("lightgray", "lightgray@0.8");
+    $this->xgrid->SetColor("lightgray", "lightgray:1.7");
     
     $this->xaxis->SetFont(FF_ARIAL, FS_NORMAL,8);
     $this->xaxis->scale->ticks->SupressTickMarks();
@@ -61,7 +61,7 @@ class AudiogrammeTonal extends Graph {
     
     // Setup Y-axis labels 
     $this->ygrid->Show(true, true);
-    $this->ygrid->SetColor("lightgray", "lightgray@0.8");
+    $this->ygrid->SetColor("lightgray", "lightgray:1.7");
 
     $this->yaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
     $this->yaxis->SetLabelFormatString("%ddB");
@@ -81,7 +81,7 @@ class AudiogrammeTonal extends Graph {
     foreach ($values as $key => $value) {
       $frequence = $frequences[$key];
       $labels[] = "Modifier la valeur {$value}dB pour $title à $frequence";
-      $jscalls[] = "javascript:changeValue('$cote','$value_name',$key)";
+      $jscalls[] = "javascript:changeTonalValue('$cote','$value_name',$key)";
       
       if (is_numeric($value)) {
         $values[$key] = - intval($value);

@@ -100,6 +100,33 @@ class CExamAudio extends CMbObject {
     $this->updateFormFields();
   }
   
+  function checkAbscisse($vocal_points) {
+    $dBs = array();
+    foreach($vocal_points as $point) {
+      $point = explode("-", $point);
+      $dB = $point[0];
+      if (array_search($dB, $dBs) !== false) {
+        return false;
+      }
+      $dBs[] = $dB;
+    }
+    
+    return true;
+  }
+  
+  function check() {
+    $msg = "Deux points ont la même abscisse dans l'audiogramme vocal de l'oreille ";
+    if (!$this->checkAbscisse($this->_gauche_vocale)) {
+        return $msg . "gauche";
+    }
+
+    if (!$this->checkAbscisse($this->_droite_vocale)) {
+        return $msg . "droite";
+    }
+
+    return parent::check();
+  }
+  
   function updateFormFields() {
     parent::updateFormFields();
 
@@ -137,14 +164,18 @@ class CExamAudio extends CMbObject {
    
   function updateDBFields() {
     parent::updateDBFields();
-
+    
     foreach($this->_gauche_vocale as $key => $value) {
+      $dBs_gauche[] = @$value[0] ? @$value[0] : "end sort";
       $this->_gauche_vocale[$key] = @$value[0] . "-" . @$value[1];
     }
+    array_multisort($dBs_gauche, SORT_ASC, $this->_gauche_vocale);
 
     foreach($this->_droite_vocale as $key => $value) {
+      $dBs_droite[] = @$value[0] ? @$value[0] : "end sort";
       $this->_droite_vocale[$key] = @$value[0] . "-" . @$value[1];
     }
+    array_multisort($dBs_droite, SORT_ASC, $this->_droite_vocale);
 
     $this->gauche_aerien = implode("|", $this->_gauche_aerien);
     $this->gauche_osseux = implode("|", $this->_gauche_osseux);

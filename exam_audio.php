@@ -10,12 +10,14 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 require_once($AppUI->getModuleClass("dPcabinet", "consultation"));
+require_once($AppUI->getModuleClass("dPcabinet", "examaudio"));
 
 if (!$canEdit) {
   $AppUI->redirect( "m=public&a=access_denied" );
 }
 
 $_conduction = mbGetValueFromGetOrSession("_conduction", "aerien");
+$_oreille = mbGetValueFromGetOrSession("_oreille", "gauche");
 
 $consultation_id = mbGetValueFromGetOrSession("consultation_id");
 $where["consultation_id"] = "= '$consultation_id'";
@@ -67,6 +69,7 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign("_conduction", $_conduction);
+$smarty->assign("_oreille", $_oreille);
 $smarty->assign("frequences", $frequences);
 $smarty->assign("exam_audio", $exam_audio);
 $smarty->assign("bilan", $bilan);
