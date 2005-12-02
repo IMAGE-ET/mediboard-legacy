@@ -74,7 +74,7 @@ function flipGroup(id, groupname) {
   var trs = getElementsByClassName("tr", groupname + id, true);
   var trsit = 0;
   while(tr = trs[trsit++]) {
-    tr.style.display = tr.style.display == "none" ? "" : "none";
+    tr.style.display = tr.style.display == "table-row" ? "none" : "table-row";
   }
 }
 function confirmDeletion(form, typeName, objName, msg) {
