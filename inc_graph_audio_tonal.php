@@ -72,7 +72,27 @@ class AudiogrammeTonal extends Graph {
   }
   
   function addAudiogramme($values, $value_name, $title, $mark_color, $mark_type, $mark_file = null, $line = true) {
-    global $frequences;
+    global $frequences, $AppUI;
+    $image_file = $AppUI->getModuleImage("dPcabinet", $mark_file); 
+
+    // Empty plot case
+    $datay = $values;
+    mbRemoveValuesInArray("", $datay);
+    if (!count($datay)) {
+      foreach($frequences as $value) {
+        $datay[] = 50;
+      }
+      $p1 = new LinePlot($datay);
+      $p1->SetWeight(0);
+      $p1->SetLegend($title);
+      $p1->SetCenter();
+      $p1->mark->SetType($mark_type, $image_file, 1.0);
+      $p1->mark->SetColor($mark_color);
+      $p1->mark->SetFillColor("$mark_color@0.6");
+      
+      $this->Add($p1);
+      return;
+    }
     
     $words = explode(" ", $this->title->t);
     $cote = $words[1];
@@ -87,8 +107,8 @@ class AudiogrammeTonal extends Graph {
         $values[$key] = - intval($value);
       }
     }
-
-    $p1 = new LinePlot(array_values($values)); //, array_keys($sans));
+    
+    $p1 = new LinePlot($values);
 
     // Create the first line
     $p1->SetColor($mark_color);
@@ -97,8 +117,6 @@ class AudiogrammeTonal extends Graph {
     $p1->SetWeight($line ? 1 : 0);
     $p1->SetCSIMTargets($jscalls, $labels);
 
-    global $AppUI;
-    $image_file = $AppUI->getModuleImage("dPcabinet", $mark_file); 
     // Marks
     $p1->mark->SetType($mark_type, $image_file, 1.0);
     $p1->mark->SetColor($mark_color);

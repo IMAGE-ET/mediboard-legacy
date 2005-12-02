@@ -108,7 +108,10 @@ class CExamAudio extends CMbObject {
       if (array_search($dB, $dBs) !== false) {
         return false;
       }
-      $dBs[] = $dB;
+      
+      if ($dB) {
+        $dBs[] = $dB;
+      }
     }
     
     return true;

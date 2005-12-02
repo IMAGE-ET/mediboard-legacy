@@ -62,6 +62,14 @@ class AudiogrammeVocal extends Graph {
     
     mbRemoveValuesInArray(array("", ""), $points);
 
+    // Empty plot case
+    if (!count($points)) {
+      $datay = array(50);
+      $p1 = new LinePlot($datay, $datay);
+      $this->Add($p1);
+      return;
+    }
+
     $words = explode(" ", $title);
     $cote = $words[1];
 
@@ -93,13 +101,16 @@ class AudiogrammeVocal extends Graph {
     $p1->mark->SetWidth(5);
 
     // Create the splined line
-    $spline = new Spline($dBs, $pcs);
-    list($dBs, $pcs) = $spline->Get(80);
+    if (count($points) > 1) {
+      $spline = new Spline($dBs, $pcs);
+      list($dBs, $pcs) = $spline->Get(80);
+  
+      $p2 = new LinePlot($pcs, $dBs);
+      $p2->SetColor($mark_color);
+  
+      $this->Add($p2);
+    }
 
-    $p2 = new LinePlot($pcs, $dBs);
-    $p2->SetColor($mark_color);
-
-    $this->Add($p2);
     $this->Add($p1);
   }
 }
