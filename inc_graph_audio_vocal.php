@@ -14,6 +14,81 @@ require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_line'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_log'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_regstat'));
 
+
+class Bezier {
+  var $xdata = array();
+  var $ydata = array();
+  
+  function Bezier($xdata, $ydata) {
+    foreach($xdata as $xdatum) {
+      $this->xdata[] = $xdatum ; 
+      $this->xdata[] = $xdatum ; 
+    }
+    
+    foreach($ydata as $ydatum) {
+      $this->ydata[] = $ydatum ; 
+      $this->ydata[] = $ydatum ; 
+    }
+  }
+
+  function getPoints($steps) {
+    $xdata = array();
+    $ydata = array();
+    for ($i = 0; $i < $steps; $i++) {
+      list($xdatum, $ydatum) = $this->getPoint((double) $i / (double) $steps);    	
+      $xdata[] = $xdatum;
+      $ydata[] = $ydatum;
+    }
+    
+    $xdata[] = end($this->xdata);
+    $ydata[] = end($this->ydata);
+    
+    return array($xdata, $ydata);
+  }
+  
+  function getPoint($mu) {
+    $n = count($this->xdata)-1;
+    $k = 0;
+    $kn = 0;
+    $nn = 0;
+    $nkn = 0;
+    $blend = 0.0;
+    $newx = 0.0;
+    $newy = 0.0;
+
+    $muk = 1.0;
+    $munk = (double) pow(1-$mu,(double) $n);
+
+    for ($k = 0; $k <= $n; $k++) {
+      $nn = $n;
+      $kn = $k;
+      $nkn = $n - $k;
+      $blend = $muk * $munk;
+      $muk *= $mu;
+      $munk /= (1-$mu);
+      while ($nn >= 1) {
+         $blend *= $nn;
+         $nn--;
+         if ($kn > 1) {
+            $blend /= (double) $kn;
+            $kn--;
+         }
+         if ($nkn > 1) {
+            $blend /= (double) $nkn;
+            $nkn--;
+         }
+      }
+      $newx += $this->xdata[$k] * $blend;
+      $newy += $this->ydata[$k] * $blend;
+   }
+
+   return array($newx, $newy);
+  }
+}
+
+
+
+
 class AudiogrammeVocal extends Graph {  
   function AudiogrammeVocal() {
     // Setup the graph.
@@ -103,12 +178,19 @@ class AudiogrammeVocal extends Graph {
     // Create the splined line
     if (count($points) > 1) {
       $spline = new Spline($dBs, $pcs);
-      list($dBs, $pcs) = $spline->Get(80);
-  
-      $p2 = new LinePlot($pcs, $dBs);
-      $p2->SetColor($mark_color);
+      list($sdBs, $spcs) = $spline->Get(20);
+      $p2 = new LinePlot($spcs, $sdBs);
+      $p2->SetColor("$mark_color:1.7");
   
       $this->Add($p2);
+      
+      $spline = new Bezier($dBs, $pcs);
+      list($bdBs, $bpcs) = $spline->getPoints(20);
+  
+      $p3 = new LinePlot($bpcs, $bdBs);
+      $p3->SetColor("$mark_color:1.7");
+  
+      $this->Add($p3);
     }
 
     $this->Add($p1);
