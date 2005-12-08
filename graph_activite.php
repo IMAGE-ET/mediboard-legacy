@@ -120,7 +120,18 @@ $graph->legend->SetFont(FF_ARIAL,FS_NORMAL, 7);
 $graph->legend->Pos(0.02,0.02, "right", "top");
 
 // Create the bar pot
-$colors = array("#aa5500", "#55aa00", "#0055aa", "#aa0055", "#5500aa", "#00aa55");
+$colors = array("#aa5500",
+                "#55aa00",
+                "#0055aa",
+                "#aa0055",
+                "#5500aa",
+                "#00aa55",
+                "#ff0000",
+                "#00ff00",
+                "#0000ff",
+                "#ffff00",
+                "#ff00ff",
+                "#00ffff",);
 $listPlots = array();
 foreach($opbysalle as $key => $value) {
   $bplot = new BarPlot($value["op"]);
