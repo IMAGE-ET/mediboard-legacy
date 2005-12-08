@@ -1289,7 +1289,7 @@ table#weber td {
 
 @media print {
   table#weber table#allvalues,
-  table#weber tr#radiointeractive {
+  table#weber td.radiointeractive {
     display: none;
   }
 }
