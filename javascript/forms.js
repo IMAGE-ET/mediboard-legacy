@@ -488,3 +488,10 @@ function insertAt(textarea, str) {
     textarea.value += str;
   }
 }
+
+function followUp(field, sFollowFieldName, iLength) {
+  if (field.value.length == iLength) {
+    fieldFollow = field.form.elements[sFollowFieldName];
+    fieldFollow.focus();
+  }  
+}
