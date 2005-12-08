@@ -33,7 +33,6 @@
       <form name="fusion" action="index.php" method="get">
       <input type="hidden" name="m" value="dPpatients" />
       <input type="hidden" name="a" value="fusion_pat" />
-      <input type="hidden" name="dialog" value="1" />
       <table class="tbl">
         <tr>
           <th><button type="submit">Fusion</button></th>
