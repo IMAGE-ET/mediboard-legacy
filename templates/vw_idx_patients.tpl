@@ -28,11 +28,15 @@
           <td class="button" colspan="2"><input type="submit" value="rechercher" /></td>
         </tr>
       </table>
-
       </form>
-      
+
+      <form name="fusion" action="index.php" method="get">
+      <input type="hidden" name="m" value="dPpatients" />
+      <input type="hidden" name="a" value="fusion_pat" />
+      <input type="hidden" name="dialog" value="1" />
       <table class="tbl">
         <tr>
+          <th><button type="submit">Fusion</button></th>
           <th>Nom - Prénom</th>
           <th>Date de naissance</th>
           <th>Adresse</th>
@@ -41,6 +45,7 @@
 
         {foreach from=$patients item=curr_patient}
         <tr>
+          <td><input type="checkbox" name="fusion_{$curr_patient->patient_id}" /></td>
           <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->_view}</a></td>
           <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->_naissance}</a></td>
           <td class="text"><a href="index.php?m={$m}&amp;tab={$tab}&amp;id={$curr_patient->patient_id}">{$curr_patient->adresse}</a></td>
@@ -49,6 +54,7 @@
         {/foreach}
         
       </table>
+      </form>
 
     </td>
  
@@ -59,4 +65,3 @@
     {/if}
   </tr>
 </table>
-      

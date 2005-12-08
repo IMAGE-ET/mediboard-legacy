@@ -194,6 +194,12 @@ class CPatient extends CMbObject {
       'idfield' => 'consultation_id', 
       'joinfield' => 'patient_id'
     );
+    $tables[] = array (
+      'label' => 'antécédent(s)', 
+      'name' => 'antecedent', 
+      'idfield' => 'antecedent_id', 
+      'joinfield' => 'patient_id'
+    );
     
     return parent::canDelete( $msg, $oid, $tables );
   }
