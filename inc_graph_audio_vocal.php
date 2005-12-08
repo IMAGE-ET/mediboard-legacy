@@ -14,40 +14,48 @@ require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_line'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_log'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_regstat'));
 
-
+/**
+* @abstract Bezier interoplated point generation, 
+* @copyright Thomas Despoix, openXtrem company, released under QPL
+* computed from control points data sets, based on Paul Bourke algorithm :
+* http://astronomy.swin.edu.au/~pbourke/curves/bezier/
+*/
 class Bezier {
-  var $xdata = array();
-  var $ydata = array();
+  var $datax = array();
+  var $datay = array();
   
-  function Bezier($xdata, $ydata) {
-    foreach($xdata as $xdatum) {
-      $this->xdata[] = $xdatum ; 
-      $this->xdata[] = $xdatum ; 
+  function Bezier($datax, $datay, $attraction_factor = 1) {
+    // Adding control point multiple time will raise their attraction power over the curve    
+    foreach($datax as $datumx) {
+      for ($i = 0; $i < $attraction_factor; $i++) {
+        $this->datax[] = $datumx; 
+      }
     }
     
-    foreach($ydata as $ydatum) {
-      $this->ydata[] = $ydatum ; 
-      $this->ydata[] = $ydatum ; 
+    foreach($datay as $datumy) {
+      for ($i = 0; $i < $attraction_factor; $i++) {
+        $this->datay[] = $datumy; 
+      }
     }
   }
 
-  function getPoints($steps) {
-    $xdata = array();
-    $ydata = array();
+  function Get($steps) {
+    $datax = array();
+    $datay = array();
     for ($i = 0; $i < $steps; $i++) {
-      list($xdatum, $ydatum) = $this->getPoint((double) $i / (double) $steps);    	
-      $xdata[] = $xdatum;
-      $ydata[] = $ydatum;
+      list($datumx, $datumy) = $this->GetPoint((double) $i / (double) $steps);    	
+      $datax[] = $datumx;
+      $datay[] = $datumy;
     }
     
-    $xdata[] = end($this->xdata);
-    $ydata[] = end($this->ydata);
+    $datax[] = end($this->datax);
+    $datay[] = end($this->datay);
     
-    return array($xdata, $ydata);
+    return array($datax, $datay);
   }
   
-  function getPoint($mu) {
-    $n = count($this->xdata)-1;
+  function GetPoint($mu) {
+    $n = count($this->datax)-1;
     $k = 0;
     $kn = 0;
     $nn = 0;
@@ -78,8 +86,8 @@ class Bezier {
             $nkn--;
          }
       }
-      $newx += $this->xdata[$k] * $blend;
-      $newy += $this->ydata[$k] * $blend;
+      $newx += $this->datax[$k] * $blend;
+      $newy += $this->datay[$k] * $blend;
    }
 
    return array($newx, $newy);
@@ -92,13 +100,13 @@ class Bezier {
 class AudiogrammeVocal extends Graph {  
   function AudiogrammeVocal() {
     // Setup the graph.
-    $this->Graph(500,280); 
+    $this->Graph(460,280); 
        
     $this->SetScale("intint", 0, 100, 0, 120);
     $this->SetMarginColor("lightblue");
     
     // Image setup
-//    $this->img->SetAntiAliasing();
+    $this->img->SetAntiAliasing();
     $this->img->SetMargin(40,20,20,20);
     
     // Legend setup
@@ -167,7 +175,7 @@ class AudiogrammeVocal extends Graph {
     $p1->SetColor($mark_color);
     $p1->SetLegend($title);
     $p1->SetCSIMTargets($jscalls, $labels);
-    $p1->SetWeight(0);
+    $p1->SetWeight(1);
 
     // Marks
     $p1->mark->SetType(MARK_SQUARE);
@@ -177,20 +185,20 @@ class AudiogrammeVocal extends Graph {
 
     // Create the splined line
     if (count($points) > 1) {
-      $spline = new Spline($dBs, $pcs);
-      list($sdBs, $spcs) = $spline->Get(20);
-      $p2 = new LinePlot($spcs, $sdBs);
-      $p2->SetColor("$mark_color:1.7");
-  
-      $this->Add($p2);
+//      $spline = new Spline($dBs, $pcs);
+//      list($sdBs, $spcs) = $spline->Get(40);
+//      $p2 = new LinePlot($spcs, $sdBs);
+//      $p2->SetColor("$mark_color:1.8");
+//  
+//      $this->Add($p2);
       
-      $spline = new Bezier($dBs, $pcs);
-      list($bdBs, $bpcs) = $spline->getPoints(20);
-  
-      $p3 = new LinePlot($bpcs, $bdBs);
-      $p3->SetColor("$mark_color:1.7");
-  
-      $this->Add($p3);
+//      $spline = new Bezier($dBs, $pcs, 5);
+//      list($bdBs, $bpcs) = $spline->Get(40);
+//  
+//      $p3 = new LinePlot($bpcs, $bdBs);
+//      $p3->SetColor("$mark_color:1.8");
+//  
+//      $this->Add($p3);
     }
 
     $this->Add($p1);

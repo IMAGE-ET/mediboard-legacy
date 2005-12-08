@@ -19,13 +19,8 @@ $exam_audio->loadObject($where);
 require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_tonal"));
 
 $side = dPgetParam($_GET, "side");
+$type = dPgetParam($_GET, "type");
 
-global $graph_audio_gauche, $graph_audio_droite;
-switch ($side) {
-  case "gauche":
-    $graph_tonal_gauche->Stroke();
-    break;
-  case "droite":
-    $graph_tonal_droite->Stroke();
-    break;
-}
+$graphname = "graph_{$type}_{$side}";
+$graph = $$graphname;
+$graph->Stroke();

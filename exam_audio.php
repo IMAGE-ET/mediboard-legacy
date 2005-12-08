@@ -30,13 +30,17 @@ $exam_audio->_ref_consult->loadRefsFwd();
 
 require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_tonal"));
 
-global $graph_audio_gauche;
 $graph_tonal_gauche->Stroke("tmp/graphtmp.png");
 $map_tonal_gauche = $graph_tonal_gauche->GetHTMLImageMap("graph_tonal_gauche");
 
-global $graph_audio_droite;
 $graph_tonal_droite->Stroke("tmp/graphtmp.png");
 $map_tonal_droite = $graph_tonal_droite->GetHTMLImageMap("graph_tonal_droite");
+
+$graph_tympan_gauche->Stroke("tmp/graphtmp.png");
+$map_tympan_gauche = $graph_tympan_gauche->GetHTMLImageMap("graph_tympan_gauche");
+
+$graph_tympan_droite->Stroke("tmp/graphtmp.png");
+$map_tympan_droite = $graph_tympan_droite->GetHTMLImageMap("graph_tympan_droite");
 
 require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_vocal"));
 $graph_vocal->Stroke("tmp/graphtmp.png");
@@ -75,6 +79,8 @@ $smarty->assign("exam_audio", $exam_audio);
 $smarty->assign("bilan", $bilan);
 $smarty->assign("map_tonal_gauche", $map_tonal_gauche);
 $smarty->assign("map_tonal_droite", $map_tonal_droite);
+$smarty->assign("map_tympan_gauche", $map_tympan_gauche);
+$smarty->assign("map_tympan_droite", $map_tympan_droite);
 $smarty->assign("map_vocal", $map_vocal);
 
 

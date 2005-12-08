@@ -11,7 +11,7 @@
 <table class="main" id="weber">
 
 <tr>
-  <th class="title" colspan="2">
+  <th class="title">
     Consultation de {$exam_audio->_ref_consult->_ref_patient->_view}
     le {$exam_audio->_ref_consult->_date|date_format:"%A %d/%m/%Y"}
     par le Dr. {$exam_audio->_ref_consult->_ref_chir->_view}
@@ -19,21 +19,19 @@
 </tr>
   
 <tr>
-  <th class="title" colspan="2">Audiométrie tonale (Test de Weber)</th>
+  <th class="title">Audiométrie tonale (Test de Weber)</th>
 </tr>
 
 <tr>
   <td>
-    {$map_tonal_gauche}
-    <img id="image_gauche" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=gauche" usemap="#graph_tonal_gauche" onclick="changeTonalValueMouseGauche(event)" />
-  </td>
-  <td>
     {$map_tonal_droite}
-    <img id="image_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=droite" usemap="#graph_tonal_droite" onclick="changeTonalValueMouseDroite(event)" />
+    {$map_tonal_gauche}
+    <img id="tonal_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;type=tonal&amp;side=droite" usemap="#graph_tonal_droite" onclick="changeTonalValueMouseDroite(event)" />
+    <img id="tonal_gauche" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;type=tonal&amp;side=gauche" usemap="#graph_tonal_gauche" onclick="changeTonalValueMouseGauche(event)" />
   </td>
 </tr>
-<tr id="radiointeractive">
-  <td colspan="2">
+<tr>
+  <td class="radiointeractive">
     <input type="radio" name="_conduction" value="aerien" {if $_conduction == "aerien"}checked="checked"{/if} />
     <label for="_conduction_aerien" title="Conduction aérienne pour la saisie intéractive">Conduction aérienne</label>
     <input type="radio" name="_conduction" value="osseux" {if $_conduction == "osseux"}checked="checked"{/if} />
@@ -47,7 +45,7 @@
   </td>
 </tr>
 <tr>
-  <td colspan="2">
+  <td>
 
     <table class="form" id="allvalues">
       <tr class="groupcollapse" id="values" onclick="flipGroup('', 'values');">
@@ -147,11 +145,11 @@
 </tr>
 
 <tr>
-  <th class="title" colspan="2">Bilan comparé</th>
+  <th class="title">Bilan comparé</th>
 </tr>
 
 <tr>
-  <td colspan="2">
+  <td>
   
     <table class="tbl">
       <tr>
@@ -242,29 +240,46 @@
 </tr>
 
 <tr>
-
-  <th class="title" colspan="2"><a name="vocal"></a>Audiométrie vocale</th>
+  <td>
+    <table style="width: 100%">
+      <tr>
+      
+        <th class="title"><a name="vocal"></a>Audiométrie vocale</th>
+        <th class="title"><a name="tympan"></a>Tympanométrie</th>
+      </tr>
+      <tr>
+        <td>
+          {$map_vocal}
+          <img id="image_vocal" src="?m=dPcabinet&amp;a=graph_audio_vocal&amp;suppressHeaders=1&amp;" usemap="#graph_vocal" onclick="changeVocalValueMouse(event)" />
+        </td>
+        
+        <td rowspan="2">
+          {$map_tympan_gauche}
+          <img id="tympan_gauche" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;type=tympan&amp;side=gauche" usemap="#graph_tympan_gauche" onclick="changeTympanValueMouseGauche(event)" />
+          {$map_tympan_droite}
+          <br /><img id="tympan_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;type=tympan&amp;side=droite" usemap="#graph_tympan_gauche" onclick="changeTympanValueMouseDroite(event)" />
+        </td>
+      </tr>
+      <tr>
+        <td class="radiointeractive">
+          <input type="radio" name="_oreille" value="gauche" {if $_oreille == "gauche"}checked="checked"{/if} />
+          <label for="_oreille_gauche" title="Oreille gauche pour la saisie intéractive">Oreille gauche</label>
+          <input type="radio" name="_oreille" value="droite" {if $_oreille == "droite"}checked="checked"{/if} />
+          <label for="_oreille_droite" title="Oreille gauche pour la saisie intéractive">Oreille droite</label>
+        </td>
+      </tr>
+    </table>
+  </td>
 </tr>
 
 <tr>
-  <td colspan="2">
-    {$map_vocal}
-    <img id="image_vocal" src="?m=dPcabinet&amp;a=graph_audio_vocal&amp;suppressHeaders=1&amp;" usemap="#graph_vocal" onclick="changeVocalValueMouse(event)" /></td>
-</tr>
-
-<tr id="radiointeractive">
-  <td colspan="2">
-    <input type="radio" name="_oreille" value="gauche" {if $_oreille == "gauche"}checked="checked"{/if} />
-    <label for="_oreille_gauche" title="Oreille gauche pour la saisie intéractive">Oreille gauche</label>
-    <input type="radio" name="_oreille" value="droite" {if $_oreille == "droite"}checked="checked"{/if} />
-    <label for="_oreille_droite" title="Oreille gauche pour la saisie intéractive">Oreille droite</label>
-
+  <td class="radiointeractive">
     <table class="form" id="allvocales">
       <tr class="groupcollapse" id="vocales" onclick="flipGroup('', 'vocales');">
         <th class="category" colspan="9">Toutes les valeurs</th>
       </tr>
       <tr class="vocales">
-        <th class="category">Fréquences</th>
+        <th class="category">Audiométrie vocale</th>
         {foreach from=$frequences key=index item=frequence}
         <th class="category">
           Point #{$index}<br />dB / %
@@ -289,18 +304,57 @@
         </td>
         {/foreach}
       </tr>
+
+      <tr class="vocales">
+        <th class="category">Tympanométrie</th>
+        {foreach from=$frequences key=index item=frequence}
+        <th class="category">
+          {$frequence}
+        </th>
+        {/foreach}
+      </tr>
+      <tr class="vocales">
+        <th>Oreille gauche</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_gauche_tympan[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_tympan.$index}" tabindex="{$index+300}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+      <tr class="vocales">
+        <th>Oreille droite</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_tympan[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_tympan.$index}" tabindex="{$index+310}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
       <tr class="vocales">
         <td class="button" colspan="9">
           <input type="submit" value="Valider" />
         </td>
       </tr>
           
-    </table>
 
-    
+    </table>
   </td>
 </tr>
-
+<tr>
+  <td>
+    <table class="form">
+      <tr>
+        <th class="category">Remarques</th>
+      </tr>
+      <tr>
+        <td>
+          <textarea name="remarques" rows="4">{$exam_audio->remarques}</textarea>
+        </td>
+      </tr>
+      <tr>
+        <td class="button radiointeractive">
+          <input type="submit" value="Valider" />
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
 </table>
 
     

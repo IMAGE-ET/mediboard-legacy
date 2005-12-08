@@ -10,7 +10,7 @@ function changeTonalValue(sCote, sConduction, iFrequence, iNewValue) {
   var nFrequence = 125 * Math.pow(2, iFrequence);
   
   if (!iNewValue) {
-    sInvite = printf("Modifier la perte pour l'oreille %s en conduction %s à %iHz'", sCote, sConduction, nFrequence);
+    sInvite = printf("Modifier la perte pour l'oreille %s à %iHz'", sCote, nFrequence);
     sAdvice = printf("Merci de fournir une valeur comprise (en dB) entre %i et %i", iMinTonalPerte, iMaxTonalPerte);
 
     iNewValue = prompt(sInvite + "\n" + sAdvice, oElement.value);
@@ -25,19 +25,25 @@ function changeTonalValue(sCote, sConduction, iFrequence, iNewValue) {
       return;
     }
   }
+  
+  if (sConduction == "tympan") {
+    oForm.action += "#tympan";
+  }
 
   oElement.value = iNewValue;
   oForm.submit();
 }
 
-function changeTonalValueMouse(event, sCote) {
-  var oImg = document.getElementById("image_" + sCote);
+function changeTonalValueMouse(event, sCote, sType) {
+  if (!sType) sType = "tonal";
+  var oImg = document.getElementById(sType + "_" + sCote);
 
+  var iLegendMargin = (sType == "tonal") ? 75: 0; 
   var oGraphMargins = {
     left  : 45,
-    top   : 40,
-    right : 20 + (sCote == "droite" ? 75 : 0),
-    bottom: 20
+    top   : 30,
+    right : 20 + iLegendMargin,
+    bottom: 15
   }
   
   var oGraphRect = {
@@ -61,7 +67,8 @@ function changeTonalValueMouse(event, sCote) {
   
   var oForm = document.editFrm;
   var oElement = oForm._conduction;
-  changeTonalValue(sCote, getCheckedValue(oElement), iSelectedIndex, iSelectedDb);
+  var sConduction = (sType == "tonal") ? getCheckedValue(oElement) : sType; 
+  changeTonalValue(sCote, sConduction, iSelectedIndex, iSelectedDb);
 }
 
 function changeTonalValueMouseGauche(event) {
@@ -71,6 +78,20 @@ function changeTonalValueMouseGauche(event) {
 function changeTonalValueMouseDroite(event) {
   changeTonalValueMouse(event, "droite");
 }
+
+function changeTympanValueMouse(event, sCote) {
+  changeTonalValueMouse(event, sCote, "tympan");
+}
+
+function changeTympanValueMouseGauche(event) {
+  changeTympanValueMouse(event, "gauche");
+}
+
+
+function changeTympanValueMouseDroite(event) {
+  changeTympanValueMouse(event, "droite");
+}
+
 
 var iMinVocalDB = 0;
 var iMaxVocalDB = 120;
