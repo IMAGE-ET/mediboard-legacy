@@ -11,11 +11,10 @@ function checkForm() {
 }
 
 function popColor() {
-  var url = "./index.php?m=public";
-  url += "&a=color_selector";
-  url += "&dialog=1";
-  url += "&callback=setColor";
-  popup(320, 250, url, "color");
+  var url = new Url;
+  url.setModuleAction("public", "color_selector");
+  url.addParam("callback", "setColor");
+  url.popup(320, 250, "color");
 }
 
 function setColor(color) {
