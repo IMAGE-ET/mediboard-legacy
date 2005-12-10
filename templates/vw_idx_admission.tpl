@@ -3,15 +3,17 @@
 <script type="text/javascript">
 {literal}
 function printAdmission(id) {
-  var url = './index.php?m=dPadmissions&a=print_admission&dialog=1';
-  url += '&id=' + id;
-  popup(700, 550, url, 'Patient');
+  url = new Url;
+  url.setModuleAction("dPadmissions", "print_admission");
+  url.addParam("id", id);
+  url.popup(700, 550, "Patient");
 }
 
 function printDepassement(id) {
-  var url = './index.php?m=dPadmissions&a=print_depassement&dialog=1';
-  url += '&id=' + id;
-  popup(700, 550, url, 'Depassement');
+  url = new Url;
+  url.setModuleAction("dPadmissions", "print_depassement");
+  url.addParam("id", id);
+  url.popup(700, 550, "Depassement");
 }
 
 function pageMain() {
