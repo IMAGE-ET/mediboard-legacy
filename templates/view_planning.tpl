@@ -5,9 +5,10 @@
 //<![CDATA[
 
 function printAdmission(id) {
-  var url = './index.php?m=dPadmissions&a=print_admission&dialog=1';
-  url = url + '&id=' + id;
-  popup(700, 550, url, 'Patient');
+  var url = new Url;
+  url.setModuleAction("dPadmissions", "print_admission");
+  url.addParam("id", id);
+  url.popup(700, 550, "Patient");
 }
 
 //]]>
