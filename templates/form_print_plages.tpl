@@ -16,12 +16,12 @@ function checkForm() {
 function popPlages() {
   var form = document.paramFrm;
 
-  var url = './index.php?m=dPcabinet&a=print_plages&dialog=1';
-  url += '&deb=' + form.deb.value;
-  url += '&fin=' + form.fin.value;
-  url += '&chir=' + form.chir.value;;
-
-  popup(700, 550, url, 'Planning');
+  var url = new Url;
+  url.setModuleAction("dPcabinet", "print_plages");
+  url.addElement(form.deb);
+  url.addElement(form.fin);
+  url.addElement(form.chir);
+  url.popup(700, 550, "Planning");
 }
 
 function pageMain() {

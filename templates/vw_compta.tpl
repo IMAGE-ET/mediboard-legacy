@@ -10,16 +10,17 @@ function checkRapport(){
     return false;
   }
 
-  var url = './index.php?m=dPcabinet&dialog=1';
-  url += makeURLParam(form.a);
-  url += makeURLParam(form.deb);
-  url += makeURLParam(form.fin);
-  url += makeURLParam(form.chir);
-  url += makeURLParam(form.etat);
-  url += makeURLParam(form.type);
-  url += makeURLParam(form.aff);
-
-  popup(700, 550, url, 'Rapport');
+  var url = new Url();
+  url.setModuleAction("dPcabinet", form.a.value);
+  url.addElement(form.deb);
+  url.addElement(form.a);
+  url.addElement(form.deb);
+  url.addElement(form.fin);
+  url.addElement(form.chir);
+  url.addElement(form.etat);
+  url.addElement(form.type);
+  url.addElement(form.aff);
+  url.popup(700, 550, "Rapport");
   
   return false;
 }
