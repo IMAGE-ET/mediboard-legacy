@@ -124,8 +124,15 @@ function pageMain() {
 }
 
 function popPlanning() {
-  var url = '?m=dPhospi&a=vw_affectations&dialog=1';
-  popup(700, 550, url, 'Planning');
+  url = new Url;
+  url.setModuleAction("dPhospi", "vw_affectations");
+  url.popup(700, 550, "Planning");
+}
+
+function showLegend() {
+  url = new Url;
+  url.setModuleAction("dPhospi", "legende");
+  url.popup(500, 500, "Legend");
 }
 
 {/literal} 
@@ -135,7 +142,7 @@ function popPlanning() {
 
 <tr>
   <td>
-    <a href="javascript:popup(500, 500, '?m=dPhospi&a=legende&dialog=1', 'Legende')">Légende</a>
+    <a href="javascript:showLegend()">Légende</a>
   </td>
   <th>
     <a href="javascript:{if $dialog}window.print(){else}popPlanning(){/if}">
