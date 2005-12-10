@@ -15,15 +15,17 @@ require_once( $AppUI->getSystemClass('mbobject'));
  */
 class CSalle extends CMbObject {
   // DB Table key
-	var $id = NULL;
+	var $id = null;
 	
   // DB Fields
-  var $nom = NULL;
+  var $nom = null;
+  var $stats = null;
 
 	function CSalle() {
 		$this->CMbObject( 'sallesbloc', 'id' );
 
-    $this->_props["nom"] = "str|notNull|confidential";
+    $this->_props["nom"]   = "str|notNull|confidential";
+    $this->_props["stats"] = "enum|0|1|notNull";
 	}
 
   function canDelete(&$msg, $oid = null) {

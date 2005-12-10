@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPbloc';
-$config['mod_version'] = '0.12';
+$config['mod_version'] = '0.13';
 $config['mod_directory'] = 'dPbloc';
 $config['mod_setup_class'] = 'CSetupdPbloc';
 $config['mod_type'] = 'user';
@@ -66,6 +66,9 @@ class CSetupdPbloc {
       $this->swapPratIds();
       return true;
     case "0.12":
+      $sql = "ALTER TABLE `sallesbloc` ADD `stats` TINYINT DEFAULT '0' NOT NULL AFTER `nom` ;";
+      db_exec( $sql ); db_error();
+    case "0.13":
 			return true;
 		default:
 			return false;

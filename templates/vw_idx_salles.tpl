@@ -67,6 +67,14 @@ function checkSalle() {
     </tr>
     
     <tr>
+      <th>Stats</th>
+      <td>
+        <input type="radio" name="stats" value="1" {if $salleSel->stats}checked="checked"{/if}> Oui /
+        <input type="radio" name="stats" value="0" {if !$salleSel->stats || !$salleSel->id}checked="checked"{/if}> Non
+      </td>
+    </tr>
+    
+    <tr>
       <td class="button" colspan="2">
         {if $salleSel->id}
         <input type="reset" value="Réinitialiser" />
