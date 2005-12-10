@@ -3,6 +3,11 @@
 {literal}
 <script type="text/javascript">
 
+function pageMain() {
+  if(oForm = document.addFrm)
+    document.addFrm._new.focus();
+}
+
 function checkForm() {
   var form = document.editFrm;
   var field = null;
@@ -153,7 +158,7 @@ function checkForm() {
         <select name="chir_id" onchange="this.form.function_id.value = 0">
           <option value="0">&mdash; Associer à un praticien &mdash;</options>
           {foreach from=$listPrat item=curr_prat}
-            <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $liste->chir_id} selected="selected" {/if}>
+            <option value="{$curr_prat->user_id}" {if ($liste->liste_choix_id && ($curr_prat->user_id == $liste->chir_id)) || (!$liste->liste_choix_id && ($curr_prat->user_id == $user_id))}selected="selected"{/if}>
               {$curr_prat->_view}
             </option>
           {/foreach}

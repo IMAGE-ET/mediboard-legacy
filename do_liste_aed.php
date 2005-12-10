@@ -7,8 +7,25 @@
 * @author Romain OLLIVIER
 */
 
-require_once( $AppUI->getModuleClass('dPcompteRendu', 'listeChoix'));
+require_once( $AppUI->getModuleClass("dPcompteRendu", "listeChoix"));
+require_once($AppUI->getSystemClass("doobjectaddedit"));
 
+$do = new CDoObjectAddEdit("CListeChoix", "liste_choix_id");
+$do->createMsg = "Liste créée";
+$do->modifyMsg = "Liste modifiée";
+$do->deleteMsg = "Liste supprimée";
+$do->doBind();
+if (intval(dPgetParam($_POST, 'del'))) {
+  $do->doDelete();
+  $do->redirect = "m=dPcompteRendu&liste_id=0";
+} else {
+  $do->doStore();
+  $do->redirect = "m=dPcompteRendu&liste_id=".$do->_obj->liste_choix_id;
+}
+$do->doRedirect();
+
+
+/*
 $obj = new CListeChoix();
 $msg = null;
 
@@ -45,5 +62,5 @@ if ($del) {
 		$AppUI->setMsg( $isNotNew ? 'Liste mise à jour' : 'Liste ajoutée', UI_MSG_OK);
 	}
 	$AppUI->redirect();
-}
+}*/
 ?>
