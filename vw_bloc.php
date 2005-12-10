@@ -32,7 +32,9 @@ $user = new CMediusers;
 $listPrats = $user->loadPraticiens(PERM_READ);
 
 $listSalles = new CSalle;
-$listSalles = $listSalles->loadList();
+$where["stats"] = "= 1";
+$order = "nom";
+$listSalles = $listSalles->loadList($where, $order);
 
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));
