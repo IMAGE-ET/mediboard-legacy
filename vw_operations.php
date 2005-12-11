@@ -54,7 +54,7 @@ foreach($plages as $key => $value) {
 
 // Opération selectionnée
 $selOp = new COperation;
-$timings = array();
+$timing = array();
 if($op) {
   $selOp->load($op);
   $selOp->loadRefs();
