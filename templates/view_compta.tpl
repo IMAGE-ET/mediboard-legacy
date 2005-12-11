@@ -14,14 +14,13 @@ function checkForm() {
 
 function popRapport() {
   var form = document.paramFrm;
-
-  var url = '?m=dPressources&a=print_rapport&dialog=1';
-  url += '&deb='     + form.deb.value;
-  url += '&fin='     + form.fin.value;
-  url += '&type='    + form.type.value;
-  url += '&prat_id=' + form.prat_id.value;
-  
-  popup(700, 550, url, 'Rapport');
+  var url = new Url();
+  url.setModuleAction("dPressources", "print_rapport");
+  url.addElement(form.deb);
+  url.addElement(form.fin);
+  url.addElement(form.type);
+  url.addElement(form.prat_id);
+  url.popup(700, 550, "Rapport");
 }
 
 function pageMain() {
