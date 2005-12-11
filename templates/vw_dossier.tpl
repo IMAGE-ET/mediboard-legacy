@@ -9,10 +9,9 @@ function pageMain() {
 }
 
 function popPat() {
-  var url = './index.php?m=dPpatients';
-  url += '&a=pat_selector';
-  url += '&dialog=1';
-  popup(500, 500, url, 'Patient');
+  var url = new Url();
+  url.setModuleAction("dPpatients", "pat_selector");
+  url.popup(500, 500, url, "Patient");
 }
 
 function setPat( key, val ) {
@@ -25,9 +24,10 @@ function setPat( key, val ) {
 }
 
 function imprimerDocument(doc_id) {
-  var url = '?m=dPcompteRendu&a=print_cr&dialog=1';
-  url += '&compte_rendu_id=' + doc_id;
-  popup(700, 600, url, 'Compte-rendu');
+  var url = new Url();
+  url.setModuleAction("dPcompteRendu", "print_cr");
+  url.addParam("compte_rendu_id", doc_id);
+  url.popup(700, 600, "Compte-rendu");
 }
 
 </script>
