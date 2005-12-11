@@ -10,16 +10,18 @@ function selectCR(id, form) {
 }
 
 function editDocument(compte_rendu_id) {
-  var url = '?m=dPcompteRendu&a=edit_compte_rendu&dialog=1';
-  url += '&compte_rendu_id=' + compte_rendu_id;
-  popup(700, 700, url, 'Document');
+  var url = new Url();
+  url.setModuleAction("dPcompteRendu", "edit_compte_rendu");
+  url.addParam("compte_rendu_id", compte_rendu_id);
+  url.popup(700, 700, "Document");
 }
 
 function createDocument(modele_id, operation_id) {
-  var url = '?m=dPcompteRendu&a=edit_compte_rendu&dialog=1';
-  url += '&modele_id=' + modele_id;
-  url += '&object_id=' + operation_id;
-  popup(700, 700, url, 'Document');
+  var url = new Url();
+  url.setModuleAction("dPcompteRendu", "edit_compte_rendu");
+  url.addParam("modele_id", modele_id);
+  url.addParam("object_id", operation_id);
+  url.popup(700, 700, "Document");
 }
 
 function validerCompteRendu(form) {
