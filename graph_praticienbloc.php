@@ -36,8 +36,36 @@ if($salle_id)
   $sql .= "\nAND id = '$salle_id'";
 $salles = db_loadlist($sql);
 
-$op = array();
-$sql = "SELECT COUNT(operations.operation_id) AS total," .
+$nbHours = array();
+$sql = "SELECT SUM(TIME_TO_SEC(plagesop.fin) - TIME_TO_SEC(plagesop.debut)) AS total," .
+  "\nDATE_FORMAT(plagesop.date, '%m/%Y') AS mois," .
+  "\nDATE_FORMAT(plagesop.date, '%Y-%m-01') AS orderitem" .
+  "\nFROM plagesop, sallesbloc" .
+  "\nWHERE plagesop.id_salle = sallesbloc.id" .
+  "\nAND sallesbloc.stats = 1" .
+  "\nAND plagesop.date BETWEEN '$debut' AND '$fin'";
+  if($prat_id)
+    $sql .= "\nAND plagesop.chir_id = '$prat_id'";
+  if($salle_id)
+    $sql .= "\nAND plagesop.id_salle = '$salle_id'";
+$sql .= "\nGROUP BY mois" .
+    "\nORDER BY orderitem";
+$result = db_loadlist($sql);
+foreach($datax as $x) {
+  $f = true;
+  foreach($result as $total) {
+    if($x == $total["mois"]) {
+      $nbHours[] = $total["total"]/(60*60);
+      $f = false;
+    }
+  }
+  if($f) {
+    $nbHours[] = 0;
+  }
+}
+
+$doneHours = array();
+$sql = "SELECT SUM(TIME_TO_SEC(operations.sortie_bloc) - TIME_TO_SEC(operations.entree_bloc)) AS total," .
   "\nDATE_FORMAT(plagesop.date, '%m/%Y') AS mois," .
   "\nDATE_FORMAT(plagesop.date, '%Y-%m-01') AS orderitem" .
   "\nFROM plagesop, sallesbloc" .
@@ -49,8 +77,6 @@ $sql = "SELECT COUNT(operations.operation_id) AS total," .
   "\nAND plagesop.date BETWEEN '$debut' AND '$fin'";
   if($prat_id)
     $sql .= "\nAND operations.chir_id = '$prat_id'";
-  if($codeCCAM)
-    $sql .= "\nAND operations.codes_ccam LIKE '%$codeCCAM%'";
   if($salle_id)
     $sql .= "\nAND plagesop.id_salle = '$salle_id'";
 $sql .= "\nGROUP BY mois" .
@@ -60,13 +86,12 @@ foreach($datax as $x) {
   $f = true;
   foreach($result as $total) {
     if($x == $total["mois"]) {
-      $nbjours = mbWorkDaysInMonth($total["orderitem"]);
-      $op[] = $total["total"]/($nbjours*count($salles));
+      $doneHours[] = $total["total"]/(60*60);
       $f = false;
     }
   }
   if($f) {
-    $op[] = 0;
+    $doneHours[] = 0;
   }
 }
 
@@ -77,16 +102,13 @@ $graph->SetScale("textlin");
 $graph->SetMarginColor("lightblue");
 
 // Set up the title for the graph
-$title = "Patients / jour / salle";
+$title = "Heures réservées / occupées par mois";
 $subtitle = "";
 if($prat_id) {
   $subtitle .= "- Dr. $pratSel->_view ";
 }
 if($salle_id) {
   $subtitle .= "- $salleSel->nom ";
-}
-if($codeCCAM) {
-  $subtitle .= "- CCAM : $codeCCAM ";
 }
 if($subtitle) {
   $subtitle .= "-";
@@ -98,9 +120,12 @@ $graph->title->SetColor("darkred");
 $graph->subtitle->SetFont(FF_ARIAL,FS_NORMAL,7);
 $graph->subtitle->SetColor("black");
 //$graph->img->SetAntiAliasing();
-$opSorted = $op;
-rsort($opSorted);
-$graph->SetScale("intint", 0, intval($opSorted[0])+1);
+$hours1Sorted = $nbHours;
+rsort($hours1Sorted);
+$hours2Sorted = $doneHours;
+rsort($hours2Sorted);
+$scale = max(intval($hours1Sorted[0]), intval($hours2Sorted[0]));
+$graph->SetScale("intint", 0, $scale + $scale/10);
 
 // Setup font for axis
 $graph->xaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
@@ -116,8 +141,13 @@ $graph->xgrid->Show();
 $graph->xaxis->SetLabelAngle(50);
 $graph->yaxis->SetPosAbsDelta(-15);
 
-// Create the plot
-$lplot = new LinePlot($op);
+// Legend
+$graph->legend->SetMarkAbsSize(5);
+$graph->legend->SetFont(FF_ARIAL,FS_NORMAL, 7);
+$graph->legend->Pos(0.02,0.02, "right", "top");
+
+// Create the first plot
+$lplot = new LinePlot($nbHours);
 $lplot->SetColor("blue");
 $lplot->SetWeight(0);
 $lplot->value->SetFormat("%01.2f");
@@ -127,17 +157,40 @@ $lplot->mark->SetType(MARK_FILLEDCIRCLE);
 $lplot->mark->SetColor("blue");
 $lplot->mark->SetFillColor("blue:1.5");
 $lplot->value->show();
+$lplot->setLegend("Réservé");
 
-// Create the spline plot
-$spline = new Spline(array_keys($datax), array_values($op));
+// Create the first spline plot
+$spline = new Spline(array_keys($datax), array_values($nbHours));
 list($sdatax,$sdatay) = $spline->Get(50);
-$lplot2 = new LinePlot($sdatay, $sdatax);
-$lplot2->SetFillGradient("white", "darkgray");
-$lplot2->SetColor("black");
+$splot = new LinePlot($sdatay, $sdatax);
+//$splot->SetFillGradient("white", "darkgray");
+$splot->SetColor("black");
+
+// Create the second plot
+$lplot2 = new LinePlot($doneHours);
+$lplot2->SetColor("blue");
+$lplot2->SetWeight(0);
+$lplot2->value->SetFormat("%01.2f");
+$lplot2->value->SetFont(FF_ARIAL,FS_NORMAL, 7);
+$lplot2->value->SetMargin(10);
+$lplot2->mark->SetType(MARK_FILLEDCIRCLE);
+$lplot2->mark->SetColor("red");
+$lplot2->mark->SetFillColor("red:1.5");
+$lplot2->value->show();
+$lplot2->setLegend("Occupé");
+
+// Create the first spline plot
+$spline2 = new Spline(array_keys($datax), array_values($doneHours));
+list($sdatax2,$sdatay2) = $spline2->Get(50);
+$splot2 = new LinePlot($sdatay2, $sdatax2);
+//$splot2->SetFillGradient("white", "darkgray");
+$splot2->SetColor("black");
 
 // Add the plots to the graph
-$graph->Add($lplot2);
+$graph->Add($splot);
 $graph->Add($lplot);
+$graph->Add($splot2);
+$graph->Add($lplot2);
 
 // Finally send the graph to the browser
 $graph->Stroke();

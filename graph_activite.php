@@ -32,7 +32,7 @@ for($i = $debut; $i <= $fin; $i = mbDate("+1 MONTH", $i)) {
 
 $sql = "SELECT * FROM sallesbloc WHERE stats = 1";
 if($salle_id)
-  $sql .= "\nWHERE id = '$salle_id'";
+  $sql .= "\nAND id = '$salle_id'";
 $salles = db_loadlist($sql);
 
 $opbysalle = array();
