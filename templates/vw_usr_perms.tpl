@@ -49,13 +49,12 @@ function popPermItem() {
 		alert( 'No list associated with the module ' + pgo + '.' );
 		return;
 	}
-	
-	url = './index.php?m=admin';
-	url+= '&a=selector';
-	url+= '&dialog=1';
-	url+= '&callback=setPermItem';
-	url+= '&table=' + tables[pgo];
-	popup(400, 250, url, 'selector');
+  
+  var url = new Url();
+  url.setModuleAction("admin", "selector");
+  url.addParam("callback", "setPermItem");
+  url.addParam("table", tables[pgo]);
+  url.popup(400, 250, "Selector");
 }
 
 // Callback function for the generic selector
