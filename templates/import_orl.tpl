@@ -2,10 +2,9 @@
 {literal}
 
 function doAction(sAction) {
-  url = "index.php?m=dPinterop&dialog=1";
-  url += "&a=" + sAction;
-  
-  popup(400, 400, url, sAction);
+  var url = new Url();
+  url.setModuleAction("dPinterop", sAction);
+  url.popup(400, 400, sAction);
 }  
 
 {/literal}
