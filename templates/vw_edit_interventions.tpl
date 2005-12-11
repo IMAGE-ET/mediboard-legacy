@@ -22,33 +22,37 @@
 		    <a style="float:right;" href="javascript:view_log('COperation',{$curr_op->operation_id})">
               <img src="images/history.gif" alt="historique" />
             </a>
-		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op->operation_id}">
+		    <strong>
+		    <a href="index.php?m=dPpatients&amp;tab=vw_idx_patients&amp;id={$curr_op->_ref_pat->patient_id}">
 		    {$curr_op->_ref_pat->_view} ({$curr_op->_ref_pat->_age} ans)
-		    </a></b>
+		    </a>
+		    </strong>
 			<br />
 			Admission le {$curr_op->date_adm|date_format:"%a %d %b"} à {$curr_op->time_adm|date_format:"%Hh%M"} ({$curr_op->type_adm|truncate:1:""|capitalize})
             <br />
 			Durée : {$curr_op->temp_operation|date_format:"%Hh%M"}
 		  </td>
 		  <td class="text">
-        {foreach from=$curr_op->_ext_codes_ccam item=curr_code}
-        <strong>{$curr_code->code}</strong> : {$curr_code->libelleLong}<br />
-        {/foreach}
-        Côté : {$curr_op->cote}
-        <br />
-        <form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
-        <input type="hidden" name="m" value="{$m}" />
-        <input type="hidden" name="a" value="do_order_op" />
-        <input type="hidden" name="cmd" value="setanesth" />
-        <input type="hidden" name="id" value="{$curr_op->operation_id}" />
-        <select name="type">
-          <option value="NULL">&mdash; Anesthésie &mdash;</option>
-          {foreach from=$anesth item=curr_anesth}
-          <option {if $curr_op->_lu_type_anesth == $curr_anesth} selected="selected" {/if}>{$curr_anesth}</option>
-          {/foreach}
-        </select>
-        <input type="submit" value="changer" />
-        </form>
+		    <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
+            {foreach from=$curr_op->_ext_codes_ccam item=curr_code}
+              <strong>{$curr_code->code}</strong> : {$curr_code->libelleLong}<br />
+            {/foreach}
+            </a>
+            Côté : {$curr_op->cote}
+            <br />
+            <form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
+            <input type="hidden" name="m" value="{$m}" />
+            <input type="hidden" name="a" value="do_order_op" />
+            <input type="hidden" name="cmd" value="setanesth" />
+            <input type="hidden" name="id" value="{$curr_op->operation_id}" />
+            <select name="type">
+              <option value="NULL">&mdash; Anesthésie &mdash;</option>
+              {foreach from=$anesth item=curr_anesth}
+              <option {if $curr_op->_lu_type_anesth == $curr_anesth} selected="selected" {/if}>{$curr_anesth}</option>
+              {/foreach}
+            </select>
+            <input type="submit" value="changer" />
+            </form>
 		  </td>
 		  <td>
 		    {if $curr_op->annulee}
@@ -83,9 +87,11 @@
             <input type="hidden" name="cmd" value="sethour" />
             <input type="hidden" name="id" value="{$curr_op->operation_id}" />
             </a>
-		    <b><a href="index.php?m=dPplanningOp&tab=vw_edit_planning&operation_id={$curr_op->operation_id}">
+		    <strong>
+		    <a href="index.php?m=dPpatients&amp;tab=vw_idx_patients&amp;id={$curr_op->_ref_pat->patient_id}">
 		    {$curr_op->_ref_pat->_view} ({$curr_op->_ref_pat->_age} ans)
-		    </a></b>
+		    </a>
+		    </strong>
 			<br />
 			Admission le {$curr_op->date_adm|date_format:"%a %d %b"} à {$curr_op->time_adm|date_format:"%Hh%M"} ({$curr_op->type_adm|truncate:1:""|capitalize})
             <br />
@@ -109,9 +115,11 @@
 			</form>
 		  </td>
 		  <td class="text">
+		    <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
             {foreach from=$curr_op->_ext_codes_ccam item=curr_code}
             <strong>{$curr_code->code}</strong> : {$curr_code->libelleLong}<br />
             {/foreach}
+            </a>
             Côté : {$curr_op->cote}
             <br />
             <form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
@@ -120,7 +128,7 @@
             <input type="hidden" name="cmd" value="setanesth" />
             <input type="hidden" name="id" value="{$curr_op->operation_id}" />
             <select name="type">
-              <option value="NULL">&mdash; Anesthésie &mdash;</option>
+              <option value="">&mdash; Anesthésie &mdash;</option>
               {foreach from=$anesth item=curr_anesth}
               <option {if $curr_op->_lu_type_anesth == $curr_anesth} selected="selected" {/if}>{$curr_anesth}</option>
               {/foreach}
