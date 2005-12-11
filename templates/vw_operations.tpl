@@ -94,7 +94,15 @@ function pageMain() {
         </tr>
         {foreach from=$curr_plage->_ref_operations item=curr_operation}
         <tr>
+          {if $curr_operation->entree_bloc && $curr_operation->sortie_bloc}
+          <td style="background-image:url(modules/{$m}/images/ray.gif); background-repeat:repeat;">
+          {elseif $curr_operation->entree_bloc}
+          <td style="background-color:#cfc">
+          {elseif $curr_operation->sortie_bloc}
+          <td style="background-color:#fcc">
+          {else}
           <td>
+          {/if}
             <a href="index.php?m={$m}&amp;op={$curr_operation->operation_id}" title="Coder l'intervention">
             {$curr_operation->time_operation|date_format:"%Hh%M"}
             </a>
