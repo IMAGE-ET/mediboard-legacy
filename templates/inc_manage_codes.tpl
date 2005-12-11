@@ -19,16 +19,15 @@ function showCode(form) {
 }
 
 function popCode() {
-  var url = './index.php?m=dPplanningOp';
-  url += '&a=code_selector';
-  url += '&dialog=1';
+  var url = new Url();
+  url.setModuleAction("dPplanningOp", "code_selector");
   {/literal}
   {if $selOp->operation_id}
-  url += '&chir='+ {$selOp->chir_id};
+  url.addParam("chir", "{$selOp->chir_id}");
   {/if}
   {literal}
-  url += '&type=ccam';
-  popup(600, 500, url, 'ccam');
+  url.addParam("type", "ccam");
+  url.popup(600, 500, "ccam");
 }
 
 function setCode( key, type ) {
