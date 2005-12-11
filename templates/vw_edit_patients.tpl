@@ -8,24 +8,33 @@ function confirmCreation(id, bDialog, sSiblingsText) {
     form.del.value = 1;
     form.submit();
   } else {
-    url = "index.php?m=dPpatients";
-    url += bDialog ? "&a=pat_selector&dialog=1" : ("&tab=vw_idx_patients&id=" + id + "&nom=&prenom=");
-    window.location.href = url;
+    url = new Url();
+    if (bDialog) {
+      url.setModuleAction("dPpatients", "pat_selector");
+      url.addParam("dialog", "1");
+    } else {
+      url.addParam("m", "dPpatients");
+      url.addParam("tab", "vw_idx_patients");
+      url.addParam("id", id);
+      url.addParam("nom", "");
+      url.addParam("prenom", "");
+    }
+    url.redirect();
   }
 }
 
 function printPatient(id) {
-  var url = './index.php?m=dPpatients&a=print_patient&dialog=1';
-  url = url + '&patient_id=' + id;
-  popup(700, 550, url, 'Patient');
+  var url = new Url();
+  url.setModuleAction("dPpatients", "print_patient");
+  url.addParam("patient_id", id);
+  url.popup(700, 550, "Patient");
 }
 
 function popMed(type) {
-  var url = './index.php?m=dPpatients';
-  url += '&a=vw_medecins';
-  url += '&dialog=1';
-  url += '&type=' + type;
-  popup(700, 400, url, 'Medecin');
+  var url = new Url();
+  url.setModuleAction("dPpatients", "vw_medecins");
+  url.addParam("type", type);
+  url.popup(700, 400, "Medecin");
 }
 
 function delMed(sElementName) {

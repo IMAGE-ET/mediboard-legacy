@@ -71,10 +71,10 @@ var step = 1;
 
 function startStep() {
   setRunning(true);
-
-  url = "?m=dPpatients&a=medecin&dialog=1";
-  url += "&step=" + step;
-  popup(400, 100, url, 'import');
+  url = new Url();
+  url.setModuleAction("dPpatients", "medecin");
+  url.addParam("step", step)
+  url.popup(400, 100, 'import');
 }
 
 function startProcess() {

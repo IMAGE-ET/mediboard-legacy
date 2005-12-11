@@ -4,10 +4,13 @@
 <script type="text/javascript">
 function createPat(){
   var form = document.frmSelector;
-  var url = "index.php?m=dPpatients&a=vw_edit_patients&dialog=1&patient_id=0";
-  url += makeURLParam(form.name);
-  url += makeURLParam(form.firstName);
-  window.location = url;
+  var url = new Url();
+  url.setModuleAction("dPpatients", "vw_edit_patients");
+  url.addParam("patient_id", "0");
+  url.addParam("dialog", "1");
+  url.addElement(form.name);
+  url.addElement(form.firstName);
+  url.redirect();
 }
 
 function setClose(key, val){
