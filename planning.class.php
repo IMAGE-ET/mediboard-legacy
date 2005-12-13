@@ -429,11 +429,14 @@ class COperation extends CMbObject {
   
   function loadPossibleActes () {
     $depassement_affecte = false;
-    
+  
+    // existing acts may only be affected once to possible acts
+    $used_actes = array();
     foreach ($this->_ext_codes_ccam as $codeKey => $codeValue) {
       $code =& $this->_ext_codes_ccam[$codeKey];
       $code->load($code->code);
       
+
       foreach ($code->activites as $activiteKey => $activiteValue) {
         $activite =& $code->activites[$activiteKey];
         foreach ($activite->phases as $phaseKey => $phaseValue) {
@@ -459,12 +462,16 @@ class COperation extends CMbObject {
           $possible_acte->updateFormFields();
           $possible_acte->loadRefs();
           
-          // Affect a loaded acte is exists
+          // Affect a loaded acte if exists
           foreach ($this->_ref_actes_ccam as $curr_acte) {
             if ($curr_acte->code_acte == $possible_acte->code_acte 
             and $curr_acte->code_activite == $possible_acte->code_activite 
             and $curr_acte->code_phase == $possible_acte->code_phase) {
-              $possible_acte = $curr_acte;
+              if (!isset($used_actes[$curr_acte->acte_id])) {
+                $possible_acte = $curr_acte;
+                $used_actes[$curr_acte->acte_id] = true;
+                break;
+              }
             }
           }
           
@@ -480,7 +487,7 @@ class COperation extends CMbObject {
           }
         }
       }
-    }
+    } 
   }
   
   function getLastAffectation(){

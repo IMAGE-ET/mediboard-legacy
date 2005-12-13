@@ -20,10 +20,9 @@ function putCCAM(code) {
     // Si la chaine est vide, il crée un tableau à un élément vide donc :
     aCcam.removeByValue("");
     aCcam.push(code);
-    aCcam.removeDuplicates();
     oForm.codes_ccam.value = aCcam.join("|");
     oForm._codeCCAM.value = "";
-    refreshListCCAM(aCcam);
+    refreshListCCAM();
     modifOp();
     return true;
   }
@@ -34,23 +33,29 @@ function delCCAM(code) {
   var aCcam = oForm.codes_ccam.value.split("|");
   // Si la chaine est vide, il crée un tableau à un élément vide donc :
   aCcam.removeByValue("");
-  aCcam.removeByValue(code);
+  aCcam.removeByValue(code, true);
   oForm.codes_ccam.value = aCcam.join("|");
-  refreshListCCAM(aCcam);
+  refreshListCCAM();
   modifOp();
 }
 
-function refreshListCCAM(aCcam) {
+function refreshListCCAM() {
   oCcamNode = document.getElementById("listCodesCcam");
-  var sCodes = "";
+  var oForm = document.editFrm;
+  var aCcam = oForm.codes_ccam.value.split("|");
+  // Si la chaine est vide, il crée un tableau à un élément vide donc :
+  aCcam.removeByValue("");
+  
+  var aCodeNodes = new Array();
   var iCode = 0;
   while (sCode = aCcam[iCode++]) {
-    sCodes += sCode;
-    sCodes += "<button type='button' onclick='delCCAM(\"" + sCode + "\")'>";
-    sCodes += "<img src='modules/dPplanningOp/images/cross.png' />";
-    sCodes += "</button>";
+    var sCodeNode = sCode;
+    sCodeNode += "<button type='button' onclick='delCCAM(\"" + sCode + "\")'>";
+    sCodeNode += "<img src='modules/dPplanningOp/images/cross.png' />";
+    sCodeNode += "</button>";
+    aCodeNodes.push(sCodeNode);
   }
-  oCcamNode.innerHTML = sCodes;
+  oCcamNode.innerHTML = aCodeNodes.join(" &mdash; ");
 }
 
 
@@ -264,12 +269,7 @@ function setProtocole(
   form.chir_id.value       = chir_id;
   form._chir_name.value    = chir_last_name + " " + chir_first_name;
   form.codes_ccam.value    = prot_codes_ccam;
-  // Actualisation de l'affichage
-  aCcam = prot_codes_ccam.split("|");
-  // Si la chaine est vide, il crée un tableau à un élément vide donc :
-  aCcam.removeByValue("");
-  aCcam.removeDuplicates();
-  refreshListCCAM(aCcam);
+  refreshListCCAM();
   form.libelle.value       = prot_libelle;
 
   // Hospitalisation ?
@@ -328,6 +328,7 @@ function printForm() {
 function pageMain() {
   regFieldCalendar("editFrm", "date_anesth");
   regFieldCalendar("editFrm", "date_adm");
+  refreshListCCAM();
 }
 
 {/literal}
@@ -497,14 +498,6 @@ function pageMain() {
             <input name="codes_ccam" type="hidden" value="{$op->codes_ccam}" />
           </th>
           <td colspan="2" class="text" id="listCodesCcam">
-            {foreach from=$op->_codes_ccam item=curr_code}
-              {$curr_code}
-              <button type="button" onclick="delCCAM('{$curr_code}')">
-                <img src="modules/dPplanningOp/images/cross.png" />
-              </button>;
-            {foreachelse}
-            Pas de codes CCAM
-            {/foreach}
           </td>
         </tr>
         
