@@ -113,7 +113,7 @@ function pageMain() {
           </td>
           <td style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
             <a href="javascript:printAdmission({$curr_adm->operation_id})">
-            {$curr_adm->time_adm|date_format:"%Hh%M"}
+            {$curr_adm->time_adm|date_format:"%Hh%M"} ({$curr_adm->type_adm|truncate:1:"":true})
             </a>
           </td>
           <td class="text" style="background: {if $curr_adm->annulee == 1}#f33{elseif $curr_adm->type_adm == 'ambu'}#faa{elseif $curr_adm->type_adm == 'comp'}#fff{else}#afa{/if}">
