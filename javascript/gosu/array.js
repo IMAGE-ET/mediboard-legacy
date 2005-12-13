@@ -56,11 +56,16 @@ Array.prototype.removeByIndex = function(index) {
     this.splice(index, 1);
 };
 
-/* Remove elements with such value (mutates) */
-Array.prototype.removeByValue = function(value) {
+/* Remove all elements with such value (mutates), or only first */
+Array.prototype.removeByValue = function(value, onlyfirst) {
     var i, indexes = [];
     for (i = 0; i < this.length; ++i) {
-        if (this[i] === value) { indexes.push(i); }
+        if (this[i] === value) { 
+        	indexes.push(i);
+        	if (onlyfirst) {
+        		break;
+        	}
+        }
     }
     for (i = indexes.length - 1; i >= 0; --i) {
         this.splice(indexes[i], 1);
