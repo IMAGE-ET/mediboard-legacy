@@ -64,6 +64,9 @@ function pageMain() {ldelim}
             {if $curr_patient.patient}
               <div {if $curr_patient.premiere}style="background: #faa;" {/if}>
               {$curr_patient.patient}
+              {if $curr_patient.motif}
+                ({$curr_patient.motif|truncate:"20"})
+              {/if}
               </div>
             {/if}
           {/foreach}

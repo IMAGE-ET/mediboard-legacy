@@ -90,6 +90,7 @@ if($plageSel) {
           $tmp = array();
           $tmp["premiere"] = $plage->_ref_consultations[$key]->premiere;
           $tmp["duree"] = $plage->_ref_consultations[$key]->duree;
+          $tmp["motif"] = $plage->_ref_consultations[$key]->motif;
           $tmpduree = $tmp["duree"];
           $plage->_ref_consultations[$key]->loadRefs();
           $tmp["patient"] = $plage->_ref_consultations[$key]->_ref_patient->_view;
