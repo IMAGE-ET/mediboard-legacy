@@ -44,7 +44,6 @@ function addCode() {
   aCCAM.removeByValue("");
   if(oForm._newCode.value != '')
     aCCAM.push(oForm._newCode.value);
-  aCCAM.removeDuplicates();
   aCCAM.sort();
   oForm.codes_ccam.value = aCCAM.join("|");
   oForm.submit();
@@ -55,9 +54,9 @@ function delCode() {
   var aCCAM = oForm.codes_ccam.value.split("|");
   // Si la chaine est vide, il crée un tableau à un élément vide donc :
   aCCAM.removeByValue("");
-  if(oForm._selCode.value != '')
-    aCCAM.removeByValue(oForm._selCode.value);
-  aCCAM.removeDuplicates();
+  if (oForm._selCode.value != '') {
+    aCCAM.removeByValue(oForm._selCode.value, true);
+  }
   aCCAM.sort();
   oForm.codes_ccam.value = aCCAM.join("|");
   oForm.submit();

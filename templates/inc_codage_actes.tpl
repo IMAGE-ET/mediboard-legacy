@@ -32,6 +32,7 @@
         
       <tr class="groupcollapse" id="acte{$acte->_view}" onclick="flipGroup('{$acte->_view}', 'acte')">
         <td colspan="2">
+          Acte #{$acte->acte_id}
           Activité {$curr_activite->numero} ({$curr_activite->type|escape}) &mdash; 
           Phase {$curr_phase->phase} : {$curr_phase->libelle|escape}
         </td>
