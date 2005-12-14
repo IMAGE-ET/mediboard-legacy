@@ -25,6 +25,7 @@
   <?php mbLoadScript("lib/jscalendar/calendar.js"); ?>
   <?php mbLoadScript("lib/jscalendar/lang/calendar-fr.js"); ?>
   <?php mbLoadScript("lib/jscalendar/calendar-setup.js"); ?>
+  <?php mbLoadScript("lib/scriptaculous/src/scriptaculous.js"); ?>
 </head>
 
 <body onload="main()">
