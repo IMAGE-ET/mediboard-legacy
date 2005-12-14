@@ -13,7 +13,7 @@ require_once($AppUI->getModuleClass("dPcompteRendu", "compteRendu"));
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.31';
+$config['mod_version'] = '0.32';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -161,6 +161,12 @@ class CSetupdPplanningOp {
           db_exec($sql); db_error();
         
         case "0.31":
+          $sql = "ALTER TABLE `operations`" .
+              "\nADD `salle_id` BIGINT AFTER `plageop_id` ," .
+              "\nADD `date` DATE AFTER `salle_id` ;";
+          db_exec($sql); db_error();
+        
+        case "0.32":
           return true;
 	  }
       return false;

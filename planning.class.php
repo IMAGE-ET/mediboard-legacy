@@ -29,6 +29,8 @@ class COperation extends CMbObject {
   var $plageop_id = null;
 
   // DB fields
+  var $salle_id = null;
+  var $date = null;
   var $codes_ccam = null;
   var $CCAM_code = null;
   var $CCAM_code2 = null;
