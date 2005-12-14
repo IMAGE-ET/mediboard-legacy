@@ -6,13 +6,19 @@
 
 function changeList() {
   var oElement = document.getElementById("listConsult");
-  var oEffect = new Effect.Squish(oElement);
+  if(oElement.className == "effectShown") {
+    oElement.className = "effectHidden";
+    var oEffect = new Effect.Fade(oElement);
+  } else {
+    oElement.className = "effectShown";
+    var oEffect = new Effect.Appear(oElement);
+  }
 }
 
 {/literal}
 </script>
 
-<div id="listConsult" style="float: left; width: 300px; height: 400px;">
+<div id="listConsult" class="effectShown" style="float: left; width: 300px; height: 400px;">
   <form name="changeView" action="index.php" method="get">
     <input type="hidden" name="m" value="{$m}" />
     <input type="hidden" name="tab" value="{$tab}" />
