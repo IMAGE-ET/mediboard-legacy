@@ -1,4 +1,18 @@
-<td id="listConsult" class="show">
+<script type="text/javascript" src="lib/scriptaculous/lib/prototype.js"></script>
+<script type="text/javascript" src="lib/scriptaculous/src/scriptaculous.js"></script>
+  
+<script type="text/javascript">
+{literal}
+
+function changeList() {
+  var oElement = document.getElementById("listConsult");
+  var oEffect = new Effect.Squish(oElement);
+}
+
+{/literal}
+</script>
+
+<div id="listConsult" style="float: left; width: 300px; height: 400px;">
   <form name="changeView" action="index.php" method="get">
     <input type="hidden" name="m" value="{$m}" />
     <input type="hidden" name="tab" value="{$tab}" />
@@ -62,4 +76,4 @@
     </tr>
   {/if}
   </table>
-</td>
+</div>
