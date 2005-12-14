@@ -46,19 +46,29 @@ function flipElementClass(elementId, firstClass, secondClass, cookieName) {
   }
 }
 
-function initEffectClass(elementId, cookieName) {
-  var oElement = document.getElementById(elementId);
-  initElementClass(elementId, cookieName);
-  if(oElement.className == "effectHidden")
-    oElement.style.display = "none";
-}
-
 function initElementClass(elementId, cookieName) {
   var oElement = document.getElementById(elementId);
   var cookie = new CJL_CookieUtil(cookieName);
   value = cookie.getSubValue(elementId);
   if(value)
     oElement.className = value;
+}
+
+function flipEffectElement(id, shownEffect, hiddenEffect) {
+  var oElement = document.getElementById(id);
+  if(oElement.className == "effectShown") {
+    eval('new Effect.' + shownEffect + '(oElement)');
+  } else {
+    eval('new Effect.' + hiddenEffect + '(oElement)');
+  }
+  flipElementClass(id, "effectShown", "effectHidden", id);
+}
+
+function initEffectClass(elementId, cookieName) {
+  var oElement = document.getElementById(elementId);
+  initElementClass(elementId, cookieName);
+  if(oElement.className == "effectHidden")
+    oElement.style.display = "none";
 }
 
 function initGroups(groupname) {
