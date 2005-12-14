@@ -79,7 +79,12 @@ function pageMain() {
 </script>
 {/literal}
 
+<table class="main">
+  <tr>
+    <td id="listConsult" style="vertical-align: top">
 {include file="inc_list_consult.tpl"}
+    </td>
+    <td>
 
 {if $consult->consultation_id}
 <table class="form">
@@ -259,3 +264,7 @@ function pageMain() {
 </form>
 {include file="inc_fdr_consult.tpl"}
 {/if}
+
+    </td>
+  </tr>
+</table>

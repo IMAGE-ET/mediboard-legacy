@@ -74,8 +74,13 @@ function pageMain() {
 {/literal}
 </script>
 
+<table class="main">
+  <tr>
+    <td id="listConsult" style="vertical-align: top">
 {include file="inc_list_consult.tpl"}
-
+    </td>
+    <td>
+    
 {if $consult->consultation_id}
 <form name="editFrm" action="?m={$m}" method="post">
 
@@ -87,20 +92,20 @@ function pageMain() {
 
 <table class="form">
   <tr>
-	  <th class="category" colspan="4">
-	    <input type="hidden" name="chrono" value="{$consult->chrono}" />
-	    Consultation
-	    (Etat : {$consult->_etat}
-	    {if $consult->chrono <= $smarty.const.CC_EN_COURS}
+    <th class="category" colspan="4">
+      <input type="hidden" name="chrono" value="{$consult->chrono}" />
+      Consultation
+      (Etat : {$consult->_etat}
+      {if $consult->chrono <= $smarty.const.CC_EN_COURS}
       / <input type="button" value="Terminer" onclick="submitConsultWithChrono({$smarty.const.CC_TERMINE})" />
       {/if})
     </th>
   </tr>
 <!--
   <tr>
-	  <th class="category">
-	    <label for="motif" title="Motif de la consultation">Motif</label>
-	  </th>
+    <th class="category">
+      <label for="motif" title="Motif de la consultation">Motif</label>
+    </th>
     <th>
       <select name="_aide_motif" size="1" onchange="pasteText('motif')">
         <option value="0">&mdash; Choisir une aide</option>
@@ -108,8 +113,8 @@ function pageMain() {
       </select>
     </th>
     <th class="category">
-	    <label for="traitement" title="title">Traitements</label>
-	  </th>
+      <label for="traitement" title="title">Traitements</label>
+    </th>
     <th>
       <select name="_aide_traitement" size="1" onchange="pasteText('traitement')">
         <option value="0">&mdash; Choisir une aide</option>
@@ -118,20 +123,20 @@ function pageMain() {
     </th>
   </tr>
   <tr>
-	  <td class="text" colspan="2">
-	    {if $consult->motif}
-	    <textarea name="motif" rows="5">{$consult->motif}</textarea>
-	    {else}
-	    <textarea name="motif" rows="5">Intervention le {$consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}
+    <td class="text" colspan="2">
+      {if $consult->motif}
+      <textarea name="motif" rows="5">{$consult->motif}</textarea>
+      {else}
+      <textarea name="motif" rows="5">Intervention le {$consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}
 Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
 {foreach from=$consult_anesth->_ref_operation->_ext_codes_ccam item=curr_code}
 - {$curr_code->libelleLong} ({$curr_code->code})
 {/foreach}</textarea>
     {/if}
-	  </td>
-	  <td class="text" colspan="2">
-	    <textarea name="traitement" rows="5">{$consult->traitement}</textarea>
-	  </td>
+    </td>
+    <td class="text" colspan="2">
+      <textarea name="traitement" rows="5">{$consult->traitement}</textarea>
+    </td>
   </tr>
 -->
 </table>
@@ -456,3 +461,8 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
 
 {include file="inc_fdr_consult.tpl"}
 {/if}
+
+    </td>
+  </tr>
+</table>
+
