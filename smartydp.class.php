@@ -70,7 +70,7 @@ class CSmartyDP extends Smarty {
     
     // Debugginf directives
     $this->debug_tpl = "$root/classes/smarty_debug.tpl";
-    $this->debugging = $dPconfig['debug'];
+    $this->debugging = false; // $dPconfig['debug'];
 
     // Standard data assignment
     $this->assign("app", $AppUI);
