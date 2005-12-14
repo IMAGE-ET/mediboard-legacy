@@ -46,12 +46,19 @@ function flipElementClass(elementId, firstClass, secondClass, cookieName) {
   }
 }
 
+function initEffectClass(elementId, cookieName) {
+  var oElement = document.getElementById(elementId);
+  initElementClass(elementId, cookieName);
+  if(oElement.className == "effectHidden")
+    oElement.style.display = "none";
+}
+
 function initElementClass(elementId, cookieName) {
-  var element = document.getElementById(elementId);
+  var oElement = document.getElementById(elementId);
   var cookie = new CJL_CookieUtil(cookieName);
   value = cookie.getSubValue(elementId);
   if(value)
-    element.className = value;
+    oElement.className = value;
 }
 
 function initGroups(groupname) {
