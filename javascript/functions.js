@@ -106,11 +106,11 @@ function confirmDeletion(form, typeName, objName, msg) {
   }
 }
 
-function throwError(msg) {
- var func = throwError.caller.toString();
- var funcName = func.substring(9, func.indexOf("("));
- funcName.replace(/^\s+/,'').replace(/\s+$/,''); //trim
- throw "Error in " + funcName + "(): " + msg;
+function throwError(sMsg) {
+ var sFunction = throwError.caller.toString();
+ var sFuncName = sFunction.substring(9, sFunction.indexOf("("));
+ sFuncName.replace(/^\s+/,'').replace(/\s+$/,''); //trim
+ debug("Error in " + sFuncName + "(): " + sMsg);
 }
 
 function makeDateFromDATE(sDate) {
