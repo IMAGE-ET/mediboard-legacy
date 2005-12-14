@@ -7,12 +7,11 @@
 function changeList() {
   var oElement = document.getElementById("listConsult");
   if(oElement.className == "effectShown") {
-    oElement.className = "effectHidden";
-    var oEffect = new Effect.Fade(oElement);
+    new Effect.Fade(oElement);
   } else {
-    oElement.className = "effectShown";
-    var oEffect = new Effect.Appear(oElement);
+    new Effect.Appear(oElement);
   }
+  flipElementClass("listConsult", "effectShown", "effectHidden", "listConsult");
 }
 
 {/literal}

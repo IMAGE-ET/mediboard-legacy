@@ -65,7 +65,7 @@ function pageMain() {
   {/literal}
   {if $consult->consultation_id}
   {literal}
-//  initElementClass("listConsult", "listConsult")
+  initEffectClass("listConsult", "listConsult");
   {/literal}
   {/if}
   {literal}
