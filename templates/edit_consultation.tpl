@@ -85,7 +85,7 @@ function pageMain() {
 <table class="form">
   <tr>
     <th class="category" colspan="2">
-      <button type="button" onclick="changeList();" style="float:left">+/-</button>
+      <button type="button" onclick="flipEffectElement('listConsult', 'Fade', 'Appear');" style="float:left">+/-</button>
       Patient
     </th>
     <th class="category">Correpondants</th>
