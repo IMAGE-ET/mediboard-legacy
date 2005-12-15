@@ -54,21 +54,26 @@ function initElementClass(elementId, cookieName) {
     oElement.className = value;
 }
 
-function flipEffectElement(id, shownEffect, hiddenEffect) {
-  var oElement = document.getElementById(id);
-  if(oElement.className == "effectShown") {
-    eval('new Effect.' + shownEffect + '(oElement)');
-  } else {
-    eval('new Effect.' + hiddenEffect + '(oElement)');
+function flipEffectElement(idTarget, sShowEffect, sHideEffect, idTrigger) {
+  var oTargetElement = document.getElementById(idTarget);
+  var oTriggerElement = document.getElementById(idTrigger);
+  var sEffect = "";
+  switch (oTriggerElement.className) {
+  	case "triggerShow" : sEffect = sShowEffect; break;
+  	case "triggerHide" : sEffect = sHideEffect; break;
+  	default: throwError(printf("Trigger element class name should be either 'triggerShow' or 'triggerHide', instead of '%s'", oTriggerElement.className));
   }
-  flipElementClass(id, "effectShown", "effectHidden", id);
+  
+  eval('new Effect.' + sEffect + '(oTargetElement)');
+  flipElementClass(idTrigger, "triggerShow", "triggerHide", idTrigger);
 }
 
-function initEffectClass(elementId, cookieName) {
-  var oElement = document.getElementById(elementId);
-  initElementClass(elementId, cookieName);
-  if(oElement.className == "effectHidden")
-    oElement.style.display = "none";
+function initEffectClass(idTarget, idTrigger) {
+  initElementClass(idTrigger, idTrigger);
+  
+  var oTriggerElement = document.getElementById(idTrigger);
+  var oTargetElement = document.getElementById(idTarget);
+  oTargetElement.style.display = (oTriggerElement.className == "triggerShow") ? "none" : "";
 }
 
 function initGroups(groupname) {
@@ -110,7 +115,7 @@ function throwError(sMsg) {
  var sFunction = throwError.caller.toString();
  var sFuncName = sFunction.substring(9, sFunction.indexOf("("));
  sFuncName.replace(/^\s+/,'').replace(/\s+$/,''); //trim
- debug("Error in " + sFuncName + "(): " + sMsg);
+ debug(sMsg, "Error in " + sFuncName + "()");
 }
 
 function makeDateFromDATE(sDate) {
