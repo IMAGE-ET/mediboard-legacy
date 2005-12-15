@@ -47,7 +47,8 @@ class Cplanning {
               LEFT JOIN operations
               ON operations.plageop_id = plagesop.id
               AND operations.annulee = '0'
-              WHERE id_salle = '".$value['id']."' AND date = '".$year."-".$month."-".$day."'
+              WHERE plagesop.id_salle = '".$value['id']."'
+              AND plagesop.date = '".$year."-".$month."-".$day."'
               AND (plagesop.chir_id = users_mediboard.user_id OR plagesop.id_spec = functions_mediboard.function_id)
               AND users_mediboard.function_id = functions_mediboard.function_id
               GROUP BY plagesop.id";
