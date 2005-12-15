@@ -442,6 +442,7 @@ function pageMain() {
           <td class="readonly"><input type="text" name="_pat_name" size="30" value="{$pat->_view}" readonly="readonly" /></td>
           <td class="button"><input type="button" value="Rechercher un patient" onclick="popPat()" /></td>
         </tr>
+        {/if}
         
         {if !$hospitalisation}
         <tr>
@@ -462,6 +463,8 @@ function pageMain() {
             </select>
           </td>
         </tr>
+        
+        {if !$protocole}
         <tr>
           <th class="mandatory">
             <input type="hidden" name="plageop_id" title="{$op->_props.pat_id}|notNull" ondblclick="popPlage()" value="{$plage->id}" />
@@ -471,13 +474,13 @@ function pageMain() {
           <td class="button"><input type="button" value="Choisir une date" onclick="popPlage()" /></td>
         </tr>
         {/if}
-        
+        {/if}
+
         <tr>
           <th><label for="CIM10_code" title="Code CIM10 de diagnostic">Diagnostic (CIM10):</label></th>
           <td><input type="text" name="CIM10_code" title="{$op->_props.CIM10_code}" size="10" value="{$op->CIM10_code}" /></td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('cim10')" /></td>
         </tr>
-        {/if}
 
         <tr>
           <th>
