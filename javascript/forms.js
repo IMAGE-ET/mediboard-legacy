@@ -44,6 +44,13 @@ function getCheckedValue(radioObj) {
   return "";
 }
 
+function setRadioValue(oElement, sValue) {
+  for(var i = 0;i < oElement.length; i++) {
+    if(oElement[i].value == sValue)
+      oElement[i].checked = true;
+  }
+}
+
 
 function getBoundingForm(oElement) {
   if (!oElement) {
