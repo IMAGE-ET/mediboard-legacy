@@ -58,14 +58,12 @@ function submitConsultWithChrono(chrono) {
 }
 
 function pageMain() {
+  incPatientHistoryMain();
 
-  initGroups("consultations");
-  initGroups("operations");
-  initGroups("hospitalisations");
   {/literal}
   {if $consult->consultation_id}
   {literal}
-  initEffectClass("listConsult", "listConsult");
+  initEffectClass("listConsult", "triggerList");
   {/literal}
   {/if}
   {literal}
@@ -81,19 +79,21 @@ function pageMain() {
 
 <table class="main">
   <tr>
-    <td id="listConsult" style="vertical-align: top">
+    <td id="listConsult" class="effectShown" style="vertical-align: top">
 {include file="inc_list_consult.tpl"}
     </td>
     <td>
 
 {if $consult->consultation_id}
+{assign var="patient" value=$consult->_ref_patient}
+
 <table class="form">
   <tr>
     <th class="category" colspan="2">
-      <button type="button" onclick="flipEffectElement('listConsult', 'Fade', 'Appear');" style="float:left">+/-</button>
+      <button id="triggerList" class="triggerHide" type="button" onclick="flipEffectElement('listConsult', 'Appear', 'Fade', 'triggerList');" style="float:left">+/-</button>
       Patient
     </th>
-    <th class="category">Correpondants</th>
+    <th class="category">Correspondants</th>
     <th class="category">
       <a style="float:right;" href="javascript:view_log('CConsultation',{$consult->consultation_id})">
         <img src="images/history.gif" alt="historique" />
@@ -104,82 +104,42 @@ function pageMain() {
   </tr>
   <tr>
     <td class="readonly">
-      {$consult->_ref_patient->_view}
+      {$patient->_view}
       <br />
-      Age: {$consult->_ref_patient->_age} ans
+      Age: {$patient->_age} ans
       <br />
-      <a href="javascript:showAll({$consult->_ref_patient->patient_id})">
+      <a href="javascript:showAll({$patient->patient_id})">
         Résumé
       </a>
       <br />
-      <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$consult->_ref_patient->patient_id}">
+      <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$patient->patient_id}">
         Consulter le dossier complet
       </a>
     </td>
     <td class="button">
-      <button onclick="editPat({$consult->_ref_patient->patient_id})">
+      <button onclick="editPat({$patient->patient_id})">
         <img src="modules/dPcabinet/images/edit.png" />
       </button>
     </td>
     <td class="text">
-      {if $consult->_ref_patient->medecin_traitant}
-      Dr. {$consult->_ref_patient->_ref_medecin_traitant->_view}
+      {if $patient->medecin_traitant}
+      Dr. {$patient->_ref_medecin_traitant->_view}
       {/if}
-      {if $consult->_ref_patient->medecin1}
+      {if $patient->medecin1}
       <br />
-      Dr. {$consult->_ref_patient->_ref_medecin1->_view}
+      Dr. {$patient->_ref_medecin1->_view}
       {/if}
-      {if $consult->_ref_patient->medecin2}
+      {if $patient->medecin2}
       <br />
-      Dr. {$consult->_ref_patient->_ref_medecin2->_view}
+      Dr. {$patient->_ref_medecin2->_view}
       {/if}
-      {if $consult->_ref_patient->medecin3}
+      {if $patient->medecin3}
       <br />
-      Dr. {$consult->_ref_patient->_ref_medecin3->_view}
+      Dr. {$patient->_ref_medecin3->_view}
       {/if}
     </td>
     <td class="text">
-      <table class="form">
-        <tr class="groupcollapse" id="operations" onclick="flipGroup('', 'operations')">
-          <td colspan="2">Interventions ({$consult->_ref_patient->_ref_operations|@count})</td>
-        </tr>
-        {foreach from=$consult->_ref_patient->_ref_operations item=curr_op}
-        <tr class="operations">
-          <td>
-            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-              {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
-            </a>
-          </td>
-          <td>Dr. {$curr_op->_ref_chir->_view}</td>
-        </tr>
-        {/foreach}
-        <tr class="groupcollapse" id="hospitalisations" onclick="flipGroup('', 'hospitalisations')">
-          <td colspan="2">Hospitalisations ({$consult->_ref_patient->_ref_hospitalisations|@count})</td>
-        </tr>
-        {foreach from=$consult->_ref_patient->_ref_hospitalisations item=curr_op}
-        <tr class="hospitalisations">
-          <td>
-            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
-              {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
-           </a>
-          </td>
-          <td>Dr. {$curr_op->_ref_chir->_view}</td>
-        </tr>
-        {/foreach}
-        <tr class="groupcollapse" id="consultations" onclick="flipGroup('', 'consultations')">
-          <td colspan="2">Consultations ({$consult->_ref_patient->_ref_consultations|@count})</td>
-        </tr>
-        {foreach from=$consult->_ref_patient->_ref_consultations item=curr_consult}
-        <tr class="consultations">
-          <td>
-            <a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
-              {$curr_consult->_ref_plageconsult->date|date_format:"%d %b %Y"}
-            </a>
-          </td>
-          <td>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}</td>
-        </tr>
-        {/foreach}
-      </table>
+{include file="inc_patient_history.tpl"}
     </td>
     <td class="button">
       <input type="button" value="intervention"    onclick="newOperation      ({$consult->_ref_plageconsult->chir_id},{$consult->patient_id})" /><br />

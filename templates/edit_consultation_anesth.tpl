@@ -49,19 +49,17 @@ function delCim10(code) {
 }
 
 function pageMain() {
-
-  initGroups("consultations");
-  initGroups("operations");
-  initGroups("hospitalisations");
+  incPatientHistoryMain();
   
   {/literal}
   
   {foreach from=$consult_anesth->_static_cim10 key=cat item=curr_cat}
-  initGroups("{$cat}");
+  initEffectClass("group{$cat}"   , "trigger{$cat}");
+
   {/foreach}
   
   {if $consult->consultation_id}
-  initElementClass("listConsult", "listConsult")
+  initEffectClass("listConsult", "triggerList");
   {/if}
 
   regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=", "changeDate");
@@ -82,6 +80,8 @@ function pageMain() {
     <td>
     
 {if $consult->consultation_id}
+{assign var="patient" value=$consult->_ref_patient}
+
 <form name="editFrm" action="?m={$m}" method="post">
 
 <input type="hidden" name="m" value="{$m}" />
@@ -146,7 +146,7 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
 <table class="form">
   <tr>
     <th class="category" colspan="2">
-      <button type="button" onclick="changeList();" style="float:left">+/-</button>
+      <button id="triggerList" class="triggerHide" type="button" onclick="flipEffectElement('listConsult', 'Appear', 'Fade', 'triggerList');" style="float:left">+/-</button>
       Patient
     </th>
     <th class="category">Informations</th>
@@ -160,16 +160,16 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
   </tr>
   <tr>
     <td class="readonly">
-      {$consult->_ref_patient->_view}
+      {$patient->_view}
       <br />
-      Age: {$consult->_ref_patient->_age} ans
+      Age: {$patient->_age} ans
       <br />
-      <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$consult->_ref_patient->patient_id}">
+      <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$patient->patient_id}">
         Consulter le dossier
       </a>
     </td>
     <td class="button">
-      <button onclick="editPat({$consult->_ref_patient->patient_id})">
+      <button onclick="editPat({$patient->patient_id})">
         <img src="modules/dPcabinet/images/edit.png" />
       </button>
     </td>
@@ -247,64 +247,24 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
       </form>
     </td>
     <td class="text">
-      {if $consult->_ref_patient->medecin_traitant}
-      Dr. {$consult->_ref_patient->_ref_medecin_traitant->_view}
+      {if $patient->medecin_traitant}
+      Dr. {$patient->_ref_medecin_traitant->_view}
       {/if}
-      {if $consult->_ref_patient->medecin1}
+      {if $patient->medecin1}
       <br />
-      Dr. {$consult->_ref_patient->_ref_medecin1->_view}
+      Dr. {$patient->_ref_medecin1->_view}
       {/if}
-      {if $consult->_ref_patient->medecin2}
+      {if $patient->medecin2}
       <br />
-      Dr. {$consult->_ref_patient->_ref_medecin2->_view}
+      Dr. {$patient->_ref_medecin2->_view}
       {/if}
-      {if $consult->_ref_patient->medecin3}
+      {if $patient->medecin3}
       <br />
-      Dr. {$consult->_ref_patient->_ref_medecin3->_view}
+      Dr. {$patient->_ref_medecin3->_view}
       {/if}
     </td>
     <td class="text">
-      <table class="form">
-        <tr class="groupcollapse" id="operations" onclick="flipGroup('', 'operations')">
-          <td colspan="2">Interventions ({$consult->_ref_patient->_ref_operations|@count})</td>
-        </tr>
-        {foreach from=$consult->_ref_patient->_ref_operations item=curr_op}
-        <tr class="operations">
-          <td>
-            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-              {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
-            </a>
-          </td>
-          <td>Dr. {$curr_op->_ref_chir->_view}</td>
-        </tr>
-        {/foreach}
-        <tr class="groupcollapse" id="hospitalisations" onclick="flipGroup('', 'hospitalisations')">
-          <td colspan="2">Hospitalisations ({$consult->_ref_patient->_ref_hospitalisations|@count})</td>
-        </tr>
-        {foreach from=$consult->_ref_patient->_ref_hospitalisations item=curr_op}
-        <tr class="hospitalisations">
-          <td>
-            <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
-              {$curr_op->_ref_plageop->date|date_format:"%d %b %Y"}
-           </a>
-          </td>
-          <td>Dr. {$curr_op->_ref_chir->_view}</td>
-        </tr>
-        {/foreach}
-        <tr class="groupcollapse" id="consultations" onclick="flipGroup('', 'consultations')">
-          <td colspan="2">Consultations ({$consult->_ref_patient->_ref_consultations|@count})</td>
-        </tr>
-        {foreach from=$consult->_ref_patient->_ref_consultations item=curr_consult}
-        <tr class="consultations">
-          <td>
-            <a href="index.php?m=dPcabinet&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
-              {$curr_consult->_ref_plageconsult->date|date_format:"%d %b %Y"}
-            </a>
-          </td>
-          <td>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}</td>
-        </tr>
-        {/foreach}
-      </table>
+{include file="inc_patient_history.tpl"}
     </td>
   </tr>
 </table>
@@ -320,22 +280,24 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
   <tr><th class="category" colspan="2">Examen Préanesthésique</th></tr>
   <tr>
     <td class="text">
-      <strong>Selection de diagnostics</strong>
-      <table>
+      <strong>Sélection de diagnostics</strong>
+      <table style="width: 100%">
       {foreach from=$consult_anesth->_static_cim10 key=cat item=curr_cat}
-        <tr class="groupcollapse" id="{$cat}" onclick="flipGroup('', '{$cat}')">
+        <tr id="trigger{$cat}" class="triggerShow" onclick="flipEffectElement('group{$cat}', 'SlideDown', 'SlideUp', 'trigger{$cat}')">
           <td>{$cat}</td>
         </tr>
-        {foreach from=$curr_cat item=curr_code}
-        <tr class="{$cat}">
-          <td class="text">
-            <button type="button" onclick="selectCim10('{$curr_code->code}')">
-              <img src="modules/dPcabinet/images/tick.png" />
-            </button>
-            {$curr_code->code}: {$curr_code->libelle}
-           </td>
-         </tr>
-         {/foreach}
+        <tbody id="group{$cat}" style="display: none">
+          {foreach from=$curr_cat item=curr_code}
+          <tr class="{$cat}">
+            <td class="text">
+              <button type="button" onclick="selectCim10('{$curr_code->code}')">
+                <img src="modules/dPcabinet/images/tick.png" />
+              </button>
+              {$curr_code->code}: {$curr_code->libelle}
+            </td>
+          </tr>
+           {/foreach}
+        </tbody>
       {/foreach}
       </table>
     </td>
@@ -367,7 +329,7 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
       <input type="hidden" name="m" value="dPpatients" />
       <input type="hidden" name="del" value="0" />
       <input type="hidden" name="dosql" value="do_antecedent_aed" />
-      <input type="hidden" name="patient_id" value="{$consult->_ref_patient->patient_id}" />
+      <input type="hidden" name="patient_id" value="{$patient->patient_id}" />
       <table class="form">
         <tr>
           <td colspan="2"><strong>Ajouter un antécédent</strong></td>
@@ -406,7 +368,7 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
     <td class="text">
       <strong>Antécédents du patient</strong>
       <ul>
-        {foreach from=$consult->_ref_patient->_ref_antecedents item=curr_ant}
+        {foreach from=$patient->_ref_antecedents item=curr_ant}
         <li>
           <form name="editAntFrm" action="?m=dPcabinet" method="post">
           <input type="hidden" name="m" value="dPpatients" />
