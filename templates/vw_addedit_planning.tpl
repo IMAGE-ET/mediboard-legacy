@@ -282,10 +282,7 @@ function setProtocole(
   
   form.examen.value        = prot_examen;
   form.depassement.value   = prot_depassement;
-  for(var i = 0;i < form.type_adm.length; i++) {
-    if(form.type_adm[i].value == prot_type_adm)
-      form.type_adm[i].checked = true;
-  }
+  setRadioValue(form.type_adm, prot_type_adm);
   form.duree_hospi.value   = prot_duree_hospi;
   form.rques.value         = prot_rques;
 }
