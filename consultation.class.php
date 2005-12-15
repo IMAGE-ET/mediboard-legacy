@@ -9,10 +9,11 @@
 
 require_once( $AppUI->getSystemClass ('mbobject' ) );
 
-require_once($AppUI->getModuleClass('dPpatients', 'patients'));
-require_once($AppUI->getModuleClass('dPcabinet', 'consultAnesth'));
-require_once($AppUI->getModuleClass('dPcabinet', 'plageconsult'));
-require_once($AppUI->getModuleClass('dPcabinet', 'files'));
+require_once($AppUI->getModuleClass('dPpatients'   , 'patients'));
+require_once($AppUI->getModuleClass('dPcabinet'    , 'consultAnesth'));
+require_once($AppUI->getModuleClass('dPcabinet'    , 'plageconsult'));
+require_once($AppUI->getModuleClass('dPcabinet'    , 'files'));
+require_once($AppUI->getModuleClass('dPcabinet'    , 'examaudio'));
 require_once($AppUI->getModuleClass('dPcompteRendu', 'compteRendu'));
 
 // Enum for Consultation.chrono
@@ -75,6 +76,7 @@ class CConsultation extends CMbObject {
   var $_ref_files = null;
   var $_ref_documents = null; // Pseudo backward references to documents
   var $_ref_consult_anesth = null;
+  var $_ref_examaudio = null;
 
   function CConsultation() {
     $this->CMbObject( 'consultation', 'consultation_id' );
@@ -192,8 +194,13 @@ class CConsultation extends CMbObject {
     
     $this->_ref_consult_anesth = new CConsultAnesth;
     $where = array();
-    $where["consultation_id"] = "= $this->consultation_id";
-    $this->_ref_consult_anesth->loadObject($where); 
+    $where["consultation_id"] = "= '$this->consultation_id'";
+    $this->_ref_consult_anesth->loadObject($where);
+    
+    $this->_ref_examaudio = new CExamAudio;
+    $where = array();
+    $where["consultation_id"] = "= '$this->consultation_id'";
+    $this->_ref_examaudio->loadObject($where);
   }
   
   function fillTemplate(&$template) {

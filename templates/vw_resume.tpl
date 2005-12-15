@@ -10,6 +10,15 @@ function printDocument(doc_id) {
   url.popup(700, 600, 'Compte-rendu');
 }
 
+function newExam(sAction, consultation_id) {
+  if (sAction) {
+    var url = new Url;
+    url.setModuleAction("dPcabinet", sAction);
+    url.addParam("consultation_id", consultation_id);
+    url.popup(900, 600, "Examen");  
+  }
+}
+
 </script>
 {/literal}
 
@@ -48,6 +57,12 @@ function printDocument(doc_id) {
             <br />
             <strong>Traitement:</strong>
             <i>{$curr_consult->traitement}</i>
+          {/if}
+          {if $curr_consult->_ref_examaudio->examaudio_id}
+            <br />
+            <a href="javascript:newExam('exam_audio', {$curr_consult->consultation_id})">
+              <strong>Audiogramme</strong>
+            </a>
           {/if}
         </li>
     {/foreach}
