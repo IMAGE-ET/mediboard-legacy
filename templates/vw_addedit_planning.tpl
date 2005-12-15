@@ -282,7 +282,10 @@ function setProtocole(
   
   form.examen.value        = prot_examen;
   form.depassement.value   = prot_depassement;
-  form.type_adm.value      = prot_type_adm;
+  for(var i = 0;i < form.type_adm.length; i++) {
+    if(form.type_adm[i].value == prot_type_adm)
+      form.type_adm[i].checked = true;
+  }
   form.duree_hospi.value   = prot_duree_hospi;
   form.rques.value         = prot_rques;
 }
@@ -632,11 +635,11 @@ function pageMain() {
         <tr>
           <th><label for="type_adm_comp" title="Type d'admission">{tr}type_adm{/tr}:</label></th>
           <td>
-            <input name="type_adm" value="comp" type="radio" {if !$op->operation_id || $op->type_adm == "comp"} checked="checked" {/if} onchange="modifOp()" />
+            <input name="type_adm" value="comp" type="radio" {if !$op->operation_id || $op->type_adm == "comp"}checked="checked"{/if} onchange="modifOp()" />
             <label for="type_adm_comp">{tr}comp{/tr}</label><br />
-            <input name="type_adm" value="ambu" type="radio" {if $op->type_adm == "ambu"} checked="checked" {/if} onchange="modifOp()" />
+            <input name="type_adm" value="ambu" type="radio" {if $op->type_adm == "ambu"}checked="checked"{/if} onchange="modifOp()" />
             <label for="type_adm_ambu">{tr}ambu{/tr}</label><br />
-            <input name="type_adm" value="exte" type="radio" {if $op->type_adm == "exte"} checked="checked" {/if} onchange="modifOp()" />
+            <input name="type_adm" value="exte" type="radio" {if $op->type_adm == "exte"}checked="checked"{/if} onchange="modifOp()" />
             <label for="type_adm_exte">{tr}exte{/tr}</label><br />
           </td>
         </tr>
