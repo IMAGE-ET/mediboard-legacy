@@ -1242,6 +1242,31 @@ tr.groupexpand th {
   background-image: url(./images/expand.gif);
 }
 
+tr.triggerShow td,
+tr.triggerHide td {
+  background-color: #ddf;
+}
+
+tr.triggerShow td,
+tr.triggerHide td,
+tr.triggerShow th,
+tr.triggerHide th {
+  padding-left: 25px;
+  font-weight: bold;
+  background-repeat: no-repeat;
+  background-position: center left;
+}
+
+tr.triggerHide td,
+tr.triggerHide th {
+  background-image: url(./images/expand.gif);
+}
+
+tr.triggerShow td,
+tr.triggerShow th {
+  background-image: url(./images/collapse.gif);
+}
+
 tr.show {
   display: table-row;
 }
