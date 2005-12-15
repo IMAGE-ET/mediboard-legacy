@@ -10,9 +10,9 @@
         <tr>
           <th>Début:</th>
           <td><input type="text" name="debutact" value="{$debutact}" /></td>
-          <th>Salle:</th>
+          <th>Service:</th>
           <td>
-            <select name="salle_id">
+            <select name="service_id">
               <option value="0">&mdash Tous les services</option>
               {foreach from=$listServices item=curr_service}
               <option value="{$curr_service->service_id}" {if $curr_service->service_id == $service_id}selected="selected"{/if}>
