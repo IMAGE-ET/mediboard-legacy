@@ -1,3 +1,6 @@
+// $Id$
+
+// --- Audiométrie Tonale
 
 var iMinTonalPerte = -10;
 var iMaxTonalPerte = 120;
@@ -9,7 +12,8 @@ function changeTonalValue(sCote, sConduction, iFrequence, iNewValue) {
   var oElement = oForm.elements[sElementName];
   var nFrequence = 125 * Math.pow(2, iFrequence);
   
-  if (!iNewValue) {
+  // Do not use !iNewValue which is also true for a 0 value    
+  if (iNewValue == null) {
     sInvite = printf("Modifier la perte pour l'oreille %s à %iHz'", sCote, nFrequence);
     sAdvice = printf("Merci de fournir une valeur comprise (en dB) entre %i et %i", iMinTonalPerte, iMaxTonalPerte);
 
@@ -26,19 +30,14 @@ function changeTonalValue(sCote, sConduction, iFrequence, iNewValue) {
     }
   }
   
-  if (sConduction == "tympan") {
-    oForm.action += "#tympan";
-  }
-
   oElement.value = iNewValue;
   oForm.submit();
 }
 
-function changeTonalValueMouse(event, sCote, sType) {
-  if (!sType) sType = "tonal";
-  var oImg = document.getElementById(sType + "_" + sCote);
+function changeTonalValueMouse(event, sCote) {
+  var oImg = document.getElementById("tonal_" + sCote);
 
-  var iLegendMargin = (sType == "tonal") ? 75: 0; 
+  var iLegendMargin = 75; 
   var oGraphMargins = {
     left  : 45,
     top   : 30,
@@ -67,7 +66,7 @@ function changeTonalValueMouse(event, sCote, sType) {
   
   var oForm = document.editFrm;
   var oElement = oForm._conduction;
-  var sConduction = (sType == "tonal") ? getCheckedValue(oElement) : sType; 
+  var sConduction = getCheckedValue(oElement);
   changeTonalValue(sCote, sConduction, iSelectedIndex, iSelectedDb);
 }
 
@@ -79,8 +78,72 @@ function changeTonalValueMouseDroite(event) {
   changeTonalValueMouse(event, "droite");
 }
 
+// --- Tympanométrie
+
+var iMinTympanAdmittance = 0;
+var iMaxTympanAdmittance = 15;
+var iMaxIndexPression = 7;
+
+function changeTympanValue(sCote, iPression, iNewValue) {
+  var oForm = document.editFrm;
+  var sElementName = printf("_%s_tympan[%i]", sCote, iPression);
+  var oElement = oForm.elements[sElementName];
+  
+  // Do not use !iNewValue which is also true for a 0 value    
+  if (iNewValue == null) {
+    var sPression = 100*iPression - 400;
+    var sInvite = printf("Modifier l'admittance pour l'oreille %s à la pression %s mm H²0", sCote, sPression);
+    var sAdvice = printf("Merci de fournir une valeur comprise (en dixième de ml) entre %i et %i", iMinTympanAdmittance, iMaxTympanAdmittance);
+
+    iNewValue = prompt(sInvite + "\n" + sAdvice, oElement.value);
+
+    // Do not use !iNewValue which is also true for empty string    
+    if (iNewValue == null) {
+      return;
+    }
+    
+    if (isNaN(iNewValue) || iNewValue < iMinTympanAdmittance || iNewValue > iMaxTympanAdmittance) {
+      alert("Valeur incorrecte : " + iNewValue + "\n" + sAdvice);
+      return;
+    }
+  }
+  
+  oElement.value = iNewValue;
+  oForm.action += "#tympan";
+  oForm.submit();
+}
+
+
 function changeTympanValueMouse(event, sCote) {
-  changeTonalValueMouse(event, sCote, "tympan");
+  var oImg = document.getElementById("tympan_" + sCote);
+
+  var oGraphMargins = {
+    left  : 35,
+    top   : 20,
+    right : 10,
+    bottom: 30
+  }
+  
+  var oGraphRect = {
+    x : oImg.x + oGraphMargins.left,
+    y : oImg.y + oGraphMargins.top ,
+    w : oImg.width  - oGraphMargins.left - oGraphMargins.right ,
+    h : oImg.height - oGraphMargins.top  - oGraphMargins.bottom
+  }
+
+  var iStep = oGraphRect.w / (iMaxIndexPression+1);
+  var iRelatX = event.pageX - oGraphRect.x; 
+  var iRelatY = event.pageY - oGraphRect.y;
+
+  var iSelectedIndex = parseInt(iRelatX / iStep);
+  var iSelectedAdmittance = parseInt(iMaxTympanAdmittance - (iRelatY / oGraphRect.h * (iMaxTympanAdmittance - iMinTympanAdmittance)));
+      
+  if (iRelatX < 0 || iRelatX > oGraphRect.w || iSelectedAdmittance < iMinTympanAdmittance || iSelectedAdmittance > iMaxTympanAdmittance) {
+    alert("Merci de cliquer à l'intérieur du tympanogramme");
+    return;
+  }
+  
+  changeTympanValue(sCote, iSelectedIndex, iSelectedAdmittance);
 }
 
 function changeTympanValueMouseGauche(event) {
@@ -92,6 +155,7 @@ function changeTympanValueMouseDroite(event) {
   changeTympanValueMouse(event, "droite");
 }
 
+// --- Audiométrie vocale
 
 var iMinVocalDB = 0;
 var iMaxVocalDB = 120;
@@ -150,7 +214,7 @@ function changeVocalValueMouse(event) {
 
   var oGraphMargins = {
     left  : 40,
-    top   : 20,
+    top   : 45,
     right : 20,
     bottom: 20
   }

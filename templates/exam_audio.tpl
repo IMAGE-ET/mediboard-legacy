@@ -26,8 +26,8 @@
   <td>
     {$map_tonal_droite}
     {$map_tonal_gauche}
-    <img id="tonal_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;type=tonal&amp;side=droite" usemap="#graph_tonal_droite" onclick="changeTonalValueMouseDroite(event)" />
-    <img id="tonal_gauche" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;type=tonal&amp;side=gauche" usemap="#graph_tonal_gauche" onclick="changeTonalValueMouseGauche(event)" />
+    <img id="tonal_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=droite" usemap="#graph_tonal_droite" onclick="changeTonalValueMouseDroite(event)" />
+    <img id="tonal_gauche" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=gauche" usemap="#graph_tonal_gauche" onclick="changeTonalValueMouseGauche(event)" />
   </td>
 </tr>
 <tr>
@@ -51,6 +51,44 @@
       <tr class="groupcollapse" id="values" onclick="flipGroup('', 'values');">
         <th class="category" colspan="9">Toutes les valeurs</th>
       </tr>
+      <tr class="values">
+        <th class="category" colspan="9">Oreille droite</th>
+      </tr>
+      <tr class="values">
+        <th>Conduction aérienne</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_aerien[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_aerien.$index}" tabindex="{$index+110}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+      
+      <tr class="values">
+        <th>Conduction osseuse</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_osseux[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_osseux.$index}" tabindex="{$index+120}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th>stapédien ipsilatéral</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_ipslat[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_ipslat.$index}" tabindex="{$index+130}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th>stapédien controlatéral</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_conlat[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_conlat.$index}" tabindex="{$index+140}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
+      <tr class="values">
+        <th>pas de réponse</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td><input type="text" name="_droite_pasrep[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_pasrep.$index}" tabindex="{$index+150}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+
       <tr class="values">
         <th class="category">Fréquences</th>
         {foreach from=$frequences key=index item=frequence}
@@ -98,44 +136,6 @@
       </tr>
 
       <tr class="values">
-        <th class="category" colspan="9">Oreille droite</th>
-      </tr>
-      <tr class="values">
-        <th>Conduction aérienne</th>
-        {foreach from=$frequences key=index item=frequence}
-        <td><input type="text" name="_droite_aerien[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_aerien.$index}" tabindex="{$index+110}" size="4" maxlength="4" /></td>
-        {/foreach}
-      </tr>
-      
-      <tr class="values">
-        <th>Conduction osseuse</th>
-        {foreach from=$frequences key=index item=frequence}
-        <td><input type="text" name="_droite_osseux[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_osseux.$index}" tabindex="{$index+120}" size="4" maxlength="4" /></td>
-        {/foreach}
-      </tr>
-
-      <tr class="values">
-        <th>stapédien ipsilatéral</th>
-        {foreach from=$frequences key=index item=frequence}
-        <td><input type="text" name="_droite_ipslat[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_ipslat.$index}" tabindex="{$index+130}" size="4" maxlength="4" /></td>
-        {/foreach}
-      </tr>
-
-      <tr class="values">
-        <th>stapédien controlatéral</th>
-        {foreach from=$frequences key=index item=frequence}
-        <td><input type="text" name="_droite_conlat[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_conlat.$index}" tabindex="{$index+140}" size="4" maxlength="4" /></td>
-        {/foreach}
-      </tr>
-
-      <tr class="values">
-        <th>pas de réponse</th>
-        {foreach from=$frequences key=index item=frequence}
-        <td><input type="text" name="_droite_pasrep[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_pasrep.$index}" tabindex="{$index+150}" size="4" maxlength="4" /></td>
-        {/foreach}
-      </tr>
-
-      <tr class="values">
         <td class="button" colspan="9">
           <input type="submit" value="Valider" />
         </td>
@@ -164,28 +164,28 @@
       </tr>
       <tr class="moyenne">
         <th class="text">
-          Moyenne gauche
-        </th>
-        <td colspan="2" />
-        <td class="aerien" colspan="4">{$exam_audio->_moyenne_gauche_aerien}dB</td>
-        <td colspan="2" />
-      </tr>
-      <tr class="moyenne">
-        <th class="text">
           Moyenne droite
         </th>
         <td colspan="2" />
         <td class="aerien" colspan="4">{$exam_audio->_moyenne_droite_aerien}dB</td>
         <td colspan="2" />
       </tr>
+      <tr class="moyenne">
+        <th class="text">
+          Moyenne gauche
+        </th>
+        <td colspan="2" />
+        <td class="aerien" colspan="4">{$exam_audio->_moyenne_gauche_aerien}dB</td>
+        <td colspan="2" />
+      </tr>
       <tr>
         <th class="text">
           Comparaison<br />
-          (gauche / droite)
+          (droite / gauche)
         </th>
         {foreach from=$bilan item=pertes}
         <td>
-          {$pertes.aerien.gauche}dB / {$pertes.aerien.droite}dB<br />
+          {$pertes.aerien.droite}dB / {$pertes.aerien.gauche}dB<br />
           {assign var="delta" value=$pertes.aerien.delta}
           {if $delta lt -20}&lt;&lt;
           {elseif $delta lt 0}&lt;=
@@ -202,28 +202,28 @@
       </tr>
       <tr class="moyenne">
         <th class="text">
-          Moyenne gauche
-        </th>
-        <td colspan="2" />
-        <td class="osseux" colspan="4">{$exam_audio->_moyenne_gauche_osseux}dB</td>
-        <td colspan="2" />
-      </tr>
-      <tr class="moyenne">
-        <th class="text">
           Moyenne droite
         </th>
         <td colspan="2" />
         <td class="osseux" colspan="4">{$exam_audio->_moyenne_droite_osseux}dB</td>
         <td colspan="2" />
       </tr>
+      <tr class="moyenne">
+        <th class="text">
+          Moyenne gauche
+        </th>
+        <td colspan="2" />
+        <td class="osseux" colspan="4">{$exam_audio->_moyenne_gauche_osseux}dB</td>
+        <td colspan="2" />
+      </tr>
       <tr>
         <th class="text">
           Comparaison<br />
-          (gauche / droite)
+          (droite / gauche)
         </th>
         {foreach from=$bilan item=pertes}
         <td>
-          {$pertes.osseux.gauche}dB / {$pertes.osseux.droite}dB<br />
+          {$pertes.osseux.droite}dB / {$pertes.osseux.gauche}dB<br />
           {assign var="delta" value=$pertes.osseux.delta}
           {if $delta lt -20}&lt;&lt;
           {elseif $delta lt 0}&lt;=
@@ -255,9 +255,10 @@
         
         <td rowspan="2">
           {$map_tympan_gauche}
-          <img id="tympan_gauche" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;type=tympan&amp;side=gauche" usemap="#graph_tympan_gauche" onclick="changeTympanValueMouseGauche(event)" />
+          <img id="tympan_gauche" src="?m=dPcabinet&amp;a=graph_audio_tympan&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=gauche" usemap="#graph_tympan_gauche" onclick="changeTympanValueMouseGauche(event)" />
           {$map_tympan_droite}
-          <br /><img id="tympan_droite" src="?m=dPcabinet&amp;a=graph_audio_tonal&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;type=tympan&amp;side=droite" usemap="#graph_tympan_gauche" onclick="changeTympanValueMouseDroite(event)" />
+          <br />
+          <img id="tympan_droite" src="?m=dPcabinet&amp;a=graph_audio_tympan&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=droite" usemap="#graph_tympan_gauche" onclick="changeTympanValueMouseDroite(event)" />
         </td>
       </tr>
       <tr>
@@ -307,21 +308,21 @@
 
       <tr class="vocales">
         <th class="category">Tympanométrie</th>
-        {foreach from=$frequences key=index item=frequence}
+        {foreach from=$pressions item=pression}
         <th class="category">
-          {$frequence}
+          {$pression}
         </th>
         {/foreach}
       </tr>
       <tr class="vocales">
         <th>Oreille gauche</th>
-        {foreach from=$frequences key=index item=frequence}
+        {foreach from=$pressions key=index item=pression}
         <td><input type="text" name="_gauche_tympan[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_tympan.$index}" tabindex="{$index+300}" size="4" maxlength="4" /></td>
         {/foreach}
       </tr>
       <tr class="vocales">
         <th>Oreille droite</th>
-        {foreach from=$frequences key=index item=frequence}
+        {foreach from=$pressions key=index item=pression}
         <td><input type="text" name="_droite_tympan[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_tympan.$index}" tabindex="{$index+310}" size="4" maxlength="4" /></td>
         {/foreach}
       </tr>

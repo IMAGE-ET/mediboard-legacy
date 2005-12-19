@@ -12,31 +12,19 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once($AppUI->getModuleClass("dPcabinet", "examaudio"));
 require_once($AppUI->getLibraryClass('jpgraph/src/jpgraph'));
 require_once($AppUI->getLibraryClass('jpgraph/src/jpgraph_line'));
-require_once($AppUI->getLibraryClass('jpgraph/src/jpgraph_log'));
-require_once($AppUI->getLibraryClass('jpgraph/src/jpgraph_regstat'));
 
 class AudiogrammeTonal extends Graph {
   function setTitle($title) {
     $this->title->Set($title);
   }
   
-  function AudiogrammeTonal($with_legend = true, $type = "tonal") {
+  function AudiogrammeTonal($with_legend = true) {
     global $frequences;
-    
-    $width["tonal"] = 300;
-    $width["tympan"] = 280;
-    $height["tonal"] = 250;
-    $height["tympan"] = 150;
-    $labelmargin["tonal"] = 22;
-    $labelmargin["tympan"] = 14;
-    $axisfontsize["tonal"] = 8;
-    $axisfontsize["tympan"] = 7;
-    
     
     $delta = $with_legend ? 75 : 0;
     
     // Setup the graph.
-    $this->Graph($width[$type] + $delta, $height[$type], "auto"); 
+    $this->Graph(300 + $delta, 250, "auto"); 
        
     $this->SetScale("textlin", -120, 10);
     $this->SetMarginColor("lightblue");
@@ -61,19 +49,19 @@ class AudiogrammeTonal extends Graph {
     
     // Setup font for axis
     $this->xgrid->Show(true, true);
-    $this->xgrid->SetColor("lightgray", "lightgray:1.7");
+    $this->xgrid->SetColor("lightgray", "lightgray:1.8");
     
-    $this->xaxis->SetFont(FF_ARIAL, FS_NORMAL,$axisfontsize[$type]);
+    $this->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
     $this->xaxis->scale->ticks->SupressTickMarks();
     $this->xaxis->labelPos = 1;
-    $this->xaxis->SetLabelMargin($labelmargin[$type]);
+    $this->xaxis->SetLabelMargin(22);
     $this->xaxis->SetTickLabels($frequences);
     
     // Setup Y-axis labels 
     $this->ygrid->Show(true, true);
-    $this->ygrid->SetColor("lightgray", "lightgray:1.7");
+    $this->ygrid->SetColor("lightgray", "lightgray:1.8");
 
-    $this->yaxis->SetFont(FF_ARIAL,FS_NORMAL,$axisfontsize[$type]);
+    $this->yaxis->SetFont(FF_ARIAL,FS_NORMAL, 8);
     $this->yaxis->SetLabelFormatString("%ddB");
     
     $this->yaxis->scale->ticks->Set(20, 10);
@@ -143,7 +131,7 @@ global $exam_audio;
 $graph_tonal_gauche = new AudiogrammeTonal(true);
 $graph_tonal_gauche->setTitle("Oreille gauche");
 $graph_tonal_gauche->addAudiogramme($exam_audio->_gauche_aerien, "aerien", "Conduction\naérienne", "blue", MARK_FILLEDCIRCLE);
-$graph_tonal_gauche->addAudiogramme($exam_audio->_gauche_osseux, "osseux", "Conduction\nosseuse", "red", MARK_FILLEDCIRCLE);
+$graph_tonal_gauche->addAudiogramme($exam_audio->_gauche_osseux, "osseux", "Conduction\nosseuse", "red", MARK_STAR);
 $graph_tonal_gauche->addAudiogramme($exam_audio->_gauche_pasrep, "pasrep", "Pas de\nréponse", "green", MARK_DTRIANGLE, null, false);
 $graph_tonal_gauche->addAudiogramme($exam_audio->_gauche_ipslat, "ipslat", "Stapédien\nipsilatéral", "black", MARK_IMG, "si.png", false);
 $graph_tonal_gauche->addAudiogramme($exam_audio->_gauche_conlat, "conlat", "Stapédien\ncontrolatéral", "black", MARK_IMG, "sc.png", false);
@@ -151,15 +139,8 @@ $graph_tonal_gauche->addAudiogramme($exam_audio->_gauche_conlat, "conlat", "Stap
 $graph_tonal_droite = new AudiogrammeTonal(true);
 $graph_tonal_droite->setTitle("Oreille droite");
 $graph_tonal_droite->addAudiogramme($exam_audio->_droite_aerien, "aerien", "Conduction\naérienne", "blue", MARK_FILLEDCIRCLE);
-$graph_tonal_droite->addAudiogramme($exam_audio->_droite_osseux, "osseux", "Conduction\nosseuse", "red", MARK_FILLEDCIRCLE);
+$graph_tonal_droite->addAudiogramme($exam_audio->_droite_osseux, "osseux", "Conduction\nosseuse", "red", MARK_STAR);
 $graph_tonal_droite->addAudiogramme($exam_audio->_droite_pasrep, "pasrep", "Pas de\nréponse", "green", MARK_DTRIANGLE, null, false);
 $graph_tonal_droite->addAudiogramme($exam_audio->_droite_ipslat, "ipslat", "Stapédien\nipsilatéral", "black", MARK_IMG, "si.png", false);
 $graph_tonal_droite->addAudiogramme($exam_audio->_droite_conlat, "conlat", "Stapédien\ncontrolatéral", "black", MARK_IMG, "sc.png", false);
-
-$graph_tympan_gauche = new AudiogrammeTonal(false, "tympan");
-$graph_tympan_gauche->setTitle("Oreille gauche");
-$graph_tympan_gauche->addAudiogramme($exam_audio->_gauche_tympan, "tympan", "Tympanométrie", "blue", MARK_FILLEDCIRCLE);
-
-$graph_tympan_droite = new AudiogrammeTonal(false, "tympan");
-$graph_tympan_droite->setTitle("Oreille droite");
-$graph_tympan_droite->addAudiogramme($exam_audio->_droite_tympan, "tympan", "Tympanométrie", "red", MARK_FILLEDCIRCLE);
+?>

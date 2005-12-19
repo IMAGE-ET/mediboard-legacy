@@ -9,105 +9,32 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
+require_once( $AppUI->getModuleFile("dPcabinet", "jpgraph_bezier"));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_line'));
-require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_log'));
+require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_scatter'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_regstat'));
 
-/**
-* @abstract Bezier interoplated point generation, 
-* @copyright Thomas Despoix, openXtrem company, released under QPL
-* computed from control points data sets, based on Paul Bourke algorithm :
-* http://astronomy.swin.edu.au/~pbourke/curves/bezier/
-*/
-class Bezier {
-  var $datax = array();
-  var $datay = array();
-  
-  function Bezier($datax, $datay, $attraction_factor = 1) {
-    // Adding control point multiple time will raise their attraction power over the curve    
-    foreach($datax as $datumx) {
-      for ($i = 0; $i < $attraction_factor; $i++) {
-        $this->datax[] = $datumx; 
-      }
-    }
-    
-    foreach($datay as $datumy) {
-      for ($i = 0; $i < $attraction_factor; $i++) {
-        $this->datay[] = $datumy; 
-      }
-    }
-  }
-
-  function Get($steps) {
-    $datax = array();
-    $datay = array();
-    for ($i = 0; $i < $steps; $i++) {
-      list($datumx, $datumy) = $this->GetPoint((double) $i / (double) $steps);    	
-      $datax[] = $datumx;
-      $datay[] = $datumy;
-    }
-    
-    $datax[] = end($this->datax);
-    $datay[] = end($this->datay);
-    
-    return array($datax, $datay);
-  }
-  
-  function GetPoint($mu) {
-    $n = count($this->datax)-1;
-    $k = 0;
-    $kn = 0;
-    $nn = 0;
-    $nkn = 0;
-    $blend = 0.0;
-    $newx = 0.0;
-    $newy = 0.0;
-
-    $muk = 1.0;
-    $munk = (double) pow(1-$mu,(double) $n);
-
-    for ($k = 0; $k <= $n; $k++) {
-      $nn = $n;
-      $kn = $k;
-      $nkn = $n - $k;
-      $blend = $muk * $munk;
-      $muk *= $mu;
-      $munk /= (1-$mu);
-      while ($nn >= 1) {
-         $blend *= $nn;
-         $nn--;
-         if ($kn > 1) {
-            $blend /= (double) $kn;
-            $kn--;
-         }
-         if ($nkn > 1) {
-            $blend /= (double) $nkn;
-            $nkn--;
-         }
-      }
-      $newx += $this->datax[$k] * $blend;
-      $newy += $this->datay[$k] * $blend;
-   }
-
-   return array($newx, $newy);
-  }
+function xPseudoAxisFormatCb ($value) {
+	$value -= 50;
+  $value *= 100;
+  // Prevents rounding errors intrinsic to float values...
+  $value = round($value);
+  $value *= 10;
+  return sprintf("%d", $value);
 }
-
-
-
 
 class AudiogrammeVocal extends Graph {  
   function AudiogrammeVocal() {
     // Setup the graph.
-    $this->Graph(460,280); 
+    $this->Graph(460,305); 
        
     $this->SetScale("intint", 0, 100, 0, 120);
     $this->SetMarginColor("lightblue");
     
     // Image setup
     $this->img->SetAntiAliasing();
-    $this->img->SetMargin(40,20,20,20);
+    $this->img->SetMargin(40,20,45,20);
     
     // Legend setup
     $this->legend->Pos(0.02, 0.02, "right","top");
@@ -123,7 +50,7 @@ class AudiogrammeVocal extends Graph {
     
     // Setup font for axis
     $this->xgrid->Show(true, true);
-    $this->xgrid->SetColor("lightgray", "lightgray:1.7");
+    $this->xgrid->SetColor("lightgray", "lightgray:1.8");
     $this->xaxis->SetFont(FF_ARIAL, FS_NORMAL,8);
     $this->xaxis->SetLabelFormatString("%ddB");
     $this->xaxis->scale->ticks->Set(10, 5);
@@ -132,15 +59,29 @@ class AudiogrammeVocal extends Graph {
 
     // Setup Y-axis labels 
     $this->ygrid->Show(true, true);
-    $this->xgrid->SetColor("lightgray", "lightgray:1.7");
+    $this->ygrid->SetColor("lightgray", "lightgray:1.8");
     $this->yaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
     $this->yaxis->SetLabelFormatString("%d%%");
     $this->yaxis->scale->ticks->Set(10, 5);
     $this->yaxis->scale->ticks->SupressZeroLabel(true);
     $this->yaxis->scale->ticks->SupressMinorTickMarks(false);
+    
+    // Secondary x pseudo-axis
+    for ($i = 10; $i < 120; $i += 10) {
+      $datax[] = $i;
+      $datay[] = 50 + ($i-10)/1000;
+    }
+
+    $sp1 = new LinePlot($datay,$datax);
+    $sp1->mark->SetType(MARK_CROSS);
+    $sp1->value->SetFont(FF_ARIAL,FS_NORMAL,7);
+    $sp1->value->SetFormatCallback("xPseudoAxisFormatCb");
+    $sp1->value->Show();
+    
+    $this->Add($sp1);
   }
   
-  function addAudiogramme($points, $title, $mark_color) {
+  function addAudiogramme($points, $title, $mark_color, $mark_type) {
     global $frequences;
     
     mbRemoveValuesInArray(array("", ""), $points);
@@ -178,7 +119,7 @@ class AudiogrammeVocal extends Graph {
     $p1->SetWeight(1);
 
     // Marks
-    $p1->mark->SetType(MARK_SQUARE);
+    $p1->mark->SetType($mark_type);
     $p1->mark->SetColor($mark_color);
     $p1->mark->SetFillColor("$mark_color@0.6");
     $p1->mark->SetWidth(5);
@@ -208,5 +149,7 @@ class AudiogrammeVocal extends Graph {
 global $exam_audio;
 
 $graph_vocal = new AudiogrammeVocal();
-$graph_vocal->addAudiogramme($exam_audio->_gauche_vocale, "Oreille gauche", "blue");
-$graph_vocal->addAudiogramme($exam_audio->_droite_vocale, "Oreille droite", "red");
+$graph_vocal->addAudiogramme($exam_audio->_gauche_vocale, "Oreille gauche", "blue", MARK_STAR);
+$graph_vocal->addAudiogramme($exam_audio->_droite_vocale, "Oreille droite", "red", MARK_SQUARE);
+
+?>

@@ -21,6 +21,12 @@ $frequences = array(
   "16kHz",
 );
 
+$nb_pressions = 8;
+for ($i = 0; $i < $nb_pressions; $i++) {
+	$pressions[] = 100*$i - 400;
+}
+
+
 class CExamAudio extends CMbObject {
   // DB Table key
   var $examaudio_id = null;

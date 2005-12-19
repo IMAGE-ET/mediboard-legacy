@@ -25,6 +25,10 @@ function incPatientHistoryMain() {
       </td>
       <td>Dr. {$curr_op->_ref_chir->_view}</td>
     </tr>
+    {foreachelse}
+    <tr>
+      <td colspan="2"><em>Aucune opération disponible</em></td>
+    </tr>
     {/foreach}
   </tbody>
   <tr class="triggerShow" id="triggerhospitalisations" onclick="flipEffectElement('grouphospitalisations', 'SlideDown', 'SlideUp', 'triggerhospitalisations')">
@@ -40,6 +44,10 @@ function incPatientHistoryMain() {
       </td>
       <td>Dr. {$curr_op->_ref_chir->_view}</td>
     </tr>
+    {foreachelse}
+    <tr>
+      <td colspan="2"><em>Aucune hospitalisation disponible</em></td>
+    </tr>
     {/foreach}
   </tbody>
   <tr class="triggerShow" id="triggerconsultations" onclick="flipEffectElement('groupconsultations', 'SlideDown', 'SlideUp', 'triggerconsultations')">
@@ -54,6 +62,10 @@ function incPatientHistoryMain() {
         </a>
       </td>
       <td>Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}</td>
+    </tr>
+    {foreachelse}
+    <tr>
+      <td colspan="2"><em>Aucune consultation disponible</em></td>
     </tr>
     {/foreach}
   </tbody>

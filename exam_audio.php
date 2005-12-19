@@ -36,6 +36,7 @@ $map_tonal_gauche = $graph_tonal_gauche->GetHTMLImageMap("graph_tonal_gauche");
 $graph_tonal_droite->Stroke("tmp/graphtmp.png");
 $map_tonal_droite = $graph_tonal_droite->GetHTMLImageMap("graph_tonal_droite");
 
+require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_tympan"));
 $graph_tympan_gauche->Stroke("tmp/graphtmp.png");
 $map_tympan_gauche = $graph_tympan_gauche->GetHTMLImageMap("graph_tympan_gauche");
 
@@ -64,7 +65,7 @@ foreach ($bilan as $frequence => $value) {
   $pertes =& $bilan[$frequence];
   foreach ($pertes as $keyConduction => $valConduction) {
     $conduction =& $pertes[$keyConduction];
-    $conduction["delta"] = $conduction["gauche"] - $conduction["droite"];
+    $conduction["delta"] = $conduction["droite"] - $conduction["gauche"];
   }
 }
 
@@ -75,6 +76,7 @@ $smarty = new CSmartyDP;
 $smarty->assign("_conduction", $_conduction);
 $smarty->assign("_oreille", $_oreille);
 $smarty->assign("frequences", $frequences);
+$smarty->assign("pressions", $pressions);
 $smarty->assign("exam_audio", $exam_audio);
 $smarty->assign("bilan", $bilan);
 $smarty->assign("map_tonal_gauche", $map_tonal_gauche);
@@ -85,3 +87,5 @@ $smarty->assign("map_vocal", $map_vocal);
 
 
 $smarty->display('exam_audio.tpl');
+
+?>

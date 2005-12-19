@@ -16,10 +16,10 @@ $where["consultation_id"] = "= '$consultation_id'";
 $exam_audio = new CExamAudio;
 $exam_audio->loadObject($where);
 
-require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_tonal"));
+require_once( $AppUI->getModuleFile("$m", "inc_graph_audio_tympan"));
 
 $side = dPgetParam($_GET, "side");
 
-$graphname = "graph_tonal_{$side}";
+$graphname = "graph_tympan_{$side}";
 $graph = $$graphname;
 $graph->Stroke();
