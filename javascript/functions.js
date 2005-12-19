@@ -150,9 +150,10 @@ function makeDateFromDATETIME(sDateTime) {
 }
 
 function makeDateFromLocaleDate(sDate) {
+  debug(sDate, "sDate");
   // sDate must be: dd/mm/yyyy
   var aParts = sDate.split("/");
-  if (aParts.length != 3) throwError("Bad Display date format");
+  if (aParts.length != 3) throwError(printf("Bad Display date format : '%s'", sDate));
 
   var year  = parseInt(aParts[2], 10);
   var month = parseInt(aParts[1], 10);
