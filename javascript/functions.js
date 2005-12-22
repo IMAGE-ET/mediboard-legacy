@@ -47,11 +47,16 @@ function flipElementClass(elementId, firstClass, secondClass, cookieName) {
 }
 
 function initElementClass(elementId, cookieName) {
-  var oElement = document.getElementById(elementId);
   var cookie = new CJL_CookieUtil(cookieName);
   value = cookie.getSubValue(elementId);
-  if(value)
+  if (value) {
+	var oElement = document.getElementById(elementId);
+	if (!oElement) {
+		throwError(printf("Element with id '%s' doesn't exist", elementId));
+	}
     oElement.className = value;
+    
+  }
 }
 
 function flipEffectElement(idTarget, sShowEffect, sHideEffect, idTrigger) {
@@ -111,11 +116,21 @@ function confirmDeletion(form, typeName, objName, msg) {
   }
 }
 
+function getFunctionName(oFunction) {
+  var sFunction = oFunction.toString();
+  var re = /function ([^{]*)/;
+  var sFuncProt = sFunction.match(re)[0];
+  return sFuncProt;
+}
+
 function throwError(sMsg) {
- var sFunction = throwError.caller.toString();
- var sFuncName = sFunction.substring(9, sFunction.indexOf("("));
- sFuncName.replace(/^\s+/,'').replace(/\s+$/,''); //trim
- debug(sMsg, "Error in " + sFuncName + "()");
+  var oCaller = throwError.caller;
+  debug(getFunctionName(oCaller), printf("Error: %s()", sMsg));
+ 
+  while (oCaller = oCaller.caller) {
+    debug(getFunctionName(oCaller), "backtrace");
+  }
+ 
 }
 
 function makeDateFromDATE(sDate) {
