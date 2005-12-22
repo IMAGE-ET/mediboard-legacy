@@ -111,10 +111,10 @@ foreach ($nav as $module) {
 	</td>
 </tr>
 </table>
-<?php } // (!$dialog) ?>
 <script language="JavaScript" type="text/javascript">
   initEffectClass("menuIcons", "triggerMenu");
 </script>
+<?php } // (!$dialog) ?>
 <table id="main" class="<?php echo $m ?>">
 <tr>
   <td>
