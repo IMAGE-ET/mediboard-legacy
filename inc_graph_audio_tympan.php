@@ -63,6 +63,17 @@ class AudiogrammeTympano extends Graph {
     $this->yaxis->title->Set("Admittance x10 en ml");
     $this->yaxis->title->SetFont(FF_ARIAL,FS_NORMAL, 7);
     $this->yaxis->title->SetColor("darkred");
+    
+    // Empty plots for scale window
+    foreach($pressions as $pression) {
+      $datay[] = 20;
+    }
+    $p1 = new LinePlot($datay);
+    $p1->SetCenter();
+    
+    $this->Add($p1);
+    return;
+    
   }
   
   function addAudiogramme($values, $mark_color) {
@@ -71,16 +82,7 @@ class AudiogrammeTympano extends Graph {
     // Empty plot case
     $datay = $values;
     mbRemoveValuesInArray("", $datay);
-    
     if (!count($datay)) {
-      foreach($pressions as $pression) {
-        $datay[] = 20;
-      }
-      $p1 = new LinePlot($datay);
-      $p1->SetWeight(0);
-      $p1->SetCenter();
-      
-      $this->Add($p1);
       return;
     }
     
@@ -96,7 +98,17 @@ class AudiogrammeTympano extends Graph {
       $jscalls[] = "javascript:changeTympanValue('$cote', $key)";
     }
     
-    $p1 = new LinePlot($values);
+    // Remove empty values to connect distant points
+    $datax = array();
+    $datay = array();
+    foreach($values as $key => $value) {
+      if ($value !== "") {
+        $datay[] = $value;
+        $datax[] = "$key"; // Needs to be a string when null
+      }
+    }
+    
+    $p1 = new LinePlot($datay, $datax);
 
     // Create the first line
     $p1->SetColor($mark_color);

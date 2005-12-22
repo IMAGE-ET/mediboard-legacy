@@ -67,6 +67,15 @@ class AudiogrammeTonal extends Graph {
     $this->yaxis->scale->ticks->Set(20, 10);
     $this->yaxis->scale->ticks->SupressZeroLabel(false);
     $this->yaxis->scale->ticks->SupressMinorTickMarks(false);
+
+    // Empty plots for scale window
+    foreach($frequences as $value) {
+      $datay[] = 100;
+    }
+    $p1 = new LinePlot($datay);
+    $p1->SetCenter();
+    
+    $this->Add($p1);
   }
   
   function addAudiogramme($values, $value_name, $title, $mark_color, $mark_type, $mark_file = null, $line = true) {
@@ -77,18 +86,6 @@ class AudiogrammeTonal extends Graph {
     $datay = $values;
     mbRemoveValuesInArray("", $datay);
     if (!count($datay)) {
-      foreach($frequences as $value) {
-        $datay[] = 100;
-      }
-      $p1 = new LinePlot($datay);
-      $p1->SetWeight(0);
-      $p1->SetLegend($title);
-      $p1->SetCenter();
-      $p1->mark->SetType($mark_type, $image_file, 1.0);
-      $p1->mark->SetColor($mark_color);
-      $p1->mark->SetFillColor("$mark_color@0.6");
-      
-      $this->Add($p1);
       return;
     }
     
@@ -107,7 +104,17 @@ class AudiogrammeTonal extends Graph {
       }
     }
     
-    $p1 = new LinePlot($values);
+    // Remove empty values to connect distant points
+    $datax = array();
+    $datay = array();
+    foreach($values as $key => $value) {
+      if ($value !== "") {
+        $datay[] = $value;
+        $datax[] = "$key"; // Needs to be a string when null
+      }
+    }
+    
+    $p1 = new LinePlot($datay, $datax);
 
     // Create the first line
     $p1->SetColor($mark_color);

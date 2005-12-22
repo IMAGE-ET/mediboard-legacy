@@ -254,11 +254,11 @@
         </td>
         
         <td rowspan="2">
-          {$map_tympan_gauche}
-          <img id="tympan_gauche" src="?m=dPcabinet&amp;a=graph_audio_tympan&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=gauche" usemap="#graph_tympan_gauche" onclick="changeTympanValueMouseGauche(event)" />
           {$map_tympan_droite}
+          <img id="tympan_droite" src="?m=dPcabinet&amp;a=graph_audio_tympan&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=droite" usemap="#graph_tympan_droite" onclick="changeTympanValueMouseDroite(event)" />
+          {$map_tympan_gauche}
           <br />
-          <img id="tympan_droite" src="?m=dPcabinet&amp;a=graph_audio_tympan&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=droite" usemap="#graph_tympan_gauche" onclick="changeTympanValueMouseDroite(event)" />
+          <img id="tympan_gauche" src="?m=dPcabinet&amp;a=graph_audio_tympan&amp;suppressHeaders=1&amp;consultation_id={$exam_audio->consultation_id}&amp;side=gauche" usemap="#graph_tympan_gauche" onclick="changeTympanValueMouseGauche(event)" />
         </td>
       </tr>
       <tr>
@@ -288,15 +288,6 @@
         {/foreach}
       </tr>
       <tr class="vocales">
-        <th>Oreille gauche :</th>
-        {foreach from=$frequences key=index item=frequence}
-        <td>
-          <input type="text" name="_gauche_vocale[{$index}][0]" title="num|minMax|0|120" value="{$exam_audio->_gauche_vocale.$index.0}" tabindex="{$index*2+200}" size="1" maxlength="3" />
-          <input type="text" name="_gauche_vocale[{$index}][1]" title="num|minMax|0|100" value="{$exam_audio->_gauche_vocale.$index.1}" tabindex="{$index*2+201}" size="1" maxlength="3" />
-        </td>
-        {/foreach}
-      </tr>
-      <tr class="vocales">
         <th>Oreille droite :</th>
         {foreach from=$frequences key=index item=frequence}
         <td>
@@ -305,25 +296,34 @@
         </td>
         {/foreach}
       </tr>
+      <tr class="vocales">
+        <th>Oreille gauche :</th>
+        {foreach from=$frequences key=index item=frequence}
+        <td>
+          <input type="text" name="_gauche_vocale[{$index}][0]" title="num|minMax|0|120" value="{$exam_audio->_gauche_vocale.$index.0}" tabindex="{$index*2+200}" size="1" maxlength="3" />
+          <input type="text" name="_gauche_vocale[{$index}][1]" title="num|minMax|0|100" value="{$exam_audio->_gauche_vocale.$index.1}" tabindex="{$index*2+201}" size="1" maxlength="3" />
+        </td>
+        {/foreach}
+      </tr>
 
       <tr class="vocales">
         <th class="category">Tympanométrie</th>
         {foreach from=$pressions item=pression}
         <th class="category">
-          {$pression}
+          {$pression} mm H²O
         </th>
-        {/foreach}
-      </tr>
-      <tr class="vocales">
-        <th>Oreille gauche</th>
-        {foreach from=$pressions key=index item=pression}
-        <td><input type="text" name="_gauche_tympan[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_tympan.$index}" tabindex="{$index+300}" size="4" maxlength="4" /></td>
         {/foreach}
       </tr>
       <tr class="vocales">
         <th>Oreille droite</th>
         {foreach from=$pressions key=index item=pression}
         <td><input type="text" name="_droite_tympan[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_droite_tympan.$index}" tabindex="{$index+310}" size="4" maxlength="4" /></td>
+        {/foreach}
+      </tr>
+      <tr class="vocales">
+        <th>Oreille gauche</th>
+        {foreach from=$pressions key=index item=pression}
+        <td><input type="text" name="_gauche_tympan[{$index}]" title="num|minMax|-10|120" value="{$exam_audio->_gauche_tympan.$index}" tabindex="{$index+300}" size="4" maxlength="4" /></td>
         {/foreach}
       </tr>
 

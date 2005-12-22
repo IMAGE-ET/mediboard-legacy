@@ -66,7 +66,27 @@ class AudiogrammeVocal extends Graph {
     $this->yaxis->scale->ticks->SupressZeroLabel(true);
     $this->yaxis->scale->ticks->SupressMinorTickMarks(false);
     
+    // Perfect audiogramme
+    $datax = array(0,  5, 10, 15, 22);
+    $datay = array(0, 10, 50, 98, 100);
+
+    $pa = new LinePlot($datay, $datax);
+//    $pa->SetWeight(0);
+//    $pa->mark->SetType(MARK_SQUARE);
+//    $pa->mark->SetWidth(2);
+//    $this->Add($pa);
+
+    $bezier = new Bezier($datax, $datay, 5);
+    list($datax, $datay) = $bezier->Get(20);
+
+    $pb = new LinePlot($datay, $datax);
+    $pb->SetColor("#999999");
+    $pb->SetWeight(2);
+    $this->Add($pb);
+    
     // Secondary x pseudo-axis
+    $datax = array();
+    $datay = array();
     for ($i = 10; $i < 120; $i += 10) {
       $datax[] = $i;
       $datay[] = 50 + ($i-10)/1000;
@@ -133,13 +153,13 @@ class AudiogrammeVocal extends Graph {
 //  
 //      $this->Add($p2);
       
-//      $spline = new Bezier($dBs, $pcs, 5);
-//      list($bdBs, $bpcs) = $spline->Get(40);
-//  
-//      $p3 = new LinePlot($bpcs, $bdBs);
-//      $p3->SetColor("$mark_color:1.8");
-//  
-//      $this->Add($p3);
+      $spline = new Bezier($dBs, $pcs, 5);
+      list($bdBs, $bpcs) = $spline->Get(40);
+  
+      $p3 = new LinePlot($bpcs, $bdBs);
+      $p3->SetColor("$mark_color:1.8");
+  
+      $this->Add($p3);
     }
 
     $this->Add($p1);
