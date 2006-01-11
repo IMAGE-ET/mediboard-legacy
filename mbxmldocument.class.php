@@ -7,8 +7,8 @@
 * @author Thomas Despoix
 */
 
-if (!preg_match("/5.\d+.\d+/", phpversion())) {
-	trigger_error("sorry, PHP5 is needed");
+if (!class_exists("DOMDocument")) {
+  trigger_error("sorry, DOMDocument is needed");
   return;
 }
 

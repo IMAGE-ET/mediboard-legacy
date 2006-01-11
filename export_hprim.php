@@ -9,8 +9,8 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
-if (!preg_match("/5.\d+.\d+/", phpversion())) {
-  $AppUI->setMsg("Désolé, l'export H'XML nécessite", UI_MSG_ERROR);
+if (!class_exists("DOMDocument")) {
+  trigger_error("sorry, DOMDocument is needed");
   return;
 }
 
