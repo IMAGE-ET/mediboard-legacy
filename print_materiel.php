@@ -26,7 +26,7 @@ $where["materiel"] = "!= ''";
 $where["plageop_id"] = "IS NOT NULL";
 $where[] = "plagesop.date BETWEEN '$deb' AND '$fin'";
 $order = array();
-$order[] = "date";
+$order[] = "plagesop.date";
 $order[] = "rank";
 
 $where1 = $where;

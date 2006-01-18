@@ -29,7 +29,7 @@ $where["plageop_id"] = "IS NOT NULL";
 $where["commande_mat"] = $typeAff ? "= 'o'" : "!= 'o'";
 $where["annulee"]      = $typeAff ? "= '1'" : "!= '1'";
 $order = array();
-$order[] = "date";
+$order[] = "plagesop.date";
 $order[] = "rank";
 
 $op = new COperation;

@@ -108,7 +108,7 @@ function pageMain() {
         <input type="hidden" name="m" value="{$m}" />
         <select name="typeAff" onchange="submit()">
           <option value="0" {if $typeAff == 0}selected="selected"{/if}>Matériel à commander</option>
-          <option value="1" {if $typeAff == 1}selected="selected"{/if}>Matériel annulé</option>
+          <option value="1" {if $typeAff == 1}selected="selected"{/if}>Matériel à annuler</option>
         </select>
       </form>
     </td>
