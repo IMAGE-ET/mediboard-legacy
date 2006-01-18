@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPpatients';
-$config['mod_version'] = '0.27';
+$config['mod_version'] = '0.28';
 $config['mod_directory'] = 'dPpatients';
 $config['mod_setup_class'] = 'CSetupdPpatients';
 $config['mod_type'] = 'user';
@@ -69,39 +69,39 @@ class CSetupdPpatients {
           "\nADD specialite TEXT AFTER prenom ;";
 	    db_exec( $sql ); db_error();
 
-        case "0.21":
-            $sql = "ALTER TABLE medecin " .
+    case "0.21":
+      $sql = "ALTER TABLE medecin " .
           "\nADD disciplines TEXT AFTER prenom ;";
-        db_exec( $sql ); db_error();
+      db_exec( $sql ); db_error();
 
-		case "0.22":
+    case "0.22":
 		    $sql = "ALTER TABLE `medecin`" .
 		  "\nCHANGE `adresse` `adresse` TEXT DEFAULT NULL ;";
         db_exec( $sql ); db_error();
         
         case "0.23":
-            $sql = "ALTER TABLE `medecin` ADD INDEX ( `nom` ) ;";
-        db_exec( $sql ); db_error();
-            $sql = "ALTER TABLE `medecin` ADD INDEX ( `prenom` ) ;";
-        db_exec( $sql ); db_error();
-            $sql = "ALTER TABLE `medecin` ADD INDEX ( `cp` ) ;";
-        db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `medecin` ADD INDEX ( `nom` ) ;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `medecin` ADD INDEX ( `prenom` ) ;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `medecin` ADD INDEX ( `cp` ) ;";
+          db_exec( $sql ); db_error();
         
         case "0.24":
           $sql = "ALTER TABLE `patients`" .
           		"\nADD `nom_jeune_fille` VARCHAR( 50 ) NOT NULL" .
           		"\nAFTER `nom` ;";
-        db_exec( $sql ); db_error();
+          db_exec( $sql ); db_error();
           $sql = "ALTER TABLE `patients`" .
           		"\nCHANGE `sexe` `sexe` ENUM( 'm', 'f', 'j' )" .
           		"\nDEFAULT 'm' NOT NULL ";
-        db_exec( $sql ); db_error();
+          db_exec( $sql ); db_error();
         
         case "0.25":
           $sql = "ALTER TABLE `patients`" .
           		"\nCHANGE `adresse` `adresse` TEXT" .
           		"\nNOT NULL ";
-        db_exec( $sql ); db_error();
+          db_exec( $sql ); db_error();
         
         case "0.26":
           $sql = "CREATE TABLE `antecedent` (
@@ -113,9 +113,14 @@ class CSetupdPpatients {
                   PRIMARY KEY ( `antecedent_id` ) ,
                   INDEX ( `patient_id` )
                   ) COMMENT = 'antecedents des patients';";
-        db_exec( $sql ); db_error();
+          db_exec( $sql ); db_error();
         
         case "0.27":
+          $sql = "ALTER TABLE `antecedent`" .
+              "CHANGE `type` `type`" .
+              "ENUM( 'trans', 'obst', 'chir', 'med', 'fam' )" .
+              "DEFAULT 'med' NOT NULL;";
+          db_exec( $sql ); db_error();
 			return true;
 		}
 
