@@ -12,7 +12,9 @@ function setClose(code) {
   <tr>
     <th class="category" colspan="2">
       <a href="index.php?m=dPcim10&amp;a=code_finder&amp;dialog=1&amp;code={$up->code}">
-        ^{$up->code}: {$up->libelle}^
+        <img src="modules/dPcim10/images/uparrow.png" />
+        {$up->code}: {$up->libelle}
+        <img src="modules/dPcim10/images/uparrow.png" />
       </a>
     </th>
   <tr>
@@ -88,7 +90,7 @@ function setClose(code) {
         <li>Pas d'information disponible</li>
       {/if}
     </td>
-    <td style="vertical-align:top;">
+    <td class="text" style="vertical-align:top;">
       {if $cim10->_levelsInf|@count or $cim10->_exclude|@count}
       <strong>Codes associés:</strong>
       <ul>
@@ -97,16 +99,13 @@ function setClose(code) {
         <ul>
           {foreach from=$cim10->_levelsInf item=curr_code}
           <li>
-            {if !$curr_code->_levelsInf|@count}
-              <button type="button" onclick="setClose('{$curr_code->code}')">
-                <img src="modules/dPcim10/images/tick.png" />
-              </button>
-            {else}
-              <button type="button">
-                <img src="modules/dPcim10/images/cross.png" />
-              </button>
-            {/if}
+            <button type="button" onclick="setClose('{$curr_code->code}')">
+              <img src="modules/dPcim10/images/tick.png" />
+            </button>
             <a class="action" href="index.php?m=dPcim10&amp;a=code_finder&amp;dialog=1&amp;code={$curr_code->code}">
+              <button type="button">
+                <img src="modules/dPcim10/images/downarrow.png" />
+              </button>
               {$curr_code->code}: {$curr_code->libelle}
             </a>
           </li>
@@ -119,16 +118,13 @@ function setClose(code) {
         <ul>
           {foreach from=$cim10->_exclude item=curr_code}
           <li>
-            {if !$curr_code->_levelsInf|@count}
-              <button type="button" onclick="setClose('{$curr_code->code}')">
-                <img src="modules/dPcim10/images/tick.png" />
-              </button>
-            {else}
-              <button type="button">
-                <img src="modules/dPcim10/images/cross.png" />
-              </button>
-            {/if}
+            <button type="button" onclick="setClose('{$curr_code->code}')">
+              <img src="modules/dPcim10/images/tick.png" />
+            </button>
             <a class="action" href="index.php?m=dPcim10&amp;a=code_finder&amp;dialog=1&amp;code={$curr_code->code}">
+              <button type="button">
+                <img src="modules/dPcim10/images/downarrow.png" />
+              </button>
               {$curr_code->code}: {$curr_code->libelle}
             </a>
           </li>

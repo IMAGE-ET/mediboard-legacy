@@ -29,7 +29,7 @@ foreach($cim10->_levelsInf as $key => $value) {
 
 $up = null;
 $i = count($cim10->_levelsSup);
-$i -= 2;
+$i -= 1;
 if($i >= 0)
   $up =& $cim10->_levelsSup[$i];
 
