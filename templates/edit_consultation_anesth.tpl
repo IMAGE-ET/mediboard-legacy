@@ -290,8 +290,11 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
           {foreach from=$curr_cat item=curr_code}
           <tr class="{$cat}">
             <td class="text">
-              <button type="button" onclick="selectCim10('{$curr_code->code}')">
+              <button type="button" onclick="putCim10('{$curr_code->code}')">
                 <img src="modules/dPcabinet/images/tick.png" />
+              </button>
+              <button type="button" onclick="selectCim10('{$curr_code->code}')">
+                <img src="modules/dPcabinet/images/downarrow.png" />
               </button>
               {$curr_code->code}: {$curr_code->libelle}
             </td>
@@ -350,10 +353,11 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
           <th><label for="type" title="Type d'antécédent">Type :</label></th>
           <td>
             <select name="type">
-              <option value="trans">Transfusion</option>
-              <option value="obst">Obstétrique</option>
               <option value="chir">Chirurgical</option>
+              <option value="fam">Familial</option>
+              <option value="obst">Obstétrique</option>
               <option value="med">Medical</option>
+              <option value="trans">Transfusion</option>
             </select>
           </td>
         </tr>

@@ -115,14 +115,14 @@ class CConsultation extends CMbObject {
     $this->_min  = intval(substr($this->heure, 3, 2));
 
     $etat = array();
-    $etat[CC_PLANIFIE]       = "Planifiée";
-    $etat[CC_PATIENT_ARRIVE] = "Patient arrivé";
+    $etat[CC_PLANIFIE]       = "Planif.";
+    $etat[CC_PATIENT_ARRIVE] = "Arrivé";
     $etat[CC_EN_COURS]       = "En cours";
-    $etat[CC_TERMINE]        = "Terminée";
+    $etat[CC_TERMINE]        = "Term.";
     if($this->chrono)
       $this->_etat = $etat[$this->chrono];
     if ($this->annule) {
-      $this->_etat = "Annulée";
+      $this->_etat = "Ann.";
     }
     $this->_check_premiere = $this->premiere;
   }

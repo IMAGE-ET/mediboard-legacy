@@ -25,26 +25,37 @@
 {if $listPlage}
 {foreach from=$listPlage item=curr_plage}
   <tr>
-    <th colspan="4" style="font-weight: bold;">Consultations de {$curr_plage->_hour_deb}h à {$curr_plage->_hour_fin}h</th>
+    <th colspan="5" style="font-weight: bold;">Consultations de {$curr_plage->_hour_deb}h à {$curr_plage->_hour_fin}h</th>
   </tr>
   <tr>
     <th>Heure</th>
     <th>Patient</th>
+    <th>Motif</th>
     <th>RDV</th>
     <th>Etat</th>
   </tr>
   {foreach from=$curr_plage->_ref_consultations item=curr_consult}
     {if $curr_consult->premiere} 
-      {assign var="style" value="style='background: #faa;'"}
+      {assign var="style" value="style='background: #faa;font-size: 9px;'"}
     {else} 
-      {assign var="style" value=""}
+      {assign var="style" value="style='font-size: 9px;'"}
     {/if}
   <tr {if $curr_consult->consultation_id == $consult->consultation_id} style="font-weight: bold;" {/if}>
     <td {$style}>
       <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">{$curr_consult->heure|truncate:5:"":true}</a>
     </td>
-    <td {$style}>
-      <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">{$curr_consult->_ref_patient->_view}</a>
+    <td class="text" {$style}>
+      <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+        {$curr_consult->_ref_patient->_view}
+        {if $curr_consult->_ref_patient->_age != "??"}
+          ({$curr_consult->_ref_patient->_age}&nbsp;ans)
+        {/if}
+      </a>
+    </td>
+    <td class="text" {$style}>
+      <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">
+        {$curr_consult->motif|nl2br|truncate:10:"...":true}
+      </a>
     </td>
     <td {$style}>
       <a href="index.php?m={$m}&amp;tab=edit_planning&amp;consultation_id={$curr_consult->consultation_id}" title="Modifier le RDV">
