@@ -113,7 +113,10 @@ class CDpObject {
     // Order by fields
     if (is_array($order)) {
       foreach ($order as $key => $field) {
-        $order[$key] = "`$field`";
+        // We cannot use the `` syntax because it wont work
+        // with table.field syntax, neither the ASC/DESC one
+        //$order[$key] = "`$field`";
+        $order[$key] = "$field";
       }
     }
     
