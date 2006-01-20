@@ -31,8 +31,8 @@ $n = count($listConsult);
 
 foreach($listConsult as $key => $value) {
   $sql = "UPDATE patients" .
-      "SET listCim10 = '".$value["listCim10"]."'" .
-      "WHERE patient_id = '".$value["patient_id"]."';";
+      "\nSET listCim10 = '".$value["listCim10"]."'" .
+      "\nWHERE patient_id = '".$value["patient_id"]."';";
   db_exec( $sql ); db_error();
 }
 
