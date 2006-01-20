@@ -1071,6 +1071,15 @@ table.selectCode td {
   padding: 1px 4px;
 }
 
+#admission td.halfPane {
+  white-space: normal;
+  vertical-align: top;
+  width: 50%;
+  background: transparent;
+  text-align: left;
+  padding: 1px 4px;
+}
+
 #admission td.info {
   white-space: normal;
   font-style: italic;
