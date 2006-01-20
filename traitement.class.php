@@ -11,28 +11,28 @@ require_once( $AppUI->getSystemClass ('mbobject' ) );
 
 require_once($AppUI->getModuleClass('dPpatients', 'patients'));
 
-class CAntecedent extends CMbObject {
+class CTraitement extends CMbObject {
   // DB Table key
-  var $antecedent_id = null;
+  var $traitement_id = null;
 
   // DB References
   var $patient_id = null;
 
   // DB fields
-  var $type = null;
-  var $date = null;
-  var $rques = null;
+  var $debut = null;
+  var $fin = null;
+  var $traitement = null;
   
   // Object References
   var $_ref_patient = null;
 
-  function CAntecedent() {
-    $this->CMbObject( 'antecedent', 'antecedent_id' );
+  function CTraitement() {
+    $this->CMbObject( 'traitement', 'traitement_id' );
 
     $this->_props["patient_id"] = "ref|notNull";
-    $this->_props["type"]       = "enum|trans|obst|chir|med|fam|notNull";
-    $this->_props["date"]       = "date|notNull";
-    $this->_props["rques"]      = "str";
+    $this->_props["debut"]      = "date|notNull";
+    $this->_props["fin"]        = "date";
+    $this->_props["traitement"] = "str";
   }
   
   function loadRefsFwd() {

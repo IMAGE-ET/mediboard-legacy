@@ -12,6 +12,7 @@ require_once($AppUI->getSystemClass('mbobject'));
 require_once($AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once($AppUI->getModuleClass('dPpatients', 'medecin') );
 require_once($AppUI->getModuleClass('dPpatients', 'antecedent') );
+require_once($AppUI->getModuleClass('dPpatients', 'traitement') );
 require_once($AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once($AppUI->getModuleClass('dPhospi', 'affectation') );
 
@@ -42,6 +43,11 @@ class CPatient extends CMbObject {
 	var $matricule = null;
 	var $SHS = null;
 	var $rques = null;
+  
+  var $listCim10 = null;
+  
+  // Other fields
+  var $_static_cim10 = null;
 
   // Form fields
   var $_naissance = null;
@@ -59,6 +65,7 @@ class CPatient extends CMbObject {
 	var $_tel24 = null;
 	var $_tel25 = null;
 	var $_age = null;
+  var $_codes_cim10 = null;
   
   // HPRIM Fields
   var $_prenoms = null; // multiple
@@ -72,6 +79,7 @@ class CPatient extends CMbObject {
   var $_ref_hospitalisations = null;
   var $_ref_consultations = null;
   var $_ref_antecedents = null;
+  var $_ref_traitements = null;
   var $_ref_curr_affectation = null;
   var $_ref_next_affectation = null;
   var $_ref_medecin_traitant = null;
@@ -82,29 +90,32 @@ class CPatient extends CMbObject {
 	function CPatient() {
 		$this->CMbObject('patients', 'patient_id');
     
-    $this->_props["nom"] = "str|notNull|confidential";
-    $this->_props["prenom"] = "str|notNull|confidential";
-    $this->_props["nom_jeune_fille"] = "str|confidential";
+    $this->_props["nom"]              = "str|notNull|confidential";
+    $this->_props["prenom"]           = "str|notNull|confidential";
+    $this->_props["nom_jeune_fille"]  = "str|confidential";
     $this->_props["medecin_traitant"] = "ref";
-    $this->_props["medecin1"] = "ref";
-    $this->_props["medecin2"] = "ref";
-    $this->_props["medecin3"] = "ref";
-    $this->_props["matricule"] = "code|insee|confidential";
-    $this->_props["SHS"] = "num|maxLength|10|confidential";
-    $this->_props["sexe"] = "enum|m|f|j";
-    $this->_props["adresse"] = "str|confidential";
-    $this->_props["ville"] = "str|confidential";
-    $this->_props["cp"] = "num|length|5|confidential";
-    $this->_props["tel"] = "num|length|10|confidential";
-    $this->_props["tel2"] = "num|length|10|confidential";
+    $this->_props["medecin1"]         = "ref";
+    $this->_props["medecin2"]         = "ref";
+    $this->_props["medecin3"]         = "ref";
+    $this->_props["matricule"]        = "code|insee|confidential";
+    $this->_props["SHS"]              = "num|maxLength|10|confidential";
+    $this->_props["sexe"]             = "enum|m|f|j";
+    $this->_props["adresse"]          = "str|confidential";
+    $this->_props["ville"]            = "str|confidential";
+    $this->_props["cp"]               = "num|length|5|confidential";
+    $this->_props["tel"]              = "num|length|10|confidential";
+    $this->_props["tel2"]             = "num|length|10|confidential";
     $this->_props["incapable_majeur"] = "enum|o|n";
-    $this->_props["ATNC"] = "enum|o|n";
-    $this->_props["naissance"] = "date|confidential";
-    $this->_props["rques"] = "text";
+    $this->_props["ATNC"]             = "enum|o|n";
+    $this->_props["naissance"]        = "date|confidential";
+    $this->_props["rques"]            = "text";
+    $this->_props["listCim10"]        = "str";
+
+    $this->buildEnums();
 	}
   
   function updateFormFields() {
-    
+
     $this->nom = strtoupper($this->nom);
     $this->prenom = ucwords(strtolower($this->prenom));
     
@@ -150,6 +161,15 @@ class CPatient extends CMbObject {
     else
       $this->_shortview = "Mlle.";
     $this->_view = $this->_shortview." $this->nom $this->prenom";
+    
+    // Codes CIM10
+    $this->_codes_cim10 = array();
+    $arrayCodes = array();
+    if($this->listCim10)
+      $arrayCodes = explode("|", $this->listCim10);
+    foreach($arrayCodes as $value) {
+      $this->_codes_cim10[] = new CCodeCim10($value, 1);
+    }
   }
   
   function updateDBFields() {
@@ -200,6 +220,12 @@ class CPatient extends CMbObject {
       'idfield' => 'antecedent_id', 
       'joinfield' => 'patient_id'
     );
+    $tables[] = array (
+      'label' => 'traitement(s)', 
+      'name' => 'traitement', 
+      'idfield' => 'traitement_id', 
+      'joinfield' => 'patient_id'
+    );
     
     return parent::canDelete( $msg, $oid, $tables );
   }
@@ -239,6 +265,13 @@ class CPatient extends CMbObject {
     $where["patient_id"] = "= '$this->patient_id'";
     $order = "type, date DESC";
     $this->_ref_antecedents = $this->_ref_antecedents->loadList($where, $order);
+    
+    // traitements
+    $this->_ref_traitements = new CTraitement;
+    $where = array();
+    $where["patient_id"] = "= '$this->patient_id'";
+    $order = "fin DESC, debut DESC";
+    $this->_ref_traitements = $this->_ref_traitements->loadList($where, $order);
     
     // affectation actuelle et prochaine affectation
   	$this->_ref_curr_affectation = new CAffectation();
@@ -282,6 +315,49 @@ class CPatient extends CMbObject {
     // medecin3
     $this->_ref_medecin3 = new CMedecin();
     $this->_ref_medecin3->load($this->medecin3);
+  }
+  
+  // Liste statique des codes CIM10 initiaux
+  function loadStaticCIM10($user = 0) {
+    
+    // Liste des favoris
+    if($user) {
+      $favoris = new CFavoricim10;
+      $where = array();
+      $where["favoris_user"] = "= '$user'";
+      $order = "favoris_code";
+      $favoris = $favoris->loadList($where, $order);
+      foreach($favoris as $key => $value) {
+        $this->_static_cim10["favoris"][] = new CCodeCIM10($value->favoris_code, 1);
+      }
+    }
+    
+    // Liste statique
+    //$this->_static_cim10["cardiovasculaire"][] = new CCodeCIM10("I20", 1);       // Angor
+    //$this->_static_cim10["cardiovasculaire"][] = new CCodeCIM10("I21", 1);       // Infarctus
+    $this->_static_cim10["cardiovasculaire"][] = new CCodeCIM10("(I20-I25)", 1); // Cardiopathies ischemiques
+    $this->_static_cim10["cardiovasculaire"][] = new CCodeCIM10("J81", 1);       // O.A.P ?
+    $this->_static_cim10["cardiovasculaire"][] = new CCodeCIM10("R60", 1);       // Oedemes
+    $this->_static_cim10["cardiovasculaire"][] = new CCodeCIM10("I776", 1);      // Artérite
+    $this->_static_cim10["cardiovasculaire"][] = new CCodeCIM10("R943", 1);      // ECG
+    $this->_static_cim10["cardiovasculaire"][] = new CCodeCIM10("I10", 1);       // HTA
+    $this->_static_cim10["respiratoire"][]     = new CCodeCIM10("A15", 1);       // Pleurésie1
+    $this->_static_cim10["respiratoire"][]     = new CCodeCIM10("A16", 1);       // Pleurésie2
+    $this->_static_cim10["respiratoire"][]     = new CCodeCIM10("(J10-J18)", 1); // Pneumonie
+    $this->_static_cim10["respiratoire"][]     = new CCodeCIM10("J45", 1);       // Asthme
+    $this->_static_cim10["respiratoire"][]     = new CCodeCIM10("J180", 1);      // BPCO
+    $this->_static_cim10["respiratoire"][]     = new CCodeCIM10("R230", 1);      // Cyanose
+    $this->_static_cim10["divers"][]           = new CCodeCIM10("Z88", 1);       // Allergies
+    $this->_static_cim10["divers"][]           = new CCodeCIM10("(B15-B19)", 1); // Hepatite
+    $this->_static_cim10["divers"][]           = new CCodeCIM10("(E10-E14)", 1); // Diabete
+    $this->_static_cim10["divers"][]           = new CCodeCIM10("H40", 1)      ; // Glaucome
+    
+    // Sommaire complet
+    $sommaire = new CCodeCIM10();
+    $sommaire = $sommaire->getSommaire();
+    foreach($sommaire as $key => $value) {
+      $this->_static_cim10["sommaire"][] = new CCodeCIM10($value["code"], 1);
+    }
   }
 
   function getSiblings() {

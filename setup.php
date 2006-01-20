@@ -121,7 +121,22 @@ class CSetupdPpatients {
               "ENUM( 'trans', 'obst', 'chir', 'med', 'fam' )" .
               "DEFAULT 'med' NOT NULL;";
           db_exec( $sql ); db_error();
-			return true;
+          $sql = "ALTER TABLE `patients`" .
+              "ADD `listCim10` TEXT DEFAULT NULL ;";
+          db_exec( $sql ); db_error();
+          $sql = "CREATE TABLE `traitement` (
+                  `traitement_id` BIGINT NOT NULL AUTO_INCREMENT ,
+                  `patient_id` BIGINT NOT NULL ,
+                  `debut` DATE DEFAULT '0000-00-00' NOT NULL ,
+                  `fin` DATE,
+                  `traitement` TEXT,
+                  PRIMARY KEY ( `traitement_id` ) ,
+                  INDEX ( `patient_id` )
+                  ) COMMENT = 'traitements des patients';";
+          db_exec( $sql ); db_error();
+        
+        case "0.28":
+			    return true;
 		}
 
 		return false;

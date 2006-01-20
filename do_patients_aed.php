@@ -25,8 +25,9 @@ class CDoPatientAddEdit extends CDoObjectAddEdit {
       $this->redirectStore  .= $this->redirect."&a=vw_edit_patients&dialog=1";
     }
     else {
-      $this->redirectDelete .= $this->redirect."&tab=vw_edit_patients";
-      $this->redirectStore  .= $this->redirect."&tab=vw_edit_patients";
+      $tab = dPgetParam($_POST, 'tab', 'vw_edit_patients');
+      $this->redirectDelete .= $this->redirect."&tab=$tab";
+      $this->redirectStore  .= $this->redirect."&tab=$tab";
     }
   }
   
