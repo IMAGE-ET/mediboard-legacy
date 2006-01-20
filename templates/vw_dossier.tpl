@@ -120,7 +120,7 @@ function imprimerDocument(doc_id) {
           <th>Diagnostics</th>
           <td class="text" colspan="3">
             <ul>
-              {foreach from=$curr_op->_ref_consult_anesth->_codes_cim10 item=curr_code}
+              {foreach from=$patient->_codes_cim10 item=curr_code}
               <li>
                 {$curr_code->code}: {$curr_code->libelle}
               </li>
@@ -138,9 +138,30 @@ function imprimerDocument(doc_id) {
               <li>
                 {$curr_ant->type} le {$curr_ant->date|date_format:"%d/%m/%Y"} :
                 <i>{$curr_ant->rques}</i>
+                </form>
               </li>
               {foreachelse}
               <li>Pas d'antécédents</li>
+              {/foreach}
+            </ul>
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <th>Traitements</th>
+          <td class="text" colspan="3">
+            <ul>
+              {foreach from=$patient->_ref_traitements item=curr_trmt}
+              <li>
+                {if $curr_trmt->fin}
+                  Du {$curr_trmt->debut|date_format:"%d/%m/%Y"} au {$curr_trmt->fin|date_format:"%d/%m/%Y"}
+                {else}
+                  Depuis le {$curr_trmt->debut|date_format:"%d/%m/%Y"}
+                {/if}
+                : <i>{$curr_trmt->traitement}</i>
+                </form>
+              </li>
+              {foreachelse}
+              <li>Pas de traitements</li>
               {/foreach}
             </ul>
           </td>
@@ -164,10 +185,40 @@ function imprimerDocument(doc_id) {
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
-          <th>Heures</th>
-          <td class="text" colspan="3">
-            Entrée en salle à {$curr_op->entree_bloc|date_format:"%Hh%M"},
-            sortie à {$curr_op->sortie_bloc|date_format:"%Hh%M"}
+          <th rowspan="6">Heures</th>
+          <th>Entrée en salle</th>
+          <td colspan="2">
+            {$curr_op->entree_bloc|date_format:"%Hh%M"}
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <th>Pose du garrot</th>
+          <td colspan="2">
+            {$curr_op->pose_garrot|date_format:"%Hh%M"}
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <th>Début d'intervention</th>
+          <td colspan="2">
+            {$curr_op->debut_op|date_format:"%Hh%M"}
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <th>Fin d'intervention</th>
+          <td colspan="2">
+            {$curr_op->fin_op|date_format:"%Hh%M"}
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <th>Retrait du garrot</th>
+          <td colspan="2">
+            {$curr_op->retrait_garrot|date_format:"%Hh%M"}
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <th>Sortie de salle</th>
+          <td colspan="2">
+            {$curr_op->sortie_bloc|date_format:"%Hh%M"}
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
