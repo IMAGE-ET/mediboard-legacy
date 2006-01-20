@@ -547,6 +547,10 @@ class COperation extends CMbObject {
     $template->addProperty("Opération - heure", mbTranformTime(null, $this->time_operation, $timeFormat));
     $template->addProperty("Opération - durée", mbTranformTime(null, $this->temp_operation, $timeFormat));
     $template->addProperty("Opération - entrée bloc",  mbTranformTime(null, $this->entree_bloc, $timeFormat));
+    $template->addProperty("Opération - pose garrot",  mbTranformTime(null, $this->pose_garrot, $timeFormat));
+    $template->addProperty("Opération - début op",  mbTranformTime(null, $this->debut_op, $timeFormat));
+    $template->addProperty("Opération - fin op",  mbTranformTime(null, $this->fin_op, $timeFormat));
+    $template->addProperty("Opération - retrait garrot",  mbTranformTime(null, $this->retrait_garrot, $timeFormat));
     $template->addProperty("Opération - sortie bloc",  mbTranformTime(null, $this->sortie_bloc, $timeFormat));
     $template->addProperty("Opération - depassement", $this->depassement);
     $template->addProperty("Opération - exams pre-op", nl2br($this->examen));
