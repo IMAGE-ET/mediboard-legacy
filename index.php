@@ -42,6 +42,7 @@ $tabBox->add("export_hprim", "Export HPRIM");
 $tabBox->add("send_mail", "Envoie de mails");
 $tabBox->add("consult_anesth", "maj consult anesth");
 $tabBox->add("codes_ccam", "maj codes ccam");
+$tabBox->add("diag_patient", "maj diagnostics patients");
 $tabBox->show();
 
 ?>
