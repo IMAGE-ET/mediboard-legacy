@@ -35,13 +35,17 @@
     <th>Etat</th>
   </tr>
   {foreach from=$curr_plage->_ref_consultations item=curr_consult}
-    {if $curr_consult->premiere} 
-      {assign var="style" value="style='background: #faa;font-size: 9px;'"}
-    {else} 
-      {assign var="style" value="style='font-size: 9px;'"}
-    {/if}
-  <tr {if $curr_consult->consultation_id == $consult->consultation_id} style="font-weight: bold;" {/if}>
+  {if $curr_consult->premiere} 
+    {assign var="style" value="style='background: #faa;font-size: 9px;'"}
+  {else} 
+    {assign var="style" value="style='font-size: 9px;'"}
+  {/if}
+  <tr>
+    {if $curr_consult->consultation_id == $consult->consultation_id}
+    <td style='font-size: 9px;background: #aaf;'>
+    {else}
     <td {$style}>
+    {/if}
       <a href="index.php?m={$m}&amp;tab=edit_consultation&amp;selConsult={$curr_consult->consultation_id}">{$curr_consult->heure|truncate:5:"":true}</a>
     </td>
     <td class="text" {$style}>

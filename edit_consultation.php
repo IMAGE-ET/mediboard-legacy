@@ -74,6 +74,7 @@ if ($selConsult) {
   }
   $patient =& $consult->_ref_patient;
   $patient->loadRefs();
+  $patient->loadStaticCIM10($userSel->user_id);
   foreach ($patient->_ref_consultations as $key => $value) {
     $patient->_ref_consultations[$key]->loadRefs();
     $patient->_ref_consultations[$key]->_ref_plageconsult->loadRefs();
