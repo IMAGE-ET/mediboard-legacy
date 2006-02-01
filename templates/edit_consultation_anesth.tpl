@@ -30,32 +30,6 @@ function submitConsultWithChrono(chrono) {
   form.submit();
 }
 
-function selectCim10(code) {
-  var url = new Url;
-  url.setModuleAction("dPcim10", "code_finder");
-  url.addParam("code", code);
-  url.popup(800, 500, "CIM10");
-}
-
-function putCim10(code) {
-  var oForm = document.editDiagFrm;
-  aCim10 = oForm.listCim10.value.split("|");
-  // Si la chaine est vide, il crée un tableau à un élément vide donc :
-  aCim10.removeByValue("");
-  aCim10.push(code);
-  aCim10.removeDuplicates();
-  oForm.listCim10.value = aCim10.join("|");
-  oForm.submit();
-}
-
-function delCim10(code) {
-  var oForm = document.editDiagFrm;
-  var aCim10 = oForm.listCim10.value.split("|");
-  aCim10.removeByValue(code);
-  oForm.listCim10.value = aCim10.join("|");
-  oForm.submit();
-}
-
 function finTrmt() {
   var oForm = document.editTrmtFrm;
   var oEnCours = oForm._en_cours;
@@ -77,13 +51,9 @@ function finTrmt() {
 
 function pageMain() {
   incPatientHistoryMain();
-  
+  incAntecedantsMain();
+    
   {/literal}
-  
-  {foreach from=$consult_anesth->_static_cim10 key=cat item=curr_cat}
-  initEffectClass("group{$cat}"   , "trigger{$cat}");
-
-  {/foreach}
   
   {if $consult->consultation_id}
   initEffectClass("listConsult", "triggerList");
@@ -196,7 +166,7 @@ Par le Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}
     <td class="readonly">
       {$patient->_view}
       <br />
-      Age: {$patient->_age} ans
+      Age : {$patient->_age} ans
       <br />
       <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$patient->patient_id}">
         Consulter le dossier

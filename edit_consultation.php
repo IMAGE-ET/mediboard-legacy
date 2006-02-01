@@ -14,8 +14,7 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'tarif') );
 require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
-require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie') );
-
+  
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -184,6 +183,14 @@ $smarty->assign('anesth', $anesth);
 $smarty->assign('consult', $consult);
 
 if($consult->_ref_chir->isFromType(array("Anesthésiste")) || $consult->_ref_consult_anesth->consultation_anesth_id) {
+  $antecedent = new CAntecedent();
+  $antecedent->loadAides("dPpatients", "Antecedent", $userSel->user_id);
+  $smarty->assign("antecedent", $antecedent);
+
+  $traitement = new CTraitement();
+  $traitement->loadAides("dPpatients", "Traitement", $userSel->user_id);
+  $smarty->assign("traitement", $traitement);
+  
   $smarty->assign('consult_anesth', $consult->_ref_consult_anesth);
   $smarty->display('edit_consultation_anesth.tpl');
 } else {

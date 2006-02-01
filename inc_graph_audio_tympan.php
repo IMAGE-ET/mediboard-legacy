@@ -95,7 +95,7 @@ class AudiogrammeTympano extends Graph {
       $pression = $pressions[$key];
       $jstitle = strtr($title, "\n", " ");
       $labels[] = "Modifier l'admittance {$value} ml pour $jstitle à la pression $pression mm H²0";
-      $jscalls[] = "javascript:changeTympanValue('$cote', $key)";
+      $jscalls[] = "javascript:changeTympanValue('$cote',$key)";
     }
     
     // Remove empty values to connect distant points

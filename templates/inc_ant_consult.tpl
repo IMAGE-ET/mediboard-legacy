@@ -1,5 +1,58 @@
+<script type="text/javascript">
+{literal}
+
+function selectCim10(code) {
+  var url = new Url;
+  url.setModuleAction("dPcim10", "code_finder");
+  url.addParam("code", code);
+  url.popup(800, 500, "CIM10");
+}
+
+function putCim10(code) {
+  var oForm = document.editDiagFrm;
+  aCim10 = oForm.listCim10.value.split("|");
+  // Si la chaine est vide, il crée un tableau à un élément vide donc :
+  aCim10.removeByValue("");
+  aCim10.push(code);
+  aCim10.removeDuplicates();
+  oForm.listCim10.value = aCim10.join("|");
+  oForm.submit();
+}
+
+function delCim10(code) {
+  var oForm = document.editDiagFrm;
+  var aCim10 = oForm.listCim10.value.split("|");
+  aCim10.removeByValue(code);
+  oForm.listCim10.value = aCim10.join("|");
+  oForm.submit();
+}
+
+function pasteHelperContent(oHelpElement) {
+  var aFound = oHelpElement.name.match(/_helpers_(.*)/);
+  if (aFound.length != 2) throwError(printf("Helper element '%s' is not of the form '_helpers_propname'", oHelpElement.name));
+  
+  var oForm = oHelpElement.form;    
+  var sPropName = aFound[1];
+  var oAreaField = oForm.elements[sPropName];
+  if (!oAreaField) throwError(printf("Helper element '%s' has no corresponding property element '%s' in the same form", oHelpElement.name, sPropName));
+
+  insertAt(oAreaField, oHelpElement.value + '\n')
+  oHelpElement.value = 0;
+}
+
+function incAntecedantsMain() {
+  {/literal}
+  {foreach from=$patient->_static_cim10 key=cat item=curr_cat}
+  initEffectClass("group{$cat}"   , "trigger{$cat}");
+  {/foreach}
+  {literal}
+}
+
+{/literal}
+</script>
+
 <table class="form">
-  <tr><th class="category" colspan="2">Antécédents / traitements</th></tr>
+  <tr><th class="category" colspan="2">Antécédents / Traitements</th></tr>
   <tr>
     <td class="text">
       <strong>Ajouter un diagnostic</strong>
@@ -33,7 +86,9 @@
       {/foreach}
       </table>
       </form>
+      
       <hr />
+      
       <form name="editAntFrm" action="?m=dPcabinet" method="post">
       <input type="hidden" name="m" value="dPpatients" />
       <input type="hidden" name="del" value="0" />
@@ -42,7 +97,14 @@
       <table class="form">
         <tr>
           <td colspan="2"><strong>Ajouter un antécédent</strong></td>
-          <td><label for="rques" title="Remarques sur l'antécédent">Remarques :</label></td>
+          <td>
+            <label for="rques" title="Remarques sur l'antécédent">Remarques :</label>
+            <select name="_helpers_rques" size="1" onchange="pasteHelperContent(this)">
+              <option value="0">&mdash; Choisir une aide</option>
+              {html_options options=$antecedent->_aides.rques}
+            </select>
+          </td>
+
         </tr>
         <tr>
           <th><label for="date" title="Date de l'antécédent">Date :</label></th>
@@ -74,16 +136,26 @@
         </tr>
       </table>
       </form>
+      
       <hr />
+
       <form name="editTrmtFrm" action="?m=dPcabinet" method="post">
+      
       <input type="hidden" name="m" value="dPpatients" />
       <input type="hidden" name="del" value="0" />
       <input type="hidden" name="dosql" value="do_traitement_aed" />
       <input type="hidden" name="patient_id" value="{$patient->patient_id}" />
+      
       <table class="form">
         <tr>
           <td colspan="2"><strong>Ajouter un traitement</strong></td>
-          <td><label for="traitement" title="Traitement">Traitement :</label></td>
+          <td>
+            <label for="traitement" title="Traitement">Traitement :</label>
+            <select name="_helpers_traitement" size="1" onchange="pasteHelperContent(this)">
+              <option value="0">&mdash; Choisir une aide</option>
+              {html_options options=$traitement->_aides.traitement}
+            </select>
+          </td>
         </tr>
         <tr>
           <th><label for="debut" title="Début du traitement">Début :</label></th>
@@ -114,6 +186,7 @@
         </tr>
       </table>
       </form>
+      
     </td>
     <td class="text">
       <strong>Diagnostics du patient</strong>
