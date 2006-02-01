@@ -23,11 +23,17 @@ $users = $users->loadPraticiens(PERM_EDIT);
 // Modules, classes & fields
 $modules = array (
   "dPcabinet" => array (
-    "Consultation" => array ("motif", "rques", "examen", "traitement", "compte_rendu")),
+    "Consultation" => array ("motif", "rques", "examen", "traitement", "compte_rendu"),
+    ),
+    
   "dPplanningOp" => array (
-    "Operations" => array ("examen", "materiel", "convalescence")),
+    "Operations" => array ("examen", "materiel", "convalescence"),
+    ),
   "dPpatients" => array (
-    "Patient" => array ("remarques"))
+    "Patient" => array ("remarques"),
+    "Antecedent" => array ("rques"),
+    "Traitement" => array ("traitement"),
+    )
   );
 
 // Noms de modules
