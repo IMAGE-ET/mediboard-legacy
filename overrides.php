@@ -71,7 +71,10 @@ class CTitleBlock extends CTitleBlock_core {
 //
 class CTabBox extends CTabBox_core {
   function CTabBox($baseHRef, $baseInc, $active) {
-    parent::CTabBox($baseHRef, $baseInc, $active);
+    $this->tabs = array();
+    $this->active = $active;
+    $this->baseHRef = ($baseHRef ? "$baseHRef&amp;" : "?");
+    $this->baseInc = $baseInc;
   }
 
   function show( $extra='' ) {
