@@ -30,9 +30,6 @@
 </head>
 
 <body onload="main()">
-<div style="background: #aaa; color: #fff;">
-<strong>Important</strong> : Suite à un incident matériel survenu le mardi 27 décembre 2006 à 14h20, toute information saisie dans Mediboard de 03h00 à 14h20 ce mardi sont indisponibles pour l'instant.
-</div>
 
 <?php 
 	$dialog = dPgetParam( $_GET, 'dialog');
@@ -40,6 +37,10 @@
 		// top navigation menu
 		$nav = $AppUI->getMenuModules();
 ?>
+
+<div style="background: #aaa; color: #fff;">
+<strong>Important</strong> : Suite à un incident matériel survenu le mardi 27 décembre 2006 à 14h20, toute information saisie dans Mediboard de 03h00 à 14h20 ce mardi sont indisponibles pour l'instant.
+</div>
 
 <table id="header" cellspacing="0"><!-- IE Hack: cellspacing should be useless --> 
 <tr>
