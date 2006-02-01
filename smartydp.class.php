@@ -27,12 +27,12 @@ function include_script($params, &$smarty) {
     $module = $m;
     $source = null;
 
-    foreach($params as $_key => $_val) {
+    foreach ($params as $_key => $_val) {
         switch($_key) {
             case 'module':
                 $$_key = $_val;
                 break;
-            case 'soure':
+            case 'source':
                 $$_key = $_val;
                 break;
         }
@@ -70,7 +70,7 @@ class CSmartyDP extends Smarty {
     
     // Debugginf directives
     $this->debug_tpl = "$root/classes/smarty_debug.tpl";
-    $this->debugging = false; // $dPconfig['debug'];
+    $this->debugging = $dPconfig['debug'];
 
     // Standard data assignment
     $this->assign("app", $AppUI);

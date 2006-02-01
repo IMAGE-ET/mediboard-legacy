@@ -8,6 +8,7 @@
 */
 
 require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getModuleClass('dPcompteRendu', 'aidesaisie') );
 
 function htmlReplace($find, $replace, &$source) {
   $matches = array();
@@ -32,6 +33,8 @@ function purgeHtmlText($regexps, &$source) {
  * @abstract Adds Mediboard abstraction layer functionality
  */
 class CMbObject extends CDpObject {
+  
+  var $_aides = array();
   /*
    * Properties  specification
    */
@@ -428,7 +431,11 @@ class CMbObject extends CDpObject {
       switch ($specFragments[0]) {
         // Reference to another object : do nothing
         case "ref":
+          break;
           
+        // regular string
+        case "text": 
+          $propValue = $this->randomString($chars, 40);
           break;
           
         // regular string
@@ -586,6 +593,31 @@ class CMbObject extends CDpObject {
     }
 
      return true;
+  }
+  
+  function loadAides($m, $class, $user_id) {
+    // Initialisation to prevent understandable smarty notices
+    foreach ($this->_props as $propName => $propSpec) {
+      $specFragments = explode("|", $propSpec);
+      if (array_search("text", $specFragments) !== false) {
+        $this->_aides[$propName] = null;
+      }
+    }
+
+    // Load appropriate Aides
+    $where = array();
+    $where["user_id"] = " = '$user_id'";
+    $where["module"] = " = '$m'";
+    $where["class"] = " = '$class'";
+    
+    $aides = new CAideSaisie();
+    $aides = $aides->loadList($where);
+        
+    // Aides mapping suitable for select options
+    foreach ($aides as $aide) {
+      $this->_aides[$aide->field][$aide->text] = $aide->name;  
+    }
+    
   }
 }
 ?>
