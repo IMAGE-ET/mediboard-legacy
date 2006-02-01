@@ -32,7 +32,7 @@ class CAntecedent extends CMbObject {
     $this->_props["patient_id"] = "ref|notNull";
     $this->_props["type"]       = "enum|trans|obst|chir|med|fam|notNull";
     $this->_props["date"]       = "date|notNull";
-    $this->_props["rques"]      = "str";
+    $this->_props["rques"]      = "text";
   }
   
   function loadRefsFwd() {
