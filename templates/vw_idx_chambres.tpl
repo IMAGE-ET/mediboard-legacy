@@ -2,45 +2,11 @@
 <script type="text/javascript">
 
 function pageMain() {
-  initGroups("service");
-}
-
-function checkChambre() {
-  var form = document.editChambre;
-  var field = null;
-    
-  if (field = form.nom) {
-    if (field.value.length == 0) {
-      alert("Intitulé manquant");
-      field.focus();
-      return false;
-    }
-  }
-    
-  if (field = form.service_id) {
-    if (field.value == 0) {
-      alert("Service manquant");
-      field.focus();
-      return false;
-    }
-  }
-    
-  return true;
-}
-
-function checkLit() {
-  var form = document.editLit;
-  var field = null;
-    
-  if (field = form.nom) {
-    if (field.value.length == 0) {
-      alert("Intitulé manquant");
-      field.focus();
-      return false;
-    }
-  }
-    
-  return true;
+  {/literal}
+  {foreach from=$services item=curr_service}
+  initEffectClass("groupservice{$curr_service->service_id}", "triggerservice{$curr_service->service_id}");
+  {/foreach}
+  {literal}
 }
 
 </script>
@@ -64,11 +30,12 @@ function checkLit() {
     </tr>
     
 	{foreach from=$services item=curr_service}
-	<tr class="groupcollapse" id="service{$curr_service->service_id}" onclick="flipGroup({$curr_service->service_id}, 'service')">
+	<tr class="triggerShow" id="triggerservice{$curr_service->service_id}" onclick="flipEffectElement('groupservice{$curr_service->service_id}', 'SlideDown', 'SlideUp', 'triggerservice{$curr_service->service_id}')"
 	  <td colspan="4">{$curr_service->nom}</td>
 	</tr>
+  <tbody id="groupservice{$curr_service->service_id}" style="display: none">
 	{foreach from=$curr_service->_ref_chambres item=curr_chambre}
-    <tr class="service{$curr_service->service_id}">
+    <tr>
       <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_chambre->chambre_id}&amp;lit_id=0">{$curr_chambre->nom}</a></td>
       <td class="text">{$curr_chambre->caracteristiques|nl2br}</td>
       <td>
@@ -78,7 +45,8 @@ function checkLit() {
       </td>
     </tr>
     {/foreach}
-    {/foreach}
+  </tbody>
+  {/foreach}
       
     </table>
 
@@ -88,7 +56,7 @@ function checkLit() {
 
     <a href="index.php?m={$m}&amp;tab={$tab}&amp;chambre_id=0"><strong>Créer un chambre</strong></a>
 
-    <form name="editChambre" action="?m={$m}" method="post" onsubmit="return checkChambre()">
+    <form name="editChambre" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
 
     <input type="hidden" name="dosql" value="do_chambre_aed" />
     <input type="hidden" name="chambre_id" value="{$chambreSel->chambre_id}" />
@@ -107,14 +75,14 @@ function checkLit() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="nom" title="intitulé du chambre, obligatoire.">Intitulé:</label></th>
-      <td><input type="text" name="nom" value="{$chambreSel->nom}" /></td>
+      <th><label for="nom" title="intitulé du chambre, obligatoire.">Intitulé :</label></th>
+      <td><input type="text" name="nom" title="{$chambreSel->_props.nom}" value="{$chambreSel->nom}" /></td>
     </tr>
 
 	<tr>
-      <th class="mandatory"><label for="service_id" title="Service auquel la chambre est rattaché, obligatoire.">Service:</label></th>
+     <th><label for="service_id" title="Service auquel la chambre est rattaché, obligatoire.">Service :</label></th>
 	  <td>
-        <select name="service_id">
+        <select name="service_id" title="{$chambreSel->_props.service_id}">
           <option value="">&mdash; Choisir un service &mdash;</option>
         {foreach from=$services item=curr_service}
           <option value="{$curr_service->service_id}" {if $curr_service->service_id == $chambreSel->service_id}selected="selected"{/if}>{$curr_service->nom}</option>
@@ -124,7 +92,7 @@ function checkLit() {
 	</tr>
 	    
     <tr>
-      <th><label for="caracteristiques" title="Caracteristiques du chambre.">Caractéristiques:</label></th>
+      <th><label for="caracteristiques" title="Caracteristiques du chambre.">Caractéristiques :</label></th>
       <td>
         <textarea name="caracteristiques" rows="4">{$chambreSel->caracteristiques}</textarea></td>
     </tr>
@@ -144,10 +112,18 @@ function checkLit() {
     </table>
 
 	</form>
-    
+
+  {if $chambreSel->chambre_id}
+  <strong><a href="?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_lit->chambre_id}&amp;lit_id=0">Ajouter un lit<a/></strong>
+
+  <form name="editLit" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
+
+  <input type="hidden" name="dosql" value="do_lit_aed" />
+  <input type="hidden" name="lit_id" value="{$litSel->lit_id}" />
+  <input type="hidden" name="chambre_id" value="{$chambreSel->chambre_id}" />
+  <input type="hidden" name="del" value="0" />
     <table class="form">
 
-    {if $chambreSel->chambre_id}
     <tr>
       <th class="category" colspan="2">Lits</th>
     {foreach from=$chambreSel->_ref_lits item=curr_lit}
@@ -155,31 +131,24 @@ function checkLit() {
       <th>Lit:</th>
       <td><a href="?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_lit->chambre_id}&amp;lit_id={$curr_lit->lit_id}">{$curr_lit->nom}</a></td>
     </tr>
-	{/foreach}
+	  {/foreach}
     <tr>
-      <td><strong><a href="?m={$m}&amp;tab={$tab}&amp;chambre_id={$curr_lit->chambre_id}&amp;lit_id=0">Ajouter un lit:<a/></strong>
+      <th><label for="nom" title="Nom du lit">Nom :</label></th>
       <td>
-        <form name="editLit" action="?m={$m}" method="post" onsubmit="return checkLit()">
-
-        <input type="hidden" name="dosql" value="do_lit_aed" />
-        <input type="hidden" name="lit_id" value="{$litSel->lit_id}" />
-        <input type="hidden" name="chambre_id" value="{$chambreSel->chambre_id}" />
-        <input type="hidden" name="del" value="0" />
-        <input type="text" name="nom" value="{$litSel->nom}" />
+        <input type="text" name="nom" title="{$litSel->_props.nom}" value="{$litSel->nom}" />
         {if $litSel->lit_id}
         <input type="submit" value="Modifier" />
         <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le lit', '{$litSel->nom|escape:javascript}')" />
         {else}
         <input type="submit" value="Créer" />
         {/if}
-
-        </form>
       </td>
     </tr>
-    {/if}    
 
-	
     </table>
+
+  </form>
+  {/if}    
 
   </td>
 </tr>
