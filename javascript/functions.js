@@ -125,7 +125,7 @@ function getFunctionName(oFunction) {
 
 function throwError(sMsg) {
   var oCaller = throwError.caller;
-  debug(getFunctionName(oCaller), printf("Error: %s()", sMsg));
+  debug(getFunctionName(oCaller), printf("Error: %s", sMsg));
  
   while (oCaller = oCaller.caller) {
     debug(getFunctionName(oCaller), "backtrace");
