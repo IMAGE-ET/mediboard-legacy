@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPcompteRendu';
-$config['mod_version'] = '0.18';
+$config['mod_version'] = '0.19';
 $config['mod_directory'] = 'dPcompteRendu';
 $config['mod_setup_class'] = 'CSetupdPcompteRendu';
 $config['mod_type'] = 'user';
@@ -101,6 +101,9 @@ class CSetupdPcompteRendu {
           $sql = " ALTER TABLE `liste_choix` CHANGE `chir_id` `chir_id` BIGINT( 20 ) DEFAULT NULL";
           db_exec( $sql ); db_error();
         case "0.18":
+          $sql = "ALTER TABLE `aide_saisie` DROP `module` ";
+          db_exec( $sql ); db_error();
+        case "0.19":
           return true;
 		}
 		return false;

@@ -2,39 +2,17 @@
 {literal}
 <script type="text/javascript">
 
-var modules = new Array;
-
-{/literal}
-{foreach from=$modules key=key_module item=classes}
-{foreach from=$classes key=key_class item=fields}
-{foreach from=$fields item=field}
-addField('{$key_module}', '{$key_class}', '{$field}');
-{/foreach}
-{/foreach}
-{/foreach}
-{literal}
-
-function pageMain() {
+var classes = {
   {/literal}
-  loadClasses('{$aide->class}');
-  loadFields('{$aide->field}');
+  {foreach from=$classes key=key_class item=fields}
+  "{$key_class}" : {ldelim}
+    {foreach from=$fields item=field}
+      "{$field|escape:javascript}" : null,
+    {/foreach}
+  {rdelim},
+  {/foreach}
   {literal}
-}
-
-function addField(moduleName, className, fieldName) {
-  // Warning: arrays don't return references until element is an array itself
-  if (modules[moduleName] == null) {
-    modules[moduleName] = new Array;
-  }
-  
-  var classes = modules[moduleName];
-  if (classes[className] == null) {
-    classes[className] = new Array;
-  }
-  
-  var fields = classes[className];
-  fields[fieldName] = true;
-}
+};
 
 function loadItems(select, options, value) {
   // delete all former options
@@ -46,16 +24,13 @@ function loadItems(select, options, value) {
   for (var elm in options) {
 	if (typeof(options[elm]) != "function") { // to filter prototype functions
       select.options[select.length] = new Option(elm, elm, elm == value);
-	}
+    }
   }
-  
 }
 
 function loadClasses(value) {
   var form = document.editFrm;
   var select = form.elements['class'];
-  var moduleName = form.elements['module'].value;
-  var classes = modules[moduleName];
 
   loadItems(select, classes, value);
   loadFields();
@@ -64,60 +39,18 @@ function loadClasses(value) {
 function loadFields(value) {
   var form = document.editFrm;
   var select = form.elements['field'];
-  var moduleName = form.elements['module'].value;
   var className  = form.elements['class' ].value;
-  var fields = modules[moduleName] ? modules[moduleName][className] : null;
-
+  var fields = classes[className];
   loadItems(select, fields, value);
 }
 
-
-function checkForm() {
-  var form = document.editFrm;
-  var field = null;
-   
-  if (field = form.elements['user_id']) {
-    if (field.value == 0) {
-      alert("Utilisateur indéterminé");
-      field.focus();
-      return false;
-    }
-  }
-    
-  if (field = form.elements['module']) {
-    if (field.value == 0) {
-      alert("Module indéterminé");
-      field.focus();
-      return false;
-    }
-  }
-    
-  if (field = form.elements['class']) {    
-    if (field.value == 0) {
-      alert("Type d'objet indéterminé");
-      field.focus();
-      return false;
-    }
-  }
-    
-  if (field = form.elements['field']) {    
-    if (field.value == 0) {
-      alert("Champ indéterminé");
-      field.focus();
-      return false;
-    }
-  }
-
-  if (field = form.elements['name']) {    
-    if (field.value == 0) {
-      alert("Intitulé indéterminé");
-      field.focus();
-      return false;
-    }
-  }
-    
-  return true;
+function pageMain() {
+  {/literal}
+  loadClasses('{$aide->class}');
+  loadFields('{$aide->field}');
+  {literal}
 }
+
 </script>
 {/literal}
 
@@ -136,7 +69,7 @@ function checkForm() {
       </tr>
 
       <tr>
-        <th><label for="filter_user_id" title="Filtrer les aides pour cet utilisateur">Utilisateur:</label></th>
+        <th><label for="filter_user_id" title="Filtrer les aides pour cet utilisateur">Utilisateur :</label></th>
         <td>
           <select name="filter_user_id" onchange="this.form.submit()">
             <option value="0">&mdash; Tous les utilisateurs</option>
@@ -147,11 +80,15 @@ function checkForm() {
             {/foreach}
           </select>
         </td>
-        <th><label for="filter_module" title="Filtrer les aides pour ce module">Module:</label></th>
+        <th><label for="filter_class" title="Filtrer les aides pour ce type d'objet">Type d'objet :</label></th>
         <td>
-          <select name="filter_module" onchange="this.form.submit()">
-            <option value="0">&mdash; Tous les modules</option>
-              {html_options options=$moduleNames selected=$filter_module}
+          <select name="filter_class" onchange="this.form.submit()">
+            <option value="0">&mdash; Tous les types d'objets</option>
+            {foreach from=$classes key=class_name item=fields}
+            <option {if $class_name == $filter_class} selected="selected" {/if}>
+              {$class_name}
+            </option>
+            {/foreach}
           </select>
         </td>
       </tr>
@@ -167,7 +104,6 @@ function checkForm() {
     
     <tr>
       <th>Utilisateur</th>
-      <th>Module</th>
       <th>Type d'objet</th>
       <th>Champ de l'objet</th>
       <th>Nom de l'aide</th>
@@ -179,7 +115,6 @@ function checkForm() {
       {eval var=$curr_aide->aide_id assign="aide_id"}
       {assign var="href" value="?m=$m&amp;tab=$tab&amp;aide_id=$aide_id"}
       <td><a href="{$href}">{$curr_aide->_ref_user->_view}</a></td>
-      <td><a href="{$href}">{$curr_aide->_module_name}</a></td>
       <td><a href="{$href}">{$curr_aide->class}</a></td>
       <td><a href="{$href}">{$curr_aide->field}</a></td>
       <td><a href="{$href}">{$curr_aide->name}</a></td>
@@ -195,7 +130,7 @@ function checkForm() {
 
 	<a href="index.php?m={$m}&amp;tab={$tab}&amp;aide_id=0"><strong>Créer une aide à la saisie</strong></a>
 
-    <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkForm()">
+    <form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
 
     <input type="hidden" name="dosql" value="do_aide_aed" />
     <input type="hidden" name="aide_id" value="{$aide->aide_id}" />
@@ -214,9 +149,9 @@ function checkForm() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="user_id" title="Utilisateur concerné, obligatoire.">Utilisateur:</label></th>
+      <th><label for="user_id" title="Utilisateur concerné, obligatoire.">Utilisateur :</label></th>
       <td>
-        <select name="user_id">
+        <select name="user_id" title="{$aide->_props.user_id}">
           <option value="0">&mdash; Choisir un utilisateur</option>
           {foreach from=$users item=curr_user}
           <option value="{$curr_user->user_id}" {if $curr_user->user_id == $aide->user_id} selected="selected" {/if}>
@@ -228,42 +163,32 @@ function checkForm() {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="module" title="Module concerné, obligatoire.">Module:</label></th>
+      <th><label for="class" title="Type d'objet concerné, obligatoire.">Objet:</label></th>
       <td>
-        <select name="module" onchange="loadClasses(this.value)">
-          <option value="0">&mdash; Choisir un module</option>
-          {html_options options=$moduleNames selected=$aide->module}
+        <select name="class" title="{$aide->_props.class}" onchange="loadFields()">
+          <option value="">&mdash; Choisir un objet</option>
         </select>
       </td>
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="class" title="Type d'objet concerné, obligatoire.">Objet:</label></th>
+      <th><label for="field" title="Champ de l'objet concerné, obligatoire.">Champ:</label></th>
       <td>
-        <select name="class" onchange="loadFields()">
-          <option value="0">&mdash; Choisir un objet</option>
+        <select name="field" title="{$aide->_props.field}">
+          <option value="">&mdash; Choisir un champ</option>
         </select>
       </td>
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="field" title="Champ de l'objet concerné, obligatoire.">Champ:</label></th>
-      <td>
-        <select name="field">
-          <option value="0">&mdash; Choisir un champ</option>
-        </select>
-      </td>
-    </tr>
-
-    <tr>
-      <th class="mandatory"><label for="name" title="intitulé de l'aide, obligatoire.">Intitulé:</label></th>
-      <td><input type="text" name="name" value="{$aide->name}" /></td>
+      <th><label for="name" title="intitulé de l'aide, obligatoire.">Intitulé:</label></th>
+      <td><input type="text" name="name" title="{$aide->_props.name}" value="{$aide->name}" /></td>
     </tr>
     
     <tr>
       <th><label for="text" title="Texte de remplacement.">Texte:</label></th>
       <td>
-        <textarea style="width: 200px" rows="4" name="text">{$aide->text}</textarea>
+        <textarea style="width: 200px" rows="4" name="text" title="{$aide->_props.text}">{$aide->text}</textarea>
       </td>
     </tr>
 

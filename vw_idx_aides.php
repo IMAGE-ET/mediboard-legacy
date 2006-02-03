@@ -16,36 +16,26 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// Class and fields
+$classes = array (
+    "Consultation" => array ("motif", "rques", "examen", "traitement", "compte_rendu"),
+    "Operation" => array ("examen", "materiel", "convalescence", "compte_rendu"),
+    "Patient" => array ("remarques"),
+    "Antecedent" => array ("rques"),
+    "Traitement" => array ("traitement"),
+  );
+  
+
 // Liste des praticiens accessibles
 $users = new CMediusers();
 $users = $users->loadPraticiens(PERM_EDIT);
 
-// Modules, classes & fields
-$modules = array (
-  "dPcabinet" => array (
-    "Consultation" => array ("motif", "rques", "examen", "traitement", "compte_rendu"),
-    ),
-    
-  "dPplanningOp" => array (
-    "Operations" => array ("examen", "materiel", "convalescence"),
-    ),
-  "dPpatients" => array (
-    "Patient" => array ("remarques"),
-    "Antecedent" => array ("rques"),
-    "Traitement" => array ("traitement"),
-    )
-  );
-
-// Noms de modules
-$allModules = $AppUI->getInstalledModules();
-foreach ($modules as $moduleName => $classes) {
-  $moduleNames[$moduleName] = $allModules[$moduleName];
-}
+$user_id = array_key_exists($AppUI->user_id, $users) ? $AppUI->user_id : null;
 
 // Filtres sur la liste d'aides
 $where = null;
 
-$filter_user_id = mbGetValueFromGetOrSession("filter_user_id", $AppUI->user_id);
+$filter_user_id = mbGetValueFromGetOrSession("filter_user_id", $user_id);
 if ($filter_user_id) {
   $where["user_id"] = "= '$filter_user_id'";
 } else {
@@ -56,13 +46,14 @@ if ($filter_user_id) {
   $where ["user_id"] = "IN (".implode(",", $inUsers).")";
 }
 
-$filter_module = mbGetValueFromGetOrSession("filter_module");
-if ($filter_module) {
-  $where["module"] = "= '$filter_module'";
+$filter_class = mbGetValueFromGetOrSession("filter_class");
+if ($filter_class) {
+  $where["class"] = "= '$filter_class'";
 }
 
+$order = array("user_id", "class", "field", "name");
 $aides = new CAideSaisie();
-$aides = $aides->loadList($where);
+$aides = $aides->loadList($where, $order);
 foreach($aides as $key => $aide) {
   $aides[$key]->loadRefsFwd();
 }
@@ -74,7 +65,7 @@ $aide->load($aide_id);
 $aide->loadRefs();
 
 if (!$aide_id) {
-  $aide->user_id = $AppUI->user_id;
+  $aide->user_id = $user_id;
 }
 
 // Création du template
@@ -82,10 +73,9 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('users', $users);
-$smarty->assign('modules', $modules);
-$smarty->assign('moduleNames', $moduleNames);
+$smarty->assign('classes', $classes);
 $smarty->assign('filter_user_id', $filter_user_id);
-$smarty->assign('filter_module', $filter_module);
+$smarty->assign('filter_class', $filter_class);
 $smarty->assign('aides', $aides);
 $smarty->assign('aide', $aide);
 

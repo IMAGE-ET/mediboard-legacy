@@ -19,14 +19,10 @@ class CAideSaisie extends CMbObject {
   var $user_id = null;
 
   // DB fields
-  var $module = null;
   var $class = null;
   var $field = null;
   var $name = null;
   var $text = null;
-  
-  // Form fields
-  var $_module_name = null;
   
   // Referenced objects
   var $_ref_user = null;
@@ -34,18 +30,11 @@ class CAideSaisie extends CMbObject {
   function CAideSaisie() {
     $this->CMbObject( 'aide_saisie', 'aide_id' );
 
-    $this->_props["module"] = "str|notNull";
+    $this->_props["user_id"] = "ref|notNull";
     $this->_props["class"]  = "str|notNull";
     $this->_props["field"]  = "str|notNull";
     $this->_props["name"]   = "str|notNull|confidential";
-    $this->_props["text"]   = "str|notNull|confidential";
-  }
-  
-  function updateFormFields() {
-    global $AppUI;
-    
-    $installed_modules =& $AppUI->getInstalledModules();
-    $this->_module_name = $installed_modules[$this->module];
+    $this->_props["text"]   = "text|notNull|confidential";
   }
   
   function loadRefsFwd() {

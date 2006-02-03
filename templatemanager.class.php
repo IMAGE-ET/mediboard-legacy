@@ -121,19 +121,12 @@ class CTemplateManager {
     $prat->fillTemplate($this);
         
     switch ($modeleType) {
-      case TMT_CONSULTATION:
-        $consult = new CConsultation;
-        $consult->fillTemplate($this);
-        break;
-      case TMT_OPERATION:
-        $op = new COperation;
-        $op->fillTemplate($this);
-        break;
-      case TMT_HOSPITALISATION:
-        $op = new COperation;
-        $op->fillTemplate($this);
-        break;
+      case TMT_CONSULTATION   : $object = new CConsultation; break;
+      case TMT_OPERATION      : $object = new COperation   ; break;
+      case TMT_HOSPITALISATION: $object = new COperation   ; break;
     }
+
+    $object->fillTemplate($this);
   }
   
   function loadLists($user_id, $compte_rendu_id = 0) {
@@ -153,31 +146,17 @@ class CTemplateManager {
   }
   
   function loadHelpers($user_id, $modeleType) {
-    // Aides à la saisie
-    $where = array();
-    $where["user_id"] = "= '$user_id'";
-    $where["field"  ] = "= 'compte_rendu'";
-    
     switch ($modeleType) {
-      case TMT_CONSULTATION:
-        $where["module" ] = "= 'dPcabinet'";
-        $where["class"  ] = "= 'Consultation'";
-        break;
-      case TMT_OPERATION:
-        $where["module" ] = "= 'dPplanningOp'";
-        $where["class"  ] = "= 'Operation'";
-        break;
-      case TMT_HOSPITALISATION:
-        $where["module" ] = "= 'dPhospi'";
-        $where["class"  ] = "= 'Hospitalisation'";
-        break;
+      case TMT_CONSULTATION   : $object = new CConsultation; break;
+      case TMT_OPERATION      : $object = new COperation   ; break;
+      case TMT_HOSPITALISATION: $object = new COperation   ; break;
     }
+
+    $object->loadAides($user_id);
     
-    $aides = new CAideSaisie();
-    $aides = $aides->loadList($where);
-    
-    foreach ($aides as $aide) {
-      $this->addHelper($aide->name, $aide->text);
+    if (is_array($helpers = $object->_aides["compte_rendu"])) {
+      // Caution, keys and values have to been flipped out
+      $this->helpers = array_flip($helpers);
     }
   }
   
