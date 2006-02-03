@@ -46,7 +46,7 @@ function pageMain() {
   {/foreach}
   </tbody>
 
-  <!-- Allocated -->
+  <!-- Not Allocated -->
   {foreach from=$mainTab.notallocated.functions item=curr_function}
   {if $curr_function.class != "notallocated"}
   <tr class="triggerShow" id="triggernotallocated" onclick="flipEffectElement('groupnotallocated', 'SlideDown', 'SlideUp', 'triggernotallocated')">
