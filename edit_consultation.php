@@ -53,6 +53,7 @@ $anesth = dPgetSysVal("AnesthType");
 
 // Consultation courante
 $consult = new CConsultation();
+$consult->_ref_chir = $userSel;
 if ($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
