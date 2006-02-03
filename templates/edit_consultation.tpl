@@ -173,18 +173,18 @@ function pageMain() {
 	    <label for="motif" title="Motif de la consultation">Motif</label>
 	  </th>
     <th>
-      <select name="_aide_motif" size="1" onchange="pasteText('motif')">
+      <select name="_helpers_motif" size="1" onchange="pasteHelperContent(this)">
         <option value="0">&mdash; Choisir une aide</option>
-        {html_options options=$aides.motif}
+        {html_options options=$consult->_aides.motif}
       </select>
     </th>
 	  <th class="category">
 	    <label for="rques" title="Remarques concernant la consultation">Remarques</label>
 	  </th>
     <th>
-      <select name="_aide_rques" size="1" onchange="pasteText('rques')">
+      <select name="_helpers_rques" size="1" onchange="pasteHelperContent(this)">
         <option value="0">&mdash; Choisir une aide</option>
-        {html_options options=$aides.rques}
+        {html_options options=$consult->_aides.rques}
       </select>
     </th>
   </tr>
@@ -197,18 +197,18 @@ function pageMain() {
 	    <label for="examen" title="Bilan de l'examen clinique">Examens</label>
 	  </th>
     <th>
-      <select name="_aide_examen" size="1" onchange="pasteText('examen')">
+      <select name="_helpers_examen" size="1" onchange="pasteHelperContent(this)">
         <option value="0">&mdash; Choisir une aide</option>
-        {html_options options=$aides.examen}
+        {html_options options=$consult->_aides.examen}
       </select>
     </th>
     <th class="category">
 	    <label for="traitement" title="title">Traitements</label>
 	  </th>
     <th>
-      <select name="_aide_traitement" size="1" onchange="pasteText('traitement')">
+      <select name="_helpers_traitement" size="1" onchange="pasteHelperContent(this)">
         <option value="0">&mdash; Choisir une aide</option>
-        {html_options options=$aides.traitement}
+        {html_options options=$consult->_aides.traitement}
       </select>
     </th>
   </tr>

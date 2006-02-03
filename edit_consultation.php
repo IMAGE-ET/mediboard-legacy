@@ -58,6 +58,8 @@ if ($selConsult) {
   $consult->loadRefs();
   $userSel->load($consult->_ref_plageconsult->chir_id);
   $userSel->loadRefs();
+  $consult->loadAides($userSel->user_id);
+  
   // On vérifie que l'utilisateur a les droits sur la consultation
   $right = false;
   foreach($listChir as $key => $value) {
@@ -71,6 +73,7 @@ if ($selConsult) {
   if($consult->_ref_consult_anesth->consultation_anesth_id) {
     $consult->_ref_consult_anesth->loadRefs();
   }
+  
   $patient =& $consult->_ref_patient;
   $patient->loadRefs();
   $patient->loadStaticCIM10($userSel->user_id);
@@ -134,27 +137,6 @@ if ($userSel->user_id) {
   $listModeleFunc = $listModeleFunc->loadlist($where, $order);
 }
 
-// Récupération des aides à la saisie
-$where = array();
-$where["user_id"] = " = '$userSel->user_id'";
-$where["module"] = " = '$m'";
-$where["class"] = " = 'Consultation'";
-
-$aidesConsultation = new CAideSaisie();
-$aidesConsultation = $aidesConsultation->loadList($where);
-
-// Initialisation to prevent understandable smarty notices
-$aides = array(
-  "rques" => null,
-  "motif" => null,
-  "examen" => null,
-  "traitement" => null  
-);
-
-foreach ($aidesConsultation as $aideConsultation) {
-  $aides[$aideConsultation->field][$aideConsultation->text] = $aideConsultation->name;  
-}
-
 // Récupération des tarifs
 $order = "description";
 $where = array();
@@ -176,19 +158,18 @@ $smarty->assign('today', $today);
 $smarty->assign('listPlage', $listPlage);
 $smarty->assign('listModelePrat', $listModelePrat);
 $smarty->assign('listModeleFunc', $listModeleFunc);
-$smarty->assign('aides', $aides);
 $smarty->assign('tarifsChir', $tarifsChir);
 $smarty->assign('tarifsCab', $tarifsCab);
 $smarty->assign('anesth', $anesth);
 $smarty->assign('consult', $consult);
 
-if($consult->_ref_chir->isFromType(array("Anesthésiste")) || $consult->_ref_consult_anesth->consultation_anesth_id) {
+if ($consult->_ref_chir->isFromType(array("Anesthésiste")) || $consult->_ref_consult_anesth->consultation_anesth_id) {
   $antecedent = new CAntecedent();
-  $antecedent->loadAides("dPpatients", "Antecedent", $userSel->user_id);
+  $antecedent->loadAides($userSel->user_id);
   $smarty->assign("antecedent", $antecedent);
 
   $traitement = new CTraitement();
-  $traitement->loadAides("dPpatients", "Traitement", $userSel->user_id);
+  $traitement->loadAides($userSel->user_id);
   $smarty->assign("traitement", $traitement);
   
   $smarty->assign('consult_anesth', $consult->_ref_consult_anesth);
