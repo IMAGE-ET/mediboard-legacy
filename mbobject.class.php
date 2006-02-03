@@ -595,7 +595,9 @@ class CMbObject extends CDpObject {
      return true;
   }
   
-  function loadAides($m, $class, $user_id) {
+  function loadAides($user_id) {
+    $class = substr(get_class($this), 1);
+    
     // Initialisation to prevent understandable smarty notices
     foreach ($this->_props as $propName => $propSpec) {
       $specFragments = explode("|", $propSpec);
@@ -607,7 +609,6 @@ class CMbObject extends CDpObject {
     // Load appropriate Aides
     $where = array();
     $where["user_id"] = " = '$user_id'";
-    $where["module"] = " = '$m'";
     $where["class"] = " = '$class'";
     
     $aides = new CAideSaisie();
