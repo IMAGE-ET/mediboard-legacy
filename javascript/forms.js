@@ -51,6 +51,18 @@ function setRadioValue(oElement, sValue) {
   }
 }
 
+function pasteHelperContent(oHelpElement) {
+  var aFound = oHelpElement.name.match(/_helpers_(.*)/);
+  if (aFound.length != 2) throwError(printf("Helper element '%s' is not of the form '_helpers_propname'", oHelpElement.name));
+  
+  var oForm = oHelpElement.form;    
+  var sPropName = aFound[1];
+  var oAreaField = oForm.elements[sPropName];
+  if (!oAreaField) throwError(printf("Helper element '%s' has no corresponding property element '%s' in the same form", oHelpElement.name, sPropName));
+
+  insertAt(oAreaField, oHelpElement.value + '\n')
+  oHelpElement.value = 0;
+}
 
 function getBoundingForm(oElement) {
   if (!oElement) {
@@ -71,7 +83,7 @@ function prepareForms() {
   while (oLabel = aLabels[iLabel++]) {
   	oForm = getBoundingForm(oLabel);
   	if (sFor = oLabel.getAttribute("for")) {
-      oLabel.setAttribute("for", oForm.name + "_" + sFor);
+      oLabel.setAttribute("for", oForm.getAttribute("name") + "_" + sFor);
   	} 
   } 
 
