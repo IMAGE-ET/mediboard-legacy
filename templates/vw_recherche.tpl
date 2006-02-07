@@ -75,7 +75,10 @@ function pageMain() {
         {else}
         <tr>
           <th class="title" colspan="7">
-            {$date_recherche|date_format:"%A %d %B %Y"}
+            {if $selPrat}
+              Dr. {$listPrat.$selPrat->_view} -
+            {/if}
+            {$date_recherche|date_format:"%A %d %B %Y"} : {$listAff|@count} patient(s)
           </th>
         </tr>
         <tr>

@@ -20,7 +20,7 @@ function printAdmission(id) {
     <th>
       <a href="javascript:window.print()">
         Planning du {$deb|date_format:"%A %d %b %Y à %Hh%M"}
-        au {$fin|date_format:"%A %d %B %Y à %Hh%M"}
+        au {$fin|date_format:"%A %d %B %Y à %Hh%M"} ({$total} admissions)
       </a>
     </th>
   </tr>
@@ -107,11 +107,4 @@ function printAdmission(id) {
   {/if}
   {/foreach}
   {/foreach}
-  <tr>
-    <th>
-      Total : {$total} admission(s) pour le planning 
-      Planning du {$deb|date_format:"%A %d %B %Y à %Hh%M"}
-      au {$fin|date_format:"%A %d %B %Y à %Hh%M"}
-    </th>
-  </tr>
 </table>

@@ -31,7 +31,9 @@ function pageMain() {
           <td>
             <table class="tbl">
               <tr>
-                <th class="title" colspan="6">Confirmation des déplacements</th>
+                <th class="title" colspan="6">
+                  Confirmation des déplacements ({$deplacements|@count})
+                </th>
               </tr>
               <tr>
                 <th>Confirmation</th>
@@ -93,7 +95,11 @@ function pageMain() {
           </td>
           <td>
             <table class="tbl">
-              <tr><th class="title" colspan="5">Confirmation des sorties</th></tr>
+              <tr>
+                <th class="title" colspan="5">
+                  Confirmation des sorties ({$sortiesComp|@count} hospis - {$sortiesAmbu|@count} ambus)
+                </th>
+              </tr>
               <tr>
                 <th>Confirmation</th>
                 <th><a href="index.php?m={$m}&amp;tab={$tab}&amp;typeOrder=0">Patient</a></th>
