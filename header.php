@@ -39,9 +39,14 @@
 		$nav = $AppUI->getMenuModules();
 ?>
 
-<div style="background: #aaa; color: #fff;">
-<strong>Important</strong> : Suite à un incident matériel survenu le mardi 27 décembre 2006 à 14h20, toute information saisie dans Mediboard de 03h00 à 14h20 ce mardi sont indisponibles pour l'instant.
-</div>
+<?php 
+  require_once($AppUI->getModuleClass("system", "message"));
+  $messages = new CMessage();
+  $messages = $messages->loadPublications("present");
+  foreach ($messages as $message) {
+    echo "<div style='background: #aaa; color: #fff;'><strong>$message->titre</strong> : $message->corps</div>";
+  }
+?>
 
 <table id="header" cellspacing="0"><!-- IE Hack: cellspacing should be useless --> 
 <!--
