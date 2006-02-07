@@ -5,18 +5,21 @@
 
 function affNaissance() {
   var oForm      = document.find;
+  var oCheckNaissance = oForm.check_naissance;
   var oNaissance = oForm.naissance;
   var oDay       = oForm.Date_Day;
   var oMonth     = oForm.Date_Month;
   var oYear      = oForm.Date_Year;
-  if (oNaissance.checked) {
-    oDay.style.display = "inline";
+  if (oCheckNaissance.checked) {
+    oDay.style.display   = "inline";
     oMonth.style.display = "inline";
-    oYear.style.display = "inline";
+    oYear.style.display  = "inline";
+    oNaissance.value     = "on";
   } else {
-    oDay.style.display = "none";
+    oDay.style.display   = "none";
     oMonth.style.display = "none";
-    oYear.style.display = "none";
+    oYear.style.display  = "none";
+    oNaissance.value     = "off";
   }
 }
 
@@ -50,7 +53,8 @@ function affNaissance() {
         <tr>
           <th>
             <label for="Date_Day" title="Date de naissance du patient à rechercher">
-              <input type="checkbox" name="naissance" onclick="affNaissance()" {if $naissance == "on"}checked="checked"{/if}/>
+              <input type="checkbox" name="check_naissance" onclick="affNaissance()" {if $naissance == "on"}checked="checked"{/if}/>
+              <input type="hidden" name="naissance" {if $naissance == "on"}value="on"{else}value="off"{/if} />
               Date de naissance:
             </lable>
           </th>

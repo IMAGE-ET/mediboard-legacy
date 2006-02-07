@@ -70,7 +70,7 @@ if($patient->patient_id) {
 // Récuperation des patients recherchés
 $patient_nom       = mbGetValueFromGetOrSession("nom"   , '');
 $patient_prenom    = mbGetValueFromGetOrSession("prenom", '');
-$patient_naissance = mbGetValueFromGet("naissance", '');
+$patient_naissance = mbGetValueFromGetOrSession("naissance", 'off');
 $patient_day       = mbGetValueFromGetOrSession("Date_Day", date("d"));
 $patient_month     = mbGetValueFromGetOrSession("Date_Month", date("m"));
 $patient_year      = mbGetValueFromGetOrSession("Date_Year", date("Y"));
