@@ -1,5 +1,28 @@
 <!-- $Id$ -->
 
+<script language="JavaScript" type="text/javascript">
+{literal}
+
+function affNaissance() {
+  var oForm      = document.find;
+  var oNaissance = oForm.naissance;
+  var oDay       = oForm.Date_Day;
+  var oMonth     = oForm.Date_Month;
+  var oYear      = oForm.Date_Year;
+  if (oNaissance.checked) {
+    oDay.style.display = "inline";
+    oMonth.style.display = "inline";
+    oYear.style.display = "inline";
+  } else {
+    oDay.style.display = "none";
+    oMonth.style.display = "none";
+    oYear.style.display = "none";
+  }
+}
+
+{/literal}
+</script>
+
 <table class="main">
   <tr>
     <td class="greedyPane">
@@ -22,6 +45,30 @@
         <tr>
           <th><label for="prenom" title="Prénom du patient à rechercher, au moins les premières lettres">Prénom:</label></th>
           <td><input tabindex="2" type="text" name="prenom" value="{$prenom}" /></td>
+        </tr>
+        
+        <tr>
+          <th>
+            <label for="Date_Day" title="Date de naissance du patient à rechercher">
+              <input type="checkbox" name="naissance" onclick="affNaissance()" {if $naissance == "on"}checked="checked"{/if}/>
+              Date de naissance:
+            </lable>
+          </th>
+          <td>
+            {if $naissance == "on"}
+            {html_select_date
+                 time=$date
+                 start_year=1900
+                 field_order=DMY
+                 all_extra="style='display:inline;'"}
+             {else}
+            {html_select_date
+                 time=$date
+                 start_year=1900
+                 field_order=DMY
+                 all_extra="style='display:none;'"}
+             {/if}
+          </td>
         </tr>
         
         <tr>

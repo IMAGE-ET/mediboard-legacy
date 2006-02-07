@@ -68,12 +68,18 @@ if($patient->patient_id) {
 }
 
 // Récuperation des patients recherchés
-$patient_nom    = mbGetValueFromGetOrSession("nom"   , '');
-$patient_prenom = mbGetValueFromGetOrSession("prenom", '');
+$patient_nom       = mbGetValueFromGetOrSession("nom"   , '');
+$patient_prenom    = mbGetValueFromGetOrSession("prenom", '');
+$patient_naissance = mbGetValueFromGet("naissance", '');
+$patient_day       = mbGetValueFromGetOrSession("Date_Day", date("d"));
+$patient_month     = mbGetValueFromGetOrSession("Date_Month", date("m"));
+$patient_year      = mbGetValueFromGetOrSession("Date_Year", date("Y"));
 
 $where = null;
 if ($patient_nom   ) $where[] = "nom LIKE '".addslashes($patient_nom)."%'";
 if ($patient_prenom) $where[] = "prenom LIKE '".addslashes($patient_prenom)."%'";
+if ($patient_naissance == "on")
+  $where["naissance"] = "= '$patient_year/$patient_month/$patient_day'";
 
 $patients = null;
 if ($where) {
@@ -92,6 +98,8 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('nom', $patient_nom);
 $smarty->assign('prenom', $patient_prenom);
+$smarty->assign('naissance', $patient_naissance);
+$smarty->assign('date', "$patient_year-$patient_month-$patient_day");
 $smarty->assign('patients', $patients);
 $smarty->assign('patient', $patient);
 $smarty->assign('chir', $chir);
