@@ -27,6 +27,25 @@ function delCim10(code) {
   oForm.submit();
 }
 
+function finTrmt() {
+  var oForm = document.editTrmtFrm;
+  var oEnCours = oForm._en_cours;
+  var oHiddenField = oForm.fin;
+  var oViewField = document.getElementById('editTrmtFrm_fin_da');
+  var oTriggerField = document.getElementById('editTrmtFrm_fin_trigger');
+  if (oEnCours.checked) {
+    {/literal}
+    oHiddenField.value = "{$today}";
+    oViewField.innerHTML = "{$today|date_format:"%d/%m/%Y"}";
+    oTriggerField.style.display = "inline";
+    {literal}
+  } else {
+    oHiddenField.value = "";
+    oViewField.innerHTML = "En cours";
+    oTriggerField.style.display = "none";
+  }
+}
+
 function incAntecedantsMain() {
   {/literal}
   {foreach from=$patient->_static_cim10 key=cat item=curr_cat}
