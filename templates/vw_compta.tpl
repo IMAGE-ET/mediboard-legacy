@@ -175,8 +175,8 @@ function pageMain() {
             <input type="hidden" name="dosql" value="do_tarif_aed" />
             <input type="hidden" name="tarif_id" value="{$tarif->tarif_id}" />
             <input type="hidden" name="del" value="0" />
-            <input type="hidden" name="chir_id" value="{if $tarif->tarif_id}{$tarif->chir_id}{else}{$mediuser->user_id}{/if}" />
-            <input type="hidden" name="function_id" value="{if $tarif->tarif_id}{$tarif->function_id}{else}{$mediuser->function_id}{/if}" />
+            <input type="hidden" name="chir_id" value="{$mediuser->user_id}" />
+            <input type="hidden" name="function_id" value="{$mediuser->function_id}" />
             <table class="form">
               {if $tarif->tarif_id}
               <tr><th class="category" colspan="2">Editer ce tarif</th></tr>
