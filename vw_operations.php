@@ -81,7 +81,7 @@ if($op) {
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
-$smarty->debugging = false;
+$smarty->debugging = true;
 
 $smarty->assign('salle', $salle);
 $smarty->assign('listSalles', $listSalles);

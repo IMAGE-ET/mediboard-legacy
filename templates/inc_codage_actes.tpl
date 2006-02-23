@@ -10,7 +10,7 @@
     <select name="asso" onchange="setCode(this.value, 'ccam')">
       <option value="">&mdash choix</option>
       {foreach from=$curr_code->assos item=curr_asso}
-      <option value="{$curr_asso.code}">{$curr_asso.code}</option>
+      <option value="{$curr_asso.code}">{$curr_asso.code}({$curr_asso.texte|truncate:40:"...":true})</option>
       {/foreach}
     </select>
 
