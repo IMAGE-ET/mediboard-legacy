@@ -307,7 +307,11 @@ function mbLinkShortcutIcon($filepath) {
  * @return string: the link to mediboard.org  */
 function mbPortalLink( $page="Accueil", $title="Portail Mediboard" ) {
   global $AppUI;
-  return "\n<a href=\"http://www.mediboard.org/public/tiki-index.php?page=$page\" target=\"_blank\">$title</a>";
+  if($page == "bugTracker")
+    $url = "\"http://www.mediboard.org/public/tiki-view_tracker.php?trackerId=4\"";
+  else
+    $url = "\"http://www.mediboard.org/public/tiki-index.php?page=$page\"";
+  return "\n<a href=$url target=\"_blank\">$title</a>";
 }
 
 /**
