@@ -157,7 +157,7 @@ function cleanOrderOp($plageop, $type = "rank") {
         db_exec($sql);
         changeAffect($curr_id);
         $hour = substr($debut, 0, 2) + substr($value["temp_operation"], 0, 2);
-        $min  = substr($debut, 3, 2) + substr($value["temp_operation"], 3, 2);
+        $min  = substr($debut, 3, 2) + substr($value["temp_operation"], 3, 2) + 15;
         $debut = date("H:i:00", mktime($hour, $min, 0, 1, 1, 2000));
       }
       break;
