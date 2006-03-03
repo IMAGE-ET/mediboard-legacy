@@ -114,18 +114,19 @@ foreach ($nav as $module) {
 			<tr>
 				<td id="userWelcome"><?php echo $AppUI->_('Welcome') . " $AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 				<td id="userMenu">
-					<?php echo mbPortalLink( $m, "Aide en ligne" );?> |
-					<a href="./index.php?m=admin&amp;a=viewuser&amp;user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
+          <?php echo mbPortalLink( $m, "Aide en ligne" );?> |
+          <?php echo mbPortalLink( "bugTracker", "Suggérer une amélioration" );?> |
+          <a href="./index.php?m=admin&amp;a=viewuser&amp;user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
 <?php
-	if (!getDenyRead( 'calendar' )) {
-		$now = new CDate();
-		$date = $now->format( FMT_TIMESTAMP_DATE );
-		$today = $AppUI->_('Today');
-		echo "<a href='./index.php?m=calendar&amp;a=day_view&amp;date=$date'>$today</a> |";
-	}
+  if (!getDenyRead( 'calendar' ) && 0) {
+    $now = new CDate();
+    $date = $now->format( FMT_TIMESTAMP_DATE );
+    $today = $AppUI->_('Today');
+    echo "<a href='./index.php?m=calendar&amp;a=day_view&amp;date=$date'>$today</a> |";
+  }
 ?>
-					<a href="./index.php?logout=-1"><?php echo $AppUI->_('Logout');?></a>
-				</td>
+          <a href="./index.php?logout=-1"><?php echo $AppUI->_('Logout');?></a>
+        </td>
 			</tr>
 		</table>
 	</td>
