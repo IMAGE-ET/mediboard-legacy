@@ -9,64 +9,68 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('dPbloc', 'salle') );
+require_once( $AppUI->getModuleClass('dPhospi', 'service') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_bar'));
 
-$debut    = mbGetValueFromGet("debut"   , mbDate("-1 YEAR"));
-$fin      = mbGetValueFromGet("fin"     , mbDate());
-$prat_id  = mbGetValueFromGet("prat_id" , 0);
-$salle_id = mbGetValueFromGet("salle_id", 0);
-$codeCCAM = mbGetValueFromGet("codeCCAM", "");
+$debut      = mbGetValueFromGet("debut"     , mbDate("-1 YEAR"));
+$fin        = mbGetValueFromGet("fin"       , mbDate());
+$prat_id    = mbGetValueFromGet("prat_id"   , 0);
+$service_id = mbGetValueFromGet("service_id", 0);
+$type_adm   = mbGetValueFromGet("type_adm"  , 0);
 
 $pratSel = new CMediusers;
 $pratSel->load($prat_id);
 
-$salleSel = new CSalle;
-$salleSel->load($salle_id);
+$serviceSel = new CService;
+$serviceSel->load($service_id);
 
 for($i = $debut; $i <= $fin; $i = mbDate("+1 MONTH", $i)) {
   $datax[] = mbTranformTime("+0 DAY", $i, "%m/%Y");
 }
 
-$sql = "SELECT * FROM sallesbloc WHERE stats = 1";
-if($salle_id)
-  $sql .= "\nAND id = '$salle_id'";
-$salles = db_loadlist($sql);
+$sql = "SELECT * FROM service";
+if($service_id)
+  $sql .= "\nWHERE service_id = '$service_id'";
+$services = db_loadlist($sql);
 
-$opbysalle = array();
-foreach($salles as $salle) {
-  $id = $salle["id"];
-  $opbysalle[$id]["nom"] = $salle["nom"];
-  $sql = "SELECT COUNT(operations.operation_id) AS total," .
-    "\nDATE_FORMAT(plagesop.date, '%m/%Y') AS mois," .
-    "\nDATE_FORMAT(plagesop.date, '%Y%m') AS orderitem," .
-    "\nsallesbloc.nom AS nom" .
-    "\nFROM plagesop, sallesbloc" .
-    "\nLEFT join operations" .
-    "\nON operations.plageop_id = plagesop.id" .
-    "\nAND operations.annulee = 0" .
-    "\nWHERE plagesop.date BETWEEN '$debut' AND '$fin'";
+$patbyservice = array();
+foreach($services as $service) {
+  $id = $service["service_id"];
+  $patbyservice[$id]["nom"] = $service["nom"];
+  $sql = "SELECT COUNT(DISTINCT affectation.operation_id) AS total," .
+    "\nservice.nom AS nom," .
+    "\nDATE_FORMAT(affectation.entree, '%m/%Y') AS mois," .
+    "\nDATE_FORMAT(affectation.entree, '%Y%m') AS orderitem" .
+    "\nFROM operations" .
+    "\nINNER JOIN affectation" .
+    "\nON operations.operation_id = affectation.operation_id" .
+    "\nAND affectation.entree BETWEEN '$debut' AND '$fin'" .
+    "\nINNER JOIN lit" .
+    "\nON affectation.lit_id = lit.lit_id" .
+    "\nINNER JOIN chambre" .
+    "\nON lit.chambre_id = chambre.chambre_id" .
+    "\nINNER JOIN service" .
+    "\nON chambre.service_id = service.service_id" .
+    "\nAND service.service_id = '$id'" .
+    "\nWHERE operations.annulee = 0";
   if($prat_id)
     $sql .= "\nAND operations.chir_id = '$prat_id'";
-  if($codeCCAM)
-    $sql .= "\nAND operations.codes_ccam LIKE '%$codeCCAM%'";
-  $sql .= "\nAND plagesop.id_salle = sallesbloc.id" .
-    "\nAND sallesbloc.id = '$id'" .
-    "\nGROUP BY mois" .
+  $sql .= "\nGROUP BY mois" .
     "\nORDER BY orderitem";
+  //echo "$sql<br />";
   $result = db_loadlist($sql);
   foreach($datax as $x) {
     $f = true;
     foreach($result as $totaux) {
       if($x == $totaux["mois"]) {
-        $opbysalle[$id]["op"][] = $totaux["total"];
+        $patbyservice[$id]["op"][] = $totaux["total"];
         $f = false;
       }
     }
     if($f) {
-      $opbysalle[$id]["op"][] = 0;
+      $patbyservice[$id]["op"][] = 0;
     }
   }
 }
@@ -78,16 +82,10 @@ $graph->SetScale("textlin");
 $graph->SetMarginColor("lightblue");
 
 // Set up the title for the graph
-$title = "Nombre d'interventions";
+$title = "Nombre de patients par service";
 $subtitle = "";
 if($prat_id) {
   $subtitle .= "- Dr. $pratSel->_view ";
-}
-if($salle_id) {
-  $subtitle .= "- $salleSel->nom ";
-}
-if($codeCCAM) {
-  $subtitle .= "- CCAM : $codeCCAM ";
 }
 if($subtitle) {
   $subtitle .= "-";
@@ -133,7 +131,7 @@ $colors = array("#aa5500",
                 "#ff00ff",
                 "#00ffff",);
 $listPlots = array();
-foreach($opbysalle as $key => $value) {
+foreach($patbyservice as $key => $value) {
   $bplot = new BarPlot($value["op"]);
   $from = $colors[$key];
   $to = "#EEEEEE";

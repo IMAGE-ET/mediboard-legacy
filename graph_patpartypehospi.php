@@ -9,64 +9,66 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('mediusers') );
-require_once( $AppUI->getModuleClass('dPbloc', 'salle') );
+require_once( $AppUI->getModuleClass('dPhospi', 'service') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph'));
 require_once( $AppUI->getLibraryClass('jpgraph/src/jpgraph_bar'));
 
-$debut    = mbGetValueFromGet("debut"   , mbDate("-1 YEAR"));
-$fin      = mbGetValueFromGet("fin"     , mbDate());
-$prat_id  = mbGetValueFromGet("prat_id" , 0);
-$salle_id = mbGetValueFromGet("salle_id", 0);
-$codeCCAM = mbGetValueFromGet("codeCCAM", "");
+$debut      = mbGetValueFromGet("debut"     , mbDate("-1 YEAR"));
+$fin        = mbGetValueFromGet("fin"       , mbDate());
+$prat_id    = mbGetValueFromGet("prat_id"   , 0);
+$service_id = mbGetValueFromGet("service_id", 0);
+$type_adm   = mbGetValueFromGet("type_adm"  , 0);
 
 $pratSel = new CMediusers;
 $pratSel->load($prat_id);
-
-$salleSel = new CSalle;
-$salleSel->load($salle_id);
 
 for($i = $debut; $i <= $fin; $i = mbDate("+1 MONTH", $i)) {
   $datax[] = mbTranformTime("+0 DAY", $i, "%m/%Y");
 }
 
-$sql = "SELECT * FROM sallesbloc WHERE stats = 1";
-if($salle_id)
-  $sql .= "\nAND id = '$salle_id'";
-$salles = db_loadlist($sql);
+$listHospis = array();
+if($type_adm != "ambu" && $type_adm != "exte") {
+  $listHospis[0]["code"] = "comp";
+  $listHospis[0]["view"] = "Hospi complètes";
+}
+if($type_adm != "comp" && $type_adm != "exte") {
+  $listHospis[1]["code"] = "ambu";
+  $listHospis[1]["view"] = "Ambulatoires";
+}
+if($type_adm != "ambu" && $type_adm != "comp" && $type_adm != "0") {
+  $listHospis[2]["code"] = "exte";
+  $listHospis[2]["view"] = "Externes";
+}
 
-$opbysalle = array();
-foreach($salles as $salle) {
-  $id = $salle["id"];
-  $opbysalle[$id]["nom"] = $salle["nom"];
+$patbyhospi = array();
+foreach($listHospis as $hospi) {
+  $type = $hospi["code"];
+  $patbyhospi[$type]["nom"] = $hospi["view"];
   $sql = "SELECT COUNT(operations.operation_id) AS total," .
-    "\nDATE_FORMAT(plagesop.date, '%m/%Y') AS mois," .
-    "\nDATE_FORMAT(plagesop.date, '%Y%m') AS orderitem," .
-    "\nsallesbloc.nom AS nom" .
-    "\nFROM plagesop, sallesbloc" .
-    "\nLEFT join operations" .
-    "\nON operations.plageop_id = plagesop.id" .
-    "\nAND operations.annulee = 0" .
-    "\nWHERE plagesop.date BETWEEN '$debut' AND '$fin'";
+    "\noperations.type_adm," .
+    "\nDATE_FORMAT(operations.date_adm, '%m/%Y') AS mois," .
+    "\nDATE_FORMAT(operations.date_adm, '%Y%m') AS orderitem" .
+    "\nFROM operations" .
+    "\nWHERE operations.type_adm = '$type'" .
+    "\nAND operations.annulee = 0";
   if($prat_id)
     $sql .= "\nAND operations.chir_id = '$prat_id'";
-  if($codeCCAM)
-    $sql .= "\nAND operations.codes_ccam LIKE '%$codeCCAM%'";
-  $sql .= "\nAND plagesop.id_salle = sallesbloc.id" .
-    "\nAND sallesbloc.id = '$id'" .
-    "\nGROUP BY mois" .
+  $sql .= "\nGROUP BY mois" .
     "\nORDER BY orderitem";
+  //echo "$sql<br />";
+  //exit(0);
   $result = db_loadlist($sql);
   foreach($datax as $x) {
     $f = true;
     foreach($result as $totaux) {
       if($x == $totaux["mois"]) {
-        $opbysalle[$id]["op"][] = $totaux["total"];
+        $patbyhospi[$type]["op"][] = $totaux["total"];
         $f = false;
       }
     }
     if($f) {
-      $opbysalle[$id]["op"][] = 0;
+      $patbyhospi[$type]["op"][] = 0;
     }
   }
 }
@@ -78,16 +80,10 @@ $graph->SetScale("textlin");
 $graph->SetMarginColor("lightblue");
 
 // Set up the title for the graph
-$title = "Nombre d'interventions";
+$title = "Nombre d'admissions par type d'hospi";
 $subtitle = "";
 if($prat_id) {
   $subtitle .= "- Dr. $pratSel->_view ";
-}
-if($salle_id) {
-  $subtitle .= "- $salleSel->nom ";
-}
-if($codeCCAM) {
-  $subtitle .= "- CCAM : $codeCCAM ";
 }
 if($subtitle) {
   $subtitle .= "-";
@@ -120,20 +116,11 @@ $graph->legend->SetFont(FF_ARIAL,FS_NORMAL, 7);
 $graph->legend->Pos(0.02,0.02, "right", "top");
 
 // Create the bar pot
-$colors = array("#aa5500",
-                "#55aa00",
-                "#0055aa",
-                "#aa0055",
-                "#5500aa",
-                "#00aa55",
-                "#ff0000",
-                "#00ff00",
-                "#0000ff",
-                "#ffff00",
-                "#ff00ff",
-                "#00ffff",);
+$colors = array('comp' => "#aa5500",
+                'ambu' => "#55aa00",
+                'exte' => "#0055aa");
 $listPlots = array();
-foreach($opbysalle as $key => $value) {
+foreach($patbyhospi as $key => $value) {
   $bplot = new BarPlot($value["op"]);
   $from = $colors[$key];
   $to = "#EEEEEE";
