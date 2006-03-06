@@ -24,7 +24,7 @@ require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 
 $pmsipath = "modules/$m/hprim/serveurActe";
 if (!is_dir($pmsipath)) {
-  trigger_error("ServeurActe schemas are missing. Please extract them from achive in $pmsipath/   directory");
+  trigger_error("ServeurActe schemas are missing. Please extract them from archive in $pmsipath/   directory");
   return;
 }
 
@@ -198,6 +198,7 @@ $doc->addAttribute($evenementsServeurActes, "xsi:schemaLocation", "http://www.hp
 
 $documentpath = "$pmsipath/document.xml";
 $doc->save($documentpath);
+
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );

@@ -50,6 +50,10 @@ class CMbXMLDocument extends DOMDocument {
   }
   
   function schemaValidate($filename) {
+    if (!function_exists("libxml_use_internal_errors")) {
+      return parent::schemaValidate($filename);
+    }
+    
     // Enable user error handling
     libxml_use_internal_errors(true);
     
