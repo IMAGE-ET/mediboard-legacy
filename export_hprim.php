@@ -23,8 +23,12 @@ require_once($AppUI->getModuleClass($m, "hprimxmlschema"));
 require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 
 $pmsipath = "modules/$m/hprim/serveurActe";
-$schemapath = "$pmsipath/schema.xml";
+if (!is_dir($pmsipath)) {
+  trigger_error("ServeurActe schemas are missing. Please extract them from achive in $pmsipath/   directory");
+  return;
+}
 
+$schemapath = "$pmsipath/schema.xml";
 if (!is_file($schemapath)) {
   $schema = new CHPrimXMLSchema();
   $schema->importSchemaPackage($pmsipath);
@@ -140,7 +144,7 @@ $doc->addElement($dateHeureOptionnelle, "heure", mbTime(null, $mbOp->_ref_last_a
 
 $placement = $doc->addElement($venue, "Placement");
 $modePlacement = $doc->addElement($placement, "modePlacement");
-$doc->addAttribute($modePlacement, "modaliteHospitalisation", $mbOp->_modalite_hospitaliation);
+$doc->addAttribute($modePlacement, "modaliteHospitalisation", $mbOp->_modalite_hospitalisation);
 $datePlacement = $doc->addElement($placement, "datePlacement");
 $doc->addElement($datePlacement, "date", $mbOp->date_adm);
 $doc->addElement($datePlacement, "heure", $mbOp->time_adm);
