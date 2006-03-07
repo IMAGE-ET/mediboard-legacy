@@ -56,8 +56,6 @@ foreach($listHospis as $hospi) {
     $sql .= "\nAND operations.chir_id = '$prat_id'";
   $sql .= "\nGROUP BY mois" .
     "\nORDER BY orderitem";
-  //echo "$sql<br />";
-  //exit(0);
   $result = db_loadlist($sql);
   foreach($datax as $x) {
     $f = true;
@@ -80,7 +78,7 @@ $graph->SetScale("textlin");
 $graph->SetMarginColor("lightblue");
 
 // Set up the title for the graph
-$title = "Nombre d'admissions par type d'hospi";
+$title = "Nombre d'admissions par type d'hospitalisation";
 $subtitle = "";
 if($prat_id) {
   $subtitle .= "- Dr. $pratSel->_view ";

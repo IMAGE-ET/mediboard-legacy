@@ -38,13 +38,13 @@
         </tr>
         <tr>
           <th colspan="2"/>
-          <th>Type d'hospitalisation:</th>
+          <th>Type d'hospitalisation: ({$type_adm})</th>
           <td>
             <select name="type_adm">
               <option value="0">Hospi complètes + ambu</option>
               {foreach from=$listHospis item=curr_hospi}
-              <option value="{$curr_hospi.code}" {if $curr_hospi.code == $type_adm}selected="selected"{/if}>
-                {$curr_hospi.view}
+              <option value="{$curr_hospi.code}" {if $type_adm && ($curr_hospi.code == $type_adm)}selected="selected"{/if}>
+                {$curr_hospi.code}
               </option>
               {/foreach}
             </select>
