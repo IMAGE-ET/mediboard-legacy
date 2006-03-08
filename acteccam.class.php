@@ -34,6 +34,9 @@ class CActeCCAM extends CMbObject {
   var $montant_depassement = null;
   var $commentaire = null;  
 
+  // Form fields
+  var $_modificateurs = array();
+  
   // Object references
   var $_ref_operation = null;
   var $_ref_executant = null;
@@ -62,6 +65,10 @@ class CActeCCAM extends CMbObject {
    
   function updateFormFields() {
     parent::updateFormFields();
+    
+    for ($index = 0; $index < strlen($this->modificateurs); $index++) {
+    	$this->_modificateurs[] = $this->modificateurs[$index];
+    }
     
     $this->_view = "$this->code_acte-$this->code_activite-$this->code_phase-$this->modificateurs"; 
   }
