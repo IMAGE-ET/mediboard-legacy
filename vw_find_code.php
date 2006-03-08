@@ -20,10 +20,7 @@ $seltopo1 = mbGetValueFromGetOrSession("seltopo1");
 $seltopo2 = mbGetValueFromGetOrSession("seltopo2");
 
 // Connexion a la base de donnees pour la recherche
-$mysql = mysql_connect("localhost", "CCAMAdmin", "AdminCCAM")
-  or die("Could not connect");
-mysql_select_db("ccamV2")
-  or die("Could not select database");
+do_connect($AppUI->cfg['baseCCAM']);
 
 // Création de la requête
 $query = "SELECT CODE, LIBELLELONG FROM actes WHERE 0";
@@ -59,10 +56,10 @@ if ($code || $clefs || $selacces || $seltopo1) {
 $query .= " ORDER BY CODE LIMIT 0 , 100";
 
 //Codes correspondants à la requete
-$result = mysql_query($query);
+$result = db_exec($query, $AppUI->cfg['baseCCAM']);
 $i = 0;
 $codes = array();
-while($row = mysql_fetch_array($result)) {
+while($row = db_fetch_array($result)) {
   $codes[$i]["code"] = $row['CODE'];
   $codes[$i]["texte"] = $row['LIBELLELONG'];
   $i++;
@@ -71,9 +68,9 @@ $numcodes = $i;
 
 //On récupère les voies d'accès
 $query = "select * from acces1";
-$result = mysql_query($query);
+$result = db_exec($query, $AppUI->cfg['baseCCAM']);
 $i = 1;
-while($row = mysql_fetch_array($result)) {
+while($row = db_fetch_array($result)) {
   $acces[$i]["code"] = $row['CODE'];
   $acces[$i]["texte"] = $row['ACCES'];
   $i++;
@@ -81,10 +78,10 @@ while($row = mysql_fetch_array($result)) {
 
 //On récupère les appareils : topographie1
 $query = "select * from topographie1";
-$result = mysql_query($query);
+$result = db_exec($query, $AppUI->cfg['baseCCAM']);
 
 $i = 1;
-while($row = mysql_fetch_array($result)) {
+while($row = db_fetch_array($result)) {
   $topo1[$i]["code"] = $row['CODE'];
   $topo1[$i]["texte"] = $row['LIBELLE'];
   $i++;
@@ -92,16 +89,14 @@ while($row = mysql_fetch_array($result)) {
 
 // On récupère les systèmes correspondants à l'appareil : topographie2
 $query = "SELECT * FROM topographie2 WHERE PERE = '$seltopo1'";
-$result = mysql_query($query);
+$result = db_exec($query, $AppUI->cfg['baseCCAM']);
 $topo2 = array();
 $i = 1;
-while($row = mysql_fetch_array($result)) {
+while($row = db_fetch_array($result)) {
   $topo2[$i]["code"] = $row['CODE'];
   $topo2[$i]["texte"] = $row['LIBELLE'];
   $i++;
 }
-
-mysql_close($mysql);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
