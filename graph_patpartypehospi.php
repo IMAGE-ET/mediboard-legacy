@@ -28,15 +28,15 @@ for($i = $debut; $i <= $fin; $i = mbDate("+1 MONTH", $i)) {
 }
 
 $listHospis = array();
-if($type_adm != "ambu" && $type_adm != "exte") {
+if($type_adm == "comp" || $type_adm == "0" || $type_adm == "1") {
   $listHospis[0]["code"] = "comp";
   $listHospis[0]["view"] = "Hospi complètes";
 }
-if($type_adm != "comp" && $type_adm != "exte") {
+if($type_adm == "ambu" || $type_adm == "0" || $type_adm == "1") {
   $listHospis[1]["code"] = "ambu";
   $listHospis[1]["view"] = "Ambulatoires";
 }
-if($type_adm != "ambu" && $type_adm != "comp" && $type_adm != "0") {
+if($type_adm == "exte" || $type_adm == "0") {
   $listHospis[2]["code"] = "exte";
   $listHospis[2]["view"] = "Externes";
 }
@@ -50,7 +50,8 @@ foreach($listHospis as $hospi) {
     "\nDATE_FORMAT(operations.date_adm, '%m/%Y') AS mois," .
     "\nDATE_FORMAT(operations.date_adm, '%Y%m') AS orderitem" .
     "\nFROM operations" .
-    "\nWHERE operations.type_adm = '$type'" .
+    "\nWHERE operations.date_adm BETWEEN '$debut' AND '$fin'" .
+    "\nAND operations.type_adm = '$type'" .
     "\nAND operations.annulee = 0";
   if($prat_id)
     $sql .= "\nAND operations.chir_id = '$prat_id'";

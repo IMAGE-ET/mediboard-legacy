@@ -44,7 +44,7 @@ foreach($salles as $salle) {
     "\nDATE_FORMAT(plagesop.date, '%Y%m') AS orderitem," .
     "\nsallesbloc.nom AS nom" .
     "\nFROM plagesop, sallesbloc" .
-    "\nLEFT join operations" .
+    "\nINNER JOIN operations" .
     "\nON operations.plageop_id = plagesop.id" .
     "\nAND operations.annulee = 0" .
     "\nWHERE plagesop.date BETWEEN '$debut' AND '$fin'";

@@ -38,12 +38,13 @@
         </tr>
         <tr>
           <th colspan="2"/>
-          <th>Type d'hospitalisation: ({$type_adm})</th>
+          <th>Type d'hospitalisation:</th>
           <td>
             <select name="type_adm">
-              <option value="0">Hospi complètes + ambu</option>
+              <option value="0">&mdash Tous les types d'hospi</option>
+              <option value="1" {if $type_adm == "1"}selected="selected"{/if}>Hospi complètes + ambu</option>
               {foreach from=$listHospis item=curr_hospi}
-              <option value="{$curr_hospi.code}" {if $type_adm && ($curr_hospi.code == $type_adm)}selected="selected"{/if}>
+              <option value="{$curr_hospi.code}" {if $curr_hospi.code == $type_adm}selected="selected"{/if}>
                 {$curr_hospi.code}
               </option>
               {/foreach}
@@ -52,6 +53,9 @@
         </tr>
         <tr>
           <td colspan="4" class="button"><button type="submit">Go</button></td>
+        </tr>
+        <tr>
+          <td colspan="4"><i>Note : le nombre d'admissions par type d'hospitalisation avant le 16 novembre 2005 est en dessous de la réalité dû à un mauvais remplissage des dates d'admission par certains cabinets</i></td>
         </tr>
         <tr>
           <td colspan="4" class="button">
