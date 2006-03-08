@@ -20,7 +20,7 @@ if (!$canRead) {
 
 require_once($AppUI->getModuleClass($m, "hprimxmlserveuractes"));
 
-$mb_operation_id = dPgetParam($_POST, "mb_operation_id", 10559);
+$mb_operation_id = dPgetParam($_POST, "mb_operation_id");
 
 $mbOp = new COperation();
 $doc = new CHPrimXMLServeurActes;
@@ -42,7 +42,7 @@ if ($mbOp->load($mb_operation_id)) {
   $doc_valid = $doc->schemaValidate();
 }
 
-$doc->addNameSpaces();
+//$doc->addNameSpaces();
 $doc->save();
 
 require_once($AppUI->getSystemClass("ftp"));
