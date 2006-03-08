@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPpatients';
-$config['mod_version'] = '0.28';
+$config['mod_version'] = '0.29';
 $config['mod_directory'] = 'dPpatients';
 $config['mod_setup_class'] = 'CSetupdPpatients';
 $config['mod_type'] = 'user';
@@ -39,104 +39,112 @@ class CSetupdPpatients {
 	}
 
 	function upgrade( $old_version ) {
-		switch ( $old_version )
-		{
-		case "all":
-		case "0.1":
-		  $sql = "ALTER TABLE patients" .
-          "\nADD tel2 VARCHAR( 10 ) AFTER tel ," .
-          "\nADD medecin1 INT( 11 ) AFTER medecin_traitant ," .
-          "\nADD medecin2 INT( 11 ) AFTER medecin1 ," .
-          "\nADD medecin3 INT( 11 ) AFTER medecin2 ," .
-          "\nADD rques TEXT;";
-		  db_exec( $sql ); db_error();
+		switch ( $old_version ) {
+  		case "all":
+  		case "0.1":
+  		  $sql = "ALTER TABLE patients" .
+            "\nADD tel2 VARCHAR( 10 ) AFTER tel ," .
+            "\nADD medecin1 INT( 11 ) AFTER medecin_traitant ," .
+            "\nADD medecin2 INT( 11 ) AFTER medecin1 ," .
+            "\nADD medecin3 INT( 11 ) AFTER medecin2 ," .
+            "\nADD rques TEXT;";
+  		  db_exec( $sql ); db_error();
+        
+  		  $sql = "CREATE TABLE medecin (" .
+            "\nmedecin_id int(11) NOT NULL auto_increment," .
+            "\nnom varchar(50) NOT NULL default ''," .
+            "\nprenom varchar(50) NOT NULL default ''," .
+            "\ntel varchar(10) default NULL," .
+            "\nfax varchar(10) default NULL," .
+            "\nemail varchar(50) default NULL," .
+            "\nadresse varchar(50) default NULL," .
+            "\nville varchar(50) default NULL," .
+            "\ncp varchar(5) default NULL," .
+            "\nPRIMARY KEY  (medecin_id))" .
+            "\nTYPE=MyISAM COMMENT='Table des medecins correspondants';";
+    		db_exec( $sql ); db_error();
+  		case "0.2":
+  			$sql = "ALTER TABLE medecin " .
+            "\nADD specialite TEXT AFTER prenom ;";
+  	    db_exec( $sql ); db_error();
+  
+      case "0.21":
+        $sql = "ALTER TABLE medecin " .
+            "\nADD disciplines TEXT AFTER prenom ;";
+        db_exec( $sql ); db_error();
+  
+      case "0.22":
+  		    $sql = "ALTER TABLE `medecin`" .
+  		  "\nCHANGE `adresse` `adresse` TEXT DEFAULT NULL ;";
+          db_exec( $sql ); db_error();
+          
+      case "0.23":
+        $sql = "ALTER TABLE `medecin` ADD INDEX ( `nom` ) ;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `medecin` ADD INDEX ( `prenom` ) ;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `medecin` ADD INDEX ( `cp` ) ;";
+        db_exec( $sql ); db_error();
       
-		  $sql = "CREATE TABLE medecin (" .
-          "\nmedecin_id int(11) NOT NULL auto_increment," .
-          "\nnom varchar(50) NOT NULL default ''," .
-          "\nprenom varchar(50) NOT NULL default ''," .
-          "\ntel varchar(10) default NULL," .
-          "\nfax varchar(10) default NULL," .
-          "\nemail varchar(50) default NULL," .
-          "\nadresse varchar(50) default NULL," .
-          "\nville varchar(50) default NULL," .
-          "\ncp varchar(5) default NULL," .
-          "\nPRIMARY KEY  (medecin_id))" .
-          "\nTYPE=MyISAM COMMENT='Table des medecins correspondants';";
-  		db_exec( $sql ); db_error();
-		case "0.2":
-			$sql = "ALTER TABLE medecin " .
-          "\nADD specialite TEXT AFTER prenom ;";
-	    db_exec( $sql ); db_error();
-
-    case "0.21":
-      $sql = "ALTER TABLE medecin " .
-          "\nADD disciplines TEXT AFTER prenom ;";
-      db_exec( $sql ); db_error();
-
-    case "0.22":
-		    $sql = "ALTER TABLE `medecin`" .
-		  "\nCHANGE `adresse` `adresse` TEXT DEFAULT NULL ;";
+      case "0.24":
+        $sql = "ALTER TABLE `patients`" .
+        		"\nADD `nom_jeune_fille` VARCHAR( 50 ) NOT NULL AFTER `nom` ;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `patients`" .
+        		"\nCHANGE `sexe` `sexe` ENUM( 'm', 'f', 'j' )" .
+        		"\nDEFAULT 'm' NOT NULL ";
+        db_exec( $sql ); db_error();
+      
+      case "0.25":
+        $sql = "ALTER TABLE `patients`" .
+        		"\nCHANGE `adresse` `adresse` TEXT" .
+        		"\nNOT NULL ";
+        db_exec( $sql ); db_error();
+      
+      case "0.26":
+        $sql = "CREATE TABLE `antecedent` (
+                `antecedent_id` BIGINT NOT NULL AUTO_INCREMENT ,
+                `patient_id` BIGINT NOT NULL ,
+                `type` ENUM( 'trans', 'obst', 'chir', 'med' ) DEFAULT 'med' NOT NULL ,
+                `date` DATE,
+                `rques` TEXT,
+                PRIMARY KEY ( `antecedent_id` ) ,
+                INDEX ( `patient_id` )
+                ) COMMENT = 'antecedents des patients';";
+        db_exec( $sql ); db_error();
+      
+      case "0.27":
+        $sql = "ALTER TABLE `antecedent`" .
+            "CHANGE `type` `type`" .
+            "ENUM( 'trans', 'obst', 'chir', 'med', 'fam' )" .
+            "DEFAULT 'med' NOT NULL;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `patients`" .
+            "ADD `listCim10` TEXT DEFAULT NULL ;";
+        db_exec( $sql ); db_error();
+        $sql = "CREATE TABLE `traitement` (
+                `traitement_id` BIGINT NOT NULL AUTO_INCREMENT ,
+                `patient_id` BIGINT NOT NULL ,
+                `debut` DATE DEFAULT '0000-00-00' NOT NULL ,
+                `fin` DATE,
+                `traitement` TEXT,
+                PRIMARY KEY ( `traitement_id` ) ,
+                INDEX ( `patient_id` )
+                ) COMMENT = 'traitements des patients';";
+        db_exec( $sql ); db_error();
+      
+      case "0.28":
+        $sql = "ALTER TABLE `patients`" .
+            "CHANGE `SHS` `regime_sante` VARCHAR( 40 ) NOT NULL;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `patients`" .
+            "ADD `SHS` VARCHAR( 8 ) NOT NULL AFTER `matricule`;";
+        db_exec( $sql ); db_error();
+        $sql = "ALTER TABLE `patients` ADD INDEX ( `SHS` );";
         db_exec( $sql ); db_error();
         
-        case "0.23":
-          $sql = "ALTER TABLE `medecin` ADD INDEX ( `nom` ) ;";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `medecin` ADD INDEX ( `prenom` ) ;";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `medecin` ADD INDEX ( `cp` ) ;";
-          db_exec( $sql ); db_error();
-        
-        case "0.24":
-          $sql = "ALTER TABLE `patients`" .
-          		"\nADD `nom_jeune_fille` VARCHAR( 50 ) NOT NULL" .
-          		"\nAFTER `nom` ;";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `patients`" .
-          		"\nCHANGE `sexe` `sexe` ENUM( 'm', 'f', 'j' )" .
-          		"\nDEFAULT 'm' NOT NULL ";
-          db_exec( $sql ); db_error();
-        
-        case "0.25":
-          $sql = "ALTER TABLE `patients`" .
-          		"\nCHANGE `adresse` `adresse` TEXT" .
-          		"\nNOT NULL ";
-          db_exec( $sql ); db_error();
-        
-        case "0.26":
-          $sql = "CREATE TABLE `antecedent` (
-                  `antecedent_id` BIGINT NOT NULL AUTO_INCREMENT ,
-                  `patient_id` BIGINT NOT NULL ,
-                  `type` ENUM( 'trans', 'obst', 'chir', 'med' ) DEFAULT 'med' NOT NULL ,
-                  `date` DATE,
-                  `rques` TEXT,
-                  PRIMARY KEY ( `antecedent_id` ) ,
-                  INDEX ( `patient_id` )
-                  ) COMMENT = 'antecedents des patients';";
-          db_exec( $sql ); db_error();
-        
-        case "0.27":
-          $sql = "ALTER TABLE `antecedent`" .
-              "CHANGE `type` `type`" .
-              "ENUM( 'trans', 'obst', 'chir', 'med', 'fam' )" .
-              "DEFAULT 'med' NOT NULL;";
-          db_exec( $sql ); db_error();
-          $sql = "ALTER TABLE `patients`" .
-              "ADD `listCim10` TEXT DEFAULT NULL ;";
-          db_exec( $sql ); db_error();
-          $sql = "CREATE TABLE `traitement` (
-                  `traitement_id` BIGINT NOT NULL AUTO_INCREMENT ,
-                  `patient_id` BIGINT NOT NULL ,
-                  `debut` DATE DEFAULT '0000-00-00' NOT NULL ,
-                  `fin` DATE,
-                  `traitement` TEXT,
-                  PRIMARY KEY ( `traitement_id` ) ,
-                  INDEX ( `patient_id` )
-                  ) COMMENT = 'traitements des patients';";
-          db_exec( $sql ); db_error();
-        
-        case "0.28":
-			    return true;
+      case "0.29":
+  	    return true;
 		}
 
 		return false;

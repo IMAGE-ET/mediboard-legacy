@@ -42,6 +42,7 @@ class CPatient extends CMbObject {
 	var $ATNC = null;
 	var $matricule = null;
 	var $SHS = null;
+  var $regime_sante = null;
 	var $rques = null;
   
   var $listCim10 = null;
@@ -98,7 +99,8 @@ class CPatient extends CMbObject {
     $this->_props["medecin2"]         = "ref";
     $this->_props["medecin3"]         = "ref";
     $this->_props["matricule"]        = "code|insee|confidential";
-    $this->_props["SHS"]              = "num|maxLength|10|confidential";
+    $this->_props["regime_sante"]     = "str|";
+    $this->_props["SHS"]              = "num|length|8|confidential";
     $this->_props["sexe"]             = "enum|m|f|j";
     $this->_props["adresse"]          = "str|confidential";
     $this->_props["ville"]            = "str|confidential";
@@ -173,11 +175,15 @@ class CPatient extends CMbObject {
   }
   
   function updateDBFields() {
-    if($this->nom)
+    if ($this->nom) {
   	  $this->nom = strtoupper($this->nom);
-    if($this->prenom)
+    }
+
+    if ($this->prenom) {
       $this->prenom = ucwords(strtolower($this->prenom));
-  	if(($this->_tel1 != null) && ($this->_tel2 != null) && ($this->_tel3 != null) && ($this->_tel4 !== null) && ($this->_tel5 !== null)) {
+    }
+
+  	if (($this->_tel1 != null) && ($this->_tel2 != null) && ($this->_tel3 != null) && ($this->_tel4 !== null) && ($this->_tel5 !== null)) {
       $this->tel = 
         $this->_tel1 .
         $this->_tel2 .
@@ -185,6 +191,7 @@ class CPatient extends CMbObject {
         $this->_tel4 .
         $this->_tel5;
     }
+
   	if(($this->_tel21 != null) && ($this->_tel22 != null) && ($this->_tel23 != null) && ($this->_tel24 !== null) && ($this->_tel25 !== null)) {
       $this->tel2 = 
         $this->_tel21 .
@@ -193,6 +200,7 @@ class CPatient extends CMbObject {
         $this->_tel24 .
         $this->_tel25;
   	}
+
   	if(($this->_annee != null) && ($this->_mois != null) && ($this->_jour != null)) {
       $this->naissance = 
         $this->_annee . "-" .
