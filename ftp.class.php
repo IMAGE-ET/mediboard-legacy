@@ -27,7 +27,7 @@ class CFTP {
     $conn_id = ftp_connect($this->hostname);
     if (!$conn_id) {
       $this->logError("failed to $this->hostname");
-      return;
+      return false;
     } 
     
     $this->logStep("Connected to $this->hostname");
@@ -36,7 +36,7 @@ class CFTP {
     $login_result = ftp_login($conn_id, $this->username, $this->userpass);
     if (!$login_result) {
       $this->logError("Failed to login as user $this->username");
-      return;
+      return false;
     } 
     
     $this->logStep("Logged in as user $this->username");
@@ -45,13 +45,14 @@ class CFTP {
     $upload = ftp_put($conn_id, $destination_file, $source_file, FTP_BINARY);
     if (!$upload) {
       $this->logError("Failed to upload source file $source_file as destination file $destination_file");
-      return;
+      return false;
     } 
     
-    $this->logStep("source file $source_file succesfully uploaded as destination file $destination_file !!!");
+    $this->logStep("Source file $source_file succesfully uploaded as destination file $destination_file !!!");
     
     // close the FTP stream
-    ftp_close($conn_id); 
+    ftp_close($conn_id);
+    return true;
   }
   
 }
