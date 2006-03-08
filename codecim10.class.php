@@ -39,10 +39,15 @@ class CCodeCIM10 {
   
   // Other
   var $isInfo = null;
+  // Id de la base de données (qui doit être dans le config.php)
+  var $dbcim10 = null;
   
   
   // Constructeur
   function CCodeCIM10($code = "(A00-B99)", $loadlite = 0) {
+    global $AppUI;
+    $this->dbcim10 = $AppUI->cfg['baseCIM10'];
+    do_connect($this->dbcim10);
     $this->code = strtoupper($code);
     if($loadlite)
       $this->loadLite();
@@ -50,21 +55,15 @@ class CCodeCIM10 {
   
   // Chargement des données Lite
   function loadLite($lang = LANG_FR, $connection = 1) {
+    
     $this->_lang = $lang;
-    
-    if($connection) {
-      $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
-        or die("Could not connect");
-      mysql_select_db("cim10")
-        or die("Could not select database");
-    }
-    
+
     // Vérification de l'existence du code
     $query = "SELECT COUNT(abbrev) AS total" .
         "\nFROM master" .
         "\nWHERE abbrev = '$this->code'";
-    $result = mysql_query($query);
-    $row = mysql_fetch_array($result);
+    $result = db_exec($query, $this->dbcim10);
+    $row = db_fetch_array($result);
     if ($row["total"] == 0) {
       $this->code = "(A00-B99)";
     }
@@ -72,15 +71,15 @@ class CCodeCIM10 {
     $query = "SELECT SID" .
         "\nFROM master" .
         "\nWHERE abbrev = '$this->code'";
-    $result = mysql_query($query);
-    $row = mysql_fetch_array($result);
+    $result = db_exec($query, $this->dbcim10);
+    $row = db_fetch_array($result);
     $this->sid = $row['SID'];
     // code et level
     $query = "SELECT abbrev, level" .
         "\nFROM master" .
         "\nWHERE SID = '$this->sid'";
-    $result = mysql_query($query);
-    $row = mysql_fetch_array($result);
+    $result = db_exec($query, $this->dbcim10);
+    $row = db_fetch_array($result);
     $this->code = $row['abbrev'];
     $this->level = $row['level'];
     //libelle
@@ -88,26 +87,14 @@ class CCodeCIM10 {
         "\nFROM libelle" .
         "\nWHERE SID = '$this->sid'" .
         "\nAND source = 'S'";
-    $result = mysql_query($query);
-    $row = mysql_fetch_array($result);
+    $result = db_exec($query, $this->dbcim10);
+    $row = db_fetch_array($result);
     $this->libelle = $row[$this->_lang];
-
-    if($connection) {
-      mysql_close($mysql);
-      // Reconnect to standard data base
-      do_connect();
-    }
   }
   
   // Chargement des données
   function load($lang = LANG_FR, $connection = 1) {
-    if($connection) {
-      $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
-        or die("Could not connect");
-      mysql_select_db("cim10")
-        or die("Could not select database");
-    }
-    
+
     $this->loadLite($lang, 0);
 
     //descr
@@ -115,13 +102,13 @@ class CCodeCIM10 {
     $query = "SELECT LID" .
         "\nFROM descr" .
         "\nWHERE SID = '$this->sid'";
-    $result = mysql_query($query);
-    while($row = mysql_fetch_array($result)) {
+    $result = db_exec($query, $this->dbcim10);
+    while($row = db_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM libelle" .
           "\nWHERE LID = '".$row['LID']."'";
-      $result2 = mysql_query($query);
-      if ($row2 = mysql_fetch_array($result2)) {
+      $result2 = db_exec($query, $this->dbcim10);
+      if ($row2 = db_fetch_array($result2)) {
         $found = $row2[$this->_lang];
         if ($found != "" and array_search($found, $this->descr) === false) {
           $this->descr[] = $found;
@@ -134,14 +121,14 @@ class CCodeCIM10 {
     $query = "SELECT MID" .
         "\nFROM glossaire" .
         "\nWHERE SID = '$this->sid'";
-    $result = mysql_query($query);
+    $result = db_exec($query, $this->dbcim10);
     $i = 0;
-    while($row = mysql_fetch_array($result)) {
+    while($row = db_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM memo" .
           "\nWHERE MID = '".$row['MID']."'";
-      $result2 = mysql_query($query);
-      if ($row2 = mysql_fetch_array($result2)) {
+      $result2 = db_exec($query, $this->dbcim10);
+      if ($row2 = db_fetch_array($result2)) {
         $found = $row2[$this->_lang];
         if ($found != "" and array_search($found, $this->glossaire) === false) {
           $this->glossaire[] = $found;
@@ -154,13 +141,13 @@ class CCodeCIM10 {
     $query = "SELECT LID" .
         "\nFROM include" .
         "\nWHERE SID = '$this->sid'";
-    $result = mysql_query($query);
-    while($row = mysql_fetch_array($result)) {
+    $result = db_exec($query, $this->dbcim10);
+    while($row = db_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM libelle" .
           "\nWHERE LID = '".$row['LID']."'";
-      $result2 = mysql_query($query);
-      if ($row2 = mysql_fetch_array($result2)) {
+      $result2 = db_exec($query, $this->dbcim10);
+      if ($row2 = db_fetch_array($result2)) {
         $found = $row2[$this->_lang];
         if ($found != "" and array_search($found, $this->include) === false) {
           $this->include[] = $found;
@@ -173,13 +160,13 @@ class CCodeCIM10 {
     $query = "SELECT LID" .
         "\nFROM indir" .
         "\nWHERE SID = '$this->sid'";
-    $result = mysql_query($query);
-    while($row = mysql_fetch_array($result)) {
+    $result = db_exec($query, $this->dbcim10);
+    while($row = db_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM libelle" .
           "\nWHERE LID = '".$row['LID']."'";
-      $result2 = mysql_query($query);
-      if ($row2 = mysql_fetch_array($result2)) {
+      $result2 = db_exec($query, $this->dbcim10);
+      if ($row2 = db_fetch_array($result2)) {
         $found = $row2[$this->_lang];
         if ($found != "" and array_search($found, $this->indir) === false) {
           $this->indir[] = $found;
@@ -192,14 +179,14 @@ class CCodeCIM10 {
     $query = "SELECT MID" .
         "\nFROM note" .
         "\nWHERE SID = '$this->sid'";
-    $result = mysql_query($query);
+    $result = db_exec($query, $this->dbcim10);
     $i = 0;
-    while($row = mysql_fetch_array($result)) {
+    while($row = db_fetch_array($result)) {
       $query = "SELECT $this->_lang" .
           "\nFROM memo" .
           "\nWHERE MID = '".$row['MID']."'";
-      $result2 = mysql_query($query);
-      if ($row2 = mysql_fetch_array($result2)) {
+      $result2 = db_exec($query, $this->dbcim10);
+      if ($row2 = db_fetch_array($result2)) {
         $found = $row2[$this->_lang];
         if ($found != "" and array_search($found, $this->notes) === false) {
           $this->notes[] = $found;
@@ -213,36 +200,23 @@ class CCodeCIM10 {
     $this->_isInfo += count($this->include);
     $this->_isInfo += count($this->indir);
     $this->_isInfo += count($this->notes);
-
-    if($connection) {
-      mysql_close($mysql);
-      // Reconnect to standard data base
-      do_connect();
-    }
     
   }
   
   function loadRefs($connection = 1) {
-
-    if($connection) {
-      $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
-        or die("Could not connect");
-      mysql_select_db("cim10")
-        or die("Could not select database");
-    }
 
     // Exclusions
     $this->_exclude = array();
     $query = "SELECT LID, excl" .
         "\nFROM exclude" .
         "\nWHERE SID = '$this->sid'";
-    $result = mysql_query($query);
-    while ($row = mysql_fetch_array($result)) {
+    $result = db_exec($query, $this->dbcim10);
+    while ($row = db_fetch_array($result)) {
       $query = "SELECT abbrev" .
           "\nFROM master" .
           "\nWHERE SID = '".$row['excl']."'";
-      $result2 = mysql_query($query);
-      if ($row2 = mysql_fetch_array($result2)) {
+      $result2 = db_exec($query, $this->dbcim10);
+      if ($row2 = db_fetch_array($result2)) {
         $code_cim10 = $row2['abbrev'];
         if (array_key_exists($code_cim10, $this->_exclude) === false) {
           $code = new CCodeCIM10($code_cim10);
@@ -257,8 +231,8 @@ class CCodeCIM10 {
     $query = "SELECT *" .
         "\nFROM master" .
         "\nWHERE SID = '$this->sid'";
-    $result = mysql_query($query);
-    $row = mysql_fetch_array($result);
+    $result = db_exec($query, $this->dbcim10);
+    $row = db_fetch_array($result);
 
     // Niveaux superieurs
     $this->_levelsup = array();
@@ -268,8 +242,8 @@ class CCodeCIM10 {
         $query = "SELECT abbrev" .
             "\nFROM master" .
             "\nWHERE SID = '$code_cim10_id'";
-        $result = mysql_query($query);
-        $row2 = mysql_fetch_array($result);
+        $result = db_exec($query, $this->dbcim10);
+        $row2 = db_fetch_array($result);
         $code_cim10 = $row2['abbrev'];
         $code = new CCodeCIM10($code_cim10);
         $code->loadLite($this->_lang, 0);
@@ -287,8 +261,8 @@ class CCodeCIM10 {
       $query .= "\nAND id".($this->level+2)." = '0'";
     }
     
-    $result = mysql_query($query);
-    while ($row = mysql_fetch_array($result)) {
+    $result = db_exec($query, $this->dbcim10);
+    while ($row = db_fetch_array($result)) {
       $code_cim10 = $row['abbrev'];
       $code = new CCodeCIM10($code_cim10);
       $code->loadLite($this->_lang, 0);
@@ -296,45 +270,26 @@ class CCodeCIM10 {
     }
     
     ksort($this->_levelsInf);
-    
-
-    if($connection) {
-      mysql_close($mysql);
-      // Reconnect to standard data base
-      do_connect();
-    }
 }
   
   // Sommaire
   function getSommaire($lang = LANG_FR, $connection = 1) {
     $this->_lang = $lang;
-    if($connection) {
-      $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
-        or die("Could not connect");
-      mysql_select_db("cim10")
-        or die("Could not select database");
-    }
 
     $query = "SELECT * FROM chapter ORDER BY chap";
-    $result = mysql_query($query);
+    $result = db_exec($query, $this->dbcim10);
     $i = 0;
-    while($row = mysql_fetch_array($result)) {
+    while($row = db_fetch_array($result)) {
       $chapter[$i]["rom"] = $row['rom'];
       $query = "SELECT * FROM master WHERE SID = '".$row['SID']."'";
-      $result2 = mysql_query($query);
-      $row2 = mysql_fetch_array($result2);
+      $result2 = db_exec($query, $this->dbcim10);
+      $row2 = db_fetch_array($result2);
       $chapter[$i]["code"] = $row2['abbrev'];
       $query = "SELECT * FROM libelle WHERE SID = '".$row['SID']."' AND source = 'S'";
-      $result2 = mysql_query($query);
-      $row2 = mysql_fetch_array($result2);
+      $result2 = db_exec($query, $this->dbcim10);
+      $row2 = db_fetch_array($result2);
       $chapter[$i]["text"] = $row2[$this->_lang];
       $i++;
-    }
-  
-    if($connection) {
-      mysql_close($mysql);
-      // Reconnect to standard data base
-      do_connect();
     }
   
     return ($chapter);
@@ -343,12 +298,6 @@ class CCodeCIM10 {
   // Recherche de codes
   function findCodes($keys, $lang = LANG_FR, $connection = 1) {
     $this->_lang = $lang;
-    if($connection) {
-      $mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
-        or die("Could not connect");
-      mysql_select_db("cim10")
-        or die("Could not select database");
-    }
   
     $query = "SELECT * FROM libelle WHERE 0";
     $keywords = explode(" ", $keys);
@@ -360,22 +309,16 @@ class CCodeCIM10 {
       $query .= ")";
     }
     $query .= " ORDER BY SID LIMIT 0 , 100";
-    $result = mysql_query($query);
+    $result = db_exec($query, $this->dbcim10);
     $master = array();
     $i = 0;
-    while($row = mysql_fetch_array($result)) {
+    while($row = db_fetch_array($result)) {
       $master[$i]['text'] = $row[$this->_lang];
       $query = "SELECT * FROM master WHERE SID = '".$row['SID']."'";
-      $result2 = mysql_query($query);
-      $row2 = mysql_fetch_array($result2);
+      $result2 =db_exec($query, $this->dbcim10);
+      $row2 = db_fetch_array($result2);
       $master[$i]['code'] = $row2['abbrev'];
       $i++;
-    }
-
-    if($connection) {
-      mysql_close($mysql);
-      // Reconnect to standard data base
-      do_connect();
     }
   
     return($master);

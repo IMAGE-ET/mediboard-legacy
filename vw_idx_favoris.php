@@ -28,11 +28,6 @@ $where["favoris_user"] = "= '$AppUI->user_id'";
 $order = "favoris_code";
 $favoris = $favoris->loadList($where, $order);
 
-$mysql = mysql_connect("localhost", "CIM10Admin", "AdminCIM10")
-  or die("Could not connect");
-mysql_select_db("cim10")
-  or die("Could not select database");
-
 $codes = array();
 $i = 0;
 foreach($favoris as $key => $value) {
@@ -41,10 +36,6 @@ foreach($favoris as $key => $value) {
   $codes[$i]->_favoris_id = $value->favoris_id;
   $i++;
 }
-
-mysql_close($mysql);
-// Reconnect to standard data base
-do_connect();
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
