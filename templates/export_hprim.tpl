@@ -58,10 +58,90 @@ function choosePreselection(oSelect) {
   {/if}
 </td>
 
+<td>
+  <table class="form">
+    <tr>
+      <th class="title">Enregistrement des liens S@nté.com vers Mediboard</th>
+    </tr>
+    <tr>
+      <td>
+        <form name="editPatFrm" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
+        <input type="hidden" name="dosql" value="do_patient_aed" />
+        <input type="hidden" name="del" value="0" />
+        <input type="hidden" name="operation_id" value="{$mbOp->_ref_pat->patient_id}" />
+        <table class="form">
+        <table class="form">
+          <tr>
+            <th class="category" colspan="2">Patient</th>
+          </tr>
+          <tr>
+            <th><label for="sc_patient_id" title="Choisir un identifiant de patient correspondant à l'opération">Identifiant de patient</label></th>
+            <td><input type="text" title="notNull|num|length|8" name="SHS" value="{$mbOp->_ref_pat->SHS}" size="8" maxlength="8" /></td>
+          </tr>
+        </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <form name="editOpFrm" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
+        <input type="hidden" name="dosql" value="do_planning_aed" />
+        <input type="hidden" name="del" value="0" />
+        <input type="hidden" name="operation_id" value="{$mbOp->operation_id}" />
+        <table class="form">
+          <tr>
+            <th class="category" colspan="2">Intervention</th>
+          </tr>
+          <tr>
+            <th>
+              <label for="sc_venue_id" title="Choisir un identifiant pour la venue correspondant à l'opération">Identifiant de venue :</label><br />
+              Suggestion :
+            </th>
+            <td>
+              <input type="text" title="notNull|num|length|8" name="venue_SHS" value="{$mbOp->venue_SHS}" size="8" maxlength="8" /><br />
+              {$mbOp->_venue_SHS_guess}
+            </td>
+          </tr>
+          <tr>
+            <th><label for="_cmca_uf_preselection" title="Choisir une pré-selection pour remplir les unités fonctionnelles">Pré-sélection</label></th>
+            <td>
+              <select onchange="choosePreselection(this)">
+                <option value="">&mdash; Choisir une pré-selection</option>
+                <option value="ABS|ABSENT">(ABS) Absent</option>
+                <option value="AEC|ARRONDI EURO">(AEC) Arrondi Euro</option>
+                <option value="AEH|ARRONDI EURO">(AEH) Arrondi Euro</option>
+                <option value="AMB|CHIRURGIE AMBULATOIRE">(AMB) Chirurgie Ambulatoire</option>
+                <option value="CHI|CHIRURGIE">(CHI) Chirurgie</option>
+                <option value="CHO|CHIRURGIE COUTEUSE">(CHO) Chirurgie Coûteuse</option>
+                <option value="EST|ESTHETIQUE">(EST) Esthétique</option>
+                <option value="EXL|EXL POUR RECUP V4 V5">(EXL) EXL pour récup. v4 v5</option>
+                <option value="EXT|EXTERNES">(EXT) Externes</option>
+                <option value="MED|MEDECINE">(MED) Médecine</option>
+                <option value="PNE|PNEUMOLOGUE">(PNE) Pneumologie</option>
+                <option value="TRF|TRANSFERT >48H">(TRF) Transfert > 48h</option>
+                <option value="TRI|TRANSFERT >48H">(TRI) Transfert > 48h</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th><label for="cmca_uf_code" title="Choisir un code pour l'unité fonctionnelle">Code de l'unité fonctionnelle</label></th>
+            <td><input type="text" title="notNull|str|maxLength|10" name="code_uf" value="{$mbOp->code_uf}" size="10" maxlength="10" /></td>
+          </tr>
+          <tr>
+            <th><label for="cmca_uf_libelle" title="Choisir un libellé pour l'unité fonctionnelle">Libellé de l'unité fonctionnelle</label></th>
+            <td><input type="text" title="notNull|str|maxLength|35" name="libelle_uf" value="{$mbOp->libelle_uf}" size="35" maxlength="35" /></td>
+          </tr>
+        </table>
+        </form>
+      </td>
+    </tr>
+  </table>
+</td>
+
 </tr>
 <tr>
 
-<td>
+<td colspan="2">
   <form name="formEdit" method="post" onsubmit="return checkForm(this)">  
   
   <table class="form">
@@ -90,8 +170,8 @@ function choosePreselection(oSelect) {
   
   <tr>
     <th>
-      <label for="sc_venue_id" title="Choisir un identifiant pour la venue correspondant à l'opération">Identifiant de venue :</label>
-      <br />Suggestion :
+      <label for="sc_venue_id" title="Choisir un identifiant pour la venue correspondant à l'opération">Identifiant de venue :</label><br />
+      Suggestion :
     </th>
     <td>
       <input type="text" title="notNull|num|length|8" name="sc_venue_id" value="{$sc_venue_id}" size="8" maxlength="8" />
@@ -145,14 +225,12 @@ function choosePreselection(oSelect) {
   
   </form>
     
-  </td>
+</td>
 </tr>
 
 {if $doc_valid}  
 <tr>
   <td>
-  
-  </form>
 
   <form name="formFTP" method="post" onsubmit="return checkForm(this)">
   

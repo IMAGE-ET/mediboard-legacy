@@ -20,7 +20,7 @@ if (!$canRead) {
 
 require_once($AppUI->getModuleClass($m, "hprimxmlserveuractes"));
 
-$mb_operation_id = dPgetParam($_POST, "mb_operation_id");
+$mb_operation_id = dPgetParam($_GET, "operation_id");
 
 $mbOp = new COperation();
 $doc = new CHPrimXMLServeurActes;
@@ -31,8 +31,8 @@ if ($mbOp->load($mb_operation_id)) {
   
   $sc_patient_id   = dPgetParam($_POST, "sc_patient_id", $mbOp->_ref_pat->SHS);
   $sc_venue_id     = dPgetParam($_POST, "sc_venue_id", $mbOp->venue_SHS);
-  $cmca_uf_code    = dPgetParam($_POST, "cmca_uf_code", "CHI");
-  $cmca_uf_libelle = dPgetParam($_POST, "cmca_uf_libelle", "CHIRURGIE");
+  $cmca_uf_code    = dPgetParam($_POST, "cmca_uf_code", $mbOp->code_uf);
+  $cmca_uf_libelle = dPgetParam($_POST, "cmca_uf_libelle", $mbOp->libelle_uf);
 
   if (!$doc->checkSchema()) {
     return;
