@@ -8,6 +8,22 @@ function pageMain() {
   initGroups("op");
 }
 
+function choosePreselection(oSelect) {
+  if (!oSelect.value) { 
+    return;
+  }
+  
+  var aParts = oSelect.value.split("|");
+  var sLibelle = aParts.pop();
+  var sCode = aParts.pop();
+
+  var oForm = oSelect.form;
+  oForm.code_uf.value = sCode;
+  oForm.libelle_uf.value = sLibelle;
+  
+  oSelect.value = "";
+}
+
 function popPat() {
   var url = new Url();
   url.setModuleAction("dPpatients", "pat_selector");
@@ -186,45 +202,107 @@ function exporterDossier(operation_id) {
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
-          <th>Anesthésiste</th>
-          <td colspan="3">
-            Dr. {$curr_op->_ref_plageop->_ref_anesth->_view}
-          </td>
-        </tr>
-        <tr class="op{$curr_op->operation_id}">
           <th rowspan="6">Heures</th>
           <th>Entrée en salle</th>
-          <td colspan="2">
+          <td>
             {$curr_op->entree_bloc|date_format:"%Hh%M"}
+          </td>
+          <td rowspan="6">
+        <form name="editPatFrm" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
+        <input type="hidden" name="dosql" value="do_patients_aed" />
+        <input type="hidden" name="m" value="dPpatients" />
+        <input type="hidden" name="del" value="0" />
+        <input type="hidden" name="patient_id" value="{$curr_op->_ref_pat->patient_id}" />
+        <table class="form">
+        <table class="form">
+          <tr>
+            <th class="category" colspan="2"><i>Lien S@nté.com</i> : Patient <input type="submit" value="sauver" /></th>
+          </tr>
+          <tr>
+            <th><label for="SHS" title="Choisir un identifiant de patient correspondant à l'opération">Identifiant de patient</label></th>
+            <td><input type="text" title="notNull|num|length|8" name="SHS" value="{$curr_op->_ref_pat->SHS}" size="8" maxlength="8" /></td>
+          </tr>
+        </table>
+        </form>
+        <form name="editOpFrm" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
+        <input type="hidden" name="dosql" value="do_planning_aed" />
+        <input type="hidden" name="m" value="dPplanningOp" />
+        <input type="hidden" name="del" value="0" />
+        <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
+        <table class="form">
+          <tr>
+            <th class="category" colspan="2"><i>Lien S@nté.com</i> : Intervention <input type="submit" value="sauver" /></th>
+          </tr>
+          <tr>
+            <th>
+              <label for="venue_SHS" title="Choisir un identifiant pour la venue correspondant à l'opération">Identifiant de venue :</label><br />
+              Suggestion :
+            </th>
+            <td>
+              <input type="text" title="notNull|num|length|8" name="venue_SHS" value="{$curr_op->venue_SHS}" size="8" maxlength="8" /><br />
+              {$curr_op->_venue_SHS_guess}
+            </td>
+          </tr>
+          <tr>
+            <th><label for="_cmca_uf_preselection" title="Choisir une pré-selection pour remplir les unités fonctionnelles">Pré-sélection</label></th>
+            <td>
+              <select name="_cmca_uf_preselection" onchange="choosePreselection(this)">
+                <option value="">&mdash; Choisir une pré-selection</option>
+                <option value="ABS|ABSENT">(ABS) Absent</option>
+                <option value="AEC|ARRONDI EURO">(AEC) Arrondi Euro</option>
+                <option value="AEH|ARRONDI EURO">(AEH) Arrondi Euro</option>
+                <option value="AMB|CHIRURGIE AMBULATOIRE">(AMB) Chirurgie Ambulatoire</option>
+                <option value="CHI|CHIRURGIE">(CHI) Chirurgie</option>
+                <option value="CHO|CHIRURGIE COUTEUSE">(CHO) Chirurgie Coûteuse</option>
+                <option value="EST|ESTHETIQUE">(EST) Esthétique</option>
+                <option value="EXL|EXL POUR RECUP V4 V5">(EXL) EXL pour récup. v4 v5</option>
+                <option value="EXT|EXTERNES">(EXT) Externes</option>
+                <option value="MED|MEDECINE">(MED) Médecine</option>
+                <option value="PNE|PNEUMOLOGUE">(PNE) Pneumologie</option>
+                <option value="TRF|TRANSFERT >48H">(TRF) Transfert > 48h</option>
+                <option value="TRI|TRANSFERT >48H">(TRI) Transfert > 48h</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th><label for="code_uf" title="Choisir un code pour l'unité fonctionnelle">Code d'unité fonct. :</label></th>
+            <td><input type="text" title="notNull|str|maxLength|10" name="code_uf" value="{$curr_op->code_uf}" size="10" maxlength="10" /></td>
+          </tr>
+          <tr>
+            <th><label for="libelle_uf" title="Choisir un libellé pour l'unité fonctionnelle">Libellé d'unité fonct. :</label></th>
+            <td><input type="text" title="notNull|str|maxLength|35" name="libelle_uf" value="{$curr_op->libelle_uf}" size="20" maxlength="35" /></td>
+          </tr>
+        </table>
+        </form>
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
           <th>Pose du garrot</th>
-          <td colspan="2">
+          <td>
             {$curr_op->pose_garrot|date_format:"%Hh%M"}
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
           <th>Début d'intervention</th>
-          <td colspan="2">
+          <td>
             {$curr_op->debut_op|date_format:"%Hh%M"}
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
           <th>Fin d'intervention</th>
-          <td colspan="2">
+          <td>
             {$curr_op->fin_op|date_format:"%Hh%M"}
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
           <th>Retrait du garrot</th>
-          <td colspan="2">
+          <td>
             {$curr_op->retrait_garrot|date_format:"%Hh%M"}
           </td>
         </tr>
         <tr class="op{$curr_op->operation_id}">
           <th>Sortie de salle</th>
-          <td colspan="2">
+          <td>
             {$curr_op->sortie_bloc|date_format:"%Hh%M"}
           </td>
         </tr>
@@ -251,7 +329,7 @@ function exporterDossier(operation_id) {
             </button>
             </form>
           </td>
-          <td class="button">{$curr_acte->code_acte}</td>
+          <td class="text">{$curr_acte->_ref_executant->_view} : {$curr_acte->code_acte}</td>
           <td class="button">{$curr_acte->code_activite}</td>
           <td class="button">
             {$curr_acte->code_phase}
@@ -277,7 +355,7 @@ function exporterDossier(operation_id) {
           {/if}
         </tr>
         {/foreach}
-        <tr>
+        <tr class="op{$curr_op->operation_id}">
           <td class="button" colspan="4">
             <button onclick="exporterDossier({$curr_op->operation_id})">Exporter vers S@nté.com</button>
           </td>

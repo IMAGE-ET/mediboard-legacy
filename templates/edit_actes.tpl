@@ -13,7 +13,7 @@ function pageMain() {
     <th class="title" colspan="2">
       {$selOp->_ref_pat->_view} &mdash; {$selOp->_ref_plageop->date|date_format:"%A %d %B %Y"}<br />
       Chirurgien : Dr. {$selOp->_ref_chir->_view}<br />
-      Anesthésiste : Dr. {$selOp->_ref_plageop->_ref_anesth->_view} 
+      Anesthésiste probable : Dr. {$selOp->_ref_plageop->_ref_anesth->_view} 
       
     </th>
   </tr>

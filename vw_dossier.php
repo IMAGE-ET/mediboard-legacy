@@ -35,6 +35,9 @@ if($patient->patient_id) {
   }
   foreach($patient->_ref_operations as $key => $value) {
     $patient->_ref_operations[$key]->loadRefs();
+    foreach($patient->_ref_operations[$key]->_ref_actes_ccam as $key2 => $value2) {
+      $patient->_ref_operations[$key]->_ref_actes_ccam[$key2]->loadRefsFwd();
+    }
     $patient->_ref_operations[$key]->_ref_plageop->loadRefsFwd();
     if($patient->_ref_operations[$key]->_ref_consult_anesth->consultation_anesth_id) {
       $patient->_ref_operations[$key]->_ref_consult_anesth->loadRefsFwd();
@@ -51,6 +54,8 @@ $canEditCabinet = !getDenyEdit("dPcabinet");
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
+
+$smarty->debugging = false;
 
 $smarty->assign('patient', $patient);
 $smarty->assign('listPrat', $listPrat);
