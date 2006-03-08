@@ -135,10 +135,10 @@ class CSetupdPpatients {
       
       case "0.28":
         $sql = "ALTER TABLE `patients`" .
-            "CHANGE `SHS` `regime_sante` VARCHAR( 40 ) NOT NULL;";
+            "CHANGE `SHS` `regime_sante` VARCHAR( 40 );";
         db_exec( $sql ); db_error();
         $sql = "ALTER TABLE `patients`" .
-            "ADD `SHS` VARCHAR( 8 ) NOT NULL AFTER `matricule`;";
+            "ADD `SHS` VARCHAR( 8 ) AFTER `matricule`;";
         db_exec( $sql ); db_error();
         $sql = "ALTER TABLE `patients` ADD INDEX ( `SHS` );";
         db_exec( $sql ); db_error();
