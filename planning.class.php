@@ -59,6 +59,8 @@ class COperation extends CMbObject {
   var $type_adm = null;
   var $chambre = null;
   var $venue_SHS = null;
+  var $code_uf = null;
+  var $libelle_uf = null;
   var $ATNC = null;
   var $rques = null;
   var $rank = null;
