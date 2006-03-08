@@ -21,15 +21,13 @@ class CHPrimXMLServeurActes extends CHPrimXMLDocument {
   function __construct() {
     parent::__construct("serveurActes");
     global $AppUI;
-    
-    $now = time();
-    
+        
     $evenementsServeurActes = $this->addElement($this, "evenementsServeurActes", null, "http://www.hprim.org/hprimXML");
     $this->addAttribute($evenementsServeurActes, "version", "1.01");
 
     $enteteMessage = $this->addElement($evenementsServeurActes, "enteteMessage");
     $this->addAttribute($enteteMessage, "modeTraitement", "test"); // A supprimer pour un utilisation réelle
-    $this->addElement($enteteMessage, "identifiantMessage", "ES{$now}");
+    $this->addElement($enteteMessage, "identifiantMessage", "ES{$this->now}");
     $this->addDateTimeElement($enteteMessage, "dateHeureProduction");
     
     $emetteur = $this->addElement($enteteMessage, "emetteur");
@@ -45,8 +43,10 @@ class CHPrimXMLServeurActes extends CHPrimXMLDocument {
   }
   
   function generateFromOperation($mbOp, $sc_patient_id, $sc_venue_id, $cmca_uf_code, $cmca_uf_libelle) {
+    $this->documentfinalprefix = "op" . sprintf("%06d", $mbOp->operation_id);    
+
     $evenementsServeurActes = $this->documentElement;
-    
+
     $evenementServeurActe = $this->addElement($evenementsServeurActes, "evenementServeurActe");
     $this->addDateTimeElement($evenementServeurActe, "dateAction");
 
@@ -137,7 +137,7 @@ class CHPrimXMLServeurActes extends CHPrimXMLDocument {
     $this->addElement($fin, "heure", $mbOpFin);
     
     $mbChir->loadRefs();
-    $this->addUniteFonctionnelle($intervention, $mbChir->_ref_function);
+    $this->addUniteFonctionnelle($intervention, $cmca_uf_code, $cmca_uf_libelle);
     
     // Ajout des participants
     $mbPlage = $mbOp->_ref_plageop;
@@ -156,8 +156,8 @@ class CHPrimXMLServeurActes extends CHPrimXMLDocument {
     // Ajout des actes CCAM
     $actesCCAM = $this->addElement($evenementServeurActe, "actesCCAM");
     
-    foreach ($mbOp->_ext_codes_ccam as $mbCode) {
-      $this->addActeCCAM($actesCCAM, $mbCode, $mbOp);
+    foreach ($mbOp->_ref_actes_ccam as $mbActe) {
+      $this->addActeCCAM($actesCCAM, $mbActe, $mbOp, $cmca_uf_code, $cmca_uf_libelle);
     }
     
     // Traitement final

@@ -20,16 +20,23 @@ require_once($AppUI->getModuleClass("dPinterop", "hprimxmlschema"));
 
 class CHPrimXMLDocument extends CMbXMLDocument {
   var $pmsipath = "modules/dPinterop/hprim";
+  var $finalpath = "files/hprim";
   var $schemapath = null;
   var $schemafilename = null;
   var $documentfilename = null;
+  var $documentfinalprefix = null;
+  var $documentfinalfilename = null;
+  var $now = null;
    
   function __construct($schemaname) {
     parent::__construct();
-    
+
     $this->schemapath = "$this->pmsipath/$schemaname";
     $this->schemafilename   = "$this->schemapath/schema.xml"  ;
     $this->documentfilename = "$this->schemapath/document.xml";
+    $this->finalpath .= "/$schemaname";
+
+    $this->now = time();
   }
   
   function checkSchema() {
@@ -59,8 +66,14 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     $this->addAttribute($this->documentElement, "xsi:schemaLocation", "http://www.hprim.org/hprimXML schema.xml");
   }
   
-  function save() {
+  function saveTempFile() {
     parent::save($this->documentfilename);
+  }
+  
+  function saveFinalFile() {
+    $this->documentfinalfilename = "$this->finalpath/$this->documentfinalprefix-$this->now.xml";
+    mbForceDirectory(dirname($this->documentfinalfilename));
+    parent::save($this->documentfinalfilename);
   }
   
   
@@ -86,9 +99,10 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     $this->addAttribute($part, "referent", "non");
   }
     
-  function addUniteFonctionnelle($elParent, $mbFunction) {
-    $this->addCodeLibelle($elParent, "uniteFonctionnelle", "Func$mbFunction->function_id", $mbFunction->_view);
+  function addUniteFonctionnelle($elParent, $cmca_uf_code, $cmca_uf_libelle) {
+    $this->addCodeLibelle($elParent, "uniteFonctionnelle", $cmca_uf_code, $cmca_uf_libelle);
   }
+  
   
   function addProfessionnelSante($elParent, $mbMediuser) {
     $medecin = $this->addElement($elParent, "medecin");
@@ -103,11 +117,7 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     return $medecin;
   }
   
-  function addActeCCAM($elParent, $mbCodeCCAM, $mbOp) {
-    if (!$mbCodeCCAM->code) {
-      return null;
-		}
-    
+  function addActeCCAM($elParent, $mbActeCCAM, $mbOp, $cmca_uf_code, $cmca_uf_libelle) {        
     $acteCCAM = $this->addElement($elParent, "acteCCAM");
     $this->addAttribute($acteCCAM, "action", "création");
     $this->addAttribute($acteCCAM, "facturable", "oui");
@@ -117,9 +127,9 @@ class CHPrimXMLDocument extends CMbXMLDocument {
 
     $identifiant = $this->addElement($acteCCAM, "identifiant");
     $emetteur = $this->addElement($identifiant, "emetteur", "acte{$mbOp->operation_id}-1");
-    $this->addElement($acteCCAM, "codeActe", $mbCodeCCAM->code);
-    $this->addElement($acteCCAM, "codeActivite", "1");
-    $this->addElement($acteCCAM, "codePhase", "0");
+    $this->addElement($acteCCAM, "codeActe", $mbActeCCAM->code_acte);
+    $this->addElement($acteCCAM, "codeActivite", $mbActeCCAM->code_activite);
+    $this->addElement($acteCCAM, "codePhase", $mbActeCCAM->code_phase);
 
     $execute = $this->addElement($acteCCAM, "execute");
     $this->addElement($execute, "date", $mbOp->_ref_plageop->date);
@@ -130,13 +140,17 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     $medecinExecutant = $this->addElement($medecins, "medecinExecutant");
     $this->addAttribute($medecinExecutant, "principal", "oui");
     $this->addProfessionnelSante($medecinExecutant, $mbChir);
-    $this->addUniteFonctionnelle($executant, $mbChir->_ref_function);
+    $this->addUniteFonctionnelle($executant, $cmca_uf_code, $cmca_uf_libelle);
     
     $modificateurs = $this->addElement($acteCCAM, "modificateurs");
-    $this->addElement($modificateurs, "modificateur", "B");
+    foreach ($mbActeCCAM->_modificateurs as $mbModificateur) {
+      $this->addElement($modificateurs, "modificateur", $mbModificateur);
+    }
     
     $montant = $this->addElement($acteCCAM, "montant");
-    $montantDepassement = $this->addElement($montant, "montantDepassement", "150.00");
+    if ($mbActeCCAM->montant_depassement > 0) {
+      $montantDepassement = $this->addElement($montant, "montantDepassement", sprintf("%.2f", $mbActeCCAM->montant_depassement));
+    }
     
     return $acteCCAM;
   }

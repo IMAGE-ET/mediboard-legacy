@@ -43,7 +43,7 @@ if ($mbOp->load($mb_operation_id)) {
 }
 
 //$doc->addNameSpaces();
-$doc->save();
+$doc->saveTempFile();
 
 require_once($AppUI->getSystemClass("ftp"));
 
@@ -54,7 +54,8 @@ $ftp->userpass = dPgetParam($_POST, "userpass", "g5b3deay");
 
 // Connexion FTP
 if (isset($_POST["hostname"])) {
-  $ftp->sendFile($doc->documentfilename, "document.xml");
+  $doc->saveFinalFile();
+  $ftp->sendFile($doc->documentfinalfilename, basename($doc->documentfinalfilename));
 }
 
 // Création du template
