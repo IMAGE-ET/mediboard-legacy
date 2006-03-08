@@ -10,44 +10,62 @@
 	originally written for WEBO project, see webo source for "real life" usages
 */
 
-function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port='3306', $persist=false ) {
-	function_exists( 'mysql_connect' )
-		or  die( 'FATAL ERROR: MySQL support not avaiable.  Please check your configuration.' );
-
-	if ($persist) {
-		mysql_pconnect( "$host:$port", $user, $passwd )
-			or die( 'FATAL ERROR: Connection to database server failed' );
-	} else {
-		mysql_connect( "$host:$port", $user, $passwd )
-			or die( 'FATAL ERROR: Connection to database server failed' );
-	}
-
-	if ($dbname) {
-		mysql_select_db( $dbname )
-			or die( "FATAL ERROR: Database not found ($dbname)" );
-	} else {
-		die( "FATAL ERROR: Database name not supplied<br />(connection to database server succesful)" );
-	}
-}
-
-function db_error() {
-	return mysql_error();
-}
-
-function db_errno() {
-	return mysql_errno();
-}
-
-function db_insert_id() {
-	return mysql_insert_id();
-}
-
-function db_exec( $sql ) {
+function db_connect( $dbid = 'std', $host='localhost', $dbname, $user='root', $passwd='', $port='3306', $persist=false ) {
+  global $links_db;
   global $dbChrono;
+  if(!isset($links_db[$dbid])) {
+    function_exists( 'mysql_connect' )
+      or  die( 'FATAL ERROR: MySQL support not avaiable.  Please check your configuration.' );
 
-  $dbChrono->start();
-	$cur = mysql_query( $sql );
-  $dbChrono->stop();
+	  if ($persist) {
+      $links_db[$dbid] = mysql_pconnect( "$host:$port", $user, $passwd )
+        or die( 'FATAL ERROR: Connection to database server failed' );
+    } else {
+      $links_db[$dbid] = mysql_connect( "$host:$port", $user, $passwd )
+        or die( 'FATAL ERROR: Connection to database server failed' );
+    }
+
+    if ($dbname) {
+	    mysql_select_db( $dbname, $links_db[$dbid] )
+        or die( "FATAL ERROR: Database not found ($dbname)" );
+    } else {
+      die( "FATAL ERROR: Database name not supplied<br />(connection to database server succesful)" );
+    }
+
+    $dbChrono[$dbid] = new Chronometer;
+  }
+}
+
+function db_error($dbid = 'std') {
+  global $links_db;
+  if(!isset($links_db[$dbid]))
+    die( 'FATAL ERROR: link to $dbid not found.' );
+	return mysql_error($links_db[$dbid]);
+}
+
+function db_errno($dbid = 'std') {
+  global $links_db;
+  if(!isset($links_db[$dbid]))
+    die( 'FATAL ERROR: link to $dbid not found.' );
+	return mysql_errno($links_db[$dbid]);
+}
+
+function db_insert_id($dbid = 'std') {
+  global $links_db;
+  if(!isset($links_db[$dbid]))
+    die( 'FATAL ERROR: link to $dbid not found.' );
+	return mysql_insert_id($links_db[$dbid]);
+}
+
+function db_exec( $sql, $dbid = 'std' ) {
+  global $dbChrono;
+  global $links_db;
+  if(!isset($links_db[$dbid]))
+    die( 'FATAL ERROR: link to $dbid not found.' );
+
+  $dbChrono[$dbid]->start();
+	$cur = mysql_query( $sql, $links_db[$dbid] );
+  $dbChrono[$dbid]->stop();
 
 	if( !$cur ) {
 		return false;
@@ -84,9 +102,11 @@ function db_escape( $str ) {
 	return mysql_escape_string( $str );
 }
 
-function db_version() {
-	;
-	if( ($cur = mysql_query( "SELECT VERSION()" )) ) {
+function db_version($dbid = 'std') {
+  global $links_db;
+  if(!isset($links_db[$dbid]))
+    die( 'FATAL ERROR: link to $dbid not found.' );
+	if( ($cur = mysql_query( "SELECT VERSION()",  $links_db[$dbid])) ) {
 		$row =  mysql_fetch_row( $cur );
 		mysql_free_result( $cur );
 		return $row[0];

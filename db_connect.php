@@ -7,26 +7,27 @@
 
 require_once($AppUI->getSystemClass("chrono"));
 
-$dbChrono = new Chronometer;
+$dbChrono = array();
 
 // load the db specific handlers
 require_once( "{$AppUI->cfg['root_dir']}/includes/db_{$AppUI->cfg['dbtype']}.php" );
 
 // make the connection to the db
-function do_connect() {
+function do_connect($dbid) {
   global $AppUI;
   
   db_connect(
-    $AppUI->cfg['dbhost'], 
-    $AppUI->cfg['dbname'],
-    $AppUI->cfg['dbuser'], 
-    $AppUI->cfg['dbpass'], 
-    $AppUI->cfg['dbport'], 
+    $dbid,
+    $AppUI->cfg['db'][$dbid]['dbhost'], 
+    $AppUI->cfg['db'][$dbid]['dbname'],
+    $AppUI->cfg['db'][$dbid]['dbuser'], 
+    $AppUI->cfg['db'][$dbid]['dbpass'], 
+    $AppUI->cfg['db'][$dbid]['dbport'], 
     $AppUI->cfg['dbpersist']
   );
 }
 
-do_connect();
+do_connect("std");
 
 
 /**
