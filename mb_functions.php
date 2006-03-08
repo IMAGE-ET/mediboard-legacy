@@ -332,5 +332,24 @@ function mbRemoveValuesInArray($needle, &$haystack) {
   }
 }
 
+/**
+ * Ensures a directory path exists. Creates it if needed.
+ * @return void */
+function mbForceDirectory($dir, $mode = 0755) {
+  if (!$dir) {
+    return false;
+  }
+  
+  if (is_dir($dir) || $dir === "/") {
+    return true;
+  }
+  
+  if (mbForceDirectory(dirname($dir))){
+    return mkdir($dir, $mode);
+  }
+  
+  return false;
+}
+
 
 ?>
