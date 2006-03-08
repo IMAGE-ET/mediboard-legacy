@@ -38,3 +38,4 @@ class Chronometer {
     $this->avgStep = $this->total/$this->nbSteps;
   }
 }
+?>
