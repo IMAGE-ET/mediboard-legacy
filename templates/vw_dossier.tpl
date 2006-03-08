@@ -30,6 +30,13 @@ function imprimerDocument(doc_id) {
   url.popup(700, 600, "Compte-rendu");
 }
 
+function exporterDossier(operation_id) {
+  var url = new Url();
+  url.setModuleAction("dPinterop", "export_hprim");
+  url.addParam("operation_id", operation_id);
+  url.popup(800, 600, "Export H'XML vers Sa@nté.com");
+}
+
 </script>
 {/literal}
 
@@ -270,6 +277,12 @@ function imprimerDocument(doc_id) {
           {/if}
         </tr>
         {/foreach}
+        <tr>
+          <td class="button" colspan="4">
+            <button onclick="exporterDossier({$curr_op->operation_id})">Exporter vers S@nté.com</button>
+          </td>
+        </tr>
+        
         {/foreach}
         <tr>
           <th class="title" colspan="4">Hospitalisations</th>
