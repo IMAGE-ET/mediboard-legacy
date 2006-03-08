@@ -58,12 +58,14 @@ class COperation extends CMbObject {
   var $duree_hospi = null;
   var $type_adm = null;
   var $chambre = null;
+  var $venue_SHS = null;
   var $ATNC = null;
   var $rques = null;
   var $rank = null;
   var $admis = null;
   var $saisie = null;
   var $modifiee = null;
+  
   var $depassement = null;
   var $annulee = null;
   var $compte_rendu = null;
@@ -82,6 +84,7 @@ class COperation extends CMbObject {
   var $_entree_adm = null;
   var $_sortie_adm = null;
   var $_codes_ccam = null;
+  var $_venue_SHS_guess = null;
   
   // Shortcut fields
   var $_datetime = null;
@@ -132,6 +135,7 @@ class COperation extends CMbObject {
     $this->_props["time_adm"] = "time";
     $this->_props["duree_hospi"] = "num";
     $this->_props["type_adm"] = "enum|comp|ambu|exte";
+    $this->_props["venue_SHS"] = "num|length|8|confidential";
     $this->_props["chambre"] = "enum|o|n";
     $this->_props["ATNC"] = "enum|o|n";
     $this->_props["rques"] = "str|confidential";
@@ -259,6 +263,12 @@ class COperation extends CMbObject {
 
     $this->_entree_adm = "$this->date_adm $this->time_adm";
     $this->_sortie_adm = mbDateTime("+ $this->duree_hospi days", $this->_entree_adm);
+    
+    $this->_venue_SHS_guess = mbTranformTime(null, $this->_datetime, "%y");
+    $this->_venue_SHS_guess .= 
+      $this->type_adm == "exte" ? "5" :
+      $this->type_adm == "ambu" ? "4" : "0";
+    $this->_venue_SHS_guess .="xxxxx";
   }
   
   function updateDBFields() {
@@ -393,6 +403,7 @@ class COperation extends CMbObject {
     $this->loadRefPat();
     $this->loadRefPlageOp();
     $this->loadRefCCAM();
+    $this->_view = "Intervention de {$this->_ref_pat->_view} par le Dr. {$this->_ref_chir->_view}";
   }
 
   function loadRefsBack() {

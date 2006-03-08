@@ -13,7 +13,7 @@ require_once($AppUI->getModuleClass("dPcompteRendu", "compteRendu"));
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.32';
+$config['mod_version'] = '0.33';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -167,6 +167,13 @@ class CSetupdPplanningOp {
           db_exec($sql); db_error();
         
         case "0.32":
+          $sql = "ALTER TABLE `operations`" .
+              "ADD `venue_SHS` VARCHAR( 8 ) NOT NULL AFTER `chambre`;";
+          db_exec( $sql ); db_error();
+          $sql = "ALTER TABLE `operations` ADD INDEX ( `venue_SHS` );";
+          db_exec( $sql ); db_error();
+
+        case "0.33":
           return true;
 	  }
       return false;
