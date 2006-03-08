@@ -1,3 +1,6 @@
+<?php // Unused in Mediboard. To be removed.
+?>
+
 <?php
 //add or edit a system user
 if(empty($user_id))$user_id = 0;
