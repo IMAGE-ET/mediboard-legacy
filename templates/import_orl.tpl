@@ -4,6 +4,7 @@
 function doAction(sAction) {
   var url = new Url();
   url.setModuleAction("dPinterop", sAction);
+  url.addParam("u", "import/orl");
   url.popup(400, 400, sAction);
 }  
 

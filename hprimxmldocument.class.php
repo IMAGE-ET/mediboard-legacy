@@ -16,11 +16,53 @@ if (!class_exists("DOMDocument")) {
 global $AppUI, $m;
 
 require_once($AppUI->getModuleClass("dPinterop", "mbxmldocument"));
+require_once($AppUI->getModuleClass("dPinterop", "hprimxmlschema"));
 
 class CHPrimXMLDocument extends CMbXMLDocument {
-  function __construct() {
+  var $pmsipath = "modules/dPinterop/hprim";
+  var $schemapath = null;
+  var $schemafilename = null;
+  var $documentfilename = null;
+   
+  function __construct($schemaname) {
     parent::__construct();
+    
+    $this->schemapath = "$this->pmsipath/$schemaname";
+    $this->schemafilename   = "$this->schemapath/schema.xml"  ;
+    $this->documentfilename = "$this->schemapath/document.xml";
   }
+  
+  function checkSchema() {
+    if (!is_dir($this->schemapath)) {
+      trigger_error("ServeurActe schemas are missing. Please extract them from archive in $this->schemapath/ directory");
+      return false;
+    }
+    
+    if (!is_file($this->schemafilename)) {
+      $schema = new CHPrimXMLSchema();
+      $schema->importSchemaPackage($this->schemapath);
+      $schema->purgeIncludes();
+      $schema->purgeImportedNamespaces();
+      $schema->save($this->schemafilename);
+    }
+    
+    return true;
+  }
+  
+  function schemaValidate() {
+    return parent::schemaValidate($this->schemafilename);
+  }
+  
+  function addNameSpaces() {
+    // Ajout des namespace pour XML Spy
+    $this->addAttribute($this->documentElement, "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+    $this->addAttribute($this->documentElement, "xsi:schemaLocation", "http://www.hprim.org/hprimXML schema.xml");
+  }
+  
+  function save() {
+    parent::save($this->documentfilename);
+  }
+  
   
   function addCodeLibelle($elParent, $nodeName, $code, $libelle) {
     $codeLibelle = $this->addElement($elParent, $nodeName);
