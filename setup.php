@@ -178,7 +178,7 @@ class CSetupdPplanningOp {
               "ADD `code_uf` VARCHAR( 3 ) AFTER `venue_SHS`;";
           db_exec( $sql ); db_error();
           $sql = "ALTER TABLE `operations`" .
-              "ADD `libelle_uf` VARCHAR( 8 ) AFTER `code_uf`;";
+              "ADD `libelle_uf` VARCHAR( 40 ) AFTER `code_uf`;";
           db_exec( $sql ); db_error();
 
         case "0.34":
