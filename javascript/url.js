@@ -54,7 +54,7 @@ Url.prototype.popup = function(iWidth, iHeight, sWindowName) {
 }
 
 Url.prototype.request = function(fOnReadyStateChange) {
-  this.addParam("dialog", "1");
+  this.addParam("suppressHeaders", "1");
 
   http_request = null;
 
@@ -80,7 +80,7 @@ Url.prototype.request = function(fOnReadyStateChange) {
   
   http_request.onreadystatechange = fOnReadyStateChange;
   http_request.open('GET', this.make(), true);
-  http_request.send(null);
+  http_request.send();
   
   return http_request;
 }
