@@ -125,8 +125,9 @@ class CTemplateManager {
       case TMT_OPERATION      : $object = new COperation   ; break;
       case TMT_HOSPITALISATION: $object = new COperation   ; break;
     }
-
-    $object->fillTemplate($this);
+    
+    if(isset($object))
+      $object->fillTemplate($this);
   }
   
   function loadLists($user_id, $compte_rendu_id = 0) {
@@ -151,13 +152,15 @@ class CTemplateManager {
       case TMT_OPERATION      : $object = new COperation   ; break;
       case TMT_HOSPITALISATION: $object = new COperation   ; break;
     }
-
-    $object->loadAides($user_id);
     
-    if (is_array($helpers = $object->_aides["compte_rendu"])) {
-      // Caution, keys and values have to been flipped out
-      $this->helpers = array_flip($helpers);
-    }
+    if(isset($object)) {
+      $object->loadAides($user_id);
+      if (is_array($helpers = $object->_aides["compte_rendu"])) {
+        // Caution, keys and values have to been flipped out
+        $this->helpers = array_flip($helpers);
+      }
+    } else
+      $this->helpers = array();
   }
   
   function renderDocument($source) {

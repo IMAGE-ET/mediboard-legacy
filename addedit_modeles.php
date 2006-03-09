@@ -17,6 +17,8 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+global $ECompteRenduType;
+
 // Liste des praticiens accessibles
 $listPrat = new CMediusers();
 $listPrat = $listPrat->loadPraticiens(PERM_EDIT);

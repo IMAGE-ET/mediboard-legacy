@@ -53,7 +53,7 @@ foreach($packs as $key => $value) {
 
 // Récupération des modèles
 $whereCommon = array();
-$whereCommon["type"] = "= 'hospitalisation'";
+$whereCommon[] = "type = 'hospitalisation' OR type = 'operation'";
 $order = "nom";
 
 // Modèles de l'utilisateur
