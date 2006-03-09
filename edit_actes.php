@@ -48,7 +48,7 @@ $listAnesths = new CMediusers;
 $listAnesths = $listAnesths->loadAnesthesistes();
 
 $listChirs = new CMediusers;
-$listChirs = $listChirs->loadChirurgiens();
+$listChirs = $listChirs->loadPraticiens();
 
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));
