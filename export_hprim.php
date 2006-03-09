@@ -54,22 +54,25 @@ $ftp->userpass = dPgetParam($_POST, "userpass", "oxcmca");
 
 // Connexion FTP
 if (isset($_POST["hostname"])) {
-  $doc->saveFinalFile();
 
   // Compte le nombre de fichiers déjà générés
   $count = 0;
-  $dir = dir(dirname($doc->documentfinalfilename));
+  $dir = dir($doc->finalpath);
   while (false !== ($entry = $dir->read())) {
     $count++;
   }
   $dir->close();
   $count -= 2; // Exclure . et ..
-  $counter = ($count - 1) % 100;
+  $counter = $count % 100;
   
   // Transfert réel
   $destination_basename = sprintf("admls1%02d", $counter);
-  $ftp->sendFile($doc->documentfinalfilename, "$destination_basename.xml");
-  $ftp->sendFile($doc->documentfinalfilename, "$destination_basename.ok");
+  if ($ftp->sendFile($doc->documentfilename, "$destination_basename.xml")) {
+    $ftp->sendFile($doc->documentfilename, "$destination_basename.ok");
+
+    $doc->saveFinalFile();
+    $ftp->logStep("Archiving sent file in Mediboard server under name $doc->documentfinalfilename");
+  }
 }
 
 // Création du template
