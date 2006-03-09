@@ -28,7 +28,7 @@ $listAnesths = new CMediusers;
 $listAnesths = $listAnesths->loadAnesthesistes();
 
 $listChirs = new CMediusers;
-$listChirs = $listChirs->loadChirurgiens();
+$listChirs = $listChirs->loadPraticiens();
 
 
 // Selection des salles
