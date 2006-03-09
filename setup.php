@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'Mediusers';
-$config['mod_version'] = '0.12';
+$config['mod_version'] = '0.13';
 $config['mod_directory'] = 'mediusers';
 $config['mod_setup_class'] = 'CSetupMediusers';
 $config['mod_type'] = 'user';
@@ -53,8 +53,12 @@ class CSetupMediusers {
       case "0.11":
         $sql = "ALTER TABLE `users_mediboard` ADD `adeli` int(9) DEFAULT NULL;";
         db_exec($sql);  db_error();
-        
-      case "0.12": 
+
+      case "0.12":
+        $sql = "ALTER TABLE `users_mediboard` CHANGE `adeli` `adeli` VARCHAR( 9 );";
+        db_exec($sql);  db_error();
+
+      case "0.13": 
         return true;
 		}
 

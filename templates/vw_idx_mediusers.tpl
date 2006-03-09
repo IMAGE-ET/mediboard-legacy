@@ -4,43 +4,6 @@ function pageMain() {
   toggleFunction({/literal}{$mediuserSel->function_id}{literal});
 }
 
-function checkMediuser() {
-  var form = document.mediuser;
-  var field = null;
-    
-  if (field = form._user_username)
-    if (field.value.length < 3) {
-      alert("Nom utilisateur trop court");
-      field.focus();
-      return false;
-    }
-  
-  if (field = form._user_password)
-    if (field.value.length < 4) {
-      alert("Mot de passe trop court");
-      field.focus();
-      return false;
-    } 
-  
-  var pass = form._user_password;
-  var pass2 = form._user_password2;
-  if (pass && pass2)
-    if (pass.value !=  pass2.value) {
-      alert("Les deux mots de passe diffèrent");
-      pass.focus();
-      return false;
-    } 
-
-  if (field = form._user_last_name)
-    if (field.value.length == 0) {
-      alert("Nom manquant");
-      field.focus();
-      return false;
-    }
-  
-  return true;
-}
-
 function collapseFunctions() {
   var trs = getElementsByClassName("tr", "function", false);
   
@@ -142,7 +105,7 @@ function toggleFunction(function_id) {
   
   <td class="pane">
 
-    <form name="mediuser" action="./index.php?m={$m}" method="post" onSubmit="return checkMediuser()"/>
+    <form name="mediuser" action="./index.php?m={$m}" method="post" onSubmit="return checkForm(this)"/>
     <input type="hidden" name="dosql" value="do_mediusers_aed" />
     <input type="hidden" name="user_id" value="{$mediuserSel->user_id}" />
     <input type="hidden" name="del" value="0" />
@@ -163,18 +126,18 @@ function toggleFunction(function_id) {
     </tr>
 
     <tr>
-      <th class="mandatory"><label for="_user_username" title="Nom du compte pour se connecter à Mediboard. Obligatoire">Login:</label></th>
-      <td><input type="text" name="_user_username" value="{$mediuserSel->_user_username}" /></td>
+      <th><label for="_user_username" title="Nom du compte pour se connecter à Mediboard. Obligatoire">Login:</label></th>
+      <td><input type="text" name="_user_username" title="{$mediuserSel->_user_props._user_username}" value="{$mediuserSel->_user_username}" /></td>
     </tr>
     
     <tr>
-      <th class="mandatory"><label for="_user_password" title="Mot de passe pour se connecter à Mediboard. Obligatoire">Mot de passe:</label></th>
-      <td><input type="password" name="_user_password" value="{$mediuserSel->_user_password}" /></td>
+      <th<label for="_user_password" title="Mot de passe pour se connecter à Mediboard. Obligatoire">Mot de passe:</label></th>
+      <td><input type="password" name="_user_password" title="notNull|str" value="{$mediuserSel->_user_password}" /></td>
     </tr>
     
     <tr>
-      <th class="mandatory"><label for="_user_password2" title="Re-saisir le mot de passe pour confimer. Obligatoire">Mot de passe (vérif.):</label></th>
-      <td><input type="password" name="_user_password2" value="{$mediuserSel->_user_password}" /></td>
+      <th><label for="_user_password2" title="Re-saisir le mot de passe pour confimer. Obligatoire">Mot de passe (vérif.):</label></th>
+      <td><input type="password" name="_user_password2" title="notNull|str|sameAs|_user_password" value="{$mediuserSel->_user_password}" /></td>
     </tr>
     
     <tr>
@@ -187,9 +150,9 @@ function toggleFunction(function_id) {
     </tr>
     
     <tr>
-      <th class="mandatory"><label for="function_id" title="Fonction de l'utilisateur au sein de l'établissement. Obligatoire">Fonction:</th>
+      <th><label for="function_id" title="Fonction de l'utilisateur au sein de l'établissement. Obligatoire">Fonction:</th>
       <td>
-        <select name="function_id">
+        <select name="function_id" title="{$mediuserSel->_props.function_id}">
           <option>&mdash; Choisir une fonction &mdash;</option>
         {foreach from=$functions item=curr_function}
           <option value="{$curr_function->function_id}" {if $curr_function->function_id == $mediuserSel->function_id} selected="selected" {/if}>
@@ -213,28 +176,28 @@ function toggleFunction(function_id) {
     </tr>
     
     <tr>
-      <th class="mandatory"><label for="_user_last_name" title="Nom de famille de l'utilisateur. Obligatoire">Nom:</label></th>
-      <td><input type="text" name="_user_last_name" value="{$mediuserSel->_user_last_name}" /></td>
+      <th><label for="_user_last_name" title="Nom de famille de l'utilisateur. Obligatoire">Nom:</label></th>
+      <td><input type="text" name="_user_last_name" title="{$mediuserSel->_user_props._user_last_name}" value="{$mediuserSel->_user_last_name}" /></td>
     </tr>
     
     <tr>
       <th><label for="_user_first_name" title="Prénom de l'utilisateur">Prénom:</label></th>
-      <td><input type="text" name="_user_first_name" value="{$mediuserSel->_user_first_name}" /></td>
+      <td><input type="text" name="_user_first_name"  title="{$mediuserSel->_user_props._user_first_name}" value="{$mediuserSel->_user_first_name}" /></td>
     </tr>
     
     <tr>
       <th><label for="adeli" title="Numero Adeli de l'utilisateur">Code Adeli:</label></th>
-      <td><input type="text" name="adeli" value="{$mediuserSel->adeli}" /></td>
+      <td><input type="text" name="adeli" size="9" maxlength="9" title="{$mediuserSel->_props.adeli}" value="{$mediuserSel->adeli}" /></td>
     </tr>
     
     <tr>
       <th><label for="_user_email" title="Email de l'utilisateur">Email:</label></th>
-      <td><input type="text" name="_user_email" value="{$mediuserSel->_user_email}" /></td>
+      <td><input type="text" name="_user_email" title="{$mediuserSel->_user_props._user_email}" value="{$mediuserSel->_user_email}" /></td>
     </tr>
 
     <tr>
       <th><label for="_user_phone" title="Numéro de téléphone de l'utilisateur">Tél:</label></th>
-      <td><input type="text" name="_user_phone" value="{$mediuserSel->_user_phone}" /></td>
+      <td><input type="text" name="_user_phone" title="{$mediuserSel->_user_props._user_phone}" value="{$mediuserSel->_user_phone}" /></td>
     </tr>
     
 
