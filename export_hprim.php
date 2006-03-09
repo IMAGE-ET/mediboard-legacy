@@ -48,14 +48,28 @@ $doc->saveTempFile();
 require_once($AppUI->getSystemClass("ftp"));
 
 $ftp = new CFTP;
-$ftp->hostname = dPgetParam($_POST, "hostname", "ftpperso.free.fr");
-$ftp->username = dPgetParam($_POST, "username", "tdespoix");
-$ftp->userpass = dPgetParam($_POST, "userpass", "g5b3deay");
+$ftp->hostname = dPgetParam($_POST, "hostname", "10.9.44.1");
+$ftp->username = dPgetParam($_POST, "username", "mediboard");
+$ftp->userpass = dPgetParam($_POST, "userpass", "oxcmca");
 
 // Connexion FTP
 if (isset($_POST["hostname"])) {
   $doc->saveFinalFile();
-  $ftp->sendFile($doc->documentfinalfilename, basename($doc->documentfinalfilename));
+
+  // Compte le nombre de fichiers déjà générés
+  $count = 0;
+  $dir = dir(dirname($doc->documentfinalfilename));
+  while (false !== ($entry = $dir->read())) {
+    $count++;
+  }
+  $dir->close();
+  $count -= 2; // Exclure . et ..
+  $counter = ($count - 1) % 100;
+  
+  // Transfert réel
+  $destination_basename = sprintf("admls1%02d", $counter);
+  $ftp->sendFile($doc->documentfinalfilename, "$destination_basename.xml");
+  $ftp->sendFile($doc->documentfinalfilename, "$destination_basename.ok");
 }
 
 // Création du template
