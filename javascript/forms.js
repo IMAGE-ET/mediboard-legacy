@@ -142,7 +142,7 @@ function checkMoreThan(oElement, aSpecFragments) {
     switch (sFragment1) {
       case "moreThan":
         var sTargetElement = aSpecFragments[2];
-        var oTargetElement = this.form.getElement(sTargetElement);
+        var oTargetElement = oElements.form.elements[sTargetElement];
 
 		if (!oTargetElement) {
           return printf("Elément cible invalide ou inexistant (nom = %s)", sTargetElement);
@@ -240,6 +240,21 @@ function checkElement(oElement, aSpecFragments) {
   
             break;
   
+          case "sameAs":
+	        var sTargetElement = aSpecFragments[2];
+	        var oTargetElement = oElement.form.elements[sTargetElement];
+			
+			if (!oTargetElement) {
+	          return printf("Elément cible invalide ou inexistant (nom = %s)", sTargetElement);
+			}
+			        
+			if (oElement.value != oTargetElement.value) {
+			  var oTargetLabel = getLabelFor(oTargetElement);
+			  var sTargetLabel = oTargetLabel ? oTargetLabel.innerHTML : oElement.name;
+			  return printf("Doit être identique à %s", sTargetLabel);
+			}
+	
+	        break;
           default:
             return "Spécification de chaîne de caractères invalide";
         }
@@ -305,7 +320,7 @@ function checkElement(oElement, aSpecFragments) {
             
   
           default:
-            return "Spécification de chaîne de caractères invalide";
+            return "Spécification de chaîne numérique invalide";
         }
       };
       
@@ -406,16 +421,16 @@ function checkElement(oElement, aSpecFragments) {
 }
 
 function checkForm(oForm) {
-  oElementFocus = null;
-  aMsgFailed = new Array;
-  iElement = 0;
+  var oElementFocus = null;
+  var aMsgFailed = new Array;
+  var iElement = 0;
   while (oElement = oForm.elements[iElement++]) {
     if (sPropSpec = oElement.getAttribute("title")) {
-      aSpecFragments = sPropSpec.split("|");
-      oLabel = getLabelFor(oElement);
+      var aSpecFragments = sPropSpec.split("|");
+      var oLabel = getLabelFor(oElement);
       if (sMsg = checkElement(oElement, aSpecFragments)) {
-        sLabelTitle = oLabel ? oLabel.getAttribute("title") : null;
-        sMsgFailed = sLabelTitle ? sLabelTitle : printf("%s (val:'%s', spec:'%s')", oElement.name, oElement.value, sPropSpec);
+        var sLabelTitle = oLabel ? oLabel.getAttribute("title") : null;
+        var sMsgFailed = sLabelTitle ? sLabelTitle : printf("%s (val:'%s', spec:'%s')", oElement.name, oElement.value, sPropSpec);
         sMsgFailed += "\n => " + sMsg;
         aMsgFailed.push("- " + sMsgFailed);
         
@@ -431,9 +446,10 @@ function checkForm(oForm) {
   }
 
   if (aMsgFailed.length) {
-  	sMsg = "Merci de remplir/corriger les champs suivants : \n";
+  	var sMsg = "Merci de remplir/corriger les champs suivants : \n";
   	sMsg += aMsgFailed.join("\n")
     alert(sMsg);
+    
     if (oElementFocus) {
     oElementFocus.focus();
       if (sDoubleClickAction = oElementFocus.getAttribute("ondblclick")) {
