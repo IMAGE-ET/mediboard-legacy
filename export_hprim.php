@@ -43,6 +43,7 @@ if ($mbOp->load($mb_operation_id)) {
 }
 
 //$doc->addNameSpaces();
+
 $doc->saveTempFile();
 
 require_once($AppUI->getSystemClass("ftp"));
@@ -67,8 +68,9 @@ if (isset($_POST["hostname"])) {
   
   // Transfert réel
   $destination_basename = sprintf("admls1%02d", $counter);
-  if ($ftp->sendFile($doc->documentfilename, "$destination_basename.xml")) {
-    $ftp->sendFile($doc->documentfilename, "$destination_basename.ok");
+  // Transfert en mode FTP_ASCII obligatoire pour les AS400
+  if ($ftp->sendFile($doc->documentfilename, "$destination_basename.xml", FTP_ASCII)) {
+    $ftp->sendFile($doc->documentfilename, "$destination_basename.ok", FTP_ASCII);
 
     $doc->saveFinalFile();
     $ftp->logStep("Archiving sent file in Mediboard server under name $doc->documentfinalfilename");

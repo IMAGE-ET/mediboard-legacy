@@ -61,7 +61,7 @@ function choosePreselection(oSelect) {
 <tr>
 
 <td>
-  <form name="formEdit" method="post" onsubmit="return checkForm(this)">  
+  <form name="formEdit" action="?m={$m}" method="post" onsubmit="return checkForm(this)">  
   
   <table class="form">
 
@@ -151,7 +151,7 @@ function choosePreselection(oSelect) {
 <tr>
   <td>
 
-  <form name="formFTP" method="post" onsubmit="return checkForm(this)">
+  <form name="formFTP" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
   
   <table class="form">
 
@@ -161,17 +161,17 @@ function choosePreselection(oSelect) {
   
   <tr>
     <th><label for="hostname" title="Nom pleinement qualifié de l'hôte FTP">Nom du server :</label></th>
-    <td><input type="text" title="notNull|str" name="hostname" value="{$ftp->hostname}"</td>
+    <td><input type="text" title="notNull|str" name="hostname" value="{$ftp->hostname}"/></td>
   </tr>
   
   <tr>
     <th><label for="username" title="Nom de l'utilisateur FTP">Utilisateur :</label></th>
-    <td><input type="text" title="notNull|str" name="username" value="{$ftp->username}"</td>
+    <td><input type="text" title="notNull|str" name="username" value="{$ftp->username}"/></td>
   </tr>
   
   <tr>
     <th><label for="userpass" title="Nom de l'utilisateur FTP">Mot de passe :</label></th>
-    <td><input type="password" title="notNull|str" name="userpass" value="{$ftp->userpass}"</td>
+    <td><input type="password" title="notNull|str" name="userpass" value="{$ftp->userpass}"/></td>
   </tr>
   
   <tr>
