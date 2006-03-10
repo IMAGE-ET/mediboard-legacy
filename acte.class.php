@@ -50,21 +50,22 @@ class CCodeCCAM {
     $result = db_exec($query, $this->dbccam);
     if(mysql_num_rows($result) == 0) {
       // On va chercher dans la V0bis un acte obsolète
-      do_connect('ccam');
+      // Nb : les deux blocs commentés en dessous empechent d'utiliser la V0bis
+      /*do_connect('ccam');
       $result = db_exec($query, 'ccam');;
-      if(db_fetch_array($result, 'ccam') == 0) {
+      if(db_fetch_array($result, 'ccam') == 0) {*/
         $this->code = "XXXXXXX";
         //On rentre les champs de la table actes
         $this->libelleCourt = "Acte invalide";
         $this->libelleLong = "Acte invalide";
         $this->_code7 = 1;
-      } else {
+      /*} else {
         $row = db_fetch_array($result);
         //On rentre les champs de la table actes
         $this->libelleCourt = "[Acte obsolete V0bis] - ".$row['LIBELLECOURT'];
         $this->libelleLong = "[Acte obsolete V0bis] - ".$row['LIBELLELONG'];
         $this->_code7 = 1;
-      }      
+      } */     
     } else {
       $row = db_fetch_array($result);
       //On rentre les champs de la table actes
