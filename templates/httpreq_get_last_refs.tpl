@@ -1,6 +1,6 @@
 <table width="100%">
   <tr>
-    <td><strong>{$patient->_view} &mdash {$patient->_age} ans</strong></td>
+    <td><strong>{$patient->_view} &mdash; {$patient->_age} ans</strong></td>
   </tr>
   {if $patient->_ref_operations|@count == 0}
   <tr>
