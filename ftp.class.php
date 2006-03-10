@@ -22,7 +22,7 @@ class CFTP {
     $this->logs[] = "<strong>Step : </strong>$log";
   }
   
-  function sendFile($source_file, $destination_file) {
+  function sendFile($source_file, $destination_file, $mode = FTP_BINARY) {
     // Set up basic connection
     $conn_id = ftp_connect($this->hostname);
     if (!$conn_id) {
@@ -42,7 +42,7 @@ class CFTP {
     $this->logStep("Logged in as user $this->username");
     
     // Upload the file
-    $upload = ftp_put($conn_id, $destination_file, $source_file, FTP_BINARY);
+    $upload = ftp_put($conn_id, $destination_file, $source_file, $mode);
     if (!$upload) {
       $this->logError("Failed to upload source file $source_file as destination file $destination_file");
       return false;
