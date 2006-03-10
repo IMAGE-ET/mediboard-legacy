@@ -3,24 +3,11 @@
 {literal}
 <script type="text/javascript">
 
-var http_request = false;
-
 function requestInfoPat() {
   var url = new Url;
   url.setModuleAction("dPpatients", "httpreq_get_last_refs");
   url.addElement(document.editFrm.patient_id);
-  http_request = url.request(alertContents);
-}
-
-function alertContents() {
-  if (http_request.readyState == 4) {
-    if (http_request.status == 200) {
-      myNode = document.getElementById("infoPat");
-      myNode.innerHTML = http_request.responseText;
-    } else {
-      alert('There was a problem with the request.');
-    }
-  }
+  url.requestUpdate("infoPat");
 }
 
 function popChir() {
