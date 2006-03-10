@@ -53,36 +53,66 @@ Url.prototype.popup = function(iWidth, iHeight, sWindowName) {
   this.pop(iWidth, iHeight, sWindowName).focus();
 }
 
-Url.prototype.request = function(fOnReadyStateChange) {
-  this.addParam("suppressHeaders", "1");
-
-  http_request = null;
-
+Url.prototype.createRequest = function() {
+  var request = null;
+  
   if (window.XMLHttpRequest) { // Mozilla, Safari,...
-    http_request = new XMLHttpRequest();
-    if (http_request.overrideMimeType) {
-      http_request.overrideMimeType('text/xml');
+    request = new XMLHttpRequest();
+    if (request.overrideMimeType) {
+      request.overrideMimeType('text/xml');
     }
   } else if (window.ActiveXObject) { // IE
     try {
-      http_request = new ActiveXObject("Msxml2.XMLHTTP");
+      request = new ActiveXObject("Msxml2.XMLHTTP");
     } catch (e) {
       try {
-        http_request = new ActiveXObject("Microsoft.XMLHTTP");
+        request = new ActiveXObject("Microsoft.XMLHTTP");
       } catch (e) {}
     }
   }
+  
+  return request;
+}
 
-  if (!http_request) {
+Url.prototype.request = function(fOnReadyStateChange) {
+  this.addParam("suppressHeaders", "1");
+
+  var request = this.createRequest();
+
+  if (!request) {
     alert('Giving up :( Cannot create an XMLHTTP instance');
     return false;
   }
   
-  http_request.onreadystatechange = fOnReadyStateChange;
-  http_request.open('GET', this.make(), true);
-  http_request.send();
+  request.onreadystatechange = fOnReadyStateChange;
+  request.open('GET', this.make(), true);
+  request.send(null);
   
-  return http_request;
+  return request;
+}
+
+var oRequest = null;
+
+Url.prototype.requestUpdate = function(idTarget) {
+  var oTarget = document.getElementById(idTarget);
+  oTarget.innerHTML = "Loading...";
+  
+  oRequest = this.request(function () {updateTarget(oTarget);});
+}
+
+function updateTarget(oTarget) {
+  // oRequest is not affected instantly
+  if (!oRequest) {
+    return;
+  }
+  
+  if (oRequest.readyState == 4) {
+    if (oRequest.status == 200) {
+      oTarget.innerHTML = oRequest.responseText;
+    } else {
+      oTarget.innerHTML = "There was a problem with the request.";
+    }
+  }
 }
 
 function view_log(classe, id) {
