@@ -26,7 +26,7 @@ class CFTP {
     // Set up basic connection
     $conn_id = ftp_connect($this->hostname);
     if (!$conn_id) {
-      $this->logError("failed to $this->hostname");
+      $this->logError("failed to connect to $this->hostname");
       return false;
     } 
     
