@@ -151,7 +151,7 @@ function choosePreselection(oSelect) {
 <tr>
   <td>
 
-  <form name="formFTP" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
+  <form name="formFTP" action="?m={$m}&amp;{if $a}a={$a}{/if}&amp;dialog={$dialog}" method="post" onsubmit="return checkForm(this)">
   
   <table class="form">
 
@@ -172,6 +172,11 @@ function choosePreselection(oSelect) {
   <tr>
     <th><label for="userpass" title="Nom de l'utilisateur FTP">Mot de passe :</label></th>
     <td><input type="password" title="notNull|str" name="userpass" value="{$ftp->userpass}"/></td>
+  </tr>
+
+  <tr>
+    <th><label for="fileprefix" title="Préfixe pour le nom de fichier à télécharger">Préfix de nom de fichier :</label></th>
+    <td><input type="text" title="notNull|str" name="fileprefix" value="{$fileprefix}"/></td>
   </tr>
   
   <tr>

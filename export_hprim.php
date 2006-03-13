@@ -50,6 +50,7 @@ $doc->saveTempFile();
 
 require_once($AppUI->getSystemClass("ftp"));
 
+$fileprefix = dPgetParam($_POST, "fileprefix", "facls1");
 $ftp = new CFTP;
 $ftp->hostname = dPgetParam($_POST, "hostname", "10.9.44.1");
 $ftp->username = dPgetParam($_POST, "username", "mediboard");
@@ -57,7 +58,6 @@ $ftp->userpass = dPgetParam($_POST, "userpass", "oxcmca");
 
 // Connexion FTP
 if (isset($_POST["hostname"])) {
-
   // Compte le nombre de fichiers déjà générés
   $count = 0;
   $dir = dir($doc->finalpath);
@@ -69,7 +69,7 @@ if (isset($_POST["hostname"])) {
   $counter = $count % 100;
   
   // Transfert réel
-  $destination_basename = sprintf("admls1%02d", $counter);
+  $destination_basename = sprintf("%s%02d", $fileprefix, $counter);
   // Transfert en mode FTP_ASCII obligatoire pour les AS400
   if ($ftp->sendFile($doc->documentfilename, "$destination_basename.xml", FTP_ASCII)) {
     $ftp->sendFile($doc->documentfilename, "$destination_basename.ok", FTP_ASCII);
@@ -84,6 +84,7 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign("doc", $doc);
+$smarty->assign("fileprefix", $fileprefix);
 $smarty->assign("ftp", $ftp);
 $smarty->assign("doc_valid", $doc_valid);
 $smarty->assign("mbOp", $mbOp);
