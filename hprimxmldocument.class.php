@@ -99,8 +99,8 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     $this->addAttribute($part, "referent", "non");
   }
     
-  function addUniteFonctionnelle($elParent, $cmca_uf_code, $cmca_uf_libelle) {
-    $this->addCodeLibelle($elParent, "uniteFonctionnelle", $cmca_uf_code, $cmca_uf_libelle);
+  function addUniteFonctionnelle($elParent, $mbOp) {
+    $this->addCodeLibelle($elParent, "uniteFonctionnelle", $mbOp->code_uf, $mbOp->libelle_uf);
   }
   
   
@@ -117,7 +117,7 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     return $medecin;
   }
   
-  function addActeCCAM($elParent, $mbActeCCAM, $mbOp, $cmca_uf_code, $cmca_uf_libelle) {        
+  function addActeCCAM($elParent, $mbActeCCAM, $mbOp) {        
     $acteCCAM = $this->addElement($elParent, "acteCCAM");
     $this->addAttribute($acteCCAM, "action", "création");
     $this->addAttribute($acteCCAM, "facturable", "oui");
@@ -134,13 +134,13 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     $execute = $this->addElement($acteCCAM, "execute");
     $this->addElement($execute, "date", $mbOp->_ref_plageop->date);
 
-    $mbChir = $mbOp->_ref_chir;
+    $mbExecutant = $mbActeCCAM->_ref_executant;
     $executant = $this->addElement($acteCCAM, "executant");
     $medecins = $this->addElement($executant, "medecins");
     $medecinExecutant = $this->addElement($medecins, "medecinExecutant");
     $this->addAttribute($medecinExecutant, "principal", "oui");
-    $this->addProfessionnelSante($medecinExecutant, $mbChir);
-    $this->addUniteFonctionnelle($executant, $cmca_uf_code, $cmca_uf_libelle);
+    $this->addProfessionnelSante($medecinExecutant, $mbExecutant);
+    $this->addUniteFonctionnelle($executant, $mbOp);
     
     $modificateurs = $this->addElement($acteCCAM, "modificateurs");
     foreach ($mbActeCCAM->_modificateurs as $mbModificateur) {

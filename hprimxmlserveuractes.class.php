@@ -42,7 +42,7 @@ class CHPrimXMLServeurActes extends CHPrimXMLDocument {
     $this->addAgent($agents, "système", "CMCA", "Centre Médico-Chir. de l'Atlantique");
   }
   
-  function generateFromOperation($mbOp, $sc_patient_id, $sc_venue_id, $cmca_uf_code, $cmca_uf_libelle) {
+  function generateFromOperation($mbOp) {
     $this->documentfinalprefix = "op" . sprintf("%06d", $mbOp->operation_id);    
 
     $evenementsServeurActes = $this->documentElement;
@@ -56,12 +56,17 @@ class CHPrimXMLServeurActes extends CHPrimXMLDocument {
     $patient = $this->addElement($evenementServeurActe, "patient");
     $identifiant = $this->addElement($patient, "identifiant");
     $this->addIdentifiantPart($identifiant, "emetteur", "pat$mbPatient->patient_id");
-    $this->addIdentifiantPart($identifiant, "recepteur", $sc_patient_id);
+    $this->addIdentifiantPart($identifiant, "recepteur", $mbOp->_ref_pat->SHS);
     
     $personnePhysique = $this->addElement($patient, "personnePhysique");
-    $this->addAttribute($personnePhysique, "sexe", 
-      $mbPatient->sexe == "m" ? "M" :
-      $mbPatient->sexe == "f" ? "F" : "J");
+    
+    $sexeConversion = array (
+      "m" => "M",
+      "f" => "F",
+      "j" => "F"
+    );
+    
+    $this->addAttribute($personnePhysique, "sexe", $sexeConversion[$mbPatient->sexe]);
     $this->addElement($personnePhysique, "nomUsuel", substr($mbPatient->nom, 0, 35));
     $this->addElement($personnePhysique, "nomNaissance", substr($mbPatient->_nom_naissance, 0, 35));
     
@@ -90,7 +95,7 @@ class CHPrimXMLServeurActes extends CHPrimXMLDocument {
     
     $identifiant = $this->addElement($venue, "identifiant");
     $this->addIdentifiantPart($identifiant, "emetteur", "op$mbOp->operation_id");
-    $this->addIdentifiantPart($identifiant, "recepteur", $sc_venue_id);
+    $this->addIdentifiantPart($identifiant, "recepteur", $mbOp->venue_SHS);
     
     $entree = $this->addElement($venue, "entree");
     $dateHeureOptionnelle = $this->addElement($entree, "dateHeureOptionnelle");
@@ -137,19 +142,21 @@ class CHPrimXMLServeurActes extends CHPrimXMLDocument {
     $this->addElement($fin, "heure", $mbOpFin);
     
     $mbChir->loadRefs();
-    $this->addUniteFonctionnelle($intervention, $cmca_uf_code, $cmca_uf_libelle);
+    $this->addUniteFonctionnelle($intervention, $mbOp);
     
     // Ajout des participants
-    $mbPlage = $mbOp->_ref_plageop;
-    $mbPlage->loadRefsFwd();
-    $mbAnest = $mbPlage->_ref_anesth;
+    $mbParticipants = array();
+    foreach($mbOp->_ref_actes_ccam as $acte_ccam) {
+      $mbParticipant = $acte_ccam->_ref_executant;
+      $mbParticipants[$mbParticipant->user_id] = $mbParticipant;
+    }
     
     $participants = $this->addElement($intervention, "participants");
-    $participant = $this->addElement($participants, "participant");
-    $this->addProfessionnelSante($participant, $mbChir);
-    $participant = $this->addElement($participants, "participant");
-    $this->addProfessionnelSante($participant, $mbAnest);
-    
+    foreach ($mbParticipants as $mbParticipant) {
+      $participant = $this->addElement($participants, "participant");
+      $this->addProfessionnelSante($participant, $mbParticipant);
+    }
+        
     // Libellé de l'opération
     $this->addElement($intervention, "libelle", substr($mbOp->libelle, 0, 80));
     
@@ -157,7 +164,7 @@ class CHPrimXMLServeurActes extends CHPrimXMLDocument {
     $actesCCAM = $this->addElement($evenementServeurActe, "actesCCAM");
     
     foreach ($mbOp->_ref_actes_ccam as $mbActe) {
-      $this->addActeCCAM($actesCCAM, $mbActe, $mbOp, $cmca_uf_code, $cmca_uf_libelle);
+      $this->addActeCCAM($actesCCAM, $mbActe, $mbOp);
     }
     
     // Traitement final

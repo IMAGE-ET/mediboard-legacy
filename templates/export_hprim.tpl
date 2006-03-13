@@ -43,7 +43,7 @@ function choosePreselection(oSelect) {
         Le document <strong>{if $doc_valid}est valide!{else}n'est pas valide...{/if}</strong>
     </li>
     <li>
-      Visualiser <a href="?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$mb_operation_id}">l'opération correspondante</a>
+      Visualiser <a href="?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$mbOp->operation_id}">l'opération correspondante</a>
     </li>
   </ul>
   {/if}
@@ -75,7 +75,7 @@ function choosePreselection(oSelect) {
   
   <tr>
     <th><label for="mb_operation_id" title="Choisir un identifiant d'opération">Identifiant d'opération</label></th>
-    <td><input type="text" title="notNull|ref" name="mb_operation_id" value="{$mb_operation_id}" size="5"/></td>
+    <td><input type="text" title="notNull|ref" name="mb_operation_id" value="{$mbOp->operation_id}" size="5"/></td>
   </tr>
   
   <tr>
@@ -84,7 +84,7 @@ function choosePreselection(oSelect) {
   
   <tr>
    <th><label for="sc_patient_id" title="Choisir un identifiant de patient correspondant à l'opération">Identifiant de patient</label></th>
-    <td><input type="text" title="notNull|num|length|8" name="sc_patient_id" value="{$sc_patient_id}" size="8" maxlength="8" /></td>
+    <td><input type="text" title="notNull|num|length|8" name="sc_patient_id" value="{$mbOp->_ref_pat->SHS}" size="8" maxlength="8" /></td>
   </tr>
   
   <tr>
@@ -93,7 +93,7 @@ function choosePreselection(oSelect) {
       Suggestion :
     </th>
     <td>
-      <input type="text" title="notNull|num|length|8" name="sc_venue_id" value="{$sc_venue_id}" size="8" maxlength="8" />
+      <input type="text" title="notNull|num|length|8" name="sc_venue_id" value="{$mbOp->venue_SHS}" size="8" maxlength="8" />
       <br />{$mbOp->_venue_SHS_guess}
     </td>
   </tr>
@@ -126,12 +126,12 @@ function choosePreselection(oSelect) {
   
   <tr>
     <th><label for="cmca_uf_code" title="Choisir un code pour l'unité fonctionnelle">Code de l'unité fonctionnelle</label></th>
-    <td><input type="text" title="notNull|str|maxLength|10" name="cmca_uf_code" value="{$cmca_uf_code}" size="10" maxlength="10" /></td>
+    <td><input type="text" title="notNull|str|maxLength|10" name="cmca_uf_code" value="{$mbOp->code_uf}" size="10" maxlength="10" /></td>
   </tr>
 
   <tr>
     <th><label for="cmca_uf_libelle" title="Choisir un libellé pour l'unité fonctionnelle">Libellé de l'unité fonctionnelle</label></th>
-    <td><input type="text" title="notNull|str|maxLength|35" name="cmca_uf_libelle" value="{$cmca_uf_libelle}" size="35" maxlength="35" /></td>
+    <td><input type="text" title="notNull|str|maxLength|35" name="cmca_uf_libelle" value="{$mbOp->libelle_uf}" size="35" maxlength="35" /></td>
   </tr>
 
   <tr>
