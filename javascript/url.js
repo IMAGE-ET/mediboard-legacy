@@ -100,6 +100,12 @@ Url.prototype.requestUpdate = function(idTarget) {
   oRequest = this.request(function () {updateTarget(oTarget);});
 }
 
+Url.prototype.requestUpdate2 = function(idTarget) {
+  this.addParam("suppressHeaders", "1");
+  $(idTarget).innerHTML = "Loading...";
+  new Ajax.Updater(idTarget, this.make(), {asynchronous:true});
+}
+
 function updateTarget(oTarget) {
   // oRequest is not affected instantly
   if (!oRequest) {
