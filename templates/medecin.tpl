@@ -3,7 +3,7 @@
 {literal}
 function pageMain() {
   window.opener.endProcess();
-  window.close();
+//  window.close();
 }
 
 {/literal}

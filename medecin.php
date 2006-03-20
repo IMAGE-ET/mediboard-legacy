@@ -19,10 +19,12 @@ require_once("XML/Tree.php");
 $parse_errors = 0;
 
 function getAllElements(&$node, $element) {
+  global $parse_errors;
+
   $elements = array();
 
   if (!is_a($node, "XML_Tree_Node")) {
-    mbTrace(debug_backtrace());
+//    mbTrace(debug_backtrace());
     $parse_errors++;
     return $elements;
   }
@@ -37,8 +39,9 @@ function getAllElements(&$node, $element) {
 }
 
 function getElement(&$node, $element, $number = 1) {
+  global $parse_errors;
   if (!is_a($node, "XML_Tree_Node")) {
-    mbTrace(debug_backtrace());
+//    mbTrace(debug_backtrace());
     $parse_errors++;
     return;
   }
