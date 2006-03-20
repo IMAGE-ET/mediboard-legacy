@@ -53,80 +53,15 @@ Url.prototype.popup = function(iWidth, iHeight, sWindowName) {
   this.pop(iWidth, iHeight, sWindowName).focus();
 }
 
-Url.prototype.createRequest = function() {
-  var request = null;
-  
-  if (window.XMLHttpRequest) { // Mozilla, Safari,...
-    request = new XMLHttpRequest();
-    if (request.overrideMimeType) {
-      request.overrideMimeType('text/xml');
-    }
-  } else if (window.ActiveXObject) { // IE
-    try {
-      request = new ActiveXObject("Msxml2.XMLHTTP");
-    } catch (e) {
-      try {
-        request = new ActiveXObject("Microsoft.XMLHTTP");
-      } catch (e) {}
-    }
-  }
-  
-  return request;
-}
 
-Url.prototype.request = function(fOnReadyStateChange) {
+Url.prototype.requestUpdate = function(ioTarget) {
   this.addParam("suppressHeaders", "1");
-
-  var request = this.createRequest();
-
-  if (!request) {
-    alert('Giving up :( Cannot create an XMLHTTP instance');
-    return false;
-  }
+  this.addParam("ajax", "1");
+  $(ioTarget).innerHTML = "Loading...";
   
-  request.onreadystatechange = fOnReadyStateChange;
-  request.open('GET', this.make(), true);
-  request.send(null);
+  var oOptions = {
+    asynchronous : true,
+  };
   
-  return request;
-}
-
-var oRequest = null;
-
-Url.prototype.requestUpdate = function(idTarget) {
-  var oTarget = document.getElementById(idTarget);
-  oTarget.innerHTML = "Loading...";
-  
-  oRequest = this.request(function () {updateTarget(oTarget);});
-}
-
-Url.prototype.requestUpdate2 = function(idTarget) {
-  this.addParam("suppressHeaders", "1");
-  $(idTarget).innerHTML = "Loading...";
-  new Ajax.Updater(idTarget, this.make(), {asynchronous:true});
-}
-
-function updateTarget(oTarget) {
-  // oRequest is not affected instantly
-  if (!oRequest) {
-    return;
-  }
-  
-  if (oRequest.readyState == 4) {
-    if (oRequest.status == 200) {
-      oTarget.innerHTML = oRequest.responseText;
-    } else {
-      oTarget.innerHTML = "There was a problem with the request.";
-    }
-  }
-}
-
-function view_log(classe, id) {
-  url = new Url();
-  url.setModuleAction("system", "view_history");
-  url.addParam("object_class", classe);
-  url.addParam("object_id", id);
-  url.addParam("user_id", "");
-  url.addParam("type", "");
-  url.popup(600, 500, "history");
+  var oUpdater = new Ajax.Updater(ioTarget, this.make(), oOptions);
 }

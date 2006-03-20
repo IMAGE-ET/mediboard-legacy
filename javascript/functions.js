@@ -259,30 +259,12 @@ function regRedirectFlatCal(sInitDate, sRedirectBase, sContainerId, bTime) {
   );
 }
 
-
-var idInterval = 0;
-
-function doResize(idElement, iTargetWidth) {
-  oElement = document.getElementById(idElement);
-  iWidth = parseInt(oElement.style.width);
-  iLackingWidth = iTargetWidth - iWidth;
-  iLackingWidth *= .85;
-  iLackingWidth = parseInt(iLackingWidth);
-  iWidth = iTargetWidth - iLackingWidth;
-  oElement.style.width = iWidth;
-
-  if (iLackingWidth < 1 && iLackingWidth > -1) {
-  	window.clearInterval(idInterval);
-  }
-}
-
-function smoothToggle(idElement, iExpandedWidth) {
-  oElement = document.getElementById(idElement);
-  iWidth = parseInt(oElement.style.width);
-  iTargetWidth = iWidth == 0 ? iExpandedWidth : 0;
-  
-  // Close previous interval to prevent collisions
-  window.clearInterval(idInterval);
-  sFunc = "doResize('" + idElement + "', " +iTargetWidth + ")";
-  idInterval = window.setInterval(sFunc, 20);
+function view_log(classe, id) {
+  url = new Url();
+  url.setModuleAction("system", "view_history");
+  url.addParam("object_class", classe);
+  url.addParam("object_id", id);
+  url.addParam("user_id", "");
+  url.addParam("type", "");
+  url.popup(600, 500, "history");
 }
