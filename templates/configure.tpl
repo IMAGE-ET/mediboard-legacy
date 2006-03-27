@@ -41,7 +41,7 @@ parse_errors_total = 0;
 sibling_errors_total = 0;
 stores_total = 0;
 
-function endStep(file, nb_medecins, time, parse_errors, sibling_errors, stores) {
+function endStep(from, to, nb_medecins, time, parse_errors, sibling_errors, stores) {
   nb_medecins_total += nb_medecins;
   time_total += time;
   parse_errors_total += parse_errors;
@@ -54,12 +54,17 @@ function endStep(file, nb_medecins, time, parse_errors, sibling_errors, stores) 
   tr = document.createElement("tr"); 
   table.appendChild(tr);
 
-  addCell(tr, file);
+  var sStep = printf("De %d à %d", from, to);
+  addCell(tr, sStep);
   addCell(tr, time + ' seconds');
   addCell(tr, nb_medecins);
   addCell(tr, parse_errors);
   addCell(tr, sibling_errors);
   addCell(tr, stores);
+  
+  if (!nb_medecins) {
+    endProcess();
+  }
   
   if (is_running) {
     step++;
@@ -67,7 +72,7 @@ function endStep(file, nb_medecins, time, parse_errors, sibling_errors, stores) 
   }  
 }
 
-var step = 1;
+var step = 0;
 
 function startStep() {
   setRunning(true);
@@ -122,7 +127,7 @@ function pageMain() {
 <table class="tbl" id="process">
   <thead>
     <tr>
-      <th>Nom de fichier</th>
+      <th>Etape #</th>
       <th>Temps pris</th>
       <th>Nombre de médecins importés</th>
       <th>Erreurs de parsing</th>

@@ -20,7 +20,8 @@ class CMedecin extends CMbObject {
 
   // DB Fields
 	var $nom = null;
-	var $prenom = null;
+  var $prenom = null;
+  var $nom_jeunefille = null;
 	var $adresse = null;
 	var $ville = null;
 	var $cp = null;
@@ -28,6 +29,8 @@ class CMedecin extends CMbObject {
 	var $fax = null;
 	var $email = null;
   var $disciplines = null;
+  var $orientations = null;
+  var $complementaires = null;
 
   // Form fields
 	var $_tel1 = null;
@@ -49,6 +52,7 @@ class CMedecin extends CMbObject {
     
     $this->_props["nom"] = "str|notNull|confidential";
     $this->_props["prenom"] = "str|confidential";
+    $this->_props["nom_jeunefille"] = "str|confidential";
     $this->_props["adresse"] = "str|confidential";
     $this->_props["ville"] = "str|confidential";
     $this->_props["cp"] = "num|length|5|confidential";
@@ -56,6 +60,8 @@ class CMedecin extends CMbObject {
     $this->_props["fax"] = "num|length|10|confidential";
     $this->_props["email"] = "str|confidential";
     $this->_props["disciplines"] = "str|confidential";
+    $this->_props["orientations"] = "str|confidential";
+    $this->_props["complementaires"] = "str|confidential";
 	}
   
   function updateFormFields() {
@@ -134,6 +140,7 @@ class CMedecin extends CMbObject {
       $where["cp"] = "IS NULL";
   	else
   	  $where["cp"] = "= '".addslashes($this->cp)."'";
+      
   	$siblings = new CMedecin;
   	$siblings = $siblings->loadList($where);
   	return $siblings;
