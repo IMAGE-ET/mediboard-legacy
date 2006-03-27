@@ -176,6 +176,19 @@ class CAppUI {
     }
   }
   
+/**
+* Used to store information in tmp directory
+* @param string $subpath in tmp directory
+* @return string The path to the include file
+ */
+  function getTmpPath($subpath) {
+    if ($subpath) {
+      if ($root = $this->getConfig( 'root_dir' )) {
+        return "$root/tmp/{$subpath}";
+      }
+    }
+  }
+  
 
 /**
 * Sets the internal confuration settings array.
