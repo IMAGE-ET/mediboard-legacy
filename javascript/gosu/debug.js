@@ -17,14 +17,12 @@ function debugObject(obj, name) {
     var s = typeof obj;
     for (var i in obj) {
     	var prop = obj[i];
-    	if (prop) {
-    		s += "\nProperty." + i + "=";
-	        if ((typeof prop == "object" || typeof prop == "function") && prop.toString) {
-	            s += prop.toString().replace(/\n/g, "");
-	        } else {
-	            s += prop;
-	        }
-    	}
+		s += "\nProperty." + i + "=";
+        if ((typeof prop == "object" || typeof prop == "function") && prop.toString) {
+            s += prop.toString().replace(/\n/g, "");
+        } else {
+            s += prop;
+        }
     }
 
     debug(s, name);

@@ -53,15 +53,22 @@ Url.prototype.popup = function(iWidth, iHeight, sWindowName) {
   this.pop(iWidth, iHeight, sWindowName).focus();
 }
 
-
-Url.prototype.requestUpdate = function(ioTarget) {
+Url.prototype.requestUpdate = function(ioTarget, oOptions) {
   this.addParam("suppressHeaders", "1");
   this.addParam("ajax", "1");
-  $(ioTarget).innerHTML = "Loading...";
-  
-  var oOptions = {
-    asynchronous : true,
+
+  var oDefaultOptions = {
+    waitingText: "Chargement",
+    method: "get",
+    parameters:  this.aParams.join("&"), 
+    asynchronous: true,
+    evalScripts: true,
   };
+
+  Object.extend(oDefaultOptions, oOptions);
   
-  var oUpdater = new Ajax.Updater(ioTarget, this.make(), oOptions);
+  $(ioTarget).innerHTML = oDefaultOptions.waitingText + "...";
+    
+  new Ajax.Updater(ioTarget, "index.php", oDefaultOptions);  
 }
+
