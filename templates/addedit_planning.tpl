@@ -7,7 +7,9 @@ function requestInfoPat() {
   var url = new Url;
   url.setModuleAction("dPpatients", "httpreq_get_last_refs");
   url.addElement(document.editFrm.patient_id);
-  url.requestUpdate("infoPat");
+  url.requestUpdate("infoPat", {
+    waitingText: "Chargement des antécédants du patient",
+  });
 }
 
 function popChir() {
@@ -104,7 +106,7 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
             <td class="readonly">
               <input type="text" name="_chir_name" size="30" value="{$chir->_view}" readonly="readonly" />
               <button type="button" onclick="setChir(0, '')">
-                <img src="modules/{$m}/images/cross.png" />
+                <img src="modules/{$m}/images/cross.png" alt="X" />
               </button>
             </td>
             <td class="button"><input type="button" value="choisir un praticien" onclick="popChir()" /></td>
@@ -189,6 +191,9 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
         </tr>
         <tr>
           <td id="infoPat" class="text"></td>
+        </tr>
+        <tr>
+          <td id="infoPat2" class="text"></td>
         </tr>
       </table>
     
