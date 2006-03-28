@@ -523,6 +523,11 @@ div.message {
   color: #888;
 }
 
+div.loading {
+  background: url(images/loading.gif) no-repeat center left;
+  padding-left: 20px;
+}
+
 @media print {
   div.warning,
   div.error,
