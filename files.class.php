@@ -79,13 +79,14 @@ class CFile extends CMbObject {
 		global $AppUI;
 	// remove the file from the file system
 	    if($this->file_consultation) {
-		  @unlink( "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation/$this->file_real_filename" );
+		    @unlink( "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation/$this->file_real_filename" );
+        @unlink( "{$AppUI->cfg['root_dir']}/files/consultations2/$this->file_consultation/$this->file_real_filename" );
 	    }
 	    elseif($this->file_consultation_anesth) {
-		  @unlink( "{$AppUI->cfg['root_dir']}/files/consultations_anesth/$this->file_consultation_anesth/$this->file_real_filename" );
+		    @unlink( "{$AppUI->cfg['root_dir']}/files/consultations_anesth/$this->file_consultation_anesth/$this->file_real_filename" );
 	    }
 	    else {
-		  @unlink( "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation/$this->file_real_filename" );
+		    @unlink( "{$AppUI->cfg['root_dir']}/files/operations/$this->file_operation/$this->file_real_filename" );
 	    }
 	// delete any index entries
 		$sql = "DELETE FROM files_index_mediboard WHERE file_id = $this->file_id";
@@ -111,13 +112,22 @@ class CFile extends CMbObject {
 			 }
 		}
 		if($this->file_consultation) {
-		  if (!is_dir("{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation")) {
-		      $res = mkdir( "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation", 0777 );
+		  if (!is_dir("{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation")
+       && !is_dir("{$AppUI->cfg['root_dir']}/files/consultations2/$this->file_consultation")) {
+		      $res = mbForceDirectory( "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation", 0777 );
+          $rep = "consultations";
 			   if (!$res) {
+          $res = mbForceDirectory( "{$AppUI->cfg['root_dir']}/files/consultations2/$this->file_consultation", 0777 );
+          $rep = "consultations2";
+          if(!$res)
 			       return false;
 			   }
-		  }
-		  $this->_filepath = "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation/$this->file_real_filename";
+		  } else if(is_dir("{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation")) {
+        $rep = "consultations";
+      } else {
+        $rep = "consultations2";
+      } 
+		  $this->_filepath = "{$AppUI->cfg['root_dir']}/files/$rep/$this->file_consultation/$this->file_real_filename";
 		}
 		elseif($this->file_consultation_anesth) {
 		  if (!is_dir("{$AppUI->cfg['root_dir']}/files/consultations_anesth/$this->file_consultation_anesth")) {
