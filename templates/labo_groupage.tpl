@@ -4,9 +4,12 @@
     <form name="GHMFrm" action="?m={$m}" method="get">
     <input type="hidden" name="m" value="{$m}" />
       <table class="form">
-        <tr>
-          <th class="title" colspan="3">Diagnostics</th>
-        </tr>
+        <tr><th class="title">Patient</th></tr>
+        <tr><th class="category">Age (ex : 53a ou 120j)</th></tr>
+        <tr><td><input type="text" name="age" value="{$GHM->age}" />
+      </table>
+      <table class="form">
+        <tr><th class="title" colspan="3">Diagnostics</th></tr>
         <tr>
           <th class="category">DP</th>
           <th class="category">DR</th>
@@ -14,30 +17,43 @@
         </tr>
         <tr>
           <td><input type="text" name="DP" value="{$GHM->DP}" /></td>
-          <td><input type="text" name="DR" value="{$GHM->DR}" /></td>
-          <td><input type="text" name="DAS" value="{$GHM->DAS}" /></td>
+          <td>
+            {foreach from=$GHM->DRs item=DR key=key}
+            <input type="text" name="DRs[{$key}]" value="{$DR}" /><br />
+            {/foreach}
+            <input type="text" name="DRs[{$GHM->DRs|@count}]" value="" />
+          </td>
+          <td>
+            {foreach from=$GHM->DASs item=DAS key=key}
+            <input type="text" name="DASs[{$key}]" value="{$DAS}" /><br />
+            {/foreach}
+            <input type="text" name="DASs[{$GHM->DASs|@count}]" value="" />
+          </td>
         </tr>
       </table>
       <table class="form">
-        <tr>
-          <th class="title" colspan="2">Actes</th>
-        </tr>
+        <tr><th class="title" colspan="3">Actes</th></tr>
         <tr>
           <th class="category">Code</th>
           <th class="category">Phase</th>
+          <th class="category">Activite</th>
         </tr>
+        {foreach from=$GHM->actes item=acte key=key}
         <tr>
-          <td><input type="text" name="code" value="{$GHM->actes.0}" /></td>
-          <td><input type="text" name="phase" value="" /></td>
+          <td><input type="text" name="actes[{$key}]" value="{$acte}" /></td>
+          <td>Phase</td>
+          <td>Activite</td>
+        </tr>
+        {/foreach}
+        <tr>
+          <td><input type="text" name="actes[{$GHM->actes|@count}]" value="" /></td>
+          <td>Phase</td>
+          <td>Activite</td>
         </tr>
       </table>
       <table class="form">
-        <tr>
-          <th class="title">Hospi</th>
-        </tr>
-        <tr>
-          <th class="category">Type</th>
-        </tr>
+        <tr><th class="title">Hospi</th></tr>
+        <tr><th class="category">Type</th></tr>
         <tr>
           <td>
             <select name="type_hospi">
@@ -49,7 +65,7 @@
           </td>
         </tr>
         <tr>
-          <td class="button" colspan="6">
+          <td class="button">
             <button type="submit">Calculer</button>
           </td>
         </tr>

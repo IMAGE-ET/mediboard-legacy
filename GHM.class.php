@@ -16,10 +16,13 @@ class CGHM {
   // Id de la base de données (qui doit être dans le config.php)
   var $dbghm = null;
   
+  // Informations sur le patient
+  var $age = null;
+  
   // Informations de diagnostic
   var $DP = null;
-  var $DR = null;
-  var $DAS = null;
+  var $DRs = null;
+  var $DASs = null;
   
   // Informations sur les actes
   var $actes = null;
@@ -61,11 +64,11 @@ class CGHM {
         break;
       case "DR" :
         $table = "diag";
-        $elements[] = $this->DR;
+        $elements = $this->DRs;
         break;
       case "DAS" :
         $table = "diag";
-        $elements[] = $this->DAS;
+        $elements = $this->DASs;
         break;
       case "Actes" :
         $table = "acte";
@@ -79,8 +82,9 @@ class CGHM {
       $column2 = "liste_id";
       $liste_ids[] = $liste;
     } else if (preg_match("`^CMA([[:alpha:]]{0,3})`", $liste, $cma)) {
-      $column1 = strtolower($cma[1])."_id";
-      $table = strtolower($cma[1]);
+      $column1 = "cma".strtolower($cma[1])."_id";
+      $table = "cma".strtolower($cma[1]);
+      $liste_ids[] = "";
     } else if(preg_match("`^CM([[:digit:]]{2})`", $liste, $cm)) {
       $column1 = "code";
       $column2 = "CM_id";
@@ -145,7 +149,7 @@ class CGHM {
   
   // Vérification des conditions de l'arbre
   function checkCondition($type, $cond) {
-    $this->chemin .= "On test ($type : $cond) -> ";
+    $this->chemin .= "On teste ($type : $cond) -> ";
     if($type == "1A" || $type == "2A" || $type == "nA") {
       $n = $this->isFromList("Actes", $cond);
       $this->chemin .= "$n";
@@ -166,6 +170,28 @@ class CGHM {
       $this->chemin .= "$n";
       return $n;
     }
+    if($type == "Age") {
+      preg_match("`^([<>])([[:digit:]]+)([[:alpha:]])`", $cond, $ageTest);
+      if(preg_match("`^([[:digit:]]+)([[:alpha:]])`", $this->age, $agePat)) {
+        if($ageTest[1] == ">") {
+          if($ageTest[3] == "j" && $agePat[2] == "a") {
+            $this->chemin .= "1";
+            return 1;
+          } else if($ageTest[3] == $agePat[2] && $agePat[1] > $ageTest[2]) {
+            $this->chemin .= "1";
+            return 1;
+          }
+        } else if($ageTest[1] == "<") {
+          if($ageTest[3] == "a" && $agePat[2] == "j") {
+            $this->chemin .= "1";
+            return 1;
+          } else if($ageTest[3] == $agePat[2] && $agePat[1] < $ageTest[2]) {
+            $this->chemin .= "1";
+            return 1;
+          }
+        }
+      }
+    }
     $this->chemin .= "0";
     return 0;
   }
@@ -182,8 +208,11 @@ class CGHM {
     for($i = 1; ($i <= $maxcond*2) && ($this->GHM === null); $i = $i + 2) {
       $type = $i;
       $cond = $i + 1;
-      $this->chemin .= "Pour i = $i, arbre_id = ".$row["arbre_id"].", ";
-      if(!($this->checkCondition($row["$type"], $row["$cond"]))) {
+      $this->chemin .= "Pour i = ".(($i+1)/2).", arbre_id = ".$row["arbre_id"].", ";
+      if($row["$type"] == '') {
+        $this->chemin .= "c'est bon";
+        $this->GHM = $row["GHM"];
+      } else if(!($this->checkCondition($row["$type"], $row["$cond"]))) {
         $sql = "SELECT * FROM arbre" .
             "\nWHERE CM_id = '$this->CM'" .
             "\nAND arbre_id > '".$row["arbre_id"]."'";

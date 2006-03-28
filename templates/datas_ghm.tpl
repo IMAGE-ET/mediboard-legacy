@@ -40,7 +40,7 @@ function doGHSAction(sType, bFollowed) {
         </tr>
         <tr>
           <td onclick="doGHSAction('extractFiles');"><button>Go</button></td>
-          <td>Remplissage des Catégories Majeures</td>
+          <td>Extraction des fichiers</td>
           <td class="text" id="extractFiles"></td>
         </tr>
         <tr>

@@ -187,7 +187,7 @@ function addactes() {
   $sql = "CREATE TABLE `acte` (
   `code` varchar(7) NOT NULL default '0',
   `phase` varchar(1) NOT NULL default '0',
-  `liste_id` varchar(5) NOT NULL default 'A-001',
+  `liste_id` varchar(6) NOT NULL default 'A-001',
   `CM_id` varchar(2) NOT NULL default '01',
   PRIMARY KEY  (`code`, `phase`, `liste_id`, `CM_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Table des actes';";
@@ -204,7 +204,7 @@ function addactes() {
   }
   $sql = "CREATE TABLE `diag` (
   `code` varchar(7) NOT NULL default '0',
-  `liste_id` varchar(5) NOT NULL default 'D-001',
+  `liste_id` varchar(6) NOT NULL default 'D-001',
   `CM_id` varchar(2) NOT NULL default '01',
   PRIMARY KEY  (`code`, `liste_id`, `CM_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Table des diagnostics';";
