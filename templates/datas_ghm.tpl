@@ -1,7 +1,7 @@
 {literal}
 <script type="text/javascript">
 
-var aActionTypes = ["AddCM", "AddDiagCM", "AddActes", "AddGHM", "AddCMA", "AddIncomp", "AddArbre"];
+var aActionTypes = ["extractFiles", "AddCM", "AddDiagCM", "AddActes", "AddGHM", "AddCMA", "AddIncomp", "AddArbre"];
 
 function doGHSAction(sType, bFollowed) {
   var nType = aActionTypes.indexOf(sType);
@@ -34,9 +34,14 @@ function doGHSAction(sType, bFollowed) {
     <td>
       <table class="form">
         <tr>
-          <th class="category" onclick="doGHSAction('AddCM', true);"><button>Go</button></th>
+          <th class="category" onclick="doGHSAction('extractFiles', true);"><button>Go</button></th>
           <th class="category">Action</th>
           <th class="category">Résultat</th>
+        </tr>
+        <tr>
+          <td onclick="doGHSAction('extractFiles');"><button>Go</button></td>
+          <td>Remplissage des Catégories Majeures</td>
+          <td class="text" id="extractFiles"></td>
         </tr>
         <tr>
           <td onclick="doGHSAction('AddCM');"><button>Go</button></td>
@@ -69,7 +74,7 @@ function doGHSAction(sType, bFollowed) {
           <td class="text" id="AddIncomp"></td>
         </tr>
         <tr>
-          <td onclick="doGHSAction('AddArbres');"><button>Go</button></td>
+          <td onclick="doGHSAction('AddArbre');"><button>Go</button></td>
           <td>Ajout de l'arbre de décision</td>
           <td class="text" id="AddArbre"></td>
         </tr>

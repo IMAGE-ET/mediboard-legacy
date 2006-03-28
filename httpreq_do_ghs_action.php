@@ -9,9 +9,12 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
-$type = mbGetValueFromGet("type", 0);
+require_once("Archive/Tar.php");
 
-$path = "./modules/dPpmsi/ghm";
+$type = mbGetValueFromGet("type");
+
+$filepath = "modules/dPpmsi/ghm/ghm.tar.gz";
+$filedir = "tmp/ghm";
 
 //Reconnaissance d'un code Cim10
 $regCim10 = "[[:alpha:]][[:digit:]]{2}[.]?[[:alnum:]\+\*-]*";
@@ -20,39 +23,40 @@ $regCim10 = "[[:alpha:]][[:digit:]]{2}[.]?[[:alnum:]\+\*-]*";
 $regCCAM = "[[:alpha:]]{4}[[:digit:]]{3}";
 
 switch($type) {
-  case "AddCM" :
-    addcm();
-    break;
-  case "AddDiagCM" :
-    adddiagcm();
-    break;
-  case "AddActes" :
-    addactes();
-    break;
-  case "AddGHM" :
-    addghm();
-    break;
-  case "AddCMA" :
-    addcma();
-    break;
-  case "AddIncomp" :
-    addincomp();
-    break;
-  case "AddArbre" :
-    addarbre();
-    break;
+  case "extractFiles": extractFiles(); break;  
+  case "AddCM"       : addcm(); break;
+  case "AddDiagCM"   : adddiagcm(); break;
+  case "AddActes"    : addactes(); break;
+  case "AddGHM"      : addghm(); break;
+  case "AddCMA"      : addcma(); break;
+  case "AddIncomp"   : addincomp(); break;
+  case "AddArbre"    : addarbre(); break;
+  
   default:
-    echo "Argument <strong>type</strong> manquant";
-    break;
+  echo "Argument <strong>type</strong> manquant";
+}
+
+/** Extraction des fichiers sources de Ajout des CM, valide pour la version 1010
+ **/
+function extractFiles() {
+  global $filepath, $filedir;
+  $tarball = new Archive_Tar($filepath);
+  if ($tarball->extract($filedir)) {
+    $nbFiles = @count($tarball->listContent());
+    echo "<strong>Done</strong> : extraction de $nbFiles fichiers";
+  } else {
+    echo "Erreur, impossible d'extraire l'archive";
+  }
+  
 }
 
 /** Ajout des CM, valide pour la version 1010
  * Fichier texte : ./modules/dPpmsi/ghm/CM.txt
  * Ligne sous la forme "XX Nom du CM" */
 function addcm() {
-  global $AppUI, $regCim10, $regCCAM, $path;
+  global $AppUI, $regCim10, $regCCAM, $filedir;
   $base = $AppUI->cfg['baseGHS'];
-  $fileName = "$path/CM.txt";
+  $fileName = "$filedir/CM.txt";
   do_connect($base);
 
   // Table des CM
@@ -102,9 +106,9 @@ function addcm() {
 /** Ajout des diagnostics d'entrée dans les CM, valide pour la version 1010
  * Fichier texte : ./modules/dPpmsi/ghm/diagCM.txt */
 function adddiagcm() {
-  global $AppUI, $regCim10, $regCCAM, $path;
+  global $AppUI, $regCim10, $regCCAM, $filedir;
   $base = $AppUI->cfg['baseGHS'];
-  $fileName = "$path/diagCM.txt";
+  $fileName = "$filedir/diagCM.txt";
   do_connect($base);
   $sql = "DROP TABLE IF EXISTS `diagCM`;";
   db_exec($sql, $base);
@@ -155,9 +159,9 @@ function adddiagcm() {
  * "Liste AouD-XXX : nom"
  * "CCAMXXX/Phase Libelle" */
 function addactes() {
-  global $AppUI, $regCim10, $regCCAM, $path;
+  global $AppUI, $regCim10, $regCCAM, $filedir;
   $base = $AppUI->cfg['baseGHS'];
-  $fileName = "$path/Listes.txt";
+  $fileName = "$filedir/Listes.txt";
   do_connect($base);
   $sql = "DROP TABLE IF EXISTS `liste`;";
   db_exec($sql, $base);
@@ -263,9 +267,9 @@ function addactes() {
 /** Ajout des GHM, valide pour la version 1010
  * Fichier texte : ./modules/dPpmsi/ghm/GHM.txt */
 function addghm() {
-  global $AppUI, $regCim10, $regCCAM, $path;
+  global $AppUI, $regCim10, $regCCAM, $filedir;
   $base = $AppUI->cfg['baseGHS'];
-  $fileName = "$path/GHM.txt";
+  $fileName = "$filedir/GHM.txt";
   do_connect($base);
 
   // Table des CM
@@ -330,7 +334,7 @@ function addghm() {
  * ./modules/dPpmsi/ghm/cmas.txt
  * ./modules/dPpmsi/ghm/cmasnt.txt */
 function addcma() {
-  global $AppUI, $regCim10, $regCCAM, $path;
+  global $AppUI, $regCim10, $regCCAM, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   do_connect($base);
 
@@ -354,7 +358,7 @@ function addcma() {
       echo "<strong>Done :</strong> Table des $typeCM créée<br />";
     }
   
-    $fileName = "$path/$typeCM.txt";
+    $fileName = "$filedir/$typeCM.txt";
     // Lecture du fichier
     $file = @fopen($fileName, 'rw');
     if(!$file) {
@@ -384,7 +388,7 @@ function addcma() {
 /** Ajout des incompatibilités entre DP - CMA, valide pour la version 1010
  * Fichier texte : ./modules/dPpmsi/ghm/incomp.txt */
 function addincomp() {
-  global $AppUI, $regCim10, $regCCAM, $path;
+  global $AppUI, $regCim10, $regCCAM, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   do_connect($base);
 
@@ -406,7 +410,7 @@ function addincomp() {
     echo "<strong>Done :</strong> Table des incompatibilités créée<br />";
   }
 
-  $fileName = "$path/incomp.txt";
+  $fileName = "$filedir/incomp.txt";
   // Lecture du fichier
   $file = @fopen($fileName, 'rw');
   if(!$file) {
@@ -475,7 +479,7 @@ function addincomp() {
  */
 
 function addarbre() {
-  global $AppUI, $regCim10, $regCCAM, $path;
+  global $AppUI, $regCim10, $regCCAM, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   do_connect($base);
 
@@ -486,7 +490,7 @@ function addarbre() {
     echo "$error ($sql)<br />";
   }
 
-  $fileName = "$path/arbreGHM.csv";
+  $fileName = "$filedir/arbreGHM.csv";
   // Lecture du fichier
   $file = @fopen($fileName, 'rw');
   if(!$file) {
