@@ -363,7 +363,7 @@ function mbVersion() {
   // Automated numbering (should be incremented at each commit)
   $mb_version_build = 21;
   
-  return "Mediboard v$mb_version_major.$mb_version_minor.$mb_version_build b$mb_version_build";
+  return "v$mb_version_major.$mb_version_minor.$mb_version_patch b$mb_version_build";
 }
 
 ?>
