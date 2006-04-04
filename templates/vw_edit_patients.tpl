@@ -123,7 +123,7 @@ function setMed( key, nom, prenom, sElementName ){
         <td><input tabindex="3" type="text" name="nom_jeune_fille" title="{$patient->_props.nom_jeune_fille}" value="{$patient->nom_jeune_fille}" /></td>
         <th><label for="matricule" title="Matricule valide d'assuré social (13 chiffres + 2 pour la clé)">Numéro d'assuré social :</label></th>
         <td colspan="2">
-          <input tabindex="25" type="text" size="15" maxlength="15" name="matricule" title="{$patient->_props.matricule}" value="{$patient->matricule}" />
+          <input tabindex="25" type="text" size="17" maxlength="15" name="matricule" title="{$patient->_props.matricule}" value="{$patient->matricule}" />
         </td>
       </tr>
       
