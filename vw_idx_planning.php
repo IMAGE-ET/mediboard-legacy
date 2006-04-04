@@ -44,10 +44,17 @@ $listChir = $mediuser->loadPraticiens(PERM_EDIT);
 
 // récupération des modèles de compte-rendu disponibles
 $crList = new CCompteRendu;
+$where = array();
 $where["chir_id"] = "= '$selChir'";
 $where["type"] = "= 'operation'";
 $order[] = "nom";
 $crList = $crList->loadList($where, $order);
+$hospiList = new CCompteRendu;
+$where = array();
+$where["chir_id"] = "= '$selChir'";
+$where["type"] = "= 'hospitalisation'";
+$order[] = "nom";
+$hospiList = $hospiList->loadList($where, $order);
 
 // Planning du mois
 $sql = "SELECT plagesop.*," .
@@ -91,6 +98,7 @@ $smarty->assign('nextmonth', $nextmonth);
 $smarty->assign('listChir', $listChir);
 $smarty->assign('selChir', $selChir);
 $smarty->assign('crList', $crList);
+$smarty->assign('hospiList', $hospiList);
 $smarty->assign('listPlages', $listPlages);
 $smarty->assign('listDay', $listDay);
 
