@@ -18,11 +18,11 @@ function do_connect($dbid) {
   
   db_connect(
     $dbid,
-    $AppUI->cfg['db'][$dbid]['dbhost'], 
+    $AppUI->cfg['db'][$dbid]['dbhost'],
     $AppUI->cfg['db'][$dbid]['dbname'],
-    $AppUI->cfg['db'][$dbid]['dbuser'], 
-    $AppUI->cfg['db'][$dbid]['dbpass'], 
-    $AppUI->cfg['db'][$dbid]['dbport'], 
+    $AppUI->cfg['db'][$dbid]['dbuser'],
+    $AppUI->cfg['db'][$dbid]['dbpass'],
+    $AppUI->cfg['db'][$dbid]['dbport'],
     $AppUI->cfg['dbpersist']
   );
 }
@@ -34,10 +34,11 @@ do_connect("std");
 * This global function loads the first field of the first row returned by the query.
 *
 * @param string The SQL query
+* @param strong The db identifier
 * @return The value returned in the query or null if the query failed.
 */
-function db_loadResult( $sql ) {
-	$cur = db_exec( $sql );
+function db_loadResult( $sql, $dbid = 'std' ) {
+	$cur = db_exec( $sql, $dbid );
 	$cur or exit( db_error() );
 	$ret = null;
 	if ($row = db_fetch_row( $cur )) {
@@ -116,13 +117,16 @@ function db_loadHashList( $sql, $index='' ) {
 /**
 * Document::db_loadList()
 *
-* { Description }
+* return an array of the db lines
+* can connect to any database via $dbid param
 *
-* @param [type] $maxrows
+* @param int $maxrows
+* @param string the db identifier
+* @return array the query result
 */
-function db_loadList( $sql, $maxrows=NULL ) {
+function db_loadList( $sql, $maxrows=NULL, $dbid = 'std' ) {
 	GLOBAL $AppUI;
-	if (!($cur = db_exec( $sql ))) {;
+	if (!($cur = db_exec( $sql, $dbid ))) {;
 		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 		return false;
 	}
