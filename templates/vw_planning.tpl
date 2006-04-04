@@ -37,7 +37,7 @@ function checkPlage() {
 
 function pageMain() {
   {/literal}
-  regRedirectPopupCal("{$debut}", "index.php?m={$m}&tab={$tab}&debut=");
+  regRedirectPopupCal("{$debut}", "index.php?m={$m}&tab={$tab}&plageconsult_id=0&debut=");
   {literal}
   
 }
@@ -48,12 +48,12 @@ function pageMain() {
 <table class="main">
   <tr>
     <th>
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$prec}">&lt;&lt;&lt;</a>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$prec}&amp;plageconsult_id=0">&lt;&lt;&lt;</a>
       Semaine du {$debut|date_format:"%A %d %b %Y"} au {$fin|date_format:"%A %d %b %Y"}
       <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$suiv}">&gt;&gt;&gt;</a>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$suiv}&amp;plageconsult_id=0">&gt;&gt;&gt;</a>
       <br />
-      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$today}">Aujourd'hui</a>
+      <a href="index.php?m={$m}&amp;tab={$tab}&amp;debut={$today}&amp;plageconsult_id=0">Aujourd'hui</a>
     </th>
     <td>
       <form action="index.php" name="selection" method="get">
