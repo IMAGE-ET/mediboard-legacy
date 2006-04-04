@@ -17,19 +17,10 @@ require_once( $AppUI->getModuleClass('dPpmsi', 'GHM') );
 
 $GHM = new CGHM();
 
-//mbSetValueToSession("DRs", null);
-//mbSetValueToSession("DASs", null);
-//mbSetValueToSession("actes", null);
-
 $age = mbGetValueFromGetOrSession("age", null);
+$sexe = mbGetValueFromGetOrSession("sexe", null);
 $DP = mbGetValueFromGetOrSession("DP", null);
-$DRs = mbGetValueFromGetOrSession("DRs", array());
-if(is_array($DRs)) {
-  foreach($DRs as $key => $DR) {
-    if($DR == "")
-      unset($DRs[$key]);
-  }
-}
+$DR = mbGetValueFromGetOrSession("DR", null);
 $DASs = mbGetValueFromGetOrSession("DASs", array());
 if(is_array($DASs)) {
   foreach($DASs as $key => $DAS) {
@@ -37,25 +28,42 @@ if(is_array($DASs)) {
       unset($DASs[$key]);
   }
 }
+$DADs = mbGetValueFromGetOrSession("DADs", array());
+if(is_array($DADs)) {
+  foreach($DADs as $key => $DAD) {
+    if($DAD == "")
+      unset($DADs[$key]);
+  }
+}
 $actes = mbGetValueFromGetOrSession("actes", array());
 if(is_array($actes)) {
   foreach($actes as $key => $acte) {
-    if($acte == "")
+    if($acte["code"] == "")
       unset($actes[$key]);
   }
 }
-$phase = mbGetValueFromGetOrSession("phase", null);
-$activite = mbGetValueFromGetOrSession("activite", null);
 $type_hospi = mbGetValueFromGetOrSession("type_hospi", null);
+$duree = mbGetValueFromGetOrSession("duree", null);
+$seances = mbGetValueFromGetOrSession("seances", null);
+$motif = mbGetValueFromGetOrSession("motif", null);
+$destination = mbGetValueFromGetOrSession("destination", null);
 
 $GHM->age = $age;
+$GHM->sexe = $sexe;
 $GHM->DP = $DP;
-$GHM->DRs = $DRs;
+$GHM->DR = $DR;
 $GHM->DASs = $DASs;
+$GHM->DADs = $DADs;
 $GHM->actes = $actes;
 $GHM->type_hospi = $type_hospi;
+$GHM->duree = $duree;
+$GHM->motif = $motif;
+$GHM->seances = $seances;
+$GHM->destination = $destination;
 
 $GHM->getGHM();
+
+//mbTrace($GHM);
 
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));

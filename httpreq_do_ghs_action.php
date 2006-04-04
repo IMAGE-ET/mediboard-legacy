@@ -47,7 +47,6 @@ function extractFiles() {
   } else {
     echo "Erreur, impossible d'extraire l'archive";
   }
-  
 }
 
 /** Ajout des CM, valide pour la version 1010
@@ -269,10 +268,10 @@ function addactes() {
 function addghm() {
   global $AppUI, $regCim10, $regCCAM, $filedir;
   $base = $AppUI->cfg['baseGHS'];
-  $fileName = "$filedir/GHM.txt";
   do_connect($base);
 
-  // Table des CM
+  // Table des GHM
+  $fileName = "$filedir/GHM.txt";
   $sql = "DROP TABLE IF EXISTS `ghm`;";
   db_exec($sql, $base);
   if($error = db_error($base)) {
@@ -283,6 +282,11 @@ function addghm() {
   `nom` text default NULL,
   `groupe` varchar(100) NOT NULL default 'groupes chirurgicaux',
   `CM_id` varchar(2) NOT NULL default '01',
+  `GHS` int(2) default NULL,
+  `borne_basse` int(1) default NULL,
+  `borne_haute` int(1) default NULL,
+  `tarif_2006` float default NULL,
+  `EXH` float default NULL,
   PRIMARY KEY  (`GHM_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Table des groupements homogènes de malades';";
   db_exec($sql, $base);
@@ -315,7 +319,8 @@ function addghm() {
     } else if(preg_match("`^([[:digit:]]{2}[[:alpha:]][[:digit:]]{2}[[:alpha:]]) ([[:alnum:][:space:][:punct:]]*)`", $line, $GHM)) {
       $sql = "INSERT INTO ghm" .
           "\nvalues('".addslashes($GHM[1])."', '".addslashes($GHM[2])."'," .
-          "\n'".addslashes($curr_group)."', '".addslashes($curr_CM)."');";
+          "\n'".addslashes($curr_group)."', '".addslashes($curr_CM)."'," .
+          "\nnull, null, null, null, null);";
       db_exec($sql, $base);
       if($error = db_error($base)) {
         echo "$error ($sql)<br />";
@@ -326,6 +331,52 @@ function addghm() {
     }
   }
   echo "<strong>Done :</strong> $nGHM GHM créés<br />";
+  
+  // Ajout des tarifs
+  $fileName = "$filedir/tarifsGHS.csv";
+  // Lecture du fichier
+  $file = @fopen($fileName, 'rw');
+  if(!$file) {
+    echo "Fichier des tarifs non trouvé<br>";
+    return;
+  }
+  
+  $nPass = 0;
+  $nFailed = 0;
+
+  $trans = array(
+    "\n" => "",
+    "\r" => "",
+    ";;" => ";'';");
+  $trans2 = array(
+    "'" => "",
+    "," => ".");
+  $line = fgets($file, 1024);
+  // Ajout des lignes
+  while (!feof($file)) {
+    $line = fgets($file, 1024);
+    $line = strtr($line, $trans);
+    $line = strtr($line, $trans);
+    if(substr($line, -1, 1) == ";")
+      $line .= "''";
+    $result = explode(";", $line);
+    $sql = "UPDATE GHM SET" .
+        "\nGHS = '".strtr($result[0], $trans2)."'," .
+        "\nborne_basse = '".strtr($result[3], $trans2)."'," .
+        "\nborne_haute = '".strtr($result[4], $trans2)."'," .
+        "\ntarif_2006 = '".strtr($result[5], $trans2)."'," .
+        "\nEXH = '".strtr($result[6], $trans2)."'" .
+        "\nWHERE GHM_id = '".strtr($result[1], $trans2)."';";
+    db_exec($sql, $base);
+    if($error = db_error($base)) {
+      echo "$error ($sql)<br />";
+      $nFailed++;
+    } else {
+      //echo "<strong>Done :</strong> $line<br />";
+      $nPass++;
+    }
+  }
+  echo "<strong>Done :</strong> $nPass tarifs créés, $nFailed échoués<br />";
 }
 
 /** Ajout des CMA, valide pour la version 1010
