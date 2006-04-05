@@ -29,6 +29,8 @@ function doGHSAction(sType, bFollowed) {
 </script>
 {/literal}
 
+<h2>Création et remplissage des la base des GHS / GHM</h2>
+
 <table class="main">
   <tr>
     <td>
