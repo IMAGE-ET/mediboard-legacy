@@ -7,10 +7,7 @@
 * @author Thomas Despoix
 */
 
-$mbpath = "..";
-
 include("header.php");
-require_once("$mbpath/includes/mb_functions.php");
 
 class CPrerequisite {
   var $name = "";
@@ -141,7 +138,7 @@ $versions[] = $version;
 
 ?>
 
-<h1>Vérification des prérequis à l'installaton de Mediboard <?php echo mbVersion(); ?></h1>
+<h1>Vérification des prérequis à l'installation de Mediboard <?php echo mbVersion(); ?></h1>
 
 <h2>Version de PHP</h2>
 
