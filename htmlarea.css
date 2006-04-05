@@ -41,7 +41,6 @@ span.hilite {
 
 @media print {
   hr.pagebreak {
-    display: none;
     page-break-before:always;
   }
 }
