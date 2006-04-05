@@ -207,6 +207,9 @@ function mbDaysRelative($from, $to) {
 
 /**
  * Inserts a CSV file into a mysql table 
+ * Not a generic function : used for import of specials files
+ * in dPinterop
+ * @todo : become a generic function
  **/
 
 function mbInsertCSV( $fileName, $tableName, $oldid = false )
