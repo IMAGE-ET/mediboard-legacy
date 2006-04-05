@@ -104,7 +104,7 @@ function pageMain() {
     </td>
     <td class="halfpane">
       <form name="selectFrm" action="index.php" method="get">
-      <input type="hidden" name="m" value="{$m}">
+      <input type="hidden" name="m" value="{$m}" />
       <table class="tbl">
         <tr>
           <th class="title" colspan="5">Recherche de fiches</th>
@@ -120,7 +120,7 @@ function pageMain() {
           </td>
           <td class="button">
             <button type="button" onclick="printRapport()">
-              <img src="modules/dPgestionCab/images/print.png" />
+              <img src="modules/dPgestionCab/images/print.png" alt="imprimer" />
             </button>
           </td>
         </tr>
@@ -146,7 +146,7 @@ function pageMain() {
           <th class="category">
             Rubrique<br />
             <select name="rubrique_id">
-              <option value="0">&mdash Toutes</option>
+              <option value="0">&mdash; Toutes</option>
               {foreach from=$listRubriques item=rubrique}
               <option value="{$rubrique->rubrique_id}" {if $rubrique->rubrique_id == $rubrique_id}selected="selected"{/if}>
                 {$rubrique->nom}
@@ -157,7 +157,7 @@ function pageMain() {
           <th class="category">
             Mode de paiement<br />
             <select name="mode_paiement_id">
-              <option value="0">&mdash Tous</option>
+              <option value="0">&mdash; Tous</option>
               {foreach from=$listModesPaiement item=mode}
               <option value="{$mode->mode_paiement_id}" {if $mode->mode_paiement_id == $mode_paiement_id}selected="selected"{/if}>
                 {$mode->nom}
