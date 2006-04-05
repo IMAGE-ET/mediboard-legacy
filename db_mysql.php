@@ -10,19 +10,19 @@
 	originally written for WEBO project, see webo source for "real life" usages
 */
 
-function db_connect( $dbid = 'std', $host='localhost', $dbname, $user='root', $passwd='', $port='3306', $persist=false ) {
+function db_connect( $dbid = "std", $host="localhost", $dbname, $user="root", $passwd="", $port="3306", $persist=false ) {
   global $links_db;
   global $dbChrono;
   if(!isset($links_db[$dbid])) {
-    function_exists( 'mysql_connect' )
-      or  die( 'FATAL ERROR: MySQL support not avaiable.  Please check your configuration.' );
+    function_exists( "mysql_connect" )
+      or  die( "FATAL ERROR: MySQL support not available.  Please check your configuration." );
 
 	  if ($persist) {
       $links_db[$dbid] = mysql_pconnect( "$host:$port", $user, $passwd )
-        or die( 'FATAL ERROR: Connection to database server failed' );
+        or die( "FATAL ERROR: Connection to database server failed" );
     } else {
       $links_db[$dbid] = mysql_connect( "$host:$port", $user, $passwd )
-        or die( 'FATAL ERROR: Connection to database server failed' );
+        or die( "FATAL ERROR: Connection to database server failed" );
     }
 
     if ($dbname) {
@@ -36,32 +36,32 @@ function db_connect( $dbid = 'std', $host='localhost', $dbname, $user='root', $p
   }
 }
 
-function db_error($dbid = 'std') {
+function db_error($dbid = "std") {
   global $links_db;
   if(!isset($links_db[$dbid]))
-    die( 'FATAL ERROR: link to $dbid not found.' );
+    die( "FATAL ERROR: link to $dbid not found." );
 	return mysql_error($links_db[$dbid]);
 }
 
-function db_errno($dbid = 'std') {
+function db_errno($dbid = "std") {
   global $links_db;
   if(!isset($links_db[$dbid]))
-    die( 'FATAL ERROR: link to $dbid not found.' );
+    die( "FATAL ERROR: link to $dbid not found." );
 	return mysql_errno($links_db[$dbid]);
 }
 
-function db_insert_id($dbid = 'std') {
+function db_insert_id($dbid = "std") {
   global $links_db;
   if(!isset($links_db[$dbid]))
-    die( 'FATAL ERROR: link to $dbid not found.' );
+    die( "FATAL ERROR: link to $dbid not found." );
 	return mysql_insert_id($links_db[$dbid]);
 }
 
-function db_exec( $sql, $dbid = 'std' ) {
+function db_exec($sql, $dbid = "std") {
   global $dbChrono;
   global $links_db;
   if(!isset($links_db[$dbid]))
-    die( 'FATAL ERROR: link to $dbid not found.' );
+    die( "FATAL ERROR: link to $dbid not found." );
 
   $dbChrono[$dbid]->start();
 	$cur = mysql_query( $sql, $links_db[$dbid] );
@@ -102,10 +102,10 @@ function db_escape( $str ) {
 	return mysql_escape_string( $str );
 }
 
-function db_version($dbid = 'std') {
+function db_version($dbid = "std") {
   global $links_db;
   if(!isset($links_db[$dbid]))
-    die( 'FATAL ERROR: link to $dbid not found.' );
+    die( "FATAL ERROR: link to $dbid not found." );
 	if( ($cur = mysql_query( "SELECT VERSION()",  $links_db[$dbid])) ) {
 		$row =  mysql_fetch_row( $cur );
 		mysql_free_result( $cur );
@@ -121,7 +121,7 @@ function db_unix2dateTime( $time ) {
 }
 
 function db_dateTime2unix( $time ) {
-	if ($time == '0000-00-00 00:00:00') {
+	if ($time == "0000-00-00 00:00:00") {
 		return -1;
 	}
 	if( ! preg_match( "/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})(.?)$/", $time, $a ) ) {
