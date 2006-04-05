@@ -41,7 +41,11 @@ span.hilite {
 
 @media print {
   hr.pagebreak {
-    display: none;
+    border-style: solid;
+    border-top-color: #fff;
+    border-right-color: #fff;
+    border-bottom-color: #fff;
+    border-left-color: #fff;
     page-break-before:always;
   }
 }

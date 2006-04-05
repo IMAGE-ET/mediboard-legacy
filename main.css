@@ -335,6 +335,20 @@ table.tbl tr.clear th {
   border: none;
 }
 
+table.tbl td.date div {
+  font-size: 11px;
+  border: 1px dotted;
+  padding: 0px 1px;
+  margin: 1px;
+  width: 100px;
+  min-height: 15px;
+  float: left;
+}
+
+table.tbl td.date img {
+  margin-top: 3px;
+}
+
 /* a 'standard' table */
 
 table.std {
