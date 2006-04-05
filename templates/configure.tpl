@@ -108,6 +108,12 @@ function endProcess() {
   addCell(tr, stores_total);
 }
 
+function startINSEE() {
+  var INSEEUrl = new Url;
+  INSEEUrl.setModuleAction("dPpatients", "httpreq_do_add_insee");
+  INSEEUrl.requestUpdate("INSEE");
+}
+
 function pageMain() {
   setRunning(false);
 }
@@ -143,3 +149,10 @@ function pageMain() {
     <tr>
   </tfoot>
 </table>
+
+<h2>Import de la base de données des codes INSEE</h2>
+<button id="start_villes" onclick="startINSEE()">
+  Importer les codes INSEE
+</button>
+<div id="INSEE">
+</div>
