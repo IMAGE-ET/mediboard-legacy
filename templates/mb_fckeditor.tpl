@@ -1,3 +1,30 @@
+{literal}
+
+
+function debugAlert(oTarget, sLabel) {
+  var sMsg = sLabel + " : " ;
+  
+  if (typeof oTarget == "object") {
+    sMsg += "Object";
+    
+    for (var sProp in oTarget) {
+      sMsg += "\n  => " + sProp + ": ";
+      var oProp = oTarget[sProp];
+      switch (typeof oProp) {
+        case "object": sMsg += "object"; break;
+        case "function": sMsg += "function"; break;
+        default: sMsg += oProp; break;
+      }
+    }
+  } else {
+    sMsg += oTarget;    
+  }
+  
+  alert(sMsg);
+}
+{/literal}
+
+
 // Mediboard Combo configuration
 var aMbCombos = new Array();
 
@@ -96,9 +123,7 @@ sMbPluginsPath = sMbPath + "modules/dPcompteRendu/fcke_plugins/" ;
 FCKConfig.Plugins.Add( 'mbcombo'    , 'en,fr', sMbPluginsPath ) ;
 FCKConfig.Plugins.Add( 'mbpagebreak', 'en,fr', sMbPluginsPath ) ;
 
-//oMbPageBreakItem.iconPath = FCKPlugins.Items['mbPageBreak'].Path + 'images/pageBreak.gif';
-
-FCKConfig.EditorAreaCSS = sMbPath + "style/mediboard/htmlarea.css";
+FCKConfig.EditorAreaCSS = sMbPath + "style/mediboard/htmlarea.css?build={$mb_version_build}";
 FCKConfig.DefaultLanguage = "fr" ;
 FCKConfig.AutoDetectLanguage = false ;
 

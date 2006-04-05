@@ -42,10 +42,8 @@ FCKToolbarMbPageBreak.prototype.GetLabel = function() {
 }
 
 var oMbPageBreakItem = new FCKToolbarMbPageBreak ;
-// Impossible de pointer ou on veut ?!?
-// oMbPageBreakItem.iconPath = 'images/pageBreak.gif';
+
+oMbPageBreakItem.IconPath = sMbPluginsPath + 'mbpagebreak/images/mbpagebreak.gif';
 
 // Registers toolbar item object
 FCKToolbarItems.RegisterItem("mbPageBreak", oMbPageBreakItem) ;
-//oMbPageBreakItem.iconPath = '/dotproject/modules/dPcompteRendu/fcke_plugins/mbpagebreak/images/pageBreak.gif' ;
-//oMbPageBreakItem.iconPath = FCKPlugins.Items['mbPageBreak'].Path + 'images/pageBreak.gif';

@@ -66,6 +66,8 @@ $smarty->debugging = false;
 
 $smarty->assign("configAlert", $configAlert);
 $smarty->assign("templateManager", $templateManager);
-$smarty->display('mb_fckeditor.tpl');      
+$smarty->assign("mb_version_build", $mb_version_build);
+
+$smarty->display('mb_fckeditor.tpl');
 
 ?>

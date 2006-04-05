@@ -55,18 +55,26 @@ for (var i = 0; i < aMbCombos.length; i++) {
     this.Command =  FCKCommands.GetCommand(oMbCombo.commandName);
     this.options = oMbCombo.options;
     this.commandLabel = oMbCombo.commandLabel;
+
+	/// Format combo way
+	this.Style = FCK_TOOLBARITEM_ICONTEXT ;
+	
+	this.PanelWidth = 300 ;
+	this.PanelMaxHeight = 300 ;
   }
 
   // Inherit from FCKToolbarSpecialCombo.
-  FCKToolbarMbCombo.prototype = new FCKToolbarSpecialCombo ;
+  FCKToolbarMbCombo.prototype = new FCKToolbarSpecialCombo;
 
   FCKToolbarMbCombo.prototype.GetLabel = function() {
     return this.commandLabel;
   }
+	
 
   FCKToolbarMbCombo.prototype.CreateItems = function( targetSpecialCombo ) {
     for (var i = 0; i < this.options.length; i++) {
-      this._Combo.AddItem( this.options[i].item, this.options[i].view);
+      var oOption = this.options[i];
+      this._Combo.AddItem(oOption.item, "<span style='font-size: 70%'>" + oOption.view + "</span>");
     }
   }
 
