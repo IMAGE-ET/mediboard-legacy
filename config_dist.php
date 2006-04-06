@@ -42,6 +42,7 @@ $dPconfig['db']['cim10'] = array(
   'dbport' => ""
 );
 
+// CCAM
 $dPconfig['db']['ccam'] = array(
   'dbhost' => "localhost",
   'dbname' => "ccam",
@@ -59,12 +60,23 @@ $dPconfig['db']['ccamV2'] = array(
   'dbport' => ""
 );
 
+// GHS
 $dPconfig['baseGHS'] = 'GHS1010';
 $dPconfig['db']['GHS1010'] = array(
   'dbhost' => "localhost",
   'dbname' => "ghs1010",
   'dbuser' => "GHSAdmin",
   'dbpass' => "AdminGHS",
+  'dbport' => ""
+);
+
+// Codes postaux
+$dPconfig['baseINSEE'] = 'INSEE';
+$dPconfig['db']['INSEE'] = array(
+  'dbhost' => "localhost",
+  'dbname' => "INSEE",
+  'dbuser' => "INSEEAdmin",
+  'dbpass' => "AdminINSEE",
   'dbport' => ""
 );
 
@@ -101,10 +113,10 @@ $dPconfig['debug'] = true;
 
 // HPRIM export FTP settings
 $dPconfig["dPinterop"]["hprim_export"] = array (
-  "hostname" => "10.9.44.1",
-  "username" => "mediboard",
-  "userpass" => "oxcmca",
-  "fileprefix" => "facls1",
+  "hostname" => "ftp.server.com",
+  "username" => "username",
+  "userpass" => "password",
+  "fileprefix" => "prefix",
 );
 
 /********* 
