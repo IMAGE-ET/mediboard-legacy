@@ -57,6 +57,39 @@ function setMed( key, nom, prenom, sElementName ){
   fieldMedecinName.value = "Dr. " + nom + " " + prenom;
 }
 
+function pageMain() {
+  new Ajax.Autocompleter(
+    'editFrm_cp',
+    'cp_auto_complete',
+    'index.php?m=dPpatients&ajax=1&suppressHeaders=1&a=httpreq_do_insee_autocomplete', {
+      minChars: 2,
+      frequency: 0.15,
+      updateElement: function(selected) {
+        Element.cleanWhitespace(selected);
+        dn = selected.childNodes;
+        $('editFrm_cp').value = dn[0].firstChild.firstChild.nodeValue;
+        $('editFrm_ville').value = dn[2].firstChild.nodeValue;
+        $('editFrm__tel1').focus();
+      }
+    }
+  );
+  new Ajax.Autocompleter(
+    'editFrm_ville',
+    'ville_auto_complete',
+    'index.php?m=dPpatients&ajax=1&suppressHeaders=1&a=httpreq_do_insee_autocomplete', {
+      minChars: 4,
+      frequency: 0.15,
+      updateElement: function(selected) {
+        Element.cleanWhitespace(selected);
+        dn = selected.childNodes;
+        $('editFrm_cp').value = dn[0].firstChild.nodeValue;
+        $('editFrm_ville').value = dn[2].firstChild.nodeValue;
+        $('editFrm__tel1').focus();
+      }
+    }
+  );
+}
+
 </script>
 {/literal}
 
@@ -176,7 +209,10 @@ function setMed( key, nom, prenom, sElementName ){
       
       <tr>
         <th><label for="cp" title="Code postal">Code Postal :</label></th>
-        <td><input tabindex="9" type="text" name="cp" value="{$patient->cp}" title="{$patient->_props.cp}" /></td>
+        <td>
+          <input tabindex="9" size="31" maxlength="5" type="text" name="cp" value="{$patient->cp}" title="{$patient->_props.cp}" />
+          <div style="display:none;" class="autocomplete" id="cp_auto_complete"></div>
+        </td>
         <th>
           <label for="medecin1" title="Choisir un médecin correspondant">Médecin correspondant 1 :</label>
           <input type="hidden" name="medecin1" value="{$patient->_ref_medecin1->medecin_id}" title="{$patient->_props.medecin1}" />
@@ -190,7 +226,10 @@ function setMed( key, nom, prenom, sElementName ){
       
       <tr>
         <th><label for="ville" title="Ville du patient">Ville :</label></th>
-        <td><input tabindex="10" type="text" name="ville" value="{$patient->ville}" title="{$patient->_props.ville}" /></td>
+        <td>
+          <input tabindex="10" size="31" type="text" name="ville" value="{$patient->ville}" title="{$patient->_props.ville}" />
+          <div style="display:none;" class="autocomplete" id="ville_auto_complete"></div>
+        </td>
         <th>
           <input type="hidden" name="medecin2" value="{$patient->_ref_medecin2->medecin_id}" title="{$patient->_props.medecin2}" />
           <label for="medecin2" title="Choisir un second médecin correspondant">Médecin correspondant 2 :</label>
