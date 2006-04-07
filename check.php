@@ -48,6 +48,13 @@ $package->reasons[] = "Import des fonctions de GHM";
 $packages[] = $package;
 
 $package = new CPearPackage;
+$package->name = "Archive/Zip";
+$package->description = "Package de manipulation d'archives au format ZIP";
+$package->mandatory = true;
+$package->reasons[] = "Installation de Mediboard";
+$packages[] = $package;
+
+$package = new CPearPackage;
 $package->name = "Date";
 $package->description = "Package de manipulation de dates";
 $package->mandatory = true;

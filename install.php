@@ -92,10 +92,10 @@ $library->fileName = "jpgraph-1.20.3.tar.gz";
 $library->description = "Composant PHP de génération de graphs aux formats d'image";
 
 $renamer = new CLibraryRenamer;
-$renamer->sourcePath = "FCKEditor";
-$renamer->targetPath = "FCKEditor";
+$renamer->sourcePath = "jpgraph-1.20.3";
+$renamer->targetPath = "jpgraph";
 
-$library->renamer = $patch;
+$library->renamer = $renamer;
 
 $libraries[] = $library;
 
