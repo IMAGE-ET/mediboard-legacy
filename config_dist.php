@@ -13,7 +13,7 @@
  */
   
 // Global hosting settings
-$dPconfig['root_dir'] = "D:\Sites\Mediboard.org\demo";  // No trailing slash
+$dPconfig['root_dir'] = "D:/Sites/Mediboard.org/demo";  // No trailing slash, no backslashes for Win users (use slashes instead)
 $dPconfig['company_name'] = "mediboard.org";
 $dPconfig['page_title'] = "Mediboard : système de gestion des établissements de santé";
 $dPconfig['base_url'] = "http://www.mediboard.org/demo";
@@ -81,7 +81,14 @@ $dPconfig['db']['INSEE'] = array(
 );
 
 // you can add as much databases as you want by using
-// $dPconfig['db']['myNewDB'] = array(...);
+//$dPconfig['logical_name'] = 'physical_name';
+//$dPconfig['db']['physical_name'] = array(
+//  'dbhost' => "dbhost",
+//  'dbname' => "dbname",
+//  'dbuser' => "dbuser",
+//  'dbpass' => "dbpass",
+//  'dbport' => ""
+//);
 
 // Default locale for Mediboard (including login screen)
 $dPconfig['host_locale'] = "fr";
