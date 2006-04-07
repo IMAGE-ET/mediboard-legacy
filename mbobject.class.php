@@ -53,7 +53,7 @@ class CMbObject extends CDpObject {
     foreach ($this->_props as $propName => $propSpec) {
       $propValue =& $this->$propName;
       if ($propValue !== null) {
-        $msgProp = $this->checkProperty($propValue, $propSpec);
+        $msgProp = $this->checkProperty($propName);
         $msg .= $msgProp ? "<br/> => $propName (val:'$propValue', spec:'$propSpec'): $msgProp" : null;
       }
     }
@@ -82,7 +82,9 @@ class CMbObject extends CDpObject {
     return $fragmentPosition !== false;
   }
   
-  function checkProperty(&$propValue, &$propSpec) {
+  function checkProperty($propName) {
+    $propValue =& $this->$propName;
+    $propSpec =& $this->_props[$propName];
     $specFragments = explode("|", $propSpec);
     
     // remove confidential status

@@ -15,40 +15,42 @@ class CFTP {
   
   
   function logError($log) {
-    $this->logs[] = "<strong>Error : </strong>$log";
+    $this->logs[] = "<strong>Erreur : </strong>$log";
   }
 
   function logStep($log) {
-    $this->logs[] = "<strong>Step : </strong>$log";
+    $this->logs[] = "Etape : $log";
   }
   
   function sendFile($source_file, $destination_file, $mode = FTP_BINARY) {
+    $source_base = basename($source_file);
+    
     // Set up basic connection
     $conn_id = ftp_connect($this->hostname);
     if (!$conn_id) {
-      $this->logError("failed to connect to $this->hostname");
+      $this->logError("Impossible de se connecter au serveur $this->hostname");
       return false;
     } 
     
-    $this->logStep("Connected to $this->hostname");
+    $this->logStep("Connecté au serveur $this->hostname");
 
     // Login with username and password
     $login_result = ftp_login($conn_id, $this->username, $this->userpass);
     if (!$login_result) {
-      $this->logError("Failed to login as user $this->username");
+      $this->logError("Impossible de s'authentifier en tant que $this->username");
       return false;
     } 
     
-    $this->logStep("Logged in as user $this->username");
+    $this->logStep("Authentifié en tant que $this->username");
     
     // Upload the file
     $upload = ftp_put($conn_id, $destination_file, $source_file, $mode);
     if (!$upload) {
-      $this->logError("Failed to upload source file $source_file as destination file $destination_file");
+      $this->logError("Impossible de copier le fichier source $source_base en fichier cible $destination_file");
       return false;
     } 
     
-    $this->logStep("Source file $source_file succesfully uploaded as destination file $destination_file !!!");
+    $this->logStep("Fichier source $source_base copié en fichier cible $destination_file !!!");
     
     // close the FTP stream
     ftp_close($conn_id);
