@@ -27,7 +27,7 @@ function choosePreselection(oSelect) {
 function popPat() {
   var url = new Url();
   url.setModuleAction("dPpatients", "pat_selector");
-  url.popup(500, 500, url, "Patient");
+  url.popup(500, 500, "Patient");
 }
 
 function setPat( key, val ) {
@@ -50,7 +50,8 @@ function exporterDossier(operation_id) {
   var url = new Url();
   url.setModuleAction("dPinterop", "export_hprim");
   url.addParam("operation_id", operation_id);
-  url.popup(800, 600, "Export H'XML vers Sa@nté.com");
+//  url.popup(800, 600, "Export H'XML vers Sa@nté.com");
+  url.requestUpdate("hprim_export" + operation_id, {waitingText: "Export H'XML vers Sa@nté.com"}); 
 }
 
 </script>
@@ -214,9 +215,8 @@ function exporterDossier(operation_id) {
         <input type="hidden" name="del" value="0" />
         <input type="hidden" name="patient_id" value="{$curr_op->_ref_pat->patient_id}" />
         <table class="form">
-        <table class="form">
           <tr>
-            <th class="category" colspan="2"><i>Lien S@nté.com</i> : Patient <input type="submit" value="sauver" /></th>
+            <th class="category" colspan="2"><i>Lien S@nté.com</i> : Patient <input type="submit" value="Valider" /></th>
           </tr>
           <tr>
             <th><label for="SHS" title="Choisir un identifiant de patient correspondant à l'opération">Identifiant de patient</label></th>
@@ -231,7 +231,7 @@ function exporterDossier(operation_id) {
         <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
         <table class="form">
           <tr>
-            <th class="category" colspan="2"><i>Lien S@nté.com</i> : Intervention <input type="submit" value="sauver" /></th>
+            <th class="category" colspan="2"><i>Lien S@nté.com</i> : Intervention <input type="submit" value="Valider" /></th>
           </tr>
           <tr>
             <th>
@@ -314,7 +314,7 @@ function exporterDossier(operation_id) {
           </td>
           <td class="button"><strong>Code</strong></td>
           <td class="button"><strong>Activité</strong></td>
-          <td class="button"><strong>Phase &mdash Modificateurs</strong></td>
+          <td class="button"><strong>Phase &mdash; Modificateurs</strong></td>
         </tr>
         {foreach from=$curr_op->_ref_actes_ccam item=curr_acte}
         <tr class="op{$curr_op->operation_id}">
@@ -358,6 +358,10 @@ function exporterDossier(operation_id) {
         <tr class="op{$curr_op->operation_id}">
           <td class="button" colspan="4">
             <button onclick="exporterDossier({$curr_op->operation_id})">Exporter vers S@nté.com</button>
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <td class="text" id="hprim_export{$curr_op->operation_id}" colspan="4">
           </td>
         </tr>
         
