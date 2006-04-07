@@ -91,7 +91,7 @@ class CGHM {
       default :
         return 0;
     }
-    if(preg_match("`^[AD]-[[:digit:]]+`", $liste)) {
+    if(preg_match("`^[AD]-[[:alnum:]]+`", $liste)) {
       $column1 = "code";
       $column2 = "liste_id";
       $liste_ids[] = $liste;
@@ -139,6 +139,7 @@ class CGHM {
         foreach($listeNO as $liste) {
           $sql = "SELECT code FROM acte" .
               "\nWHERE code = '".$acte["code"]."'" .
+              "\nAND phase = '".$acte["phase"]."'" .
               "\nAND liste_id = '".$liste["liste_id"]."'" .
               "\nAND CM_id = '$this->CM'";
           $result = db_exec($sql, $this->dbghm);
@@ -161,6 +162,7 @@ class CGHM {
         foreach($listeNO as $liste) {
           $sql = "SELECT code FROM acte" .
               "\nWHERE code = '".$acte["code"]."'" .
+              "\nAND phase = '".$acte["phase"]."'" .
               "\nAND liste_id = '".$liste["liste_id"]."'" .
               "\nAND CM_id = '$this->CM'";
           $result = db_exec($sql, $this->dbghm);
@@ -172,9 +174,16 @@ class CGHM {
       }
       return $n;
     } else if($groupe == "non médical") {
-      // A faire : liste A-173 ?
-      // Résultat : attendre la liste sur l'atih
       $n = 0;
+      foreach($this->actes as $acte) {
+        $sql = "SELECT code FROM acte" .
+            "\nWHERE code = '".$acte["code"]."'" .
+            "\nAND phase = '".$acte["phase"]."'" .
+            "\nAND liste_id = 'A-med'";
+        $result = db_exec($sql, $this->dbghm);
+        if (mysql_num_rows($result))
+          $n++;
+      }
       return $n;
     } else if($groupe == "activité 4") {
       $n = 0;

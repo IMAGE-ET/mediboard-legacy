@@ -215,7 +215,7 @@ function addactes() {
   }
   $file = @fopen( $fileName, 'rw' );
   if(! $file) {
-    echo "Fichier non trouvé<br>";
+    echo "Fichier $fileName non trouvé<br>";
     return;
   }
   $curr_cmd = null;
@@ -257,6 +257,33 @@ function addactes() {
       } else {
         $nDiags++;
         //echo "<strong>Done :</strong> ".$diag[1]." ($curr_liste, CMD $curr_cmd)<br />";
+      }
+    }
+  }
+  // Cas de la liste des actes medicaux reclassants dans un GHM médical
+  $fileName = "$filedir/Actes_Med.txt";
+  $file = @fopen( $fileName, 'rw' );
+  if(! $file) {
+    echo "Fichier $fileName non trouvé<br>";
+    return;
+  }
+  $sql = "INSERT INTO liste VALUES('A-med', 'Actes reclassant dans un GHM médical')";
+  db_exec($sql, $base);
+  if($error = db_error($base)) {
+    echo "$error ($sql)<br />";
+  } else {
+    $nListes++;
+  }
+  while (!feof($file) ) {
+    $line = fgets($file, 1024);
+    if(preg_match("`^($regCCAM)/([[:digit:]])`", $line, $acte) && $curr_liste) {
+      $sql = "INSERT INTO acte VALUES('".$acte[1]."', '".$acte[2]."', 'A-med', '99')";
+      db_exec($sql, $base);
+      if($error = db_error($base)) {
+        echo "$error ($sql)<br />";
+      } else {
+        $nActes++;
+        //echo "<strong>Done :</strong> ".$acte[1]."/".$acte[2]." ($curr_liste, CMD $curr_cmd)<br />";
       }
     }
   }
