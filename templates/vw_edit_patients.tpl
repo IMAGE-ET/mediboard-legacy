@@ -57,6 +57,14 @@ function setMed( key, nom, prenom, sElementName ){
   fieldMedecinName.value = "Dr. " + nom + " " + prenom;
 }
 
+function updateFields(selected) {
+  Element.cleanWhitespace(selected);
+  dn = selected.childNodes;
+  $('editFrm_cp').value = dn[0].firstChild.firstChild.nodeValue;
+  $('editFrm_ville').value = dn[2].firstChild.nodeValue;
+  $('editFrm__tel1').focus();
+}
+
 function pageMain() {
   new Ajax.Autocompleter(
     'editFrm_cp',
@@ -64,13 +72,7 @@ function pageMain() {
     'index.php?m=dPpatients&ajax=1&suppressHeaders=1&a=httpreq_do_insee_autocomplete', {
       minChars: 2,
       frequency: 0.15,
-      updateElement: function(selected) {
-        Element.cleanWhitespace(selected);
-        dn = selected.childNodes;
-        $('editFrm_cp').value = dn[0].firstChild.firstChild.nodeValue;
-        $('editFrm_ville').value = dn[2].firstChild.nodeValue;
-        $('editFrm__tel1').focus();
-      }
+      updateElement: updateFields
     }
   );
   new Ajax.Autocompleter(
@@ -79,13 +81,7 @@ function pageMain() {
     'index.php?m=dPpatients&ajax=1&suppressHeaders=1&a=httpreq_do_insee_autocomplete', {
       minChars: 4,
       frequency: 0.15,
-      updateElement: function(selected) {
-        Element.cleanWhitespace(selected);
-        dn = selected.childNodes;
-        $('editFrm_cp').value = dn[0].firstChild.nodeValue;
-        $('editFrm_ville').value = dn[2].firstChild.nodeValue;
-        $('editFrm__tel1').focus();
-      }
+      updateElement: updateFields
     }
   );
 }

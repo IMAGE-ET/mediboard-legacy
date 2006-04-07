@@ -37,7 +37,10 @@ $sql = "CREATE TABLE `communes_france` (
           PRIMARY KEY  (`INSEE`)
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Table des informations sur les communes françaises';";
 db_exec($sql, $base);
-$sql = "LOAD DATA LOCAL INFILE '".$AppUI->cfg["root_dir"]."/$filedir/insee.csv'" .
+
+$fileTmpPath = $AppUI->cfg["root_dir"]."/$filedir/insee.csv";
+
+$sql = "LOAD DATA LOCAL INFILE '$fileTmpPath'" .
     "\nINTO TABLE `communes_france`" .
     "\nFIELDS TERMINATED BY ';'" .
     "\nLINES TERMINATED BY '\r\n'";

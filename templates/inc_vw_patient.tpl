@@ -195,7 +195,7 @@ function printIntervention(id) {
       (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})
       </a></em>
       <a href="javascript:printIntervention({$curr_op->operation_id})">
-      <img src="modules/dPpatients/images/print.png" title="imprimer"/>
+      <img src="modules/dPpatients/images/print.png" alt="imprimer" title="imprimer"/>
       </a>
     </td>
     <td>
@@ -205,7 +205,7 @@ function printIntervention(id) {
     </td>
     <td>{if $curr_op->annulee}[ANNULE]{else}
       <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_planning&amp;operation_id={$curr_op->operation_id}">
-      <img src="modules/dPpatients/images/planning.png" title="modifier" /></a>{/if}
+      <img src="modules/dPpatients/images/planning.png" alt="modifier" title="modifier" /></a>{/if}
     </td>
   </tr>
   {/foreach}
@@ -221,7 +221,7 @@ function printIntervention(id) {
       <em><a href="index.php?m=dPadmissions&amp;tab=vw_idx_admission&amp;date={$curr_op->date_adm|date_format:"%Y-%m-%d"}#adm{$curr_op->operation_id}">
       (adm. le {$curr_op->date_adm|date_format:"%d %b %Y"})
       </a></em>
-      <img src="modules/dPpatients/images/print.png" title="imprimer" onclick="printIntervention({$curr_op->operation_id})"/>
+      <img src="modules/dPpatients/images/print.png" alt="imprimer" title="imprimer" onclick="printIntervention({$curr_op->operation_id})"/>
     </td>
     <td>
       <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
@@ -230,7 +230,7 @@ function printIntervention(id) {
     </td>
     <td>{if $curr_op->annulee}[ANNULE]{else}
       <a href="index.php?m=dPplanningOp&amp;tab=vw_edit_hospi&amp;hospitalisation_id={$curr_op->operation_id}">
-      <img src="modules/dPpatients/images/planning.png" title="modifier" /></a>{/if}
+      <img src="modules/dPpatients/images/planning.png" alt="modifier" title="modifier" /></a>{/if}
     </td>
   </tr>
   {/foreach}
@@ -245,7 +245,7 @@ function printIntervention(id) {
       Dr. {$curr_consult->_ref_plageconsult->_ref_chir->_view}</a></td>
     <td>{if $curr_consult->annule}[ANNULE]{else}
     <a href="index.php?m=dPcabinet&amp;tab=edit_planning&amp;consultation_id={$curr_consult->consultation_id}">
-    <img src="modules/dPpatients/images/planning.png" title="modifier" /></a>{/if}</td>
+    <img src="modules/dPpatients/images/planning.png" alt="modifier" title="modifier" /></a>{/if}</td>
   </tr>
   {/foreach}
   {/if}
