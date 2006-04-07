@@ -44,7 +44,7 @@ class CMbXMLDocument extends DOMDocument {
   function libxml_display_errors() {
      $errors = libxml_get_errors();
      foreach ($errors as $error) {
-         print $this->libxml_display_error($error);
+         trigger_error($this->libxml_display_error($error), E_USER_WARNING);
      }
      libxml_clear_errors();
   }
@@ -59,7 +59,6 @@ class CMbXMLDocument extends DOMDocument {
     libxml_use_internal_errors(true);
     
     if (!parent::schemaValidate($filename)) {
-       print '<b>DOMDocument::schemaValidate() Generated Errors!</b>';
        $this->libxml_display_errors();
        return false;
     }

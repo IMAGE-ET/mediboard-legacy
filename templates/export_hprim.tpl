@@ -22,7 +22,9 @@ function choosePreselection(oSelect) {
 </script>
 {/literal}
 
-<h1>Génération d'un fichier H'XML evenementsServeurActes</h1>
+{if !$ajax}
+<h2>Génération d'un fichier H'XML evenementsServeurActes</h2>
+{/if}
 
 
 <table class="main">
@@ -30,10 +32,36 @@ function choosePreselection(oSelect) {
 <tr>
 
 <td>
+  {if !$doc_valid}
+  <h3>Document non valide : pensez à valider les valeurs suivantes !</h3>
+  <ul>
+    <li>Code Adeli du praticien : '{$mbOp->_ref_chir->adeli}'</li>
+    <li>Identifiant S@anté.com du patient : '{$mbOp->_ref_pat->SHS}'</li>
+    <li>Identifiant S@anté.com de la venue : '{$mbOp->venue_SHS}'</li>
+    <li>Code d'unité fonctionnelle S@anté.com : '{$mbOp->code_uf}'</li>
+    <li>Libellé d'unité fonctionnelle S@anté.com : '{$mbOp->libelle_uf}'</li>
+  </ul>
+  {/if}
+  <h3>
+  
+  <h3>Fichiers précédemment envoyés pour cette opération</h3>
+  <ul>
+    {foreach from=$doc->sentFiles item=curr_file}
+    <li>
+      Fichier {$curr_file.name} 
+      envoyé le {$curr_file.datetime|date_format:"%A %d %B %Y à %H:%M:%S"}
+    </li>
+    {foreachelse}
+    Aucun fichier envoyé précédemment
+    {/foreach}
+  </ul>
+
+  {if !$ajax}
   <h3>XML: Schema de validation</h3>
   <ul>
     <li>Consulter <a href="{$doc->schemafilename}">le Schema de validation H'XML</a>.</li>
   </ul>
+  {/if}
 
   {if $doc->documentfilename}
   <h3>XML: Génération du document</h3>
@@ -60,6 +88,7 @@ function choosePreselection(oSelect) {
 </tr>
 <tr>
 
+{if !$ajax}
 <td>
   <form name="formEdit" action="?m={$m}" method="post" onsubmit="return checkForm(this)">  
   
@@ -78,6 +107,7 @@ function choosePreselection(oSelect) {
     <td><input type="text" title="notNull|ref" name="mb_operation_id" value="{$mbOp->operation_id}" size="5"/></td>
   </tr>
   
+  {if $mbOp->operation_id}
   <tr>
     <th class="category" colspan="2">Identifiants S@nté.com</th>
   </tr>
@@ -133,6 +163,7 @@ function choosePreselection(oSelect) {
     <th><label for="cmca_uf_libelle" title="Choisir un libellé pour l'unité fonctionnelle">Libellé de l'unité fonctionnelle</label></th>
     <td><input type="text" title="notNull|str|maxLength|35" name="cmca_uf_libelle" value="{$mbOp->libelle_uf}" size="35" maxlength="35" /></td>
   </tr>
+  {/if}
 
   <tr>
     <td class="button" colspan="2">
@@ -192,6 +223,6 @@ function choosePreselection(oSelect) {
   </td>
 </tr>
 {/if}
-
+{/if}
 </table>
 

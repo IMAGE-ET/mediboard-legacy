@@ -7,7 +7,7 @@
 * @author Thomas Despoix
 */
 
-global $AppUI, $canRead, $canEdit, $m;
+global $AppUI, $canRead, $canEdit, $m, $dPconfig;
 
 if (!class_exists("DOMDocument")) {
   trigger_error("sorry, DOMDocument is needed");
@@ -34,7 +34,7 @@ if ($mbOp->load($mb_operation_id)) {
   if (isset($_POST["sc_venue_id"    ])) $mbOp->venue_SHS     = $_POST["sc_venue_id"    ];
   if (isset($_POST["cmca_uf_code"   ])) $mbOp->code_uf       = $_POST["cmca_uf_code"   ];
   if (isset($_POST["cmca_uf_libelle"])) $mbOp->libelle_uf    = $_POST["cmca_uf_libelle"];
-
+  
   if (!$doc->checkSchema()) {
     return;
   }
@@ -50,14 +50,22 @@ $doc->saveTempFile();
 
 require_once($AppUI->getSystemClass("ftp"));
 
-$fileprefix = dPgetParam($_POST, "fileprefix", "facls1");
+// HPRIM export FTP settings
+$HPrimConfig = $dPconfig["dPinterop"]["hprim_export"];
+
+$fileprefix = dPgetParam($_POST, "fileprefix", $HPrimConfig["fileprefix"]);
+
 $ftp = new CFTP;
-$ftp->hostname = dPgetParam($_POST, "hostname", "10.9.44.1");
-$ftp->username = dPgetParam($_POST, "username", "mediboard");
-$ftp->userpass = dPgetParam($_POST, "userpass", "oxcmca");
+$ftp->hostname = dPgetParam($_POST, "hostname", $HPrimConfig["hostname"]);
+$ftp->username = dPgetParam($_POST, "username", $HPrimConfig["username"]);
+$ftp->userpass = dPgetParam($_POST, "userpass", $HPrimConfig["userpass"]);
+
+$ajax = mbGetValueFromGet("ajax");
+
+$doc->getSentFiles();
 
 // Connexion FTP
-if (isset($_POST["hostname"])) {
+if (isset($_POST["hostname"]) or ($ajax and $doc_valid)) {
   // Compte le nombre de fichiers déjà générés
   $count = 0;
   $dir = dir($doc->finalpath);
@@ -75,7 +83,8 @@ if (isset($_POST["hostname"])) {
     $ftp->sendFile($doc->documentfilename, "$destination_basename.ok", FTP_ASCII);
 
     $doc->saveFinalFile();
-    $ftp->logStep("Archiving sent file in Mediboard server under name $doc->documentfinalfilename");
+    $documentFinalBaseName = basename($doc->documentfinalfilename);
+    $ftp->logStep("Archivage du fichier envoyé sur le serveur Mediboard sous le nom $documentFinalBaseName");
   }
 }
 
@@ -86,9 +95,10 @@ $smarty = new CSmartyDP;
 $smarty->assign("doc", $doc);
 $smarty->assign("fileprefix", $fileprefix);
 $smarty->assign("ftp", $ftp);
-$smarty->assign("doc_valid", $doc_valid);
+$smarty->assign("ajax", $ajax);
+$smarty->assign("doc_valid", @$doc_valid);
 $smarty->assign("mbOp", $mbOp);
 
-$smarty->display('export_hprim.tpl');
+$smarty->display("export_hprim.tpl");
 
 ?>

@@ -26,6 +26,7 @@ class CHPrimXMLDocument extends CMbXMLDocument {
   var $documentfilename = null;
   var $documentfinalprefix = null;
   var $documentfinalfilename = null;
+  var $sentFiles = array();
   var $now = null;
    
   function __construct($schemaname) {
@@ -76,6 +77,18 @@ class CHPrimXMLDocument extends CMbXMLDocument {
     parent::save($this->documentfinalfilename);
   }
   
+  function getSentFiles() {
+    $pattern = "$this->finalpath/$this->documentfinalprefix-*.xml";
+    foreach(glob($pattern) as $sentFile) {
+      $baseName = basename($sentFile);
+      preg_match("`^op[[:digit:]]{6}-([[:digit:]]*)\.xml$`", $baseName, $matches);
+      $timeStamp = $matches[1];
+      $this->sentFiles[] = array (
+        "name" => $baseName,
+        "datetime" => strftime("%Y-%m-%d %H:%M:%S", $timeStamp)
+      );
+    }
+  }
   
   function addCodeLibelle($elParent, $nodeName, $code, $libelle) {
     $codeLibelle = $this->addElement($elParent, $nodeName);
