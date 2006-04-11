@@ -41,7 +41,7 @@ function pageMain() {
         <tr>
           <td>{$curr_op->_ref_plageop->_ref_salle->nom}</td>
           <td>Dr. {$curr_op->_ref_chir->_view}</td>
-          <td>{$curr_op->_ref_pat->_view}</td>
+          <td class="text">{$curr_op->_ref_pat->_view}</td>
           <td>{$curr_op->sortie_bloc|date_format:"%Hh%M"}</td>
           <td>
             <form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
@@ -77,7 +77,7 @@ function pageMain() {
         <tr>
           <td>{$curr_op->_ref_plageop->_ref_salle->nom}</td>
           <td>Dr. {$curr_op->_ref_chir->_view}</td>
-          <td>{$curr_op->_ref_pat->_view}</td>
+          <td class="text">{$curr_op->_ref_pat->_view}</td>
           <td>{$curr_op->sortie_bloc|date_format:"%Hh%M"}</td>
           <td>
             <form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
@@ -111,7 +111,7 @@ function pageMain() {
         <tr>
           <td>{$curr_op->_ref_plageop->_ref_salle->nom}</td>
           <td>Dr. {$curr_op->_ref_chir->_view}</td>
-          <td>{$curr_op->_ref_pat->_view}</td>
+          <td class="text">{$curr_op->_ref_pat->_view}</td>
           <td>{$curr_op->sortie_bloc|date_format:"%Hh%M"}</td>
           <td>
             <form name="editFrm{$curr_op->operation_id}" action="index.php" method="get">
