@@ -44,6 +44,8 @@ class COperation extends CMbObject {
   var $fin_op = null;
   var $retrait_garrot = null;
   var $sortie_bloc = null;
+  var $entree_reveil = null;
+  var $sortie_reveil = null;
   var $time_operation = null;
   var $examen = null;
   var $materiel = null;

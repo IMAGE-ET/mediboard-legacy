@@ -13,7 +13,7 @@ require_once($AppUI->getModuleClass("dPcompteRendu", "compteRendu"));
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'dPplanningOp';
-$config['mod_version'] = '0.34';
+$config['mod_version'] = '0.35';
 $config['mod_directory'] = 'dPplanningOp';
 $config['mod_setup_class'] = 'CSetupdPplanningOp';
 $config['mod_type'] = 'user';
@@ -182,6 +182,11 @@ class CSetupdPplanningOp {
           db_exec( $sql ); db_error();
 
         case "0.34":
+          $sql = "ALTER TABLE `operations`
+                  ADD `entree_reveil` TIME AFTER `sortie_bloc` ,
+                  ADD `sortie_reveil` TIME AFTER `entree_reveil` ;";
+          db_exec($sql); db_error();
+        case "0.35":
           return true;
 	  }
       return false;
