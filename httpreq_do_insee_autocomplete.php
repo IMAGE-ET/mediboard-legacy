@@ -21,7 +21,7 @@ if($ville = @$_POST["ville"]) {
       "\nWHERE commune LIKE '%$ville%'" .
       "\nORDER BY code_postal, commune";
 }
-$result = db_loadList($sql, 12, $AppUI->cfg["baseINSEE"]);
+$result = db_loadList($sql, 30, $AppUI->cfg["baseINSEE"]);
 
 if ($canRead) {
   // Création du template
@@ -29,6 +29,8 @@ if ($canRead) {
   $smarty = new CSmartyDP;
   $smarty->debugging = false;
 
+  $smarty->assign('cp', $cp);
+  $smarty->assign('ville', $ville);
   $smarty->assign('result', $result);
 
   $smarty->display('httpreq_do_insee_autocomplete.tpl');
