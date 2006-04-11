@@ -34,7 +34,9 @@ $sql = "CREATE TABLE `communes_france` (
           `code_postal` varchar(5) NOT NULL default '',
           `departement` varchar(25) NOT NULL default '',
           `INSEE` varchar(5) NOT NULL default '',
-          PRIMARY KEY  (`INSEE`)
+          PRIMARY KEY  (`INSEE`),
+          KEY `commune` (`commune`),
+          KEY `code_postal` (`code_postal`)
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Table des informations sur les communes françaises';";
 db_exec($sql, $base);
 
