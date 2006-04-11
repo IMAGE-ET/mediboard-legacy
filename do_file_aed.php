@@ -61,7 +61,7 @@ if (isset( $_FILES['formfile'] )) {
 		    $AppUI->setMsg( 'Impossible de créer le fichier', UI_MSG_ERROR );
 		    $AppUI->redirect();
 		}
-		$obj->indexStrings();
+		//$obj->indexStrings();
 	}
 }
 
@@ -73,6 +73,7 @@ if (($msg = $obj->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR );
 } else {
 	$AppUI->setMsg( $file_id ? 'modifié' : 'ajouté', UI_MSG_OK, true );
+  $obj->indexStrings();
 }
 $AppUI->redirect();
 ?>

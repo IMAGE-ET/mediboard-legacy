@@ -193,16 +193,16 @@ class CFile extends CMbObject {
 				$wordarr[] = array( "word" => $newword, "wordplace" => $x );
 			}
 		}
-		db_exec( "LOCK TABLES files_index WRITE" );
+		db_exec( "LOCK TABLES files_index_mediboard WRITE" );
 	// filter out common strings
 		$ignore = array();
-		include "{$AppUI->cfg['root_dir']}/modules/files/file_index_ignore.php";
+		include "{$AppUI->cfg['root_dir']}/modules/dPcabinet/file_index_ignore.php";
 		foreach ($ignore as $w) {
 			unset( $wordarr[$w] );
 		}
 	// insert the strings into the table
 		while (list( $key, $val ) = each( $wordarr )) {
-			$sql = "INSERT INTO files_index VALUES ('" . $this->file_id . "', '" . $wordarr[$key]['word'] . "', '" . $wordarr[$key]['wordplace'] . "')";
+			$sql = "INSERT INTO files_index_mediboard VALUES ('" . $this->file_id . "', '" . $wordarr[$key]['word'] . "', '" . $wordarr[$key]['wordplace'] . "')";
 			db_exec( $sql );
 		}
 
