@@ -173,6 +173,7 @@ $dPconfig["cal_working_days"]  = "1,2,3,4,5"; // days of week that the company w
 $ft["default"] = "/usr/bin/strings";
 $ft["application/msword"] = "/usr/bin/strings";
 $ft["text/html"] = "/usr/bin/strings";
+$ft["text/plain"] = "/usr/bin/strings";
 $ft["application/pdf"] = "/usr/bin/pdftotext";
 
 ?>
