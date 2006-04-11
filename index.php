@@ -27,7 +27,8 @@ $titleBlock->addCell();
 $titleBlock->show();
 
 $tabBox = new CTabBox( "?m=dPsalleOp", "{$AppUI->cfg['root_dir']}/modules/dPsalleOp/", $tab );
-$tabBox->add( 'vw_operations', 'Liste des opérations' );
+$tabBox->add( 'vw_operations', 'Salles d\'opération' );
+$tabBox->add( 'vw_reveil', 'Salle de reveil' );
 $tabBox->show();
 
 ?>
