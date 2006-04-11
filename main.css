@@ -73,12 +73,12 @@ table.tabmenu td.selected {
 
 table.tabmenu td.selectedLeft {
   width: 10px;
-  background: url(./images/tabSelectedLeft.png) no-repeat bottom right;
+  background: url(./images/tabSelectedLeft2.png) no-repeat bottom right;
 }
 
 table.tabmenu td.selectedRight {
   width: 10px;
-  background: url(./images/tabSelectedRight.png) no-repeat bottom left;
+  background: url(./images/tabSelectedRight2.png) no-repeat bottom left;
 }
 
 /* panneau d'affichage */
