@@ -157,9 +157,9 @@ class CFile extends CMbObject {
 
 // parse file for indexing
 	function indexStrings() {
-		global $ft, $AppUI;
+		global $AppUI;
 	// get the parser application
-		$parser = @$ft[$this->file_type];
+		$parser = @$AppUI->cfg["ft"][$this->file_type];
 		if (!$parser) {
 			return false;
 		}
