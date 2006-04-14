@@ -193,12 +193,15 @@ function makeLocaleDateFromDate(date) {
   return printf("%02d/%02d/%04d", d, m, y);
 }
 
-function makeDATETIMEFromDate(date) {
+function makeDATETIMEFromDate(date, useSpace) {
   var h = date.getHours();
   var m = date.getMinutes();
   var s = date.getSeconds();
   
-  return makeDATEFromDate(date) + printf("+%02d:%02d:%02d", h, m, s);
+  if(useSpace)
+    return makeDATEFromDate(date) + printf(" %02d:%02d:%02d", h, m, s);
+  else
+    return makeDATEFromDate(date) + printf("+%02d:%02d:%02d", h, m, s);
 }
 
 function regFieldCalendar(sFormName, sFieldName, bTime) {
