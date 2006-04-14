@@ -63,7 +63,7 @@
     </td>
     <td {$style}>
       <a href="index.php?m={$m}&amp;tab=edit_planning&amp;consultation_id={$curr_consult->consultation_id}" title="Modifier le RDV">
-        <img src="modules/dPcabinet/images/planning.png" />
+        <img src="modules/dPcabinet/images/planning.png" alt="modifier" />
       </a>
     </td>
     <td {$style}>{$curr_consult->_etat}</td>

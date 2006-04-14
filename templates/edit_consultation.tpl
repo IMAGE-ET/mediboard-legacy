@@ -118,7 +118,7 @@ function pageMain() {
     </td>
     <td class="button">
       <button onclick="editPat({$patient->patient_id})">
-        <img src="modules/dPcabinet/images/edit.png" />
+        <img src="modules/dPcabinet/images/edit.png" alt="editer" />
       </button>
     </td>
     <td class="text">

@@ -306,7 +306,7 @@ function pageMain() {
           </td>
           <td class="text" {$style}>
             <a class="action" href="?m=dPpatients&amp;tab=vw_edit_patients&amp;patient_id={$curr_consult->_ref_patient->patient_id}">
-              <img src="modules/{$m}/images/edit.png">
+              <img src="modules/{$m}/images/edit.png" alt="modifier" />
             </a>
             <a class="action" href="{$href_consult}">{$curr_consult->_ref_patient->_view}</a>
           </td>
@@ -336,15 +336,15 @@ function pageMain() {
             </form>
             
             <a class="action" href="{$href_planning}">
-              <img src="modules/{$m}/images/planning.png" title="Modifier le rendez-vous" />
+              <img src="modules/{$m}/images/planning.png" title="Modifier le rendez-vous" alt="modifier" />
             </a>
 
 			{if $curr_consult->chrono == $smarty.const.CC_PLANIFIE}
             <a class="action" href="javascript:putArrivee(document.etatFrm{$curr_consult->consultation_id})">
-              <img src="modules/{$m}/images/check.png" title="Notifier l'arrivée du patient" />
+              <img src="modules/{$m}/images/check.png" title="Notifier l'arrivée du patient" alt="arrivee" />
             </a>
             <a class="action" href="javascript:document.cancelFrm{$curr_consult->consultation_id}.submit()">
-              <img src="modules/{$m}/images/cancel.png" title="Annuler ce rendez-vous" />
+              <img src="modules/{$m}/images/cancel.png" title="Annuler ce rendez-vous" alt="annuler" />
             </a>
             {/if}
           </td>
