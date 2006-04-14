@@ -555,6 +555,8 @@ class COperation extends CMbObject {
     $template->addProperty("Opération - CCAM - description" , @$this->_ext_codes_ccam[0]->libelleLong);
     $template->addProperty("Opération - CCAM2 - code"       , @$this->_ext_codes_ccam[1]->code);
     $template->addProperty("Opération - CCAM2 - description", @$this->_ext_codes_ccam[1]->libelleLong);
+    $template->addProperty("Opération - CCAM3 - code"       , @$this->_ext_codes_ccam[2]->code);
+    $template->addProperty("Opération - CCAM3 - description", @$this->_ext_codes_ccam[2]->libelleLong);
     $template->addProperty("Opération - CCAM complet", implode(" - ", $this->_codes_ccam));
     $template->addProperty("Opération - salle", $this->_ref_plageop->_ref_salle->nom);
     $template->addProperty("Opération - côté", $this->cote);
