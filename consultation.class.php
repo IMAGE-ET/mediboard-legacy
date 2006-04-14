@@ -49,6 +49,7 @@ class CConsultation extends CMbObject {
   var $premiere = null;
   var $tarif = null;
   var $type_tarif = null;
+  var $arrivee = null;
   
   // Document fields:  to be externalized
   var $cr_valide = null;
@@ -116,7 +117,7 @@ class CConsultation extends CMbObject {
 
     $etat = array();
     $etat[CC_PLANIFIE]       = "Planif.";
-    $etat[CC_PATIENT_ARRIVE] = "Arrivé";
+    $etat[CC_PATIENT_ARRIVE] = "Arrivé ".mbTranformTime(null, $this->arrivee, "%Hh%M");
     $etat[CC_EN_COURS]       = "En cours";
     $etat[CC_TERMINE]        = "Term.";
     if($this->chrono)

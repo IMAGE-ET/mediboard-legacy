@@ -35,6 +35,12 @@ function checkPlage() {
   return true;
 }
 
+function putArrivee(oForm) {
+  var today = new Date();
+  oForm.arrivee.value = makeDATETIMEFromDate(today, true);
+  oForm.submit();
+}
+
 function pageMain() {
   {/literal}
   regRedirectPopupCal("{$debut}", "index.php?m={$m}&tab={$tab}&plageconsult_id=0&debut=");
@@ -317,6 +323,7 @@ function pageMain() {
             <input type="hidden" name="consultation_id" value="{$curr_consult->consultation_id}" />
             <input type="hidden" name="_check_premiere" value="{$curr_consult->_check_premiere}" />
             <input type="hidden" name="chrono" value="{$smarty.const.CC_PATIENT_ARRIVE}" />
+            <input type="hidden" name="arrivee" value="" />
             </form>
             
             <form name="cancelFrm{$curr_consult->consultation_id}" action="?m=dPcabinet" method="post">
@@ -333,7 +340,7 @@ function pageMain() {
             </a>
 
 			{if $curr_consult->chrono == $smarty.const.CC_PLANIFIE}
-            <a class="action" href="javascript:document.etatFrm{$curr_consult->consultation_id}.submit()">
+            <a class="action" href="javascript:putArrivee(document.etatFrm{$curr_consult->consultation_id})">
               <img src="modules/{$m}/images/check.png" title="Notifier l'arrivée du patient" />
             </a>
             <a class="action" href="javascript:document.cancelFrm{$curr_consult->consultation_id}.submit()">

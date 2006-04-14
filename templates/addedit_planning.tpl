@@ -72,6 +72,7 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
 <input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
 <input type="hidden" name="compte_rendu" value="{$consult->compte_rendu|escape:"html"}" />
 <input type="hidden" name="annule" value="0" />
+<input type="hidden" name="arrivee" value="" />
 <input type="hidden" name="chrono" value="{$smarty.const.CC_PLANIFIE}" />
 
 <table class="main" style="margin: 4px; border-spacing: 0px;">
