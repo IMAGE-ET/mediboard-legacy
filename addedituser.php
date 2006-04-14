@@ -9,12 +9,8 @@ if (!$canEdit && $user_id != $AppUI->user_id) {
 }
 
 $sql = "
-SELECT users.*, 
-    company_id, company_name, 
-    dept_name
+SELECT users.*
 FROM users
-LEFT JOIN companies ON user_company = companies.company_id
-LEFT JOIN departments ON dept_id = user_department
 WHERE user_id = $user_id
 ";
 if (!db_loadHash( $sql, $user ) && $user_id > 0) {
@@ -22,9 +18,6 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$titleBlock->addCrumb( "?m=admin", "users list" );
 	$titleBlock->show();
 } else {
-// pull companies
-	$sql = "SELECT company_id, company_name FROM companies ORDER BY company_name";
-	$companies = arrayMerge( array( 0 => '' ), db_loadHashList( $sql ) );
 
 // setup the title block
 	$ttl = $user_id > 0 ? "Edit User" : "Add User";
@@ -54,9 +47,9 @@ function submitIt(){
     } else if (form.user_last_name.value.length < 1) {
         alert("<?php echo $AppUI->_('adminValidLastName');?>");
         form.user_last_name.focus();
-    } else if (form.user_email.value.length < 4) {
-        alert("<?php echo $AppUI->_('adminInvalidEmail');?>");
-        form.user_email.focus();
+    //} else if (form.user_email.value.length < 4) {
+    //    alert("<?php echo $AppUI->_('adminInvalidEmail');?>");
+    //    form.user_email.focus();
     } else if (form.user_birthday.value.length > 0) {
         dar = form.user_birthday.value.split("-");
         if (dar.length < 3) {
@@ -147,24 +140,6 @@ function setDept( key, val ) {
 <tr>
     <td align="right"><?php echo $AppUI->_('First Name');?>:</td>
     <td><input type="text" class="text" name="user_first_name" value="<?php echo $user["user_first_name"];?>" maxlength="50" /> <input type="text" class="text" name="user_last_name" value="<?php echo $user["user_last_name"];?>" maxlength="50" /></td>
-</tr>
-<?php if ($canEdit) { ?>
-<tr>
-    <td align="right"><?php echo $AppUI->_('Company');?>:</td>
-    <td>
-<?php
-    echo arraySelect( $companies, 'user_company', 'class=text size=1', $user["user_company"] );
-?>
-    </td>
-</tr>
-<?php } ?>
-<tr>
-    <td align="right"><?php echo $AppUI->_('Department');?>:</td>
-    <td>
-        <input type="hidden" name="user_department" value="<?php echo @$user["user_department"];?>" />
-        <input type="text" class="text" name="dept_name" value="<?php echo @$user["dept_name"];?>" size="40" disabled />
-        <input type="button" class="button" value="<?php echo $AppUI->_('select dept');?>..." onclick="popDept()" />
-    </td>
 </tr>
 <tr>
     <td align="right"><?php echo $AppUI->_('Email');?>:</td>

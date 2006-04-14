@@ -5,46 +5,11 @@ global $AppUI, $user_id, $canEdit, $tab;
 $modules = $AppUI->getActiveModules( 'modules' );
 $modules["all"] = "All Modules";
 
-$pgos["files"] = array(
-  "table"       => "files", 
-  "table_alias" => "fi", 
-  "id_field"    => "file_id",
-  "name_field"  => "file_name"
-);
-
 $pgos["admin"] = array(
   "table"       => "users", 
   "table_alias" => "us", 
   "id_field"    => "user_id",
   "name_field"  => "user_username"
-);
-
-$pgos["projects"] = array(
-  "table"       => "projects", 
-  "table_alias" => "pr", 
-  "id_field"    => "project_id",
-  "name_field"  => "project_name"
-);
-
-$pgos["tasks"] = array(
-  "table"       => "tasks", 
-  "table_alias" => "ta", 
-  "id_field"    => "task_id",
-  "name_field"  => "task_name"
-);
-
-$pgos["companies"] = array(
-  "table"       => "companies", 
-  "table_alias" => "co", 
-  "id_field"    => "company_id",
-  "name_field"  => "company_name"
-);
-
-$pgos["forums"] = array(
-  "table"       => "forums", 
-  "table_alias" => "fo", 
-  "id_field"    => "forum_id",
-  "name_field"  => "forum_name"
 );
 
 $pgos["mediusers"] = array(

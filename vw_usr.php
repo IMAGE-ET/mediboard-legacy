@@ -10,9 +10,6 @@
 	<th>
 		<a href="?m=admin&a=index&orderby=user_last_name" class="hdr"><?php echo $AppUI->_('Real Name');?></a>
 	</th>
-	<th>
-		<a href="?m=admin&a=index&orderby=user_company" class="hdr"><?php echo $AppUI->_('Company');?></a>
-	</th>
 </tr>
 <?php 
 foreach ($users as $row) {
@@ -47,9 +44,6 @@ foreach ($users as $row) {
 	<td>
 		<a href="mailto:<?php echo $row["user_email"];?>"><img style="float: left; margin: 0 2px" src="images/obj/email.gif" width="16" height="16" border="0" alt="email"></a>
 		<?php echo $row["user_last_name"].', '.$row["user_first_name"];?>
-	</td>
-	<td>
-		<a href="./index.php?m=companies&a=view&company_id=<?php echo $row["user_company"];?>"><?php echo $row["company_name"];?></a>
 	</td>
 </tr>
 <?php }?>

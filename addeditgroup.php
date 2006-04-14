@@ -4,12 +4,6 @@
 <?php
 //add or edit a system user
 if(empty($user_id))$user_id = 0;
-$usql = "select * from users left join companies on user_company = companies.company_id where user_id = $user_id";
-$prc  = mysql_query($usql);
-$prow = mysql_fetch_array($prc);
-
-$csql ="select company_name, company_id from companies order by company_name";
-$crc = mysql_query($csql);
 
 ?>
 <SCRIPT language="javascript">
@@ -114,19 +108,6 @@ function submitIt(){
         <td>
             <input type="text" class="text" name="user_first_name" value="<?php echo $prow["user_first_name"];?>" maxlength="50" /> 
             <input type="text" class="text" name="user_last_name" value="<?php echo $prow["user_last_name"];?>" maxlength="50" />
-        </td>
-    </tr>
-    <tr>
-        <td align="right">Company:</td>
-        <td>
-            <select name="user_company">
-                <option value=0 <?php if($prow["user_company"]==0)echo " selected ";?> />N/A
-                <?php while($crow = mysql_fetch_array($crc)){
-                echo '<option value=' . $crow["company_id"];
-                if($crow["company_id"] == $prow["user_company"]) echo " selected";
-                echo ' />' . $crow["company_name"];
-                }?>
-                </select>
         </td>
     </tr>
     <tr><td align="right">Email:</td><td><input type="text" class="text" name="user_email" value="<?php echo $prow["user_email"];?>" maxlength="255" /> </td></tr>

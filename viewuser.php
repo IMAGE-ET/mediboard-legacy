@@ -10,12 +10,8 @@ $tab = $AppUI->getState( 'UserVwTab' ) !== NULL ? $AppUI->getState( 'UserVwTab' 
 
 // pull data
 $sql = "
-SELECT users.*, 
-	company_id, company_name, 
-	dept_name, dept_id
+SELECT users.*
 FROM users
-LEFT JOIN companies ON user_company = companies.company_id
-LEFT JOIN departments ON dept_id = user_department
 WHERE user_id = $user_id
 ";
 if (!db_loadHash( $sql, $user )) {
@@ -59,18 +55,6 @@ function popChgPwd() {
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Real Name');?>:</td>
 			<td class="hilite" width="100%"><?php echo $user["user_first_name"].' '.$user["user_last_name"];?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
-			<td class="hilite" width="100%">
-				<a href="?m=companies&a=view&company_id=<?php echo @$user["company_id"];?>"><?php echo @$user["company_name"];?></a>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Department');?>:</td>
-			<td class="hilite" width="100%">
-				<a href="?m=departments&a=view&dept_id=<?php echo @$user["dept_id"];?>"><?php echo $user["dept_name"];?></a>
-			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Phone');?>:</td>
@@ -133,10 +117,7 @@ function popChgPwd() {
 <?php	
 	// tabbed information boxes
 	$tabBox = new CTabBox( "?m=admin&a=viewuser&user_id=$user_id", "{$AppUI->cfg['root_dir']}/modules/admin/", $tab );
-//	$tabBox->add( 'vw_usr_proj', 'Owned Projects' );
-//  $tabBox->add( 'vw_usr_perms', 'Permissions' );
   $tabBox->add( 'vw_usr_perms_mb', 'Permissions Mediboard' );
-	//$tabBox->add( 'vw_usr_roles', 'Roles' );	// under development
 	$tabBox->show();
 }
 ?>

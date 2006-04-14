@@ -2,10 +2,9 @@
 GLOBAL $AppUI, $canEdit, $stub, $where, $orderby;
 
 $sql = "
-SELECT DISTINCT(user_id), user_username, user_last_name, user_first_name, permission_user, user_email, company_name, user_company
+SELECT DISTINCT(user_id), user_username, user_last_name, user_first_name, permission_user, user_email
 FROM users
 LEFT JOIN permissions ON user_id = permission_user 
-LEFT JOIN companies ON company_id = user_company
 WHERE permission_value IS NULL
 ";
 

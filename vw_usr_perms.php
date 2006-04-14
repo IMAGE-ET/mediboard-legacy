@@ -6,7 +6,6 @@ $pgos = array(
 	'users' => 'user_username',
 	'projects' => 'project_name',
 	'tasks' => 'task_name',
-	'companies' => 'company_name',
   'forums' => 'forum_name',
   'functions_mediboard' => 'text'
 );
@@ -21,14 +20,12 @@ $pvs = array(
 $sql = "
 SELECT u.user_id, u.user_username,
 	p.permission_item, p.permission_id, p.permission_grant_on, p.permission_value,
-	c.company_id, c.company_name,
 	pj.project_id, pj.project_name,
 	t.task_id, t.task_name,
 	f.file_id, f.file_name,
 	fm.forum_id, fm.forum_name,
 	u2.user_id, u2.user_username
 FROM users u, permissions p
-LEFT JOIN companies c ON c.company_id = p.permission_item and p.permission_grant_on = 'companies'
 LEFT JOIN projects pj ON pj.project_id = p.permission_item and p.permission_grant_on = 'projects'
 LEFT JOIN tasks t ON t.task_id = p.permission_item and p.permission_grant_on = 'tasks'
 LEFT JOIN files f ON f.file_id = p.permission_item and p.permission_grant_on = 'files'
@@ -114,8 +111,6 @@ function delIt(id) {
 }
 
 var tables = new Array;
-tables['companies'] = 'companies';
-tables['departments'] = 'departments';
 tables['projects'] = 'projects';
 tables['tasks'] = 'tasks';
 tables['forums'] = 'forums';
