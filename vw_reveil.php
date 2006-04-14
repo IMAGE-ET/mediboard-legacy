@@ -53,6 +53,14 @@ $listOps = $listOps->loadList($where, $order);
 foreach($listOps as $key => $value) {
   $listOps[$key]->loadRefsFwd();
   $listOps[$key]->_ref_plageop->loadRefsFwd();
+  //Tableau des timmings
+  $timing[$key]["entree_reveil"] = array();
+  $timing[$key]["sortie_reveil"] = array();
+  foreach($timing[$key] as $key2 => $value2) {
+    for($i = -10; $i < 10 && $value->$key2 !== null; $i++) {
+      $timing[$key][$key2][] = mbTime("+ $i minutes", $value->$key2);
+    }
+  }
 }
 $listReveil = new COperation;
 $where = array();
@@ -64,6 +72,14 @@ $listReveil = $listReveil->loadList($where, $order);
 foreach($listReveil as $key => $value) {
   $listReveil[$key]->loadRefsFwd();
   $listReveil[$key]->_ref_plageop->loadRefsFwd();
+  //Tableau des timmings
+  $timing[$key]["entree_reveil"] = array();
+  $timing[$key]["sortie_reveil"] = array();
+  foreach($timing[$key] as $key2 => $value2) {
+    for($i = -10; $i < 10 && $value->$key2 !== null; $i++) {
+      $timing[$key][$key2][] = mbTime("+ $i minutes", $value->$key2);
+    }
+  }
 }
 $listOut = new COperation;
 $where = array();
@@ -75,7 +91,17 @@ $listOut = $listOut->loadList($where, $order);
 foreach($listOut as $key => $value) {
   $listOut[$key]->loadRefsFwd();
   $listOut[$key]->_ref_plageop->loadRefsFwd();
+  //Tableau des timmings
+  $timing[$key]["entree_reveil"] = array();
+  $timing[$key]["sortie_reveil"] = array();
+  foreach($timing[$key] as $key2 => $value2) {
+    for($i = -10; $i < 10 && $value->$key2 !== null; $i++) {
+      $timing[$key][$key2][] = mbTime("+ $i minutes", $value->$key2);
+    }
+  }
 }
+
+//mbTrace($timing);
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
@@ -91,6 +117,7 @@ $smarty->assign('plages', $plages);
 $smarty->assign('listOps', $listOps);
 $smarty->assign('listReveil', $listReveil);
 $smarty->assign('listOut', $listOut);
+$smarty->assign('timing', $timing);
 $smarty->assign('date', $date);
 
 $smarty->display('vw_reveil.tpl');
