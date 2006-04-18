@@ -13,19 +13,28 @@ function debug(s, name) {
     debugWindow.document.write(s + "\n");
 }
 
-function debugObject(obj, name) {
-    var s = typeof obj;
-    for (var i in obj) {
-    	var prop = obj[i];
-		s += "\nProperty." + i + "=";
-        if ((typeof prop == "object" || typeof prop == "function") && prop.toString) {
-            s += prop.toString().replace(/\n/g, "");
+function debugObject(oObject, sName) {
+	sInfo = "";
+
+	for (var sPropName in oObject) {
+		var oProp = oObject[sPropName];
+		var sType = typeof oProp;
+		
+		sInfo += "\nProperty." + sPropName + " = ";
+
+		if (oProp == null) {
+			sInfo += "null";
+			continue;
+		}
+		
+		if ((sType == "object" || sType == "function") && oProp.toString) {
+			sInfo += "[[ " + sType + " ]]";
         } else {
-            s += prop;
+			sInfo += oProp;
         }
     }
 
-    debug(s, name);
+    debug(sInfo, sName);
 }
 
 function debugArray(arr, name) {
