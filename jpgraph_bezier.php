@@ -6,11 +6,11 @@
 * computed from control points data sets, based on Paul Bourke algorithm :
 * http://astronomy.swin.edu.au/~pbourke/curves/bezier/
 */
-class Bezier {
+class BezierTD {
   var $datax = array();
   var $datay = array();
   
-  function Bezier($datax, $datay, $attraction_factor = 1) {
+  function BezierTD($datax, $datay, $attraction_factor = 1) {
     // Adding control point multiple time will raise their attraction power over the curve    
     foreach($datax as $datumx) {
       for ($i = 0; $i < $attraction_factor; $i++) {
@@ -23,6 +23,7 @@ class Bezier {
         $this->datay[] = $datumy; 
       }
     }
+
   }
 
   function Get($steps) {
@@ -75,7 +76,6 @@ class Bezier {
       $newx += $this->datax[$k] * $blend;
       $newy += $this->datay[$k] * $blend;
    }
-
    return array($newx, $newy);
   }
 }

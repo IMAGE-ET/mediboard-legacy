@@ -76,7 +76,8 @@ class AudiogrammeVocal extends Graph {
 //    $pa->mark->SetWidth(2);
 //    $this->Add($pa);
 
-    $bezier = new Bezier($datax, $datay, 5);
+    $bezier = new BezierTD($datax, $datay, 5);
+    
     list($datax, $datay) = $bezier->Get(20);
 
     $pb = new LinePlot($datay, $datax);
@@ -153,9 +154,9 @@ class AudiogrammeVocal extends Graph {
 //  
 //      $this->Add($p2);
       
-      $spline = new Bezier($dBs, $pcs, 5);
+      $spline = new BezierTD($dBs, $pcs, 5);
       list($bdBs, $bpcs) = $spline->Get(40);
-  
+
       $p3 = new LinePlot($bpcs, $bdBs);
       $p3->SetColor("$mark_color:1.8");
   
