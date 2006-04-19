@@ -79,7 +79,7 @@ function checkSalle() {
         {if $salleSel->id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la salle', '{$salleSel->nom|escape:javascript}')""/>
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'la salle',objName:'{$salleSel->nom|escape:javascript}'{rdelim})""/>
         {else}
         <input type="submit" name="btnFuseAction" value="Créer" />
         {/if}
