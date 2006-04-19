@@ -102,7 +102,7 @@ function pageMain() {
         {if $chambreSel->chambre_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la chambre', '{$chambreSel->nom|escape:javascript}')" />
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'la chambre',objName:'{$chambreSel->nom|escape:javascript}'{rdelim})" />
         {else}
         <input type="submit" name="btnFuseAction" value="Créer" />
         {/if}
@@ -138,7 +138,7 @@ function pageMain() {
         <input type="text" name="nom" title="{$litSel->_props.nom}" value="{$litSel->nom}" />
         {if $litSel->lit_id}
         <input type="submit" value="Modifier" />
-        <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le lit', '{$litSel->nom|escape:javascript}')" />
+        <input type="button" value="supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'le lit',objName:'{$litSel->nom|escape:javascript}'{rdelim})" />
         {else}
         <input type="submit" value="Créer" />
         {/if}

@@ -81,7 +81,7 @@ function checkFrm() {
         {if $serviceSel->service_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le service ', '{$serviceSel->nom|escape:javascript}')" />
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'le service ',objName:'{$serviceSel->nom|escape:javascript}'{rdelim})" />
         {else}
         <input type="submit" name="btnFuseAction" value="Créer" />
         {/if}
