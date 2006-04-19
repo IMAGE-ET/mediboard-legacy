@@ -104,15 +104,24 @@ function flipGroup(id, groupname) {
     tr.style.display = tr.style.display == "table-row" ? "none" : "table-row";
   }
 }
-function confirmDeletion(form, typeName, objName, msg) {
-  if (!typeName) typeName = "";
-  if (!objName) objName = "";
-  if (!msg) msg = "Voulez-vous réellement supprimer ";
+function confirmDeletion(oForm, oOptions, oOptionsAjax) {
+  oDefaultOptions = {
+    typeName: "",
+    objName : "",
+    msg     : "Voulez-vous réellement supprimer ",
+    ajax    : 0,
+    target  : "",
+  }
   
-  if (objName.length) objName = " '" + objName + "'";
-  if (confirm(msg + typeName + " " + objName + " ?" )) {
-  	form.del.value = 1; 
-  	form.submit();
+  Object.extend(oDefaultOptions, oOptions);
+  
+  if (oDefaultOptions.objName.length) oDefaultOptions.objName = " '" + oDefaultOptions.objName + "'";
+  if (confirm(oDefaultOptions.msg + oDefaultOptions.typeName + " " + oDefaultOptions.objName + " ?" )) {
+  	oForm.del.value = 1;
+  	if(oDefaultOptions.ajax)
+  	  submitFormAjax(oForm, oDefaultOptions.target, oOptionsAjax);
+  	else
+  	  oForm.submit();
   }
 }
 

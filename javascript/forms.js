@@ -464,22 +464,24 @@ function checkForm(oForm) {
 }
 
 function submitFormAjax(oForm, ioTarget, oOptions) {
-  var sEventCode = oForm.attributes.onsubmit.nodeValue;
-  sEventCode = sEventCode.replace(/(\W)this(\W)/g, "$1oForm$2");
-  if(eval(sEventCode)) {
-    urlTarget = new Url;
-    var iElement = 0;
-    while (oElement = oForm.elements[iElement++]) {
-      urlTarget.addParam(oElement.name, oElement.value);
-    }
-    
-    var oDefaultOptions = {
-      method : "post",
-    };
-    Object.extend(oDefaultOptions, oOptions);
-    
-    urlTarget.requestUpdate(ioTarget, oDefaultOptions);
+  if(oForm.attributes.onsubmit) {
+    sEventCode = oForm.attributes.onsubmit.nodeValue;
+    sEventCode = sEventCode.replace(/(\W)this(\W)/g, "$1oForm$2");
+    if(!eval(sEventCode))
+      return
   }
+  urlTarget = new Url;
+  var iElement = 0;
+  while (oElement = oForm.elements[iElement++]) {
+    urlTarget.addParam(oElement.name, oElement.value);
+  }
+
+  var oDefaultOptions = {
+    method : "post",
+  };
+  Object.extend(oDefaultOptions, oOptions);
+
+  urlTarget.requestUpdate(ioTarget, oDefaultOptions);
 }
 
 function setSelectionRange(textarea, selectionStart, selectionEnd) {
