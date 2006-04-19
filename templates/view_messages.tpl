@@ -122,7 +122,7 @@ function pageMain() {
         {if $message->message_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'message', '{$message->_view|escape:javascript}')" />
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'message',objName:'{$message->_view|escape:javascript}'{rdelim})" />
         {else}
         <input type="submit" value="Créer" />
         {/if}
