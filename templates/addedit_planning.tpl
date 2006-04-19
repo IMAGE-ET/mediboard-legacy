@@ -210,7 +210,7 @@ function setRDV( hour, min, id, date, freq, chirid, chirname ) {
           {if $consult->consultation_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" style="cursor: pointer;" onclick="confirmDeletion(this.form, 'la consultation de', '{$consult->_ref_patient->_view|escape:javascript}')" />
+            <input type="button" value="Supprimer" style="cursor: pointer;" onclick="confirmDeletion(this.form,{ldelim}typeName:'la consultation de',objName:'{$consult->_ref_patient->_view|escape:javascript}'{rdelim})" />
           {else}
             <input type="submit" value="Créer" />
           {/if}

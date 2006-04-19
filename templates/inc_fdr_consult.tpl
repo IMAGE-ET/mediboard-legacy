@@ -91,13 +91,15 @@ function newExam(sAction, consultation_id) {
       <ul>
         {foreach from=$consult->_ref_files item=curr_file}
         <li>
-          <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+          <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post" onsubmit="checkForm(this)">
             <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
             ({$curr_file->_file_size})
+            <input type="hidden" name="m" value="dPCabinet" />
             <input type="hidden" name="dosql" value="do_file_aed" />
             <input type="hidden" name="del" value="1" />
             <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
-            <button type="button" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
+            <button type="button"
+              onclick="confirmDeletion(this.form, {ldelim}typeName:'le fichier',objName:'{$curr_file->file_name|escape:javascript}',ajax:1,target:'systemMsg'{rdelim},{ldelim}onComplete:reloadFdr{rdelim})"/>
               <img src="modules/dPcabinet/images/cross.png" />
             </button>
           </form>
@@ -106,7 +108,8 @@ function newExam(sAction, consultation_id) {
           <li>Aucun fichier disponible</li>
         {/foreach}
       </ul>
-      <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post">
+      <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post" onsubmit="checkForm(this)">
+        <input type="hidden" name="m" value="dPCabinet" />
         <input type="hidden" name="dosql" value="do_file_aed" />
         <input type="hidden" name="del" value="0" />
         <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />

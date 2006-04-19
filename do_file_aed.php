@@ -9,6 +9,19 @@
 
 require_once( $AppUI->getModuleClass('dPcabinet', 'files') );
 
+$ajax = mbGetValueFromPost("ajax", 0);
+$suppressHeaders = mbGetValueFromPost("suppressHeaders", 0);
+unset($_POST["ajax"]);
+unset($_POST["suppressHeaders"]);
+
+function doRedirect() {
+  global $ajax, $AppUI;
+  if($ajax)
+    exit(0);
+  else
+    $AppUI->redirect();
+}
+
 //addfile sql
 $file_id = intval( dPgetParam( $_POST, 'file_id', 0 ) );
 $del = intval( dPgetParam( $_POST, 'del', 0 ) );
@@ -16,7 +29,7 @@ $obj = new CFile();
 
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
-	$AppUI->redirect();
+	doRedirect();
 }
 
 // prepare (and translate) the module name ready for the suffix
@@ -26,17 +39,15 @@ if ($del) {
 	$obj->load( $file_id );
 	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
-		$AppUI->redirect();
+		doRedirect();
 	} else {
 		$AppUI->setMsg( "supprimé", UI_MSG_ALERT, true );
-		$AppUI->redirect();
+		doRedirect();
 	}
 }
 
 set_time_limit( 600 );
 ignore_user_abort( 1 );
-
-//echo "<pre>";print_r($_POST);echo "</pre>";die;
 
 $upload = null;
 if (isset( $_FILES['formfile'] )) {
@@ -45,7 +56,7 @@ if (isset( $_FILES['formfile'] )) {
 	if ($upload['size'] < 1) {
 		if (!$file_id) {
 			$AppUI->setMsg( 'Taille de fichier nulle. Echec de l\'opération.', UI_MSG_ERROR );
-			$AppUI->redirect();
+			doRedirect();
 		}
 	} else {
 
@@ -59,7 +70,7 @@ if (isset( $_FILES['formfile'] )) {
 		$res = $obj->moveTemp( $upload );
 		if (!$res) {
 		    $AppUI->setMsg( 'Impossible de créer le fichier', UI_MSG_ERROR );
-		    $AppUI->redirect();
+		    doRedirect();
 		}
 		//$obj->indexStrings();
 	}
@@ -75,5 +86,5 @@ if (($msg = $obj->store())) {
 	$AppUI->setMsg( $file_id ? 'modifié' : 'ajouté', UI_MSG_OK, true );
   $obj->indexStrings();
 }
-$AppUI->redirect();
+doRedirect();
 ?>

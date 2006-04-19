@@ -139,7 +139,7 @@ function printDocument(doc_id) {
                 <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
                 <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
                 ({$curr_file->_file_size}) 
-                <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
+                <input type="button" value="supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'le fichier',objName:'{$curr_file->file_name|escape:javascript}'{rdelim})"/>
       
                 </form>
               </li>
@@ -303,7 +303,7 @@ function printDocument(doc_id) {
                 <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
                 <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
                 ({$curr_file->_file_size}) 
-                <input type="button" value="supprimer" onclick="confirmDeletion(this.form, 'le fichier', '{$curr_file->file_name|escape:javascript}')"/>
+                <input type="button" value="supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'le fichier',objName:'{$curr_file->file_name|escape:javascript}'{rdelim})"/>
       
                 </form>
               </li>

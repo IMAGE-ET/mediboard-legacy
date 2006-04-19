@@ -58,10 +58,21 @@ function reloadMain() {
   mainUrl.requestUpdate('mainConsult', { waitingText : null });
 }
 
+function reloadFdr() {
+  var mainUrl = new Url;
+  mainUrl.setModuleAction("dPcabinet", "httpreq_vw_fdr_consult");
+  mainUrl.addParam("selConsult", document.editFrm.consultation_id.value);
+  mainUrl.requestUpdate('fdrConsult', { waitingText : null });
+}
+
 function submitConsultWithChrono(chrono) {
   var oForm = document.editFrm;
   oForm.chrono.value = chrono;
   submitFormAjax(oForm, 'systemMsg', { onComplete : reloadMain });
+}
+
+function submitFdr(oForm) {
+  submitFormAjax(oForm, 'systemMsg', { onComplete : reloadFdr });
 }
 
 function pageMain() {

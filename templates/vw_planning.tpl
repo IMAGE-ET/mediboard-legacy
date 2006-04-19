@@ -256,7 +256,7 @@ function pageMain() {
               </tr>
               <tr>
                 <td class="button" colspan="2">
-                  <input type='button' value='Supprimer' onclick="confirmDeletion(this.form, 'la plage de consultations du', '{$plageSel->date|date_format:"%A %d %B %Y"}')" />
+                  <input type='button' value='Supprimer' onclick="confirmDeletion(this.form,{ldelim}typeName:'la plage de consultations du',objName:'{$plageSel->date|date_format:"%A %d %B %Y"}'{rdelim})" />
                 </td>
               </tr>
             </table>

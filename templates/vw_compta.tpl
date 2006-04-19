@@ -214,7 +214,7 @@ function pageMain() {
                 <td class="button" colspan="2">
                   {if $tarif->tarif_id}
                   <input type="submit" value="Modifier" />
-                  <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le tarif', '{$tarif->description|escape:javascript}')" />
+                  <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'le tarif',objName:'{$tarif->description|escape:javascript}'{rdelim})" />
                   {else}
                   <input type="submit" name="btnFuseAction" value="Créer" />
                   {/if}

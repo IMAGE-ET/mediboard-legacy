@@ -167,8 +167,7 @@ class CConsultation extends CMbObject {
     $this->_date = $this->_ref_plageconsult->date;
   }
   
-  function loadRefsBack() {
-    // Backward references
+  function loadRefFiles() {
     $this->_ref_files = array();
     if($this->consultation_id) {
       $where = array();
@@ -176,7 +175,9 @@ class CConsultation extends CMbObject {
       $this->_ref_files = new CFile();
       $this->_ref_files = $this->_ref_files->loadList($where);
     }
-
+  }
+  
+  function loadRefDocs() {
     $this->_ref_documents = array();
     $this->_ref_documents = new CCompteRendu();
     $where = array();
@@ -192,6 +193,12 @@ class CConsultation extends CMbObject {
     }
     if($docs_valid)
       $this->_etat .= " ($docs_valid Doc.)";
+  }
+  
+  function loadRefsBack() {
+    // Backward references
+    $this->loadRefFiles();
+    $this->loadRefDocs();
     
     $this->_ref_consult_anesth = new CConsultAnesth;
     $where = array();

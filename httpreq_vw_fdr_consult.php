@@ -1,4 +1,4 @@
-<?php /* $Id$*/
+<?php /* $Id$ */
 
 /**
 * @package Mediboard
@@ -9,8 +9,11 @@
 
 global $AppUI, $canRead, $canEdit, $m;
 
+require_once( $AppUI->getModuleClass('dPcabinet', 'plageconsult') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
+require_once( $AppUI->getModuleClass('dPcabinet', 'tarif') );
 require_once( $AppUI->getModuleClass('mediusers') );
+require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
   
 if (!$canEdit) {
   $AppUI->redirect( "m=public&a=access_denied" );
@@ -44,8 +47,8 @@ $consult->_ref_chir = $userSel;
 if ($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefsFwd();
-  $userSel->load($consult->_ref_plageconsult->chir_id);
-  $consult->loadAides($userSel->user_id);
+  $consult->loadRefDocs();
+  $consult->loadRefFiles();
   
   // On vérifie que l'utilisateur a les droits sur la consultation
   $right = false;
@@ -59,12 +62,50 @@ if ($selConsult) {
   }
 }
 
+// Récupération des modèles
+$whereCommon = array();
+$whereCommon["type"] = "= 'consultation'";
+$order = "nom";
+
+// Modèles de l'utilisateur
+$listModelePrat = array();
+if ($userSel->user_id) {
+  $where = $whereCommon;
+  $where["chir_id"] = "= '$userSel->user_id'";
+  $listModelePrat = new CCompteRendu;
+  $listModelePrat = $listModelePrat->loadlist($where, $order);
+}
+
+// Modèles de la fonction
+$listModeleFunc = array();
+if ($userSel->user_id) {
+  $where = $whereCommon;
+  $where["function_id"] = "= '$userSel->function_id'";
+  $listModeleFunc = new CCompteRendu;
+  $listModeleFunc = $listModeleFunc->loadlist($where, $order);
+}
+
+// Récupération des tarifs
+$order = "description";
+$where = array();
+$where["chir_id"] = "= '$userSel->user_id'";
+$tarifsChir = new CTarif;
+$tarifsChir = $tarifsChir->loadList($where, $order);
+$where = array();
+$where["function_id"] = "= '$userSel->function_id'";
+$tarifsCab = new CTarif;
+$tarifsCab = $tarifsCab->loadList($where, $order);
+
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
+$smarty->assign('listModelePrat', $listModelePrat);
+$smarty->assign('listModeleFunc', $listModeleFunc);
+$smarty->assign('tarifsChir', $tarifsChir);
+$smarty->assign('tarifsCab', $tarifsCab);
 $smarty->assign('consult', $consult);
 
-$smarty->display('inc_main_consultForm.tpl');
+$smarty->display('inc_fdr_consult.tpl');
 
 ?>
