@@ -136,6 +136,8 @@ foreach ($nav as $module) {
 <table id="main">
 <tr>
   <td>
-<?php
-	echo $AppUI->getMsg();
-?>
+  <div id="systemMsg">
+    <?php
+      echo $AppUI->getMsg();
+    ?>
+  </div>
