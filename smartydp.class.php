@@ -5,7 +5,7 @@
  * @author Thomas Despoix
  */
 
-require_once($AppUI->getLibraryClass( "smarty/Smarty.class"));
+require_once($AppUI->getLibraryClass( "smarty/libs/Smarty.class"));
 
 /**
  * Delegates the actual translation to $AppUI framework object
