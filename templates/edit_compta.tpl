@@ -93,7 +93,7 @@ function pageMain() {
           <td class="button" colspan="5">
             {if $gestioncab->gestioncab_id}
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la fiche', '{$gestioncab->_view|escape:javascript}')"/>
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'la fiche',objName:'{$gestioncab->_view|escape:javascript}'{rdelim})"/>
             {else}
             <input type="submit" value="Créer" />
             {/if}
