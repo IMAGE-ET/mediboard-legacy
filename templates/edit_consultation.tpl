@@ -80,150 +80,80 @@ function pageMain() {
 <table class="main">
   <tr>
     <td id="listConsult" class="effectShown" style="vertical-align: top">
-{include file="inc_list_consult.tpl"}
+      {include file="inc_list_consult.tpl"}
     </td>
     <td>
 
-{if $consult->consultation_id}
-{assign var="patient" value=$consult->_ref_patient}
+      {if $consult->consultation_id}
+      {assign var="patient" value=$consult->_ref_patient}
 
-<table class="form">
-  <tr>
-    <th class="category" colspan="2">
-      <button id="triggerList" class="triggerHide" type="button" onclick="flipEffectElement('listConsult', 'Appear', 'Fade', 'triggerList');" style="float:left">+/-</button>
-      Patient
-    </th>
-    <th class="category">Correspondants</th>
-    <th class="category">
-      <a style="float:right;" href="javascript:view_log('CConsultation',{$consult->consultation_id})">
-        <img src="images/history.gif" alt="historique" />
-      </a>
-      Historique
-    </th>
-    <th class="category">Planification</th>
-  </tr>
-  <tr>
-    <td class="readonly">
-      {$patient->_view}
-      <br />
-      Age: {$patient->_age} ans
-      <br />
-      <a href="javascript:showAll({$patient->patient_id})">
-        Résumé
-      </a>
-      <br />
-      <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$patient->patient_id}">
-        Consulter le dossier complet
-      </a>
-    </td>
-    <td class="button">
-      <button onclick="editPat({$patient->patient_id})">
-        <img src="modules/dPcabinet/images/edit.png" alt="editer" />
-      </button>
-    </td>
-    <td class="text">
-      {if $patient->medecin_traitant}
-      Dr. {$patient->_ref_medecin_traitant->_view}
+      <table class="form">
+        <tr>
+          <th class="category" colspan="2">
+            <button id="triggerList" class="triggerHide" type="button" onclick="flipEffectElement('listConsult', 'Appear', 'Fade', 'triggerList');" style="float:left">+/-</button>
+            Patient
+          </th>
+          <th class="category">Correspondants</th>
+          <th class="category">
+            <a style="float:right;" href="javascript:view_log('CConsultation',{$consult->consultation_id})">
+              <img src="images/history.gif" alt="historique" />
+            </a>
+            Historique
+          </th>
+          <th class="category">Planification</th>
+        </tr>
+        <tr>
+          <td class="readonly">
+            {$patient->_view}
+            <br />
+            Age: {$patient->_age} ans
+            <br />
+            <a href="javascript:showAll({$patient->patient_id})">
+              Résumé
+            </a>
+            <br />
+            <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$patient->patient_id}">
+              Consulter le dossier complet
+            </a>
+          </td>
+          <td class="button">
+            <button onclick="editPat({$patient->patient_id})">
+              <img src="modules/dPcabinet/images/edit.png" alt="editer" />
+            </button>
+          </td>
+          <td class="text">
+            {if $patient->medecin_traitant}
+            Dr. {$patient->_ref_medecin_traitant->_view}
+            {/if}
+            {if $patient->medecin1}
+            <br />
+            Dr. {$patient->_ref_medecin1->_view}
+            {/if}
+            {if $patient->medecin2}
+            <br />
+            Dr. {$patient->_ref_medecin2->_view}
+            {/if}
+            {if $patient->medecin3}
+            <br />
+            Dr. {$patient->_ref_medecin3->_view}
+            {/if}
+          </td>
+          <td class="text">
+            {include file="inc_patient_history.tpl"}
+          </td>
+          <td class="button">
+            <input type="button" value="intervention"    onclick="newOperation      ({$consult->_ref_plageconsult->chir_id},{$consult->patient_id})" /><br />
+            <input type="button" value="hospitalisation" onclick="newHospitalisation({$consult->_ref_plageconsult->chir_id},{$consult->patient_id})" /><br />
+            <input type="button" value="consultation"    onclick="newConsultation   ({$consult->_ref_plageconsult->chir_id},{$consult->patient_id})" />
+          </td>
+        </tr>
+      </table>
+
+      {include file="inc_main_consultform.tpl"}
+
+      {include file="inc_fdr_consult.tpl"}
+
       {/if}
-      {if $patient->medecin1}
-      <br />
-      Dr. {$patient->_ref_medecin1->_view}
-      {/if}
-      {if $patient->medecin2}
-      <br />
-      Dr. {$patient->_ref_medecin2->_view}
-      {/if}
-      {if $patient->medecin3}
-      <br />
-      Dr. {$patient->_ref_medecin3->_view}
-      {/if}
-    </td>
-    <td class="text">
-{include file="inc_patient_history.tpl"}
-    </td>
-    <td class="button">
-      <input type="button" value="intervention"    onclick="newOperation      ({$consult->_ref_plageconsult->chir_id},{$consult->patient_id})" /><br />
-      <input type="button" value="hospitalisation" onclick="newHospitalisation({$consult->_ref_plageconsult->chir_id},{$consult->patient_id})" /><br />
-      <input type="button" value="consultation"    onclick="newConsultation   ({$consult->_ref_plageconsult->chir_id},{$consult->patient_id})" />
-    </td>
-  </tr>
-</table>
-
-<form class="watch" name="editFrm" action="?m={$m}" method="post">
-
-<input type="hidden" name="m" value="{$m}" />
-<input type="hidden" name="del" value="0" />
-<input type="hidden" name="dosql" value="do_consultation_aed" />
-<input type="hidden" name="consultation_id" value="{$consult->consultation_id}" />
-<input type="hidden" name="_check_premiere" value="{$consult->_check_premiere}" />
-
-<table class="form">
-  <tr>
-	  <th class="category" colspan="4">
-	    <input type="hidden" name="chrono" value="{$consult->chrono}" />
-	    Consultation
-	    (Etat : {$consult->_etat}
-	    {if $consult->chrono <= $smarty.const.CC_EN_COURS}
-      / <input type="button" value="Terminer" onclick="submitConsultWithChrono({$smarty.const.CC_TERMINE})" />
-      {/if})
-    </th>
-  </tr>
-  <tr>
-	  <th class="category">
-	    <label for="motif" title="Motif de la consultation">Motif</label>
-	  </th>
-    <th>
-      <select name="_helpers_motif" size="1" onchange="pasteHelperContent(this)">
-        <option value="0">&mdash; Choisir une aide</option>
-        {html_options options=$consult->_aides.motif}
-      </select>
-    </th>
-	  <th class="category">
-	    <label for="rques" title="Remarques concernant la consultation">Remarques</label>
-	  </th>
-    <th>
-      <select name="_helpers_rques" size="1" onchange="pasteHelperContent(this)">
-        <option value="0">&mdash; Choisir une aide</option>
-        {html_options options=$consult->_aides.rques}
-      </select>
-    </th>
-  </tr>
-  <tr>
-	  <td class="text" colspan="2"><textarea name="motif" rows="5">{$consult->motif}</textarea></td>
-	  <td class="text" colspan="2"><textarea name="rques" rows="5">{$consult->rques}</textarea></td>
-  </tr>
-  <tr>
-    <th class="category">
-	    <label for="examen" title="Bilan de l'examen clinique">Examens</label>
-	  </th>
-    <th>
-      <select name="_helpers_examen" size="1" onchange="pasteHelperContent(this)">
-        <option value="0">&mdash; Choisir une aide</option>
-        {html_options options=$consult->_aides.examen}
-      </select>
-    </th>
-    <th class="category">
-	    <label for="traitement" title="title">Traitements</label>
-	  </th>
-    <th>
-      <select name="_helpers_traitement" size="1" onchange="pasteHelperContent(this)">
-        <option value="0">&mdash; Choisir une aide</option>
-        {html_options options=$consult->_aides.traitement}
-      </select>
-    </th>
-  </tr>
-  <tr>
-    <td class="text" colspan="2"><textarea name="examen" rows="5">{$consult->examen}</textarea></td>
-	  <td class="text" colspan="2"><textarea name="traitement" rows="5">{$consult->traitement}</textarea></td>
-  </tr>
-  <tr>
-    <td class="button" colspan="4"><input type="submit" value="sauver" /></td>
-  </tr>
-</table>
-
-</form>
-{include file="inc_fdr_consult.tpl"}
-{/if}
 
     </td>
   </tr>
