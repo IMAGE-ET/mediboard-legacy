@@ -198,7 +198,7 @@ function setClose() {ldelim}
             {if $medecin->medecin_id}
             <input type="hidden" name="medecin_id" value="{$medecin->medecin_id}" />
             <input type="submit" value="Modifier" />
-            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le médecin', '{$medecin->_view|escape:javascript}')"/>
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'le médecin',objName:'{$medecin->_view|escape:javascript}'{rdelim})"/>
             {else}
             <input type="submit" value="Créer" />
             {/if}

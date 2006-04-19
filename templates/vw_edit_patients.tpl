@@ -281,7 +281,7 @@ function pageMain() {
           {if $patient->patient_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Valider" />
-            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le patient', '{$patient->_view|escape:javascript}')"/>
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'le patient',objName:'{$patient->_view|escape:javascript}'{rdelim})"/>
             <input type="button" value="Imprimer" onclick="printPatient({$patient->patient_id})" />
           {else}
             <input tabindex="32" type="submit" value="Créer" />
