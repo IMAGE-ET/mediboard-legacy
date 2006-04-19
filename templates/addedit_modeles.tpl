@@ -2,10 +2,10 @@
 <script language="JavaScript" type="text/javascript">
 
 function nouveau() {
-  var url = "index.php?m=dPcompteRendu";
-  url += "&tab=addedit_modeles";
-  url += "&compte_rendu_id=0";
-  window.location.href = url;
+  var url = new Url;
+  url.setModuleTab("dPcompteRendu", "addedit_modeles");
+  url.addParam("compte_rendu_id", "0");
+  url.redirect();
 }
 
 function supprimer() {
@@ -35,7 +35,7 @@ function checkModele() {
 {/literal}
 </script>
 
-<form name="editFrm" action="?m={$m}" method="POST" onsubmit="return checkModele()">
+<form name="editFrm" action="?m={$m}" method="post" onsubmit="return checkModele()">
 
 <input type="hidden" name="m" value="{$m}" />
 <input type="hidden" name="del" value="0" />
@@ -68,7 +68,7 @@ function checkModele() {
     <th><label for="function_id" title="Fonction à laquelle le modèle est associé">Fonction:</label></th>
     <td>
       <select name="function_id" onchange="this.form.chir_id.value = 0">
-        <option value="0">&mdash; Associer à une fonction &mdash;</options>
+        <option value="0">&mdash; Associer à une fonction &mdash;</option>
         {foreach from=$listFunc item=curr_func}
           <option value="{$curr_func->function_id}" {if $curr_func->function_id == $compte_rendu->function_id} selected="selected" {/if}>
             {$curr_func->_view}
@@ -82,7 +82,7 @@ function checkModele() {
     <th><label for="chir_id" title="Praticien auquel le modèle est associé">Praticien:</label></th>
     <td>
       <select name="chir_id" onchange="this.form.function_id.value = 0">
-        <option value="0">&mdash; Associer à un praticien &mdash;</options>
+        <option value="0">&mdash; Associer à un praticien &mdash;</option>
         {foreach from=$listPrat item=curr_prat}
           <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $prat_id} selected="selected" {/if}>
             {$curr_prat->_view}
