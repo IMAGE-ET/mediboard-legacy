@@ -20,6 +20,16 @@ function mbGetValueFromGet($valName, $valDefault = NULL) {
 }
 
 /**
+ * Returns the value of a variable retreived it from HTTP Post, with at least a
+ * default value
+ * @access public
+ * @return any 
+ **/
+function mbGetValueFromPost($valName, $valDefault = NULL) {
+  return isset($_POST[$valName]) ? $_POST[$valName] : $valDefault;
+}
+
+/**
  * Returns the value of a variable retreived it from HTTP Get, then from the session
  * Stores it in _SESSION in all cases, with at least a default value
  * @access public
@@ -30,6 +40,22 @@ function mbGetValueFromGetOrSession($valName, $valDefault = NULL) {
 
   if (isset($_GET[$valName])) {
     $_SESSION[$m][$valName] = $_GET[$valName];
+  }
+  
+  return dPgetParam($_SESSION[$m], $valName, $valDefault);
+}
+
+/**
+ * Returns the value of a variable retreived it from HTTP Post, then from the session
+ * Stores it in _SESSION in all cases, with at least a default value
+ * @access public
+ * @return any 
+ **/
+function mbGetValueFromPostOrSession($valName, $valDefault = NULL) {
+  global $m;
+
+  if (isset($_POST[$valName])) {
+    $_SESSION[$m][$valName] = $_POST[$valName];
   }
   
   return dPgetParam($_SESSION[$m], $valName, $valDefault);
