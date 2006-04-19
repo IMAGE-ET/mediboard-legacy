@@ -51,10 +51,17 @@ function pasteText(formName) {
   aide.value = 0;
 }
 
+function reloadMain() {
+  var mainUrl = new Url;
+  mainUrl.setModuleAction("dPcabinet", "httpreq_vw_main_consult");
+  mainUrl.addParam("selConsult", document.editFrm.consultation_id.value);
+  mainUrl.requestUpdate('mainConsult', { waitingText : null });
+}
+
 function submitConsultWithChrono(chrono) {
-  var form = document.editFrm;
-  form.chrono.value = chrono;
-  form.submit();
+  var oForm = document.editFrm;
+  oForm.chrono.value = chrono;
+  submitFormAjax(oForm, 'systemMsg', { onComplete : reloadMain });
 }
 
 function pageMain() {
@@ -149,9 +156,13 @@ function pageMain() {
         </tr>
       </table>
 
+      <div id="mainConsult">
       {include file="inc_main_consultform.tpl"}
+      </div>
 
+      <div id="fdrConsult">
       {include file="inc_fdr_consult.tpl"}
+      </div>
 
       {/if}
 
