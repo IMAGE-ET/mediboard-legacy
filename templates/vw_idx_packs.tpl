@@ -128,7 +128,7 @@ function checkForm() {
         {if $pack->pack_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le pack', '{$pack->nom|escape:javascript}')" />
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'le pack',objName:'{$pack->nom|escape:javascript}'{rdelim})" />
         {else}
         <input type="submit" value="Créer" />
         {/if}

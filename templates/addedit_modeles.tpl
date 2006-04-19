@@ -109,7 +109,7 @@ function checkModele() {
     <td class="button" colspan="2">
     {if $compte_rendu->compte_rendu_id}
       <input type="submit" value="Modifier" />
-      <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le modèle', '{$compte_rendu->nom|escape:javascript}')" />
+      <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'le modèle',objName:'{$compte_rendu->nom|escape:javascript}'{rdelim})" />
       <input type="button" value="Nouveau" onclick="nouveau()" />
     {else}
       <input type="submit" value="Créer" />

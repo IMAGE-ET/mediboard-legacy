@@ -197,7 +197,7 @@ function checkForm() {
         {if $liste->liste_choix_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la liste', '{$liste->nom|escape:javascript}')" />
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'la liste',objName:'{$liste->nom|escape:javascript}'{rdelim})" />
         {else}
         <input type="submit" value="Créer" />
         {/if}

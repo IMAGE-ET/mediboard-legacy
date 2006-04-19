@@ -197,7 +197,7 @@ function pageMain() {
         {if $aide->aide_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'l\'aide', '{$aide->name|escape:javascript}')" />
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'l\'aide',objName:'{$aide->name|escape:javascript}'{rdelim})" />
         {else}
         <input type="submit" value="Créer" />
         {/if}
