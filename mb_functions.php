@@ -335,9 +335,22 @@ function mbRemoveValuesInArray($needle, &$haystack) {
   }
 }
 
+function mbArrayMergeRecursive($paArray1, $paArray2) {
+  if (!is_array($paArray1) or !is_array($paArray2)) { 
+     return $paArray2;
+  }
+
+  foreach ($paArray2 AS $sKey2 => $sValue2) {
+    $paArray1[$sKey2] = mbArrayMergeRecursive(@$paArray1[$sKey2], $sValue2);
+  }
+   
+  return $paArray1;
+}
+
+
 /**
  * Ensures a directory path exists. Creates it if needed.
- * @return void */
+ * @return boolean jobdone-value */
 function mbForceDirectory($dir, $mode = 0755) {
   if (!$dir) {
     return false;
@@ -352,6 +365,51 @@ function mbForceDirectory($dir, $mode = 0755) {
   }
   
   return false;
+}
+
+
+/**
+ * Clears out any file a sub-directory from target path
+ * @return boolean jobdone-value */
+function mbClearPath($dir) {
+  if (!($dir = dir($dir))) {
+    return false;
+  }
+  
+  while (false !== $item = $dir->read()) {
+    if ($item != '.' && $item != '..' && !mbRemovePath($dir->path . DIRECTORY_SEPARATOR . $item)) {
+      $dir->close();
+      return false;
+    }
+  }
+  
+  $dir->close();
+  return true;
+}
+
+/**
+ * Recursively removes target path
+ * @return boolean jobdone-value */
+function mbGetFileExtension($path) {
+  $fragments = explode(".", basename($path));
+  if (count($fragments) < 2) {
+    return "";
+  }
+  
+  return $fragments[count($fragments) - 1];
+}
+
+/**
+ * Recursively removes target path
+ * @return boolean jobdone-value */
+function mbRemovePath($dir) {
+  if (is_dir ($dir)) {
+    if (mbClearPath($dir)) {
+      return rmdir ($dir);
+    }
+    return false;
+  }
+  return unlink ($dir);
 }
 
 /**
