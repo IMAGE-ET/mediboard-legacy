@@ -67,7 +67,8 @@ Url.prototype.requestUpdate = function(ioTarget, oOptions) {
 
   Object.extend(oDefaultOptions, oOptions);
   
-  $(ioTarget).innerHTML = "<div class='loading'>" + oDefaultOptions.waitingText + "...<br>Merci de patienter.</div>";
+  if(oDefaultOptions.waitingText)
+    $(ioTarget).innerHTML = "<div class='loading'>" + oDefaultOptions.waitingText + "...<br>Merci de patienter.</div>";
     
   new Ajax.Updater(ioTarget, "index.php", oDefaultOptions);  
 }
