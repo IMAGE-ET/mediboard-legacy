@@ -45,8 +45,8 @@ class CDoObjectAddEdit {
     global $AppUI;
     
     // Object binding
-    $this->ajax = dPgetParam( $_POST, 'ajax');
-    $this->suppressHeaders = dPgetParam( $_POST, 'suppressHeaders');
+    $this->ajax = mbGetValueFromPost("ajax", 0);
+    $this->suppressHeaders = mbGetValueFromPost("suppressHeaders", 0);
     unset($_POST["ajax"]);
     unset($_POST["suppressHeaders"]);
     $this->_obj = new $this->className();
