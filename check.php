@@ -55,6 +55,13 @@ $package->reasons[] = "Installation de Mediboard";
 $packages[] = $package;
 
 $package = new CPearPackage;
+$package->name = "Config";
+$package->description = "Package de manipulation de fichiers de configuration";
+$package->mandatory = true;
+$package->reasons[] = "Configuration générale de Mediboard";
+$packages[] = $package;
+
+$package = new CPearPackage;
 $package->name = "Date";
 $package->description = "Package de manipulation de dates";
 $package->mandatory = true;
@@ -145,14 +152,14 @@ $versions[] = $version;
 
 ?>
 
-<h1>Vérification des prérequis à l'installation de Mediboard <?php echo mbVersion(); ?></h1>
+<h2>Vérification des prérequis</h2>
 
-<h2>Version de PHP</h2>
+<h3>Version de PHP</h3>
 
 <p>
   PHP est le langage d'exécution de script côté serveur de Mediboard. Il est 
   nécessaire d'installer une version récente de PHP pour assurer le bon 
-  fonctionnement du système
+  fonctionnement du système.
 </p>
 
 <p>
@@ -198,7 +205,7 @@ $versions[] = $version;
   
 </table>
 
-<h2>Extensions PECL</h2>
+<h3>Extensions PECL</h3>
 <p>
   PECL est une bibliothèque d'extensions binaires de PHP. 
   <br />
@@ -254,7 +261,7 @@ $versions[] = $version;
 
 </table>
 
-<h2>Packages PEAR</h2>
+<h3>Packages PEAR</h3>
 
 <p>
   PEAR est un framework de distributions de bibliothèques écrites en PHP.

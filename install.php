@@ -10,8 +10,7 @@
 include("header.php");
 
 require_once ("Archive/Tar.php");
-
-$mbpath = "..";
+require_once ("Archive/Zip.php");
 
 class CLibraryPatch {
   var $dirName = "";
@@ -20,12 +19,13 @@ class CLibraryPatch {
   
   function apply() {
     global $mbpath;
-    $libPath = "$mbpath/lib";
-    $patchPath = "$libPath/releases/patches";
-    $sourcePath = "$patchPath/$this->dirName/$this->sourceName";
-    $targetPath = "$libPath/$this->dirName/$this->targetDir/$this->sourceName";
+    $pkgsDir = "$mbpath/libpkg";
+    $libsDir = "$mbpath/lib";
+    $patchDir = "$pkgsDir/patches";
+    $sourcePath = "$patchDir/$this->dirName/$this->sourceName";
+    $targetPath = "$libsDir/$this->dirName/$this->targetDir/$this->sourceName";
     $oldPath = $targetPath . ".old";
-    assert(is_file($targetPath));
+    assert("Source is not existing" | is_file($targetPath));
     @unlink($oldPath);
     rename($targetPath, $oldPath);
     return copy($sourcePath, $targetPath);
@@ -33,17 +33,17 @@ class CLibraryPatch {
 }
 
 class CLibraryRenamer {
-  var $sourcePath = "";
-  var $targetPath = "";
+  var $sourceDir = "";
+  var $targetDir = "";
   
   function apply() {
     global $mbpath;
-    $libPath = "$mbpath/lib";
-    $sourcePath = "$libPath/$this->sourcePath";
-    $targetPath = "$libPath/$this->targetPath";
-    assert(is_dir($sourcePath));
-    @unlink($targetPath);
-    return rename($sourcePath, $targetPath);
+    $libsDir = "$mbpath/lib";
+    $sourceDir = "$libsDir/$this->sourceDir";
+    $targetDir = "$libsDir/$this->targetDir";
+    assert(is_dir($sourceDir));
+    @mbRemovePath($targetDir);
+    return rename($sourceDir, $targetDir);
   }
 }
 
@@ -51,6 +51,7 @@ class CLibrary {
   var $name = "";
   var $url = "";
   var $fileName = "";
+  var $extraDir = "";
   var $description = "";
   var $nbFiles = 0;
   var $renamer = null;
@@ -58,17 +59,115 @@ class CLibrary {
   
   function install() {
     global $mbpath;
-    $libPath = "$mbpath/lib";
-    $releasePath = "$libPath/releases";
-    $filePath = "$releasePath/$this->fileName";
+    $pkgsDir = "$mbpath/libpkg";
+    $libsDir = "$mbpath/lib";
+    $filePath = "$pkgsDir/$this->fileName";
     
-    $tarball = new Archive_Tar($filePath);
-    $this->nbFiles = count($tarball->listContent());
-    return $tarball->extract($libPath);
+    // For libraries archive non contained in directory
+    if ($this->extraDir) {
+      $libsDir .= "/$this->extraDir";
+    }
+    
+    $archive = null;
+    
+    switch (mbGetFileExtension($filePath)) {
+      case "gz"  :
+      case "tgz" : 
+      $archive = new Archive_Tar($filePath);
+      $this->nbFiles = count($archive->listContent());
+      $return = $archive->extract($libsDir);
+      break;
+      
+      case "zip" : 
+      $archive = new Archive_Zip($filePath);
+      $this->nbFiles = count($archive->listContent());
+      $return = $archive->extract(array("add_path" => $libsDir));
+      break;
+      
+      default : 
+      $return = false;
+      break;
+    }
+    
+    return $return;
   }
 }
 
 $libraries = array();
+
+$library = new CLibrary;
+$library->name = "Smarty";
+$library->url = "http://smarty.php.net/";
+$library->fileName = "Smarty-2.6.13.tar.gz";
+$library->description = "Moteur de templates PHP et framework de présentation";
+
+$renamer = new CLibraryRenamer;
+$renamer->sourceDir = "Smarty-2.6.13";
+$renamer->targetDir = "smarty";
+
+$library->renamer = $renamer;
+
+$libraries[] = $library;
+
+$library = new CLibrary;
+$library->name = "JPGraph";
+$library->url = "http://www.aditus.nu/jpgraph/";
+$library->fileName = "jpgraph-1.19.tar.gz";
+$library->description = "Composant PHP de génération de graphs aux formats d'image";
+
+$renamer = new CLibraryRenamer;
+$renamer->sourceDir = "jpgraph-1.19";
+$renamer->targetDir = "jpgraph";
+
+$library->renamer = $renamer;
+
+$libraries[] = $library;
+
+$library = new CLibrary;
+$library->name = "FPDF";
+$library->url = "http://www.fpdf.org/";
+$library->fileName = "fpdf153.tgz";
+$library->description = "Composant de génération de fichiers PDF";
+
+$renamer = new CLibraryRenamer;
+$renamer->sourceDir = "fpdf153";
+$renamer->targetDir = "fpdf";
+
+$library->renamer = $renamer;
+
+$libraries[] = $library;
+
+$library = new CLibrary;
+$library->name = "PHPMailer";
+$library->url = "http://phpmailer.sourceforge.net/";
+$library->fileName = "phpmailer-1.73.tar.gz";
+$library->description = "Composant PHP d'envoi d'email";
+
+$libraries[] = $library;
+
+$library = new CLibrary;
+$library->name = "JSON-PHP";
+$library->url = "http://mike.teczno.com/json.html";
+$library->fileName = "JSON.tar.gz";
+$library->extraDir = "json";
+$library->description = "Composant PHP de genération de données JSON. Bientôt en package PEAR";
+
+$libraries[] = $library;
+
+$library = new CLibrary;
+
+$library->name = "Scriptaculous";
+$library->url = "http://script.aculo.us/";
+$library->fileName = "scriptaculous-js-1.6.0.tar.gz";
+$library->description = "Composant Javascript d'effets spéciaux, accompagné du framework prototype.js";
+
+$renamer = new CLibraryRenamer;
+$renamer->sourceDir = "scriptaculous-js-1.6.0";
+$renamer->targetDir = "scriptaculous";
+
+$library->renamer = $renamer;
+
+$libraries[] = $library;
 
 $library = new CLibrary;
 $library->name = "FCKEditor";
@@ -86,22 +185,27 @@ $library->patches[] = $patch;
 $libraries[] = $library;
 
 $library = new CLibrary;
-$library->name = "JPGraph";
-$library->url = "http://www.aditus.nu/jpgraph/";
-$library->fileName = "jpgraph-1.20.3.tar.gz";
-$library->description = "Composant PHP de génération de graphs aux formats d'image";
+$library->name = "JSCalendar";
+$library->url = "http://www.dynarch.com/projects/calendar/";
+$library->fileName = "jscalendar-1.0.zip";
+$library->description = "Composant Javascript de sélecteur de date/heure";
 
 $renamer = new CLibraryRenamer;
-$renamer->sourcePath = "jpgraph-1.20.3";
-$renamer->targetPath = "jpgraph";
+$renamer->sourceDir = "jscalendar-1.0";
+$renamer->targetDir = "jscalendar";
 
 $library->renamer = $renamer;
+
+$patch = new CLibraryPatch;
+$patch->dirName = "jscalendar";
+$patch->sourceName = "calendar-fr.js";
+$patch->targetDir = "lang";
+
+$library->patches[] = $patch;
 
 $libraries[] = $library;
 
 ?>
-
-<h1>Installation de Mediboard</h1>
 
 <h2>Installation des bibliothèques externes</h2>
 
@@ -138,10 +242,28 @@ $libraries[] = $library;
     <?php if ($library->install()) { ?>
     Ok, <?php echo $library->nbFiles; ?> fichiers extraits
     <?php } else { ?>
+    Erreur, <?php echo $library->nbFiles; ?> fichiers trouvés
+    <?php } ?>
+  </td>
+</tr>
+
+<?php if ($renamer = $library->renamer) { ?>
+<tr>
+  <td />
+  <td colspan="3">
+    Renommage de la bibliothèque <?php echo $renamer->sourceDir; ?>/ 
+    en <?php echo $renamer->targetDir; ?>/
+  </td>
+  <td>
+    <?php if ($renamer->apply()) { ?>
+    Renommage effectué
+    <?php } else { ?>
     Erreur
     <?php } ?>
   </td>
 </tr>
+<?php } ?>
+
 <?php foreach($library->patches as $patch) { ?>
 <tr>
   <td />
@@ -157,28 +279,9 @@ $libraries[] = $library;
   </td>
 </tr>
 <?php } ?>
-<?php } ?>
 
-<?php if ($renamer = $library->renamer) { ?>
-<tr>
-  <td />
-  <td colspan="3">
-    Renommage de la bibliothèque <?php echo $renamer->sourcePath; ?> 
-    en <?php echo $renamer->targetPath; ?>
-  </td>
-  <td>
-    <?php if ($renamer->apply()) { ?>
-    Renommage effectué
-    <?php } else { ?>
-    Erreur
-    <?php } ?>
-  </td>
-</tr>
 <?php } ?>
 
 </table>
-
-<h2>Paramétrage des accès aux bases de données</h2>
-
 
 <?php include("footer.php"); ?>
