@@ -206,7 +206,7 @@ function toggleFunction(function_id) {
         {if $mediuserSel->user_id}
         <input type="reset" value="Réinitialiser" />
         <input type="submit" value="Valider" />
-        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'l\'utilisateur', '{$mediuserSel->_user_username|escape:javascript}')" />
+        <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'l\'utilisateur',objName:'{$mediuserSel->_user_username|escape:javascript}'{rdelim})" />
         {else}
         <input type="submit" name="btnFuseAction" value="Créer" />
         {/if}

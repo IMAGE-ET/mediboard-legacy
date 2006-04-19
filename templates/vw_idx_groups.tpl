@@ -55,7 +55,7 @@ function checkGroup() {
           {if $usergroup->group_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Valider" />
-            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'le groupe', '{$usergroup->text|escape:javascript}')" />
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{rdelim}typeName:'le groupe',objName:'{$usergroup->text|escape:javascript}'{rdelim})" />
           {else}
             <input type="submit" name="btnFuseAction" value="Créer" />
           {/if}

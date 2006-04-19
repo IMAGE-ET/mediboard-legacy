@@ -90,7 +90,7 @@ function setColor(color) {
           {if $userfunction->function_id}
             <input type="reset" value="Réinitialiser" />
             <input type="submit" value="Valider" />
-            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form, 'la fonction', '{$userfunction->text|escape:javascript}')"/>
+            <input type="button" value="Supprimer" onclick="confirmDeletion(this.form,{ldelim}typeName:'la fonction',objName:'{$userfunction->text|escape:javascript}'{rdelim})"/>
           {else}
             <input type="submit" name="btnFuseAction" value="Créer" />
           {/if}
