@@ -22,6 +22,7 @@ $dPconfig['site_domain'] = "mediboard.org";
 $dPconfig['dbtype'] = "mysql";   // ONLY MySQL is supported at present
 
 // Standard database config
+$dPconfig['baseMediboard'] = 'std';
 $dPconfig['db']['std'] = array(
   'dbhost' => "localhost",  // Change to connect to a distant Database
   'dbname' => "mediboard", // Change to match your Mediboard Database Name
@@ -170,10 +171,11 @@ $dPconfig['cal_day_increment'] = 15;          // Increment, in minutes
 $dPconfig["cal_working_days"]  = "1,2,3,4,5"; // days of week that the company works 0=Sunday
 
 // File parsers to return indexing information about uploaded files
-$ft["default"] = "/usr/bin/strings";
-$ft["application/msword"] = "/usr/bin/strings";
-$ft["text/html"] = "/usr/bin/strings";
-$ft["text/plain"] = "/usr/bin/strings";
-$ft["application/pdf"] = "/usr/bin/pdftotext";
+$dPconfig['ft'] = array(
+  "default" => "/usr/bin/strings",
+  "application/msword" => "/usr/bin/strings",
+  "text/html" => "/usr/bin/strings",
+  "application/pdf" => "/usr/bin/pdftotext",
+);
 
 ?>
