@@ -21,6 +21,8 @@ class CDoObjectAddEdit {
   var $redirectStore  = null;
   var $redirectError  = null;
   var $redirectDelete = null;
+  var $ajax = null;
+  var $suppressHeaders = null;
   var $_obj = null;
   var $_logIt = null;
     
@@ -43,6 +45,10 @@ class CDoObjectAddEdit {
     global $AppUI;
     
     // Object binding
+    $this->ajax = dPgetParam( $_POST, 'ajax');
+    $this->suppressHeaders = dPgetParam( $_POST, 'suppressHeaders');
+    unset($_POST["ajax"]);
+    unset($_POST["suppressHeaders"]);
     $this->_obj = new $this->className();
     if (!$this->_obj->bind( $_POST )) {
       $AppUI->setMsg( $this->_obj->getError(), UI_MSG_ERROR );
@@ -89,8 +95,12 @@ class CDoObjectAddEdit {
   
   function doRedirect() {
     global $AppUI;
-    if($this->redirect !== null)
-      $AppUI->redirect($this->redirect);;
+    if($this->ajax) {
+      echo $AppUI->getMsg();
+      exit(0);
+    } elseif($this->redirect !== null) {
+      $AppUI->redirect($this->redirect);
+    }
   }
   
   function doLog($type) {
