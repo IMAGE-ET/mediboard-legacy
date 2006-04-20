@@ -141,16 +141,10 @@ function submitFdr(oForm) {
           <input type="hidden" name="dosql" value="do_modele_aed" />
           <input type="hidden" name="object_id" value="{$consult->consultation_id}" />
           <input type="hidden" name="compte_rendu_id" value="{$document->compte_rendu_id}" />
-          <input type="hidden" name="valide" value="{$document->valide}" />
           <button type="button" onclick="editDocument({$document->compte_rendu_id})">
             <img src="modules/dPcabinet/images/edit.png" /> 
           </button>
-          {if !$document->valide}
-          <button type="button" onclick="this.form.valide.value = 1; this.form.submit()">
-            <img src="modules/dPcabinet/images/check.png" /> 
-          </button>
-          {/if}
-          <button type="button" onclick="this.form.del.value = 1; this.form.submit()">
+          <button type="button" onclick="this.form.del.value = 1; submitFdr(this.form)">
             <img src="modules/dPcabinet/images/trash.png" /> 
           </button>
           </form>
