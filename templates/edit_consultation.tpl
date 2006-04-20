@@ -55,10 +55,8 @@ function pageMain() {
 
   {/literal}
   {if $consult->consultation_id}
-  {literal}
   incPatientHistoryMain();
   initEffectClass("listConsult", "triggerList");
-  {/literal}
   {/if}
   {literal}
   

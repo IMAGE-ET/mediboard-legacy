@@ -16,10 +16,12 @@ unset($_POST["suppressHeaders"]);
 
 function doRedirect() {
   global $ajax, $AppUI;
-  if($ajax)
+  if($ajax) {
+    echo $AppUI->getMsg();
     exit(0);
-  else
+  } else {
     $AppUI->redirect();
+  }
 }
 
 //addfile sql
