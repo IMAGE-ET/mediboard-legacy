@@ -19,8 +19,10 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$date = mbGetValueFromGetOrSession("date", mbDate());
+$date  = mbGetValueFromGetOrSession("date", mbDate());
+$vue   = mbGetValueFromGetOrSession("vue2", 0);
 $today = mbDate();
+$hour  = mbTime(null);
 
 // Utilisateur sélectionné ou utilisateur courant
 $prat_id = mbGetValueFromGetOrSession("chirSel", 0);
@@ -42,10 +44,10 @@ if (!$userSel->isAllowed(PERM_EDIT)) {
   $AppUI->redirect("m=dPcabinet&tab=0");
 }
 
-$selConsult = mbGetValueFromGetOrSession("selConsult");
+$selConsult = mbGetValueFromGetOrSession("selConsult", 0);
 if (isset($_GET["date"])) {
   $selConsult = null;
-  mbSetValueToSession("selConsult");
+  mbSetValueToSession("selConsult", 0);
 }
 
 //Liste des types d'anesthésie
@@ -54,6 +56,7 @@ $anesth = dPgetSysVal("AnesthType");
 // Consultation courante
 $consult = new CConsultation();
 $consult->_ref_chir = $userSel;
+$consult->_ref_consult_anesth->consultation_anesth_id = 0;
 if ($selConsult) {
   $consult->load($selConsult);
   $consult->loadRefs();
@@ -92,27 +95,6 @@ if ($selConsult) {
   // Affecter la date de la consultation
   $date = $consult->_ref_plageconsult->date;
   
-}
-
-// Récupération des plages de consultation du jour et chargement des références
-$listPlage = new CPlageconsult();
-$where = array();
-$where["chir_id"] = "= '$userSel->user_id'";
-$where["date"] = "= '$date'";
-$order = "debut";
-$listPlage = $listPlage->loadList($where, $order);
-
-$vue = mbGetValueFromGetOrSession("vue2", 0);
-
-
-foreach($listPlage as $key => $value) {
-  $listPlage[$key]->loadRefs();
-  foreach($listPlage[$key]->_ref_consultations as $key2 => $value2) {
-    if($vue && ($listPlage[$key]->_ref_consultations[$key2]->chrono == CC_TERMINE))
-      unset($listPlage[$key]->_ref_consultations[$key2]);
-    else
-      $listPlage[$key]->_ref_consultations[$key2]->loadRefs();
-  }
 }
 
 // Récupération des modèles
@@ -154,9 +136,10 @@ require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
 
 $smarty->assign('date', $date );
+$smarty->assign('hour', $hour );
 $smarty->assign('vue', $vue);
 $smarty->assign('today', $today);
-$smarty->assign('listPlage', $listPlage);
+$smarty->assign('userSel', $userSel);
 $smarty->assign('listModelePrat', $listModelePrat);
 $smarty->assign('listModeleFunc', $listModeleFunc);
 $smarty->assign('tarifsChir', $tarifsChir);

@@ -1,3 +1,13 @@
+{literal}
+<script type="text/javascript">
+
+  {/literal}
+  regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  {literal}
+
+</script>
+{/literal}
+
 <form name="changeView" action="index.php" method="get">
   <input type="hidden" name="m" value="{$m}" />
   <input type="hidden" name="tab" value="{$tab}" />
@@ -5,6 +15,7 @@
   <table class="form">
     <tr>
       <td colspan="6" style="text-align: center; width: 100%; font-weight: bold;">
+        <div style="float: right;">{$hour|date_format:"%Hh%M"}</div>
         {$date|date_format:"%A %d %B %Y"}
         <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
       </td>
@@ -12,10 +23,10 @@
     <tr>
       <th><label for="vue2" title="Type de vue du planning">Type de vue:</label></th>
       <td colspan="5">
-          <select name="vue2" onchange="this.form.submit()">
-            <option value="0"{if $vue == "0"}selected="selected"{/if}>Tout afficher</option>
-            <option value="1"{if $vue == "1"}selected="selected"{/if}>Cacher les Terminées</option>
-          </select>
+        <select name="vue2" onchange="this.form.submit()">
+          <option value="0"{if $vue == "0"}selected="selected"{/if}>Tout afficher</option>
+          <option value="1"{if $vue == "1"}selected="selected"{/if}>Cacher les Terminées</option>
+        </select>
       </td>
     </tr>
   </table>

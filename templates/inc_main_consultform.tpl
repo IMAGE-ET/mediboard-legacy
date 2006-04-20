@@ -1,3 +1,22 @@
+{literal}
+<script type="text/javascript">
+
+function submitConsultWithChrono(chrono) {
+  var oForm = document.editFrm;
+  oForm.chrono.value = chrono;
+  submitFormAjax(oForm, 'systemMsg', { onComplete : reloadMain });
+}
+
+function reloadMain() {
+  var mainUrl = new Url;
+  mainUrl.setModuleAction("dPcabinet", "httpreq_vw_main_consult");
+  mainUrl.addParam("selConsult", document.editFrm.consultation_id.value);
+  mainUrl.requestUpdate('mainConsult', { waitingText : null });
+}
+
+</script>
+{/literal}
+
       <form class="watch" name="editFrm" action="?m={$m}" method="post" onsubmit="checkForm(this);">
 
       <input type="hidden" name="m" value="{$m}" />

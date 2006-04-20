@@ -2,42 +2,42 @@
 <script type="text/javascript">
 
 function cancelTarif() {
-  var form = document.tarifFrm;
-  form.secteur1.value = 0;
-  form.secteur2.value = 0;
-  form.tarif.value = "";
-  form.paye.value = "0";
-  form.date_paiement.value = "";
-  form.submit();
+  var oForm = document.tarifFrm;
+  oForm.secteur1.value = 0;
+  oForm.secteur2.value = 0;
+  oForm.tarif.value = "";
+  oForm.paye.value = "0";
+  oForm.date_paiement.value = "";
+  submitFdr(oForm);
 }
 
 function modifTarif() {
-  var form = document.tarifFrm;
-  var secteurs = form.choix.value;
+  var oForm = document.tarifFrm;
+  var secteurs = oForm.choix.value;
   if(secteurs != '') {
     var pos = secteurs.indexOf("/");
     var size = secteurs.length;
     var secteur1 = eval(secteurs.substring(0, pos));
     var secteur2 = eval(secteurs.substring(pos+1, size));
-    form.secteur1.value = secteur1;
-    form.secteur2.value = secteur2;
-    form._somme.value = secteur1 + secteur2;
-    for (i = 0;i < form.choix.length;++i)
-    if(form.choix.options[i].selected == true)
-     form.tarif.value = form.choix.options[i].text;
+    oForm.secteur1.value = secteur1;
+    oForm.secteur2.value = secteur2;
+    oForm._somme.value = secteur1 + secteur2;
+    for (i = 0;i < oForm.choix.length;++i)
+    if(oForm.choix.options[i].selected == true)
+     oForm.tarif.value = oForm.choix.options[i].text;
    } else {
-     form.secteur1.value = 0;
-     form.secteur2.value = 0;
-     form._somme.value = '';
-     form.tarif.value = '';
+     oForm.secteur1.value = 0;
+     oForm.secteur2.value = 0;
+     oForm._somme.value = '';
+     oForm.tarif.value = '';
    }  
 }
 
 function effectuerReglement() {
-  var form = document.tarifFrm;
-  form.paye.value = "1";
-  form.date_paiement.value = makeDATEFromDate(new Date());
-  form.submit();
+  var oForm = document.tarifFrm;
+  oForm.paye.value = "1";
+  oForm.date_paiement.value = makeDATEFromDate(new Date());
+  submitFdr(oForm);
 }
 
 function putTiers() {
@@ -67,6 +67,17 @@ function newExam(sAction, consultation_id) {
     url.addParam("consultation_id", consultation_id);
     url.popup(900, 600, "Examen");  
   }
+}
+
+function reloadFdr() {
+  var mainUrl = new Url;
+  mainUrl.setModuleAction("dPcabinet", "httpreq_vw_fdr_consult");
+  mainUrl.addParam("selConsult", document.editFrm.consultation_id.value);
+  mainUrl.requestUpdate('fdrConsult', { waitingText : null });
+}
+
+function submitFdr(oForm) {
+  submitFormAjax(oForm, 'systemMsg', { onComplete : reloadFdr });
 }
 
 </script>
@@ -177,7 +188,7 @@ function newExam(sAction, consultation_id) {
     
     </td>
     <td>
-      <form name="tarifFrm" action="?m={$m}" method="post" onsubmit="return checkForm(this)">
+      <form name="tarifFrm" action="?m={$m}" method="post" onsubmit="checkForm(this)">
 
       <input type="hidden" name="m" value="{$m}" />
       <input type="hidden" name="del" value="0" />
@@ -270,7 +281,7 @@ function newExam(sAction, consultation_id) {
         </tr>
         <tr>
           <td colspan="2" class="button">
-            <input type="submit" value="Valider ce tarif" />
+            <input type="button" value="Valider ce tarif" onclick="submitFdr(this.form)" />
             <input type="button" value="Annuler" onclick="cancelTarif()"/>
           </td>
         </tr>

@@ -51,44 +51,26 @@ function pasteText(formName) {
   aide.value = 0;
 }
 
-function reloadMain() {
-  var mainUrl = new Url;
-  mainUrl.setModuleAction("dPcabinet", "httpreq_vw_main_consult");
-  mainUrl.addParam("selConsult", document.editFrm.consultation_id.value);
-  mainUrl.requestUpdate('mainConsult', { waitingText : null });
-}
-
-function reloadFdr() {
-  var mainUrl = new Url;
-  mainUrl.setModuleAction("dPcabinet", "httpreq_vw_fdr_consult");
-  mainUrl.addParam("selConsult", document.editFrm.consultation_id.value);
-  mainUrl.requestUpdate('fdrConsult', { waitingText : null });
-}
-
-function submitConsultWithChrono(chrono) {
-  var oForm = document.editFrm;
-  oForm.chrono.value = chrono;
-  submitFormAjax(oForm, 'systemMsg', { onComplete : reloadMain });
-}
-
-function submitFdr(oForm) {
-  submitFormAjax(oForm, 'systemMsg', { onComplete : reloadFdr });
-}
-
 function pageMain() {
-  incPatientHistoryMain();
 
   {/literal}
   {if $consult->consultation_id}
   {literal}
+  incPatientHistoryMain();
   initEffectClass("listConsult", "triggerList");
   {/literal}
   {/if}
   {literal}
-
+  
+  var listUpdater = new Url;
+  listUpdater.setModuleAction("dPcabinet", "httpreq_vw_list_consult");
   {/literal}
-  regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
+  listUpdater.addParam("selConsult", "{$consult->consultation_id}");
+  listUpdater.addParam("prat_id", "{$userSel->user_id}");
+  listUpdater.addParam("date", "{$date}");
+  listUpdater.addParam("vue2", "{$vue}");
   {literal}
+  listUpdater.periodicalUpdate('listConsult', { frequency: 30 });
   
 }
 
@@ -97,10 +79,13 @@ function pageMain() {
 
 <table class="main">
   <tr>
-    <td id="listConsult" class="effectShown" style="vertical-align: top">
-      {include file="inc_list_consult.tpl"}
+    <td id="listConsult" class="effectShown" style="vertical-align: top;">
     </td>
+    {if $consult->consultation_id}
     <td>
+    {else}
+    <td class="halfPane">
+    {/if}
 
       {if $consult->consultation_id}
       {assign var="patient" value=$consult->_ref_patient}
