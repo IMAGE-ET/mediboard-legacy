@@ -73,3 +73,23 @@ Url.prototype.requestUpdate = function(ioTarget, oOptions) {
   new Ajax.Updater(ioTarget, "index.php", oDefaultOptions);  
 }
 
+Url.prototype.periodicalUpdate = function(ioTarget, oOptions) {
+  this.addParam("suppressHeaders", "1");
+  this.addParam("ajax", "1");
+
+  var oDefaultOptions = {
+    waitingText: "Chargement",
+    method: "get",
+    parameters:  this.aParams.join("&"), 
+    asynchronous: true,
+    evalScripts: true,
+  };
+
+  Object.extend(oDefaultOptions, oOptions);
+  
+  if(oDefaultOptions.waitingText)
+    $(ioTarget).innerHTML = "<div class='loading'>" + oDefaultOptions.waitingText + "...<br>Merci de patienter.</div>";
+  
+  new Ajax.PeriodicalUpdater(ioTarget, "index.php", oDefaultOptions);
+}
+

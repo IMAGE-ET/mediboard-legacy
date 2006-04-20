@@ -468,7 +468,7 @@ function submitFormAjax(oForm, ioTarget, oOptions) {
     sEventCode = oForm.attributes.onsubmit.nodeValue;
     sEventCode = sEventCode.replace(/(\W)this(\W)/g, "$1oForm$2");
     if(!eval(sEventCode))
-      return
+      return;
   }
   urlTarget = new Url;
   var iElement = 0;
