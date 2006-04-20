@@ -556,6 +556,10 @@ td.tabox {
 
 /* Message styles */
 
+#systemMsg {
+  float:right;
+}
+
 div.warning {
   color: #f00;
 }
