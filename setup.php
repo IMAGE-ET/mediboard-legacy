@@ -42,9 +42,8 @@ class CSetupdPadmissions {
 	function upgrade( $old_version ) {
 		switch ( $old_version )
 		{
-		case "all":		// upgrade from scratch (called from install)
-		case "0.9":		//do some alter table commands
-		case "1.0":
+		case "all":
+		case "0.1":
 			return true;
 		default:
 			return false;
