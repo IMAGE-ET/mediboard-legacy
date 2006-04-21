@@ -12,7 +12,7 @@ function checkForm() {
 
 function popColor() {
   var url = new Url;
-  url.setModuleAction("public", "color_selector");
+  url.setModuleAction("mediusers", "color_selector");
   url.addParam("callback", "setColor");
   url.popup(320, 250, "color");
 }
