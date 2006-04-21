@@ -21,7 +21,7 @@ require_once( $AppUI->getModuleClass ('admin' ) );
 $dialog = mbGetValueFromGet("dialog", 0);
 
 if (!$canRead && !$dialog) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $user_id      = mbGetValueFromGetOrSession("user_id"     , null);

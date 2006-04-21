@@ -5,7 +5,7 @@ $AppUI->savePlace();
 $canEdit = !getDenyEdit( $m );
 $canRead = !getDenyRead( $m );
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $sql = "SELECT * FROM modules ORDER BY mod_ui_order";
@@ -65,7 +65,7 @@ foreach ($modules as $row) {
 	if ($canEdit) {
 		$s .= '</a>';
   }
-  if ($dPconfig['debug'] && $canEdit) {
+  if ($canEdit) {
 		$s .= ' | <a class="action" href="'.$query_string . '&cmd=remove" onclick="return window.confirm('."'"
 			.$AppUI->_('This will delete all data associated with the module!')."\\n\\n"
 			.$AppUI->_( 'Are you sure?' )."\\n"

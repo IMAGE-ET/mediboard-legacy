@@ -2,7 +2,7 @@
 
 // only user_type of Administrator (1) can access this page
 if (!$canEdit || $AppUI->user_type != 1) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $module = isset( $_REQUEST['module'] ) ? $_REQUEST['module'] : 'admin';
