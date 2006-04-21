@@ -62,7 +62,7 @@ switch ($cmd) {
     $msg = $setup->remove();
 		$AppUI->setMsg( $msg, UI_MSG_ALERT );
 	// remove from the installed modules table
-    if($msg) {
+    if(!$msg) {
       $obj->remove();
       $AppUI->setMsg( 'Module removed', UI_MSG_ALERT );
     }
