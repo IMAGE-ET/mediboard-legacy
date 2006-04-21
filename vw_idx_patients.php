@@ -14,7 +14,7 @@ require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 if (!$canRead) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 // L'utilisateur est-il un chirurgien

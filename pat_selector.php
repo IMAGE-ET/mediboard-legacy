@@ -11,7 +11,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 if (!$canRead) {			// lock out users that do not have at least readPermission on this module
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $name = dPgetParam( $_GET, 'name', '' );

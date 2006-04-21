@@ -12,7 +12,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPpatients', 'medecin') );
 
 if (!$canRead) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $dialog = dPgetParam($_GET, "dialog");
