@@ -106,6 +106,8 @@ class CUser extends CDpObject {
   function updateFormFields () {
     parent::updateFormFields();
 
+    $this->user_last_name = strtoupper($this->user_last_name);
+    $this->user_first_name = ucwords(strtolower($this->user_first_name));
     $this->_view = "$this->user_last_name $this->user_first_name";
   }
   
