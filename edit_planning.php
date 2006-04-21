@@ -12,7 +12,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once( $AppUI->getModuleClass('dPressources', 'plageressource') );
 
 if (!$canEdit) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 // Liste des prats
