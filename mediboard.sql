@@ -46,7 +46,6 @@ CREATE TABLE `modules` (
 
 INSERT INTO `modules` VALUES (18, 'User Administration', 'admin', '1.0.0', '', 'core', 1, 'User Admin', 'helix-setup-users.png', 9, 1, '');
 INSERT INTO `modules` VALUES (19, 'System Administration', 'system', '1.0.0', '', 'core', 1, 'System Admin', '48_my_computer.png', 10, 1, '');
-INSERT INTO `modules` VALUES (20, 'Public', 'public', '1.0.0', '', 'core', 1, 'Public', 'users.gif', 13, 0, '');
 
 -- --------------------------------------------------------
 
