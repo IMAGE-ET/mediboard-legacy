@@ -1,3 +1,5 @@
+/* $Id$ */
+
 /* Global CSS */
   /* @import "./xhtml.css";   */
 
@@ -88,21 +90,21 @@ h1 {
   font-size: 20px;
   font-weight: bold;
   color: #555;
-  margin: 12px 0px;
+  margin: 10px 0px;
 }
 
 h2 {
   font-size: 18px;
   font-weight: bold;
   color: #494;
-  margin: 8px 10px;
+  margin: 10px 10px;
 }
 
 h3 {
   font-size: 16px;
   font-weight: bold;
   color: #449;
-  margin: 4px 20px;
+  margin: 10px 20px;
 }
 
 form {
@@ -561,19 +563,29 @@ td.tabox {
 }
 
 div.warning {
-  color: #f00;
+  color: #666;
+  background: url(images/warning.png) no-repeat center left;
+  padding: 2px;
+  padding-left: 20px;
 }
 
 div.error {
   color: #f00;
+  background: url(images/cross.png) no-repeat center left;
+  padding: 2px;
+  padding-left: 20px;
 }
 
 div.message {
-  color: #888;
+  color: #008;
+  background: url(images/check.png) no-repeat center left;
+  padding: 2px;
+  padding-left: 20px;
 }
 
 div.loading {
   background: url(images/loading.gif) no-repeat center left;
+  padding: 2px;
   padding-left: 20px;
 }
 
@@ -1076,8 +1088,6 @@ table.selectCode td {
 }
 
   /* @import "./admission.css"; */
-
-/* $Id$ */
 
 /* The admission table based on the form one */
 
