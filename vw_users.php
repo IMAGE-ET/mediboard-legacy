@@ -12,7 +12,7 @@ require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
 
 if (!$canEdit) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $user_id = mbGetValueFromGetOrSession("user_id", $AppUI->user_id);
