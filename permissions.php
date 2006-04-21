@@ -161,7 +161,8 @@ function isMbModule($module, $flag) {
   $moduleFlag = @$fastMbPerms[$module][$flag];
 
   // allways check is_bool() cuz false == null
-  return (is_bool($allFlag) and $allFlag) and !(is_bool($moduleFlag) and $moduleFlag) or (is_bool($moduleFlag) and $moduleFlag);
+  return ($allFlag === true) and !($moduleFlag === false) or ($moduleFlag === true);
+  //return (is_bool($allFlag) and $allFlag) and !(is_bool($moduleFlag) and $moduleFlag) or (is_bool($moduleFlag) and $moduleFlag);
 }
 
 function isMbModuleVisible($module) {
