@@ -32,8 +32,10 @@ class CSetupdPpatients {
 	}
 
 	function remove() {
-		db_exec( "DROP TABLE patients;" );
-		db_exec( "DROP TABLE medecin;" );
+		db_exec( "DROP TABLE patients;" ); db_error();
+		db_exec( "DROP TABLE medecin;" ); db_error();
+    db_exec( "DROP TABLE antecedent;" ); db_error();
+    db_exec( "DROP TABLE traitement;" ); db_error();
 
 		return null;
 	}
