@@ -35,7 +35,6 @@ class CSetupdPccam {
 	}
 
 	function remove() {
-		// remove the favoris table from database
 		db_exec( "DROP TABLE ccamfavoris;" );
 
 		return null;
@@ -43,17 +42,10 @@ class CSetupdPccam {
 
 
 	function upgrade( $old_version ) {
-		switch ( $old_version )
-		{
-			// upgrade from scratch (called from install)
+		switch ( $old_version ) {
 			case "all":
 			case "0.1":
-				//do some alter table commands
-
-			case "0.2":
-			
 				return true;
-
 			default:
 				return false;
 		}
