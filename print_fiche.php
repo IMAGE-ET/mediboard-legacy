@@ -13,7 +13,7 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once( $AppUI->getModuleClass('mediusers') );
 
 if (!$canEdit) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $date = mbGetValueFromGetOrSession("date", mbDate());

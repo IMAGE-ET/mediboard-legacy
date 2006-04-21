@@ -16,7 +16,7 @@ require_once( $AppUI->getModuleClass('dPcompteRendu', 'pack') );
 require_once( $AppUI->getModuleClass('dPpatients', 'patients') );
 
 if (!$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 // L'utilisateur est-il praticien?
 $chirSel = new CMediusers;

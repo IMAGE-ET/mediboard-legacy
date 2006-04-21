@@ -16,7 +16,7 @@ require_once( $AppUI->getModuleClass('dPcabinet', 'consultation') );
 
 $canEdit = !getDenyEdit($m);
 if (!$canEdit) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $chir = new CMediusers;
