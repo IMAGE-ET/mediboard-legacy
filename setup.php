@@ -32,6 +32,7 @@ class CSetupdPsalleOp {
 	}
 
 	function remove() {
+    db_exec( "DROP TABLE acte_ccam;" ); db_error();
 
 		return null;
 	}
