@@ -59,10 +59,13 @@ switch ($cmd) {
 		break;
 	case 'remove':
 	// do the module specific stuff
-		$AppUI->setMsg( $setup->remove() );
+    $msg = $setup->remove();
+		$AppUI->setMsg( $msg, UI_MSG_ALERT );
 	// remove from the installed modules table
-		$obj->remove();
-		$AppUI->setMsg( 'Module removed', UI_MSG_ALERT );
+    if($msg) {
+      $obj->remove();
+      $AppUI->setMsg( 'Module removed', UI_MSG_ALERT );
+    }
 		break;
 	case 'upgrade':
 		if ( $setup->upgrade( $obj->mod_version ) )	// returns true if upgrade succeeded
