@@ -40,8 +40,7 @@ class CSetupdPstats {
 		switch ( $old_version )
 		{
 		case "all":
-		case "0.9":
-		case "1.0":
+		case "0.1":
 			return true;
 		default:
 			return false;
