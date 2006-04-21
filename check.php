@@ -7,7 +7,7 @@
 * @author Thomas Despoix
 */
 
-include("header.php");
+require_once("header.php");
 
 class CPrerequisite {
   var $name = "";
@@ -195,9 +195,9 @@ $versions[] = $version;
     </ul>
   <td>
     <?php if ($prereq->check()) { ?>
-    Oui, Version <?php echo phpVersion(); ?>
+    <div class="message">Oui, Version <?php echo phpVersion(); ?></div>
     <?php } else { ?>
-    Non, Version <?php echo phpVersion(); ?>
+    <div class="<?php echo $prereq->mandatory ? "error" : "warning"; ?>">Non, Version <?php echo phpVersion(); ?></div>
     <?php } ?>
   </td>
 </tr>
@@ -251,9 +251,9 @@ $versions[] = $version;
     </ul>
   <td>
     <?php if ($prereq->check()) { ?>
-    Extension chargée
+    <div class="message">Extension chargée</div>
     <?php } else { ?>
-    <strong>Extension absente</strong>
+    <div class="<?php echo $prereq->mandatory ? "error" : "warning"; ?>">Extension absente</div>
     <?php } ?>
   </td>
 </tr>
@@ -303,9 +303,9 @@ $versions[] = $version;
     </ul>
   <td>
     <?php if ($prereq->check()) { ?>
-    Package installé
+    <div class="message">Package installé</div>
     <?php } else { ?>
-    <strong>Package manquant</strong>
+    <div class="<?php echo $prereq->mandatory ? "error" : "warning"; ?>">Package manquant</div>
     <?php } ?>
   </td>
 </tr>
@@ -313,4 +313,4 @@ $versions[] = $version;
 
 </table>
 
-<?php include("footer.php"); ?>
+<?php require_once("footer.php"); ?>

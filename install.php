@@ -7,7 +7,7 @@
 * @author Thomas Despoix
 */
 
-include("header.php");
+require_once("header.php");
 
 require_once ("Archive/Tar.php");
 require_once ("Archive/Zip.php");
@@ -240,9 +240,9 @@ $libraries[] = $library;
   <td><?php echo $library->fileName; ?></td>
   <td>
     <?php if ($library->install()) { ?>
-    Ok, <?php echo $library->nbFiles; ?> fichiers extraits
+    <div class="message">Ok, <?php echo $library->nbFiles; ?> fichiers extraits</div>
     <?php } else { ?>
-    Erreur, <?php echo $library->nbFiles; ?> fichiers trouvés
+    <div class="<?php echo $prereq->mandatory ? "error" : "warning"; ?>">Erreur, <?php echo $library->nbFiles; ?> fichiers trouvés</div>
     <?php } ?>
   </td>
 </tr>
@@ -256,9 +256,9 @@ $libraries[] = $library;
   </td>
   <td>
     <?php if ($renamer->apply()) { ?>
-    Renommage effectué
+    <div class="message">Renommage effectué</div>
     <?php } else { ?>
-    Erreur
+    <div class="<?php echo $prereq->mandatory ? "error" : "warning"; ?>">Erreur</div>
     <?php } ?>
   </td>
 </tr>
@@ -272,9 +272,9 @@ $libraries[] = $library;
   </td>
   <td>
     <?php if ($patch->apply()) { ?>
-    Patch appliqué
+    <div class="message">Patch appliqué</div>
     <?php } else { ?>
-    Erreur
+    <div class="<?php echo $prereq->mandatory ? "error" : "warning"; ?>">Erreur</div>
     <?php } ?>
   </td>
 </tr>
@@ -284,4 +284,4 @@ $libraries[] = $library;
 
 </table>
 
-<?php include("footer.php"); ?>
+<?php require_once("footer.php"); ?>

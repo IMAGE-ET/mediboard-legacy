@@ -14,7 +14,7 @@ $mbpath = "..";
 require_once("$mbpath/includes/mb_functions.php");
 require_once("$mbpath/classes/chrono.class.php");
 
-$steps = array("check", "install", "configure", "initialize");
+$steps = array("check", "install", "configure", "initialize", "feed");
 
 $currentStep = basename($_SERVER["PHP_SELF"], ".php");
 

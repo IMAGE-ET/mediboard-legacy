@@ -7,7 +7,7 @@
 * @author Thomas Despoix
 */
 
-include("header.php");
+require_once("header.php");
 
 require_once ("$mbpath/classes/mbconfig.class.php");
 
@@ -120,31 +120,31 @@ $dPconfig = $mbConfig->values;
   </tr>
 
   <tr>
-    <th><label for="db[cim10][dbhost]" title="Nom de l'hôte">Nom de l'hôte :</label></th>
-    <td><input type="text" size="40" name="db[cim10][dbhost]" value="<?php echo @$dPconfig["db"]["cim10"]["dbhost"]; ?>" /></td>
     <th><label for="db[ccamV2][dbhost]" title="Nom de l'hôte">Nom de l'hôte :</label></th>
     <td><input type="text" size="40" name="db[ccamV2][dbhost]" value="<?php echo @$dPconfig["db"]["ccamV2"]["dbhost"]; ?>" /></td>
+    <th><label for="db[cim10][dbhost]" title="Nom de l'hôte">Nom de l'hôte :</label></th>
+    <td><input type="text" size="40" name="db[cim10][dbhost]" value="<?php echo @$dPconfig["db"]["cim10"]["dbhost"]; ?>" /></td>
   </tr>
 
   <tr>
-    <th><label for="db[cim10][dbname]" title="Nom de la base">Nom de la base :</label></th>
-    <td><input type="text" size="40" name="db[cim10][dbname]" value="<?php echo @$dPconfig["db"]["cim10"]["dbname"]; ?>" /></td>
     <th><label for="db[ccamV2][dbname]" title="Nom de la base">Nom de la base :</label></th>
     <td><input type="text" size="40" name="db[ccamV2][dbname]" value="<?php echo @$dPconfig["db"]["ccamV2"]["dbname"]; ?>" /></td>
+    <th><label for="db[cim10][dbname]" title="Nom de la base">Nom de la base :</label></th>
+    <td><input type="text" size="40" name="db[cim10][dbname]" value="<?php echo @$dPconfig["db"]["cim10"]["dbname"]; ?>" /></td>
   </tr>
 
   <tr>
-    <th><label for="db[cim10][dbuser]" title="Nom de l'utilisateur">Nom de l'utilisateur :</label></th>
-    <td><input type="text" size="40" name="db[cim10][dbuser]" value="<?php echo @$dPconfig["db"]["cim10"]["dbuser"]; ?>" /></td>
     <th><label for="db[ccamV2][dbuser]" title="Nom de l'utilisateur">Nom de l'utilisateur :</label></th>
     <td><input type="text" size="40" name="db[ccamV2][dbuser]" value="<?php echo @$dPconfig["db"]["ccamV2"]["dbuser"]; ?>" /></td>
+    <th><label for="db[cim10][dbuser]" title="Nom de l'utilisateur">Nom de l'utilisateur :</label></th>
+    <td><input type="text" size="40" name="db[cim10][dbuser]" value="<?php echo @$dPconfig["db"]["cim10"]["dbuser"]; ?>" /></td>
   </tr>
 
   <tr>
-    <th><label for="db[cim10][dbpass]" title="Mot de passe de l'utililisateur'">Mot de passe :</label></th>
-    <td><input type="text" size="40" name="db[cim10][dbpass]" value="<?php echo @$dPconfig["db"]["cim10"]["dbpass"]; ?>" /></td>
     <th><label for="db[ccamV2][dbpass]" title="Mot de passe de l'utililisateur'">Mot de passe :</label></th>
     <td><input type="text" size="40" name="db[ccamV2][dbpass]" value="<?php echo @$dPconfig["db"]["ccamV2"]["dbpass"]; ?>" /></td>
+    <th><label for="db[cim10][dbpass]" title="Mot de passe de l'utililisateur'">Mot de passe :</label></th>
+    <td><input type="text" size="40" name="db[cim10][dbpass]" value="<?php echo @$dPconfig["db"]["cim10"]["dbpass"]; ?>" /></td>
   </tr>
 
   <tr>
@@ -191,12 +191,7 @@ $dPconfig = $mbConfig->values;
 
   <tr>
     <th><label for="hide_confidential" title="Brouiller les données confidentielles. Utiles pour le monde de démonstration">Brouiller les données confidentielles ?</label></th>
-    <td><input type="hide_confidential" size="40" name="host_style" value="<?php echo $dPconfig['hide_confidential'] ?>" /></td>
-  </tr>
-
-  <tr>
-    <th><label for="host_locale" title="Langage par défaut du système. Seul le français est disponible pour le moment">Langage par défaut :</label></th>
-    <td><input type="text" size="40" name="host_locale" value="<?php echo $dPconfig["host_locale"]; ?>" /></td>
+    <td><input type="hide_confidential" size="40" name="hide_confidential" value="<?php echo $dPconfig['hide_confidential'] ?>" /></td>
   </tr>
 
   <tr>
@@ -246,9 +241,9 @@ $dPconfig = $mbConfig->values;
   </tr>
 
   <tr>
-    <td class="button"><input type="submit" value="Valider la confiration" /></td>
+    <td class="button"><input type="submit" value="Valider la configuration" /></td>
   </tr>
 </table>
 
 </form>
-<?php include("footer.php"); ?>
+<?php require_once("footer.php"); ?>

@@ -7,7 +7,26 @@
 * @author Thomas Despoix
 */
 
-include("header.php");
+require_once("header.php");
+require_once("dbconnection.php");
+
+?>
+
+<?php if (!@include_once("$mbpath/includes/config.php")) { ?>
+
+<p>
+  Le fichier de configuration n'a pas été validé, merci de revenir à l'étape 
+  précédante.
+</p>
+
+<?php
+  include("footer.php");
+  return;
+}
+
+$dbConfigs = $dPconfig["db"];
+unset($dbConfigs["ccam"]);
+require_once("addusers.sql.php");
 
 ?>
 
@@ -55,6 +74,55 @@ include("header.php");
     <td class="button" colspan="2"><input type="submit" value="Création de la base et des utilisateurs" /></td>
   </tr>
 
+</table>
+
+<?php 
+if (@$_POST["adminhost"]) { 
+  $dbConnection = new CDBConnection(
+    $_POST["adminhost"],
+    $_POST["adminuser"],
+    $_POST["adminpass"]);
+    
+  $dbConnection->connect();
+  foreach($queries as $query) {
+    $dbConnection->query($query);
+  }
+?>
+
+<table class="tbl">
+
+<tr>
+  <th>Action</th>
+  <th>Statut</th>
+</tr>
+
+<tr>
+  <td>Créations des bases et des utilisateurs</td>
+  <td>
+    <?php if (!count($dbConnection->_errors)) { ?>
+    <div class="message">Créations réussies</div>
+    <?php } else { ?>
+    <div class="error">
+      Erreurs lors des créations
+      <br />
+      <?php echo nl2br(join($dbConnection->_errors, "\n")); ?>
+    </div>
+    <?php } ?>
+  </td>
+</tr>
+
+</table>
+
+<?php } ?>
+
+</form>
+
+<form name="createBases" action="initialize.php" method="post">
+
+<input type="hidden" name="generate" value="true"/>
+  
+<table class="form">
+
   <tr>
     <th class="category" colspan="2">Sans des droits d'aministrateurs</th>
   </tr>
@@ -62,14 +130,22 @@ include("header.php");
   <tr>
     <td class="button" colspan="2"><input type="submit" value="Générer le code de création des utilisateurs et des bases" /></td>
   </tr>
-
+  
 </table>
 
 </form>
 
-<h3>Chargement initial des bases</h3>
+<?php if (@$_POST["generate"]) { ?>
+<p>
+  Merci de fournir le code suivant à un administrateur du serveur de base de
+  données pour qu'il puisse l'exécuter.
+</p>
+<p>
+  Vous <strong>ne pouvez pas </strong> continuer l'installation de Mediboard 
+  tant que cette étape n'est effectuée.
+</p>
 
-<p>Il faut désormais remplir la base de données principale avec la structures des tables.<p>
+<textarea cols="50" rows="10"><?php echo join($queries, "\n\n"); ?></textarea>
+<?php } ?>
 
-
-<?php include("footer.php"); ?>
+<?php require_once("footer.php"); ?>
