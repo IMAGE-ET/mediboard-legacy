@@ -13,7 +13,7 @@ require_once( $AppUI->getModuleClass('mediusers') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 // Liste des praticiens accessibles

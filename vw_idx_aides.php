@@ -13,7 +13,7 @@ require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie'));
 require_once( $AppUI->getModuleClass('mediusers', 'mediusers'));
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 // Class and fields

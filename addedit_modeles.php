@@ -14,7 +14,7 @@ require_once( $AppUI->getModuleClass('dPcompteRendu', 'compteRendu') );
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'templatemanager') );
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 global $ECompteRenduType;

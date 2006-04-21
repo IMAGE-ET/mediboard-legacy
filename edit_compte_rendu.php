@@ -19,7 +19,7 @@ require_once( $AppUI->getModuleClass('dPcompteRendu', 'templatemanager'));
 require_once( $AppUI->getModuleClass('dPcompteRendu', 'aidesaisie'));
 
 if (!$canEdit) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $compte_rendu_id = dPgetParam($_GET, "compte_rendu_id", 0);
