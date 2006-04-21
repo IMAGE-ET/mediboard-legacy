@@ -71,6 +71,17 @@ class CModule extends CDpObject {
 	function CModule() {
 		$this->CDpObject( 'modules', 'mod_id' );
 	}
+  
+  function reorder() {
+    $sql = "SELECT * FROM modules ORDER BY mod_ui_order";
+    $result = db_exec($sql);
+    $i = 1;
+    while($row = db_fetch_array($result)) {
+      $sql = "UPDATE modules SET mod_ui_order = '$i' WHERE mod_id = '".$row["mod_id"]."'";
+      db_exec($sql);
+      $i++;
+    }
+  }
 
 	function install() {
 		$sql = "SELECT mod_directory FROM modules WHERE mod_directory = '$this->mod_directory'";
@@ -80,6 +91,7 @@ class CModule extends CDpObject {
 			return false;
 		}
 		$this->store();
+    $this->reorder();
 		return true;
 	}
 
@@ -88,6 +100,7 @@ class CModule extends CDpObject {
 		if (!db_exec( $sql )) {
 			return db_error();
 		} else {
+      $this->reorder();
 			return NULL;
 		}
 	}
@@ -107,6 +120,8 @@ class CModule extends CDpObject {
 		db_exec( $sql );
 
 		$this->mod_id = $temp;
+    
+    $this->reorder();
 	}
 // overridable functions
 	function moduleInstall() {
