@@ -14,7 +14,7 @@ require_once($AppUI->getModuleClass("mediusers", "mediusers"));
 require_once($AppUI->getModuleClass("mediusers", "functions"));
 
 if (!$canRead) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 // Récupération du user à ajouter/editer
