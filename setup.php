@@ -32,10 +32,10 @@ class CSetupdPhospi {
 	}
 
 	function remove() {
-    db_exec( "DROP TABLE `service`;" );
-    db_exec( "DROP TABLE `chambre`;" );
-    db_exec( "DROP TABLE `lit`;" );
-    db_exec( "DROP TABLE `affectation`;" );
+    db_exec( "DROP TABLE `service`;" ); db_error();
+    db_exec( "DROP TABLE `chambre`;" ); db_error();
+    db_exec( "DROP TABLE `lit`;" ); db_error();
+    db_exec( "DROP TABLE `affectation`;" ); db_error();
 
 		return null;
 	}
