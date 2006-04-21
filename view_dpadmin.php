@@ -12,7 +12,6 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 ?>
-<p>
 <table width="50%" border="0" cellpadding="0" cellspacing="5" align="left">
 <tr>
   <td width="42">
@@ -26,7 +25,7 @@ global $AppUI, $canRead, $canEdit, $m;
 <tr>
   <td>&nbsp;</td>
   <td align="left">
-    <a href="?m=system&a=translate"><?php echo $AppUI->_( 'Translation Management' );?></a>
+    <a href="?m=system&amp;a=translate"><?php echo $AppUI->_( 'Translation Management' );?></a>
   </td>
 </tr>
 
@@ -42,9 +41,9 @@ global $AppUI, $canRead, $canEdit, $m;
 <tr>
   <td>&nbsp;</td>
   <td align="left">
-    <a href="?m=system&a=addeditpref"><?php echo $AppUI->_('Default User Preferences');?></a>
-    <br /><a href="?m=system&u=syskeys&a=keys"><?php echo $AppUI->_( 'System Lookup Keys' );?></a>
-    <br /><a href="?m=system&u=syskeys"><?php echo $AppUI->_( 'System Lookup Values' );?></a>
+    <a href="?m=system&amp;a=addeditpref"><?php echo $AppUI->_('Default User Preferences');?></a>
+    <br /><a href="?m=system&amp;u=syskeys&amp;a=keys"><?php echo $AppUI->_( 'System Lookup Keys' );?></a>
+    <br /><a href="?m=system&amp;u=syskeys"><?php echo $AppUI->_( 'System Lookup Values' );?></a>
   </td>
 </tr>
 
@@ -60,7 +59,7 @@ global $AppUI, $canRead, $canEdit, $m;
 <tr>
   <td>&nbsp;</td>
   <td align="left">
-    <a href="?m=system&a=viewmods"><?php echo $AppUI->_('View Modules');?></a>
+    <a href="?m=system&amp;a=viewmods"><?php echo $AppUI->_('View Modules');?></a>
   </td>
 </tr>
 
@@ -76,9 +75,8 @@ global $AppUI, $canRead, $canEdit, $m;
 <tr>
   <td>&nbsp;</td>
   <td align="left">
-    <a href="?m=system&u=roles"><?php echo $AppUI->_('User Roles');?></a>
+    <a href="?m=system&amp;u=roles"><?php echo $AppUI->_('User Roles');?></a>
   </td>
 </tr>
 
 </table>
-</p>
