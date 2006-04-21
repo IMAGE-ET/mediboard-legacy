@@ -38,6 +38,7 @@ class CSetupSystem {
   function upgrade( $old_version ) {
     switch ( $old_version ) {
       case "all":
+      case "1.0.0":
       case "1.0.2":
         return true;
     }
