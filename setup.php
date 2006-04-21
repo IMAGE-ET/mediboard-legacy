@@ -42,70 +42,67 @@ class CSetupdPhospi {
 
 	function upgrade( $old_version ) {
 		switch ( $old_version ) {
-		case "all":
-		case "0.1":
-      $sql = "CREATE TABLE `service` (" .
-          "\n`service_id` INT NOT NULL AUTO_INCREMENT ," .
-          "\n`nom` VARCHAR( 50 ) NOT NULL ," .
-          "\n`description` TEXT," .
-          "\nPRIMARY KEY ( `service_id` ))";
-      db_exec($sql); db_error($sql);
+		  case "all":
+		  case "0.1":
+        $sql = "CREATE TABLE `affectation` (" .
+            "\n`affectation_id` INT NOT NULL AUTO_INCREMENT," .
+            "\n`lit_id` INT NOT NULL ," .
+            "\n`operation_id` INT NOT NULL ," .
+            "\n`entree` DATETIME NOT NULL ," .
+            "\n`sortie` DATETIME NOT NULL ," .
+            "\nPRIMARY KEY ( `affectation_id` ) ," .
+            "\nINDEX ( `lit_id` , `operation_id` ));";
+        db_exec($sql); db_error();
 
-      $sql = "CREATE TABLE `chambre` (" .
-          "\n`chambre_id` INT NOT NULL AUTO_INCREMENT ," .
-          "\n`service_id` INT NOT NULL ," .
-          "\n`nom` VARCHAR( 50 ) ," .
-          "\n`caracteristiques` TEXT," .
-          "\nPRIMARY KEY ( `chambre_id` ) ," .
-          "\nINDEX ( `service_id` ))";
-      db_exec($sql); db_error($sql);
+      case "0.11":
+        $sql = "ALTER TABLE `affectation` " .
+            "\nADD `confirme` TINYINT DEFAULT '0' NOT NULL," .
+            "\nADD `effectue` TINYINT DEFAULT '0' NOT NULL ;";
+        db_exec($sql); db_error();
 
-      $sql = "CREATE TABLE `lit` (" .
-          "\n`lit_id` INT NOT NULL AUTO_INCREMENT ," .
-          "\n`chambre_id` INT NOT NULL," .
-          "\n`nom` VARCHAR( 50 ) NOT NULL ," .
-          "\nPRIMARY KEY ( `lit_id` ) ," .
-          "\nINDEX ( `chambre_id` ))";
-      db_exec($sql); db_error($sql);
-                    
-      $sql = "CREATE TABLE `affectation` (" .
-          "\n`affectation_id` INT NOT NULL AUTO_INCREMENT," .
-          "\n`lit_id` INT NOT NULL ," .
-          "\n`operation_id` INT NOT NULL ," .
-          "\n`entree` DATETIME NOT NULL ," .
-          "\n`sortie` DATETIME NOT NULL ," .
-          "\nPRIMARY KEY ( `affectation_id` ) ," .
-          "\nINDEX ( `lit_id` , `operation_id` ))";
-      db_exec($sql); db_error($sql);
-                    
-    case "0.11":
-      $sql = "ALTER TABLE `affectation` " .
-          "\nADD `confirme` TINYINT DEFAULT '0' NOT NULL," .
-          "\nADD `effectue` TINYINT DEFAULT '0' NOT NULL ;";
-      db_exec($sql); db_error($sql);
-      
-    case "0.12":
-      $sql = "ALTER TABLE `affectation` ADD INDEX ( `entree` );";
-      db_exec($sql); db_error($sql);
-      $sql = "ALTER TABLE `affectation` ADD INDEX ( `sortie` );";
-      db_exec($sql); db_error($sql);
-      
-    case "0.13":
-      $sql = "ALTER TABLE `affectation` ADD INDEX ( `operation_id` ) ;";
-      db_exec($sql); db_error();
-      $sql = "ALTER TABLE `affectation` DROP INDEX ( `lit_id` ) ;";
-      db_exec($sql); db_error();
-      $sql = "ALTER TABLE `affectation` ADD INDEX ( `lit_id` ) ;";
-      db_exec($sql); db_error();
-    
-    case "0.14":
-	  return true;
+      case "0.12":
+        $sql = "ALTER TABLE `affectation` ADD INDEX ( `entree` );";
+        db_exec($sql); db_error();
+        $sql = "ALTER TABLE `affectation` ADD INDEX ( `sortie` );";
+        db_exec($sql); db_error();
+
+      case "0.13":
+        $sql = "ALTER TABLE `affectation` ADD INDEX ( `operation_id` ) ;";
+        db_exec($sql); db_error();
+        $sql = "ALTER TABLE `affectation` DROP INDEX ( `lit_id` ) ;";
+        db_exec($sql); db_error();
+        $sql = "ALTER TABLE `affectation` ADD INDEX ( `lit_id` ) ;";
+        db_exec($sql); db_error();
+
+      case "0.14":
+	      return true;
     }
-
-	return false;
+	  return false;
 	}
 
 	function install() {
+    $sql = "CREATE TABLE `service` (" .
+      "\n`service_id` INT NOT NULL AUTO_INCREMENT ," .
+      "\n`nom` VARCHAR( 50 ) NOT NULL ," .
+      "\n`description` TEXT," .
+      "\nPRIMARY KEY ( `service_id` ));";
+    db_exec($sql); db_error();
+    $sql = "CREATE TABLE `chambre` (" .
+      "\n`chambre_id` INT NOT NULL AUTO_INCREMENT ," .
+      "\n`service_id` INT NOT NULL ," .
+      "\n`nom` VARCHAR( 50 ) ," .
+      "\n`caracteristiques` TEXT," .
+      "\nPRIMARY KEY ( `chambre_id` ) ," .
+      "\nINDEX ( `service_id` ));";
+    db_exec($sql); db_error();
+    $sql = "CREATE TABLE `lit` (" .
+      "\n`lit_id` INT NOT NULL AUTO_INCREMENT ," .
+      "\n`chambre_id` INT NOT NULL," .
+      "\n`nom` VARCHAR( 50 ) NOT NULL ," .
+      "\nPRIMARY KEY ( `lit_id` ) ," .
+      "\nINDEX ( `chambre_id` ));";
+    db_exec($sql); db_error();
+    
     $this->upgrade("all");
 		return null;
 	}
