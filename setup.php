@@ -19,7 +19,6 @@ $config['mod_ui_icon'] = 'dPcim10.png';
 $config['mod_description'] = 'Aide au codage CIM10';
 $config['mod_config'] = true;
 
-// show module configuration with the dPframework (if requested via http)
 if (@$a == 'setup') {
 	echo dPshowModuleConfig( $config );
 }
@@ -28,14 +27,12 @@ class CSetupdPcim10 {
 
 	function configure() {
 		global $AppUI;
-		// load module specific configuration page
 		$AppUI->redirect( 'm=dPcim10&a=configure' );
 		
   		return true;
 	}
 
 	function remove() {
-		// remove the favoris table from database
 		db_exec( "DROP TABLE cim10favoris;" );
 
 		return null;
@@ -43,21 +40,13 @@ class CSetupdPcim10 {
 
 
 	function upgrade( $old_version ) {
-		switch ( $old_version )
-		{
-			// upgrade from scratch (called from install)
+		switch ( $old_version ) {
 			case "all":
 			case "0.1":
-				//do some alter table commands
-
-			case "0.2":
-			
 				return true;
-
 			default:
 				return false;
 		}
-
 		return false;
 	}
 
