@@ -4,7 +4,7 @@
 ##
 $user_id = isset($HTTP_GET_VARS['user_id']) ? $HTTP_GET_VARS['user_id'] : 0;
 // Why does this need to be different to $user_id?
-$transmit_user_id = $_GET['user_id'];
+$transmit_user_id = @$_GET['user_id'];
 // Check permissions
 if (!$canEdit && $transmit_user_id != $AppUI->user_id) {
   $AppUI->redirect("m=public&a=access_denied" );
@@ -119,16 +119,16 @@ function submitIt(){
 	$currencies = array();
 	$currEx = 1234567.89;
 
-    	// This is a server not using Windows
-    	$f = "es_ES"; $currencies[$f]	= formatCurrency( $currEx, $f );
-    	$f = "es_MX"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_US"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_GB"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_AU"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_CA"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_NZ"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "pt_PT"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "pt_BR"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	// This is a server not using Windows
+	$f = "es_ES"; $currencies[$f]	=  "($f)" . formatCurrency( $currEx, $f );
+	$f = "es_FR"; $currencies[$f]	=  "($f)" . formatCurrency( $currEx, $f );
+	$f = "en_US"; $currencies[$f]	=  "($f)" . formatCurrency( $currEx, $f );
+	$f = "en_GB"; $currencies[$f]	=  "($f)" . formatCurrency( $currEx, $f );
+	$f = "en_AU"; $currencies[$f]	=  "($f)" . formatCurrency( $currEx, $f );
+	$f = "en_CA"; $currencies[$f]	=  "($f)" . formatCurrency( $currEx, $f );
+	$f = "en_NZ"; $currencies[$f]	=  "($f)" . formatCurrency( $currEx, $f );
+	$f = "pt_PT"; $currencies[$f]	=  "($f)" . formatCurrency( $currEx, $f );
+	$f = "pt_BR"; $currencies[$f]	=  "($f)" . formatCurrency( $currEx, $f );
 	echo arraySelect( $currencies, 'pref_name[CURRENCYFORMAT]', 'class=text size=1', @$prefs['CURRENCYFORMAT'], false );
 ?>
 	</td>

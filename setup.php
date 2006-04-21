@@ -32,41 +32,15 @@ class CSetupSystem {
   }
 
   function remove() {
-    db_exec( "DROP TABLE user_log;" );
-
-    return null;
+    return "impossible de supprimer le module 'system'";
   }
 
   function upgrade( $old_version ) {
     switch ( $old_version ) {
       case "all":
-      case "1.0.0":
-        $sql = "CREATE TABLE `user_log` (" .
-            "\n`user_log_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ," .
-            "\n`user_id` INT UNSIGNED NOT NULL ," .
-            "\n`object_id` INT UNSIGNED NOT NULL ," .
-            "\n`object_class` VARCHAR( 25 ) NOT NULL ," .
-            "\n`type` ENUM( 'store', 'delete' ) NOT NULL ," .
-            "\n`date` DATETIME NOT NULL ," .
-            "\nPRIMARY KEY ( `user_log_id` ) ," .
-            "\nINDEX ( `user_id` ) ," .
-            "\nINDEX ( `object_id`) ," .
-            "\nINDEX ( `object_class` )" .
-            "\n) COMMENT = 'Log des modifications des objets';";
-        db_exec( $sql ); db_error();
-      case "1.0.1":
-        $sql = "CREATE TABLE `message` (" .
-            "\n`message_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ," .
-            "\n`deb` DATETIME NOT NULL ," .
-            "\n`fin` DATETIME NOT NULL ," .
-            "\n`titre` VARCHAR( 40 ) NOT NULL ," .
-            "\n`corps` TEXT NOT NULL ," .
-            "\nPRIMARY KEY ( `message_id` ));";
-        db_exec( $sql ); db_error();
       case "1.0.2":
         return true;
     }
-    
 
     return false;
   }
