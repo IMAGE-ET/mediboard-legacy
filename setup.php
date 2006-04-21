@@ -32,9 +32,10 @@ class CSetupdPcompteRendu {
 	}
 
 	function remove() {
-    db_exec( "DROP TABLE compte_rendu;" );
-    db_exec( "DROP TABLE aide_saisie;" );
-    db_exec( "DROP TABLE liste_choix;" );
+    db_exec( "DROP TABLE compte_rendu;" ); db_error();
+    db_exec( "DROP TABLE aide_saisie;" ); db_error();
+    db_exec( "DROP TABLE liste_choix;" ); db_error();
+    db_exec( "DROP TABLE pack;" ); db_error();
 
 		return null;
 	}
