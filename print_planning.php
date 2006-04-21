@@ -13,7 +13,7 @@ require_once($AppUI->getModuleClass($m, "salle"));
 require_once($AppUI->getModuleClass("mediusers"));
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $deb = mbDate();
