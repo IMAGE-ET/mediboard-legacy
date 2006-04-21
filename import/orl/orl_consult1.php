@@ -10,7 +10,7 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 mbInsertCSV("modules/dPinterop/PLAGE CS.TXT", "import_consultations1");
