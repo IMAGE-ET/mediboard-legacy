@@ -43,22 +43,10 @@ foreach($list as $key => $value) {
 
 // Récupération de la liste des utilisateurs disponibles
 $where = array();
-$where[] = "1";
-$group = "user_id";
-$list = new CUserLog;
-$list = $list->loadList($where, null, null, $group);
-$arrayUsers = array();
-foreach($list as $key => $value) {
-  $arrayUsers[] = $value->user_id;
-}
-$in = implode(", ", $arrayUsers);
-$where = array();
-if(count($arrayUsers))
-  $where["user_id"] ="IN ($in)";
-else
-  $where["user_id"] = "= 0";
+$where["user_username"] = "NOT LIKE '>>%'";
+$order = "user_last_name, user_first_name";
 $listUsers = new CUser;
-$listUsers = $listUsers->loadList($where);
+$listUsers = $listUsers->loadList($where, $order);
 
 // Récupération des types disponibles
 $where = array();

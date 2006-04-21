@@ -8,7 +8,7 @@
 */
 
 require_once( $AppUI->getSystemClass ('mbobject' ) );
-require_once( $AppUI->getSystemClass ('admin' ) );
+require_once( $AppUI->getModuleClass ('admin' ) );
 
 global $AppUI;
 
