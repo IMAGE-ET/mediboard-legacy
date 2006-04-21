@@ -5,7 +5,7 @@ $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 0;
 
 // check permissions
 if (!$canEdit && $user_id != $AppUI->user_id) {
-    $AppUI->redirect( "m=public&a=access_denied" );
+    $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $sql = "
