@@ -62,6 +62,7 @@ function checkGroup() {
           </td>
         </tr>
       </table>
+      </form>
     </td>
   </tr>
 </table>
