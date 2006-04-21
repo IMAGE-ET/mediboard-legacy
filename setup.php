@@ -33,9 +33,9 @@ class CSetupMediusers {
 	}
 
 	function remove() {
-		db_exec( "DROP TABLE users_mediboard;" );
-		db_exec( "DROP TABLE fonctions_mediboard;" );
-		db_exec( "DROP TABLE groups_mediboard;" );
+		db_exec( "DROP TABLE users_mediboard;" ); db_error();
+		db_exec( "DROP TABLE functions_mediboard;" ); db_error();
+		db_exec( "DROP TABLE groups_mediboard;" ); db_error();
 		
 		return null;
 	}
