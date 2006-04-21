@@ -15,8 +15,8 @@ require_once( $AppUI->getModuleClass('system', 'user_log') );
 foreach (glob("modules/dP*/*.class.php") as $fileName) {
   require_once($AppUI->getConfig( 'root_dir' )."/".$fileName);
 }
-// Add the mediusers class
-require_once( $AppUI->getModuleClass ('mediusers' ) );
+// Add the user class
+require_once( $AppUI->getModuleClass ('admin' ) );
 
 $dialog = mbGetValueFromGet("dialog", 0);
 
@@ -57,7 +57,7 @@ if(count($arrayUsers))
   $where["user_id"] ="IN ($in)";
 else
   $where["user_id"] = "= 0";
-$listUsers = new CMediusers;
+$listUsers = new CUser;
 $listUsers = $listUsers->loadList($where);
 
 // Récupération des types disponibles

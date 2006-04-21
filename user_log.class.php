@@ -8,6 +8,7 @@
 */
 
 require_once( $AppUI->getSystemClass ('mbobject' ) );
+require_once( $AppUI->getSystemClass ('admin' ) );
 
 global $AppUI;
 
@@ -46,7 +47,7 @@ class CUserLog extends CMbObject {
   }
   
   function loadRefsFwd() {
-    $this->_ref_user = new CMediusers;
+    $this->_ref_user = new CUser;
     $this->_ref_user->load($this->user_id);
 
     $this->_ref_object = new $this->object_class;
