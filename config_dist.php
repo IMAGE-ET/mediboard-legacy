@@ -91,14 +91,8 @@ $dPconfig['db']['INSEE'] = array(
 //  'dbport' => ""
 //);
 
-// Default locale for Mediboard (including login screen)
-$dPconfig['host_locale'] = "fr";
-
 // Currency symbol (html entities allowed)
 $dPconfig['currency_symbol'] = "&euro;";
-
-// Default user interface style
-$dPconfig['host_style'] = "mediboard";
 
 // Enable if you want to hide confidentials fields
 $dPconfig['hide_confidential'] = false;

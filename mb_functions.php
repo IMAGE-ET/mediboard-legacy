@@ -77,7 +77,7 @@ function mbSetValueToSession($valName, $value = NULL) {
  * @return void 
  **/
 function mbTrace($var, $label = null, $die = false, $error = false) {
-  $export = var_export($var, true); 
+  $export = print_r($var, true); 
   $export = htmlspecialchars($export);
   if($error)
     trigger_error (html_entity_decode("\n$label: $export\n"));
