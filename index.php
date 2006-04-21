@@ -11,7 +11,7 @@ $canRead = !getDenyRead( $m );
 $canEdit = !getDenyEdit( $m );
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 //save the workplace state (have a footprint on this site)
