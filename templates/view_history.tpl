@@ -93,4 +93,3 @@
   </tr>
   {/foreach}
 </table>
-</form>
