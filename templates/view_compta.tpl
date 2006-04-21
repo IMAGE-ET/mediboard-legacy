@@ -35,7 +35,6 @@ function pageMain() {
 <table class="main">
   <tr>
     <td>
-
       <table class="tbl">
         <tr>
           <th colspan="3" class="title">Plages en attente de paiement &mdash; {$today|date_format:"%A %d %B %Y"}</th>
@@ -68,9 +67,9 @@ function pageMain() {
           {/foreach}
         {/foreach}
         <tr>
-          <th>{$total.prat} praticien(s)</td>
-          <th>{$total.total} plage(s)</td>
-          <th>{$total.somme} €</td>
+          <th>{$total.prat} praticien(s)</th>
+          <th>{$total.total} plage(s)</th>
+          <th>{$total.somme} €</th>
       </table>
 
     </td>
@@ -104,7 +103,6 @@ function pageMain() {
               <option value="0">Plages non payées</option>
               <option value="1">Plages payées</option>
             </select>
-        </tr>
         </tr>
         <tr>
           <th><label for="prat_id">Praticien:</label></th>
