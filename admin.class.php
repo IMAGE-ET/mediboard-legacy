@@ -1,5 +1,29 @@
 <?php /* ADMIN $Id$ */
 
+// user types
+$utypes = array(
+// DEFAULT USER (nothing special)
+  0 => '',
+// DO NOT CHANGE ADMINISTRATOR INDEX !
+  1 => 'Administrator',
+// you can modify the terms below to suit your organisation
+  2 => 'Hotesse',
+  3 => 'Chirurgien',
+  4 => 'Anesthésiste',
+  5 => 'Directeur',
+  6 => 'Comptable',
+  7 => 'Infirmière',
+  8 => 'PMSI',
+  9 => 'Qualite',
+  10 => 'Secrétaire',
+  12 => 'Surveillante de bloc',
+  13 => 'Médecin'
+);
+
+##
+##  NOTE: the user_type field in the users table must be changed to a TINYINT
+##
+
 /**
 * User Class
 */
