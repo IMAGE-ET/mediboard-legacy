@@ -471,36 +471,23 @@ class CAppUI {
 * @param boolean If true the current message state is cleared.
 */
 	function getMsg( $reset=true ) {
-		$img = '';
-		$class = '';
 		$msg = $this->msg;
 
 		switch( $this->msgNo ) {
-		case UI_MSG_OK:
-			$img = dPshowImage( dPfindImage( 'stock_ok-16.png' ), 16, 16, '' );
-			$class = "message";
-			break;
-		case UI_MSG_ALERT:
-			$img = dPshowImage( dPfindImage( 'rc-gui-status-downgr.png' ), 16, 16, '' );
-			$class = "message";
-			break;
-		case UI_MSG_WARNING:
-			$img = dPshowImage( dPfindImage( 'rc-gui-status-downgr.png' ), 16, 16, '' );
-			$class = "warning";
-			break;
-		case UI_MSG_ERROR:
-			$img = dPshowImage( dPfindImage( 'stock_cancel-16.png' ), 16, 16, '' );
-			$class = "error";
-			break;
-		default:
-			$class = "message";
-			break;
+  		case UI_MSG_OK      : $class = "message"; break;
+  		case UI_MSG_ALERT   : $class = "message"; break;
+      case UI_MSG_WARNING : $class = "warning"; break;
+  		case UI_MSG_ERROR   : $class = "error" ; break;
+  		default: $class = "message"; break;
 		}
+
 		if ($reset) {
 			$this->msg = '';
 			$this->msgNo = 0;
 		}
-		return $msg ? "<div class='$class'>$img $msg</div>" : "";
+    
+
+		return $msg ? "<div class='$class'>$msg</div>" : "";
 	}
 /**
 * Set the value of a temporary state variable.
@@ -625,9 +612,6 @@ class CAppUI {
         "\nFROM users" .
         "\nWHERE user_id = '$obj->user_id' " .
         "\nAND user_username = '$username'";
-
-    $export = var_export($sql, true); //echo "<pre>SQL: $export</pre>";
-		writeDebug( $sql, 'Login SQL', __FILE__, __LINE__ );
 
 		if( !db_loadObject( $sql, $this ) ) {
 			return false;
