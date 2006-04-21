@@ -10,7 +10,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'system';
-$config['mod_version'] = '1.0.2';
+$config['mod_version'] = '1.0.0';
 $config['mod_directory'] = 'system';
 $config['mod_setup_class'] = 'CSetupSystem';
 $config['mod_type'] = 'core';
@@ -39,7 +39,6 @@ class CSetupSystem {
     switch ( $old_version ) {
       case "all":
       case "1.0.0":
-      case "1.0.2":
         return true;
     }
 
