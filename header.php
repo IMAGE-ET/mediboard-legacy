@@ -33,7 +33,7 @@ $chrono->start();
 
 <head>
   <title>Mediboard :: Assistant d'installation &mdash; Etape <?php echo $currentStepKey+1; ?> : <?php echo $currentStep; ?></title>
-  <meta http-equiv="Content-Type" content="text/html;charset=ISO 8859-1" />
+  <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
   <meta name="Description" content="Mediboard : Plateforme Open Source pour les Etablissements de Santé" />
   <meta name="Version" content="<?php echo mbVersion(); ?>" />
   <link rel="stylesheet" type="text/css" href="../style/mediboard/main.css" />
