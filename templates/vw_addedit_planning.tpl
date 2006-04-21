@@ -52,7 +52,7 @@ function refreshListCCAM() {
     var sCodeNode = sCode;
     sCodeNode += "<button type='button' onclick='delCCAM(\"" + sCode + "\")'>";
     sCodeNode += "<img src='modules/dPplanningOp/images/cross.png' />";
-    sCodeNode += "</button>";
+    sCodeNode += "<\/button>";
     aCodeNodes.push(sCodeNode);
   }
   oCcamNode.innerHTML = aCodeNodes.join(" &mdash; ");
@@ -375,7 +375,7 @@ function pageMain() {
 
   <tr>
     {if $op->operation_id}
-      <th colspan="2" class="title" colspan="5" style="color: #f00;">
+    <th colspan="2" class="title" style="color: #f00;">
       <a style="float:right;" href="javascript:view_log('COperation',{$op->operation_id})">
         <img src="images/history.gif" alt="historique" />
       </a>
@@ -386,9 +386,9 @@ function pageMain() {
       {else}
       Modification de l'intervention de {$pat->_view} par le Dr. {$chir->_view}
       {/if}
-      </th>
+    </th>
     {else}
-      <th colspan="2" class="title" colspan="5">      
+    <th colspan="2" class="title">      
       {if $protocole}
       Création d'un protocole
       {elseif $hospitalisation}
@@ -396,7 +396,7 @@ function pageMain() {
       {else}
       Création d'une intervention
       {/if}
-      </th>
+    </th>
     {/if}
   </tr>
   
@@ -489,7 +489,7 @@ function pageMain() {
           <td>
             <input type="text" name="_codeCCAM" ondblclick="popCode('ccam')" size="10" value="" />
             <button type="button" onclick="putCCAM(this.form._codeCCAM.value)">
-              <img src="modules/dPplanningOp/images/tick.png" />
+              <img src="modules/dPplanningOp/images/tick.png" alt="ajouter" />
             </button>
           </td>
           <td class="button"><input type="button" value="Sélectionner un code" onclick="popCode('ccam')"/></td>
@@ -627,7 +627,7 @@ function pageMain() {
 
         <tr>
           <th class="mandatory"><label for="duree_hospi" title="Durée d'hospitalisation en jours">Durée d'hospitalisation :</label></th>
-          <td><input type"text" name="duree_hospi" title="{$op->_props.duree_hospi}" size="2" value="{$op->duree_hospi}"> jours</td>
+          <td><input type="text" name="duree_hospi" title="{$op->_props.duree_hospi}" size="2" value="{$op->duree_hospi}" /> jours</td>
         </tr>
         <tr>
           <th><label for="type_adm_comp" title="Type d'admission">{tr}type_adm{/tr} :</label></th>
@@ -651,14 +651,18 @@ function pageMain() {
             <label for="chambre_n">Non</label>
         </tr>
         <tr>
-          </td>
-          <th><label for="venue_SHS" title="Code Administratif SHS">Code de venue SHS :</label></th>
-          <td><input type="text" size="8" maxlength="8" name="venue_SHS" title="{$op->_props.venue_SHS}" value="{$op->venue_SHS}" />
+          <th>
+            <label for="venue_SHS" title="Code Administratif SHS">
+              Code de venue SHS :
+            </label>
+          </th>
+          <td>
+            <input type="text" size="8" maxlength="8" name="venue_SHS" title="{$op->_props.venue_SHS}" value="{$op->venue_SHS}" />
           </td>
         </tr>
         <tr><th class="category" colspan="3">Autre</th></tr>
         <tr>
-          <th><label for="ATNC_n" title="Intervention présantant un risque ATNC">Risque ATNC:</th>
+          <th><label for="ATNC_n" title="Intervention présantant un risque ATNC">Risque ATNC:</label></th>
           <td>
             <input name="ATNC" value="o" type="radio" {if $op->ATNC == "o"} checked="checked" {/if} />
             <label for="ATNC_o">Oui</label>
