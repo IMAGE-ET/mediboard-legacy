@@ -20,6 +20,7 @@ require_once($AppUI->getModuleClass("dPbloc", "plagesop"));
 require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 
 $date = mbGetValueFromGetOrSession("date", mbDate());
+$hour = mbTime(null);
 
 // Chargement des praticiens
 $listAnesths = new CMediusers;
@@ -45,36 +46,16 @@ foreach($plages as $key => $value) {
 
 $timing = array();
 
-$listReveil = new COperation;
+$listOps = new COperation;
 $where = array();
 $where["plageop_id"] = "IN(".implode(",", $listIdPlages).")";
-$where["entree_reveil"] = "IS NOT NULL";
-$where["sortie_reveil"] = "IS NULL";
-$order = "entree_reveil";
-$listReveil = $listReveil->loadList($where, $order);
-foreach($listReveil as $key => $value) {
-  $listReveil[$key]->loadRefsFwd();
-  $listReveil[$key]->_ref_plageop->loadRefsFwd();
-  //Tableau des timmings
-  $timing[$key]["entree_reveil"] = array();
-  $timing[$key]["sortie_reveil"] = array();
-  foreach($timing[$key] as $key2 => $value2) {
-    for($i = -10; $i < 10 && $value->$key2 !== null; $i++) {
-      $timing[$key][$key2][] = mbTime("+ $i minutes", $value->$key2);
-    }
-  }
-}
-
-$listOut = new COperation;
-$where = array();
-$where["plageop_id"] = "IN(".implode(",", $listIdPlages).")";
-$where["entree_reveil"] = "IS NOT NULL";
-$where["sortie_reveil"] = "IS NOT NULL";
-$order = "sortie_reveil DESC";
-$listOut = $listOut->loadList($where, $order);
-foreach($listOut as $key => $value) {
-  $listOut[$key]->loadRefsFwd();
-  $listOut[$key]->_ref_plageop->loadRefsFwd();
+$where["sortie_bloc"] = "IS NOT NULL";
+$where["entree_reveil"] = "IS NULL";
+$order = "sortie_bloc";
+$listOps = $listOps->loadList($where, $order);
+foreach($listOps as $key => $value) {
+  $listOps[$key]->loadRefsFwd();
+  $listOps[$key]->_ref_plageop->loadRefsFwd();
   //Tableau des timmings
   $timing[$key]["entree_reveil"] = array();
   $timing[$key]["sortie_reveil"] = array();
@@ -94,11 +75,11 @@ $smarty->assign('listAnesthType', dPgetSysVal("AnesthType"));
 $smarty->assign('listAnesths', $listAnesths);
 $smarty->assign('listChirs', $listChirs);
 $smarty->assign('plages', $plages);
-$smarty->assign('listReveil', $listReveil);
-$smarty->assign('listOut', $listOut);
+$smarty->assign('listOps', $listOps);
 $smarty->assign('timing', $timing);
 $smarty->assign('date', $date);
+$smarty->assign('hour', $hour);
 
-$smarty->display('vw_reveil.tpl');
+$smarty->display('inc_reveil_ops.tpl');
 
 ?>

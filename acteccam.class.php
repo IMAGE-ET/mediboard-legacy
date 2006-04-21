@@ -7,8 +7,6 @@
  *  @author Thomas Despoix
  */
 
-global $utypes, $utypes_flip;
-
 require_once($AppUI->getSystemClass("mbobject"));
 
 require_once($AppUI->getModuleClass("dPccam", "acte"));
