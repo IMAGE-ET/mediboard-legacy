@@ -11,7 +11,7 @@ CREATE TABLE `message` (
   `titre` varchar(40) NOT NULL default '',
   `corps` text NOT NULL,
   PRIMARY KEY  (`message_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM;
 
 -- 
 -- Dumping data for table `message`
@@ -38,7 +38,7 @@ CREATE TABLE `modules` (
   `mod_ui_active` int(1) unsigned NOT NULL default '0',
   `mod_description` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`mod_id`,`mod_directory`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM;
 
 -- 
 -- Dumping data for table `modules`
@@ -65,7 +65,7 @@ CREATE TABLE `permissions` (
   UNIQUE KEY `idx_pgrant_on` (`permission_grant_on`,`permission_item`,`permission_user`),
   KEY `idx_puser` (`permission_user`),
   KEY `idx_pvalue` (`permission_value`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM;
 
 -- 
 -- Dumping data for table `permissions`
@@ -88,7 +88,7 @@ CREATE TABLE `syskeys` (
   `syskey_sep2` char(2) NOT NULL default '|',
   PRIMARY KEY  (`syskey_id`),
   UNIQUE KEY `idx_syskey_name` (`syskey_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM;
 
 -- 
 -- Dumping data for table `syskeys`
@@ -108,7 +108,7 @@ CREATE TABLE `sysvals` (
   `sysval_title` varchar(48) NOT NULL default '',
   `sysval_value` text NOT NULL,
   PRIMARY KEY  (`sysval_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM;
 
 -- 
 -- Dumping data for table `sysvals`
@@ -132,7 +132,7 @@ CREATE TABLE `user_log` (
   KEY `user_id` (`user_id`),
   KEY `object_id` (`object_id`),
   KEY `object_class` (`object_class`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM;
 
 -- 
 -- Dumping data for table `user_log`
@@ -151,7 +151,7 @@ CREATE TABLE `user_preferences` (
   `pref_value` varchar(40) NOT NULL default '',
   PRIMARY KEY  (`pref_user`,`pref_name`),
   KEY `pref_user` (`pref_user`,`pref_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM;
 
 -- 
 -- Dumping data for table `user_preferences`
@@ -200,7 +200,7 @@ CREATE TABLE `users` (
   KEY `idx_uid` (`user_username`),
   KEY `idx_pwd` (`user_password`),
   KEY `idx_user_parent` (`user_parent`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM;
 
 -- 
 -- Dumping data for table `users`
