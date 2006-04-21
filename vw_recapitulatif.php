@@ -14,7 +14,7 @@ require_once($AppUI->getModuleClass("dPhospi", "service"));
 require_once($AppUI->getModuleClass("dPplanningOp", "planning"));
 
 if (!$canRead) {
-  $AppUI->redirect( "m=public&a=access_denied" );
+  $AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $date = mbGetValueFromGetOrSession("date", mbDate()); 

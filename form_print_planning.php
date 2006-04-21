@@ -14,7 +14,7 @@ require_once($AppUI->getModuleClass("mediusers", "functions"));
 require_once($AppUI->getModuleClass("dPhospi", "service"));
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=system&a=access_denied" );
 }
 
 $listPrat = new CMediusers();
