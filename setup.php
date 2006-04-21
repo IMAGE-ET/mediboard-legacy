@@ -32,7 +32,7 @@ class CSetupdPressources {
 	}
 
 	function remove() {
-    db_exec( "DROP TABLE plageressource;" );
+    db_exec( "DROP TABLE plageressource;" ); db_error();
 		return null;
 	}
 
