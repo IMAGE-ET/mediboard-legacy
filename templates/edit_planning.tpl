@@ -17,10 +17,10 @@ function pageMain() {
 <table class="main">
   <tr>
     <th class="title" colspan="2">
-      <a href="index.php?m={$m}&amp;debut={$prec}"><<<</a>
+      <a href="index.php?m={$m}&amp;debut={$prec}">&lt;&lt;&lt;</a>
       semaine du {$debut|date_format:"%A %d %B %Y"}
       <img id="changeDate" src="./images/calendar.gif" title="Choisir la date" alt="calendar" />
-      <a href="index.php?m={$m}&amp;debut={$suiv}">>>></a>
+      <a href="index.php?m={$m}&amp;debut={$suiv}">&gt;&gt;&gt;</a>
     </th>
   </tr>
   <tr>
