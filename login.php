@@ -120,22 +120,11 @@
   
   </form>
 </div>
-<div>
-  
-  <?php
-	$errorMsg = $AppUI->getMsg();
-	if ($errorMsg)
-	    echo "<div class='error'>Error: $errorMsg</div>";
 
-	$phpVersion = phpversion();
-	if ($phpVersion < "4.1")
-		echo "<div class='warning'>Warning: dotproject is NOT SUPPORT for this PHP Version ($phpVersion)</div>";
-
-	if (!function_exists("mysql_pconnect"))
-		echo "<div class='warning'>Warning: PHP may not be compiled with MySQL support.  This will prevent proper operation of dotProject.  Please check you system setup.</div>";
-
+<?php
+if ($errorMsg = $AppUI->getMsg())
+    echo $errorMsg;
 ?>
-</div>
 
 </body>
 </html>
