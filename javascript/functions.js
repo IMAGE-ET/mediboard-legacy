@@ -104,13 +104,14 @@ function flipGroup(id, groupname) {
     tr.style.display = tr.style.display == "table-row" ? "none" : "table-row";
   }
 }
+
 function confirmDeletion(oForm, oOptions, oOptionsAjax) {
   oDefaultOptions = {
     typeName: "",
     objName : "",
     msg     : "Voulez-vous réellement supprimer ",
     ajax    : 0,
-    target  : "",
+    target  : ""
   }
   
   Object.extend(oDefaultOptions, oOptions);

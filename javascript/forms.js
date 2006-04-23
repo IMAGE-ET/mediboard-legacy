@@ -477,7 +477,7 @@ function submitFormAjax(oForm, ioTarget, oOptions) {
   }
 
   var oDefaultOptions = {
-    method : "post",
+    method : "post"
   };
   Object.extend(oDefaultOptions, oOptions);
 
