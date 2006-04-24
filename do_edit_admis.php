@@ -7,9 +7,14 @@
 * @author Romain Ollivier
 */
 
-$mode = dPgetParam($_GET, 'mode', 0);
-$value = dPgetParam($_GET, 'value', 'o');
-$id = dPgetParam($_GET, 'id', 0);
+global $AppUI, $m;
+
+$ajax  = mbGetValueFromPost("ajax", 0);
+$m     = mbGetValueFromPost("m", 0);
+$mode  = mbGetValueFromPost("mode", 0);
+$value = mbGetValueFromPost("value", 'o');
+$id    = mbGetValueFromPost("id", 0);
+
 switch($mode) {
   case 'admis' : {
     if($id) {
@@ -17,6 +22,7 @@ switch($mode) {
               SET admis = '$value'
               WHERE operation_id = '$id'";
       $result = db_exec($sql);
+      db_error();
     }
     break;
   }
@@ -26,6 +32,7 @@ switch($mode) {
               SET saisie = '$value', modifiee = '0'
               WHERE operation_id = '$id'";
       $result = db_exec($sql);
+      db_error();
     }
     break;
   }
@@ -34,9 +41,15 @@ switch($mode) {
     		"\nSET saisie = '$value', modifiee = '0'" .
     		"\nWHERE date_adm = '$id'";
     $result = db_exec($sql);
+    db_error();
     $id = 0;
     break;
   }
+}
+
+if($ajax) {
+  $AppUI->getMsg();
+  exit(0);
 }
 
 $AppUI->redirect("m=$m#adm$id");
