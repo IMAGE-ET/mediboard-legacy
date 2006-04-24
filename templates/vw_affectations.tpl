@@ -424,9 +424,9 @@ function showLegend() {
           {/if}
           <tr class="dates">
             <td class="text" colspan="2">
-              <form name="editChFrm{$curr_affectation->_ref_operation->operation_id}" action="index.php" method="get">
+              <form name="editChFrm{$curr_affectation->_ref_operation->operation_id}" action="index.php" method="post">
               <input type="hidden" name="m" value="{$m}" />
-              <input type="hidden" name="a" value="do_edit_chambre" />
+              <input type="hidden" name="dosql" value="do_edit_chambre" />
               <input type="hidden" name="id" value="{$curr_affectation->_ref_operation->operation_id}" />
               {if $curr_affectation->_ref_operation->chambre == 'o'}
               <input type="hidden" name="value" value="n" />

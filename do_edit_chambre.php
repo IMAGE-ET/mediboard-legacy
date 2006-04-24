@@ -7,15 +7,24 @@
 * @author Romain Ollivier
 */
 
-$value = dPgetParam($_GET, 'value', 'o');
-$id = dPgetParam($_GET, 'id', 0);
-$m = dPgetParam($_GET, 'otherm', dPgetParam($_GET, 'm', ''));
+global $AppUI, $m;
+
+$ajax  = mbGetValueFromPost("ajax", 0);
+$m     = mbGetValueFromPost("otherm", mbGetValueFromPost("m", ""));
+$value = mbGetValueFromPost("value", "o");
+$id    = mbGetValueFromPost("id", 0);
 
 if($id) {
   $sql = "UPDATE operations
           SET chambre = '$value'
           WHERE operation_id = '$id'";
   $result = db_exec($sql);
+  db_error();
+}
+
+if($ajax) {
+  $AppUI->getMsg();
+  exit(0);
 }
 
 $AppUI->redirect("m=$m#adm$id");
