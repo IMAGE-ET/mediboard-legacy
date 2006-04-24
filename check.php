@@ -68,6 +68,22 @@ $package->mandatory = true;
 $package->reasons[] = "Relicats du framework dotProject";
 $packages[] = $package;
 
+$package = new CPearPackage;
+$package->name = "DB";
+$package->description = "Package de manipulation de base de données";
+$package->mandatory = true;
+$package->reasons[] = "Assistant d'installation de Mediboard";
+$package->reasons[] = "A terme, probablement tout le sysytème";
+$packages[] = $package;
+
+$package = new CPearPackage;
+$package->name = "Auth";
+$package->description = "Package d'authentification multi-support";
+$package->mandatory = true;
+$package->reasons[] = "Assistant d'installation de Mediboard";
+$package->reasons[] = "A terme, probablement tout le sysytème";
+$packages[] = $package;
+
 $extensions = array();
 
 $extension = new CPHPExtension;
@@ -151,6 +167,8 @@ $version->reasons[] = "Conception objet plus évoluée";
 $versions[] = $version;
 
 ?>
+
+<?php showHeader(); ?>
 
 <h2>Vérification des prérequis</h2>
 
@@ -313,4 +331,4 @@ $versions[] = $version;
 
 </table>
 
-<?php require_once("footer.php"); ?>
+<?php showFooter(); ?>

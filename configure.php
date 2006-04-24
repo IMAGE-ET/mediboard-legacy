@@ -19,6 +19,8 @@ $dPconfig = $mbConfig->values;
 
 ?>
 
+<?php showHeader(); ?>
+
 <h2>Création du fichier de configuration</h2>
 
 <form name="configure" action="configure.php" method="post">
@@ -246,4 +248,5 @@ $dPconfig = $mbConfig->values;
 </table>
 
 </form>
-<?php require_once("footer.php"); ?>
+
+<?php showFooter(); ?>

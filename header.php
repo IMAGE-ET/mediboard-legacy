@@ -14,7 +14,7 @@ $mbpath = "..";
 require_once("$mbpath/includes/mb_functions.php");
 require_once("$mbpath/classes/chrono.class.php");
 
-$steps = array("check", "install", "configure", "initialize", "feed");
+$steps = array("check", "install", "configure", "initialize", "feed", "finish");
 
 $currentStep = basename($_SERVER["PHP_SELF"], ".php");
 
@@ -27,6 +27,8 @@ $currentStepKey = array_search($currentStep, $steps);
 $chrono = new Chronometer();
 $chrono->start();
 
+function showHeader() {
+  global $currentStepKey, $currentStep, $steps;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -43,4 +45,28 @@ $chrono->start();
 <div class="wizard">
 
 <h1>Installation de Mediboard <?php echo mbVersion(); ?> &mdash; Etape <?php echo $currentStepKey+1; ?>/<?php echo count($steps); ?>  </h1>
+<?php 
+} 
 
+function showFooter() {
+  global $currentStepKey, $currentStep, $steps, $chrono;
+  $chrono->stop();
+  
+  $prevStep = $currentStepKey != 0 ? $steps[$currentStepKey-1] : null;
+  $nextStep = $currentStepKey+1 != count($steps) ? $steps[$currentStepKey+1] : null;
+?>
+<hr />
+<div class="wizard-navigation">
+  <?php if ($prevStep) { ?><a href="<?php echo $prevStep; ?>.php">&lt;&lt; <?php echo $prevStep; ?></a><?php } ?>
+  <?php if ($nextStep) { ?><a href="<?php echo $nextStep; ?>.php"><?php echo $nextStep; ?> &gt;&gt;</a><?php } ?>
+</div>
+
+<div class="generated">
+  Page générée en <?php printf("%.3f", $chrono->total); ?> secondes.
+</div>
+
+</div>
+</body>
+
+</html>
+<?php } ?>

@@ -7,28 +7,16 @@
 * @author Thomas Despoix
 */
 
-require_once("header.php");
-?>
+require_once("checkconfig.php");
 
-<?php if (!@include_once("$mbpath/includes/config.php")) { ?>
-
-<p>
-  Le fichier de configuration n'a pas été validé, merci de revenir à l'étape 
-  précédante.
-</p>
-
-<?php
-  include("footer.php");
-  return;
-}
-?>
-
-<?php 
 require_once("dbconnection.php");
 $dbConfigs = $dPconfig["db"];
 unset($dbConfigs["ccam"]);
 
 ?>
+
+<?php showHeader(); ?>
+
 
 <h2>Test et construction initiale de la base de données</h2>
 
@@ -82,6 +70,9 @@ unset($dbConfigs["ccam"]);
   opérationnelle pour continuer.
 </p>
 
+<?php 
+
+?>
 
 <form action="feed.php" name="feedBase" method="post">  
 
@@ -137,4 +128,4 @@ if (@$_POST["do"]) {
 
 <?php } ?>
 
-<?php require_once("footer.php"); ?>
+<?php showFooter(); ?>

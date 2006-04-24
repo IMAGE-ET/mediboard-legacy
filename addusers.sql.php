@@ -16,7 +16,6 @@ foreach ($dbConfigs as $dbConfigName => $dbConfig) {
   $name = $dbConfig["dbname"];
   $user = $dbConfig["dbuser"];
   $pass = $dbConfig["dbpass"];
-
   
   // Create database
   $queries[] = "CREATE DATABASE `$name` ;";
@@ -43,7 +42,7 @@ foreach ($dbConfigs as $dbConfigName => $dbConfig) {
       "\nIDENTIFIED BY '$pass';";
 
     // Grant user with database permissions
-    $queries[] = "GRANT SELECT , INSERT , UPDATE , DELETE , CREATE , DROP , INDEX , ALTER , CREATE TEMPORARY TABLES" .
+    $queries[] = "GRANT SELECT" .
       "\nON `$name` . *" .
       "\nTO '$user'@'$host';";
   }

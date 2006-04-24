@@ -7,28 +7,16 @@
 * @author Thomas Despoix
 */
 
-require_once("header.php");
-require_once("dbconnection.php");
-
-?>
-
-<?php if (!@include_once("$mbpath/includes/config.php")) { ?>
-
-<p>
-  Le fichier de configuration n'a pas été validé, merci de revenir à l'étape 
-  précédante.
-</p>
-
-<?php
-  include("footer.php");
-  return;
-}
-
+require_once("checkconfig.php");
 $dbConfigs = $dPconfig["db"];
 unset($dbConfigs["ccam"]);
+
+require_once("dbconnection.php");
 require_once("addusers.sql.php");
 
 ?>
+
+<?php showHeader(); ?>
 
 <h2>Initialisation des bases de données</h2>
 
@@ -148,4 +136,4 @@ if (@$_POST["adminhost"]) {
 <textarea cols="50" rows="10"><?php echo join($queries, "\n\n"); ?></textarea>
 <?php } ?>
 
-<?php require_once("footer.php"); ?>
+<?php showFooter(); ?>

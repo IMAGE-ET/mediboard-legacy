@@ -207,6 +207,8 @@ $libraries[] = $library;
 
 ?>
 
+<?php showHeader(); ?>
+
 <h2>Installation des bibliothèques externes</h2>
 
 <p>
@@ -284,4 +286,4 @@ $libraries[] = $library;
 
 </table>
 
-<?php require_once("footer.php"); ?>
+<?php showFooter(); ?>
