@@ -589,6 +589,33 @@ div.loading {
   padding-left: 20px;
 }
 
+div.big-warning {
+  margin: 10px 50px;
+  min-height: 50px;
+  background: #ffd url(icons/48/warning.png) no-repeat 5px center ;
+  border: 1px solid #da0;
+  padding: 5px;
+  padding-left: 60px;
+}
+
+div.big-success {
+  margin: 0 50px;
+  min-height: 50px;
+  background: #efe url(icons/48/success.png) no-repeat 5px center ;
+  border: 1px solid #5a5;
+  padding: 5px;
+  padding-left: 60px;
+}
+
+div.big-error {
+  margin: 0 50px;
+  min-height: 50px;
+  background: #fee url(icons/48/error.png) no-repeat 5px center ;
+  border: 1px solid #a55;
+  padding: 5px;
+  padding-left: 60px;
+}
+
 @media print {
   div.warning,
   div.error,
