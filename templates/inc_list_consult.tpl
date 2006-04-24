@@ -1,12 +1,6 @@
-{literal}
 <script type="text/javascript">
-
-  {/literal}
   regRedirectPopupCal("{$date}", "index.php?m={$m}&tab={$tab}&date=");
-  {literal}
-
 </script>
-{/literal}
 
 <form name="changeView" action="index.php" method="get">
   <input type="hidden" name="m" value="{$m}" />
