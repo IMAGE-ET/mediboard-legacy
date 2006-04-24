@@ -60,6 +60,7 @@ $sql .= "\nWHERE p.permission_user = $user_id ORDER BY p.permission_grant_on, p.
 $res = db_exec($sql);
 
 // Get user perms
+$userPerms = array();
 while ($row = db_fetch_assoc( $res )) {
   // Mediboard version 
   $module = $row["permission_grant_on"];
