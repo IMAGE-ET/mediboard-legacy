@@ -465,11 +465,12 @@ function checkForm(oForm) {
 
 function submitFormAjax(oForm, ioTarget, oOptions) {
   if(oForm.attributes.onsubmit) {
+  if(oForm.attributes.onsubmit.nodeValue) {        // this second test is only for IE
     sEventCode = oForm.attributes.onsubmit.nodeValue;
     sEventCode = sEventCode.replace(/(\W)this(\W)/g, "$1oForm$2");
     if(!eval(sEventCode))
       return;
-  }
+  } }
   urlTarget = new Url;
   var iElement = 0;
   while (oElement = oForm.elements[iElement++]) {
