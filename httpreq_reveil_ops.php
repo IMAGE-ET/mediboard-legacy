@@ -48,7 +48,10 @@ $timing = array();
 
 $listOps = new COperation;
 $where = array();
-$where["plageop_id"] = "IN(".implode(",", $listIdPlages).")";
+if(count($listIdPlages))
+  $where["plageop_id"] = "IN(".implode(",", $listIdPlages).")";
+else
+  $where[] = "1 = 0";
 $where["sortie_bloc"] = "IS NOT NULL";
 $where["entree_reveil"] = "IS NULL";
 $order = "sortie_bloc";
