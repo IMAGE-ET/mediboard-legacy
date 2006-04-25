@@ -11,8 +11,17 @@ function startCCAM() {
 </script>
 
 <h2>Import de la base de données CCAM V2</h2>
-<button id="start_ccam" onclick="startCCAM()">
-  Importer la base CCAM
-</button>
-<div id="ccam">
-</div>
+
+<table class="tbl">
+
+<tr>
+  <th>Action</th>
+  <th>Status</th>
+</tr>
+  
+<tr>
+  <td><button onclick="startCCAM()" >Importer la base de données CCAM</button></td>
+  <td id="ccam"></td>
+</tr>
+
+</table>

@@ -19,9 +19,9 @@ $filedir = "tmp/ccam";
 $tarball = new Archive_Tar($filepath);
 if ($tarball->extract($filedir)) {
   $nbFiles = @count($tarball->listContent());
-  echo "<strong>Done</strong> : extraction de $nbFiles fichier(s)<br />";
+  echo "<div class='message'>Extraction de $nbFiles fichier(s)</div>";
 } else {
-  echo "Erreur, impossible d'extraire l'archive<br />";
+  echo "<div class='error'>Erreur, impossible d'extraire l'archive</div>";
   exit(0);
 }
 
@@ -39,7 +39,7 @@ foreach($sqlLines as $lineNumber => $sqlLine) {
     if (preg_match("/;\s*$/", $sqlLine)) {
       db_exec($query, $base);
       if($msg = db_error($base)) {
-        echo "<strong>une erreur s'est produite</strong> : $msg<br />";
+        echo "<div class='error'>Une erreur s'est produite : $msg</div>";
         exit(0);
       }
       $query = "";
@@ -47,6 +47,6 @@ foreach($sqlLines as $lineNumber => $sqlLine) {
   }
 }
 
-echo "import effectué avec succès<br />";
+echo "<div class='message'>import effectué avec succès</div>";
 
 ?>
