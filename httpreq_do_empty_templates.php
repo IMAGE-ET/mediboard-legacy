@@ -15,11 +15,9 @@ if (!$canEdit) {
 
 $i = 0;
 
-mbTrace(glob("modules/*/templates_c/*.tpl.php"));
-
 foreach(glob("modules/*/templates_c/*.tpl.php") as $tplPath) {
   $i++;
   mbRemovePath($tplPath);
 }
 
-echo "$i fichiers de cache supprimés";
+echo "<div class='message'>$i fichiers de cache supprimés</div>";

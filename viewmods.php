@@ -158,15 +158,26 @@ function doEmptyTemplates() {
 
 </script>
 
-<div>
-  <button type="button" onclick="doEmptyTemplates()">
-    <img src="modules/system/images/cross.png" alt="Vider" />
-    Vider le cache des templates
-  </button>
-</div>
+<h2>Suppression du cache des templates</h2>
 
-<div id="emptyPath">
-</div>
+<table class="tbl">
+
+<tr>
+  <th>Action</th>
+  <th>Status</th>
+</tr>
+  
+<tr>
+  <td>
+    <button onclick="doEmptyTemplates()">
+      <img src="modules/system/images/cross.png" alt="Vider" />
+      Supprimer les templates
+    </button>
+  </td>
+  <td id="emptyPath" />
+</tr>
+
+</table>
 
 </body>
 </html>
