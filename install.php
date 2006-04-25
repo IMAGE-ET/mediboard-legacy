@@ -259,7 +259,7 @@ $libraries[] = $library;
 
 <?php if ($n = CLibrary::countLibraries()) { ?>
 <div class="big-warning">
-  Les bibliothèques de Mediboard sont désormais installées.
+  Les bibliothèques de Mediboard sont actuellement installées.
   <br />Vous pouvez décider de les ré-installer pour les mettre à jour, sachant que les
   anciennes seront supprimées. 
 </div>

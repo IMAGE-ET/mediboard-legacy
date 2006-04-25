@@ -112,6 +112,16 @@ if (@$_POST["changePassword"]) {
 
 <h3>Installer et configurer les modules</h3>
 
+<?php
+if (@$_POST["changePassword"] and $password != "admin") {
+?>
+<div class="big-success">
+  Félicitations !
+  <br />Le framework de Mediboard est maintenant opérationnel.
+</div>
+<?php } ?>
+
+
 <p>
   A cette étape le framework général de Mediboard est fonctionnel. Il est maintenant 
   nécessaire d'installer et paramétrer un par un les modules que vous souhaitez installer.

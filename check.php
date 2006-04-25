@@ -21,6 +21,8 @@ class CPrerequisite {
 }
 
 class CPearPackage extends CPrerequisite {
+  var $status = "stable";
+
   function check() {
     return @include("$this->name.php");
   }
@@ -51,6 +53,7 @@ $package = new CPearPackage;
 $package->name = "Archive/Zip";
 $package->description = "Package de manipulation d'archives au format ZIP";
 $package->mandatory = true;
+$package->status = "beta";
 $package->reasons[] = "Installation de Mediboard";
 $packages[] = $package;
 
@@ -113,7 +116,6 @@ $extensions[] = $extension;
 $extension = new CPHPExtension;
 $extension->name = "DOM";
 $extension->description = "Extension de manipulation de fichier XML avec l'API DOM";
-$extension->mandatory = false;
 $extension->reasons[] = "Import de base de données médecin";
 $extension->reasons[] = "Interopérabilité HPRIM XML, notamment pour le PMSI";
 $extensions[] = $extension;
@@ -121,28 +123,24 @@ $extensions[] = $extension;
 $extension = new CPHPExtension;
 $extension->name = "FTP";
 $extension->description = "Extension d'accès aux serveur FTP";
-$extension->mandatory = false;
 $extension->reasons[] = "Envoi HPRIM vers des serveurs de facturation";
 $extensions[] = $extension;
 
 $extension = new CPHPExtension;
 $extension->name = "BCMath";
 $extension->description = "Extension de calculs sur des nombres de précision arbitraire";
-$extension->mandatory = false;
 $extension->reasons[] = "Validation des codes INSEE et ADELI";
 $extensions[] = $extension;
 
 $extension = new CPHPExtension;
 $extension->name = "CURL";
 $extension->description = "Extension permettant de communiquer avec des serveurs distants, grâce à de nombreux protocoles";
-$extension->mandatory = false;
 $extension->reasons[] = "Connexion au site web du Conseil National l'Ordre des Médecins";
 $extensions[] = $extension;
 
 $extension = new CPHPExtension;
 $extension->name = "GD";
 $extension->description = "Extension de manipulation d'image. \nGD version 2 est recommandée car elle permet un meilleur rendu, grâce à de nombreux protocoles";
-$extension->mandatory = false;
 $extension->reasons[] = "Module de statistiques graphiques";
 $extension->reasons[] = "Fonction d'audiogrammes";
 $extensions[] = $extension;
@@ -160,7 +158,6 @@ $versions[] = $version;
 $version = new CPHPVersion;
 $version->name = "5.1";
 $version->description = "Version de PHP5 récente";
-$version->mandatory = false;
 $version->reasons[] = "Intégration du support XML natif : utilisation pour l'intéropérabilité HPRIM XML'";
 $version->reasons[] = "Intégration de PDO : accès universel et sécurisé aux base de données";
 $version->reasons[] = "Conception objet plus évoluée";
@@ -292,7 +289,7 @@ $versions[] = $version;
 <table class="tbl" >
 
 <tr>
-  <th class="category" colspan="5">Packages PEAR</th>
+  <th class="category" colspan="6">Packages PEAR</th>
 </tr>
 
 <tr>
@@ -300,6 +297,7 @@ $versions[] = $version;
   <th>Description</th>
   <th>Obligatoire ?</th>
   <th>Utilité</th>
+  <th>Statut</th>
   <th>Installation ?</th>
 </tr>
 
@@ -313,12 +311,15 @@ $versions[] = $version;
     <?php } else { ?>
     Recommandé
     <?php } ?>
+  </td>
   <td class="text">
     <ul>
       <?php foreach($prereq->reasons as $reason) { ?>
       <li><?php echo $reason; ?></li>
       <?php } ?>
     </ul>
+  </td>
+  <td><?php echo $prereq->status; ?></td>
   <td>
     <?php if ($prereq->check()) { ?>
     <div class="message">Package installé</div>
@@ -331,4 +332,13 @@ $versions[] = $version;
 
 </table>
 
+<div class="big-info">
+  Certains packages Pear ne sont pas publiés dans un status <strong>stable</strong>, 
+  bien que suffisemment fonctionnels pour Mediboard. 
+  <br />Pour pouvoir installer les packages en statut <strong>beta</strong>, il peut être
+  néccessaire de configurer PEAR avec la commande :
+  
+  <pre>pear config-set preferred_state beta</pre>
+   
+</div>
 <?php showFooter(); ?>
