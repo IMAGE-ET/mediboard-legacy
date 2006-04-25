@@ -7,9 +7,8 @@
 * @author Thomas Despoix
 */
 
-require_once("header.php");
-
-require_once ("$mbpath/classes/mbconfig.class.php");
+require_once("checkauth.php");
+require_once("$mbpath/classes/mbconfig.class.php");
 
 $mbConfig = new CMbConfig;
 $mbConfig->update($_POST);

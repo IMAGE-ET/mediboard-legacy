@@ -27,11 +27,6 @@ foreach ($dbConfigs as $dbConfigName => $dbConfig) {
       "\nON * . * " .
       "\nTO '$user'@'$host'" .
       "\nIDENTIFIED BY '$pass';";
-      
-    // Grant user with database permissions
-    $queries[] = "GRANT SELECT , INSERT , UPDATE , DELETE , CREATE , DROP , INDEX , ALTER , CREATE TEMPORARY TABLES" .
-      "\nON `$name` . *" .
-      "\nTO '$user'@'$host';";
   }
   // Other databases
   else {
@@ -40,12 +35,13 @@ foreach ($dbConfigs as $dbConfigName => $dbConfig) {
       "\nON * . * " .
       "\nTO '$user'@'$host'" .
       "\nIDENTIFIED BY '$pass';";
-
-    // Grant user with database permissions
-    $queries[] = "GRANT SELECT" .
-      "\nON `$name` . *" .
-      "\nTO '$user'@'$host';";
   }
+      
+  // Grant user with database permissions
+  $queries[] = "GRANT SELECT , INSERT , UPDATE , DELETE , CREATE , DROP , INDEX , ALTER , CREATE TEMPORARY TABLES" .
+    "\nON `$name` . *" .
+    "\nTO '$user'@'$host';";
+
 }
 
 ?>

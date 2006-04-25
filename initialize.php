@@ -136,4 +136,46 @@ if (@$_POST["adminhost"]) {
 <textarea cols="50" rows="10"><?php echo join($queries, "\n\n"); ?></textarea>
 <?php } ?>
 
+<h3>Tests de connexion</h3>
+
+<p>
+  Le tableau suivant récapitule les tests de connectivité aux différentes
+  bases de données.
+<p>
+
+<table class="tbl">
+  <tr>
+    <th>Configuration</th>
+    <th>Test de connectivité</th>
+  <tr>
+  <?php 
+  foreach($dbConfigs as $dbConfigName => $dbConfig) { 
+    $dbConnection = new CDBConnection(
+      $dbConfig["dbhost"], 
+      $dbConfig["dbuser"], 
+      $dbConfig["dbpass"], 
+      $dbConfig["dbname"]);
+    $dbConnection->connect();
+  ?>
+  <tr>
+    <td><?php echo $dbConfigName; ?>
+    </td>
+    <td>
+    
+    <?php if (!count($dbConnection->_errors)) { ?>
+      <div class="message">Connexion réussie</div>
+    <?php } else { ?>
+      <div class="error">
+        Echec de connexion
+        <br />
+        <?php echo nl2br(join($dbConnection->_errors, "\n")); ?>
+      </div>
+    <?php } ?>
+
+    </td>
+  </tr>
+  <?php } ?>
+  
+</table>
+
 <?php showFooter(); ?>

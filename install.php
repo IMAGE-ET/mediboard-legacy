@@ -7,7 +7,7 @@
 * @author Thomas Despoix
 */
 
-require_once("header.php");
+require_once("checkauth.php");
 
 require_once ("Archive/Tar.php");
 require_once ("Archive/Zip.php");
@@ -56,6 +56,27 @@ class CLibrary {
   var $nbFiles = 0;
   var $renamer = null;
   var $patches = array();
+  
+  function clearLibraries() {
+    global $mbpath;
+    $libsDir = "$mbpath/lib";
+
+    foreach (glob("$libsDir/*") as $libDir) {
+      mbRemovePath($libDir);
+    }
+  }
+  
+  function countLibraries() {
+    global $mbpath;
+    $libsDir = "$mbpath/lib";
+    $libsCount = 0;
+    
+    foreach (glob("$libsDir/*") as $libDir) {
+      $libsCount++;
+    }
+    
+    return $libsCount;
+  }
   
   function install() {
     global $mbpath;
@@ -221,6 +242,35 @@ $libraries[] = $library;
   informations.
 </p>
 
+<form action="install.php" name="InstallLibs" method="post">  
+
+<table class="form">
+  <tr>
+    <th class="category">Installation des bibliothèques</th>
+  </tr>
+  <tr>
+    <td class="button">
+      <input type="submit" name="do" value="Installer les bibliothèques" />
+    </td>
+  </tr>
+</table>
+
+</form>
+
+<?php if ($n = CLibrary::countLibraries()) { ?>
+<div class="big-warning">
+  Les bibliothèques de Mediboard sont désormais installées.
+  <br />Vous pouvez décider de les ré-installer pour les mettre à jour, sachant que les
+  anciennes seront supprimées. 
+</div>
+<?php } ?>
+
+<?php 
+if (@$_POST["do"]) {
+  CLibrary::clearLibraries();
+?>
+
+
 <table class="tbl">
 
 <tr>
@@ -280,6 +330,8 @@ $libraries[] = $library;
     <?php } ?>
   </td>
 </tr>
+<?php } ?>
+
 <?php } ?>
 
 <?php } ?>

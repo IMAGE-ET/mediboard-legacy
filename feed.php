@@ -8,6 +8,7 @@
 */
 
 require_once("checkconfig.php");
+require_once("checkauth.php");
 
 require_once("dbconnection.php");
 $dbConfigs = $dPconfig["db"];
@@ -17,50 +18,7 @@ unset($dbConfigs["ccam"]);
 
 <?php showHeader(); ?>
 
-
 <h2>Test et construction initiale de la base de données</h2>
-
-<h3>Tests de connexion</h3>
-
-<p>
-  Le tableau suivant récapitule les tests de connectivité aux différentes
-  bases de données.
-<p>
-
-<table class="tbl">
-  <tr>
-    <th>Configuration</th>
-    <th>Test de connectivité</th>
-  <tr>
-  <?php 
-  foreach($dbConfigs as $dbConfigName => $dbConfig) { 
-    $dbConnection = new CDBConnection(
-      $dbConfig["dbhost"], 
-      $dbConfig["dbuser"], 
-      $dbConfig["dbpass"], 
-      $dbConfig["dbname"]);
-    $dbConnection->connect();
-  ?>
-  <tr>
-    <td><?php echo $dbConfigName; ?>
-    </td>
-    <td>
-    
-    <?php if (!count($dbConnection->_errors)) { ?>
-      <div class="message">Connexion réussie</div>
-    <?php } else { ?>
-      <div class="error">
-        Echec de connexion
-        <br />
-        <?php echo nl2br(join($dbConnection->_errors, "\n")); ?>
-      </div>
-    <?php } ?>
-
-    </td>
-  </tr>
-  <?php } ?>
-  
-</table>
 
 <h3>Construction de la base principale</h3>
 
@@ -70,10 +28,6 @@ unset($dbConfigs["ccam"]);
   opérationnelle pour continuer.
 </p>
 
-<?php 
-
-?>
-
 <form action="feed.php" name="feedBase" method="post">  
 
 <table class="form">
@@ -82,7 +36,7 @@ unset($dbConfigs["ccam"]);
   </tr>
   <tr>
     <td class="button">
-      <input type="submit" name="do" value="Construction de la base" />
+      <input type="submit" name="do" value="Construire de la base" />
     </td>
   </tr>
 </table>
@@ -91,7 +45,6 @@ unset($dbConfigs["ccam"]);
 
 <?php 
 if (@$_POST["do"]) {
-  $dbConfig = $dbConfigs["std"];
   $dbConnection = new CDBConnection(
     $dbConfig["dbhost"], 
     $dbConfig["dbuser"], 
@@ -127,5 +80,26 @@ if (@$_POST["do"]) {
 </table>
 
 <?php } ?>
+
+<?php 
+$dbConfig = $dbConfigs["std"];
+$db = new CMbDb(
+  $dbConfig["dbhost"], 
+  $dbConfig["dbuser"], 
+  $dbConfig["dbpass"], 
+  $dbConfig["dbname"]);
+$db->connect();
+if ($db->getOne("SELECT * FROM `users`")) {
+?>
+
+<div class="big-warning">
+  Attention, la base de données principale désormais déjà une structure. La reconstruire 
+  endommagerait probablement les données. 
+  <br />Si vous désirez re-créer une structure il est
+  nécessaire de vider initialement la base avec un gestionnaire adapté.
+</div>
+
+<?php } ?>
+
 
 <?php showFooter(); ?>

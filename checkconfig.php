@@ -9,13 +9,14 @@
 
 require_once("header.php");
 
-if (!@include_once("$mbpath/includes/config.php")) { ?>
+if (!@include_once("$mbpath/includes/config.php")) { 
   showHeader();
+?>
 
-<p>
-  Le fichier de configuration n'a pas été validé, merci de revenir à l'étape 
+<div class="big-error">
+  Erreur : Le fichier de configuration n'a pas été validé, merci de revenir à l'étape 
   précédante.
-</p>
+</div>
 
 <?php
   showFooter();

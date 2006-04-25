@@ -7,9 +7,14 @@
 * @author Thomas Despoix
 */
 
-require_once("Auth.php");
-require_once("checkconfig.php");
+require_once("header.php");
 require_once("mbdb.class.php");
+
+require_once("Auth.php");
+
+if (!@include_once("$mbpath/includes/config.php")) { 
+  return;
+}
 
 function showLogin() {
   showHeader();

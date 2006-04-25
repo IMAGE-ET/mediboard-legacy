@@ -7,12 +7,9 @@
 * @author Thomas Despoix
 */
 
+require_once("checkconfig.php");
+require_once("checkstructure.php");
 require_once("checkauth.php");
-
-if (@$_POST["changePassword"]) {
-  $password = $_POST["password1"];
-}
-
 ?>
 
 <?php showHeader(); ?>
@@ -78,6 +75,40 @@ function checkForm(oForm) {
   </tr>
 
 </table>
+
+</form>
+
+<?php
+if (@$_POST["changePassword"]) {
+  $password = $_POST["password1"];
+  $res = $auth->changePassword("admin", $password);
+?>
+
+<table class="tbl">
+
+<tr>
+  <th>Action</th>
+  <th>Statut</th>
+</tr>
+
+<tr>
+  <td>Créations des bases et des utilisateurs</td>
+  <td>
+    <?php if (!Pear::isError($res)) { ?>
+    <div class="message">Mot de passe modifié</div>
+    <?php } else { ?>
+    <div class="error">
+      Erreur lors du changement de mot de passe
+      <br />
+      <?php echo $res->getMessage(); ?>
+    </div>
+    <?php } ?>
+  </td>
+</tr>
+
+</table>
+
+<?php } ?>
 
 <h3>Installer et configurer les modules</h3>
 
