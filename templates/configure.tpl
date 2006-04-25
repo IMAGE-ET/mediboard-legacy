@@ -151,8 +151,21 @@ function pageMain() {
 </table>
 
 <h2>Import de la base de données des codes INSEE</h2>
-<button id="start_villes" onclick="startINSEE()">
-  Importer les codes INSEE
-</button>
-<div id="INSEE">
-</div>
+
+<table class="tbl">
+
+<tr>
+  <th>Action</th>
+  <th>Status</th>
+</tr>
+  
+<tr>
+  <td>
+    <button onclick="startINSEE()">
+      Importer les codes INSEE
+    </button>
+  </td>
+  <td id="INSEE" />
+</tr>
+
+</table>

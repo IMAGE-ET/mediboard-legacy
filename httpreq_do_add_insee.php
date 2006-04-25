@@ -17,9 +17,9 @@ $filedir = "tmp/insee";
 $tarball = new Archive_Tar($filepath);
 if ($tarball->extract($filedir)) {
   $nbFiles = @count($tarball->listContent());
-  echo "<strong>Done</strong> : extraction de $nbFiles fichiers<br />";
+  echo '<div class="message"><strong>Done</strong> : extraction de '.$nbFiles.' fichiers</div>';
 } else {
-  echo "Erreur, impossible d'extraire l'archive<br />";
+  echo '<div class="error">Erreur, impossible d\'extraire l\'archive<div>';
   exit(0);
 }
 
@@ -48,6 +48,6 @@ $sql = "LOAD DATA LOCAL INFILE '$fileTmpPath'" .
     "\nLINES TERMINATED BY '\r\n'";
 db_exec($sql, $base);
 if(!($msg = db_error($base)))
-  echo "import effectué avec succès<br />";
+  echo '<div class="message">import effectué avec succès</div>';
 else
-  echo "<strong>une erreur s'est produite</strong> : $msg<br />";
+  echo '<div class="error"><strong>une erreur s\'est produite</strong> : $msg</div>';
