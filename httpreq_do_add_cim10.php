@@ -12,6 +12,7 @@ global $AppUI, $canRead, $canEdit, $m;
 require_once("Archive/Tar.php");
 
 set_time_limit(360);
+ini_set("memory_limit", "64M");
 
 $filepath = "modules/dPcim10/base/cim10.tar.gz";
 $filedir = "tmp/cim10";
