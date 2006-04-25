@@ -74,7 +74,7 @@ for (var i = 0; i < aMbCombos.length; i++) {
   FCKToolbarMbCombo.prototype.CreateItems = function( targetSpecialCombo ) {
     for (var i = 0; i < this.options.length; i++) {
       var oOption = this.options[i];
-      this._Combo.AddItem(oOption.item, "<span style='font-size: 70%'>" + oOption.view + "</span>");
+      this._Combo.AddItem(oOption.item, "<span style='font-size: 10px'>" + oOption.view + "</span>");
     }
   }
 
