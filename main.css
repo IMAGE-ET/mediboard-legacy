@@ -209,6 +209,7 @@ table.titleblock td.titlecell {
   font-size: 20px; 
   color: #620;
   width: 100%;
+  padding-bottom: 10px;
 }
 
 /* Bread crumbs block */
