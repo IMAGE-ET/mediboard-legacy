@@ -10,9 +10,18 @@ function startCIM10() {
 {/literal}
 </script>
 
-<h2>Import de la base de données CIM10</h2>
-<button id="start_cim10" onclick="startCIM10()">
-  Importer la base CIM10
-</button>
-<div id="cim10">
-</div>
+<h2>Import de la base de données CCAM V2</h2>
+
+<table class="tbl">
+
+<tr>
+  <th>Action</th>
+  <th>Status</th>
+</tr>
+  
+<tr>
+  <td><button onclick="startCIM10()">Importer la base de données CIM10</button></td>
+  <td id="cim10" />
+</tr>
+
+</table>
