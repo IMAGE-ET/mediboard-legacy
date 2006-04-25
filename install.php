@@ -42,7 +42,6 @@ class CLibraryRenamer {
     $sourceDir = "$libsDir/$this->sourceDir";
     $targetDir = "$libsDir/$this->targetDir";
     assert(is_dir($sourceDir));
-    @mbRemovePath($targetDir);
     return rename($sourceDir, $targetDir);
   }
 }
@@ -196,8 +195,14 @@ $library->url = "http://www.fckeditor.net/";
 $library->fileName = "FCKeditor_2.2.tar.gz";
 $library->description = "Composant Javascript d'édition de texte au format HTML";
 
+$renamer = new CLibraryRenamer;
+$renamer->sourceDir = "FCKeditor";
+$renamer->targetDir = "fckeditor";
+
+$library->renamer = $renamer;
+
 $patch = new CLibraryPatch;
-$patch->dirName = "FCKeditor";
+$patch->dirName = "fckeditor";
 $patch->sourceName = "config.php";
 $patch->targetDir = "editor/filemanager/browser/default/connectors/php";
 
