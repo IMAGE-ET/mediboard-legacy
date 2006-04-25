@@ -90,7 +90,7 @@ function addcm() {
     $id = fgets($file, 3);
     fgets($file, 2);
     $nom = fgets($file, 1024);
-    $sql = "INSERT INTO CM values('$id', '".addslashes($nom)."');";
+    $sql = "INSERT INTO cm values('$id', '".addslashes($nom)."');";
     db_exec($sql, $base);
     if($error = db_error($base)) {
       echo "$error ($sql)<br />";
@@ -387,7 +387,7 @@ function addghm() {
     if(substr($line, -1, 1) == ";")
       $line .= "''";
     $result = explode(";", $line);
-    $sql = "UPDATE GHM SET" .
+    $sql = "UPDATE ghm SET" .
         "\nGHS = '".strtr($result[0], $trans2)."'," .
         "\nborne_basse = '".strtr($result[3], $trans2)."'," .
         "\nborne_haute = '".strtr($result[4], $trans2)."'," .
