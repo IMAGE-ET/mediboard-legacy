@@ -146,6 +146,28 @@ foreach ($modFiles as $v) {
 ?>
 </table>
 
+<hr />
+
+<script type="text/javascript">
+
+function doEmptyTemplates() {
+  var emptyTemplatesUrl = new Url;
+  emptyTemplatesUrl.setModuleAction("system", "httpreq_do_empty_templates");
+  emptyTemplatesUrl.requestUpdate("emptyPath");
+}
+
+</script>
+
+<div>
+  <button type="button" onclick="doEmptyTemplates()">
+    <img src="modules/system/images/cross.png" alt="Vider" />
+    Vider le cache des templates
+  </button>
+</div>
+
+<div id="emptyPath">
+</div>
+
 </body>
 </html>
 
