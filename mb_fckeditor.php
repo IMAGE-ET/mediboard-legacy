@@ -26,7 +26,7 @@ if (($runningUserFilePath != $correctUserFilePath1
 }
 */
 class CTemplateManager {
-  var $editor = "FCKeditor";
+  var $editor = "fckeditor";
   
   var $properties = array();
   var $helpers = array();

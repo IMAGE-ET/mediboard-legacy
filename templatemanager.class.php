@@ -29,7 +29,7 @@ $listType[] = TMT_OPERATION;
 $listType[] = TMT_AUTRE;
 
 class CTemplateManager {
-  var $editor = "FCKeditor";
+  var $editor = "fckeditor";
   
   var $properties = array();
   var $helpers = array();
