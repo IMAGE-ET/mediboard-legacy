@@ -48,7 +48,7 @@ switch($mode) {
 }
 
 if($ajax) {
-  $AppUI->getMsg();
+  echo '<div class="message">Action effectuée</div>';
   exit(0);
 }
 
