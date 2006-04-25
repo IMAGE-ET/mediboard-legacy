@@ -20,9 +20,10 @@ body {
 
 pre {
   border: 1px solid #aaa;
-  padding: 2px;
+  padding: 2px 10px;
   font-family: lucida console;
   font-size: 10px;
+  margin: 2px 10px;
 }
 
 table {
@@ -600,7 +601,7 @@ div.big-warning {
 }
 
 div.big-success {
-  margin: 0 50px;
+  margin: 10px 50px;
   min-height: 50px;
   background: #efe url(icons/48/success.png) no-repeat 5px center ;
   border: 1px solid #5a5;
@@ -608,8 +609,17 @@ div.big-success {
   padding-left: 60px;
 }
 
+div.big-info {
+  margin: 10px 50px;
+  min-height: 50px;
+  background: #eef url(icons/48/info.png) no-repeat 5px center ;
+  border: 1px solid #55a;
+  padding: 5px;
+  padding-left: 60px;
+}
+
 div.big-error {
-  margin: 0 50px;
+  margin: 10px 50px;
   min-height: 50px;
   background: #fee url(icons/48/error.png) no-repeat 5px center ;
   border: 1px solid #a55;
