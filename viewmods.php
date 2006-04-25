@@ -15,9 +15,11 @@ $modules = db_loadList( $sql );
 $modFiles = $AppUI->readDirs( "modules" );
 
 $titleBlock = new CTitleBlock( 'Modules', 'power-management.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=system", "System Admin" );
+//$titleBlock->addCrumb( "?m=system", "System Admin" );
 $titleBlock->show();
 ?>
+
+<h2>Administration des modules</h2>
 
 <table border="0" cellpadding="2" cellspacing="1" width="98%" class="tbl">
 <tr>
@@ -75,10 +77,8 @@ foreach ($modules as $row) {
 // check for upgrades
 
 	$ok = @include_once( "{$AppUI->cfg['root_dir']}/modules/".$row['mod_directory']."/setup.php" );
-	if ( $ok )
-	{
-		if ( $config[ 'mod_version' ] != $row['mod_version'] && $canEdit )
-		{
+	if ( $ok ) {
+		if ( $config[ 'mod_version' ] != $row['mod_version'] && $canEdit ) {
 			$s .= ' | <a class="action" href="'.$query_string . '&amp;cmd=upgrade" onclick="return window.confirm('."'"
 				.$AppUI->_( 'Are you sure?')."'".');" >'.$AppUI->_('upgrade').'</a>';
 		}
@@ -86,11 +86,9 @@ foreach ($modules as $row) {
 
 // check for configuration
 
-	if ( $ok )
-	{
+	if ( $ok ) {
 		//if ( $config[ 'mod_config' ] == true && $canEdit )
-    if ( $canEdit )
-		{
+    if(is_file("modules/".$row['mod_directory']."/configure.php") && $canEdit) {
 			$s .= ' | <a class="action" href="'.$query_string . '&amp;cmd=configure">'.$AppUI->_('configure').'</a>';
 		}
 	}
@@ -145,8 +143,6 @@ foreach ($modFiles as $v) {
 }
 ?>
 </table>
-
-<hr />
 
 <script type="text/javascript">
 
