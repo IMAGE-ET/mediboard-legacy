@@ -102,8 +102,11 @@ function pageMain() {
         </tr>
         
         <tr>
-          <td><a href="index.php?m={$m}&amp;tab={$tab}&amp;codeacte={$codeproc}"><strong>{$codeproc}</strong></a></td>
-          <td>{$textproc}</td>
+          <td>
+            <a href="index.php?m={$m}&amp;tab={$tab}&amp;codeacte={$codeproc}"><strong>{$codeproc}</strong></a>
+            <br />
+            {$textproc}
+          </td>
         </tr>
       </table>
 
