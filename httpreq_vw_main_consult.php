@@ -65,6 +65,6 @@ $smarty = new CSmartyDP;
 
 $smarty->assign('consult', $consult);
 
-$smarty->display('inc_main_consultForm.tpl');
+$smarty->display('inc_main_consultform.tpl');
 
 ?>
