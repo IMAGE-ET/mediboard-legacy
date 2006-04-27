@@ -214,7 +214,7 @@ class CGHM {
       $sql = "SELECT * FROM diagcm WHERE diag = '$this->DP'";
       $result = db_exec($sql, $this->dbghm);
       if(mysql_num_rows($result) == 0) {
-        $this->CM = 0;
+        $this->CM = 100;
       } else {
         $row = db_fetch_array($result);
         $this->CM = $row["CM_id"];

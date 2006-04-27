@@ -16,11 +16,15 @@ $type = mbGetValueFromGet("type");
 $filepath = "modules/dPpmsi/ghm/ghm.tar.gz";
 $filedir = "tmp/ghm";
 
+//Hack pour les accents sous linux
+$alnum = "éèêùàûîôï[:alnum:]";
+$alpha = "éèêùàûîôï[:alpha:]";
+
 //Reconnaissance d'un code Cim10
-$regCim10 = "[[:alpha:]][[:digit:]]{2}[.]?[[:alnum:]\+\*-]*";
+$regCim10 = "[{$alpha}][[:digit:]]{2}[.]?[{$alnum}\+\*-]*";
 
 // Reconnaissance d'un code CCAM
-$regCCAM = "[[:alpha:]]{4}[[:digit:]]{3}";
+$regCCAM = "[{$alpha}]{4}[[:digit:]]{3}";
 
 switch($type) {
   case "extractFiles": extractFiles(); break;  
@@ -53,7 +57,7 @@ function extractFiles() {
  * Fichier texte : ./modules/dPpmsi/ghm/CM.txt
  * Ligne sous la forme "XX Nom du CM" */
 function addcm() {
-  global $AppUI, $regCim10, $regCCAM, $filedir;
+  global $AppUI, $regCim10, $regCCAM, $alnum, $alpha, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   $fileName = "$filedir/CM.txt";
   do_connect($base);
@@ -105,7 +109,7 @@ function addcm() {
 /** Ajout des diagnostics d'entrée dans les CM, valide pour la version 1010
  * Fichier texte : ./modules/dPpmsi/ghm/diagCM.txt */
 function adddiagcm() {
-  global $AppUI, $regCim10, $regCCAM, $filedir;
+  global $AppUI, $regCim10, $regCCAM, $alnum, $alpha, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   $fileName = "$filedir/diagCM.txt";
   do_connect($base);
@@ -158,7 +162,7 @@ function adddiagcm() {
  * "Liste AouD-XXX : nom"
  * "CCAMXXX/Phase Libelle" */
 function addactes() {
-  global $AppUI, $regCim10, $regCCAM, $filedir;
+  global $AppUI, $regCim10, $regCCAM, $alnum, $alpha, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   $fileName = "$filedir/Listes.txt";
   do_connect($base);
@@ -229,7 +233,7 @@ function addactes() {
     if(preg_match("`^CMD ([[:digit:]]{2})`", $line, $cmd)) {
       $curr_cmd = $cmd[1];
       $nCM++;
-    } else if(preg_match("`^Liste ([AD]-[[:digit:]]*) : ([[:alnum:][:space:][:punct:]]*)`", $line, $liste) && $curr_cmd) {
+    } else if(preg_match("`^Liste ([AD]-[[:digit:]]*) : ([{$alnum}[:space:][:punct:]]*)`", $line, $liste) && $curr_cmd) {
       $curr_liste = $liste[1];
       $sql = "INSERT INTO liste VALUES('".$liste[1]."', '".addslashes($liste[2])."')";
       db_exec($sql, $base);
@@ -293,7 +297,7 @@ function addactes() {
 /** Ajout des GHM, valide pour la version 1010
  * Fichier texte : ./modules/dPpmsi/ghm/GHM.txt */
 function addghm() {
-  global $AppUI, $regCim10, $regCCAM, $filedir;
+  global $AppUI, $regCim10, $regCCAM, $alnum, $alpha, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   do_connect($base);
 
@@ -340,10 +344,10 @@ function addghm() {
     if(preg_match("`^CATÉGORIE MAJEURE DE DIAGNOSTIC : ([[:digit:]]{2})`", $line, $cm)) {
       $curr_CM = $cm[1];
       //echo "<strong>Done :</strong> Curr_CM = $curr_CM<br />";
-    } else if(preg_match("`^Groupes ([[:alnum:][:space:][:punct:]]*)`", $line, $groupe)) {
+    } else if(preg_match("`^Groupes ([{$alnum}[:space:][:punct:]]*)`", $line, $groupe)) {
       $curr_group = $groupe[1];
       //echo "<strong>Done :</strong> Curr_groupe = $curr_groupe<br />";
-    } else if(preg_match("`^([[:digit:]]{2}[[:alpha:]][[:digit:]]{2}[[:alpha:]]) ([[:alnum:][:space:][:punct:]]*)`", $line, $GHM)) {
+    } else if(preg_match("`^([[:digit:]]{2}[{$alpha}][[:digit:]]{2}[{$alpha}]) ([{$alnum}[:space:][:punct:]]*)`", $line, $GHM)) {
       $sql = "INSERT INTO ghm" .
           "\nvalues('".addslashes($GHM[1])."', '".addslashes($GHM[2])."'," .
           "\n'".addslashes($curr_group)."', '".addslashes($curr_CM)."'," .
@@ -412,7 +416,7 @@ function addghm() {
  * ./modules/dPpmsi/ghm/cmas.txt
  * ./modules/dPpmsi/ghm/cmasnt.txt */
 function addcma() {
-  global $AppUI, $regCim10, $regCCAM, $filedir;
+  global $AppUI, $regCim10, $regCCAM, $alnum, $alpha, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   do_connect($base);
 
@@ -466,7 +470,7 @@ function addcma() {
 /** Ajout des incompatibilités entre DP - CMA, valide pour la version 1010
  * Fichier texte : ./modules/dPpmsi/ghm/incomp.txt */
 function addincomp() {
-  global $AppUI, $regCim10, $regCCAM, $filedir;
+  global $AppUI, $regCim10, $regCCAM, $alnum, $alpha, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   do_connect($base);
 
@@ -557,7 +561,7 @@ function addincomp() {
  */
 
 function addarbre() {
-  global $AppUI, $regCim10, $regCCAM, $filedir;
+  global $AppUI, $regCim10, $regCCAM, $alnum, $alpha, $filedir;
   $base = $AppUI->cfg['baseGHS'];
   do_connect($base);
 
