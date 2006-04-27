@@ -30,6 +30,7 @@ $tabBox = new CTabBox( "?m=dPstats", "{$AppUI->cfg['root_dir']}/modules/dPstats/
 $tabBox->add( 'vw_activite', 'Activite' );
 $tabBox->add( 'vw_hospitalisation', 'Hospitalisation');
 $tabBox->add( 'vw_bloc', 'Bloc opératoire');
+$tabBox->add( 'vw_time_op', 'Temps opératoires');
 $tabBox->add( 'vw_users', 'Utilisateurs');
 $tabBox->show();
 
