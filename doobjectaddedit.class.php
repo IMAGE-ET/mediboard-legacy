@@ -44,11 +44,19 @@ class CDoObjectAddEdit {
   function doBind() {
     global $AppUI;
     
-    // Object binding
     $this->ajax = mbGetValueFromPost("ajax", 0);
     $this->suppressHeaders = mbGetValueFromPost("suppressHeaders", 0);
     unset($_POST["ajax"]);
     unset($_POST["suppressHeaders"]);
+    
+    //UTF8 issue for Ajax
+    //if($this->ajax) {
+    //  foreach($_POST as $key => $value) {
+    //    $_POST[$key] = utf8_decode($value);
+    //  }
+    //}
+    
+    // Object binding
     $this->_obj = new $this->className();
     if (!$this->_obj->bind( $_POST )) {
       $AppUI->setMsg( $this->_obj->getError(), UI_MSG_ERROR );
