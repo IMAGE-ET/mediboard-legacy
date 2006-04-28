@@ -4,14 +4,27 @@
 	</td>
 </tr>
 </table>
+
+<?php if ($dPconfig['debug']) { ?>
+  <div style="margin: 10px; text-align: center;">
+    Page générée en <?php echo $phpChrono->total; ?> secondes
+ 
+  <?php foreach($dbChronos as $dbConfigName => $dbChrono) { ?>
+    <br />
+    <?php echo $dbChrono->total; ?> secondes prises 
+    par la base de données <strong><?php echo $dbConfigName; ?></strong> en 
+    <?php echo $dbChrono->nbSteps; ?> requêtes SQL.
+  <?php  } ?>
+  </div>
+<?php } ?>
+
 <?php if ($dPconfig['demo_version']) { ?>
 <div style="margin: 10px; float:right">
   <a href="http://www.sourceforge.net/projects/mediboard/" title="Projet Mediboard sur Sourceforge">
     <img src="http://www.sourceforge.net/sflogo.php?group_id=112072&amp;type=2" alt="Sourceforge Project Logo" />
   </a>
 </div>
-  
 <?php } ?>
-
 </body>
+
 </html>
