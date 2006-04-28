@@ -11,7 +11,7 @@
           <th>Acte CCAM:</th>
           <td>
             <input type="text" name="codeCCAM" value="{$codeCCAM}" />
-            (% pour tous)
+            (% pour grouper toutes les interventions)
           </td>
           <th rowspan="2">
             Intervalle:
@@ -51,12 +51,18 @@
       </form>
       <table class="tbl">
         <tr>
-          <th>Praticien</th>
-          <th>CCAM</th>
-          <th>Nombre d'interventions</th>
-          <th>Estimation de durée</th>
-          <th>Occupation moyenne de salle</th>
-          <th>Durée moyenne d'intervention</th>
+          <th rowspan="2">Praticien</th>
+          <th rowspan="2">CCAM</th>
+          <th rowspan="2">Nombre d'interventions</th>
+          <th rowspan="2">Estimation de durée</th>
+          <th colspan="2">Occupation de salle</th>
+          <th colspan="2">Durée d'intervention</th>
+        </tr>
+        <tr>
+          <th>Moyenne</th>
+          <th>Ecart-type</th>
+          <th>Moyenne</th>
+          <th>Ecart-type</th>
         </tr>
         {foreach from=$listOps item=curr_op}
         <tr>
@@ -72,14 +78,10 @@
           {/if}
             {$curr_op.estimation|date_format:"%Hh%M"}
           </td>
-          <td>
-            {$curr_op.duree_bloc|date_format:"%Hh%M"}
-            <i>(écart-type : {$curr_op.ecart_bloc|date_format:"%Hh%M"})</i>
-          </td>
-          <td>
-            {$curr_op.duree_operation|date_format:"%Hh%M"}
-            <i>(écart-type : {$curr_op.ecart_operation|date_format:"%Hh%M"})</i>
-          </td>
+          <td>{$curr_op.duree_bloc|date_format:"%Hh%M"}</td>
+          <td><i>{$curr_op.ecart_bloc|date_format:"%Hh%M"}</i></td>
+          <td>{$curr_op.duree_operation|date_format:"%Hh%M"}</td>
+          <td><i>{$curr_op.ecart_operation|date_format:"%Hh%M"}</i></td>
         </tr>
         {/foreach}
         {if $total.total}
@@ -95,14 +97,10 @@
           {/if}
             <strong>{$total.estimation|date_format:"%Hh%M"}</strong>
           </td>
-          <td>
-            <strong>{$total.duree_bloc|date_format:"%Hh%M"}</strong>
-            <i>(écart-type : {$total.ecart_bloc|date_format:"%Hh%M"})</i>
-          </td>
-          <td>
-            <strong>{$total.duree_operation|date_format:"%Hh%M"}</strong>
-            <i>(écart-type : {$total.ecart_operation|date_format:"%Hh%M"})</i>
-          </td>
+          <td><strong>{$total.duree_bloc|date_format:"%Hh%M"}</strong></td>
+          <td><strong><i>{$total.ecart_bloc|date_format:"%Hh%M"}</i></strong></td>
+          <td><strong>{$total.duree_operation|date_format:"%Hh%M"}</strong></td>
+          <td><strong><i>{$total.ecart_operation|date_format:"%Hh%M"}</i></strong></td>
         </tr>
         {/if}
       </table>
