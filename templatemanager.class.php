@@ -153,9 +153,9 @@ class CTemplateManager {
       case TMT_HOSPITALISATION: $object = new COperation   ; break;
     }
     
-    if(isset($object)) {
+    if (isset($object)) {
       $object->loadAides($user_id);
-      if (is_array($helpers = $object->_aides["compte_rendu"])) {
+      if (is_array($helpers = @$object->_aides["compte_rendu"])) {
         // Caution, keys and values have to been flipped out
         $this->helpers = array_flip($helpers);
       }
