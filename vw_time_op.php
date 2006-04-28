@@ -48,6 +48,26 @@ $sql .= "\nGROUP BY operations.chir_id, ccam" .
 
 $listOps = db_loadList($sql);
 
+$sql = "SELECT" .
+       "\n'1' AS groupall," .
+       "\nCOUNT(operations.operation_id) AS total," .
+       "\nSEC_TO_TIME(AVG(TIME_TO_SEC(operations.sortie_bloc)-TIME_TO_SEC(operations.entree_bloc))) as duree_bloc," .
+       "\nSEC_TO_TIME(STD(TIME_TO_SEC(operations.sortie_bloc)-TIME_TO_SEC(operations.entree_bloc))) as ecart_bloc," .
+       "\nSEC_TO_TIME(AVG(TIME_TO_SEC(operations.fin_op)-TIME_TO_SEC(operations.debut_op))) as duree_operation," .
+       "\nSEC_TO_TIME(STD(TIME_TO_SEC(operations.fin_op)-TIME_TO_SEC(operations.debut_op))) as ecart_operation".
+       "\nFROM operations" .
+       "\nWHERE operations.entree_bloc IS NOT NULL" .
+       "\nAND operations.debut_op IS NOT NULL" .
+       "\nAND operations.fin_op IS NOT NULL" .
+       "\nAND operations.sortie_bloc IS NOT NULL";
+if($prat_id)
+  $sql .= "\nAND operations.chir_id = '$prat_id'";
+if($codeCCAM)
+  $sql .= "\nAND operations.codes_ccam LIKE '%$codeCCAM%'";
+$sql .= "\nGROUP BY groupall";
+
+db_loadHash($sql, $total);
+
 // Création du template
 require_once( $AppUI->getSystemClass('smartydp'));
 $smarty = new CSmartyDP;
@@ -55,7 +75,8 @@ $smarty = new CSmartyDP;
 $smarty->assign('prat_id'   , $prat_id);
 $smarty->assign('codeCCAM'  , $codeCCAM);
 $smarty->assign('listPrats' , $listPrats);
-$smarty->assign('listOps', $listOps);
+$smarty->assign('listOps'   , $listOps);
+$smarty->assign('total'     , $total);
 
 $smarty->display('vw_time_op.tpl');
 

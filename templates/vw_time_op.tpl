@@ -45,14 +45,28 @@
           <td>{$curr_op.total}</td>
           <td>
             {$curr_op.duree_bloc|date_format:"%Hh%M"}
-            (écart : {$curr_op.ecart_bloc|date_format:"%Hh%M"})
+            <i>(écart-type : {$curr_op.ecart_bloc|date_format:"%Hh%M"})</i>
           </td>
           <td>
             {$curr_op.duree_operation|date_format:"%Hh%M"}
-            (écart : {$curr_op.ecart_operation|date_format:"%Hh%M"})
+            <i>(écart-type : {$curr_op.ecart_operation|date_format:"%Hh%M"})</i>
           </td>
         </tr>
         {/foreach}
+        {if $total.total}
+        <tr>
+          <th colspan="2">Total</th>
+          <td>{$total.total}</td>
+          <td>
+            {$total.duree_bloc|date_format:"%Hh%M"}
+            <i>(écart-type : {$total.ecart_bloc|date_format:"%Hh%M"})</i>
+          </td>
+          <td>
+            {$total.duree_operation|date_format:"%Hh%M"}
+            <i>(écart-type : {$total.ecart_operation|date_format:"%Hh%M"})</i>
+          </td>
+        </tr>
+        {/if}
       </table>
     </td>
   </tr>
