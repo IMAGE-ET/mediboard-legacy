@@ -62,7 +62,7 @@ Url.prototype.requestUpdate = function(ioTarget, oOptions) {
     method: "get",
     parameters:  this.aParams.join("&"), 
     asynchronous: true,
-    evalScripts: true
+    evalScripts: true,
   };
 
   Object.extend(oDefaultOptions, oOptions);
@@ -82,7 +82,7 @@ Url.prototype.periodicalUpdate = function(ioTarget, oOptions) {
     method: "get",
     parameters:  this.aParams.join("&"), 
     asynchronous: true,
-    evalScripts: true
+    evalScripts: true,
   };
 
   Object.extend(oDefaultOptions, oOptions);

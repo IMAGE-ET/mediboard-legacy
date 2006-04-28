@@ -12,7 +12,7 @@
 
 function db_connect( $dbid = "std", $host="localhost", $dbname, $user="root", $passwd="", $port="3306", $persist=false ) {
   global $links_db;
-  global $dbChrono;
+  global $dbChronos;
   if(!isset($links_db[$dbid])) {
     function_exists( "mysql_connect" )
       or  die( "FATAL ERROR: MySQL support not available.  Please check your configuration." );
@@ -32,7 +32,7 @@ function db_connect( $dbid = "std", $host="localhost", $dbname, $user="root", $p
       die( "FATAL ERROR: Database name not supplied<br />(connection to database server succesful)" );
     }
 
-    $dbChrono[$dbid] = new Chronometer;
+    $dbChronos[$dbid] = new Chronometer;
   }
 }
 
@@ -58,14 +58,14 @@ function db_insert_id($dbid = "std") {
 }
 
 function db_exec($sql, $dbid = "std") {
-  global $dbChrono;
+  global $dbChronos;
   global $links_db;
   if(!isset($links_db[$dbid]))
     die( "FATAL ERROR: link to $dbid not found." );
 
-  $dbChrono[$dbid]->start();
+  $dbChronos[$dbid]->start();
 	$cur = mysql_query( $sql, $links_db[$dbid] );
-  $dbChrono[$dbid]->stop();
+  $dbChronos[$dbid]->stop();
 
 	if( !$cur ) {
 		return false;
