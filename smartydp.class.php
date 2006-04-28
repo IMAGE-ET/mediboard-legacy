@@ -59,7 +59,7 @@ class CSmartyDP extends Smarty {
    * Standard data assignment
    */
   function CSmartyDP() {
-    global $AppUI, $dbChrono, $dPconfig, $canRead, $canEdit, $m, $a, $tab, $dialog, $mb_version_build;
+    global $AppUI, $dbChronos, $dPconfig, $canRead, $canEdit, $m, $a, $tab, $dialog, $mb_version_build;
     $root = $AppUI->getConfig( 'root_dir' );
     
     // Directories initialisation
@@ -70,11 +70,11 @@ class CSmartyDP extends Smarty {
     
     // Debugginf directives
     $this->debug_tpl = "$root/classes/smarty_debug.tpl";
-    $this->debugging = $dPconfig['debug'];
+    $this->debugging = false;
 
     // Standard data assignment
     $this->assign("app", $AppUI);
-    $this->assign("dbChrono", $dbChrono);
+    $this->assign("dbChronos", $dbChronos);
     $this->assign("user", $AppUI->user_id); // shouldn't be necessary
     $this->assign("canEdit", $canEdit);
     $this->assign("canRead", $canRead);
