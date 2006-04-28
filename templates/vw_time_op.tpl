@@ -43,8 +43,14 @@
           <td>Dr. {$curr_op.user_last_name} {$curr_op.user_first_name}</td>
           <td>{$curr_op.ccam}</td>
           <td>{$curr_op.total}</td>
-          <td>{$curr_op.duree_bloc|date_format:"%Hh%M"}</td>
-          <td>{$curr_op.duree_operation|date_format:"%Hh%M"}</td>
+          <td>
+            {$curr_op.duree_bloc|date_format:"%Hh%M"}
+            (écart : {$curr_op.ecart_bloc|date_format:"%Hh%M"})
+          </td>
+          <td>
+            {$curr_op.duree_operation|date_format:"%Hh%M"}
+            (écart : {$curr_op.ecart_operation|date_format:"%Hh%M"})
+          </td>
         </tr>
         {/foreach}
       </table>
