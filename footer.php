@@ -1,8 +1,3 @@
 <?php
-	echo $AppUI->getMsg();
+require("style/mediboard/footer.php");
 ?>
-	</td>
-</tr>
-</table>
-</body>
-</html>
