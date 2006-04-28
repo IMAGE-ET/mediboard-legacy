@@ -56,28 +56,36 @@ if ($spe) {
 $addChir = $chir ? " AND chir_id = '$chir'" : null;
 
 // On sort les chirurgiens de chaque jour
-foreach($listDays as $key => $value) {
+foreach($listDays as $keyDay => $valueDay) {
+  $day =& $listDays[$keyDay];
   $sql = "SELECT chir_id, user_last_name, user_first_name" .
   		"\nFROM operations" .
   		"\nLEFT JOIN users" .
   		"\nON users.user_id = operations.chir_id" .
-  		"\nWHERE date_adm = '".$value["date_adm"]."'" .
+  		"\nWHERE date_adm = '".$day["date_adm"]."'" .
       "\nAND $whereImploded";
-  if($spe)
+
+  if ($spe) {
     $sql .= $addSpe;
-  if($chir)
+  }
+
+  if ($chir) {
     $sql .= $addChir;
+  }
+  
   $sql .= " GROUP BY chir_id" .
   		" ORDER BY chir_id";
-  $listDays[$key]["listChirs"] = db_loadlist($sql);
-  foreach($listDays[$key]["listChirs"] as $key2 => $value2) {
+      
+  $day["listChirs"] = db_loadlist($sql);
+  foreach($day["listChirs"] as $keyChir => $valueChir) {
+    $dayChir =& $day["listChirs"][$keyChir];
   	$listAdm = new COperation;
   	$ljoin = array();
   	$ljoin["patients"] = "operations.pat_id = patients.patient_id";
   	$where = array();
   	$where["annulee"] = "= 0";
-  	$where["chir_id"] = "= '". $value2["chir_id"] ."'";
-  	$where["date_adm"] = "= '".$value["date_adm"]."'";
+  	$where["chir_id"] = "= '". $valueChir["chir_id"] ."'";
+  	$where["date_adm"] = "= '".$day["date_adm"]."'";
     if($type)
       $where["type_adm"] = "'$type'";
     if($conv) {
@@ -92,34 +100,34 @@ foreach($listDays as $key => $value) {
     else
       $order = "patients.nom, patients.prenom, operations.chir_id, operations.time_adm";
   	$listAdm = $listAdm->loadList($where, $order, null, null, $ljoin);
-    $listDays[$key]["listChirs"][$key2]["admissions"] = array();
-    foreach($listAdm as $key3 => $value3) {
-      $listAdm[$key3]->loadRefs();
-      $listAdm[$key3]->_first_aff = $listAdm[$key3]->getFirstAffectation();
-      $listAdm[$key3]->_last_aff = $listAdm[$key3]->getLastAffectation();
-      if($listAdm[$key3]->_first_aff->affectation_id) {
-        $listAdm[$key3]->_first_aff->loadRefsFwd();
-        $listAdm[$key3]->_first_aff->_ref_lit->loadRefsFwd();
-        $listAdm[$key3]->_first_aff->_ref_lit->_ref_chambre->loadRefsFwd();
+    $dayChir["admissions"] = array();
+    
+    foreach ($listAdm as $keyAdm => $valueAdm) {
+      $operation =& $listAdm[$keyAdm];
+      $operation->loadRefs();
+      
+      $chambre = null;
+      $first_affectation =& $operation->_ref_first_affectation;
+      if ($first_affectation->affectation_id) {
+        $first_affectation->loadRefsFwd();
+        $lit =& $first_affectation->_ref_lit;
+        $lit->loadRefsFwd();
+        $chambre =& $lit->_ref_chambre;
+        $chambre->loadRefsFwd();
       }
-      if($listAdm[$key3]->_last_aff->affectation_id) {
-        $listAdm[$key3]->_last_aff->loadRefsFwd();
-        $listAdm[$key3]->_last_aff->_ref_lit->loadRefsFwd();
-        $listAdm[$key3]->_last_aff->_ref_lit->_ref_chambre->loadRefsFwd();
-      }
-      if(!$service || ($listAdm[$key3]->_first_aff->_ref_lit->_ref_chambre->_ref_service->service_id == $service)) {
-        $listDays[$key]["listChirs"][$key2]["admissions"][$key3] = $listAdm[$key3];
+      
+      if (!$service || ($chambre && $chambre->_ref_service->service_id == $service)) {
+        $dayChir["admissions"][$keyAdm] = $operation;
       }
     }
-    $total += count($listDays[$key]["listChirs"][$key2]["admissions"]);
+    
+    $total += count($dayChir["admissions"]);
   }
 }
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
-
-$smarty->debugging = false;
 
 $smarty->assign('deb', $deb);
 $smarty->assign('fin', $fin);

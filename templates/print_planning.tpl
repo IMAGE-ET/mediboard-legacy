@@ -67,10 +67,10 @@ function printAdmission(id) {
       <td class="text">{$curr_adm->examen|nl2br}</td>
       <td class="text">{$curr_adm->convalescence|nl2br}</td>
       <td class="text">
-        {if $curr_adm->_first_aff->affectation_id}
-        {$curr_adm->_first_aff->_ref_lit->_ref_chambre->_ref_service->nom}
-        - {$curr_adm->_first_aff->_ref_lit->_ref_chambre->nom}
-        - {$curr_adm->_first_aff->_ref_lit->nom}
+        {if $curr_adm->_ref_first_affectation->affectation_id}
+        {$curr_adm->_ref_first_affectation->_ref_lit->_ref_chambre->_ref_service->nom}
+        - {$curr_adm->_ref_first_affectation->_ref_lit->_ref_chambre->nom}
+        - {$curr_adm->_ref_first_affectation->_ref_lit->nom}
         {else}
         Non placé
         {/if}
