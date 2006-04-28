@@ -52,21 +52,27 @@ function editDocument(compte_rendu_id) {
   url.popup(700, 700, "Document");
 }
 
-function createDocument(modele_id, consultation_id) {
-  var url = new Url;
-  url.setModuleAction("dPcompteRendu", "edit_compte_rendu");
-  url.addParam("modele_id", modele_id);
-  url.addParam("object_id", consultation_id);
-  url.popup(700, 700, "Document");
+function createDocument(oSelect, consultation_id) {
+  if (modele_id = oSelect.value) {
+    var url = new Url;
+    url.setModuleAction("dPcompteRendu", "edit_compte_rendu");
+    url.addParam("modele_id", modele_id);
+    url.addParam("object_id", consultation_id);
+    url.popup(700, 700, "Document");
+  }
+  
+  oSelect.value = "";
 }
 
-function newExam(sAction, consultation_id) {
-  if (sAction) {
+function newExam(oSelect, consultation_id) {
+  if (sAction = oSelect.value) {
     var url = new Url;
     url.setModuleAction("dPcabinet", sAction);
     url.addParam("consultation_id", consultation_id);
-    url.popup(900, 600, "Examen");  
+    url.popup(900, 600, "Examen"); 
   }
+
+  oSelect.value = ""; 
 }
 
 function reloadFdr() {
@@ -93,7 +99,7 @@ function submitFdr(oForm) {
     <td class="text">
       <form name="newExamen" action="?m=dPcabinet">
         <label for="type_examen" title="Type d'examen complémentaire à effectuer"><strong>Examens complémentaires :</strong></label>
-        <select name="type_examen" onchange="newExam(this.value, {$consult->consultation_id})">
+        <select name="type_examen" onchange="newExam(this, {$consult->consultation_id})">
           <option value="">&mdash; Choisir un type d'examen</option>
           <option value="exam_audio">Audiogramme</option>
         </select>
@@ -105,7 +111,7 @@ function submitFdr(oForm) {
           <form name="uploadFrm{$curr_file->file_id}" action="?m=dPcabinet" enctype="multipart/form-data" method="post" onsubmit="checkForm(this)">
             <a href="mbfileviewer.php?file_id={$curr_file->file_id}">{$curr_file->file_name}</a>
             ({$curr_file->_file_size})
-            <input type="hidden" name="m" value="dPCabinet" />
+            <input type="hidden" name="m" value="dPcabinet" />
             <input type="hidden" name="dosql" value="do_file_aed" />
             <input type="hidden" name="del" value="1" />
             <input type="hidden" name="file_id" value="{$curr_file->file_id}" />
@@ -120,7 +126,7 @@ function submitFdr(oForm) {
         {/foreach}
       </ul>
       <form name="uploadFrm" action="?m=dPcabinet" enctype="multipart/form-data" method="post" onsubmit="checkForm(this)">
-        <input type="hidden" name="m" value="dPCabinet" />
+        <input type="hidden" name="m" value="dPcabinet" />
         <input type="hidden" name="dosql" value="do_file_aed" />
         <input type="hidden" name="del" value="0" />
         <input type="hidden" name="file_consultation" value="{$consult->consultation_id}" />
@@ -157,7 +163,7 @@ function submitFdr(oForm) {
     <table class="form">
       <tr>
         <td>
-          <select name="_choix_modele" onchange="if (this.value) createDocument(this.value, {$consult->consultation_id})">
+          <select name="_choix_modele" onchange="createDocument(this, {$consult->consultation_id})">
             <option value="">&mdash; Choisir un modèle</option>
             {if $listModelePrat|@count}
             <optgroup label="Modèles du praticien">
