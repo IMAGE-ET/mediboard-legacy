@@ -56,7 +56,7 @@ function affNaissance() {
               <input type="checkbox" name="check_naissance" onclick="affNaissance()" {if $naissance == "on"}checked="checked"{/if}/>
               <input type="hidden" name="naissance" {if $naissance == "on"}value="on"{else}value="off"{/if} />
               Date de naissance:
-            </lable>
+            </label>
           </th>
           <td>
             {if $naissance == "on"}
