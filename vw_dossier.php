@@ -35,6 +35,7 @@ if($patient->patient_id) {
   }
   foreach($patient->_ref_operations as $key => $value) {
     $patient->_ref_operations[$key]->loadRefs();
+    $patient->_ref_operations[$key]->loadRefGHM();
     foreach($patient->_ref_operations[$key]->_ref_actes_ccam as $key2 => $value2) {
       $patient->_ref_operations[$key]->_ref_actes_ccam[$key2]->loadRefsFwd();
     }

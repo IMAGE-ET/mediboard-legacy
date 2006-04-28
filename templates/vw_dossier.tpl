@@ -192,7 +192,9 @@ function exporterDossier(operation_id) {
         </tr>
         {/if}
         <tr class="op{$curr_op->operation_id}">
-          <th colspan="4" class="category">Intervention</th>
+          <th colspan="4" class="category">
+            Intervention
+          </th>
         </tr>
         <tr class="op{$curr_op->operation_id}">
           <th>Date</th>
@@ -362,6 +364,40 @@ function exporterDossier(operation_id) {
         </tr>
         <tr class="op{$curr_op->operation_id}">
           <td class="text" id="hprim_export{$curr_op->operation_id}" colspan="4">
+          </td>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <th class="category" colspan="4">
+            Groupage
+            <a href="index.php?m=dPpmsi&amp;tab=labo_groupage&amp;operation_id={$curr_op->operation_id}">
+              (envoyer vers le labo)
+            </a>
+          </th>
+        </tr>
+        <tr class="op{$curr_op->operation_id}">
+          <td colspan="4">
+            <form name="editFrm" action="?m={$m}" method="post">
+            <input type="hidden" name="m" value="dPplanningOp" />
+            <input type="hidden" name="dosql" value="do_planning_aed" />
+            <input type="hidden" name="del" value="0" />
+            <input type="hidden" name="operation_id" value="{$curr_op->operation_id}" />
+            Diagnostic principal :
+            <input type="text" name="CIM10_code" value="{$curr_op->CIM10_code}"/>
+            <button type="submit">Modifier</button>
+            </form>
+            {if $curr_op->_ref_GHM->CM}
+            <strong>Catégorie majeure CM{$curr_op->_ref_GHM->CM}</strong> : {$curr_op->_ref_GHM->CM_nom}
+            <br />
+            <strong>GHM</strong> : {$curr_op->_ref_GHM->GHM} ({$curr_op->_ref_GHM->tarif_2006} €)
+            <br />
+            {$curr_op->_ref_GHM->GHM_nom}
+            <br />
+            <i>Appartenance aux groupes {$curr_op->_ref_GHM->GHM_groupe}</i>
+            <br />
+            <strong>Bornes d'hospitalisation</strong> : de {$GHM->borne_basse} jour(s) à {$GHM->borne_haute} jours
+            {else}
+            <strong>{$curr_op->_ref_GHM->GHM}</strong>
+            {/if}
           </td>
         </tr>
         

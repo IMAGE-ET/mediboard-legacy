@@ -7,6 +7,8 @@
  * @author Romain Ollivier
  */
 
+require_once( $AppUI->getModuleClass('dPplanningOp', 'planning') );
+
 class CGHM {
   // Variables de structure 
   
@@ -61,6 +63,34 @@ class CGHM {
     $this->type_hospi = "comp";
     $this->chemin = "";
     $this->chrono = new chronometer();
+  }
+  
+  // Liaison à une intervention
+  function bindOp($operation_id) {
+    $operation = new COperation;
+    $operation->load($operation_id);
+    $operation->loadRefs();
+    // Infos patient
+    $this->age = $operation->_ref_pat->_age."a";
+    $operation->_ref_pat->sexe == "m" ? $this->sexe = "Masculin" : $this->sexe = "Féminin";
+    // Infos hospi
+    $this->type_hospi = $operation->type_adm;
+    $this->duree = $operation->duree_hospi;
+    $this->motif = "hospi";
+    $this->destination = "MCO";
+    // Infos codage
+    if(strlen($operation->CIM10_code) > 3)
+      $this->DP = substr($operation->CIM10_code, 0, 3).".".substr($operation->CIM10_code, 3);
+    else
+      $this->DP = $operation->CIM10_code;
+    $this->actes = array();
+    foreach($operation->_ref_actes_ccam as $acte) {
+      $this->actes[] = array(
+                         "code" => $acte->code_acte,
+                         "phase" => $acte->code_phase,
+                         "activite" => $acte->code_activite
+                       );
+    }
   }
 
   // Vérification de l'appartenance à une liste
@@ -326,6 +356,10 @@ class CGHM {
   function getGHM() {
     $this->chrono->start();
     $this->GHM = null;
+    if(!$this->DP) {
+      $this->GHM = "Diagnostic principal manquant";
+      return;
+    }
     foreach($this->DASs as $key => $DAS) {
       $sql = "SELECT * FROM incomp WHERE CIM1 = '$DAS' AND CIM2 = '".$this->DP."'";
       $result = db_exec($sql, $this->dbghm);

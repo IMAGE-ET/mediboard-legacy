@@ -132,8 +132,12 @@
             <br />
             <i>Appartenance aux groupes {$GHM->GHM_groupe}</i>
             <br />
+            <strong>Bornes d'hospitalisation</strong> : de {$GHM->borne_basse} jour(s) à {$GHM->borne_haute} jours
+            <br />
             <strong>Chemin :</strong> <br />
             {$GHM->chemin}
+            {else}
+            <strong>{$GHM->GHM}</strong>
             {/if}
           </td>
         </tr>
