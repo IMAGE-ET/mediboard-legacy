@@ -18,6 +18,7 @@ require_once( $AppUI->getModuleClass('dPcabinet'   , 'files'        ) );
 require_once( $AppUI->getModuleClass('dPhospi'     , 'affectation'  ) );
 require_once( $AppUI->getModuleClass('dPplanningOp', 'pathologie'   ) );
 require_once( $AppUI->getModuleClass('dPsalleOp'   , 'acteccam'     ) );
+require_once( $AppUI->getModuleClass('dPpmsi'      , 'GHM'          ) );
 
 class COperation extends CMbObject {
   // DB Table key
@@ -107,6 +108,7 @@ class COperation extends CMbObject {
   var $_ref_last_affectation = null; 
   var $_ref_actes_ccam = array(); 
   var $_ref_documents = array();
+  var $_ref_GHM = array();
   
   // External references
   var $_ext_codes_ccam = null;
@@ -443,6 +445,11 @@ class COperation extends CMbObject {
     $this->_ref_documents = $this->_ref_documents->loadList($where, $order);
   }
   
+  function loadRefGHM () {
+    $this->_ref_GHM = new CGHM;
+    $this->_ref_GHM->bindOp($this->operation_id);
+    $this->_ref_GHM->getGHM();
+  }
   
   function loadPossibleActes () {
     $depassement_affecte = false;
