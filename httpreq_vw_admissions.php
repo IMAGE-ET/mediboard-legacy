@@ -47,6 +47,7 @@ $today = $today->loadList($where, $order, null, null, $ljoin);
 foreach ($today as $keyOp => $valueOp) {
   $operation =& $today[$keyOp];
   $operation->loadRefsFwd();
+  $operation->loadRefsAffectations();
   $affectation =& $operation->_ref_first_affectation;
   if ($affectation->affectation_id) {
     $affectation->loadRefsFwd();
