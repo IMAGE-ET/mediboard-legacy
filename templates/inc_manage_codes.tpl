@@ -65,7 +65,7 @@ function delCode() {
 </script>
 {/literal}
 
-<form name="manageCodes" action="?m={$m}" method="post">
+<form name="manageCodes" action="?m={$m}" method="post" onsubmit="return false;">
   <input type="hidden" name="m" value="dPplanningOp" />
   <input type="hidden" name="dosql" value="do_planning_aed" />
   <input type="hidden" name="operation_id" value="{$selOp->operation_id}" />
