@@ -289,13 +289,11 @@ class COperation extends CMbObject {
       }
       $this->codes_ccam = implode("|", $codes_ccam);
     }
-    
   	if ($this->_hour_anesth !== null and $this->_min_anesth !== null) {
       $this->time_anesth = 
         $this->_hour_anesth.":".
         $this->_min_anesth.":00";
   	}
-    
     if ($this->_lu_type_anesth) {
       $anesth = dPgetSysVal("AnesthType");
       foreach($anesth as $key => $value) {
@@ -303,28 +301,36 @@ class COperation extends CMbObject {
           $this->type_anesth = $key;
       }
     }
-
     if ($this->_hour_adm !== null and $this->_min_adm !== null) {
       $this->time_adm = 
         $this->_hour_adm.":".
         $this->_min_adm.":00";
     }
-
     if ($this->_hour_op !== null and $this->_min_op !== null) {
       $this->temp_operation = 
         $this->_hour_op.":".
         $this->_min_op.":00";
     }
-    
   }
-  
+
   function store() {
     if ($msg = parent::store())
       return $msg;
 
+    // Cas d'une annulation
     if ($this->annulee) {
       $this->reorder();
       $this->delAff();
+    }
+    
+    // Vérification qu'on a pas des actes CCAM codés obsolètes
+    if($this->codes_ccam) {
+      $this->loadRefsActesCCAM();
+      foreach($this->_ref_actes_ccam as $keyActe => $acte) {
+        if(strpos(strtoupper($this->codes_ccam), strtoupper($acte->code_acte)) === false) {
+          $this->_ref_actes_ccam[$keyActe]->delete();
+        }
+      }
     }
     
     // Cas de la création dans une plage de spécialité
@@ -341,7 +347,7 @@ class COperation extends CMbObject {
     // Cas ou on a une premiere affectation d'entrée différente
     // à l'heure d'admission
     if ($this->date_adm && $this->time_adm) {
-      $this->loadRefsBack();
+      $this->loadRefsAffectations();
       $affectation =& $this->_ref_first_affectation;
       $admission = $this->date_adm." ".$this->time_adm;
       if ($affectation->affectation_id && ($affectation->entree != $admission)) {
@@ -349,10 +355,6 @@ class COperation extends CMbObject {
         $affectation->store();
       }
     }
-    
-    // Cas d'une annulation
-    if($this->annulee)
-      $this->delAff();
     
     return $msg;
   }
@@ -411,15 +413,17 @@ class COperation extends CMbObject {
     $this->loadRefCCAM();
     $this->_view = "Intervention de {$this->_ref_pat->_view} par le Dr. {$this->_ref_chir->_view}";
   }
-
-  function loadRefsBack() {
+  
+  function loadRefsFiles() {
     $this->_ref_files = array();
     if ($this->operation_id) {
       $where = array("file_operation" => "= '$this->operation_id'");
       $this->_ref_files = new CFile();
       $this->_ref_files = $this->_ref_files->loadList($where);
     }
-
+  }
+  
+  function loadRefsAffectations() {
     $where = array("operation_id" => "= '$this->operation_id'");
     $order = "sortie DESC";
     $this->_ref_affectations = new CAffectation();
@@ -432,17 +436,28 @@ class COperation extends CMbObject {
       $this->_ref_first_affectation =& new CAffectation;
       $this->_ref_last_affectation =& new CAffectation;
     }
-    
+  }
+  
+  function loadRefsActesCCAM() {
     $where = array("operation_id" => "= '$this->operation_id'");
     $this->_ref_actes_ccam = new CActeCCAM;
     $this->_ref_actes_ccam = $this->_ref_actes_ccam->loadList($where);
-    
+  }
+  
+  function loadRefsDocuments() {
     $this->_ref_documents = new CCompteRendu();
     $where = array();
     $where[] = "(type = 'operation' OR type = 'hospitalisation')";
     $where["object_id"] = "= '$this->operation_id'";
     $order = "nom";
     $this->_ref_documents = $this->_ref_documents->loadList($where, $order);
+  }
+
+  function loadRefsBack() {
+    $this->loadRefsFiles();
+    $this->loadRefsAffectations();
+    $this->loadRefsActesCCAM();
+    $this->loadRefsDocuments();
   }
   
   function loadRefGHM () {
