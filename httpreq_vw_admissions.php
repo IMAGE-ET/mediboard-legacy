@@ -22,8 +22,7 @@ $selSaisis = mbGetValueFromGetOrSession("selSaisis", "0");
 $selTri = mbGetValueFromGetOrSession("selTri", "nom");
 $date = mbGetValueFromGetOrSession("date", mbDate());
 
-// operations de la journée
-
+// Operations de la journée
 $today = new COperation;
 
 $ljoin["patients"] = "operations.pat_id = patients.patient_id";
@@ -45,20 +44,20 @@ if($selTri == "heure")
 
 $today = $today->loadList($where, $order, null, null, $ljoin);
 
-foreach($today as $key => $value) {
-  $today[$key]->loadRefsFwd();
-  $today[$key]->_first_aff = $today[$key]->getFirstAffectation();
-  if($today[$key]->_first_aff->affectation_id) {
-    $today[$key]->_first_aff->loadRefsFwd();
-    $today[$key]->_first_aff->_ref_lit->loadRefsFwd();
-    $today[$key]->_first_aff->_ref_lit->_ref_chambre->loadRefsFwd();
+foreach ($today as $keyOp => $valueOp) {
+  $operation =& $today[$keyOp];
+  $operation->loadRefsFwd();
+  $affectation =& $operation->_ref_first_affectation;
+  if ($affectation->affectation_id) {
+    $affectation->loadRefsFwd();
+    $affectation->_ref_lit->loadRefsFwd();
+    $affectation->_ref_lit->_ref_chambre->loadRefsFwd();
   }
 }
 
 // Création du template
 require_once( $AppUI->getSystemClass ('smartydp' ) );
 $smarty = new CSmartyDP;
-
 
 $smarty->assign('date', $date);
 $smarty->assign('selAdmis', $selAdmis);
