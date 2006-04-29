@@ -7,14 +7,14 @@
 
 <?php if ($dPconfig['debug']) { ?>
   <div style="margin: 10px; text-align: center;">
-    Page générée en <?php echo $phpChrono->total; ?> secondes
+    Page générée en <?php echo number_format($phpChrono->total, 3); ?> secondes
  
-  <?php foreach($dbChronos as $dbConfigName => $dbChrono) { ?>
+    <?php foreach($dbChronos as $dbConfigName => $dbChrono) { ?>
     <br />
-    <?php echo $dbChrono->total; ?> secondes prises 
+    <?php echo number_format($dbChrono->total, 3); ?> secondes prises 
     par la base de données <strong><?php echo $dbConfigName; ?></strong> en 
     <?php echo $dbChrono->nbSteps; ?> requêtes SQL.
-  <?php  } ?>
+    <?php  } ?>
   </div>
 <?php } ?>
 
