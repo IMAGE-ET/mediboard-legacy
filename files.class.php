@@ -114,7 +114,7 @@ class CFile extends CMbObject {
 		if($this->file_consultation) {
 		  if (!is_dir("{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation")
        && !is_dir("{$AppUI->cfg['root_dir']}/files/consultations2/$this->file_consultation")) {
-		      $res = mbForceDirectory( "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation", 0777 );
+		      $res = @mbForceDirectory( "{$AppUI->cfg['root_dir']}/files/consultations/$this->file_consultation", 0777 );
           $rep = "consultations";
 			   if (!$res) {
           $res = mbForceDirectory( "{$AppUI->cfg['root_dir']}/files/consultations2/$this->file_consultation", 0777 );
