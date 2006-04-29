@@ -342,11 +342,12 @@ class COperation extends CMbObject {
     // Cas ou on a une premiere affectation d'entrée différente
     // à l'heure d'admission
     if ($this->date_adm && $this->time_adm) {
-      $affTmp = new CAffectation;
-      $affTmp = $this->getFirstAffectation();
-      if ($affTmp->affectation_id && ($affTmp->entree != $this->date_adm." ".$this->time_adm)) {
-        $affTmp->entree = $this->date_adm." ".$this->time_adm;
-        $affTmp->store();
+      $this->loadRefsBack();
+      $affectation =& $this->_ref_first_affectation;
+      $admission = $this->date_adm." ".$this->time_adm;
+      if ($affectation->affectation_id && ($affectation->entree != $admission)) {
+        $affectation->entree = $admission;
+        $affectation->store();
       }
     }
     
@@ -514,25 +515,6 @@ class COperation extends CMbObject {
     } 
   }
   
-  function getLastAffectation(){
-  	$this->loadRefsBack();
-    if(count($this->_ref_affectations)>0) {
-      foreach($this->_ref_affectations as $key => $value)
-        return $this->_ref_affectations[$key];
-    }
-    return new CAffectation;
-  }
-  
-  function getFirstAffectation(){
-  	$this->loadRefsBack();
-    if(count($this->_ref_affectations)>0) {
-      $tempAff = array_reverse($this->_ref_affectations, true);
-      foreach($tempAff as $key => $value)
-        return $tempAff[$key];
-    }
-    return new CAffectation;
-  }
-
   function getSiblings() {
     $twoWeeksBefore = mbDate("-15 days", $this->date_adm);
     $twoWeeksAfter  = mbDate("+15 days", $this->date_adm);
