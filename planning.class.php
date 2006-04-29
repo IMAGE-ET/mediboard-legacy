@@ -88,7 +88,7 @@ class COperation extends CMbObject {
   var $_min_adm = null;
   var $_entree_adm = null;
   var $_sortie_adm = null;
-  var $_codes_ccam = null;
+  var $_codes_ccam = array();
   var $_venue_SHS_guess = null;
   
   // Shortcut fields
@@ -247,7 +247,6 @@ class COperation extends CMbObject {
     parent::updateFormFields();
     
     $this->codes_ccam = strtoupper($this->codes_ccam);
-    $this->_codes_ccam = array();
     if($this->codes_ccam)
       $this->_codes_ccam = explode("|", $this->codes_ccam);
     else
@@ -385,7 +384,7 @@ class COperation extends CMbObject {
     $ext_code_ccam =& $this->_ext_codes_ccam[0];
     $code_ccam = @$this->_codes_ccam[0];
     
-    if (!$this->plageop_id && $this->pat_id && !$this->_codes_ccam) {
+    if (!$this->plageop_id && $this->pat_id && !count($this->_codes_ccam)) {
       $ext_code_ccam->libelleCourt = "Simple surveillance";
       $ext_code_ccam->libelleLong = "Simple surveillance";
     }
