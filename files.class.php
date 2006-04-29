@@ -207,7 +207,7 @@ class CFile extends CMbObject {
 		}
 
 		db_exec( "UNLOCK TABLES;" );
-		return nwords;
+		return $nwords;
 	}
 }
 ?>
