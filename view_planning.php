@@ -67,11 +67,13 @@ if ($salle) {
 $plagesop = $plagesop->loadList($where, $order);
 
 // Operations de chaque plage
-foreach($plagesop as $key=>$value) {
-  $plagesop[$key]->loadRefsFwd();
+foreach($plagesop as $keyPlage => $valuePlage) {
+  $plage =& $plagesop[$keyPlage];
+  $plage->loadRefsFwd();
+  
   $listOp = new COperation;
   $where = array();
-  $where["plageop_id"] = "= '".$value->id."'";
+  $where["plageop_id"] = "= '".$valuePlage->id."'";
   switch ($type) {
     case "1" : $where["rank"] = "!= '0'"; break;
     case "2" : $where["rank"] = "= '0'"; break;
@@ -83,19 +85,20 @@ foreach($plagesop as $key=>$value) {
   
   $order = "operations.rank";
   $listOp = $listOp->loadList($where, $order);
-  if((sizeof($listOp) == 0) && ($vide == "false"))
+  if ((sizeof($listOp) == 0) && ($vide == "false"))
     unset($plagesop[$key]);
   else {
-    foreach($listOp as $key2 => $currOp) {
-      $listOp[$key2]->loadRefsFwd();
-      $listOp[$key2]->_first_affectation = $listOp[$key2]->getFirstAffectation();
-      if($listOp[$key2]->_first_affectation) {
-        $listOp[$key2]->_first_affectation->loadRefsFwd();
-        $listOp[$key2]->_first_affectation->_ref_lit->loadRefsFwd();
-        $listOp[$key2]->_first_affectation->_ref_lit->_ref_chambre->loadRefsFwd();
+    foreach($listOp as $keyOp => $currOp) {
+      $operation =& $listOp[$keyOp];
+      $operation->loadRefs();
+      $affectation =& $operation->_ref_first_affectation;
+      if ($affectation->affectation_id) {
+        $affectation->loadRefsFwd();
+        $affectation->_ref_lit->loadRefsFwd();
+        $affectation->_ref_lit->_ref_chambre->loadRefsFwd();
       }
     }
-    $plagesop[$key]->_ref_operations = $listOp;
+    $plage->_ref_operations = $listOp;
   }
 }
 

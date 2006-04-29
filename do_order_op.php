@@ -168,9 +168,9 @@ function cleanOrderOp($plageop, $type = "rank") {
 function changeAffect($id, $cmd = null) {
   $operation = new COperation;
   $operation->load($id);
-  $affectation = new CAffectation;
-  $affectation = $operation->getLastAffectation();
-  if($affectation->affectation_id && ($operation->type_adm == "ambu")) {
+  $operation->loadRefs();
+  $affectation =& $operation->_ref_last_affectation;
+  if ($affectation->affectation_id && ($operation->type_adm == "ambu")) {
     if($cmd == "rm")
       $affectation->sortie = mbDate("", $affectation->sortie)." 18:00:00";
     else
