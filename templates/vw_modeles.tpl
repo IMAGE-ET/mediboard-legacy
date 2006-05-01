@@ -54,7 +54,7 @@
             <a href="index.php?m={$m}&tab=addedit_modeles&compte_rendu_id={$curr_modele->compte_rendu_id}">{$curr_modele->type}</a>
           </td>
           <td>
-            <form name="editFrm" action="?m={$m}" method="POST">
+            <form name="editFrm" action="?m={$m}" method="post">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="del" value="1" />
             <input type="hidden" name="dosql" value="do_modele_aed" />
@@ -87,7 +87,7 @@
             <a href="index.php?m={$m}&tab=addedit_modeles&compte_rendu_id={$curr_modele->compte_rendu_id}">{$curr_modele->type}</a>
           </td>
           <td>
-            <form name="editFrm" action="?m={$m}" method="POST">
+            <form name="editFrm" action="?m={$m}" method="post">
             <input type="hidden" name="m" value="{$m}" />
             <input type="hidden" name="del" value="1" />
             <input type="hidden" name="dosql" value="do_modele_aed" />

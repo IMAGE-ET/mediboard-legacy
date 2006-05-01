@@ -1,4 +1,4 @@
-<form name="editFrm" action="?m={$m}" method="POST">
+<form name="editFrm" action="?m={$m}" method="post">
 
 <input type="hidden" name="m" value="dPcompteRendu" />
 <input type="hidden" name="del" value="0" />
