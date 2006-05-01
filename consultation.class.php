@@ -94,8 +94,8 @@ class CConsultation extends CMbObject {
     $this->_props["date_paiement"]   = "date";
     $this->_props["motif"]           = "text|confidential";
     $this->_props["rques"]           = "text|confidential";
-    $this->_props["examens"]         = "text|confidential";
-    $this->_props["traitment"]       = "text|confidential";
+    $this->_props["examen"]          = "text|confidential";
+    $this->_props["traitement"]      = "text|confidential";
     $this->_props["compte_rendu"]    = "html|confidential";
     $this->_props["ordonnance"]      = "html|confidential";
     $this->_props["courrier1"]       = "html|confidential";
