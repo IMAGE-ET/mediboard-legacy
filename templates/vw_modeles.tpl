@@ -2,7 +2,7 @@
   <tr>
 
     <td colspan="2">
-      <form name="selectPrat" action="index.php" method="GET">
+      <form name="selectPrat" action="index.php" method="get">
       <input type="hidden" name="m" value="{$m}" />
         
       <table class="form">
