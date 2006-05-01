@@ -336,7 +336,7 @@ function exporterDossier(operation_id) {
           <td class="button">
             {$curr_acte->code_phase}
             {if $curr_acte->modificateurs}
-              &mdash {$curr_acte->modificateurs}
+              &mdash; {$curr_acte->modificateurs}
             {/if}
           </td>
         </tr>
