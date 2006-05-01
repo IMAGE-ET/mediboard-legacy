@@ -13,7 +13,7 @@
           <th>Service:</th>
           <td>
             <select name="service_id">
-              <option value="0">&mdash Tous les services</option>{foreach from=$listServices item=curr_service}
+              <option value="0">&mdash; Tous les services</option>{foreach from=$listServices item=curr_service}
               <option value="{$curr_service->service_id}" {if $curr_service->service_id == $service_id}selected="selected"{/if}>
                 {$curr_service->nom}
               </option>
@@ -27,7 +27,7 @@
           <th>Praticien:</th>
           <td>
             <select name="prat_id">
-              <option value="0">&mdash Tous les praticiens</option>
+              <option value="0">&mdash; Tous les praticiens</option>
               {foreach from=$listPrats item=curr_prat}
               <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $prat_id}selected="selected"{/if}>
                 {$curr_prat->_view}
@@ -41,7 +41,7 @@
           <th>Type d'hospitalisation:</th>
           <td>
             <select name="type_adm">
-              <option value="0">&mdash Tous les types d'hospi</option>
+              <option value="0">&mdash; Tous les types d'hospi</option>
               <option value="1" {if $type_adm == "1"}selected="selected"{/if}>Hospi complètes + ambu</option>
               {foreach from=$listHospis item=curr_hospi}
               <option value="{$curr_hospi.code}" {if $curr_hospi.code == $type_adm}selected="selected"{/if}>

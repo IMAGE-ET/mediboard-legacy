@@ -13,7 +13,7 @@
           <th>Salle:</th>
           <td>
             <select name="salle_id">
-              <option value="0">&mdash Toutes les salles</option>
+              <option value="0">&mdash; Toutes les salles</option>
               {foreach from=$listSalles item=curr_salle}
               <option value="{$curr_salle->id}" {if $curr_salle->id == $salle_id}selected="selected"{/if}>
                 {$curr_salle->nom}
@@ -28,7 +28,7 @@
           <th>Praticien:</th>
           <td>
             <select name="prat_id">
-              <option value="0">&mdash Tous les praticiens</option>
+              <option value="0">&mdash; Tous les praticiens</option>
               {foreach from=$listPrats item=curr_prat}
               <option value="{$curr_prat->user_id}" {if $curr_prat->user_id == $prat_id}selected="selected"{/if}>
                 {$curr_prat->_view}
