@@ -1,4 +1,27 @@
-<form name="editFrm" action="?m={$m}" method="post">
+{literal}
+<script type="text/javascript">
+
+function submitCR() {
+  return true;
+}
+
+function refreshCR() {
+  oForm = document.editFrm;
+  var listUrl = new Url;
+  listUrl.setModuleAction("dPcompteRendu", "httpreq_liste_choix_cr");
+  listUrl.addParam("compte_rendu_id", oForm.compte_rendu_id.value);
+  listUrl.requestUpdate('liste');
+
+  var sourceUrl = new Url;
+  sourceUrl.setModuleAction("dPcompteRendu", "httpreq_source_cr");
+  sourceUrl.addParam("compte_rendu_id", oForm.compte_rendu_id.value);
+  sourceUrl.requestUpdate('htmlarea');
+}
+
+</script>
+{/literal}
+
+<form name="editFrm" action="?m={$m}" method="post" onsubmit="return submitCR();">
 
 <input type="hidden" name="m" value="dPcompteRendu" />
 <input type="hidden" name="del" value="0" />
@@ -9,33 +32,33 @@
 
 <table class="form">
   <tr>
-    <th class="category" colspan="10">
+    <th class="category">
       <strong>Nom du document :</strong>
       <input name="nom" size="50" value="{$compte_rendu->nom}">
     </th>
-  {if $lists|@count}
   <tr>
-    {foreach from=$lists item=curr_list}
-    <td>{$curr_list->nom}</td>
-    {/foreach}
-    <td class="button" rowspan="2">
-      <button type="submit"><img src="modules/{$m}/images/tick.png" /></button>
-    </td>
-  </tr>
-  <tr>
-    {foreach from=$lists item=curr_list}
-    <td>
-      <select name="_liste{$curr_list->liste_choix_id}">
-        {foreach from=$curr_list->_valeurs item=curr_valeur}
-        <option>{$curr_valeur}</option>
+    <td class="listeChoixCR" id="liste">
+      {if $lists|@count}
+      <ul>
+        {foreach from=$lists item=curr_list}
+        <li>
+          <select name="_liste{$curr_list->liste_choix_id}">
+            <option value="undef">&mdash; {$curr_list->nom} &mdash;</option>
+            {foreach from=$curr_list->_valeurs item=curr_valeur}
+            <option>{$curr_valeur}</option>
+            {/foreach}
+          </select>
+        </li>
         {/foreach}
-      </select>
+        <li>
+          <button type="submit"><img src="modules/{$m}/images/tick.png" /></button>
+        </li>
+      </ul>
+      {/if}
     </td>
-    {/foreach}
   </tr>
-  {/if}
   <tr>
-    <td colspan="10" style="height: 600px">
+    <td style="height: 600px">
       <textarea id="htmlarea" name="source">
         {$templateManager->document}
       </textarea>

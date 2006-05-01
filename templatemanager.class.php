@@ -176,10 +176,12 @@ class CTemplateManager {
   function getUsedLists($lists) {
   	$this->usedLists = array();
     foreach($lists as $key => $value) {
-      if(strpos($this->document, htmlentities(stripslashes("[Liste - $value->nom]")))) {
-        $this->usedLists[] = $value;
+      $pos = strpos($this->document, htmlentities(stripslashes("[Liste - $value->nom]")));
+      if($pos !== false) {
+        $this->usedLists[$pos] = $value;
       }
     }
+    ksort($this->usedLists);
     return $this->usedLists;
   }
 }

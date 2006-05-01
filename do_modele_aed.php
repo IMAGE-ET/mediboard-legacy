@@ -29,11 +29,13 @@ if(isset($_POST["source"])) {
     if(preg_match("/_liste([0-9]+)/", $key, $result)) {
       $temp = new CListeChoix;
       $temp->load($result[1]);
-      // @todo : passer en regexp
-      //$fields[] = "<span class=\"name\">[Liste - ".htmlentities($temp->nom)."]</span>";
-      //$values[] = "<span class=\"choice\">$value</span>";
-      $fields[] = "[Liste - ".htmlentities($temp->nom)."]";
-      $values[] = "$value";
+      if($value != "undef") {
+        // @todo : passer en regexp
+        //$fields[] = "<span class=\"name\">[Liste - ".htmlentities($temp->nom)."]</span>";
+        //$values[] = "<span class=\"choice\">$value</span>";
+        $fields[] = "[Liste - ".htmlentities($temp->nom)."]";
+        $values[] = "$value";
+      }
     }
   }
   $_POST["source"] = str_replace($fields, $values, $_POST["source"]);
