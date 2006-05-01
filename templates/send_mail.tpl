@@ -1,7 +1,7 @@
 <table class="main">
   <tr>
     <td class="halfPane">
-      <form name="mailFrm" action="?m={$m}" method="POST">
+      <form name="mailFrm" action="?m={$m}" method="post">
         <input type="hidden" name="m" value="{$m}" />
         <input type="hidden" name="dosql" value="do_send" />
         <table class="form">
