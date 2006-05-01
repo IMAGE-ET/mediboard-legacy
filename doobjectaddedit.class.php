@@ -50,11 +50,11 @@ class CDoObjectAddEdit {
     unset($_POST["suppressHeaders"]);
     
     //UTF8 issue for Ajax
-    //if($this->ajax) {
-    //  foreach($_POST as $key => $value) {
-    //    $_POST[$key] = utf8_decode($value);
-    //  }
-    //}
+    if($this->ajax) {
+      foreach($_POST as $key => $value) {
+        $_POST[$key] = utf8_decode($value);
+      }
+    }
     
     // Object binding
     $this->_obj = new $this->className();
