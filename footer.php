@@ -8,7 +8,7 @@
 <?php if ($dPconfig['debug']) { ?>
   <div style="margin: 10px; text-align: center;">
     Page générée en <?php echo number_format($phpChrono->total, 3); ?> secondes
- 
+    par PHP.
     <?php foreach($dbChronos as $dbConfigName => $dbChrono) { ?>
     <br />
     <?php echo number_format($dbChrono->total, 3); ?> secondes prises 
