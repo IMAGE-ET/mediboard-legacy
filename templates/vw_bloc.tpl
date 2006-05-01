@@ -1,7 +1,7 @@
 <table class="main">
   <tr>
     <td>
-      <form name="bloc" action="index.php" method="GET">
+      <form name="bloc" action="index.php" method="get">
       <input type="hidden" name="m" value="dPstats" />
       <table class="form">
         <tr>
