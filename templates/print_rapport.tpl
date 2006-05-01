@@ -79,7 +79,7 @@
           <td>{$curr_consult->secteur2} €</td>
           <td>{if $etat == -1 && !$curr_consult->paye}0{else}{$curr_consult->secteur1+$curr_consult->secteur2}{/if} €</td>
           <td>
-            <form name="tarifFrm" action="?m=dPcabinet" method="POST">
+            <form name="tarifFrm" action="?m=dPcabinet" method="post">
             <input type="hidden" name="m" value="dPcabinet" />
             <input type="hidden" name="del" value="0" />
             <input type="hidden" name="_dialog" value="print_rapport" />
