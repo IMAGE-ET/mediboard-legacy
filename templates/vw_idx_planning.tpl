@@ -152,7 +152,7 @@ function pageMain() {
               <tr>
                 <th>{$document->nom}</th>
                 <td class="button">
-                  <form name="editDocumentFrm{$document->compte_rendu_id}" action="?m={$m}" method="POST">
+                  <form name="editDocumentFrm{$document->compte_rendu_id}" action="?m={$m}" method="post">
                   <input type="hidden" name="m" value="dPcompteRendu" />
                   <input type="hidden" name="del" value="0" />
                   <input type="hidden" name="dosql" value="do_modele_aed" />
