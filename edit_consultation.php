@@ -97,6 +97,8 @@ if ($selConsult) {
   
 }
 
+mbTrace($consult->_aides, "Aides");
+
 // Récupération des modèles
 $whereCommon = array();
 $whereCommon["type"] = "= 'consultation'";
