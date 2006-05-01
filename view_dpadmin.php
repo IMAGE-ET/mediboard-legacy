@@ -12,9 +12,9 @@
 global $AppUI, $canRead, $canEdit, $m;
 
 ?>
-<table width="50%" border="0" cellpadding="0" cellspacing="5" align="left">
+<table>
 <tr>
-  <td width="42">
+  <td>
     <?php echo dPshowImage( dPfindImage( 'rdf2.png', $m ), 42, 42, '' ); ?>
   </td>
   <td>
@@ -23,8 +23,8 @@ global $AppUI, $canRead, $canEdit, $m;
 </tr>
 
 <tr>
-  <td>&nbsp;</td>
-  <td align="left">
+  <td />
+  <td>
     <a href="?m=system&amp;a=translate"><?php echo $AppUI->_( 'Translation Management' );?></a>
   </td>
 </tr>
@@ -39,8 +39,8 @@ global $AppUI, $canRead, $canEdit, $m;
 </tr>
 
 <tr>
-  <td>&nbsp;</td>
-  <td align="left">
+  <td />
+  <td>
     <a href="?m=system&amp;a=addeditpref"><?php echo $AppUI->_('Default User Preferences');?></a>
     <br /><a href="?m=system&amp;u=syskeys&amp;a=keys"><?php echo $AppUI->_( 'System Lookup Keys' );?></a>
     <br /><a href="?m=system&amp;u=syskeys"><?php echo $AppUI->_( 'System Lookup Values' );?></a>
@@ -57,8 +57,8 @@ global $AppUI, $canRead, $canEdit, $m;
 </tr>
 
 <tr>
-  <td>&nbsp;</td>
-  <td align="left">
+  <td />
+  <td>
     <a href="?m=system&amp;a=viewmods"><?php echo $AppUI->_('View Modules');?></a>
   </td>
 </tr>
@@ -73,9 +73,9 @@ global $AppUI, $canRead, $canEdit, $m;
 </tr>
 
 <tr>
-  <td>&nbsp;</td>
-  <td align="left">
-    <a href="?m=system&amp;u=roles"><?php echo $AppUI->_('User Roles');?></a>
+  <td />
+  <td>
+    <a href="install/"><?php echo $AppUI->_("Assistant d'installation"); ?></a>
   </td>
 </tr>
 
