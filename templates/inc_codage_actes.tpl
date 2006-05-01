@@ -8,7 +8,7 @@
     <em>(<a class="action" href="?m=dPccam&amp;tab=vw_full_code&amp;codeacte={$curr_code->code}">{$curr_code->code}</a>)</em>
     <br />Codes associés :
     <select name="asso" onchange="setCode(this.value, 'ccam')">
-      <option value="">&mdash choix</option>
+      <option value="">&mdash; choix</option>
       {foreach from=$curr_code->assos item=curr_asso}
       <option value="{$curr_asso.code}">{$curr_asso.code}({$curr_asso.texte|truncate:40:"...":true})</option>
       {/foreach}
