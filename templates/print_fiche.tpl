@@ -2,24 +2,29 @@
 {assign var="consult_anesth" value=$consult->_ref_consult_anesth}
 <table class="form" id="admission">
   <tr>
-    <th class="title" colspan="4">
-      <a href="javascript:window.print()">
-        Consultation pré-anesthésique
-      </a>
-    </th>
+    <td colspan="2">
+      <table width="100%" style="font-size: 120%; padding-bottom: 50px;">
+        <tr>
+          <th class="title" colspan="2">
+            <a href="javascript:window.print()">
+              Consultation pré-anesthésique
+            </a>
+          </th>
+        </tr>
+        <tr>
+          <th>Date: </th>
+          <td>{$consult->_ref_plageconsult->date|date_format:"%A %d %B %Y"}</td>
+        </tr>
+        <tr>
+          <th>Anesthésiste: </th>
+          <td>Dr. {$consult->_ref_chir->_view}</td>
+        </tr>
+      </table>
+    </td>
   </tr>
-  <tr>
-    <th>Date: </th>
-    <td>{$consult->_ref_plageconsult->date|date_format:"%A %d %B %Y"}</td>
-  </tr>
-  <tr>
-    <th>Anesthésiste: </th>
-    <td>Dr. {$consult->_ref_chir->_view}</td>
-  </tr>
-  
   <tr>
     <td class="halfPane">
-      <table width="100%">
+      <table width="100%" style="font-size: 120%; padding-bottom: 50px;">
         <tr>
           <th class="category" colspan="2">
             Informations sur le patient
@@ -67,7 +72,7 @@
       </table>
     </td>
     <td class="halfPane">
-      <table width="100%">
+      <table width="100%" style="font-size: 120%; padding-bottom: 50px;">
         <tr>
           <th class="category" colspan="2">
             Antécédents / Traitements
@@ -119,23 +124,29 @@
     </td>
   </tr>
   <tr>
-    <th class="category" colspan="2">
-      Intervention
-    </th>
-  </tr>
-  <tr>
     <td colspan="2">
-      Intervention le <strong>{$consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}</strong>
-      par le <strong>Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}</strong><br />
-      <ul>
-        {foreach from=$consult_anesth->_ref_operation->_ext_codes_ccam item=curr_code}
-        <li><em>{$curr_code->libelleLong}</em> ({$curr_code->code})</li>
-        {/foreach}
-      </ul>
+      <table width="100%" style="font-size: 120%; padding-bottom: 50px;">
+        <tr>
+          <th class="category" colspan="2">
+            Intervention
+          </th>
+        </tr>
+        <tr>
+          <td colspan="2">
+            Intervention le <strong>{$consult_anesth->_ref_operation->_ref_plageop->date|date_format:"%a %d %b %Y"}</strong>
+            par le <strong>Dr. {$consult_anesth->_ref_operation->_ref_chir->_view}</strong><br />
+            <ul>
+              {foreach from=$consult_anesth->_ref_operation->_ext_codes_ccam item=curr_code}
+              <li><em>{$curr_code->libelleLong}</em> ({$curr_code->code})</li>
+              {/foreach}
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th>Anesthésie prévue: </th>
+          <td>{$consult_anesth->_ref_operation->_lu_type_anesth}</td>
+        </tr>
+      </table>
     </td>
-  </tr>
-  <tr>
-    <th>Anesthésie prévue: </th>
-    <td>{$consult_anesth->_ref_operation->_lu_type_anesth}</td>
   </tr>
 </table>
