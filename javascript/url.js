@@ -1,6 +1,7 @@
 // Class URL, for easy url parameters writing and poping
 function Url() {
   this.aParams = new Array;
+  this.oWindow = null;
 }
 
 Url.prototype.setModuleAction = function(sModule, sAction) {
@@ -34,23 +35,32 @@ Url.prototype.make = function() {
 }
 
 Url.prototype.redirect = function() {
-  window.location.href = this.make();
+  if(this.oWindow)
+    this.oWindow.location.href = this.make();
+  else
+    window.location.href = this.make();
 }
 
 Url.prototype.pop = function(iWidth, iHeight, sWindowName) {
   this.addParam("dialog", "1");
   params = 'left=50, top=50, height=' + iHeight + ', width=' + iWidth;
   params += ', resizable=yes, scrollbars=yes, menubar=yes';
-  return window.open(this.make(), name, params);  
+  this.oWindow = window.open(this.make(), name, params);  
 }
 
 Url.prototype.popunder = function(iWidth, iHeight, sWindowName) {
-  this.pop(iWidth, iHeight, sWindowName).blur();
+  this.pop(iWidth, iHeight, sWindowName);
+  this.oWindow.blur();
   window.focus();
 }
 
 Url.prototype.popup = function(iWidth, iHeight, sWindowName) {
-  this.pop(iWidth, iHeight, sWindowName).focus();
+  this.pop(iWidth, iHeight, sWindowName);
+  this.oWindow.focus();
+}
+
+Url.prototype.close = function() {
+  this.oWindow.close();
 }
 
 Url.prototype.requestUpdate = function(ioTarget, oOptions) {
