@@ -90,7 +90,7 @@
           <input type="submit" value="Modifier cet acte" />
           <input type="button" value="Supprimer cet acte" onclick="confirmDeletion(this.form,{ldelim}typeName:'l\'acte',objName:'{$acte->_view|escape:javascript}'{rdelim})"  />
           {else}
-          <input type="submit" value="Coder cet acte" />
+          <input type="submit" value="Coder cet acte" style="background-color: #faa" />
           {/if}
         </td>
       </tr>

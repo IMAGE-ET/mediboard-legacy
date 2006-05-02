@@ -58,10 +58,20 @@ $timing = array();
 if($op) {
   $selOp->load($op);
   $selOp->loadRefs();
-  foreach($selOp->_ext_codes_ccam as $key => $value) {
-    $selOp->_ext_codes_ccam[$key]->Load();
+  foreach($selOp->_ext_codes_ccam as $keyCode => $code) {
+    $selOp->_ext_codes_ccam[$keyCode]->Load();
   }
   $selOp->loadPossibleActes();
+  /* Loading des comptes-rendus
+  foreach($selOp->_ext_codes_ccam as $keyCode => $code) {
+    foreach($code->activites as $keyActivite => $activite) {
+      foreach($activite->phases as $keyPhase => $phase) {
+        if($phase->_connected_acte->acte_id) {
+          
+        }
+      }
+    }
+  }*/
   $selOp->_ref_plageop->loadRefsFwd();
   // Tableau des timings
   $timing["entree_bloc"]    = array();
