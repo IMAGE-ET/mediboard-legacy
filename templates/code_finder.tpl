@@ -2,7 +2,7 @@
 <script type="text/javascript">
 function setClose(code) {
   window.opener.putCim10(code);
-  window.close();
+  //window.close();
 }
 </script>
 {/literal}
