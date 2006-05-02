@@ -1454,12 +1454,14 @@ div.wizard {
 }
 
 div.wizard div.toc {
-  float: right;
+  position: fixed;
+  right: 15px;
+  top: 15px;
   background: #fff;
   border: 2px solid #000;
   margin: 5px;
   padding: 10px;
-  opacity: .6;
+  opacity: .7;
 }
 
 div.wizard div.toc a {
