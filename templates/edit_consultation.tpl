@@ -90,7 +90,7 @@ function pageMain() {
 
       <table class="form">
         <tr>
-          <th class="category" colspan="2">
+          <th class="category">
             <button id="triggerList" class="triggerHide" type="button" onclick="flipEffectElement('listConsult', 'Appear', 'Fade', 'triggerList');" style="float:left">+/-</button>
             Patient
           </th>
@@ -104,40 +104,11 @@ function pageMain() {
           <th class="category">Planification</th>
         </tr>
         <tr>
-          <td class="readonly">
-            {$patient->_view}
-            <br />
-            Age: {$patient->_age} ans
-            <br />
-            <a href="javascript:showAll({$patient->patient_id})">
-              Résumé
-            </a>
-            <br />
-            <a href="index.php?m=dPcabinet&amp;tab=vw_dossier&amp;patSel={$patient->patient_id}">
-              Consulter le dossier complet
-            </a>
-          </td>
-          <td class="button">
-            <button onclick="editPat({$patient->patient_id})">
-              <img src="modules/dPcabinet/images/edit.png" alt="editer" />
-            </button>
+          <td class="text">
+            {include file="inc_patient_infos.tpl"}
           </td>
           <td class="text">
-            {if $patient->medecin_traitant}
-            Dr. {$patient->_ref_medecin_traitant->_view}
-            {/if}
-            {if $patient->medecin1}
-            <br />
-            Dr. {$patient->_ref_medecin1->_view}
-            {/if}
-            {if $patient->medecin2}
-            <br />
-            Dr. {$patient->_ref_medecin2->_view}
-            {/if}
-            {if $patient->medecin3}
-            <br />
-            Dr. {$patient->_ref_medecin3->_view}
-            {/if}
+            {include file="inc_patient_medecins.tpl"}
           </td>
           <td class="text">
             {include file="inc_patient_history.tpl"}

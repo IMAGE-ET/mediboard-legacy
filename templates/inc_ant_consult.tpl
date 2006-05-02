@@ -1,11 +1,12 @@
 <script type="text/javascript">
 {literal}
 
+var cim10url = new Url;
+
 function selectCim10(code) {
-  var url = new Url;
-  url.setModuleAction("dPcim10", "code_finder");
-  url.addParam("code", code);
-  url.popup(800, 500, "CIM10");
+  cim10url.setModuleAction("dPcim10", "code_finder");
+  cim10url.addParam("code", code);
+  cim10url.popup(800, 500, "CIM10");
 }
 
 function putCim10(code) {
@@ -16,7 +17,7 @@ function putCim10(code) {
   aCim10.push(code);
   aCim10.removeDuplicates();
   oForm.listCim10.value = aCim10.join("|");
-  oForm.submit();
+  submitAnt(oForm);
 }
 
 function delCim10(code) {
@@ -24,7 +25,7 @@ function delCim10(code) {
   var aCim10 = oForm.listCim10.value.split("|");
   aCim10.removeByValue(code);
   oForm.listCim10.value = aCim10.join("|");
-  oForm.submit();
+  submitAnt(oForm);
 }
 
 function finTrmt() {
@@ -46,10 +47,26 @@ function finTrmt() {
   }
 }
 
+function closeCIM10() {
+  cim10url.close();
+}
+
+function reloadAntecedents() {
+  var antUrl = new Url;
+  antUrl.setModuleAction("dPcabinet", "httpreq_vw_list_antecedents");
+  antUrl.addParam("patient_id", document.editDiagFrm.patient_id.value);
+  antUrl.requestUpdate('listAnt', { waitingText : null, onComplete : closeCIM10 });
+}
+
+function submitAnt(oForm) {
+  submitFormAjax(oForm, 'systemMsg', { onComplete : reloadAntecedents });
+  oForm.reset();
+}
+
 function incAntecedantsMain() {
   {/literal}
   {foreach from=$patient->_static_cim10 key=cat item=curr_cat}
-  initEffectClass("group{$cat}"   , "trigger{$cat}");
+  initEffectClass("group{$cat}", "trigger{$cat}");
   {/foreach}
   {literal}
 }
@@ -137,7 +154,7 @@ function incAntecedantsMain() {
         </tr>
         <tr>
           <td class="button" colspan="3">
-            <button type="submit">Ajouter</button>
+            <button type="button" onclick="submitAnt(this.form)">Ajouter</button>
           </td>
         </tr>
       </table>
@@ -187,71 +204,15 @@ function incAntecedantsMain() {
         </tr>
         <tr>
           <td class="button" colspan="3">
-            <button type="submit">Ajouter</button>
+            <button type="button" onclick="submitAnt(this.form)">Ajouter</button>
           </td>
         </tr>
       </table>
       </form>
       
     </td>
-    <td class="text">
-      <strong>Diagnostics du patient</strong>
-      <ul>
-        {foreach from=$patient->_codes_cim10 item=curr_code}
-        <li>
-          <button type="button" onclick="delCim10('{$curr_code->code}')">
-            <img src="modules/dPcabinet/images/cross.png" />
-          </button>
-          {$curr_code->code}: {$curr_code->libelle}
-        </li>
-        {foreachelse}
-        <li>Pas de diagnostic</li>
-        {/foreach}
-      </ul>
-      <strong>Antécédents du patient</strong>
-      <ul>
-        {foreach from=$patient->_ref_antecedents item=curr_ant}
-        <li>
-          <form name="delAntFrm" action="?m=dPcabinet" method="post">
-          <input type="hidden" name="m" value="dPpatients" />
-          <input type="hidden" name="del" value="1" />
-          <input type="hidden" name="dosql" value="do_antecedent_aed" />
-          <input type="hidden" name="antecedent_id" value="{$curr_ant->antecedent_id}" />
-          <button type="submit">
-            <img src="modules/dPcabinet/images/cross.png" />
-          </button>
-          {$curr_ant->type} le {$curr_ant->date|date_format:"%d/%m/%Y"} :
-          <i>{$curr_ant->rques}</i>
-          </form>
-        </li>
-        {foreachelse}
-        <li>Pas d'antécédents</li>
-        {/foreach}
-      </ul>
-      <strong>Traitements du patient</strong>
-      <ul>
-        {foreach from=$patient->_ref_traitements item=curr_trmt}
-        <li>
-          <form name="delTrmtFrm" action="?m=dPcabinet" method="post">
-          <input type="hidden" name="m" value="dPpatients" />
-          <input type="hidden" name="del" value="1" />
-          <input type="hidden" name="dosql" value="do_traitement_aed" />
-          <input type="hidden" name="traitement_id" value="{$curr_trmt->traitement_id}" />
-          <button type="submit">
-            <img src="modules/dPcabinet/images/cross.png" />
-          </button>
-          {if $curr_trmt->fin}
-            Du {$curr_trmt->debut|date_format:"%d/%m/%Y"} au {$curr_trmt->fin|date_format:"%d/%m/%Y"}
-          {else}
-            Depuis le {$curr_trmt->debut|date_format:"%d/%m/%Y"}
-          {/if}
-          : <i>{$curr_trmt->traitement}</i>
-          </form>
-        </li>
-        {foreachelse}
-        <li>Pas de traitements</li>
-        {/foreach}
-      </ul>
+    <td class="text" id="listAnt">
+      {include file="inc_list_ant.tpl"}
     </td>
   </tr>
 </table>
