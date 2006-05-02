@@ -414,14 +414,16 @@ class CPatient extends CMbObject {
   
   function fillTemplate(&$template) {
   	$this->loadRefsFwd();
-    $template->addProperty("Patient - nom"                    , $this->nom             );
-    $template->addProperty("Patient - prénom"                 , $this->prenom          );
-    $template->addProperty("Patient - article"                , $this->_shortview      );
-    $template->addProperty("Patient - adresse"                , $this->adresse         );
-    $template->addProperty("Patient - âge"                    , $this->_age            );
-    $template->addProperty("Patient - date de naissance"      , $this->_naissance);
-    $template->addProperty("Patient - téléphone"              , $this->tel);
-    $template->addProperty("Patient - mobile"                 , $this->tel2);
+    $template->addProperty("Patient - nom"               , $this->nom        );
+    $template->addProperty("Patient - prénom"            , $this->prenom     );
+    $template->addProperty("Patient - article"           , $this->_shortview );
+    $template->addProperty("Patient - adresse"           , $this->adresse    );
+    $template->addProperty("Patient - ville"             , $this->ville      );
+    $template->addProperty("Patient - cp"                , $this->cp         );
+    $template->addProperty("Patient - âge"               , $this->_age       );
+    $template->addProperty("Patient - date de naissance" , $this->_naissance );
+    $template->addProperty("Patient - téléphone"         , $this->tel        );
+    $template->addProperty("Patient - mobile"            , $this->tel2       );
     if($this->medecin_traitant) {
       $template->addProperty("Patient - médecin traitant"          , "{$this->_ref_medecin_traitant->nom} {$this->_ref_medecin_traitant->prenom}");
       $template->addProperty("Patient - médecin traitant - adresse", "".nl2br($this->_ref_medecin_traitant->adresse)."<br />{$this->_ref_medecin_traitant->cp} {$this->_ref_medecin_traitant->ville}");
