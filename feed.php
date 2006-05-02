@@ -45,7 +45,7 @@ unset($dbConfigs["ccam"]);
 
 <?php 
 if (@$_POST["do"]) {
-  $dbConnection = new CDBConnection(
+  $dbConnection = new CMbDb(
     $dbConfig["dbhost"], 
     $dbConfig["dbuser"], 
     $dbConfig["dbpass"], 
@@ -95,7 +95,8 @@ if ($db->getOne("SELECT * FROM `users`")) {
 <div class="big-warning">
   Attention, la base de données principale actuellement déjà une structure. La 
   reconstruire endommagerait probablement les données. 
-  <br />Si vous désirez re-créer une structure il est nécessaire de vider initialement 
+  <br />
+  Si vous désirez re-créer une structure il est nécessaire de vider initialement 
   la base avec un gestionnaire adapté.
 </div>
 

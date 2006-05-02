@@ -202,12 +202,14 @@ $versions[] = $version;
     <?php } else { ?>
     Recommandée
     <?php } ?>
+  </td>
   <td class="text">
     <ul>
       <?php foreach($prereq->reasons as $reason) { ?>
       <li><?php echo $reason; ?></li>
       <?php } ?>
     </ul>
+  </td>
   <td>
     <?php if ($prereq->check()) { ?>
     <div class="message">Oui, Version <?php echo phpVersion(); ?></div>
@@ -258,12 +260,14 @@ $versions[] = $version;
     <?php } else { ?>
     Recommandée
     <?php } ?>
+  </td>
   <td class="text">
     <ul>
       <?php foreach($prereq->reasons as $reason) { ?>
       <li><?php echo $reason; ?></li>
       <?php } ?>
     </ul>
+  </td>
   <td>
     <?php if ($prereq->check()) { ?>
     <div class="message">Extension chargée</div>

@@ -11,7 +11,7 @@ require_once("checkconfig.php");
 $dbConfigs = $dPconfig["db"];
 unset($dbConfigs["ccam"]);
 
-require_once("dbconnection.php");
+require_once("mbdb.class.php");
 require_once("addusers.sql.php");
 
 ?>
@@ -66,7 +66,7 @@ require_once("addusers.sql.php");
 
 <?php 
 if (@$_POST["adminhost"]) { 
-  $dbConnection = new CDBConnection(
+  $dbConnection = new CMbDb(
     $_POST["adminhost"],
     $_POST["adminuser"],
     $_POST["adminpass"]);
@@ -150,7 +150,7 @@ if (@$_POST["adminhost"]) {
   <tr>
   <?php 
   foreach($dbConfigs as $dbConfigName => $dbConfig) { 
-    $dbConnection = new CDBConnection(
+    $dbConnection = new CMbDb(
       $dbConfig["dbhost"], 
       $dbConfig["dbuser"], 
       $dbConfig["dbpass"], 
