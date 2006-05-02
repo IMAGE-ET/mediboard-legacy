@@ -1453,6 +1453,19 @@ div.wizard {
   font-family: arial;
 }
 
+div.wizard div.toc {
+  float: right;
+  background: #fff;
+  border: 2px solid #000;
+  padding: 10px;
+  opacity: .6;
+}
+
+div.wizard div.toc a {
+  display: block;
+  color: #000;
+}
+
 div.wizard-navigation {
   text-align: center;
   margin: 20px;
