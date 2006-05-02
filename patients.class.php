@@ -15,6 +15,7 @@ require_once($AppUI->getModuleClass('dPpatients', 'antecedent') );
 require_once($AppUI->getModuleClass('dPpatients', 'traitement') );
 require_once($AppUI->getModuleClass('dPcabinet', 'consultation') );
 require_once($AppUI->getModuleClass('dPhospi', 'affectation') );
+require_once($AppUI->getModuleClass('dPcim10', 'codecim10') );
 
 /**
  * The CPatient Class
@@ -170,7 +171,7 @@ class CPatient extends CMbObject {
     if($this->listCim10)
       $arrayCodes = explode("|", $this->listCim10);
     foreach($arrayCodes as $value) {
-      $this->_codes_cim10[] = new CCodeCim10($value, 1);
+      $this->_codes_cim10[] = new CCodeCIM10($value, 1);
     }
   }
   
@@ -239,8 +240,8 @@ class CPatient extends CMbObject {
   }
   
   // Backward references
-  function loadRefsBack() {
-    // opérations
+  
+  function loadRefsOperations() {
     $this->_ref_operations = new COperation();
     $where = array();
     $where["pat_id"] = "= '$this->patient_id'";
@@ -249,16 +250,20 @@ class CPatient extends CMbObject {
     $leftjoin = array();
     $leftjoin["plagesop"] = "operations.plageop_id = plagesop.id";
     $this->_ref_operations = $this->_ref_operations->loadList($where, $order, null, null, $leftjoin);
-
-    // hospitalisations
+  }
+  
+  function loadRefsHospitalisations() {
     $this->_ref_hospitalisations = new COperation();
     $where = array();
     $where["pat_id"] = "= '$this->patient_id'";
     $where["plageop_id"] = "IS NULL";
     $order = "date_adm DESC, time_adm DESC";
+    $leftjoin = array();
+    $leftjoin["plagesop"] = "operations.plageop_id = plagesop.id";
     $this->_ref_hospitalisations = $this->_ref_hospitalisations->loadList($where, $order, null, null, $leftjoin);
-
-    // consultations
+  }
+  
+  function loadRefsConsultations() {
     $this->_ref_consultations = new CConsultation();
     $where = array();
     $where["patient_id"] = "= '$this->patient_id'";
@@ -266,44 +271,61 @@ class CPatient extends CMbObject {
     $leftjoin = array();
     $leftjoin["plageconsult"] = "consultation.plageconsult_id = plageconsult.plageconsult_id";
     $this->_ref_consultations = $this->_ref_consultations->loadList($where, $order, null, null, $leftjoin);
-
-  	// antecedents
+  }
+  
+  function loadRefsAntecedents() {
     $this->_ref_antecedents = new CAntecedent;
     $where = array();
     $where["patient_id"] = "= '$this->patient_id'";
     $order = "type, date DESC";
     $this->_ref_antecedents = $this->_ref_antecedents->loadList($where, $order);
-    
-    // traitements
+  }
+
+  function loadRefsTraitements() {
     $this->_ref_traitements = new CTraitement;
     $where = array();
     $where["patient_id"] = "= '$this->patient_id'";
     $order = "fin DESC, debut DESC";
     $this->_ref_traitements = $this->_ref_traitements->loadList($where, $order);
+  }
+  
+  function loadRefsAffectations() {
+    $this->loadRefsOperations();
+    $this->loadRefsHospitalisations();
     
     // affectation actuelle et prochaine affectation
-  	$this->_ref_curr_affectation = new CAffectation();
+    $this->_ref_curr_affectation = new CAffectation();
     $this->_ref_next_affectation = new CAffectation();
-  	$date = date("Y-m-d");
-  	$where = array();
-  	$where["entree"] = "<= '$date 23:59:59'";
-  	$where["sortie"] = ">= '$date 00:00:00'";
-  	$inArray = array();
-  	foreach($this->_ref_operations as $key => $value) {
-  	  $inArray[] = $key;
-  	}
-  	if(count($inArray)) {
-  	  $in = implode(", ", $inArray);
-  	  $where["operation_id"] ="IN ($in)";
-  	}
-  	else
-  	  $where["operation_id"] ="IS NULL";
-  	$this->_ref_curr_affectation->loadObject($where);
-  	
+    $date = date("Y-m-d");
+    $where = array();
+    $where["entree"] = "<= '$date 23:59:59'";
+    $where["sortie"] = ">= '$date 00:00:00'";
+    $inArray = array();
+    foreach($this->_ref_operations as $key => $value) {
+      $inArray[] = $key;
+    }
+    foreach($this->_ref_hospitalisations as $key => $value) {
+      $inArray[] = $key;
+    }
+    if(count($inArray)) {
+      $in = implode(", ", $inArray);
+      $where["operation_id"] ="IN ($in)";
+    }
+    else
+      $where["operation_id"] ="IS NULL";
+    $this->_ref_curr_affectation->loadObject($where);
+    
     $where["entree"] = "> '$date 23:59:59'";
-  	$where["sortie"] = "> '$date 23:59:59'";
-  	$order = "entree";
-  	$this->_ref_next_affectation->loadObject($where, $order);
+    $where["sortie"] = "> '$date 23:59:59'";
+    $order = "entree";
+    $this->_ref_next_affectation->loadObject($where, $order);
+  }
+  
+  function loadRefsBack() {
+    $this->loadRefsConsultations();
+    $this->loadRefsAntecedents();
+    $this->loadRefsTraitements();
+    $this->loadRefsAffectations();
   }
 
   // Forward references
