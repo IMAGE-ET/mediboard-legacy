@@ -114,12 +114,12 @@
   
   <tr><th class="category" colspan="2">Rendez vous d'anesthésie</th></tr>
   
-  <tr><!--<th>Date: </th>-->
-  <td class="text" colspan="2">
-    <!--le {$adm.dateAnesth} à {$adm.hourAnesth}-->
-    Veuillez prendre rendez-vous avec le cabinet d'anesthésistes <strong>impérativement</strong>
-    avant votre intervention. Pour cela, téléphonez au 05 46 00 77 08
-  </td><tr>
+  <tr>
+    <td class="text" colspan="2">
+      Veuillez prendre rendez-vous avec le cabinet d'anesthésistes <strong>impérativement</strong>
+      avant votre intervention. Pour cela, téléphonez au 05 46 00 77 08
+    </td>
+  <tr>
   
   <tr><td class="info" colspan="2"><b>Pour votre hospitalisation, prière de vous munir de :</b>
   <ul>
