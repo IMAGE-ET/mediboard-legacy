@@ -89,10 +89,11 @@ function printAdmission(id) {
 		    </a>
 		  </td>
 		  <td class="text">
-		    {if $curr_op->_first_affectation}
-		    {$curr_op->_first_affectation->_ref_lit->_ref_chambre->_ref_service->nom} -
-		    {$curr_op->_first_affectation->_ref_lit->_ref_chambre->nom} -
-		    {$curr_op->_first_affectation->_ref_lit->nom}
+        {assign var="affectation" value=$curr_op->_ref_first_affectation}
+		    {if $affectation->affectation_id}
+		    {$affectation->_ref_lit->_ref_chambre->_ref_service->nom} -
+		    {$affectation->_ref_lit->_ref_chambre->nom} -
+		    {$affectation->_ref_lit->nom}
 		    {/if}
 		  </td>
 		</tr>
