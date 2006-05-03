@@ -41,15 +41,10 @@ $listDays = db_loadlist($sql);
 
 // Clause de filtre par spécialité
 if ($spe) {
-  $sql = "SELECT * " .
-      "\nFROM users_mediboard " .
-      "\nWHERE function_id = '$spe'";
-  $speChir = db_loadlist($sql);
-  $addSpe .= " AND (0";
-  foreach($speChir as $key => $value) {
-    $addSpe .= " OR chir_id = '". $value["user_id"] ."'";
-  }
-  $addSpe .= ")";
+  $speChirs = new CMediusers;
+  $speChirs = $speChirs->loadList(array ("function_id" => "= '$spe'"));
+  $idChirs = join(array_keys($speChirs), ", ");
+  $inChirs = "AND chir_id IN ($idChirs)";
 }
 
 // Clause de filtre par chirurgien
@@ -66,7 +61,7 @@ foreach($listDays as $keyDay => $valueDay) {
       "\nAND $whereImploded";
 
   if ($spe) {
-    $sql .= $addSpe;
+    $sql .= $inChirs;
   }
 
   if ($chir) {
@@ -86,14 +81,19 @@ foreach($listDays as $keyDay => $valueDay) {
   	$where["annulee"] = "= 0";
   	$where["chir_id"] = "= '". $valueChir["chir_id"] ."'";
   	$where["date_adm"] = "= '".$day["date_adm"]."'";
-    if($type)
-      $where["type_adm"] = "'$type'";
-    if($conv) {
-      if($conv == "o")
+
+    if ($type) {
+      $where["type_adm"] = "= '$type'";
+    }
+    
+    if ($conv == "o") {
         $where[] = "(operations.convalescence IS NOT NULL AND operations.convalescence != '')";
-      else
+    }
+    
+    if ($conv == "n") {
         $where[] = "(operations.convalescence IS NULL OR operations.convalescence = '')";
     }
+    
   	$where[] = $whereImploded;
     if($ordre == 'heure')
       $order = "operations.time_adm, operations.chir_id, operations.time_operation";
@@ -106,7 +106,6 @@ foreach($listDays as $keyDay => $valueDay) {
       $operation =& $listAdm[$keyAdm];
       $operation->loadRefs();
       
-      $chambre = null;
       $first_affectation =& $operation->_ref_first_affectation;
       if ($first_affectation->affectation_id) {
         $first_affectation->loadRefsFwd();
@@ -116,7 +115,7 @@ foreach($listDays as $keyDay => $valueDay) {
         $chambre->loadRefsFwd();
       }
       
-      if (!$service || ($chambre && $chambre->_ref_service->service_id == $service)) {
+      if (!$service || (isset($chambre) && $chambre->_ref_service->service_id == $service)) {
         $dayChir["admissions"][$keyAdm] = $operation;
       }
     }
