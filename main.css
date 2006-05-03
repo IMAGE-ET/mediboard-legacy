@@ -1464,6 +1464,11 @@ div.wizard div.toc {
   opacity: .7;
 }
 
+div.wizard div.toc ol {
+  margin: 0px;
+  padding-left: 20px
+}
+
 div.wizard div.toc a {
   display: block;
   color: #000;
