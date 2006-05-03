@@ -55,14 +55,19 @@ function showHeader() {
 <div class="wizard">
 
 <div class="toc">
-  <?php foreach ($stepsText as $step => $stepName) { ?>
-  <?php if ($currentStep == $step) { ?>
-  <strong><?php echo $stepName; ?></strong>
-  <?php } else { ?>
-  <a href="<?php echo $step; ?>.php"><?php echo $stepName; ?></a>
-  <?php } ?>
-  <?php } ?>
+  <ol>
+    <?php foreach ($stepsText as $step => $stepName) { ?>
+    <li>
+      <?php if ($currentStep == $step) { ?>
+      <strong><?php echo $stepName; ?></strong>
+      <?php } else { ?>
+      <a href="<?php echo $step; ?>.php"><?php echo $stepName; ?></a>
+      <?php } ?>
+    </li>
+    <?php } ?>
+  <ol>
 </div>
+
 <h1>Installation de Mediboard <?php echo mbVersion(); ?> &mdash; Etape <?php echo $currentStepKey+1; ?>/<?php echo count($steps); ?>  </h1>
 <?php 
 } 

@@ -7,7 +7,9 @@
 * @author Thomas Despoix
 */
 
+require_once("checkauth.php");
 require_once("checkconfig.php");
+
 $dbConfigs = $dPconfig["db"];
 unset($dbConfigs["ccam"]);
 
