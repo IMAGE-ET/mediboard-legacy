@@ -18,7 +18,8 @@ check_errs()
   FAILURETEXT=$2
   SUCCESSTEXT=$3
 
-  if [ "${RETURNCODE}" -ne "0" ]; then
+  if [ "${RETURNCODE}" -ne "0" ]
+  then
     echo "ERROR # ${RETURNCODE} : ${FAILURETEXT}"
     # as a bonus, make our script exit with the right error code.
     echo "...Exiting..."
