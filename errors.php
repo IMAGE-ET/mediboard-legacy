@@ -111,8 +111,11 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
 
 // Initialize custom error handler
 if (!@filesize($logPath)) {
-  $styleInclusion = "<link rel='stylesheet' type='text/css' href='style/mediboard/main.css?build=24' media='all' />";  
-  file_put_contents($logPath, $styleInclusion);
+  $initTime = date("Y-m-d H:i:s");
+  
+  $logInit = "<link rel='stylesheet' type='text/css' href='style/mediboard/main.css?build=24' media='all' />";  
+  $logInit .= "<h2>Log de Mediboard ré-initailisé depuis $initTime</h2>";
+  file_put_contents($logPath, $logInit);
 }
 
 set_error_handler("errorHandler");
