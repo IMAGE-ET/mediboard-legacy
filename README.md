@@ -1,4 +1,4 @@
-mediboard-legacy-test
+mediboard-legacy
 =====================
 
-Mediboard legacy test
+Mediboard Legacy source code. DOT NOT USE IN PRODUCTION
