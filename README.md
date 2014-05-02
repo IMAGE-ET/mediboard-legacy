@@ -1,4 +1,4 @@
 mediboard-legacy
 =====================
 
-Mediboard Legacy source code. DOT NOT USE IN PRODUCTION
+Mediboard Legacy source code. DO NOT USE IN PRODUCTION
